@@ -94,6 +94,10 @@ public final class ManagedEnvironmentImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ManagedEnvironmentInner innerModel() {
         return this.innerObject;
     }
@@ -104,7 +108,7 @@ public final class ManagedEnvironmentImpl
 
     private String resourceGroupName;
 
-    private String name;
+    private String environmentName;
 
     public ManagedEnvironmentImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -116,7 +120,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -125,7 +129,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
@@ -133,7 +137,7 @@ public final class ManagedEnvironmentImpl
         String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ManagedEnvironmentInner();
         this.serviceManager = serviceManager;
-        this.name = name;
+        this.environmentName = name;
     }
 
     public ManagedEnvironmentImpl update() {
@@ -145,7 +149,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -154,7 +158,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, name, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
@@ -164,7 +168,7 @@ public final class ManagedEnvironmentImpl
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
+        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
     }
 
     public ManagedEnvironment refresh() {
@@ -172,7 +176,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
+                .getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -182,7 +186,7 @@ public final class ManagedEnvironmentImpl
             serviceManager
                 .serviceClient()
                 .getManagedEnvironments()
-                .getByResourceGroupWithResponse(resourceGroupName, name, context)
+                .getByResourceGroupWithResponse(resourceGroupName, environmentName, context)
                 .getValue();
         return this;
     }

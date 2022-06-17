@@ -225,7 +225,11 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
         return fromString(name, ShareErrorCode.class);
     }
 
-    /** @return known ShareErrorCode values. */
+    /**
+     * Gets known ShareErrorCode values.
+     *
+     * @return known ShareErrorCode values.
+     */
     public static Collection<ShareErrorCode> values() {
         return values(ShareErrorCode.class);
     }

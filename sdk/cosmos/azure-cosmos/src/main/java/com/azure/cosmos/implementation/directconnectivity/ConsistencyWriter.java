@@ -194,8 +194,28 @@ public class ConsistencyWriter {
                                                    try {
                                                        Throwable unwrappedException = Exceptions.unwrap(t);
                                                        CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
-                                                       storeReader.createAndRecordStoreResult(request, null, ex, false, false, primaryUri);
-                                                       String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
+                                                       Exception rawException = null;
+                                                       if (ex == null) {
+                                                           rawException = Utils.as(unwrappedException, Exception.class);
+
+                                                           if (rawException == null) {
+                                                               throw unwrappedException;
+                                                           }
+                                                       }
+
+                                                       storeReader.createAndRecordStoreResult(
+                                                           request,
+                                                           null, ex != null ? ex: rawException,
+                                                           false,
+                                                           false,
+                                                           primaryUri);
+                                                       String value = ex != null ?
+                                                           ex
+                                                               .getResponseHeaders()
+                                                               .get(HttpConstants
+                                                                   .HttpHeaders
+                                                                   .WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH) :
+                                                           null;
                                                        if (!Strings.isNullOrWhiteSpace(value)) {
                                                            Integer result = Integers.tryParse(value);
                                                            if (result != null && result == 1) {

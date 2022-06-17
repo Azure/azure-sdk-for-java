@@ -12,7 +12,7 @@ public final class MonitorsListSamples {
      * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/monitors_List.json
      */
     /**
-     * Sample code: List all SAP Monitors in a subscription.
+     * Sample code: List all SAP monitors in a subscription.
      *
      * @param manager Entry point to WorkloadsManager.
      */

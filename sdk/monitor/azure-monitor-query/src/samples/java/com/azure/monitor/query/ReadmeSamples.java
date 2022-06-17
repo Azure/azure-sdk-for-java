@@ -6,6 +6,7 @@ package com.azure.monitor.query;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredential;
@@ -24,7 +25,10 @@ import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import com.azure.monitor.query.models.TimeSeriesElement;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -322,5 +326,59 @@ public class ReadmeSamples {
                 .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
                 .buildClient();
         // END: readme-sample-okhttpresponsetimeout
+    }
+
+    /**
+     * Sample to show how to request for query execution statistics and consume the response.
+     * @throws IOException if parsing the statistics JSON fails.
+     */
+    public void includeStatistics() throws IOException {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        // BEGIN: readme-sample-includestatistics
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        LogsQueryOptions options = new LogsQueryOptions()
+                .setIncludeStatistics(true);
+        Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}",
+                "AzureActivity | top 10 by TimeGenerated", QueryTimeInterval.LAST_1_HOUR, options, Context.NONE);
+        LogsQueryResult result = response.getValue();
+        BinaryData statistics = result.getStatistics();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode statisticsJson = objectMapper.readTree(statistics.toBytes());
+        JsonNode queryStatistics = statisticsJson.get("query");
+        System.out.println("Query execution time = " + queryStatistics.get("executionTime").asDouble());
+        // END: readme-sample-includestatistics
+    }
+
+    /**
+     * Sample to show how to request for visualization data and consume the response.
+     * @throws IOException if parsing the visualization JSON fails.
+     */
+    public void includeVisualization() throws IOException {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        // BEGIN: readme-sample-includevisualization
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        String visualizationQuery = "StormEvents"
+                + "| summarize event_count = count() by State"
+                + "| where event_count > 10"
+                + "| project State, event_count"
+                + "| render columnchart";
+        LogsQueryOptions options = new LogsQueryOptions()
+                .setIncludeVisualization(true);
+        Response<LogsQueryResult> response = client.queryWorkspaceWithResponse("{workspace-id}", visualizationQuery,
+                QueryTimeInterval.LAST_7_DAYS, options, Context.NONE);
+        LogsQueryResult result = response.getValue();
+        BinaryData visualization = result.getVisualization();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode visualizationJson = objectMapper.readTree(visualization.toBytes());
+        System.out.println("Visualization graph type = " + visualizationJson.get("visualization").asText());
+        // END: readme-sample-includevisualization
     }
 }

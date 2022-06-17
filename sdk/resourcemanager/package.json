@@ -59,6 +59,7 @@
     "npm-run-all": "4.1.5",
     "pom-parser": "1.2.0",
     "request": "2.88.2",
-    "request-promise": "4.2.6"
+    "request-promise": "4.2.6",
+    "yaml": "2.1.0"
   }
 }

@@ -44,13 +44,11 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SuggestOptions;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
@@ -401,21 +399,19 @@ public final class DocumentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         List<String> facetsConverted =
-                Optional.ofNullable(facets)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (facets == null)
+                        ? new ArrayList<>()
+                        : facets.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         String highlightFieldsConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
         String orderByConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
         List<String> scoringParametersConverted =
-                Optional.ofNullable(scoringParameters)
-                        .map(Collection::stream)
-                        .orElseGet(Stream::empty)
-                        .map((item) -> Objects.toString(item, ""))
-                        .collect(Collectors.toList());
+                (scoringParameters == null)
+                        ? new ArrayList<>()
+                        : scoringParameters.stream()
+                                .map(item -> Objects.toString(item, ""))
+                                .collect(Collectors.toList());
         String searchFieldsConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         String selectConverted =

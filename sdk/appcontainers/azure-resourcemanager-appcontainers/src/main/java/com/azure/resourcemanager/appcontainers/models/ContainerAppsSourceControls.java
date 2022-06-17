@@ -44,21 +44,21 @@ public interface ContainerAppsSourceControls {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SourceControl of a Container App.
      */
-    SourceControl get(String resourceGroupName, String containerAppName, String name);
+    SourceControl get(String resourceGroupName, String containerAppName, String sourceControlName);
 
     /**
      * Get a SourceControl of a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -67,34 +67,34 @@ public interface ContainerAppsSourceControls {
      * @return a SourceControl of a Container App along with {@link Response}.
      */
     Response<SourceControl> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context);
+        String resourceGroupName, String containerAppName, String sourceControlName, Context context);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String containerAppName, String name);
+    void delete(String resourceGroupName, String containerAppName, String sourceControlName);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App SourceControl.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String containerAppName, String name, Context context);
+    void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context);
 
     /**
      * Get a SourceControl of a Container App.
@@ -122,7 +122,7 @@ public interface ContainerAppsSourceControls {
     Response<SourceControl> getByIdWithResponse(String id, Context context);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +133,7 @@ public interface ContainerAppsSourceControls {
     void deleteById(String id);
 
     /**
-     * Description for Delete a Container App SourceControl.
+     * Delete a Container App SourceControl.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

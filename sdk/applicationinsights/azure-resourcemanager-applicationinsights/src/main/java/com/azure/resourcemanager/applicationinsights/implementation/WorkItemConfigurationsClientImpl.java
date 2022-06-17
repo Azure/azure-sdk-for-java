@@ -472,14 +472,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
     private Mono<WorkItemConfigurationInner> createAsync(
         String resourceGroupName, String resourceName, WorkItemCreateConfiguration workItemConfigurationProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, workItemConfigurationProperties)
-            .flatMap(
-                (Response<WorkItemConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -634,14 +627,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkItemConfigurationInner> getDefaultAsync(String resourceGroupName, String resourceName) {
         return getDefaultWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<WorkItemConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -797,7 +783,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, workItemConfigId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -964,14 +950,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
     private Mono<WorkItemConfigurationInner> getItemAsync(
         String resourceGroupName, String resourceName, String workItemConfigId) {
         return getItemWithResponseAsync(resourceGroupName, resourceName, workItemConfigId)
-            .flatMap(
-                (Response<WorkItemConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1174,14 +1153,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
         WorkItemCreateConfiguration workItemConfigurationProperties) {
         return updateItemWithResponseAsync(
                 resourceGroupName, resourceName, workItemConfigId, workItemConfigurationProperties)
-            .flatMap(
-                (Response<WorkItemConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

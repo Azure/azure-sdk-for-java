@@ -97,7 +97,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static boolean isClientTelemetryEnabled(CosmosAsyncClient cosmosAsyncClient) {
-        return cosmosAsyncClient.isClientTelemetryEnabled();
+        return cosmosAsyncClient.getClientTelemetryConfig().isClientTelemetryEnabled();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -745,5 +745,17 @@ public final class BridgeInternal {
         } else {
             return null;
         }
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void  initializeAllAccessors() {
+        CosmosClient.initialize();
+        CosmosAsyncClientEncryptionKey.initialize();
+        CosmosAsyncContainer.initialize();
+        CosmosAsyncDatabase.initialize();
+        CosmosClientBuilder.initialize();
+        CosmosDiagnostics.initialize();
+        CosmosException.initialize();
+        DirectConnectionConfig.initialize();
     }
 }

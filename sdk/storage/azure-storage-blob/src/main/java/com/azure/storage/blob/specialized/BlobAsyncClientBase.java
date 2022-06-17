@@ -1717,7 +1717,7 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(null, null).map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1749,7 +1749,7 @@ public class BlobAsyncClientBase {
      * successfully deleted. If status code is 404, the base blob does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context -> deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
@@ -1759,17 +1759,18 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<Response<Void>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context).onErrorResume(t -> t
-            instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-            t -> {
-                HttpResponse response = ((BlobStorageException) t).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            });
+        return deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context)
+            .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**

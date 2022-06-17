@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.12.2</version>
+    <version>1.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

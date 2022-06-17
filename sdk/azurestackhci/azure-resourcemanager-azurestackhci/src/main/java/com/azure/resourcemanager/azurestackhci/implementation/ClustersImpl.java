@@ -10,9 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
+import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
+import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
+import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 
 public final class ClustersImpl implements Clusters {
     private static final ClientLogger LOGGER = new ClientLogger(ClustersImpl.class);
@@ -75,8 +78,40 @@ public final class ClustersImpl implements Clusters {
         this.serviceClient().delete(resourceGroupName, clusterName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, clusterName, context);
+    public void delete(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().delete(resourceGroupName, clusterName, context);
+    }
+
+    public void uploadCertificate(
+        String resourceGroupName, String clusterName, UploadCertificateRequest uploadCertificateRequest) {
+        this.serviceClient().uploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest);
+    }
+
+    public void uploadCertificate(
+        String resourceGroupName,
+        String clusterName,
+        UploadCertificateRequest uploadCertificateRequest,
+        Context context) {
+        this.serviceClient().uploadCertificate(resourceGroupName, clusterName, uploadCertificateRequest, context);
+    }
+
+    public ClusterIdentityResponse createIdentity(String resourceGroupName, String clusterName) {
+        ClusterIdentityResponseInner inner = this.serviceClient().createIdentity(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new ClusterIdentityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterIdentityResponse createIdentity(String resourceGroupName, String clusterName, Context context) {
+        ClusterIdentityResponseInner inner =
+            this.serviceClient().createIdentity(resourceGroupName, clusterName, context);
+        if (inner != null) {
+            return new ClusterIdentityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Cluster getById(String id) {
@@ -133,10 +168,10 @@ public final class ClustersImpl implements Clusters {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
+        this.delete(resourceGroupName, clusterName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -152,7 +187,7 @@ public final class ClustersImpl implements Clusters {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, clusterName, context);
+        this.delete(resourceGroupName, clusterName, context);
     }
 
     private ClustersClient serviceClient() {

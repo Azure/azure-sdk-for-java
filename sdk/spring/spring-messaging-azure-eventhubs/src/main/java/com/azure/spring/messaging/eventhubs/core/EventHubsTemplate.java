@@ -150,7 +150,7 @@ public class EventHubsTemplate implements SendOperation {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
-    private <T> PartitionSupplier buildPartitionSupplier(Message<T> message) {
+    <T> PartitionSupplier buildPartitionSupplier(Message<T> message) {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
         Optional.ofNullable(message.getHeaders().get(PARTITION_KEY)).ifPresent(s -> partitionSupplier.setPartitionKey(String.valueOf(s)));
         Optional.ofNullable(message.getHeaders().get(PARTITION_ID)).ifPresent(s -> partitionSupplier.setPartitionId(String.valueOf(s)));

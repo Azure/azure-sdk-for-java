@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.resourcemanager.compute.models.ResourceWithOptionalLocation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
 @Fluent
-public final class VirtualMachineExtensionInner extends Resource {
+public final class VirtualMachineExtensionInner extends ResourceWithOptionalLocation {
     /*
      * Describes the properties of a Virtual Machine Extension.
      */
@@ -325,7 +325,9 @@ public final class VirtualMachineExtensionInner extends Resource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

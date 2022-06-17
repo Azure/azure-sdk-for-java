@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Images ListByResourceGroup. */
 public final class ImagesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListImagesInAResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/imageExamples/Image_ListByResourceGroup.json
      */
     /**
      * Sample code: List all virtual machine images in a resource group.

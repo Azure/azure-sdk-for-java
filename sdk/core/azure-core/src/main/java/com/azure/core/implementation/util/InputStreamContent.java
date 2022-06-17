@@ -80,6 +80,11 @@ public final class InputStreamContent extends BinaryDataContent {
         return FluxUtil.toFluxByteBuffer(this.content, STREAM_READ_SIZE);
     }
 
+    @Override
+    public boolean isReplayable() {
+        return false;
+    }
+
     private byte[] getBytes() {
         try {
             ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();

@@ -11,6 +11,7 @@ private[spark] case class CosmosClientConfiguration (
                                                       useGatewayMode: Boolean,
                                                       useEventualConsistency: Boolean,
                                                       enableClientTelemetry: Boolean,
+                                                      disableTcpConnectionEndpointRediscovery: Boolean,
                                                       clientTelemetryEndpoint: Option[String],
                                                       preferredRegionsList: Option[Array[String]])
 
@@ -38,6 +39,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.useGatewayMode,
       useEventualConsistency,
       enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
+      cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
       diagnosticsConfig.clientTelemetryEndpoint,
       cosmosAccountConfig.preferredRegionsList)
   }

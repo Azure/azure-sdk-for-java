@@ -664,6 +664,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
@@ -702,7 +704,71 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
-        return new BinaryData(new FileContent(file, chunkSize));
+        return new BinaryData(new FileContent(file, chunkSize, null, null));
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Maximum number of bytes to be read from the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, Long position, Long length) {
+        return new BinaryData(new FileContent(file, STREAM_READ_SIZE, position, length));
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * int chunkSize = 8092;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Maximum number of bytes to be read from the path.
+     * @param chunkSize The requested size for each read of the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, Long position, Long length, int chunkSize) {
+        return new BinaryData(new FileContent(file, chunkSize, position, length));
     }
 
     /**
@@ -1392,5 +1458,14 @@ public final class BinaryData {
      */
     public Long getLength() {
         return content.getLength();
+    }
+
+    /**
+     * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     * @return a flag indicating whether the content can be repeatedly consumed using all accessors.
+     */
+    public boolean isReplayable() {
+        return content.isReplayable();
     }
 }

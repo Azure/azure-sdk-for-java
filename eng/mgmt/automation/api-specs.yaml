@@ -43,6 +43,8 @@ eventhub:
   suffix: generated
 keyvault:
   suffix: generated
+machinelearningservices:
+  service: machinelearning
 monitor:
   suffix: generated
 msi:

@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.21.0-beta.1 (Unreleased)
+### 3.23.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,18 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.22.0 (2022-06-08)
+#### Features Added
+* Exposed `maxDegreeOfParallelism` feature from CosmosQueryRequestOptions through application.properties flag - See [PR 28756](https://github.com/Azure/azure-sdk-for-java/pull/28756)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.31.0`.
+
+### 3.21.0 (2022-05-20)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.30.0`.
+* Updated `Spring Boot` to version `2.6.7`.
 
 ### 3.20.0 (2022-04-22)
 #### Other Changes

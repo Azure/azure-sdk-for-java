@@ -179,6 +179,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- try-with-resources bug https://github.com/spotbugs/spotbugs/issues/1694 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
+      <Method name="getBytes"/>
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
   <Match>
     <Or>
@@ -385,7 +393,9 @@
   <Match>
     <Or>
       <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
+      <Class name="com.azure.core.http.HttpPipelineNextSyncPolicy"/>
       <Class name="com.azure.core.http.HttpRequest"/>
+      <Class name="com.azure.core.implementation.http.HttpPipelineCallState"/>
     </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -2263,7 +2273,10 @@
 
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
-    <Class name="~com\.azure\.core\.http\.okhttp\.implementation\.OkHttpAsyncResponse(.*)"/>
+    <Or>
+      <Class name="~com\.azure\.core\.http\.okhttp\.implementation\.OkHttpAsyncResponse(.*)"/>
+      <Class name="~com\.azure\.core\.http\.vertx\.implementation\.VertxHttpAsyncResponse(.*)"/>
+    </Or>
     <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -2666,6 +2679,16 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody"/>
+      <Class name="com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody"/>
+    </Or>
+    <Method name="writeTo"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
   <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
   <Match>
     <Class name="com.azure.ai.textanalytics.AnalyzeActionsAsyncClient"/>
@@ -2700,7 +2723,7 @@
   </Match>
   <Match>
     <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-    <Method name="getAnalyzedSentimentResponse"/>  
+    <Method name="getAnalyzedSentimentResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
   <Match>
@@ -2722,11 +2745,10 @@
     <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
     <Method name="getRecognizedLinkedEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>  
+  </Match>
   <Match>
     <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
-
 </FindBugsFilter>

@@ -15,7 +15,6 @@ import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appconfiguration.models.ResourceIdentity;
 import com.azure.resourcemanager.appconfiguration.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -27,8 +26,6 @@ import java.util.Map;
  */
 @Fluent
 public final class ConfigurationStoreInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreInner.class);
-
     /*
      * The managed identity information, if configured.
      */
@@ -319,11 +316,13 @@ public final class ConfigurationStoreInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model ConfigurationStoreInner"));
         } else {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationStoreInner.class);
 }

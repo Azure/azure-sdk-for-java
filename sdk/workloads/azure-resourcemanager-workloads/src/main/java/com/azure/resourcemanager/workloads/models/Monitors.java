@@ -82,7 +82,7 @@ public interface Monitors {
     Response<Monitor> getByResourceGroupWithResponse(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -94,7 +94,7 @@ public interface Monitors {
     OperationStatusResult deleteByResourceGroup(String resourceGroupName, String monitorName);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -132,7 +132,7 @@ public interface Monitors {
     Response<Monitor> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +143,7 @@ public interface Monitors {
     OperationStatusResult deleteById(String id);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
