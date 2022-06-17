@@ -65,7 +65,7 @@ public final class RouterClient {
     }
 
     /**
-     * Upsert a classification policy.
+     * Create a classification policy.
      *
      * @param id Id of the classification policy.
      * @param classificationPolicy Model of classification policy properties to be patched.
@@ -75,12 +75,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy upsertClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
-        return this.client.upsertClassificationPolicy(id, classificationPolicy).block();
+    public ClassificationPolicy createClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+        return this.client.createClassificationPolicy(id, classificationPolicy).block();
     }
 
     /**
-     * Upsert a classification policy.
+     * Create a classification policy.
      *
      * @param id Id of the classification policy.
      * @param classificationPolicy Model of classification policy properties to be patched.
@@ -91,7 +91,38 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
+    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
+        return this.client.upsertClassificationPolicyWithResponse(id, classificationPolicy, context).block();
+    }
+
+    /**
+     * Update a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @return a container for the rules that govern how jobs are classified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClassificationPolicy updateClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+        return this.client.createClassificationPolicy(id, classificationPolicy).block();
+    }
+
+    /**
+     * Update a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param context The context to associate with this operation.
+     * @return a container for the rules that govern how jobs are classified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ClassificationPolicy> updateClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
         return this.client.upsertClassificationPolicyWithResponse(id, classificationPolicy, context).block();
     }
 
@@ -180,7 +211,7 @@ public final class RouterClient {
     }
 
     /**
-     * Upsert a distribution policy.
+     * Create a distribution policy.
      *
      * @param id Id of the distribution policy.
      * @param distributionPolicy Model of distribution policy properties to be patched.
@@ -190,12 +221,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy upsertDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
-        return this.client.upsertDistributionPolicy(id, distributionPolicy).block();
+    public DistributionPolicy createDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+        return this.client.createDistributionPolicy(id, distributionPolicy).block();
     }
 
     /**
-     * Upsert a distribution policy.
+     * Create a distribution policy.
      *
      * @param id Id of the distribution policy.
      * @param distributionPolicy Model of distribution policy properties to be patched.
@@ -206,7 +237,38 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
+    public Response<DistributionPolicy> createDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
+        return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy, context).block();
+    }
+
+    /**
+     * Update a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @return policy governing how jobs are distributed to workers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DistributionPolicy updateDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+        return this.client.createDistributionPolicy(id, distributionPolicy).block();
+    }
+
+    /**
+     * Update a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param context The context to associate with this operation.
+     * @return policy governing how jobs are distributed to workers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DistributionPolicy> updateDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
         return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy, context).block();
     }
 
@@ -295,7 +357,7 @@ public final class RouterClient {
     }
 
     /**
-     * Upsert an exception policy.
+     * Create an exception policy.
      *
      * @param id Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
@@ -305,12 +367,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy upsertExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
-        return this.client.upsertExceptionPolicy(id, exceptionPolicy).block();
+    public ExceptionPolicy createExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+        return this.client.createExceptionPolicy(id, exceptionPolicy).block();
     }
 
     /**
-     * Upsert an exception policy.
+     * Create an exception policy.
      *
      * @param id Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
@@ -321,7 +383,38 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
+    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
+        return this.client.upsertExceptionPolicyWithResponse(id, exceptionPolicy, context).block();
+    }
+
+    /**
+     * Update an exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @return a policy that defines actions to execute when exception are triggered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExceptionPolicy updateExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+        return this.client.createExceptionPolicy(id, exceptionPolicy).block();
+    }
+
+    /**
+     * Update an exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param context The context to associate with this operation.
+     * @return a policy that defines actions to execute when exception are triggered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExceptionPolicy> updateExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
         return this.client.upsertExceptionPolicyWithResponse(id, exceptionPolicy, context).block();
     }
 
@@ -410,7 +503,7 @@ public final class RouterClient {
     }
 
     /**
-     * Upsert a job.
+     * Create a job.
      *
      * @param id Id of the job.
      * @param routerJob Model of job properties to be created or patched.
@@ -420,12 +513,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob upsertJob(String id, RouterJob routerJob) {
-        return this.client.upsertJob(id, routerJob).block();
+    public RouterJob createJob(String id, RouterJob routerJob) {
+        return this.client.createJob(id, routerJob).block();
     }
 
     /**
-     * Upsert a job.
+     * Create a job.
      *
      * @param id Id of the job.
      * @param routerJob Model of job properties to be created or patched.
@@ -436,7 +529,38 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> upsertJobWithResponse(String id, RouterJob routerJob, Context context) {
+    public Response<RouterJob> createJobWithResponse(String id, RouterJob routerJob, Context context) {
+        return this.client.upsertJobWithResponse(id, routerJob, context).block();
+    }
+
+    /**
+     * Update a job.
+     *
+     * @param id Id of the job.
+     * @param routerJob Model of job properties to be created or patched.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterJob updateJob(String id, RouterJob routerJob) {
+        return this.client.createJob(id, routerJob).block();
+    }
+
+    /**
+     * Update a job.
+     *
+     * @param id Id of the job.
+     * @param routerJob Model of job properties to be created or patched.
+     * @param context The context to associate with this operation.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RouterJob> updateJobWithResponse(String id, RouterJob routerJob, Context context) {
         return this.client.upsertJobWithResponse(id, routerJob, context).block();
     }
 
@@ -509,8 +633,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object reclassifyJobAction(String id, Object reclassifyJobRequest) {
-        return this.client.reclassifyJobAction(id, reclassifyJobRequest).block();
+    public Object reclassifyJob(String id, Object reclassifyJobRequest) {
+        return this.client.reclassifyJob(id, reclassifyJobRequest).block();
     }
 
     /**
@@ -525,8 +649,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest, Context context) {
-        return this.client.reclassifyJobActionWithResponse(id, reclassifyJobRequest, context).block();
+    public Response<Object> reclassifyJobWithResponse(String id, Object reclassifyJobRequest, Context context) {
+        return this.client.reclassifyJobWithResponse(id, reclassifyJobRequest, context).block();
     }
 
     /**
@@ -542,8 +666,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object cancelJobAction(String id, String note, String dispositionCode) {
-        return this.client.cancelJobAction(id, note, dispositionCode).block();
+    public Object cancelJob(String id, String note, String dispositionCode) {
+        return this.client.cancelJob(id, note, dispositionCode).block();
     }
 
     /**
@@ -560,8 +684,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> cancelJobActionWithResponse(String id, String note, String dispositionCode, Context context) {
-        return this.client.cancelJobActionWithResponse(id, note, dispositionCode, context).block();
+    public Response<Object> cancelJobWithResponse(String id, String note, String dispositionCode, Context context) {
+        return this.client.cancelJobWithResponse(id, note, dispositionCode, context).block();
     }
 
     /**
@@ -576,8 +700,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object completeJobAction(String id, String assignmentId, String note) {
-        return this.client.completeJobAction(id, assignmentId, note).block();
+    public Object completeJob(String id, String assignmentId, String note) {
+        return this.client.completeJob(id, assignmentId, note).block();
     }
 
     /**
@@ -593,8 +717,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> completeJobActionWithResponse(String id, String assignmentId, String note, Context context) {
-        return this.client.completeJobActionWithResponse(id, assignmentId, note, context).block();
+    public Response<Object> completeJobWithResponse(String id, String assignmentId, String note, Context context) {
+        return this.client.completeJobWithResponse(id, assignmentId, note, context).block();
     }
 
     /**
@@ -613,8 +737,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object closeJobAction(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
-        return this.client.closeJobAction(id, assignmentId, dispositionCode, closeTime, note).block();
+    public Object closeJob(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+        return this.client.closeJob(id, assignmentId, dispositionCode, closeTime, note).block();
     }
 
     /**
@@ -634,8 +758,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> closeJobActionWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
-        return this.client.closeJobActionWithResponse(id, assignmentId, dispositionCode, closeTime, note, context).block();
+    public Response<Object> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
+        return this.client.closeJobWithResponse(id, assignmentId, dispositionCode, closeTime, note, context).block();
     }
 
     /**
@@ -707,8 +831,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResponse acceptJobAction(String offerId, String workerId) {
-        return this.client.acceptJobAction(offerId, workerId).block();
+    public AcceptJobOfferResponse acceptJobOffer(String offerId, String workerId) {
+        return this.client.acceptJobOffer(offerId, workerId).block();
     }
 
     /**
@@ -723,8 +847,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResponse> acceptJobActionWithResponse(String offerId, String workerId, Context context) {
-        return this.client.acceptJobActionWithResponse(offerId, workerId, context).block();
+    public Response<AcceptJobOfferResponse> acceptJobOfferWithResponse(String offerId, String workerId, Context context) {
+        return this.client.acceptJobOfferWithResponse(offerId, workerId, context).block();
     }
 
     /**
@@ -738,8 +862,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object declineJobAction(String offerId, String workerId) {
-        return this.client.declineJobAction(offerId, workerId).block();
+    public Object declineJobOffer(String offerId, String workerId) {
+        return this.client.declineJobOffer(offerId, workerId).block();
     }
 
     /**
@@ -754,12 +878,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> declineJobActionWithResponse(String offerId, String workerId, Context context) {
-        return this.client.declineJobActionWithResponse(offerId, workerId, context).block();
+    public Response<Object> declineJobOfferWithResponse(String offerId, String workerId, Context context) {
+        return this.client.declineJobOfferWithResponse(offerId, workerId, context).block();
     }
 
     /**
-     * Upsert a queue.
+     * Create a queue.
      *
      * @param id Id of the queue.
      * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
@@ -769,12 +893,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue upsertQueue(String id, JobQueue jobQueue) {
-        return this.client.upsertQueue(id, jobQueue).block();
+    public JobQueue createQueue(String id, JobQueue jobQueue) {
+        return this.client.createQueue(id, jobQueue).block();
     }
 
     /**
-     * Upsert a queue.
+     * Create a queue.
      *
      * @param id Id of the queue.
      * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
@@ -785,7 +909,38 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> upsertQueueWithResponse(String id, JobQueue jobQueue, Context context) {
+    public Response<JobQueue> createQueueWithResponse(String id, JobQueue jobQueue, Context context) {
+        return this.client.upsertQueueWithResponse(id, jobQueue, context).block();
+    }
+
+    /**
+     * Update a queue.
+     *
+     * @param id Id of the queue.
+     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @return a queue that can contain jobs to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobQueue updateQueue(String id, JobQueue jobQueue) {
+        return this.client.createQueue(id, jobQueue).block();
+    }
+
+    /**
+     * Update a queue.
+     *
+     * @param id Id of the queue.
+     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @param context The context to associate with this operation.
+     * @return a queue that can contain jobs to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<JobQueue> updateQueueWithResponse(String id, JobQueue jobQueue, Context context) {
         return this.client.upsertQueueWithResponse(id, jobQueue, context).block();
     }
 
@@ -903,7 +1058,7 @@ public final class RouterClient {
     }
 
     /**
-     * Upsert a worker.
+     * Create a worker.
      *
      * @param id Id of the worker.
      * @param routerWorker Model of worker properties to be patched.
@@ -913,12 +1068,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker upsertWorker(String id, RouterWorker routerWorker) {
-        return this.client.upsertWorker(id, routerWorker).block();
+    public RouterWorker createWorker(String id, RouterWorker routerWorker) {
+        return this.client.createWorker(id, routerWorker).block();
     }
 
     /**
-     * Upsert a worker.
+     * Create a worker.
      *
      * @param id Id of the worker.
      * @param routerWorker Model of worker properties to be patched.
@@ -929,7 +1084,38 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> upsertWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
+    public Response<RouterWorker> createWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
+        return this.client.upsertWorkerWithResponse(id, routerWorker, context).block();
+    }
+
+    /**
+     * Update a worker.
+     *
+     * @param id Id of the worker.
+     * @param routerWorker Model of worker properties to be patched.
+     * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterWorker updateWorker(String id, RouterWorker routerWorker) {
+        return this.client.createWorker(id, routerWorker).block();
+    }
+
+    /**
+     * Update a worker.
+     *
+     * @param id Id of the worker.
+     * @param routerWorker Model of worker properties to be patched.
+     * @param context The context to associate with this operation.
+     * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RouterWorker> updateWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
         return this.client.upsertWorkerWithResponse(id, routerWorker, context).block();
     }
 

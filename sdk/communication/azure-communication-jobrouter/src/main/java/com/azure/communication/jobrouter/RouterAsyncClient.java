@@ -69,7 +69,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Creates or updates classification policy.
+     * Creates a classification policy.
      *
      * @param id Id of the classification policy.
      * @param classificationPolicy Model of classification policy properties to be patched.
@@ -79,7 +79,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> upsertClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+    public Mono<ClassificationPolicy> createClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
         try {
             return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context)
                 .flatMap(
@@ -96,7 +96,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Creates or updates classification policy.
+     * Creates a classification policy.
      *
      * @param id Id of the classification policy.
      * @param classificationPolicy Model of classification policy properties to be patched.
@@ -106,7 +106,53 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
+    public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
+        try {
+            return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Updates a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @return a container for the rules that govern how jobs are classified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ClassificationPolicy> updateClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+        try {
+            return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context)
+                .flatMap(
+                    (Response<ClassificationPolicy> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Updates a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @return a container for the rules that govern how jobs are classified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ClassificationPolicy>> updateClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
         try {
             return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context));
         } catch (RuntimeException ex) {
@@ -261,7 +307,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Creates or updates a distribution policy.
+     * Creates a distribution policy.
      *
      * @param id Id of the distribution policy.
      * @param distributionPolicy Model of distribution policy properties to be patched.
@@ -271,7 +317,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> upsertDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+    public Mono<DistributionPolicy> createDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
         try {
             return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context)
                 .flatMap(
@@ -288,7 +334,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Creates or updates a distribution policy.
+     * Creates a distribution policy.
      *
      * @param id Id of the distribution policy.
      * @param distributionPolicy Model of distribution policy properties to be patched.
@@ -298,7 +344,53 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
+    public Mono<Response<DistributionPolicy>> createDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
+        try {
+            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Updates a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @return policy governing how jobs are distributed to workers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DistributionPolicy> updateDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+        try {
+            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context)
+                .flatMap(
+                    (Response<DistributionPolicy> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Updates a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @return policy governing how jobs are distributed to workers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DistributionPolicy>> updateDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
         try {
             return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context));
         } catch (RuntimeException ex) {
@@ -453,7 +545,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Creates or updates an exception policy.
+     * Creates an exception policy.
      *
      * @param id Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
@@ -463,7 +555,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> upsertExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+    public Mono<ExceptionPolicy> createExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
         try {
             return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context)
                 .flatMap(
@@ -480,7 +572,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Creates or updates an exception policy.
+     * Creates an exception policy.
      *
      * @param id Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
@@ -490,7 +582,53 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
+    public Mono<Response<ExceptionPolicy>> createExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
+        try {
+            return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Updates an exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @return a policy that defines actions to execute when exception are triggered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExceptionPolicy> updateExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+        try {
+            return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context)
+                .flatMap(
+                    (Response<ExceptionPolicy> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Updates an exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @return a policy that defines actions to execute when exception are triggered.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExceptionPolicy>> updateExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
         try {
             return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context));
         } catch (RuntimeException ex) {
@@ -645,7 +783,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Upsert a job.
+     * Create a job.
      *
      * @param id Id of the job.
      * @param routerJob Model of job properties to be created or patched.
@@ -655,7 +793,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJob(String id, RouterJob routerJob) {
+    public Mono<RouterJob> createJob(String id, RouterJob routerJob) {
         try {
             return withContext(context -> upsertJobWithResponse(id, routerJob, context)
                 .flatMap(
@@ -672,7 +810,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Upsert a job.
+     * Create a job.
      *
      * @param id Id of the job.
      * @param routerJob Model of job properties to be created or patched.
@@ -682,7 +820,53 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponse(String id, RouterJob routerJob) {
+    public Mono<Response<RouterJob>> createJobWithResponse(String id, RouterJob routerJob) {
+        try {
+            return withContext(context -> upsertJobWithResponse(id, routerJob, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Create a job.
+     *
+     * @param id Id of the job.
+     * @param routerJob Model of job properties to be created or patched.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterJob> updateJob(String id, RouterJob routerJob) {
+        try {
+            return withContext(context -> upsertJobWithResponse(id, routerJob, context)
+                .flatMap(
+                    (Response<RouterJob> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Create a job.
+     *
+     * @param id Id of the job.
+     * @param routerJob Model of job properties to be created or patched.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterJob>> updateJobWithResponse(String id, RouterJob routerJob) {
         try {
             return withContext(context -> upsertJobWithResponse(id, routerJob, context));
         } catch (RuntimeException ex) {
@@ -813,9 +997,9 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> reclassifyJobAction(String id, Object reclassifyJobRequest) {
+    public Mono<Object> reclassifyJob(String id, Object reclassifyJobRequest) {
         try {
-            return withContext(context -> reclassifyJobActionWithResponse(id, reclassifyJobRequest, context)
+            return withContext(context -> reclassifyJobWithResponse(id, reclassifyJobRequest, context)
                 .flatMap(
                     (Response<Object> res) -> {
                         if (res.getValue() != null) {
@@ -840,15 +1024,15 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest) {
+    public Mono<Response<Object>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest) {
         try {
-            return withContext(context -> reclassifyJobActionWithResponse(id, reclassifyJobRequest, context));
+            return withContext(context -> reclassifyJobWithResponse(id, reclassifyJobRequest, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Object>> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest, Context context) {
+    Mono<Response<Object>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest, Context context) {
         try {
             return jobRouter.reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context);
         } catch (RuntimeException ex) {
@@ -869,9 +1053,9 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> cancelJobAction(String id, String note, String dispositionCode) {
+    public Mono<Object> cancelJob(String id, String note, String dispositionCode) {
         try {
-            return withContext(context -> cancelJobActionWithResponse(id, note, dispositionCode, context)
+            return withContext(context -> cancelJobWithResponse(id, note, dispositionCode, context)
                 .flatMap(
                     (Response<Object> res) -> {
                         if (res.getValue() != null) {
@@ -898,15 +1082,15 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> cancelJobActionWithResponse(String id, String note, String dispositionCode) {
+    public Mono<Response<Object>> cancelJobWithResponse(String id, String note, String dispositionCode) {
         try {
-            return withContext(context -> cancelJobActionWithResponse(id, note, dispositionCode, context));
+            return withContext(context -> cancelJobWithResponse(id, note, dispositionCode, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Object>> cancelJobActionWithResponse(String id, String note, String dispositionCode, Context context) {
+    Mono<Response<Object>> cancelJobWithResponse(String id, String note, String dispositionCode, Context context) {
         try {
             return jobRouter.cancelJobActionWithResponseAsync(id, note, dispositionCode, context);
         } catch (RuntimeException ex) {
@@ -926,9 +1110,9 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> completeJobAction(String id, String assignmentId, String note) {
+    public Mono<Object> completeJob(String id, String assignmentId, String note) {
         try {
-            return withContext(context -> completeJobActionWithResponse(id, assignmentId, note, context)
+            return withContext(context -> completeJobWithResponse(id, assignmentId, note, context)
                 .flatMap(
                     (Response<Object> res) -> {
                         if (res.getValue() != null) {
@@ -954,15 +1138,15 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> completeJobActionWithResponse(String id, String assignmentId, String note) {
+    public Mono<Response<Object>> completeJobWithResponse(String id, String assignmentId, String note) {
         try {
-            return withContext(context -> completeJobActionWithResponse(id, assignmentId, note, context));
+            return withContext(context -> completeJobWithResponse(id, assignmentId, note, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Object>> completeJobActionWithResponse(String id, String assignmentId, String note, Context context) {
+    Mono<Response<Object>> completeJobWithResponse(String id, String assignmentId, String note, Context context) {
         try {
             return jobRouter.completeJobActionWithResponseAsync(id, assignmentId, note, context);
         } catch (RuntimeException ex) {
@@ -986,9 +1170,9 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> closeJobAction(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+    public Mono<Object> closeJob(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
         try {
-            return withContext(context -> closeJobActionWithResponse(id, assignmentId, dispositionCode, closeTime, note, context)
+            return withContext(context -> closeJobWithResponse(id, assignmentId, dispositionCode, closeTime, note, context)
                 .flatMap(
                     (Response<Object> res) -> {
                         if (res.getValue() != null) {
@@ -1018,15 +1202,15 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> closeJobActionWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+    public Mono<Response<Object>> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
         try {
-            return withContext(context -> closeJobActionWithResponse(id, assignmentId, dispositionCode, closeTime, note, context));
+            return withContext(context -> closeJobWithResponse(id, assignmentId, dispositionCode, closeTime, note, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Object>> closeJobActionWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
+    Mono<Response<Object>> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
         try {
             return jobRouter.closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context);
         } catch (RuntimeException ex) {
@@ -1134,9 +1318,9 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResponse> acceptJobAction(String offerId, String workerId) {
+    public Mono<AcceptJobOfferResponse> acceptJobOffer(String offerId, String workerId) {
         try {
-            return withContext(context -> acceptJobActionWithResponse(offerId, workerId, context)
+            return withContext(context -> acceptJobOfferWithResponse(offerId, workerId, context)
                 .flatMap(
                     (Response<AcceptJobOfferResponse> res) -> {
                         if (res.getValue() != null) {
@@ -1161,15 +1345,15 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponse(String offerId, String workerId) {
+    public Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String offerId, String workerId) {
         try {
-            return withContext(context -> acceptJobActionWithResponse(offerId, workerId, context));
+            return withContext(context -> acceptJobOfferWithResponse(offerId, workerId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponse(String offerId, String workerId, Context context) {
+    Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String offerId, String workerId, Context context) {
         try {
             return jobRouter.acceptJobActionWithResponseAsync(offerId, workerId, context);
         } catch (RuntimeException ex) {
@@ -1188,9 +1372,9 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobAction(String offerId, String workerId) {
+    public Mono<Object> declineJobOffer(String offerId, String workerId) {
         try {
-            return withContext(context -> declineJobActionWithResponse(offerId, workerId, context)
+            return withContext(context -> declineJobOfferWithResponse(offerId, workerId, context)
                 .flatMap(
                     (Response<Object> res) -> {
                         if (res.getValue() != null) {
@@ -1215,15 +1399,15 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobActionWithResponse(String offerId, String workerId) {
+    public Mono<Response<Object>> declineJobOfferWithResponse(String offerId, String workerId) {
         try {
-            return withContext(context -> declineJobActionWithResponse(offerId, workerId, context));
+            return withContext(context -> declineJobOfferWithResponse(offerId, workerId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Object>> declineJobActionWithResponse(String offerId, String workerId, Context context) {
+    Mono<Response<Object>> declineJobOfferWithResponse(String offerId, String workerId, Context context) {
         try {
             return jobRouter.declineJobActionWithResponseAsync(offerId, workerId, context);
         } catch (RuntimeException ex) {
@@ -1232,7 +1416,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Upsert a queue.
+     * Create a queue.
      *
      * @param id Id of the queue.
      * @param jobQueue Model of queue properties to be patched.
@@ -1242,7 +1426,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> upsertQueue(String id, JobQueue jobQueue) {
+    public Mono<JobQueue> createQueue(String id, JobQueue jobQueue) {
         try {
             return withContext(context -> upsertQueueWithResponse(id, jobQueue, context)
                 .flatMap(
@@ -1259,7 +1443,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Upsert a queue.
+     * Create a queue.
      *
      * @param id Id of the queue.
      * @param jobQueue Model of queue properties to be patched.
@@ -1269,7 +1453,53 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> upsertQueueWithResponse(String id, JobQueue jobQueue) {
+    public Mono<Response<JobQueue>> createQueueWithResponse(String id, JobQueue jobQueue) {
+        try {
+            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Update a queue.
+     *
+     * @param id Id of the queue.
+     * @param jobQueue Model of queue properties to be patched.
+     * @return a queue that can contain jobs to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<JobQueue> updateQueue(String id, JobQueue jobQueue) {
+        try {
+            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context)
+                .flatMap(
+                    (Response<JobQueue> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Update a queue.
+     *
+     * @param id Id of the queue.
+     * @param jobQueue Model of queue properties to be patched.
+     * @return a queue that can contain jobs to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<JobQueue>> updateQueueWithResponse(String id, JobQueue jobQueue) {
         try {
             return withContext(context -> upsertQueueWithResponse(id, jobQueue, context));
         } catch (RuntimeException ex) {
@@ -1476,7 +1706,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Upsert a worker.
+     * Create a worker.
      *
      * @param id Id of the worker.
      * @param routerWorker Model of worker properties to be patched.
@@ -1486,7 +1716,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorker(String id, RouterWorker routerWorker) {
+    public Mono<RouterWorker> createWorker(String id, RouterWorker routerWorker) {
         try {
             return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context)
                 .flatMap(
@@ -1503,7 +1733,7 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Upsert a worker.
+     * Create a worker.
      *
      * @param id Id of the worker.
      * @param routerWorker Model of worker properties to be patched.
@@ -1513,7 +1743,53 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponse(String id, RouterWorker routerWorker) {
+    public Mono<Response<RouterWorker>> createWorkerWithResponse(String id, RouterWorker routerWorker) {
+        try {
+            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Update a worker.
+     *
+     * @param id Id of the worker.
+     * @param routerWorker Model of worker properties to be patched.
+     * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterWorker> updateWorker(String id, RouterWorker routerWorker) {
+        try {
+            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context)
+                .flatMap(
+                    (Response<RouterWorker> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Update a worker.
+     *
+     * @param id Id of the worker.
+     * @param routerWorker Model of worker properties to be patched.
+     * @return an entity for jobs to be routed to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterWorker>> updateWorkerWithResponse(String id, RouterWorker routerWorker) {
         try {
             return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context));
         } catch (RuntimeException ex) {

@@ -61,7 +61,7 @@ public class ExceptionPolicyExample {
          */
         ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
         exceptionPolicy.setExceptionRules(Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
-        routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+        routerClient.createExceptionPolicy(exceptionPolicyId, exceptionPolicy);
 
         System.out.printf("Successfully created exception policy with id: %s %n", exceptionPolicyId);
 
@@ -80,7 +80,7 @@ public class ExceptionPolicyExample {
         /**
          * Upsert policy using routerClient.
          */
-        routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+        routerClient.createExceptionPolicy(exceptionPolicyId, exceptionPolicy);
 
         System.out.println("Exception policy has been successfully updated.");
     }
