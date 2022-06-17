@@ -6,9 +6,11 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -27,10 +29,35 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  *
  */
-class AzureServiceBusAutoConfigurationTests {
+class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
+    ServiceBusClientBuilderFactory, AzureServiceBusProperties> {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getMinimalContextRunner() {
+        return this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            );
+    }
+
+    @Override
+    protected String getPropertyPrefix() {
+        return AzureServiceBusProperties.PREFIX;
+    }
+
+    @Override
+    protected Class<ServiceBusClientBuilderFactory> getBuilderFactoryType() {
+        return ServiceBusClientBuilderFactory.class;
+    }
+
+    @Override
+    protected Class<AzureServiceBusProperties> getConfigurationPropertiesType() {
+        return AzureServiceBusProperties.class;
+    }
+
 
     @Test
     void configureWithoutCosmosClientBuilder() {
