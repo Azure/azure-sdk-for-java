@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -268,8 +269,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -279,6 +279,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(documentUrl -> {
@@ -627,8 +628,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 syncPoller =
                 client.beginAnalyzeDocument("prebuilt-businessCard",
                         Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)),
-                        dataLength,
-                        new AnalyzeDocumentOptions())
+                        dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -728,8 +728,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
 
@@ -786,8 +785,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -807,8 +805,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
