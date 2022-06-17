@@ -8,7 +8,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -82,25 +85,31 @@ public abstract class HttpClientTests {
     /**
      * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
      */
-    @Test
-    public void plainResponse() {
+    @SyncAsyncTest
+    public void plainResponse() throws Exception {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        StepVerifier.create(sendRequest(PLAIN_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequest(PLAIN_RESPONSE).block(),
+            () -> sendRequestSync(PLAIN_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a 'Content-Type' header encodes using the specified charset.
      */
-    @Test
-    public void headerResponse() {
+    @SyncAsyncTest
+    public void headerResponse() throws Exception {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        StepVerifier.create(sendRequest(HEADER_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequest(HEADER_RESPONSE).block(),
+            () -> sendRequestSync(HEADER_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
@@ -312,6 +321,13 @@ public abstract class HttpClientTests {
         return createHttpClient()
             .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)))
             .flatMap(HttpResponse::getBodyAsString);
+    }
+
+    private String sendRequestSync(String requestPath) {
+        return createHttpClient()
+            .sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE)
+            .getBodyAsBinaryData()
+            .toString();
     }
 
     /**
