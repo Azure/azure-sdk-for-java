@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 /**
  * An test template extension that helps to branch out a single test into sync and async invocation.
  */
-public class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
+public final class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
 
     private static final ThreadLocal<Boolean> IS_SYNC_THREAD_LOCAL = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> WAS_EXTENSION_USED_THREAD_LOCAL = new ThreadLocal<>();
@@ -46,6 +46,34 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
                     return sync.call();
                 } else {
                     return async.call().block();
+                }
+            } catch (RuntimeException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * Executes sync or async branch depending on the context.
+     * @param sync sync callable.
+     * @param async async callable. It should block at some point to return result.
+     * @throws IllegalStateException if extension doesn't work as expected.
+     * @throws RuntimeException a runtime exception wrapping error from callable.
+     */
+    public static void execute(Runnable sync, Callable<Mono<Void>> async) {
+        Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
+        WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
+        if (isSync == null) {
+            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
+                + "@SyncAsyncTest with SyncAsyncExtension.execute()");
+        } else {
+            try {
+                if (isSync) {
+                    sync.run();
+                } else {
+                    async.call().block();
                 }
             } catch (RuntimeException e) {
                 throw e;

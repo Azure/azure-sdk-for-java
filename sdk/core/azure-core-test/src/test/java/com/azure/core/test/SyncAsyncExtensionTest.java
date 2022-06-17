@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+// We're indirectly testing JUnit extension
+// Therefore we use ordering to sequence state mutations.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SyncAsyncExtensionTest {
     private static final AtomicInteger SYNC_INVOCATIONS = new AtomicInteger();
@@ -22,7 +24,7 @@ public class SyncAsyncExtensionTest {
 
     @Order(1)
     @SyncAsyncTest
-    public void sampleSyncAsyncTest() {
+    public void sampleSyncAsyncWithReturnTest() {
         Integer value = SyncAsyncExtension.execute(
             SYNC_INVOCATIONS::incrementAndGet,
             () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet)
@@ -32,10 +34,19 @@ public class SyncAsyncExtensionTest {
     }
 
     @Order(2)
+    @SyncAsyncTest
+    public void sampleSyncAsyncWithoutReturnTest() {
+        SyncAsyncExtension.execute(
+            SYNC_INVOCATIONS::incrementAndGet,
+            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet).then()
+        );
+    }
+
+    @Order(3)
     @Test
     public void actualAssertion() {
-        assertEquals(1, SYNC_INVOCATIONS.get());
-        assertEquals(1, ASYNC_INVOCATIONS.get());
+        assertEquals(2, SYNC_INVOCATIONS.get());
+        assertEquals(2, ASYNC_INVOCATIONS.get());
     }
 
     @Test
