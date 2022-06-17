@@ -19,7 +19,7 @@ from utils import ListIndentDumper
 
 
 GROUP_ID = 'com.azure'
-LLC_ARGUMENTS = '--data-plane --sdk-integration --generate-samples --generate-tests'
+DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
 YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
@@ -199,7 +199,8 @@ def generate(
 
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} {4} {5}'\
+        command = 'autorest --version={0} --use={1} --java --data-plane ' \
+                  '--java.java-sdks-folder={2} --java.output-folder={3} {4} {5}'\
             .format(
                 autorest,
                 use,
@@ -209,7 +210,7 @@ def generate(
                 autorest_options
             )
         if require_sdk_integration:
-            command += ' --java.namespace={0} '.format(namespace) + LLC_ARGUMENTS
+            command += ' --java.namespace={0} '.format(namespace) + DPG_ARGUMENTS
         logging.info(command)
         try:
             subprocess.run(command, shell=True, check=True)
@@ -241,7 +242,7 @@ def generate(
         if title:
             artifact_arguments += ' --title={0}'.format(title)
 
-        command = 'autorest --version={0} --use={1} --java ' \
+        command = 'autorest --version={0} --use={1} --java --data-plane ' \
                   '--java.java-sdks-folder={2} --java.output-folder={3} ' \
                   '--java.namespace={4} {5}'\
             .format(
@@ -250,7 +251,7 @@ def generate(
                 os.path.abspath(sdk_root),
                 os.path.abspath(output_dir),
                 namespace,
-                ' '.join((LLC_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
+                ' '.join((DPG_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
             )
         logging.info(command)
         if os.system(command) != 0:
