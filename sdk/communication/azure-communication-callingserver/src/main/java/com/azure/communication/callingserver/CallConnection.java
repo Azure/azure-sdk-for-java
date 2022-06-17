@@ -108,7 +108,7 @@ public final class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
      *                           if transferring to a pstn number. Optional
      * @param userToUserInformation The user to user information. Optional
@@ -127,7 +127,7 @@ public final class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
      *                           if transferring to a pstn number.
      * @param userToUserInformation The user to user information. Optional

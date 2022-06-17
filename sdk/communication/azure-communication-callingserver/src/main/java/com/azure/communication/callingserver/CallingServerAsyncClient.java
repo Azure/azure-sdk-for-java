@@ -25,10 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-
-
 import java.util.List;
-import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -95,9 +92,6 @@ public final class CallingServerAsyncClient {
                                                                        String subject,
                                                                        Context context) {
         try {
-            Objects.requireNonNull(source, "The source parameter cannot be null.");
-            Objects.requireNonNull(targets, "The targets parameter cannot be null.");
-            Objects.requireNonNull(callbackUri, "The callbackUri parameter cannot be null.");
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> targetsModel = null;
             for (CommunicationIdentifier target : targets) {
@@ -148,7 +142,6 @@ public final class CallingServerAsyncClient {
     Mono<Response<CallConnectionAsync>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
                                                                        Context context) {
         try {
-            Objects.requireNonNull(incomingCallContext, "The incomingCallContext parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
@@ -192,8 +185,6 @@ public final class CallingServerAsyncClient {
     Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, CommunicationIdentifier target,
                                                           Context context) {
         try {
-            Objects.requireNonNull(incomingCallContext, "The incomingCallContext parameter cannot be null.");
-            Objects.requireNonNull(target, "The target parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
@@ -235,7 +226,6 @@ public final class CallingServerAsyncClient {
     Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, String callRejectReason,
                                                         Context context) {
         try {
-            Objects.requireNonNull(incomingCallContext, "The incomingCallContext parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             RejectCallRequestInternal request = new RejectCallRequestInternal()

@@ -17,13 +17,15 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.callingserver.implementation.models.GetParticipantRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
+import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.GetCallResponse;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
-
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -31,12 +33,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
-import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
-import com.azure.communication.common.CommunicationIdentifier;
-
 import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -164,7 +161,7 @@ public final class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
      *                           if transferring to a pstn number. Optional
      * @param userToUserInformation The user to user information. Optional
@@ -183,7 +180,7 @@ public final class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
      * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
      *                           if transferring to a pstn number. Optional
      * @param userToUserInformation The user to user information. Optional
@@ -203,7 +200,6 @@ public final class CallConnectionAsync {
         CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId, String userToUserInformation,
         String operationContext, Context context) {
         try {
-            Objects.requireNonNull(targetParticipant, "The targetParticipant parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
@@ -247,7 +243,6 @@ public final class CallConnectionAsync {
     Mono<Response<AcsCallParticipant>> getParticipantWithResponseInternal(CommunicationIdentifier participant,
                                                                           Context context) {
         try {
-            Objects.requireNonNull(participant, "The participant parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             GetParticipantRequestInternal getParticipantRequestInternal = new GetParticipantRequestInternal()
@@ -308,7 +303,6 @@ public final class CallConnectionAsync {
                                                                                 String operationContext,
                                                                                 Context context) {
         try {
-            Objects.requireNonNull(participants, "The participants parameter cannot be null.");
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> participantModels = null;
             for (CommunicationIdentifier participant : participants) {
@@ -361,7 +355,6 @@ public final class CallConnectionAsync {
     Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponseInternal(
         List<CommunicationIdentifier> participantsToRemove, String operationContext, Context context) {
         try {
-            Objects.requireNonNull(participantsToRemove, "The participantsToRemove parameter cannot be null.");
             context = context == null ? Context.NONE : context;
             List<CommunicationIdentifierModel> participantModels = null;
             for (CommunicationIdentifier participant : participantsToRemove) {
