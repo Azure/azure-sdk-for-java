@@ -45,7 +45,7 @@ If you don’t want to use the `spring-boot-starter-parent`, you can still keep 
 </dependencyManagement>
 ```
 
-## Spring data version support
+## Spring Data Version Support
 This project supports `spring-data-commons 2.6.x` versions.
 
 The above setup does not allow you to override individual dependencies using a property as explained above. To achieve the same result, you’d need to add an entry in the dependencyManagement of your project before the `spring-boot-dependencies` entry. For instance, to upgrade to another Spring Data release train you’d add the following to your pom.xml.
