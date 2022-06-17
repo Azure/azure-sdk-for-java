@@ -9,9 +9,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -30,11 +31,38 @@ import static org.mockito.Mockito.when;
 /**
  *
  */
-class AzureCosmosAutoConfigurationTests {
+class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
+    CosmosClientBuilderFactory, AzureCosmosProperties> {
 
     static final String TEST_ENDPOINT_HTTPS = "https://test.https.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureCosmosAutoConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getMinimalContextRunner() {
+        final CosmosClientBuilder mockCosmosClientBuilder = mock(CosmosClientBuilder.class);
+        when(mockCosmosClientBuilder.buildClient()).thenReturn(mock(CosmosClient.class));
+        when(mockCosmosClientBuilder.buildAsyncClient()).thenReturn(mock(CosmosAsyncClient.class));
+
+        return this.contextRunner
+            .withBean(CosmosClientBuilder.class, () -> mockCosmosClientBuilder)
+            .withPropertyValues("spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS);
+    }
+
+    @Override
+    protected String getPropertyPrefix() {
+        return AzureCosmosProperties.PREFIX;
+    }
+
+    @Override
+    protected Class<CosmosClientBuilderFactory> getBuilderFactoryType() {
+        return CosmosClientBuilderFactory.class;
+    }
+
+    @Override
+    protected Class<AzureCosmosProperties> getConfigurationPropertiesType() {
+        return AzureCosmosProperties.class;
+    }
 
     @Test
     void configureWithoutCosmosClientBuilder() {
