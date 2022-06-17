@@ -4,6 +4,7 @@
 package com.azure.core.util.metrics;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * {@inheritDoc}
@@ -11,7 +12,7 @@ import java.util.Objects;
 final class NoopMeter implements AzureMeter {
 
     public static final AzureMeter INSTANCE = new NoopMeter();
-
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
     private static final AzureLongHistogram NOOP_LONG_HISTOGRAM = (value, attributes, context) -> {
     };
 
@@ -39,5 +40,10 @@ final class NoopMeter implements AzureMeter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
         return NOOP_LONG_COUNTER;
+    }
+
+    @Override
+    public AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> callback) {
+        return NOOP_CLOSEABLE;
     }
 }

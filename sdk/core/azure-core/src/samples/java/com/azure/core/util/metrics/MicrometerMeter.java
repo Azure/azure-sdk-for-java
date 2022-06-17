@@ -9,6 +9,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tag;
@@ -16,6 +17,7 @@ import io.micrometer.core.instrument.Tag;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.function.Supplier;
 
 /**
  * Implements Micrometer version of {@link AzureMeter}
@@ -24,7 +26,6 @@ class MicrometerMeter implements AzureMeter {
     private static final MicrometerTags EMPTY = new MicrometerTags();
     private static final Map<InstrumentInfo, Counter> COUNTER_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
     private static final Map<InstrumentInfo, DistributionSummary> SUMMARY_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
-
     private final MeterRegistry registry;
 
     MicrometerMeter(String libraryName, String libraryVersion, MetricsOptions options) {
@@ -52,6 +53,21 @@ class MicrometerMeter implements AzureMeter {
     @Override
     public AzureLongCounter createLongCounter(String name, String description, String unit) {
         return new MicrometerLongCounter(name, description, unit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> valueSupplier) {
+        Gauge.Builder<Supplier<Number>> gaugeBuilder = Gauge.builder(name, () -> valueSupplier.get().getValue())
+            .description(description);
+
+        if (!CoreUtils.isNullOrEmpty(unit)) {
+            gaugeBuilder.baseUnit(unit);
+        }
+
+        return new CloseableGauge(gaugeBuilder.register(registry));
     }
 
     /**
@@ -139,6 +155,18 @@ class MicrometerMeter implements AzureMeter {
             }
 
             return counterBuilder.register(registry);
+        }
+    }
+
+    private static final class CloseableGauge implements AutoCloseable {
+        private final Gauge gauge;
+        public CloseableGauge(Gauge gauge) {
+            this.gauge = gauge;
+        }
+
+        @Override
+        public void close() throws Exception {
+            gauge.close();
         }
     }
 

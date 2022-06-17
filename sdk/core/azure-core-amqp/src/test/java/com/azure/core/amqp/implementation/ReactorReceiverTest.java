@@ -116,7 +116,7 @@ class ReactorReceiverTest {
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
         reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, receiverHandler, tokenManager,
-            reactorDispatcher, retryOptions);
+            reactorDispatcher, retryOptions, null);
     }
 
     @AfterEach

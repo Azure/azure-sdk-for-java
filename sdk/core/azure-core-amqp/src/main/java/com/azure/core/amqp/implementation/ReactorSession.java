@@ -17,8 +17,12 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
@@ -65,6 +69,13 @@ import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KE
  */
 public class ReactorSession implements AmqpSession {
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    private final static AzureMeterProvider METER_PROVIDER = AzureMeterProvider.getDefaultProvider();
+    private static final String AZURE_CORE_AMQP_PROPERTIES_NAME = "azure-core.properties";
+    private static final String PROPERTIES_VERSION_KEY = "version";
+    private static final String AZURE_CORE_AMQP_VERSION = CoreUtils
+        .getProperties(AZURE_CORE_AMQP_PROPERTIES_NAME)
+        .getOrDefault(PROPERTIES_VERSION_KEY, "unknown");
+
     private final ConcurrentMap<String, LinkSubscription<AmqpSendLink>> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
 
@@ -89,6 +100,7 @@ public class ReactorSession implements AmqpSession {
     private final MessageSerializer messageSerializer;
     private final String activeTimeoutMessage;
     private final AmqpRetryOptions retryOptions;
+    private final AzureMeter meter;
 
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
@@ -109,11 +121,12 @@ public class ReactorSession implements AmqpSession {
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param retryOptions for the session operations.
+     * @param metricsOptions metrics options.
      */
     public ReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
-        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
-        Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
+                          String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+                          Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
+                          MessageSerializer messageSerializer, AmqpRetryOptions retryOptions, MetricsOptions metricsOptions) {
         this.amqpConnection = amqpConnection;
         this.session = session;
         this.sessionHandler = sessionHandler;
@@ -124,6 +137,8 @@ public class ReactorSession implements AmqpSession {
         this.tokenManagerProvider = tokenManagerProvider;
         this.messageSerializer = messageSerializer;
         this.retryOptions = retryOptions;
+        this.meter = (metricsOptions != null) ? METER_PROVIDER.createMeter("azure-core-amqp", AZURE_CORE_AMQP_VERSION, metricsOptions) : null;
+
         this.activeTimeoutMessage = String.format(
             "ReactorSession connectionId[%s], session[%s]: Retries exhausted waiting for ACTIVE endpoint state.",
             sessionHandler.getConnectionId(), sessionName);
@@ -414,7 +429,7 @@ public class ReactorSession implements AmqpSession {
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
         return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider.getReactorDispatcher(), retryOptions);
+            reactorProvider.getReactorDispatcher(), retryOptions, meter);
     }
 
     /**
@@ -541,7 +556,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
-            provider, tokenManager, messageSerializer, options, timeoutScheduler);
+            provider, tokenManager, messageSerializer, options, timeoutScheduler, meter);
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {

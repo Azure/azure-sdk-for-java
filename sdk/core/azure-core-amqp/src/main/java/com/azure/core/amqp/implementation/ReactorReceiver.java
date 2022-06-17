@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.AzureMeter;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -62,17 +63,19 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final ClientLogger logger;
     private final Flux<AmqpEndpointState> endpointStates;
     private final Sinks.Empty<AmqpEndpointState> terminateEndpointStates = Sinks.empty();
+    private final AzureMeter meter;
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-        AmqpRetryOptions retryOptions) {
+                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+                              AmqpRetryOptions retryOptions, AzureMeter meter) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
+        this.meter = meter;
 
         Map<String, Object> loggingContext = createContextWithConnectionId(handler.getConnectionId());
         loggingContext.put(LINK_NAME_KEY, this.handler.getLinkName());

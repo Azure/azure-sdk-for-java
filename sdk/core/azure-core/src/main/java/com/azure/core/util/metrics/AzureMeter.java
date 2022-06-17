@@ -3,6 +3,10 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AzureAttributeBuilder;
+
+import java.util.function.Supplier;
+
 /**
  * Meter is generally associated with Azure Service Client instance and allows creating
  * instruments that represent individual metrics such as number of active connections or
@@ -105,6 +109,26 @@ public interface AzureMeter {
      * @throws NullPointerException if name or description is null.
      */
     AzureLongCounter createLongCounter(String name, String description, String unit);
+
+    AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> callback);
+
+    class GaugePoint<T> {
+        private final T value;
+        private final AzureAttributeBuilder attributes;
+
+        public GaugePoint(T value, AzureAttributeBuilder attributes) {
+            this.value = value;
+            this.attributes = attributes;
+        }
+
+        public T getValue() {
+            return value;
+        }
+
+        public AzureAttributeBuilder getAttributes() {
+            return attributes;
+        }
+    }
 
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,

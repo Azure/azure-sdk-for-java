@@ -14,6 +14,7 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -86,6 +87,7 @@ public class ReactorConnection implements AmqpConnection {
     private final ReceiverSettleMode receiverSettleMode;
     private final Duration operationTimeout;
     private final Composite subscriptions;
+    private final MetricsOptions metricsOptions;
 
     private ReactorExecutor executor;
 
@@ -106,9 +108,10 @@ public class ReactorConnection implements AmqpConnection {
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-        ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode) {
+                             ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
+                             MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
+                             ReceiverSettleMode receiverSettleMode,
+                             MetricsOptions metricsOptions) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -124,7 +127,7 @@ public class ReactorConnection implements AmqpConnection {
         this.operationTimeout = connectionOptions.getRetry().getTryTimeout();
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
-
+        this.metricsOptions = metricsOptions;
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .flatMap(reactorConnection -> {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
@@ -338,7 +341,7 @@ public class ReactorConnection implements AmqpConnection {
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(this, session, handler, sessionName, reactorProvider,
             handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
-            connectionOptions.getRetry());
+            connectionOptions.getRetry(), metricsOptions);
     }
 
     /**

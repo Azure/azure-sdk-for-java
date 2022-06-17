@@ -160,7 +160,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, null);
 
         // Setting up onConnectionRemoteOpen.
         when(connectionEvent.getConnection()).thenReturn(connectionProtonJ);
@@ -427,7 +427,7 @@ class ReactorConnectionTest {
         // Act and Assert
         final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, connectionOptions,
             reactorProvider, handlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            ReceiverSettleMode.FIRST, null);
 
         StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
             .expectErrorSatisfies(error -> {
@@ -666,7 +666,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, null);
     }
 
     @Test
@@ -676,7 +676,7 @@ class ReactorConnectionTest {
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
             reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            ReceiverSettleMode.FIRST, null);
         final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
@@ -708,7 +708,7 @@ class ReactorConnectionTest {
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
             reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST);
+            ReceiverSettleMode.FIRST, null);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
