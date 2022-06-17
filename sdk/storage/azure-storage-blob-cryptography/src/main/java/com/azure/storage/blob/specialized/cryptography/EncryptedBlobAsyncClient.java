@@ -9,23 +9,38 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
+import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
@@ -47,16 +62,23 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_PKCS5PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
@@ -810,6 +832,360 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
         });
+    }
+
+    /**
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream -->
+     * <pre>
+     * ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     * client.downloadStream&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *     try &#123;
+     *         downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *     &#125; catch &#40;IOException ex&#41; &#123;
+     *         throw new UncheckedIOException&#40;ex&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Override
+    public Flux<ByteBuffer> downloadStream() {
+        return downloadStreamWithResponse(null, null, null, false).flatMapMany(BlobDownloadAsyncResponse::getValue);
+    }
+
+    /**
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.downloadContent -->
+     * <pre>
+     * client.downloadContent&#40;&#41;.subscribe&#40;data -&gt; &#123;
+     *     System.out.printf&#40;&quot;Downloaded %s&quot;, data.toString&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobAsyncClient.downloadContent -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStream()} to download larger blobs.</p>
+     *
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BinaryData> downloadContent() {
+        return downloadContentWithResponse(null, null)
+            .flatMap(response -> BinaryData.fromFlux(response.getValue().toFluxByteBuffer()));
+    }
+
+    /**
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, &#40;long&#41; 2048&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadStreamWithResponse&#40;range, options, null, false&#41;.subscribe&#40;response -&gt; &#123;
+     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     *     response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *         try &#123;
+     *             downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *         &#125; catch &#40;IOException ex&#41; &#123;
+     *             throw new UncheckedIOException&#40;ex&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+            return this.getPropertiesWithResponse(requestConditions)
+                .flatMap(response -> {
+                    BlobRequestConditions requestConditionsFinal = requestConditions == null
+                        ? new BlobRequestConditions() : requestConditions;
+
+                    requestConditionsFinal.setIfMatch(response.getValue().getETag());
+                    // Todo: Only add if encryptionData not null? Or is this fine?
+                    return super.downloadStreamWithResponse(range, options, requestConditionsFinal, getRangeContentMd5)
+                        .contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                            response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+                });
+    }
+
+    /**
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link
+     * PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions -->
+     * <pre>
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadContentWithResponse&#40;options, null&#41;.subscribe&#40;response -&gt; &#123;
+     *     BinaryData content = response.getValue&#40;&#41;;
+     *     System.out.println&#40;content.toString&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStreamWithResponse(BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean)}
+     * to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
+        DownloadRetryOptions options,
+        BlobRequestConditions requestConditions) {
+        return this.getPropertiesWithResponse(requestConditions)
+            .flatMap(response -> {
+                BlobRequestConditions requestConditionsFinal = requestConditions == null
+                    ? new BlobRequestConditions() : requestConditions;
+
+                requestConditionsFinal.setIfMatch(response.getValue().getETag());
+                // Todo: Only add if encryptionData not null? Or is this fine?
+                return super.downloadContentWithResponse(options, requestConditionsFinal)
+                    .contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                        response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+            });
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String -->
+     * <pre>
+     * client.downloadToFile&#40;file&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @return A reactive response containing the blob properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobProperties> downloadToFile(String filePath) {
+        return downloadToFile(filePath, false);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default value
+     * client.downloadToFile&#40;file, overwrite&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param overwrite Whether to overwrite the file, should the file exist.
+     * @return A reactive response containing the blob properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobProperties> downloadToFile(String filePath, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+        }
+        return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
+     * will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, 2048L&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadToFileWithResponse&#40;file, range, null, options, null, false&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param range {@link BlobRange}
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     * transfers parameter is ignored.
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @return A reactive response containing the blob properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5) {
+        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, options, requestConditions,
+            rangeGetContentMd5, null);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;1024, 2048L&#41;;
+     * DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * Set&lt;OpenOption&gt; openOptions = new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW,
+     *     StandardOpenOption.WRITE, StandardOpenOption.READ&#41;&#41;; &#47;&#47; Default options
+     *
+     * client.downloadToFileWithResponse&#40;file, blobRange, null, downloadRetryOptions, null, false, openOptions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param range {@link BlobRange}
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     * transfers parameter is ignored.
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     * @return A reactive response containing the blob properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return this.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+                    .setParallelTransferOptions(finalParallelTransferOptions)
+                    .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
+                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions));
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions -->
+     * <pre>
+     * client.downloadToFileWithResponse&#40;new BlobDownloadToFileOptions&#40;file&#41;
+     *     .setRange&#40;new BlobRange&#40;1024, 2018L&#41;&#41;
+     *     .setDownloadRetryOptions&#40;new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;&#41;
+     *     .setOpenOptions&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+     *         StandardOpenOption.READ&#41;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDownloadToFileOptions}
+     * @return A reactive response containing the blob properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
+        return this.getPropertiesWithResponse(options.getRequestConditions())
+            .flatMap(response -> {
+                if (options.getRequestConditions() == null) {
+                    options.setRequestConditions(new BlobRequestConditions());
+                }
+                options.getRequestConditions().setIfMatch(response.getValue().getETag());
+
+                // Todo: Only add if encryptionData not null? Or is this fine?
+                return super.downloadToFileWithResponse(options)
+                    .contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                        response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+            });
     }
 
     /**
