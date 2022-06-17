@@ -63,11 +63,11 @@ public final class TakeContinuationToken extends JsonSerializable {
     }
 
     private void setTakeCount(int takeCount) {
-        BridgeInternal.setProperty(this, LimitPropertyName, takeCount);
+        this.set(LimitPropertyName, takeCount);
     }
 
     private void setSourceToken(String sourceToken) {
-        BridgeInternal.setProperty(this, SourceTokenPropetryName, sourceToken);
+        this.set(SourceTokenPropetryName, sourceToken);
     }
 
     @Override

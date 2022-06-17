@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
@@ -183,7 +183,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     return null;
                 }
 
-                InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
+                InternalObjectNode document = CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse);
 
                 logger.info("Created lease for partition {}.", leaseToken);
 
@@ -265,7 +265,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLease.fromDocument(CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -308,7 +308,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return Mono.error(ex);
             })
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLease.fromDocument(CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
                 lease.getId(),
@@ -372,7 +372,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createItemRequestOptions(lease),
                                                  InternalObjectNode.class)
-            .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
+            .map( documentResourceResponse -> ServiceItemLease.fromDocument(CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse)))
             .flatMap( refreshedLease -> {
                 if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
 

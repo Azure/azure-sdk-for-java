@@ -124,7 +124,7 @@ public class LocationCache {
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
                 null,
-                BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
+                databaseAccount.getEnableMultipleWriteLocations());
     }
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {

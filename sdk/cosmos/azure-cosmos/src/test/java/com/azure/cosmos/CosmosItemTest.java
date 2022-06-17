@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -101,7 +102,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         //Keep size as ~ 1.5MB to account for size of other props
         int size = (int) (ONE_MB * 1.5);
-        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
+        docDefinition.set("largeString", StringUtils.repeat("x", size));
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -115,7 +116,7 @@ public class CosmosItemTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
+        docDefinition.set("mypk", sb.toString());
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -129,7 +130,7 @@ public class CosmosItemTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
+        docDefinition.set("mypk", sb.toString());
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition);
 
@@ -284,7 +285,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
@@ -292,7 +293,7 @@ public class CosmosItemTest extends TestSuiteBase {
                                                               properties.getId(),
                                                               new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                               options);
-        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
+        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(CosmosItemResponseHelper.getInternalObjectNode(replace), "newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -547,16 +548,16 @@ public class CosmosItemTest extends TestSuiteBase {
     private void validateItemResponse(InternalObjectNode containerProperties,
                                       CosmosItemResponse<InternalObjectNode> createResponse) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }
 
     private void validateIdOfItemResponse(String expectedId, CosmosItemResponse<ObjectNode> createResponse) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(expectedId);
     }

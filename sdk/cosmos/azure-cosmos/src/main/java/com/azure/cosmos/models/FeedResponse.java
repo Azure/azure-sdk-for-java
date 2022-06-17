@@ -575,8 +575,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
             @Override
             public <T2> boolean noChanges(FeedResponse<T2> page) {
-                // TODO (alzimmer): No changes needs to call the method and not access the property directly.
-                return page.nochanges;
+                return page.getNoChanges();
             }
 
             @Override

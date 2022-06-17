@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -83,19 +82,9 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         super.populatePropertyBag();
 
         synchronized(this) {
-            setProperty(
-                this,
-                Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.LEASE);
-
-            setProperty(
-                this,
-                Constants.Properties.CHANGE_FEED_START_FROM_ETAG,
-                this.eTag);
-
-            this.feedRange.setProperties(
-                this,
-                true);
+            this.set(Constants.Properties.CHANGE_FEED_START_FROM_TYPE, ChangeFeedStartFromTypes.LEASE);
+            this.set(Constants.Properties.CHANGE_FEED_START_FROM_ETAG, this.eTag);
+            this.feedRange.setProperties(this, true);
         }
     }
 

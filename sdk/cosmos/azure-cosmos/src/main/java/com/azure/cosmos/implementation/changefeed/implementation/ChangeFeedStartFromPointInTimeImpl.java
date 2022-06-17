@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.Utils;
 
 import java.time.Instant;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
@@ -50,15 +49,9 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
         super.populatePropertyBag();
 
         synchronized(this) {
-            setProperty(
-                this,
-                com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+            this.set(com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
                 ChangeFeedStartFromTypes.POINT_IN_TIME);
-
-            setProperty(
-                this,
-                Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS,
-                this.pointInTime.toEpochMilli());
+            this.set(Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS, this.pointInTime.toEpochMilli());
         }
     }
 

@@ -75,8 +75,7 @@ public class DCountDocumentQueryExecutionContext
                                                                                               .getCosmosDiagnostics()));
                            count += page.getResults().size();
                            requestCharge += page.getRequestCharge();
-                           QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
-                                                             BridgeInternal.queryMetricsFromFeedResponse(page));
+                           QueryMetrics.mergeQueryMetricsMap(queryMetricsMap, FeedResponseHelper.queryMetrics(page));
                        }
 
                        Document result = new Document();
@@ -101,8 +100,7 @@ public class DCountDocumentQueryExecutionContext
                                         .createFeedResponseWithQueryMetrics(Collections
                                                                                 .singletonList(result),
                                                                             headers,
-                                                                            BridgeInternal
-                                                                                .queryMetricsFromFeedResponse(frp),
+                                                                            FeedResponseHelper.queryMetrics(frp),
                                                                             FeedResponseHelper
                                                                                 .getQueryPlanDiagnosticsContext(frp),
                                                                             false,

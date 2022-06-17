@@ -10,6 +10,8 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -123,8 +125,8 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         assertThat(resultList1.size()).isEqualTo(resultList2.size());
         for(int i = 0; i < resultList1.size(); i++){
-            compareQueryMetrics(BridgeInternal.queryMetricsFromFeedResponse(resultList1.get(i)),
-                BridgeInternal.queryMetricsFromFeedResponse(resultList2.get(i)));
+            compareQueryMetrics(FeedResponseHelper.queryMetrics(resultList1.get(i)),
+                FeedResponseHelper.queryMetrics(resultList2.get(i)));
         }
     }
 
@@ -637,7 +639,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         InternalObjectNode docDefinition = getDocumentDefinition(cnt);
 
-        return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
+        return CosmosItemResponseHelper.getInternalObjectNode(cosmosContainer.createItem(docDefinition).block());
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<InternalObjectNode> expectedDocs) {

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Constants;
@@ -54,7 +55,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, InternalObjectNode.class)
-            .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
+            .flatMap(documentResourceResponse -> Mono.just(CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse) != null))
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
                     CosmosException e = (CosmosException) throwable;
@@ -94,12 +95,12 @@ class DocumentServiceLeaseStore implements LeaseStore {
         String lockId = this.getStoreLockName();
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(lockId);
-        BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
+        containerDocument.set(Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map(documentResourceResponse -> {
-                if (BridgeInternal.getProperties(documentResourceResponse) != null) {
-                    this.lockETag = BridgeInternal.getProperties(documentResourceResponse).getETag();
+                if (CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse) != null) {
+                    this.lockETag = CosmosItemResponseHelper.getInternalObjectNode(documentResourceResponse).getETag();
                     return true;
                 } else {
                     return false;

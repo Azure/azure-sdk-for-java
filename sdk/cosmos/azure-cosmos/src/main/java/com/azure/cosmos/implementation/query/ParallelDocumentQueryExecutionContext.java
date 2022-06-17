@@ -254,7 +254,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                     String.valueOf(pageCharge));
             documentProducerFeedResponse.pageResult = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page),
+                FeedResponseHelper.queryMetrics(page),
                 FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
@@ -271,7 +271,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                     compositeContinuationToken);
             documentProducerFeedResponse.pageResult = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page),
+                FeedResponseHelper.queryMetrics(page),
                 FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
@@ -297,7 +297,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
-                        BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
+                        FeedResponseHelper.queryMetrics(documentProducerFeedResponse.pageResult);
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
                     cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
 
@@ -320,7 +320,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                 //Combining previous empty page query metrics with current non empty page query metrics
                 if (!emptyPageQueryMetricsMap.isEmpty()) {
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
-                        BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
+                        FeedResponseHelper.queryMetrics(documentProducerFeedResponse.pageResult);
                     QueryMetrics.mergeQueryMetricsMap(currentQueryMetrics, emptyPageQueryMetricsMap);
                     emptyPageQueryMetricsMap.clear();
                 }

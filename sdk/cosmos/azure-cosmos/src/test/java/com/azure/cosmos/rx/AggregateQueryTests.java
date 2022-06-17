@@ -123,15 +123,15 @@ public class AggregateQueryTests extends TestSuiteBase {
         for (int i = 0; i < values.length; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(UUID.randomUUID().toString());
-            BridgeInternal.setProperty(d, partitionKey, values[i]);
+            d.set(partitionKey, values[i]);
             docs.add(d);
         }
 
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
             InternalObjectNode d = new InternalObjectNode();
-            BridgeInternal.setProperty(d, partitionKey, uniquePartitionKey);
-            BridgeInternal.setProperty(d, "getResourceId", Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i + 1);
+            d.set(partitionKey, uniquePartitionKey);
+            d.set("getResourceId", Integer.toString(i));
+            d.set(field, i + 1);
             d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }
@@ -139,7 +139,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         numberOfDocumentsWithNumericId = numberOfDocuments - values.length - numberOfDocsWithSamePartitionKey;
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
             InternalObjectNode d = new InternalObjectNode();
-            BridgeInternal.setProperty(d, partitionKey, i + 1);
+            d.set(partitionKey, i + 1);
             d.setId(UUID.randomUUID().toString());
             docs.add(d);
         }

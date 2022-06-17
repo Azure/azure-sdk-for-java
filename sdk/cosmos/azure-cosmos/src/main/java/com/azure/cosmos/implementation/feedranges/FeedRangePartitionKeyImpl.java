@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
@@ -192,8 +191,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         }
 
         if (this.partitionKey != null) {
-            setProperty(serializable, Constants.Properties.FEED_RANGE_PARTITION_KEY,
-                this.partitionKey);
+            serializable.set(Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
         }
     }
 }

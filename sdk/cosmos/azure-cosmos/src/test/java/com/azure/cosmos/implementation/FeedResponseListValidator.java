@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -336,7 +337,7 @@ public interface FeedResponseListValidator<T> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     for(FeedResponse<T> feedPage: feedList) {
                         if (shouldHaveMetrics ==  null || shouldHaveMetrics) {
-                            QueryMetrics queryMetrics = QueryMetrics.createFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
+                            QueryMetrics queryMetrics = QueryMetrics.createFromCollection(FeedResponseHelper.queryMetrics(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getTotalQueryExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
@@ -351,7 +352,7 @@ public interface FeedResponseListValidator<T> {
                             assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getClientSideMetrics().getRequestCharge()).isGreaterThan(0);
                         } else {
-                            assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedPage).isEmpty());
+                            assertThat(FeedResponseHelper.queryMetrics(feedPage).isEmpty());
                         }
                     }
                 }

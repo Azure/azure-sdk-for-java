@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class FeedRangeEpkImpl extends FeedRangeInternal {
@@ -243,7 +242,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
         if (this.range != null) {
             ModelBridgeInternal.populatePropertyBag(this.range);
-            setProperty(serializable, Constants.Properties.RANGE, this.range);
+            serializable.set(Constants.Properties.RANGE, this.range);
         }
     }
 

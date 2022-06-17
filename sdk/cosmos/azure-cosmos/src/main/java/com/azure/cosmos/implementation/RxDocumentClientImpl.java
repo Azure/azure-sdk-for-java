@@ -94,9 +94,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.BridgeInternal.documentFromObject;
-import static com.azure.cosmos.BridgeInternal.toResourceResponse;
-import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -296,7 +293,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 PartitionKey partitionKey = permission.getResourcePartitionKey();
                 partitionKeyAndResourceTokenPairs.add(new PartitionKeyAndResourceTokenPair(
-                        partitionKey != null ? BridgeInternal.getPartitionKeyInternal(partitionKey) : PartitionKeyInternal.Empty,
+                        partitionKey != null ? ModelBridgeInternal.getPartitionKeyInternal(partitionKey) : PartitionKeyInternal.Empty,
                         permission.getToken()));
                 logger.debug("Initializing resource token map  , with map key [{}] , partition key [{}] and resource token [{}]",
                         pathInfo.resourceIdOrFullName, partitionKey != null ? partitionKey.toString() : null, permission.getToken());
@@ -444,7 +441,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
         }
 
-        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && databaseAccount.getEnableMultipleWriteLocations();
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
@@ -705,7 +702,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                       .map(response -> toResourceResponse(response, Database.class));
+                       .map(response -> new ResourceResponse<>(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -735,7 +732,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Database.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in deleting a database. due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -763,7 +760,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, Database.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in reading a database. due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -961,7 +958,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
 
-            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
+            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
                     // set the session token
                     this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
@@ -1014,7 +1011,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, DocumentCollection.class))
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
@@ -1054,7 +1051,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, DocumentCollection.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a collection, due to [{}]", e.getMessage(), e);
@@ -1140,7 +1137,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, DocumentCollection.class));
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in reading a collection, due to [{}]", e.getMessage(), e);
@@ -1368,7 +1365,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)){
             partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else if (options != null && options.getPartitionKey() != null) {
-            partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
+            partitionKeyInternal = ModelBridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
@@ -1462,7 +1459,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Instant serializationStartTimeUTC = Instant.now();
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1550,7 +1547,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
             } else {
                 // Partition key is always non-null
-                partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+                partitionKeyInternal = ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
             }
 
             request.setPartitionKeyInternal(partitionKeyInternal);
@@ -1805,7 +1802,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 requestObs.flatMap(request -> create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options)));
 
             return responseObservable
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                    .map(serviceResponse -> new ResourceResponse<>(serviceResponse, Document.class));
 
         } catch (Exception e) {
             logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
@@ -1835,7 +1832,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)));
 
             return responseObservable
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                    .map(serviceResponse -> new ResourceResponse<>(serviceResponse, Document.class));
         } catch (Exception e) {
             logger.debug("Failure in upserting a document due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -1866,7 +1863,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw new IllegalArgumentException("document");
             }
 
-            Document typedDocument = documentFromObject(document, mapper);
+            Document typedDocument = Document.fromObject(document, mapper);
 
             return this.replaceDocumentInternal(documentLink, typedDocument, options, retryPolicyInstance);
 
@@ -1937,7 +1934,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs.flatMap(req -> replace(request, retryPolicyInstance)
-            .map(resp -> toResourceResponse(resp, Document.class)));
+            .map(resp -> new ResourceResponse<>(resp, Document.class)));
     }
 
     @Override
@@ -2001,7 +1998,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionObs);
 
         return requestObs.flatMap(req -> patch(request, retryPolicyInstance)
-            .map(resp -> toResourceResponse(resp, Document.class)));
+            .map(resp -> new ResourceResponse<>(resp, Document.class)));
     }
 
     @Override
@@ -2039,7 +2036,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return requestObs.flatMap(req -> this
                 .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+                .map(serviceResponse -> new ResourceResponse<>(serviceResponse, Document.class)));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
@@ -2076,7 +2073,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return requestObs.flatMap(req -> this
                 .deleteAllItemsByPartitionKey(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+                .map(serviceResponse -> new ResourceResponse<>(serviceResponse, Document.class)));
         } catch (Exception e) {
             logger.debug("Failure in deleting documents due to [{}]", e.getMessage());
             return Mono.error(e);
@@ -2110,7 +2107,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flatMap(req -> {
-                return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                return this.read(request, retryPolicyInstance).map(serviceResponse -> new ResourceResponse<>(serviceResponse, Document.class));
             });
 
         } catch (Exception e) {
@@ -2174,7 +2171,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 String effectivePartitionKeyString =  PartitionKeyInternalHelper
                                     .getEffectivePartitionKeyString(
-                                        BridgeInternal.getPartitionKeyInternal(
+                                        ModelBridgeInternal.getPartitionKeyInternal(
                                             itemIdentity.getPartitionKey()),
                                         pkDefinition);
 
@@ -2541,7 +2538,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         String effectivePartitionKeyString = PartitionKeyInternalHelper
                             .getEffectivePartitionKeyString(
-                                BridgeInternal.getPartitionKeyInternal(partitionKey),
+                                ModelBridgeInternal.getPartitionKeyInternal(partitionKey),
                                 pkDefinition);
 
                         //use routing map to find the partitionKeyRangeId of each
@@ -2641,7 +2638,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, StoredProcedure.class));
+            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, StoredProcedure.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -2673,7 +2670,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, StoredProcedure.class));
+            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, StoredProcedure.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -2709,7 +2706,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, StoredProcedure.class));
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, StoredProcedure.class));
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a StoredProcedure due to [{}]", e.getMessage(), e);
@@ -2746,7 +2743,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, StoredProcedure.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, StoredProcedure.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -2785,7 +2782,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, StoredProcedure.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, StoredProcedure.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -2864,7 +2861,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return reqObs.flatMap(req -> create(request, retryPolicy, getOperationContextAndListenerTuple(options))
                     .map(response -> {
                         this.captureSessionToken(request, response);
-                        return toStoredProcedureResponse(response);
+                        return new StoredProcedureResponse(response);
                     }));
 
         } catch (Exception e) {
@@ -2914,7 +2911,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Trigger.class));
+            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Trigger.class));
 
         } catch (Exception e) {
             logger.debug("Failure in creating a Trigger due to [{}]", e.getMessage(), e);
@@ -2941,7 +2938,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Trigger.class));
+            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Trigger.class));
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a Trigger due to [{}]", e.getMessage(), e);
@@ -2994,7 +2991,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, Trigger.class));
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Trigger.class));
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a Trigger due to [{}]", e.getMessage(), e);
@@ -3024,7 +3021,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Trigger.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Trigger.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Trigger due to [{}]", e.getMessage(), e);
@@ -3055,7 +3052,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, Trigger.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Trigger.class));
 
         } catch (Exception e) {
             logger.debug("Failure in reading a Trigger due to [{}]", e.getMessage(), e);
@@ -3108,7 +3105,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, UserDefinedFunction.class));
+            return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -3139,7 +3136,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, UserDefinedFunction.class));
+            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -3178,7 +3175,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, UserDefinedFunction.class));
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -3215,7 +3212,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, UserDefinedFunction.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -3252,7 +3249,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, UserDefinedFunction.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -3310,7 +3307,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
                 }
-                return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, Conflict.class));
+                return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Conflict.class));
             });
 
         } catch (Exception e) {
@@ -3368,7 +3365,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     retryPolicyInstance.onBeforeSendRequest(request);
                 }
 
-                return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Conflict.class));
+                return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Conflict.class));
             });
 
         } catch (Exception e) {
@@ -3387,7 +3384,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Creating a User. databaseLink [{}], user id [{}]", databaseLink, user.getId());
             RxDocumentServiceRequest request = getUserRequest(databaseLink, user, options, OperationType.Create);
-            return this.create(request, documentClientRetryPolicy, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, User.class));
+            return this.create(request, documentClientRetryPolicy, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, User.class));
 
         } catch (Exception e) {
             logger.debug("Failure in creating a User due to [{}]", e.getMessage(), e);
@@ -3410,7 +3407,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, User.class));
+            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, User.class));
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a User due to [{}]", e.getMessage(), e);
@@ -3459,7 +3456,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, User.class));
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, User.class));
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a User due to [{}]", e.getMessage(), e);
@@ -3490,7 +3487,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, User.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, User.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a User due to [{}]", e.getMessage(), e);
@@ -3517,7 +3514,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, User.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, User.class));
 
         } catch (Exception e) {
             logger.debug("Failure in reading a User due to [{}]", e.getMessage(), e);
@@ -3568,7 +3565,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, ClientEncryptionKey.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, ClientEncryptionKey.class));
 
         } catch (Exception e) {
             logger.debug("Failure in reading a client encryption key due to [{}]", e.getMessage(), e);
@@ -3588,7 +3585,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Creating a client encryption key. databaseLink [{}], clientEncryptionKey id [{}]", databaseLink, clientEncryptionKey.getId());
             RxDocumentServiceRequest request = getClientEncryptionKeyRequest(databaseLink, clientEncryptionKey, options, OperationType.Create);
-            return this.create(request, documentClientRetryPolicy, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, ClientEncryptionKey.class));
+            return this.create(request, documentClientRetryPolicy, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, ClientEncryptionKey.class));
 
         } catch (Exception e) {
             logger.debug("Failure in creating a client encryption key due to [{}]", e.getMessage(), e);
@@ -3643,7 +3640,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, ClientEncryptionKey.class));
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, ClientEncryptionKey.class));
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a clientEncryptionKey due to [{}]", e.getMessage(), e);
@@ -3686,7 +3683,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Creating a Permission. userLink [{}], permission id [{}]", userLink, permission.getId());
             RxDocumentServiceRequest request = getPermissionRequest(userLink, permission, options,
                     OperationType.Create);
-            return this.create(request, documentClientRetryPolicy, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Permission.class));
+            return this.create(request, documentClientRetryPolicy, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Permission.class));
 
         } catch (Exception e) {
             logger.debug("Failure in creating a Permission due to [{}]", e.getMessage(), e);
@@ -3712,7 +3709,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Permission.class));
+            return this.upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Permission.class));
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a Permission due to [{}]", e.getMessage(), e);
@@ -3762,7 +3759,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, Permission.class));
+            return this.replace(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Permission.class));
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a Permission due to [{}]", e.getMessage(), e);
@@ -3793,7 +3790,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Permission.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> new ResourceResponse<>(response, Permission.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Permission due to [{}]", e.getMessage(), e);
@@ -3821,7 +3818,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, Permission.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Permission.class));
 
         } catch (Exception e) {
             logger.debug("Failure in reading a Permission due to [{}]", e.getMessage(), e);
@@ -3869,7 +3866,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(offer.getSelfLink(), null);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this, OperationType.Replace,
                     ResourceType.Offer, path, offer, null, null);
-            return this.replace(request, documentClientRetryPolicy).map(response -> toResourceResponse(response, Offer.class));
+            return this.replace(request, documentClientRetryPolicy).map(response -> new ResourceResponse<>(response, Offer.class));
 
         } catch (Exception e) {
             logger.debug("Failure in replacing an Offer due to [{}]", e.getMessage(), e);
@@ -3897,7 +3894,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.read(request, retryPolicyInstance).map(response -> toResourceResponse(response, Offer.class));
+            return this.read(request, retryPolicyInstance).map(response -> new ResourceResponse<>(response, Offer.class));
 
         } catch (Exception e) {
             logger.debug("Failure in reading an Offer due to [{}]", e.getMessage(), e);
@@ -4058,7 +4055,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }).map(rsp -> rsp.getResource(DatabaseAccount.class))
                         .doOnNext(databaseAccount ->
                             this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled()
-                            && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
+                            && databaseAccount.getEnableMultipleWriteLocations());
                 });
         });
     }

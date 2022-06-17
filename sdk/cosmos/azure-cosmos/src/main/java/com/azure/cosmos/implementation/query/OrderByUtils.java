@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
@@ -85,16 +86,9 @@ class OrderByUtils {
                 clientSideRequestStatisticsList.addAll(
                     BridgeInternal.getClientSideRequestStatisticsList(documentProducerFeedResponse
                                                                    .pageResult.getCosmosDiagnostics()));
-
-                for (String key : BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult)
-                                      .keySet()) {
-                    if (queryMetricsMap.containsKey(key)) {
-                        QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key);
-                        queryMetricsMap.get(key).add(qm);
-                    } else {
-                        queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key));
-                    }
-                }
+                FeedResponseHelper.queryMetrics(documentProducerFeedResponse.pageResult).forEach((key, value) ->
+                    queryMetricsMap.compute(key, (ignored, existingValue) ->
+                        (existingValue == null) ? value : existingValue.add(value)));
                 List<Document> results = documentProducerFeedResponse.pageResult.getResults();
                 OrderByContinuationToken orderByContinuationToken =
                     targetRangeToOrderByContinuationTokenMap.get(documentProducerFeedResponse.sourceFeedRange);

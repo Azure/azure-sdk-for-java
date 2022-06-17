@@ -228,7 +228,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =
-                this.container.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                this.container.readItem(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId(),
                     new PartitionKey("wrongPartitionKey"),
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
@@ -662,7 +662,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =
-                cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                cosmosContainer.readItem(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId(),
                     new PartitionKey("wrongPartitionKey"),
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
@@ -1081,7 +1081,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
+        internalObjectNode.set("mypk", uuid);
         return internalObjectNode;
     }
 
@@ -1089,7 +1089,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", pkValue);
+        internalObjectNode.set("mypk", pkValue);
         return internalObjectNode;
     }
 

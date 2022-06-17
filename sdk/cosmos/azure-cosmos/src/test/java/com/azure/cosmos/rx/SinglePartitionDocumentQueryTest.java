@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -301,8 +301,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     public InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, int cnt) {
         InternalObjectNode docDefinition = getDocumentDefinition(cnt);
-        return BridgeInternal
-                   .getProperties(cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block());
+        return CosmosItemResponseHelper.getInternalObjectNode(cosmosContainer.createItem(docDefinition, new CosmosItemRequestOptions()).block());
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

@@ -57,7 +57,7 @@ public final class OffsetContinuationToken extends JsonSerializable {
     }
 
     private void setSourceToken(String sourceToken) {
-        BridgeInternal.setProperty(this, TOKEN_PROPERTY_NAME, sourceToken);
+        this.set(TOKEN_PROPERTY_NAME, sourceToken);
     }
 
     public int getOffset() {
@@ -65,7 +65,7 @@ public final class OffsetContinuationToken extends JsonSerializable {
     }
 
     private void setOffset(int offset) {
-        BridgeInternal.setProperty(this, OFFSET_PROPERTY_NAME, offset);
+        this.set(OFFSET_PROPERTY_NAME, offset);
     }
 
     @Override

@@ -247,16 +247,16 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         for (int i = 0; i < 10; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, firstPk);
+            d.set(field, i);
+            d.set(partitionKey, firstPk);
             docs.add(d);
         }
 
         for (int i = 10; i < 20; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, secondPk);
+            d.set(field, i);
+            d.set(partitionKey, secondPk);
             docs.add(d);
         }
     }

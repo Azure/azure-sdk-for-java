@@ -139,23 +139,23 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                 // Permute all the fields so that there are duplicates with tie breaks
                 InternalObjectNode numberClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(numberClone, NUMBER_FIELD, random.nextInt(5));
+                numberClone.set(NUMBER_FIELD, random.nextInt(5));
                 numberClone.setId(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
                 InternalObjectNode stringClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(stringClone, STRING_FIELD, Integer.toString(random.nextInt(5)));
+                stringClone.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
                 stringClone.setId(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
                 InternalObjectNode boolClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(boolClone, BOOL_FIELD, random.nextInt(2) % 2 == 0);
+                boolClone.set(BOOL_FIELD, random.nextInt(2) % 2 == 0);
                 boolClone.setId(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
                 InternalObjectNode partitionClone = new InternalObjectNode(multiOrderByDocumentString);
-                BridgeInternal.setProperty(partitionClone, PARTITION_KEY, random.nextInt(5));
+                partitionClone.set(PARTITION_KEY, random.nextInt(5));
                 partitionClone.setId(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
             }
@@ -170,18 +170,18 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Random random = new Random();
         InternalObjectNode document = new InternalObjectNode();
         document.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(document, NUMBER_FIELD, random.nextInt(5));
-        BridgeInternal.setProperty(document, NUMBER_FIELD_2, random.nextInt(5));
-        BridgeInternal.setProperty(document, BOOL_FIELD, (random.nextInt() % 2) == 0);
-        BridgeInternal.setProperty(document, STRING_FIELD, Integer.toString(random.nextInt(5)));
-        BridgeInternal.setProperty(document, STRING_FIELD_2, Integer.toString(random.nextInt(5)));
-        BridgeInternal.setProperty(document, NULL_FIELD, null);
-        BridgeInternal.setProperty(document, OBJECT_FIELD, "");
-        BridgeInternal.setProperty(document, ARRAY_FIELD, (new ObjectMapper()).createArrayNode());
-        BridgeInternal.setProperty(document, SHORT_STRING_FIELD, "a" + random.nextInt(100));
-        BridgeInternal.setProperty(document, MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100);
-        BridgeInternal.setProperty(document, LONG_STRING_FIELD, "a" + random.nextInt(255) + 128);
-        BridgeInternal.setProperty(document, PARTITION_KEY, random.nextInt(5));
+        document.set(NUMBER_FIELD, random.nextInt(5));
+        document.set(NUMBER_FIELD_2, random.nextInt(5));
+        document.set(BOOL_FIELD, (random.nextInt() % 2) == 0);
+        document.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
+        document.set(STRING_FIELD_2, Integer.toString(random.nextInt(5)));
+        document.set(NULL_FIELD, null);
+        document.set(OBJECT_FIELD, "");
+        document.set(ARRAY_FIELD, (new ObjectMapper()).createArrayNode());
+        document.set(SHORT_STRING_FIELD, "a" + random.nextInt(100));
+        document.set(MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100);
+        document.set(LONG_STRING_FIELD, "a" + random.nextInt(255) + 128);
+        document.set(PARTITION_KEY, random.nextInt(5));
         return document;
     }
 
@@ -269,7 +269,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         List<String> documentWithEmptyFieldIds = new ArrayList<>();
         for (int i = 0; i < documentWithUndefinedFiledSize; i++) {
             InternalObjectNode documentWithEmptyField = generateMultiOrderByDocument();
-            BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
+            documentWithEmptyField.remove(NUMBER_FIELD);
             documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
             documentWithEmptyFieldIds.add(documentWithEmptyField.getId());
         }

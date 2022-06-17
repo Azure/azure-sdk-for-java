@@ -57,7 +57,7 @@ public class ReplicationPolicy extends JsonSerializable {
     }
 
     public void setMaxReplicaSetSize(int value) {
-        BridgeInternal.setProperty(this, Constants.Properties.MAX_REPLICA_SET_SIZE, value);
+        this.set(Constants.Properties.MAX_REPLICA_SET_SIZE, value);
         this.maxReplicaSetSize = value;
     }
 

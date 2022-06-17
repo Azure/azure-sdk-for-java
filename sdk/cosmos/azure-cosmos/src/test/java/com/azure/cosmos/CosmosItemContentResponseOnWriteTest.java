@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -126,7 +127,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
         validateMinimalItemResponse(properties, itemResponse, true);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue);
         ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
@@ -148,7 +149,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue);
         ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
@@ -203,8 +204,8 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     private void validateItemResponse(InternalObjectNode containerProperties,
                                       CosmosItemResponse<InternalObjectNode> createResponse) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }
@@ -212,7 +213,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     private void validateMinimalItemResponse(InternalObjectNode containerProperties,
                                              CosmosItemResponse<?> createResponse, boolean withETag) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse)).isNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse)).isNull();
         assertThat(createResponse.getStatusCode()).isNotNull();
         assertThat(createResponse.getResponseHeaders()).isNotEmpty();
         assertThat(createResponse.getRequestCharge()).isGreaterThan(0);

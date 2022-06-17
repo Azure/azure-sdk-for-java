@@ -823,7 +823,7 @@ public class StoreReaderDotNetTest {
 
             // setup max replica set size on the config reader
             ReplicationPolicy replicationPolicy = new ReplicationPolicy();
-            BridgeInternal.setMaxReplicaSetSize(replicationPolicy,4);
+            replicationPolicy.setMaxReplicaSetSize(4);
 
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
             Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
@@ -865,7 +865,7 @@ public class StoreReaderDotNetTest {
                     ArgumentMatchers.any(), ArgumentMatchers.anyMap())).thenReturn("dummyauthtoken");
             // setup max replica set size on the config reader
             ReplicationPolicy replicationPolicy = new ReplicationPolicy();
-            BridgeInternal.setMaxReplicaSetSize(replicationPolicy,4);
+            replicationPolicy.setMaxReplicaSetSize(4);
 
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
             Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);

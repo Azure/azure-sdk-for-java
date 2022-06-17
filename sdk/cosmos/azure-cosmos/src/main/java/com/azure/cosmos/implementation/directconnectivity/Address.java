@@ -45,7 +45,7 @@ public class Address extends Resource {
     }
 
     void setIsPrimary(boolean isPrimary) {
-        BridgeInternal.setProperty(this, Constants.Properties.IS_PRIMARY, isPrimary);
+        this.set(Constants.Properties.IS_PRIMARY, isPrimary);
     }
 
     public String getProtocolScheme() {
@@ -53,7 +53,7 @@ public class Address extends Resource {
     }
 
     void setProtocol(String protocol) {
-        BridgeInternal.setProperty(this, Constants.Properties.PROTOCOL, protocol);
+        this.set(Constants.Properties.PROTOCOL, protocol);
     }
 
     public String getLogicalUri() {
@@ -61,7 +61,7 @@ public class Address extends Resource {
     }
 
     void setLogicalUri(String logicalUri) {
-        BridgeInternal.setProperty(this, Constants.Properties.LOGICAL_URI, logicalUri);
+        this.set(Constants.Properties.LOGICAL_URI, logicalUri);
     }
 
     public String getPhyicalUri() {
@@ -69,7 +69,7 @@ public class Address extends Resource {
     }
 
     void setPhysicalUri(String phyicalUri) {
-        BridgeInternal.setProperty(this, Constants.Properties.PHYISCAL_URI, phyicalUri);
+        this.set(Constants.Properties.PHYISCAL_URI, phyicalUri);
     }
 
     public String getPartitionIndex() {
@@ -77,7 +77,7 @@ public class Address extends Resource {
     }
 
     void setPartitionIndex(String partitionIndex) {
-        BridgeInternal.setProperty(this, Constants.Properties.PARTITION_INDEX, partitionIndex);
+        this.set(Constants.Properties.PARTITION_INDEX, partitionIndex);
     }
 
     public String getParitionKeyRangeId() {
@@ -85,7 +85,7 @@ public class Address extends Resource {
     }
 
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
-        BridgeInternal.setProperty(this, Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+        this.set(Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
     }
 
     @Override

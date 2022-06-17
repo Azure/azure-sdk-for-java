@@ -8,28 +8,18 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
-import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
-import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
@@ -40,21 +30,13 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcqu
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -100,29 +82,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Document documentFromObject(Object document, ObjectMapper mapper) {
-        return Document.fromObject(document, mapper);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void monitorTelemetry(MeterRegistry registry) {
         CosmosAsyncClient.setMonitorTelemetry(registry);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> ResourceResponse<T> toResourceResponse(RxDocumentServiceResponse response,
-                                                                              Class<T> cls) {
-        return new ResourceResponse<T>(response, cls);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static StoredProcedureResponse toStoredProcedureResponse(RxDocumentServiceResponse response) {
-        return new StoredProcedureResponse(response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -317,11 +278,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean isEnableMultipleWriteLocations(DatabaseAccount account) {
-        return account.getEnableMultipleWriteLocations();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> Uri getRequestUri(CosmosException cosmosException) {
         return cosmosException.requestUri;
     }
@@ -344,22 +300,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setAltLink(Resource resource, String altLink) {
-        resource.setAltLink(altLink);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setMaxReplicaSetSize(ReplicationPolicy replicationPolicy, int value) {
-        replicationPolicy.setMaxReplicaSetSize(value);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
-                                                                   QueryMetrics queryMetrics) {
-        FeedResponseHelper.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String getInnerErrorMessage(CosmosException cosmosException) {
         if (cosmosException == null) {
             return null;
@@ -370,31 +310,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static PartitionKey getPartitionKey(PartitionKeyInternal partitionKeyInternal) {
         return new PartitionKey(partitionKeyInternal);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
-        jsonSerializable.set(propertyName, value);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getObject(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void remove(JsonSerializable jsonSerializable, String propertyName) {
-        jsonSerializable.remove(propertyName);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
-        return ModelBridgeInternal.createCosmosStoredProcedureProperties(jsonString);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Object getValue(JsonNode value) {
-        return JsonSerializable.getValue(value);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -464,16 +379,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String extractContainerSelfLink(CosmosAsyncContainer container) {
         return container.getLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setResourceSelfLink(Resource resource, String selfLink) {
-        resource.setSelfLink(selfLink);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTimestamp(Resource resource, Instant date) {
-        resource.setTimestamp(date);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -584,21 +489,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<URI> getFailedReplicas(CosmosDiagnostics cosmosDiagnostics) {
         return cosmosDiagnostics.clientSideRequestStatistics().getFailedReplicas();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse<T> feedResponse) {
-        return FeedResponseHelper.queryMetrics(feedResponse);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
-        return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> InternalObjectNode getProperties(CosmosItemResponse<T> cosmosItemResponse) {
-        return CosmosItemResponseHelper.getInternalObjectNode(cosmosItemResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

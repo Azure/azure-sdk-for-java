@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 /**
  * Represents a document in the Azure Cosmos DB database service.
  * <p>
@@ -110,7 +109,7 @@ public class Document extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            setProperty(this, Constants.Properties.TTL, timeToLive);
+            this.set(Constants.Properties.TTL, timeToLive);
         } else if (super.has(Constants.Properties.TTL)) {
             remove(Constants.Properties.TTL);
         }

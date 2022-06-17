@@ -39,7 +39,7 @@ public final class DatabaseAccount extends Resource {
      * Constructor.
      */
     public DatabaseAccount() {
-        BridgeInternal.setResourceSelfLink(this, "");
+        this.setSelfLink("");
     }
 
     /**
@@ -66,7 +66,7 @@ public final class DatabaseAccount extends Resource {
      * @param databasesLink the databases link.
      */
     void setDatabasesLink(String databasesLink) {
-        BridgeInternal.setProperty(this, Constants.Properties.DATABASES_LINK, databasesLink);
+        this.set(Constants.Properties.DATABASES_LINK, databasesLink);
     }
 
     /**
@@ -84,7 +84,7 @@ public final class DatabaseAccount extends Resource {
      * @param medialink the media link.
      */
     void setMediaLink(String medialink) {
-        BridgeInternal.setProperty(this, Constants.Properties.MEDIA_LINK, medialink);
+        this.set(Constants.Properties.MEDIA_LINK, medialink);
     }
 
     /**
@@ -102,7 +102,7 @@ public final class DatabaseAccount extends Resource {
      * @param addresseslink the addresses link.
      */
     void setAddressesLink(String addresseslink) {
-        BridgeInternal.setProperty(this, Constants.Properties.ADDRESS_LINK, addresseslink);
+        this.set(Constants.Properties.ADDRESS_LINK, addresseslink);
     }
 
     /**
@@ -231,7 +231,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of writable locations.
      */
     public void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
-        BridgeInternal.setProperty(this, Constants.Properties.WRITABLE_LOCATIONS, locations);
+        this.set(Constants.Properties.WRITABLE_LOCATIONS, locations);
     }
 
     /**
@@ -251,7 +251,7 @@ public final class DatabaseAccount extends Resource {
      * @param locations the list of readable locations.
      */
     public void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
-        BridgeInternal.setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
+        this.set(Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
     /**
@@ -264,14 +264,14 @@ public final class DatabaseAccount extends Resource {
     }
 
     public void setEnableMultipleWriteLocations(boolean value) {
-        BridgeInternal.setProperty(this, Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
+        this.set(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
             this.consistencyPolicy.populatePropertyBag();
-            BridgeInternal.setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
+            this.set(Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
         }
     }
 

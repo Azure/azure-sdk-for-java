@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -313,8 +313,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             InternalObjectNode document = new InternalObjectNode();
             document.setId("doc");
-            BridgeInternal.setProperty(document, "name", "New Document");
-            BridgeInternal.setProperty(document, "mypk", "mypkValue");
+            document.set("name", "New Document");
+            document.set("mypk", "mypkValue");
             createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosItemResponse<InternalObjectNode> readDocumentResponse =
@@ -322,7 +322,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
-            BridgeInternal.setProperty(document, "name", "New Updated Document");
+            document.set("name", "New Updated Document");
             CosmosItemResponse<InternalObjectNode> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
@@ -334,8 +334,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             InternalObjectNode newDocument = new InternalObjectNode();
             newDocument.setId("doc");
-            BridgeInternal.setProperty(newDocument, "name", "New Created Document");
-            BridgeInternal.setProperty(newDocument, "mypk", "mypk");
+            newDocument.set("name", "New Created Document");
+            newDocument.set("mypk", "mypk");
             createDocument(collection2, newDocument);
 
             readDocumentResponse = client1.getDatabase(dbId)
@@ -347,7 +347,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
-            InternalObjectNode readDocument = BridgeInternal.getProperties(readDocumentResponse);
+            InternalObjectNode readDocument = CosmosItemResponseHelper.getInternalObjectNode(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")

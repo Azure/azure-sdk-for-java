@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -85,7 +86,7 @@ class DocumentProducer<T> {
                     pageResult.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
                 String pkrId = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
                 String queryMetricKey = feedRange.getRange().toString() + ",pkrId:" + pkrId;
-                BridgeInternal.putQueryMetricsIntoMap(pageResult, queryMetricKey, qm);
+                FeedResponseHelper.queryMetricsMap(pageResult).put(queryMetricKey, qm);
             }
         }
     }

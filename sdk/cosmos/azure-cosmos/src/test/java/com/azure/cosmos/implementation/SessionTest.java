@@ -348,7 +348,7 @@ public class SessionTest extends TestSuiteBase {
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(document, "pk", "pk");
+        document.set("pk", "pk");
         document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
                 .block()
                 .getResource();

@@ -121,19 +121,19 @@ public final class OrderByContinuationToken extends JsonSerializable implements 
     }
 
     private void setCompositeContinuationToken(CompositeContinuationToken compositeContinuationToken) {
-        BridgeInternal.setProperty(this, CompositeContinuationTokenPropertyName, compositeContinuationToken.toJson());
+        this.set(CompositeContinuationTokenPropertyName, compositeContinuationToken.toJson());
     }
 
     private void setOrderByItems(QueryItem[] orderByItems) {
-        BridgeInternal.setProperty(this, OrderByItemsPropetryName, Arrays.asList(orderByItems));
+        this.set(OrderByItemsPropetryName, Arrays.asList(orderByItems));
     }
 
     private void setRid(String rid) {
-        BridgeInternal.setProperty(this, RidPropertyName, rid);
+        this.set(RidPropertyName, rid);
     }
 
     private void setInclusive(boolean inclusive) {
-        BridgeInternal.setProperty(this, InclusivePropertyName, inclusive);
+        this.set(InclusivePropertyName, inclusive);
     }
 
     @Override

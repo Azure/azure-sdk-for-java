@@ -115,7 +115,7 @@ public class TopDocumentQueryExecutionContext<T>
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(),
                         headers,
-                        BridgeInternal.queryMetricsFromFeedResponse(t),
+                        FeedResponseHelper.queryMetrics(t),
                         FeedResponseHelper.getQueryPlanDiagnosticsContext(t),
                         false,
                         false,
@@ -132,7 +132,7 @@ public class TopDocumentQueryExecutionContext<T>
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
                         headers,
-                        BridgeInternal.queryMetricsFromFeedResponse(t),
+                        FeedResponseHelper.queryMetrics(t),
                         FeedResponseHelper.getQueryPlanDiagnosticsContext(t),
                         false,
                         false,

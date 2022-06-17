@@ -206,13 +206,11 @@ public final class QueryMetrics {
      * @param addOn metrics map whose values will be merge in base map.
      */
     public static void mergeQueryMetricsMap(ConcurrentMap<String, QueryMetrics> base, ConcurrentMap<String, QueryMetrics> addOn) {
-        for (ConcurrentMap.Entry<String, QueryMetrics> entry : addOn.entrySet()) {
-            if (base.containsKey(entry.getKey())) {
-                base.get(entry.getKey()).add(entry.getValue());
-            } else {
-                base.put(entry.getKey(), entry.getValue());
-            }
-        }
+        // Compute will combine calls for has key and get value based on key into one.
+        // If a value didn't exist for the key the addOn value will become the value otherwise it's added to the
+        // existing base value.
+        addOn.forEach((addOnKey, addOnValue) -> base.compute(addOnKey, (ignoredKey, baseValue) ->
+            (baseValue == null) ? addOnValue : baseValue.add(addOnValue)));
     }
 
     private String toTextString(int indentLevel) {

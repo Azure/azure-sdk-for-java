@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants;
@@ -230,7 +231,7 @@ public class ClientTelemetry {
                     } else {
                         URI targetEndpoint = new URI(endpoint);
                         ByteBuffer byteBuffer =
-                            BridgeInternal.serializeJsonToByteBuffer(this.clientTelemetryInfo,
+                            InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
                                 ClientTelemetry.OBJECT_MAPPER);
                         Flux<byte[]> fluxBytes = Flux.just(RxDocumentServiceRequest.toByteArray(byteBuffer));
 

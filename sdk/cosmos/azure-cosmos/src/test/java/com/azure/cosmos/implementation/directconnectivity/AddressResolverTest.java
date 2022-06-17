@@ -218,7 +218,7 @@ public class AddressResolverTest {
         request.forceNameCacheRefresh = forceNameCacheRefresh;
         request.forcePartitionKeyRangeRefresh = forceRoutingMapRefresh;
         PartitionKey pk = new PartitionKey("foo");
-        request.setPartitionKeyInternal(BridgeInternal.getPartitionKeyInternal(pk));
+        request.setPartitionKeyInternal(ModelBridgeInternal.getPartitionKeyInternal(pk));
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, pk.toString());
         AddressInformation[] resolvedAddresses;
         try {

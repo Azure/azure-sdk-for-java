@@ -163,7 +163,7 @@ final class BulkExecutorUtil {
         if (partitionKey == null) {
             return ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else {
-            return BridgeInternal.getPartitionKeyInternal(partitionKey);
+            return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
         }
     }
 

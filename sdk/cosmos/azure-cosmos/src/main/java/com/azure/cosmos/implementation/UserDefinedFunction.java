@@ -44,7 +44,7 @@ public class UserDefinedFunction extends Resource {
      * @param body the body.
      */
     public void setBody(String body) {
-        BridgeInternal.setProperty(this, Constants.Properties.BODY, body);
+        this.set(Constants.Properties.BODY, body);
     }
 }
 

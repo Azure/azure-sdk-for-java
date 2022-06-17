@@ -192,7 +192,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         String propName = "newProp";
         String propValue = "hello";
-        BridgeInternal.setProperty(document, propName, propValue);
+        document.set(propName, propValue);
 
         ResourceResponseValidator<Document> validator = ResourceResponseValidator.<Document>builder()
             .withProperty(propName, propValue)
@@ -320,8 +320,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     private Document getDocumentDefinition() {
         Document doc = new Document();
         doc.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(doc, PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
-        BridgeInternal.setProperty(doc, "name", "Hafez");
+        doc.set(PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
+        doc.set("name", "Hafez");
         return doc;
     }
 

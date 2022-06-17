@@ -688,7 +688,7 @@ public class CosmosAsyncContainer {
 
         boolean useEtagAsContinuation = isChangeFeed;
         boolean isNoChangesResponse = isChangeFeed ?
-            ModelBridgeInternal.getNoCHangesFromFeedResponse(response)
+            FeedResponseHelper.noChanges(response)
             : false;
 
         return BridgeInternal.createFeedResponseWithQueryMetrics(

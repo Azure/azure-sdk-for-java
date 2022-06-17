@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -14,6 +13,7 @@ import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -124,7 +124,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        InternalObjectNode readDocument = BridgeInternal.getProperties(container.readItem(docDefinition.getId(),
+        InternalObjectNode readDocument = CosmosItemResponseHelper.getInternalObjectNode(container.readItem(docDefinition.getId(),
                                                                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                options,
                                                                InternalObjectNode.class)
@@ -274,7 +274,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(docDefinition, "newProp", newPropValue);
+        docDefinition.set("newProp", newPropValue);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         // replace document
@@ -316,10 +316,10 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         InternalObjectNode properties = getDocumentDefinition(documentId);
         properties =
-            BridgeInternal.getProperties(container.createItem(properties, new CosmosItemRequestOptions()).block());
+            CosmosItemResponseHelper.getInternalObjectNode(container.createItem(properties, new CosmosItemRequestOptions()).block());
 
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue);
 
         // Replace document
 

@@ -190,12 +190,12 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         String randomVal = Utils.randomUUID().toString();
         Document document = new Document();
         document.setId(idString);
-        BridgeInternal.setProperty(document, partitionKey, idString);
-        BridgeInternal.setProperty(document, QUERY_FIELD_NAME, randomVal);
-        BridgeInternal.setProperty(document, "dataField1", randomVal);
-        BridgeInternal.setProperty(document, "dataField2", randomVal);
-        BridgeInternal.setProperty(document, "dataField3", randomVal);
-        BridgeInternal.setProperty(document, "dataField4", randomVal);
+        document.set(partitionKey, idString);
+        document.set(QUERY_FIELD_NAME, randomVal);
+        document.set("dataField1", randomVal);
+        document.set("dataField2", randomVal);
+        document.set("dataField3", randomVal);
+        document.set("dataField4", randomVal);
 
         Integer key = i == null ? cacheKey() : i;
         return client.createDocument(getCollectionLink(), document, null, false)

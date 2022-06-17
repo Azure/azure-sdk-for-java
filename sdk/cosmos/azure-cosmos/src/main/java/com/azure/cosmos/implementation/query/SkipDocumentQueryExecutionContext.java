@@ -81,7 +81,7 @@ public final class SkipDocumentQueryExecutionContext<T>
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(documentsAfterSkip,
                 headers,
-                BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
+                FeedResponseHelper.queryMetrics(tFeedResponse),
                 FeedResponseHelper.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
                 false,

@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.LifeCycleUtils;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.SharedTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
@@ -126,7 +127,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        properties.set("newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
@@ -134,7 +135,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
                                                               properties.getId(),
                                                               new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                               options);
-        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
+        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(CosmosItemResponseHelper.getInternalObjectNode(replace), "newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -238,8 +239,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     private void validateItemResponse(InternalObjectNode containerProperties,
                                       CosmosItemResponse<InternalObjectNode> createResponse) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }

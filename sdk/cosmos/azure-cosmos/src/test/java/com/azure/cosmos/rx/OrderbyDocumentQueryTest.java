@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
@@ -600,7 +601,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     public InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps) {
         InternalObjectNode docDefinition = getDocumentDefinition(keyValueProps);
-        return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
+        return CosmosItemResponseHelper.getInternalObjectNode(cosmosContainer.createItem(docDefinition).block());
     }
 
     public List<InternalObjectNode> bulkInsert(CosmosAsyncContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {

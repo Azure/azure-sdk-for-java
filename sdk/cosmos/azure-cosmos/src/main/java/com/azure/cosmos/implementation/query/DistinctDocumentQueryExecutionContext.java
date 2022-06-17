@@ -104,7 +104,7 @@ public class DistinctDocumentQueryExecutionContext<T>
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(distinctResults,
                 headers,
-                BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
+                FeedResponseHelper.queryMetrics(tFeedResponse),
                 FeedResponseHelper.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
                 false,

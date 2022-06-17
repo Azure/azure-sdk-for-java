@@ -291,7 +291,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void changeFeed_fromStartDate() throws Exception {
 
         //setStartDateTime is not currently supported in multimaster mode. So skipping the test
-        if(BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().single().block())){
+        if(client.getDatabaseAccount().single().block().getEnableMultipleWriteLocations()){
             throw new SkipException(
                 "StartTime/IfModifiedSince is not currently supported when EnableMultipleWriteLocations is set");
         }
@@ -450,7 +450,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     public Document updateDocument(AsyncDocumentClient client, Document originalDocument) {
         String uuid = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(originalDocument, "prop", uuid);
+        originalDocument.set("prop", uuid);
 
         return client
             .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
@@ -538,8 +538,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document();
         doc.setId(uuid);
-        BridgeInternal.setProperty(doc, "mypk", partitionKey);
-        BridgeInternal.setProperty(doc, "prop", uuid);
+        doc.set("mypk", partitionKey);
+        doc.set("prop", uuid);
         return doc;
     }
 

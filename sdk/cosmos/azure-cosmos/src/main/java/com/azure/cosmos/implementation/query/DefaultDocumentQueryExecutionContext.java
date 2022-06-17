@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
@@ -81,7 +82,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
-        return this.cosmosQueryRequestOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
+        return this.cosmosQueryRequestOptions.getPartitionKey() == null ? null : ModelBridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
     }
 
     @Override
@@ -192,7 +193,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                                         tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
                             String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
                             String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
+                            FeedResponseHelper.queryMetricsMap(tFeedResponse).put(queryMetricKey, qm);
                         }
                         return tFeedResponse;
                     });

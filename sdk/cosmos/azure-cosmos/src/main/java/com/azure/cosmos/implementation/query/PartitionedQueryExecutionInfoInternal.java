@@ -27,7 +27,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
     private List<Range<PartitionKeyInternal>> queryRanges;
 
     public PartitionedQueryExecutionInfoInternal() {
-        BridgeInternal.setProperty(this, PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY, Constants.PartitionedQueryExecutionInfo.VERSION_1);
+        this.set(PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY, Constants.PartitionedQueryExecutionInfo.VERSION_1);
     }
 
     public PartitionedQueryExecutionInfoInternal(ObjectNode objectNode) {

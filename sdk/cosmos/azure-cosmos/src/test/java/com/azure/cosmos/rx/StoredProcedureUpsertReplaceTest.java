@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -73,7 +74,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
-        CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal
+        CosmosStoredProcedureProperties storedProcedureDef = ModelBridgeInternal
                 .createCosmosStoredProcedureProperties("{" + "  'id': '" + UUID.randomUUID().toString() + "',"
                         + "  'body':" + "    'function () {" + "      for (var i = 0; i < 10; i++) {"
                         + "        getContext().getResponse().appendValue(\"Body\", i);" + "      }" + "    }'" + "}");

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -81,7 +81,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     })
                     .map(cosmosItemResponse -> {
                         InternalObjectNode document =
-                            BridgeInternal.getProperties(cosmosItemResponse);
+                            CosmosItemResponseHelper.getInternalObjectNode(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
                             "Partition {} update failed because the lease with token '{}' was updated by owner '{}' with token '{}'.",
@@ -131,7 +131,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     private Mono<InternalObjectNode> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
                                                                                         throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
-            .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
+            .map(CosmosItemResponseHelper::getInternalObjectNode)
             .onErrorResume(re -> {
                 if (re instanceof CosmosException) {
                     CosmosException ex = (CosmosException) re;

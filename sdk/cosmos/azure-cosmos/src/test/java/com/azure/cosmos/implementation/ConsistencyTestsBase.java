@@ -214,7 +214,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 Document document2 = new Document();
                 document2.setId("test" + UUID.randomUUID().toString());
-                BridgeInternal.setProperty(document2, "customerid", 2);
+                document2.set("customerid", 2);
                 // name link
                 ResourceResponse<Document> document = writeClient.createDocument(coll.getAltLink(),
                                                                                  document2, null, false)
@@ -228,7 +228,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 Document document2 = new Document();
                 document2.setId("test" + UUID.randomUUID().toString());
-                BridgeInternal.setProperty(document2, "customerid", 3);
+                document2.set("customerid", 3);
                 // name link
                 ResourceResponse<Document> document = writeClient.createDocument(coll.getAltLink(),
                                                                                  document2, null, false)
@@ -709,7 +709,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // Document to lock pause/resume clients
             Document document1 = new Document();
             document1.setId("test" + UUID.randomUUID().toString());
-            BridgeInternal.setProperty(document1, "mypk", 1);
+            document1.set("mypk", 1);
             ResourceResponse<Document> childResource1 = writeClient.createDocument(createdCollection.getSelfLink(), document1, null, true).block();
             logger.info("Created {} child resource", childResource1.getResource().getResourceId());
             assertThat(childResource1.getSessionToken()).isNotNull();
@@ -720,7 +720,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // Document to lock pause/resume clients
             Document document2 = new Document();
             document2.setId("test" + UUID.randomUUID().toString());
-            BridgeInternal.setProperty(document2, "mypk", 2);
+            document2.set("mypk", 2);
             ResourceResponse<Document> childResource2 = writeClient.createDocument(createdCollection.getSelfLink(), document2, null, true).block();
             assertThat(childResource2.getSessionToken()).isNotNull();
             assertThat(childResource2.getSessionToken().contains(":")).isTrue();

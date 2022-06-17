@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
-
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
  * for documents.
@@ -170,7 +168,7 @@ public final class DocumentCollection extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            setProperty(this, Constants.Properties.DEFAULT_TTL, timeToLive);
+            this.set(Constants.Properties.DEFAULT_TTL, timeToLive);
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
             remove(Constants.Properties.DEFAULT_TTL);
         }
@@ -238,7 +236,7 @@ public final class DocumentCollection extends Resource {
         }
 
         this.uniqueKeyPolicy = uniqueKeyPolicy;
-        setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
+        this.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
     }
 
     /**
@@ -262,7 +260,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
 
-        setProperty(this, Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
+        this.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
     }
 
     /**
@@ -290,7 +288,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CHANGE_FEED_POLICY cannot be null.");
         }
 
-        setProperty(this, Constants.Properties.CHANGE_FEED_POLICY, value);
+        this.set(Constants.Properties.CHANGE_FEED_POLICY, value);
     }
 
     /**
@@ -372,7 +370,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("ClientEncryptionPolicy cannot be null.");
         }
 
-        setProperty(this, Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
+        this.set(Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
     }
 
     public void populatePropertyBag() {
@@ -386,13 +384,13 @@ public final class DocumentCollection extends Resource {
 
         if (this.partitionKeyDefinition != null) {
             ModelBridgeInternal.populatePropertyBag(this.partitionKeyDefinition);
-            setProperty(this, Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
+            this.set(Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
         }
         ModelBridgeInternal.populatePropertyBag(this.indexingPolicy);
         ModelBridgeInternal.populatePropertyBag(this.uniqueKeyPolicy);
 
-        setProperty(this, Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
-        setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
+        this.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
+        this.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
     }
 
     @Override

@@ -8,6 +8,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.InternalObjectNode;
 
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -121,16 +122,16 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     private void validateItemResponse(InternalObjectNode containerProperties,
                                       CosmosItemResponse<InternalObjectNode> createResponse) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }
 
     private void validateIdOfItemResponse(String expectedId, CosmosItemResponse<ObjectNode> createResponse) {
         // Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId()).isNotNull();
+        assertThat(CosmosItemResponseHelper.getInternalObjectNode(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(expectedId);
     }

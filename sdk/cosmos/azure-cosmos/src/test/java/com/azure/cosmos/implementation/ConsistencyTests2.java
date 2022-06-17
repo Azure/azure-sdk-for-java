@@ -239,7 +239,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         List<Document> documents = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             Document documentDefinition = getDocumentDefinition();
-            BridgeInternal.setProperty(documentDefinition, UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            documentDefinition.set(UUID.randomUUID().toString(), UUID.randomUUID().toString());
             documents.add(documentDefinition);
         }
 

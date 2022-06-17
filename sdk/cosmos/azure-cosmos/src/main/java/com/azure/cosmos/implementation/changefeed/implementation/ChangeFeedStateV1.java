@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
 import java.util.Objects;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedStateV1 extends ChangeFeedState {
@@ -121,32 +120,14 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_STATE_VERSION,
-            ChangeFeedStateVersions.V1);
-
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_STATE_RESOURCE_ID,
-            this.containerRid);
-
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_STATE_MODE,
-            this.mode);
-
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_STATE_START_FROM,
-            this.startFromSettings);
+        this.set(Constants.Properties.CHANGE_FEED_STATE_VERSION, ChangeFeedStateVersions.V1);
+        this.set(Constants.Properties.CHANGE_FEED_STATE_RESOURCE_ID, this.containerRid);
+        this.set(Constants.Properties.CHANGE_FEED_STATE_MODE, this.mode);
+        this.set(Constants.Properties.CHANGE_FEED_STATE_START_FROM, this.startFromSettings);
 
         if (this.continuation != null) {
             this.continuation.populatePropertyBag();
-            setProperty(
-                this,
-                Constants.Properties.CHANGE_FEED_STATE_CONTINUATION,
-                this.continuation);
+            this.set(Constants.Properties.CHANGE_FEED_STATE_CONTINUATION, this.continuation);
             this.feedRange.removeProperties(this);
         } else {
             this.feedRange.setProperties(this, true);

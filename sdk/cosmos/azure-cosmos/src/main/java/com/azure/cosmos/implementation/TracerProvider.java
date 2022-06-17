@@ -333,7 +333,7 @@ public class TracerProvider {
                     @SuppressWarnings("unchecked")
                     CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
                     fillClientTelemetry(client, cosmosBatchResponse.getDiagnostics(), cosmosBatchResponse.getStatusCode(),
-                        ModelBridgeInternal.getPayloadLength(cosmosBatchResponse), containerId,
+                        cosmosBatchResponse.getResponseLength(), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) cosmosBatchResponse.getRequestCharge());
                 }

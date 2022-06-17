@@ -58,7 +58,7 @@ public class PartitionKeyTest {
         PartitionKey pk = ModelBridgeInternal.partitionKeyfromJsonString("[\"PartitionKeyValue\"]");
 
         try {
-            PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);
+            PartitionKeyInternalHelper.getEffectivePartitionKeyString(ModelBridgeInternal.getPartitionKeyInternal(pk), pkd);
             fail("should throw");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo(RMResources.TooFewPartitionKeyComponents);
@@ -75,7 +75,7 @@ public class PartitionKeyTest {
         PartitionKey pk = ModelBridgeInternal.partitionKeyfromJsonString(("[true, false]"));
 
         try {
-            PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);
+            PartitionKeyInternalHelper.getEffectivePartitionKeyString(ModelBridgeInternal.getPartitionKeyInternal(pk), pkd);
             fail("should throw");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage()).isEqualTo(RMResources.TooManyPartitionKeyComponents);

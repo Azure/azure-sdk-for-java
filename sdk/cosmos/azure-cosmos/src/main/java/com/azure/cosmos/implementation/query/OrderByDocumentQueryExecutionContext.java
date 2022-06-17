@@ -603,7 +603,7 @@ public class OrderByDocumentQueryExecutionContext
                     orderByContinuationToken);
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
-                BridgeInternal.queryMetricsFromFeedResponse(page),
+                FeedResponseHelper.queryMetrics(page),
                 FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
@@ -628,11 +628,7 @@ public class OrderByDocumentQueryExecutionContext
                                 orderByRowResults,
                                 headerResponse(tracker.getAndResetCharge()));
                         if (!queryMetricMap.isEmpty()) {
-                            for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
-                                BridgeInternal.putQueryMetricsIntoMap(feedResponse,
-                                    entry.getKey(),
-                                    entry.getValue());
-                            }
+                            FeedResponseHelper.queryMetricsMap(feedResponse).putAll(queryMetricMap);
                         }
                         return feedResponse;
                     })
@@ -687,7 +683,7 @@ public class OrderByDocumentQueryExecutionContext
 
                     FeedResponse<Document> feedResponse = BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
                         feedOfOrderByRowResults.getResponseHeaders(),
-                        BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
+                        FeedResponseHelper.queryMetrics(feedOfOrderByRowResults),
                         FeedResponseHelper.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
                         false, feedOfOrderByRowResults.getCosmosDiagnostics());

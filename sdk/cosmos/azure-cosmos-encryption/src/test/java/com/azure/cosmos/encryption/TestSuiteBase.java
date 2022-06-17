@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
@@ -507,7 +508,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     }
 
     public static InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, InternalObjectNode item) {
-        return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
+        return CosmosItemResponseHelper.getInternalObjectNode(cosmosContainer.createItem(item).block());
     }
 
     public <T> Flux<CosmosItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
@@ -535,7 +536,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
                                        List<InternalObjectNode> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> BridgeInternal.getProperties(itemResponse))
+            .map(CosmosItemResponseHelper::getInternalObjectNode)
             .then()
             .block();
     }

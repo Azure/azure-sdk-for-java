@@ -61,7 +61,7 @@ public class DistinctContinuationToken extends JsonSerializable {
      * @param sourceToken Value to set for property 'sourceToken'.
      */
     public void setSourceToken(String sourceToken) {
-        BridgeInternal.setProperty(this, SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
+        this.set(SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
     }
 
     UInt128 getLastHash() {
@@ -79,7 +79,7 @@ public class DistinctContinuationToken extends JsonSerializable {
      */
     public void setLastHash(UInt128 lastHash) {
         if (lastHash != null) {
-            BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer().array());
+            this.set(LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer().array());
         } else {
             this.set(LAST_HASH_PROPERTY_NAME, null);
         }

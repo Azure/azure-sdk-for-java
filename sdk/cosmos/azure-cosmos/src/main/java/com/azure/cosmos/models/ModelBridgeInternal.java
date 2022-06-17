@@ -491,16 +491,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
-        return response.getQueryInfo();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getNoCHangesFromFeedResponse(FeedResponse<?> response) {
-        return response.getNoChanges();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions createQueryRequestOptions(CosmosQueryRequestOptions options) {
         return new CosmosQueryRequestOptions(options);
     }
@@ -556,13 +546,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
         return new CosmosItemRequestOptions(options);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
-        String etag, FeedRange feedRange) {
-
-        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -717,11 +700,6 @@ public final class ModelBridgeInternal {
             operation,
             exception,
             batchContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static int getPayloadLength(CosmosBatchResponse cosmosBatchResponse) {
-        return cosmosBatchResponse.getResponseLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

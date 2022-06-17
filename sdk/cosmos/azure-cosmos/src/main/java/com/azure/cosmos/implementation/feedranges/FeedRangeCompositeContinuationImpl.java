@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -100,24 +99,15 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
-        setProperty(
-            this,
-            Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION,
-            FeedRangeContinuationVersions.V1);
-
-        setProperty(
-            this,
-            Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID,
-            this.getContainerRid());
+        this.set(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION, FeedRangeContinuationVersions.V1);
+        this.set(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID, this.getContainerRid());
 
         if (this.compositeContinuationTokens.size() > 0) {
             for (CompositeContinuationToken token : this.compositeContinuationTokens) {
                 ModelBridgeInternal.populatePropertyBag(token);
             }
 
-            setProperty(
-                this,
-                Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
+            this.set(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
                 this.compositeContinuationTokens);
         }
 

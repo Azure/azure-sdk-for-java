@@ -34,6 +34,7 @@ import com.azure.cosmos.models.CosmosStoredProcedureResponse;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -326,7 +327,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         try {
             asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
             String sprocId = "storedProcedure" + UUID.randomUUID().toString();
-            CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal
+            CosmosStoredProcedureProperties storedProcedureDef = ModelBridgeInternal
                 .createCosmosStoredProcedureProperties("{" + "  'id': '" + sprocId + "',"
                     + "  'body':" + "    'function () {" + "      for (var i = 0; i < 10; i++) {"
                     + "        getContext().getResponse().appendValue(\"Body\", i);" + "      }" + "    }'" + "}");
