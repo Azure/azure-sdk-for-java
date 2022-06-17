@@ -402,8 +402,8 @@ public interface ApplicationGatewayRequestRoutingRule
          */
         interface WithPriority<ParentT> {
             /**
-             * ({@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} Only)
-             * Specifies a unique priority value for the request routing rule.
+             * Specifies a unique priority value for the request routing rule. Only available for
+             * {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}。
              * <p>If you don't assign the priority, SDK will auto-assign a unique value for you (ranging from 10010 to
              * 20000) in the ordering of definition. For rules with auto-assigned priorities, those which defined later
              * will have larger priority values (lower priority) over those which defined earlier.</p>
@@ -531,8 +531,8 @@ public interface ApplicationGatewayRequestRoutingRule
          */
         interface WithPriority {
             /**
-             * ({@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} Only)
-             * Updates the priority value for the request routing rule.
+             * Specifies a unique priority value for the request routing rule. Only available for
+             * {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}。
              * <p>Rules with no priorities before will be auto-assigned with values ranging from 10010 to 20000.</p>
              * <p>For updating rules with auto-assigned priorities, consider updating all existing ones for that Gateway.
              * Otherwise, it would lead to unexpected ordering.</p>
@@ -619,13 +619,14 @@ public interface ApplicationGatewayRequestRoutingRule
          */
         interface WithPriority<ParentT> {
             /**
-             * ({@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} Only)
-             * Specifies a unique priority value for the request routing rule.
-             * <p>If you don't assign the priority, SDK will auto-assign a unique value for you (ranging from 10010 to
-             * 20000) in the ordering of definition. For rules with auto-assigned priorities, those which defined later
-             * will have larger priority values (lower priority) over those which defined earlier.</p>
-             * <p>If you want to assign it manually, we recommend no larger than 10000 to avoid potential priority
-             * collision with rules with auto-assigned priorities.</p>
+             * Specifies a unique priority value for the request routing rule. It is required and only available for
+             * {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}。
+             * <p>You should always specify the priority, if applicable.
+             * <p>If you don't specify, SDK will automatically assign a unique value for you (ranging from 10010 to 20000)
+             * in the ordering of definition. Those which defined later will have larger priority values (lower priority)
+             * over those which defined earlier. This auto-assignment feature is meant for working with your existing
+             * code and you should avoid relying on it and always specify for all rules whenever possible. If you do want
+             * to </p>
              * @param priority unique priority value of the request routing rule ranging from 1(highest) to 20000(lowest)
              * @return the next stage of the definition
              */

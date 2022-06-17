@@ -371,7 +371,9 @@ class ApplicationGatewayImpl
         }
 
         // Reset and update request routing rules
-        addedRuleCollection.autoAssignPriorities();
+        if (supportsRulePriority()) {
+            addedRuleCollection.autoAssignPriorities(requestRoutingRules().values(), name());
+        }
         this.innerModel().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
         for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
             SubResource ref;
@@ -1705,7 +1707,19 @@ class ApplicationGatewayImpl
                 });
     }
 
-    private class AddedRuleCollection {
+    /*
+     * Only V2 Gateway supports priority.
+     */
+    private boolean supportsRulePriority() {
+        ApplicationGatewayTier tier = tier();
+        ApplicationGatewaySkuName sku = size();
+        return tier != ApplicationGatewayTier.STANDARD
+            && sku != ApplicationGatewaySkuName.STANDARD_SMALL && sku != ApplicationGatewaySkuName.STANDARD_MEDIUM
+            && sku != ApplicationGatewaySkuName.STANDARD_LARGE && sku != ApplicationGatewaySkuName.WAF_MEDIUM
+            && sku != ApplicationGatewaySkuName.WAF_LARGE;
+    }
+
+    private static class AddedRuleCollection {
         private static final int AUTO_ASSIGN_PRIORITY_START = 10010;
         private static final int MAX_PRIORITY = 20000;
         private static final int PRIORITY_INTERVAL = 10;
@@ -1729,49 +1743,36 @@ class ApplicationGatewayImpl
          * Auto-assign priority values for rules without priority (ranging from 10010 to 20000).
          * Rules defined later in the definition chain will have larger priority values over those defined earlier.
          */
-        void autoAssignPriorities() {
-            if (supportsRulePriority()) {
-                // list all existing rule priorities
-                Set<Integer> existingPriorities = requestRoutingRules().values()
-                    .stream()
-                    .map(ApplicationGatewayRequestRoutingRule::priority)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toSet());
+        void autoAssignPriorities(Collection<ApplicationGatewayRequestRoutingRule> existingRules, String gatewayName) {
+            // list all existing rule priorities
+            Set<Integer> existingPriorities = existingRules
+                .stream()
+                .map(ApplicationGatewayRequestRoutingRule::priority)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
-                // for all newly add rules without priority, assign priorities in the order they were added
-                int nextPriorityToAssign = AUTO_ASSIGN_PRIORITY_START;
-                for (Map.Entry<String, ApplicationGatewayRequestRoutingRuleImpl> entry : ruleMap.entrySet()) {
-                    if (entry.getValue().priority() != null) {
+            // for all newly add rules without priority, assign priorities in the order they were added
+            int nextPriorityToAssign = AUTO_ASSIGN_PRIORITY_START;
+            for (ApplicationGatewayRequestRoutingRuleImpl rule : ruleMap.values()) {
+                if (rule.priority() != null) {
+                    continue;
+                }
+                boolean assigned = false;
+                for (int priority = nextPriorityToAssign; priority <= MAX_PRIORITY; priority += PRIORITY_INTERVAL) {
+                    if (existingPriorities.contains(priority)) {
                         continue;
                     }
-                    boolean assigned = false;
-                    ApplicationGatewayRequestRoutingRuleImpl rule = entry.getValue();
-                    for (int priority = nextPriorityToAssign; priority <= MAX_PRIORITY; priority += PRIORITY_INTERVAL) {
-                        if (existingPriorities.contains(priority)) {
-                            continue;
-                        }
-                        rule.withPriority(priority);
-                        assigned = true;
-                        existingPriorities.add(priority);
-                        nextPriorityToAssign = priority + PRIORITY_INTERVAL;
-                        break;
-                    }
-                    if (!assigned) {
-                        throw new IllegalStateException(
-                            String.format("Can't auto-assign priority for rule: %s, gateway: %s", rule.name(), name()));
-                    }
+                    rule.withPriority(priority);
+                    assigned = true;
+                    existingPriorities.add(priority);
+                    nextPriorityToAssign = priority + PRIORITY_INTERVAL;
+                    break;
+                }
+                if (!assigned) {
+                    throw new IllegalStateException(
+                        String.format("Can't auto-assign priority for rule: %s, gateway: %s", rule.name(), gatewayName));
                 }
             }
-        }
-
-        /*
-         * Only V2 Gateway supports priority.
-         */
-        private boolean supportsRulePriority() {
-            ApplicationGatewayTier tier = tier();
-            ApplicationGatewaySkuName sku = size();
-            return (tier == ApplicationGatewayTier.STANDARD_V2 || tier == ApplicationGatewayTier.WAF_V2)
-                && (sku == ApplicationGatewaySkuName.STANDARD_V2 || sku == ApplicationGatewaySkuName.WAF_V2);
         }
     }
 }
