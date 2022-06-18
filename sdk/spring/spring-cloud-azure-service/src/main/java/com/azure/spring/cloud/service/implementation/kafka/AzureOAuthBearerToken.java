@@ -5,6 +5,7 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.core.credential.AccessToken;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
+import org.apache.kafka.common.errors.SaslAuthenticationException;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 
 import java.text.ParseException;
@@ -31,7 +32,7 @@ public class AzureOAuthBearerToken implements OAuthBearerToken {
         try {
             claims = JWTParser.parse(token).getJWTClaimsSet();
         } catch (ParseException exception) {
-            throw new RuntimeException("Unable to parse access token", exception);
+            throw new SaslAuthenticationException("Unable to parse the access token", exception);
         }
         startTimeMs = claims.getIssueTime().getTime();
         lifetimeMs = claims.getExpirationTime().getTime();

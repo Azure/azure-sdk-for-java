@@ -6,6 +6,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import org.apache.kafka.common.requests.ApiVersionsRequest;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,7 +27,10 @@ import java.util.Map;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.KAFKA_OAUTH_CONFIGS;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.buildAzureProperties;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.logConfigureOAuthProperties;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.needConfigureSaslOAuth;
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 
 /**
@@ -52,6 +57,10 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
         this.tokenCredentialResolver = resolver;
         this.defaultTokenCredential = defaultTokenCredential;
         this.azureGlobalProperties = azureGlobalProperties;
+        ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+        apiVersionsRequest.data().setClientSoftwareName(apiVersionsRequest.data().clientSoftwareName()
+                + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
+        apiVersionsRequest.data().setClientSoftwareVersion(VERSION);
     }
 
     @Bean
@@ -74,12 +83,13 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
         if (needConfigureSaslOAuth(sourceKafkaProperties)) {
             AzureKafkaProperties azureKafkaProperties = buildAzureProperties(sourceKafkaProperties,
                     azureGlobalProperties);
-            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, buildCredentialFromProperties(azureKafkaProperties));
+            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azureKafkaProperties));
             updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
+            logConfigureOAuthProperties();
         }
     }
 
-    private TokenCredential buildCredentialFromProperties(AzureKafkaProperties azureKafkaConsumerProperties) {
+    private TokenCredential resolveSpringCloudAzureTokenCredential(AzureKafkaProperties azureKafkaConsumerProperties) {
         TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureKafkaConsumerProperties);
         return tokenCredential == null ? defaultTokenCredential : tokenCredential;
     }

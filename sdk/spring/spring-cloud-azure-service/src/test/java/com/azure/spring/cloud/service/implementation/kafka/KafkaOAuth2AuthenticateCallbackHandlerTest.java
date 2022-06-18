@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -9,23 +14,22 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
-    private static final String KAFKA_BOOTSTRAP_SERVER = "namespace.servicebus.windows.net";
+    private static final List<String> KAFKA_BOOTSTRAP_SERVER = Arrays.asList("namespace.servicebus.windows.net:9093");
     private static final String TOKEN_CREDENTIAL_FIELD_NAME = "credential";
     private static final String AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME = "properties";
     private static final String GET_TOKEN_CREDENTIAL_METHOD_NAME = "getTokenCredential";
@@ -48,7 +52,7 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
     }
 
     @Test
-    void tokenCredentialShouldConfig() {
+    void testTokenCredentialShouldConfig() {
         configs.put(AZURE_TOKEN_CREDENTIAL, tokenCredential);
         handler.configure(configs, null, null);
 
@@ -60,7 +64,7 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
     }
 
     @Test
-    void createDefaultTokenCredential() {
+    void testCreateDefaultTokenCredential() {
         handler.configure(configs, null, null);
 
         TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);
@@ -71,7 +75,7 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
     }
 
     @Test
-    void createTokenCredentialByResolver() {
+    void testCreateTokenCredentialByResolver() {
         configs.put(managedIdentityEnabled.propertyKey(), "true");
         handler.configure(configs, null, null);
 
@@ -83,5 +87,23 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(handler, GET_TOKEN_CREDENTIAL_METHOD_NAME);
         assertNotNull(getTokenCredential);
         assertTrue(getTokenCredential instanceof ManagedIdentityCredential);
+    }
+
+    @Test
+    void testMultipleBootstrapServersShouldThrowException() {
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList(KAFKA_BOOTSTRAP_SERVER, "localhost:9092"));
+        assertThrows(IllegalArgumentException.class, () -> handler.configure(configs, null, null));
+    }
+
+    @Test
+    void testNoneBootstrapServersShouldThrowException() {
+        configs.clear();
+        assertThrows(IllegalArgumentException.class, () -> handler.configure(configs, null, null));
+    }
+
+    @Test
+    void testInvalidBootstrapServerValueShouldThrowException() {
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("localhost:9092"));
+        assertThrows(IllegalArgumentException.class, () -> handler.configure(configs, null, null));
     }
 }

@@ -2,6 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
+import java.net.URI;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.UnsupportedCallbackException;
+import javax.security.auth.login.AppConfigurationEntry;
+
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -11,15 +20,6 @@ import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.security.auth.login.AppConfigurationEntry;
-import java.net.URI;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
@@ -27,19 +27,34 @@ import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CON
  * {@link AuthenticateCallbackHandler} implementation for OAuth2 authentication with Azure Event Hubs.
  */
 public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallbackHandler {
-    private final AzureKafkaProperties properties = new AzureKafkaProperties();
-    private final DefaultAzureCredentialBuilderFactory defaultAzureCredentialBuilderFactory =
-        new DefaultAzureCredentialBuilderFactory(properties);
     private TokenCredential credential;
     private AzureOAuthBearerToken accessToken;
     private String tokenAudience;
 
-    private final AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
+    private final AzureKafkaProperties properties;
+    private final AzureTokenCredentialResolver tokenCredentialResolver;
 
+    public KafkaOAuth2AuthenticateCallbackHandler() {
+        this(new AzureKafkaProperties(), new AzureTokenCredentialResolver());
+    }
+
+    public KafkaOAuth2AuthenticateCallbackHandler(AzureKafkaProperties properties, AzureTokenCredentialResolver tokenCredentialResolver) {
+        this.properties = properties;
+        this.tokenCredentialResolver = tokenCredentialResolver;
+    }
+
+    @SuppressWarnings("unchecked")
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
-        String bootstrapServer = Arrays.asList(configs.get(BOOTSTRAP_SERVERS_CONFIG)).get(0).toString();
-        bootstrapServer = bootstrapServer.replaceAll("\\[|\\]", "");
+        List<String> bootstrapServers = (List<String>) configs.get(BOOTSTRAP_SERVERS_CONFIG);
+        if (bootstrapServers == null || bootstrapServers.size() != 1) {
+            throw new IllegalArgumentException("Invalid bootstrap servers configured for Azure Event Hubs for Kafka! Must supply exactly 1 non-null bootstrap server configuration,"
+                    + " with the format as {YOUR.EVENTHUBS.FQDN}:9093.");
+        }
+        String bootstrapServer = bootstrapServers.get(0);
+        if (!bootstrapServer.endsWith(":9093")) {
+            throw new IllegalArgumentException("Invalid bootstrap server configured for Azure Event Hubs for Kafka! The format should be {YOUR.EVENTHUBS.FQDN}:9093.");
+        }
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = uri.getScheme() + "://" + uri.getHost();
         credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
@@ -66,7 +81,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             credential = tokenCredentialResolver.resolve(properties);
             if (credential == null) {
                 // Create DefaultAzureCredential when no credential can be resolved from configs.
-                credential = defaultAzureCredentialBuilderFactory.build().build();
+                credential = new DefaultAzureCredentialBuilderFactory(properties).build().build();
             }
         }
         return credential;

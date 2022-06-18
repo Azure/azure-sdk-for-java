@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import org.apache.kafka.common.requests.ApiVersionsRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -14,6 +15,8 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA;
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
@@ -31,14 +34,20 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
 
     KafkaPropertiesBeanPostProcessor(ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
+        ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
+        apiVersionsRequest.data().setClientSoftwareName(apiVersionsRequest.data().clientSoftwareName()
+                + AZURE_SPRING_EVENT_HUBS_KAFKA);
+        apiVersionsRequest.data().setClientSoftwareVersion(VERSION);
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof KafkaProperties) {
-            //TODO(yiliu6): link to oauth2 reference doc here
+            //TODO(yiliu6): link to OAuth2 reference doc here
             LOGGER.warn("Autoconfiguration for Event Hubs for Kafka on connection string/Azure Resource Manager"
-                + " has been deprecated, please migrate to AzureEventHubsKafkaOAuth2AutoConfiguration for OAuth2 authentication with Azure Identity credentials.");
+                + " has been deprecated, please migrate to AzureEventHubsKafkaOAuth2AutoConfiguration for OAuth2 authentication with Azure Identity credentials."
+                + " To leverage the OAuth2 authentication, you can delete all your Event Hubs for Kafka credential configurations, and configure Kafka bootstrap servers"
+                + " instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.");
 
             KafkaProperties kafkaProperties = (KafkaProperties) bean;
             String connectionString = connectionStringProvider.getConnectionString();
