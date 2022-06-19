@@ -1,0 +1,41 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/applicationinsights/ci.data.yml
+      - sdk/applicationinsights/microsoft-azure-applicationinsights-query
+    exclude:
+      - sdk/applicationinsights/pom.xml
+      - sdk/applicationinsights/microsoft-azure-applicationinsights-query/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/applicationinsights/ci.data.yml
+      - sdk/applicationinsights/microsoft-azure-applicationinsights-query
+    exclude:
+      - sdk/applicationinsights/pom.xml
+      - sdk/applicationinsights/microsoft-azure-applicationinsights-query/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    SDKType: data
+    ServiceDirectory: applicationinsights
+    Artifacts:
+      - name: azure-applicationinsights-query
+        groupId: com.microsoft.azure
+        safeName: azureapplicationinsightsquery

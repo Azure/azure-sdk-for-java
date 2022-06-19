@@ -1,6 +1,6 @@
-# Guide for migrating to `azure-monitor-query` from `azure-loganalytics`
+# Guide for migrating to `azure-monitor-query` from `azure-loganalytics` and `azure-applicationinsights-query`
 
-This guide assists in migrating from `azure-loganalytics` to `azure-monitor-query`. 
+This guide assists in migrating from `azure-loganalytics` and `azure-applicationinsights-query` to `azure-monitor-query`. 
 
 ## Migration benefits
 
@@ -15,11 +15,11 @@ To improve the development experience across Azure services, a set of uniform [d
 consistent experience with established API patterns for all services. A set of [Java design guidelines][GuidelinesJava] was introduced to ensure that Java clients have a natural and idiomatic feel 
 with respect to the Java ecosystem. Further details are available in the guidelines for those interested.
 
-In addition to the improved development experience, the new `azure-monitor-query` also has new features that are not available in `azure-loganalytics`. This library supports querying Azure Monitor for
-both logs and metrics while the `azure-loganalytics` library only supported querying logs. The new library also includes additional capabilities for querying logs like executing a batch of queries, 
+In addition to the improved development experience, the new `azure-monitor-query` also has new features that are not available in `azure-loganalytics` and `azure-applicationinsights-query`. This library supports querying Azure Monitor for
+both logs and metrics while the `azure-loganalytics` and `azure-applicationinsights-query`  libraries only supported querying logs. The new library also includes additional capabilities for querying logs like executing a batch of queries, 
 setting the server timeout, getting the visualization information and statistics for a query.
 
-Another key difference is that `azure-loganalytics` only has a preview release. It's not recommended for use in a production environment. The `azure-monitor-query` package has a stable release. The latest stable version can be found in the [README][README]. 
+Another key difference is that `azure-loganalytics` and `azure-applicationinsights-query` only have a preview release. It's not recommended for use in a production environment. The `azure-monitor-query` package has a stable release and is ready for production. The latest stable version can be found in the [README][README]. 
 
 ### Cross-service SDK improvements
 
@@ -33,11 +33,11 @@ The modern Azure Monitor Query client library also provides the ability to share
 
 ### Group ID, artifact ID, and package names
 
-Group IDs, artifact IDs, and package names for the modern Azure client libraries for Java have changed. They follow the [Java SDK naming guidelines][GuidelinesJavaDesign]. Each will have the group ID `com.azure`, an artifact ID following the pattern `azure-[area]-[service]`, and the root package name `com.azure.[area].[Service]`. The legacy clients have a group ID of `com.microsoft.azure`, and their package names followed the pattern `com.microsoft. Azure.[service]`. This provides a quick and accessible means to help understand, at a glance, whether you're using modern or legacy clients.
+Group IDs, artifact IDs, and package names for the modern Azure client libraries for Java have changed. They follow the [Java SDK naming guidelines][GuidelinesJavaDesign]. Each will have the group ID `com.azure`, an artifact ID following the pattern `azure-[area]-[service]`, and the root package name `com.azure.[area].[Service]`. The legacy clients have a group ID of `com.microsoft.azure`, and their package names followed the pattern `com.microsoft.azure.[service]`. This provides a quick and accessible means to help understand, at a glance, whether you're using modern or legacy clients.
 
-The Azure Monitor Query client library's package and namespaces begin with `com.azure.monitor.query` and were released starting with version 1.0.0. The legacy client library had a package name starting with `com.microsoft.azure.loganalytics` and a version of 1.0.0-beta.1.
+The Azure Monitor Query client library's package and namespaces begin with `com.azure.monitor.query` and were released starting with version 1.0.0. The legacy client libraries had package names starting with `com.microsoft.azure.loganalytics` or `com.microsoft.azure.applicationinsights` and a version of 1.0.0-beta.1.
 
-#### Instantiate clients
+#### Instantiate clients 
 
 In `azure-loganalytics`, the `LogAnalyticsDataClient` is instantiated via the `LogAnalyticsDataClientImpl` constructor. The client contains both sync and async methods.
 
@@ -52,6 +52,22 @@ ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
 
 // New up client. Accepts credentials, or a pre-authenticated restClient
 LogAnalyticsDataClient client = new LogAnalyticsDataClientImpl(credentials);
+```
+
+In `azure-applicationinsights`, the `ApplicationInsightsDataClient` is instantiated via the `ApplicationInsightsDataClientImpl` constructor. The client contains sub-client called `Querys` that have sync and async methods to execute queries.
+
+```java
+// ApplicationTokenCredentials work well for service principal authentication
+ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+        "<clientId>",
+        "<tenantId>",
+        "<clientSecret>",
+        AzureEnvironment.AZURE
+        );
+
+// New up client. Accepts credentials, or a pre-authenticated restClient
+ApplicationInsightsDataClient client = new ApplicationInsightsDataClientImpl(credentials);
+Querys applicationInsightsQueryClient = client.querys();
 ```
 
 In `azure-monitor-query`:
@@ -83,6 +99,13 @@ String query = "Heartbeat | take 1";
 String workspaceId = "<workspace-id>";
 QueryResults queryResults = logAnalyticsClient.query(workspaceId, new QueryBody().withQuery(query));
 ```
+In `azure-applicationinsights-query`, logs can be queried synchronously as shown below:
+
+```java
+String query = "Heartbeat | take 1";
+String workspaceId = "<workspace-id>";
+QueryResults queryResults = applicationInsightsQueryClient.execute(workspaceId, new QueryBody().withQuery(query));
+```
 
 In `azure-monitor-query`, logs can be queried synchronously using the sync client as shown below:
 
@@ -99,6 +122,18 @@ In `azure-loganalytics`, logs can be queried asynchronously as shown below:
 String query = "Heartbeat | take 1";
 String workspaceId = "<workspace-id>";
 Observable<QueryResults> queryResultsObservable = logAnalyticsClient.queryAsync(workspaceId, new QueryBody().withQuery(query));
+queryResultsObservable.subscribe(queryResults -> {
+            // process results
+            queryResults.tables();
+        });
+```
+
+In `azure-applicationinsights-query`, logs can be queried asynchronously as shown below:
+
+```java
+String query = "Heartbeat | take 1";
+String workspaceId = "<workspace-id>";
+Observable<QueryResults> queryResultsObservable = applicationInsightsQueryClient.executeAsync(workspaceId, new QueryBody().withQuery(query));
 queryResultsObservable.subscribe(queryResults -> {
             // process results
             queryResults.tables();
