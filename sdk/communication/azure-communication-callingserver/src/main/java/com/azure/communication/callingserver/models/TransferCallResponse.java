@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
 import com.azure.core.annotation.Immutable;
+
+import java.util.Objects;
 
 /** The TransferCallResponse model. */
 @Immutable
@@ -31,17 +34,15 @@ public final class TransferCallResponse {
     /**
      * Constructor of the class
      *
-     * @param operationId The operationId
-     * @param status The status
-     * @param operationContext The operationContext
-     * @param resultDetails The resultDetails
+     * @param transferCallResponseInternal The response from the service.
      */
-    public TransferCallResponse(String operationId, CallingOperationStatus status,
-                                   String operationContext, CallingOperationResultDetails resultDetails) {
-        this.operationId = operationId;
-        this.status = status;
-        this.operationContext = operationContext;
-        this.resultDetails = resultDetails;
+    public TransferCallResponse(TransferCallResponseInternal transferCallResponseInternal) {
+        Objects.requireNonNull(transferCallResponseInternal, "transferCallResponseInternal must not be null");
+
+        this.operationId = transferCallResponseInternal.getOperationId();
+        this.status = CallingOperationStatus.fromString(transferCallResponseInternal.getStatus().toString());
+        this.operationContext = transferCallResponseInternal.getOperationContext();
+        this.resultDetails = new CallingOperationResultDetails(transferCallResponseInternal.getResultDetails());
     }
 
     /**

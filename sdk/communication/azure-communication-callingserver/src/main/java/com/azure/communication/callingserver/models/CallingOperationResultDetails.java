@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsDto;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 
@@ -28,14 +29,12 @@ public final class CallingOperationResultDetails {
     /**
      * Constructor of the class
      *
-     * @param code The code
-     * @param subcode The subcode
-     * @param message The message
+     * @param callingOperationResultDetailsDto The calling operation result details
      */
-    public CallingOperationResultDetails(int code, int subcode, String message) {
-        this.code = code;
-        this.subcode = subcode;
-        this.message = message;
+    public CallingOperationResultDetails(CallingOperationResultDetailsDto callingOperationResultDetailsDto) {
+        this.code = callingOperationResultDetailsDto.getCode();
+        this.subcode = callingOperationResultDetailsDto.getSubcode();
+        this.message = callingOperationResultDetailsDto.getMessage();
     }
 
     /**

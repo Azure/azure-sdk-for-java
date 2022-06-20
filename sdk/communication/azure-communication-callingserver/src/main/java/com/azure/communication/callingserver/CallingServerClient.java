@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -32,19 +31,29 @@ public final class CallingServerClient {
     }
 
     /**
-     * Create a call connection request from a source identity to a target identity.
+     * Get call connection properties.
      *
-     * @param source The source property.
-     * @param targets The targets of the call.
-     * @param callbackUri The call back URI.
-     * @param subject The subject. Optional
+     * @param callConnectionId the call connection Id
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A CallConnection object.
+     * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection createCall(CallSource source, List<CommunicationIdentifier> targets,
-                           String callbackUri, String subject) {
-        return new CallConnection(callingServerAsyncClient.createCall(source, targets, callbackUri, subject).block());
+    public CallConnection getCall(String callConnectionId) {
+        return new CallConnection(callingServerAsyncClient.getCall(callConnectionId).block());
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param callConnectionId the call connection Id
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallConnection> getCallWithResponse(String callConnectionId, Context context) {
+        return callingServerAsyncClient.getCallWithResponseInternal(callConnectionId, context)
+            .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
     /**
@@ -53,16 +62,38 @@ public final class CallingServerClient {
      * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUri The call back URI.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param subject The subject. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A CallConnection object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallConnection createCall(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
+                           String callbackUri, String sourceCallerId, String subject) {
+        return new CallConnection(callingServerAsyncClient.createCall(source, targets, callbackUri, sourceCallerId,
+            subject).block());
+    }
+
+    /**
+     * Create a call connection request from a source identity to a target identity.
+     *
+     * @param source The source property.
+     * @param targets The targets of the call.
+     * @param callbackUri The call back URI.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
      * @param subject The subject. Optional
      * @param context The context to associate with this operation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> createCallWithResponse(CallSource source, List<CommunicationIdentifier> targets,
-                                                 String callbackUri, String subject,
+    public Response<CallConnection> createCallWithResponse(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
+                                                 String callbackUri, String sourceCallerId, String subject,
                                                  Context context) {
-        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, subject, context)
+        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, sourceCallerId,
+                subject, context)
             .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 

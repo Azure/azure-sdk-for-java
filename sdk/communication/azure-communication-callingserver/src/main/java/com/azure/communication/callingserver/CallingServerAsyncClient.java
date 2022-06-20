@@ -7,14 +7,14 @@ import com.azure.communication.callingserver.implementation.AzureCommunicationCa
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallingsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.CallSourceConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
-import com.azure.communication.callingserver.models.CallSource;
+import com.azure.communication.callingserver.implementation.models.CallSourceDto;
+import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -52,19 +52,38 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Create a call connection request from a source identity to a target identity.
+     * Get call connection properties.
      *
-     * @param source The source property.
-     * @param targets The targets of the call.
-     * @param callbackUri The call back URI.
-     * @param subject The subject. Optional
+     * @param callConnectionId the call connection Id
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> createCall(CallSource source, List<CommunicationIdentifier> targets,
-                                                String callbackUri, String subject) {
-        return createCallWithResponse(source, targets, callbackUri, subject).flatMap(FluxUtil::toMono);
+    public Mono<CallConnectionAsync> getCall(String callConnectionId) {
+        return getCallWithResponse(callConnectionId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param callConnectionId the call connection Id
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallConnectionAsync>> getCallWithResponse(String callConnectionId) {
+        return withContext(context -> getCallWithResponseInternal(callConnectionId, context));
+    }
+
+    Mono<Response<CallConnectionAsync>> getCallWithResponseInternal(String callConnectionId, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            return callConnectionInternal.getCallWithResponseAsync(callConnectionId, context).map(response ->
+                new SimpleResponse<>(response, new CallConnectionAsync(response.getValue(), callConnectionInternal)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -73,22 +92,42 @@ public final class CallingServerAsyncClient {
      * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUri The call back URI.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
      * @param subject The subject. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>> createCallWithResponse(CallSource source,
+    public Mono<CallConnectionAsync> createCall(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
+                                                String callbackUri, String sourceCallerId, String subject) {
+        return createCallWithResponse(source, targets, callbackUri, sourceCallerId, subject).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a call connection request from a source identity to a target identity.
+     *
+     * @param source The source property.
+     * @param targets The targets of the call.
+     * @param callbackUri The call back URI.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param subject The subject. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallConnectionAsync>> createCallWithResponse(CommunicationIdentifier source,
                                                                       List<CommunicationIdentifier> targets,
-                                                                      String callbackUri,
+                                                                      String callbackUri, String sourceCallerId,
                                                                       String subject) {
-        return withContext(context -> createCallWithResponseInternal(source, targets, callbackUri,
+        return withContext(context -> createCallWithResponseInternal(source, targets, callbackUri, sourceCallerId,
             subject, context));
     }
 
-    Mono<Response<CallConnectionAsync>> createCallWithResponseInternal(CallSource source,
+    Mono<Response<CallConnectionAsync>> createCallWithResponseInternal(CommunicationIdentifier source,
                                                                        List<CommunicationIdentifier> targets,
-                                                                       String callbackUri,
+                                                                       String callbackUri, String sourceCallerId,
                                                                        String subject,
                                                                        Context context) {
         try {
@@ -97,15 +136,19 @@ public final class CallingServerAsyncClient {
             for (CommunicationIdentifier target : targets) {
                 targetsModel.add(CommunicationIdentifierConverter.convert(target));
             }
+            CallSourceDto callSourceDto = new CallSourceDto().setIdentifier(CommunicationIdentifierConverter.convert(source));
+            if (sourceCallerId != null) {
+                callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(sourceCallerId));
+            }
 
             CreateCallRequestInternal request = new CreateCallRequestInternal()
-                .setSource(CallSourceConverter.convert(source))
+                .setSource(callSourceDto)
                 .setTargets(targetsModel)
                 .setCallbackUri(callbackUri)
                 .setSubject(subject);
 
             return serverCallingInternal.createCallWithResponseAsync(request, context).map(
-                response -> new SimpleResponse<>(response, new CallConnectionAsync(response.getValue().getCallConnectionId(),
+                response -> new SimpleResponse<>(response, new CallConnectionAsync(response.getValue(),
                     callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -150,7 +193,7 @@ public final class CallingServerAsyncClient {
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
                 .map(response -> new SimpleResponse<>(response,
-                    new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
+                    new CallConnectionAsync(response.getValue(), callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

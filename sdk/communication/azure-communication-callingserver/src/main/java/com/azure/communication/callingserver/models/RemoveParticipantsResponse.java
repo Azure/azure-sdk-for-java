@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantsResponseInternal;
 import com.azure.core.annotation.Immutable;
+
+import java.util.Objects;
 
 /** The RemoveParticipantsResponse model. */
 @Immutable
@@ -31,17 +34,15 @@ public final class RemoveParticipantsResponse {
     /**
      * Get the operationId property: The operation id.
      *
-     * @param  operationId the operationId
-     * @param  status the status
-     * @param  operationContext the operationContext
-     * @param  resultDetails the resultDetails
+     * @param  removeParticipantsResponseInternal The response from the service
      */
-    public RemoveParticipantsResponse(String operationId, CallingOperationStatus status, String operationContext,
-                                      CallingOperationResultDetails resultDetails) {
-        this.operationId = operationId;
-        this.status = status;
-        this.operationContext = operationContext;
-        this.resultDetails = resultDetails;
+    public RemoveParticipantsResponse(RemoveParticipantsResponseInternal removeParticipantsResponseInternal) {
+        Objects.requireNonNull(removeParticipantsResponseInternal, "removeParticipantsResponseInternal must not be null");
+
+        this.operationId = removeParticipantsResponseInternal.getOperationId();
+        this.status = CallingOperationStatus.fromString(removeParticipantsResponseInternal.getStatus().toString());
+        this.operationContext = removeParticipantsResponseInternal.getOperationContext();
+        this.resultDetails = new CallingOperationResultDetails(removeParticipantsResponseInternal.getResultDetails());
     }
 
     /**

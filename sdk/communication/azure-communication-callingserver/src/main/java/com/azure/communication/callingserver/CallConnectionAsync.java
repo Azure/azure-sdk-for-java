@@ -6,24 +6,25 @@ package com.azure.communication.callingserver;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-import com.azure.communication.callingserver.implementation.converters.AddParticipantResponseConverter;
-import com.azure.communication.callingserver.implementation.converters.RemoveParticipantsResponseConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.GetCallResponseConverter;
-import com.azure.communication.callingserver.implementation.converters.TransferCallResponseConverter;
 import com.azure.communication.callingserver.implementation.converters.AcsCallParticipantConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.GetParticipantRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
-import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.models.CreateCallResponseInternal;
+import com.azure.communication.callingserver.implementation.models.AnswerCallResponseInternal;
 import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
+import com.azure.communication.callingserver.implementation.models.GetCallResponseInternal;
+import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
-import com.azure.communication.callingserver.models.GetCallResponse;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
+import com.azure.communication.callingserver.models.CallConnectionState;
+
+
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -35,21 +36,164 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Asynchronous client that supports call connection operations.
  */
 public final class CallConnectionAsync {
-
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
+    private CommunicationIdentifier source;
+    private PhoneNumberIdentifier alternateCallerId;
+    private List<CommunicationIdentifier> targets;
+    private CallConnectionState callConnectionState;
+    private String subject;
+    private String callbackUri;
     private final ClientLogger logger;
 
-    CallConnectionAsync(String callConnectionId, CallConnectionsImpl callConnectionInternal) {
-        this.callConnectionId = callConnectionId;
+    CallConnectionAsync(GetCallResponseInternal getCallResponseInternal, CallConnectionsImpl callConnectionInternal) {
+        this.callConnectionId = getCallResponseInternal.getCallConnectionId();
+        this.source = CommunicationIdentifierConverter.convert(getCallResponseInternal.getSource());
+        this.alternateCallerId = PhoneNumberIdentifierConverter.convert(getCallResponseInternal.getAlternateCallerId());
+        this.targets = null;
+        getCallResponseInternal.getTargets().forEach(target -> this.targets.add(CommunicationIdentifierConverter.convert(target)));
+        this.callConnectionState = CallConnectionState.fromString(getCallResponseInternal.getCallConnectionState().toString());
+        this.subject = getCallResponseInternal.getSubject();
+        this.callbackUri = getCallResponseInternal.getCallbackUri();
         this.callConnectionInternal = callConnectionInternal;
         this.logger = new ClientLogger(CallConnectionAsync.class);
+    }
+
+    CallConnectionAsync(CreateCallResponseInternal callResponseInternal, CallConnectionsImpl callConnectionInternal) {
+        this.callConnectionId = callResponseInternal.getCallConnectionId();
+        this.callConnectionInternal = callConnectionInternal;
+        this.logger = new ClientLogger(CallConnectionAsync.class);
+    }
+
+    CallConnectionAsync(AnswerCallResponseInternal answerCallResponse, CallConnectionsImpl callConnectionInternal) {
+        this.callConnectionId = answerCallResponse.getCallConnectionId();
+        this.callConnectionInternal = callConnectionInternal;
+        this.logger = new ClientLogger(CallConnectionAsync.class);
+    }
+
+    /**
+     * Get the source property.
+     *
+     * @return source value.
+     */
+    public CommunicationIdentifier getSource() {
+        return source;
+    }
+
+    /**
+     * Set the source property.
+     *
+     * @param source The source.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setSource(CommunicationIdentifier source) {
+        this.source = source;
+        return this;
+    }
+
+    /**
+     * Get the targets property.
+     *
+     * @return list of targets
+     */
+    public List<CommunicationIdentifier> getTargets() {
+        return targets;
+    }
+
+    /**
+     * Set the targets property.
+     *
+     * @param targets The targets.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setTargets(List<CommunicationIdentifier> targets) {
+        this.targets = targets;
+        return this;
+    }
+
+    /**
+     * Get the alternateCallerId property.
+     *
+     * @return alternateCallerId value.
+     */
+    public PhoneNumberIdentifier getAlternateCallerId() {
+        return alternateCallerId;
+    }
+
+    /**
+     * Set the alternateCallerId property.
+     *
+     * @param alternateCallerId The alternateCallerId.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setAlternateCallerId(PhoneNumberIdentifier alternateCallerId) {
+        this.alternateCallerId = alternateCallerId;
+        return this;
+    }
+
+    /**
+     * Get the callConnectionState property.
+     *
+     * @return callConnectionState value.
+     */
+    public CallConnectionState getCallConnectionState() {
+        return callConnectionState;
+    }
+
+    /**
+     * Set the callConnectionState property.
+     *
+     * @param callConnectionState The callConnectionState.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setCallConnectionState(CallConnectionState callConnectionState) {
+        this.callConnectionState = callConnectionState;
+        return this;
+    }
+
+    /**
+     * Get the subject property.
+     *
+     * @return subject value.
+     */
+    public String getSubject() {
+        return subject;
+    }
+
+    /**
+     * Set the subject property.
+     *
+     * @param subject The subject.
+     * @return subject value.
+     */
+    public CallConnectionAsync setSubject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property.
+     *
+     * @return callbackUri value.
+     */
+    public String getCallbackUri() {
+        return callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property.
+     *
+     * @param callbackUri The callbackUri.
+     * @return callbackUri value.
+     */
+    public CallConnectionAsync setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
+        return this;
     }
 
     /**
@@ -59,39 +203,6 @@ public final class CallConnectionAsync {
      */
     public String getCallConnectionId() {
         return callConnectionId;
-    }
-
-    /**
-     * Get call connection properties.
-     *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallResponse> getCall() {
-        return getCallWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get call connection properties.
-     *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallResponse>> getCallWithResponse() {
-        return withContext(this::getCallWithResponseInternal);
-    }
-
-    Mono<Response<GetCallResponse>> getCallWithResponseInternal(Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-
-            return callConnectionInternal.getCallWithResponseAsync(callConnectionId, context).map(response ->
-                new SimpleResponse<>(response, GetCallResponseConverter.convert(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**
@@ -210,7 +321,7 @@ public final class CallConnectionAsync {
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
                 .map(response ->
-                    new SimpleResponse<>(response, TransferCallResponseConverter.convert(response.getValue())));
+                    new SimpleResponse<>(response, new TransferCallResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -316,7 +427,7 @@ public final class CallConnectionAsync {
                 .setOperationContext(operationContext);
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context).map(
-                response -> new SimpleResponse<>(response, AddParticipantResponseConverter.convert(response.getValue())));
+                response -> new SimpleResponse<>(response, new AddParticipantsResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -366,7 +477,7 @@ public final class CallConnectionAsync {
                 .setOperationContext(operationContext);
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context).map(
-                response -> new SimpleResponse<>(response, RemoveParticipantsResponseConverter.convert(response.getValue())));
+                response -> new SimpleResponse<>(response, new RemoveParticipantsResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
 import com.azure.core.annotation.Immutable;
+
+import java.util.Objects;
 
 /** The AddParticipantsResponse model. */
 @Immutable
@@ -31,17 +34,15 @@ public final class AddParticipantsResponse {
     /**
      * Constructor of the class
      *
-     * @param operationId The operationId
-     * @param status The status
-     * @param operationContext The operationContext
-     * @param resultDetails The resultDetails
+     * @param addParticipantsResponseInternal The response from the addParticipant service
      */
-    public AddParticipantsResponse(String operationId, CallingOperationStatus status,
-                           String operationContext, CallingOperationResultDetails resultDetails) {
-        this.operationId = operationId;
-        this.status = status;
-        this.operationContext = operationContext;
-        this.resultDetails = resultDetails;
+    public AddParticipantsResponse(AddParticipantsResponseInternal addParticipantsResponseInternal) {
+        Objects.requireNonNull(addParticipantsResponseInternal, "addParticipantsResponseInternal must not be null");
+
+        this.operationId = addParticipantsResponseInternal.getOperationId();
+        this.status = CallingOperationStatus.fromString(addParticipantsResponseInternal.getStatus().toString());
+        this.operationContext = addParticipantsResponseInternal.getOperationContext();
+        this.resultDetails = new CallingOperationResultDetails(addParticipantsResponseInternal.getResultDetails());
     }
 
     /**

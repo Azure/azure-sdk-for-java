@@ -7,7 +7,6 @@ import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
-import com.azure.communication.callingserver.models.GetCallResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -34,29 +33,6 @@ public final class CallConnection {
      */
     public String getCallConnectionId() {
         return callConnectionAsync.getCallConnectionId();
-    }
-
-    /**
-     * Get call connection properties.
-     *
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCallResponse getCall() {
-        return callConnectionAsync.getCall().block();
-    }
-
-    /**
-     * Get call connection properties.
-     *
-     * @param context A {@link Context} representing the request context.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetCallResponse> getCallWithResponse(Context context) {
-        return callConnectionAsync.getCallWithResponseInternal(context).block();
     }
 
     /**
