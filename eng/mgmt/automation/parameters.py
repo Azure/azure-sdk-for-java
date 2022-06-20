@@ -66,10 +66,13 @@ pr:
       - sdk/{0}/pom.xml
       - sdk/{0}/{1}/pom.xml
 
+parameters: []
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: {0}
+    EnableBatchRelease: true
     Artifacts: []
 '''
 
