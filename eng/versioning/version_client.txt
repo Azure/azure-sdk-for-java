@@ -265,7 +265,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.15;1.0.0-beta.16
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.16;1.0.0-beta.17
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.1;1.0.0-beta.2
@@ -277,7 +277,7 @@ com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.1;1.0.0-beta
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-batchai;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0-beta.4;1.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0-beta.4;1.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databox;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0-beta.1;1.0.0-beta.2
@@ -314,7 +314,7 @@ com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-videoanalyzer;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.4;1.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.4;1.0.0-beta.5
