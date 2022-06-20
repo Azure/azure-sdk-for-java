@@ -359,7 +359,7 @@ public class EncryptedBlobClient extends BlobClient {
             throw LOGGER.logExceptionAsError(e);
         }
     }
-    
+
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public BlobProperties downloadToFile(String filePath) {
@@ -416,8 +416,9 @@ public class EncryptedBlobClient extends BlobClient {
             options.setRequestConditions(new BlobRequestConditions());
         }
         options.getRequestConditions().setIfMatch(initialProperties.getETag());
-        // Todo: Only add if encryptionData not null? Or is this fine?
-        context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        }
         return super.downloadToFileWithResponse(options, timeout, context);
     }
 
@@ -444,9 +445,17 @@ public class EncryptedBlobClient extends BlobClient {
             options.setRequestConditions(new BlobRequestConditions());
         }
         options.getRequestConditions().setIfMatch(initialProperties.getETag());
-        // Todo: Only add if encryptionData not null? Or is this fine?
-        context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        }
         return super.openInputStream(options, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public void download(OutputStream stream) {
+        downloadStream(stream);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -462,19 +471,33 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream, range,
+            options, requestConditions, getRangeContentMd5, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
-        BlobProperties initialProperties =
-            this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
-        if (requestConditions == null) {
-            requestConditions = new BlobRequestConditions();
+        if (range != null && (range.getOffset() != 0 || range.getCount() != null)) {
+            BlobProperties initialProperties =
+                this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
+            if (requestConditions == null) {
+                requestConditions = new BlobRequestConditions();
+            }
+            requestConditions.setIfMatch(initialProperties.getETag());
+            if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+                context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+            }
         }
-        requestConditions.setIfMatch(initialProperties.getETag());
-        // Todo: Only add if encryptionData not null? Or is this fine?
-        context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+
         return super.downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5,
             timeout, context);
     }
@@ -490,8 +513,9 @@ public class EncryptedBlobClient extends BlobClient {
             requestConditions = new BlobRequestConditions();
         }
         requestConditions.setIfMatch(initialProperties.getETag());
-        // Todo: Only add if encryptionData not null? Or is this fine?
-        context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        }
         return super.downloadContentWithResponse(options, requestConditions, timeout, context);
     }
 

@@ -112,11 +112,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
-// TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
-// Current thinking is override anything that manages large downloads and do the getProps up front and then pass it through
-// the context for this policy to skip
-// What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
-// Maybe we just respond to customers when they complain and tell them to adjust a bit.
         // If there is no range, there is nothing to expand, so we can continue with the request
         String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
         if (initialRangeHeader == null) {
@@ -167,26 +162,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 }
             });
         } else {
-            // Issue a get properties call to determine how much we will need to expand the range.
-            // Apply the request conditions from the download to the getProperties.
-            BlobRequestConditions rc = extractRequestConditionsFromRequest(requestHeaders);
-            return Mono.just(EncryptionData.getAndValidateEncryptionData(
-                    (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(),
-                    requiresEncryption))
-                .flatMap(encryptionData -> {
-//            return this.blobClient.getPropertiesWithResponse(rc).flatMap(response -> {
-//                EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-//                    (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(),
-//                    requiresEncryption);
+            // If it was a ranged request, we would have already called get properties and set encryption data.
+            // Since there is no encryption data, the request is not encrypted
+            if (context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).isEmpty()) {
+                return next.process();
+            }
+            EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+                (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(), requiresEncryption);
 
-                // Apply the etag from the getProperties to the download to ensure consistency
-//                String etag = response.getValue().getETag();
-//                requestHeaders.set("ETag", etag);
-
-                // If there is no encryption data, then the blob is not encrypted. Pass the request through.
-                if (encryptionData == null) {
-                    return next.process();
-                }
                 EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
                     initialRangeHeader, encryptionData);
                 if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
@@ -222,7 +205,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                         return httpResponse;
                     }
                 });
-            });
         }
     }
 

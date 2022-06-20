@@ -835,6 +835,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
+    @Override
+    public Flux<ByteBuffer> download() {
+        return downloadStream();
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     @Override
     public Flux<ByteBuffer> downloadStream() {
         return downloadStreamWithResponse(null, null, null, false).flatMapMany(BlobDownloadAsyncResponse::getValue);
@@ -848,20 +855,35 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        if (range != null && range.getOffset() != 0 && range.getCount() != null) {
             return this.getPropertiesWithResponse(requestConditions)
                 .flatMap(response -> {
                     BlobRequestConditions requestConditionsFinal = requestConditions == null
                         ? new BlobRequestConditions() : requestConditions;
 
                     requestConditionsFinal.setIfMatch(response.getValue().getETag());
-                    // Todo: Only add if encryptionData not null? Or is this fine?
-                    return super.downloadStreamWithResponse(range, options, requestConditionsFinal, getRangeContentMd5)
-                        .contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                    Mono<BlobDownloadAsyncResponse> result = super.downloadStreamWithResponse(range, options,
+                        requestConditions, getRangeContentMd5);
+                    if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+                        result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
                             response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+                    }
+                    return result;
                 });
+        } else {
+            return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
+        }
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -875,10 +897,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     ? new BlobRequestConditions() : requestConditions;
 
                 requestConditionsFinal.setIfMatch(response.getValue().getETag());
-                // Todo: Only add if encryptionData not null? Or is this fine?
-                return super.downloadContentWithResponse(options, requestConditionsFinal)
-                    .contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                Mono<BlobDownloadContentAsyncResponse> result =
+                    super.downloadContentWithResponse(options, requestConditions);
+                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
                         response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+                }
+                return result;
             });
     }
 
@@ -936,10 +961,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 }
                 options.getRequestConditions().setIfMatch(response.getValue().getETag());
 
-                // Todo: Only add if encryptionData not null? Or is this fine?
-                return super.downloadToFileWithResponse(options)
-                    .contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                Mono<Response<BlobProperties>> result =  super.downloadToFileWithResponse(options);
+                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
                         response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+                }
+                return result;
             });
     }
 
