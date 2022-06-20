@@ -277,7 +277,7 @@ com.azure.resourcemanager:azure-resourcemanager-commerce;1.0.0-beta.1;1.0.0-beta
 com.azure.resourcemanager:azure-resourcemanager-billing;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-batchai;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-signalr;1.0.0-beta.4;1.0.0-beta.5
-com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0-beta.4;1.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-cognitiveservices;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-customerinsights;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databox;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-datamigration;1.0.0-beta.1;1.0.0-beta.2
