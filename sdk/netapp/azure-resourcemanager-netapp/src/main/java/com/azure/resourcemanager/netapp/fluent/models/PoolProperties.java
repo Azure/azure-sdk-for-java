@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Pool properties. */
 @Fluent
 public final class PoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolProperties.class);
-
     /*
      * poolId UUID v4 used to identify the Pool
      */
@@ -221,9 +218,11 @@ public final class PoolProperties {
      */
     public void validate() {
         if (serviceLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PoolProperties.class);
 }

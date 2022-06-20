@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Subvolumes GetMetadata. */
 public final class SubvolumesGetMetadataSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_Metadata.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Subvolumes_Metadata.json
      */
     /**
      * Sample code: Subvolumes_Metadata.

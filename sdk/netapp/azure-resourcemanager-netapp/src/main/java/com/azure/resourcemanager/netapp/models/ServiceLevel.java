@@ -33,7 +33,11 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
         return fromString(name, ServiceLevel.class);
     }
 
-    /** @return known ServiceLevel values. */
+    /**
+     * Gets known ServiceLevel values.
+     *
+     * @return known ServiceLevel values.
+     */
     public static Collection<ServiceLevel> values() {
         return values(ServiceLevel.class);
     }

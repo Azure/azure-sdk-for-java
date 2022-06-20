@@ -27,7 +27,11 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
         return fromString(name, EncryptionType.class);
     }
 
-    /** @return known EncryptionType values. */
+    /**
+     * Gets known EncryptionType values.
+     *
+     * @return known EncryptionType values.
+     */
     public static Collection<EncryptionType> values() {
         return values(EncryptionType.class);
     }

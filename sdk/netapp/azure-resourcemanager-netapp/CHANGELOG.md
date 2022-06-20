@@ -1,14 +1,143 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.9 (2022-06-20)
 
-### Features Added
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2022-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Volume` was modified
 
-### Other Changes
+* `java.lang.String encryptionKeySource()` -> `models.EncryptionKeySource encryptionKeySource()`
+
+#### `models.VolumeGroupDetails$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.VolumeGroupDetails` was modified
+
+* `tags()` was removed
+
+#### `models.Volume$Definition` was modified
+
+* `withEncryptionKeySource(java.lang.String)` was removed
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `java.lang.String encryptionKeySource()` -> `models.EncryptionKeySource encryptionKeySource()`
+* `withEncryptionKeySource(java.lang.String)` was removed
+
+#### `models.VolumeGroup` was modified
+
+* `tags()` was removed
+
+#### `models.NetAppAccount` was modified
+
+* `systemData()` was removed
+
+#### `models.SubscriptionQuotaItem` was modified
+
+* `systemData()` was removed
+
+### Features Added
+
+* `models.VolumeQuotaRulesList` was added
+
+* `models.VolumeQuotaRules` was added
+
+* `models.EncryptionKeySource` was added
+
+* `models.VolumeQuotaRule$Definition` was added
+
+* `models.VolumeQuotaRule$UpdateStages` was added
+
+* `models.ProvisioningState` was added
+
+* `models.VolumeQuotaRule$Update` was added
+
+* `models.VolumeQuotaRule$DefinitionStages` was added
+
+* `models.Replication` was added
+
+* `models.VolumeQuotaRule` was added
+
+* `models.VolumeQuotaRulePatch` was added
+
+* `models.ListReplications` was added
+
+* `models.Type` was added
+
+#### `models.Volume` was modified
+
+* `listReplications(com.azure.core.util.Context)` was added
+* `resetCifsPassword()` was added
+* `resetCifsPassword(com.azure.core.util.Context)` was added
+* `finalizeRelocation(com.azure.core.util.Context)` was added
+* `revertRelocation(com.azure.core.util.Context)` was added
+* `revertRelocation()` was added
+* `relocate(com.azure.core.util.Context)` was added
+* `resourceGroupName()` was added
+* `encrypted()` was added
+* `finalizeRelocation()` was added
+* `zones()` was added
+* `listReplications()` was added
+* `relocate()` was added
+
+#### `NetAppFilesManager` was modified
+
+* `volumeQuotaRules()` was added
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.Backup` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.CapacityPool` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withEncryptionKeySource(models.EncryptionKeySource)` was added
+* `withZones(java.util.List)` was added
+
+#### `models.Volumes` was modified
+
+* `relocate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `revertRelocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `resetCifsPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `relocate(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `finalizeRelocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `finalizeRelocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `revertRelocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listReplications(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `resetCifsPassword(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.SubvolumeInfo` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withEncryptionKeySource(models.EncryptionKeySource)` was added
+* `encrypted()` was added
+
+#### `models.BackupPolicy` was modified
+
+* `resourceGroupName()` was added
+
+#### `NetAppFilesManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SnapshotPolicy` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.8 (2022-02-15)
 
