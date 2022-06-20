@@ -50,3 +50,13 @@ extends:
       - name: azure-resourcemanager-purview
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
+      - name: azure-analytics-purview-account
+        groupId: com.azure
+        safeName: azureanalyticspurviewaccount
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewaccount }}
+
+parameters:
+  - name: release_azureanalyticspurviewaccount
+    displayName: azure-analytics-purview-account
+    type: boolean
+    default: true
