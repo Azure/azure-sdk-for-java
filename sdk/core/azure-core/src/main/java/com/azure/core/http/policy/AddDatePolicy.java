@@ -24,7 +24,7 @@ public class AddDatePolicy implements HttpPipelinePolicy {
             .withZone(ZoneOffset.UTC)
             .withLocale(Locale.US);
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+    private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             OffsetDateTime now = OffsetDateTime.now();
@@ -38,11 +38,11 @@ public class AddDatePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        return INNER.process(context, next);
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        return INNER.processSync(context, next);
     }
 }

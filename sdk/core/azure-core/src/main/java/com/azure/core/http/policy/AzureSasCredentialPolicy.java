@@ -18,7 +18,7 @@ import java.util.Objects;
  * Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request.
  */
 public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);
     private final AzureSasCredential credential;
     private final boolean requireHttps;
 

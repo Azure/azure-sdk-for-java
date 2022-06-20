@@ -43,7 +43,7 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
     /**Key used to override headers in HttpRequest. The Value for this key should be {@link HttpHeaders}.*/
     public static final String AZURE_REQUEST_HTTP_HEADERS_KEY = "azure-http-headers-key";
 
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+    private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).ifPresent(headers -> {
@@ -62,11 +62,11 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        return INNER.process(context, next);
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        return INNER.processSync(context, next);
     }
 }
