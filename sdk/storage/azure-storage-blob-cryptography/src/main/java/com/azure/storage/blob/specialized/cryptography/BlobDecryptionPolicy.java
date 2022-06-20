@@ -208,17 +208,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private BlobRequestConditions extractRequestConditionsFromRequest(HttpHeaders requestHeaders) {
-        return new BlobRequestConditions()
-            .setLeaseId(requestHeaders.getValue("x-ms-lease-id"))
-            .setIfUnmodifiedSince(requestHeaders.getValue("If-Unmodified-Since") == null ? null
-                : new DateTimeRfc1123(requestHeaders.getValue("If-Unmodified-Since")).getDateTime())
-            .setIfNoneMatch(requestHeaders.getValue("If-None-Match"))
-            .setIfMatch(requestHeaders.getValue("If-Match"))
-            .setIfModifiedSince(requestHeaders.getValue("If-Modified-Since") == null ? null
-                : new DateTimeRfc1123(requestHeaders.getValue("If-Modified-Since")).getDateTime());
-    }
-
     /**
      * Decrypted all or part of an encrypted Block-, Page- or AppendBlob.
      *

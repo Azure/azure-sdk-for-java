@@ -76,6 +76,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -866,24 +867,29 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
-        if (range != null && range.getOffset() != 0 && range.getCount() != null) {
-            return this.getPropertiesWithResponse(requestConditions)
-                .flatMap(response -> {
-                    BlobRequestConditions requestConditionsFinal = requestConditions == null
-                        ? new BlobRequestConditions() : requestConditions;
-
-                    requestConditionsFinal.setIfMatch(response.getValue().getETag());
-                    Mono<BlobDownloadAsyncResponse> result = super.downloadStreamWithResponse(range, options,
-                        requestConditions, getRangeContentMd5);
-                    if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-                        result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                            response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
-                    }
-                    return result;
-                });
+        if (EncryptedBlobClient.isRangeRequest(range)) {
+            return populateRequestConditionsAndContext(requestConditions,
+                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5));
         } else {
             return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
         }
+    }
+
+    private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
+        Supplier<Mono<T>> downloadCall) {
+        return this.getPropertiesWithResponse(requestConditions)
+            .flatMap(response -> {
+                BlobRequestConditions requestConditionsFinal = requestConditions == null
+                    ? new BlobRequestConditions() : requestConditions;
+
+                requestConditionsFinal.setIfMatch(response.getValue().getETag());
+                Mono<T> result = downloadCall.get();
+                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                        response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+                }
+                return result;
+            });
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -891,20 +897,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
         DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
-        return this.getPropertiesWithResponse(requestConditions)
-            .flatMap(response -> {
-                BlobRequestConditions requestConditionsFinal = requestConditions == null
-                    ? new BlobRequestConditions() : requestConditions;
-
-                requestConditionsFinal.setIfMatch(response.getValue().getETag());
-                Mono<BlobDownloadContentAsyncResponse> result =
-                    super.downloadContentWithResponse(options, requestConditions);
-                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                        response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
-                }
-                return result;
-            });
+        return populateRequestConditionsAndContext(requestConditions,
+            () -> super.downloadContentWithResponse(options, requestConditions));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -954,20 +948,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Override
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
-        return this.getPropertiesWithResponse(options.getRequestConditions())
-            .flatMap(response -> {
-                if (options.getRequestConditions() == null) {
-                    options.setRequestConditions(new BlobRequestConditions());
-                }
-                options.getRequestConditions().setIfMatch(response.getValue().getETag());
-
-                Mono<Response<BlobProperties>> result =  super.downloadToFileWithResponse(options);
-                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                        response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
-                }
-                return result;
-            });
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        return populateRequestConditionsAndContext(options.getRequestConditions(),
+            () -> super.downloadToFileWithResponse(options));
     }
 
     /**

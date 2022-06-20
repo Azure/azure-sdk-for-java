@@ -410,15 +410,9 @@ public class EncryptedBlobClient extends BlobClient {
     public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
         Context context) {
         context = context == null ? Context.NONE : context;
-        BlobProperties initialProperties =
-            this.getPropertiesWithResponse(options.getRequestConditions(), timeout, context).getValue();
-        if (options.getRequestConditions() == null) {
-            options.setRequestConditions(new BlobRequestConditions());
-        }
-        options.getRequestConditions().setIfMatch(initialProperties.getETag());
-        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
-        }
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        context = populateRequestConditionsAndContext(options.getRequestConditions(), timeout, context);
         return super.downloadToFileWithResponse(options, timeout, context);
     }
 
@@ -439,15 +433,9 @@ public class EncryptedBlobClient extends BlobClient {
 
     protected BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        BlobProperties initialProperties =
-            this.getPropertiesWithResponse(options.getRequestConditions(), null, context).getValue();
-        if (options.getRequestConditions() == null) {
-            options.setRequestConditions(new BlobRequestConditions());
-        }
-        options.getRequestConditions().setIfMatch(initialProperties.getETag());
-        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
-        }
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        context = populateRequestConditionsAndContext(options.getRequestConditions(), null, context);
         return super.openInputStream(options, context);
     }
 
@@ -485,21 +473,32 @@ public class EncryptedBlobClient extends BlobClient {
     public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
-        context = context == null ? Context.NONE : context;
-        if (range != null && (range.getOffset() != 0 || range.getCount() != null)) {
-            BlobProperties initialProperties =
-                this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
-            if (requestConditions == null) {
-                requestConditions = new BlobRequestConditions();
-            }
-            requestConditions.setIfMatch(initialProperties.getETag());
-            if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-                context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
-            }
+
+        if (isRangeRequest(range)) {
+            context = context == null ? Context.NONE : context;
+            requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+            context = populateRequestConditionsAndContext(requestConditions, timeout, context);
         }
 
         return super.downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5,
             timeout, context);
+    }
+
+    static boolean isRangeRequest(BlobRange range) {
+        return range != null && (range.getOffset() != 0 || range.getCount() != null);
+    }
+
+    private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        BlobProperties initialProperties =
+            this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
+
+        requestConditions.setIfMatch(initialProperties.getETag());
+        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+        }
+
+        return context;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -507,15 +506,8 @@ public class EncryptedBlobClient extends BlobClient {
     public BlobDownloadContentResponse downloadContentWithResponse(
         DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
-        BlobProperties initialProperties =
-            this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
-        if (requestConditions == null) {
-            requestConditions = new BlobRequestConditions();
-        }
-        requestConditions.setIfMatch(initialProperties.getETag());
-        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
-        }
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = populateRequestConditionsAndContext(requestConditions, timeout, context);
         return super.downloadContentWithResponse(options, requestConditions, timeout, context);
     }
 
