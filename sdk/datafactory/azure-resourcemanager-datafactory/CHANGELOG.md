@@ -1,16 +1,22 @@
 # Release History
 
-## 1.0.0-beta.16 (2022-06-08)
+## 1.0.0-beta.16 (2022-06-20)
 
 - Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
+
+* `models.SapOdpLinkedService` was added
 
 * `models.PurviewConfiguration` was added
 
 * `models.GlobalParameterResource` was added
 
 * `models.GlobalParameters` was added
+
+* `models.SapOdpResourceDataset` was added
+
+* `models.SapOdpSource` was added
 
 * `models.GlobalParameterResource$Update` was added
 
@@ -66,16 +72,16 @@
 
 #### `models.RestServiceLinkedService` was modified
 
-* `tokenEndpoint()` was added
-* `withClientId(java.lang.Object)` was added
-* `withClientSecret(models.SecretBase)` was added
-* `withResource(java.lang.Object)` was added
 * `withTokenEndpoint(java.lang.Object)` was added
-* `withScope(java.lang.Object)` was added
-* `clientId()` was added
-* `clientSecret()` was added
 * `resource()` was added
 * `scope()` was added
+* `tokenEndpoint()` was added
+* `withClientId(java.lang.Object)` was added
+* `withScope(java.lang.Object)` was added
+* `clientSecret()` was added
+* `clientId()` was added
+* `withClientSecret(models.SecretBase)` was added
+* `withResource(java.lang.Object)` was added
 
 #### `models.IntegrationRuntimeResource` was modified
 
