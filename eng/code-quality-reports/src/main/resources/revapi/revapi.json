@@ -264,7 +264,7 @@
         {
           "regex": true,
           "code": "java.class.removed",
-          "new": "class class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.**",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.OAuth2ClientRepositoryConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.ResourceServerWithOBOOAuth2AuthorizedClientManagerConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.WebApplicationWithoutResourceServerOAuth2AuthorizedClientManagerConfiguration",
           "justification": "To support JWT Client Authentication."
         },
         {
