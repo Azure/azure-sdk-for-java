@@ -41,8 +41,8 @@ public final class AzureSpringIdentifier {
     public static final String VERSION = getVersion();
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
     public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
-    public static final String AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH = "az-sp-eh-kafka-oauth/" + VERSION;
-    public static final String AZURE_SPRING_EVENT_HUBS_KAFKA = "az-sp-eh-kafka/" + VERSION;
+    //Kafka supports set client software name and version individually.
+    public static final String AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH = "az-sp-eh-kafka-oauth/";
     public static final String AZURE_SPRING_KEY_VAULT_SECRETS = "az-sp-kv/" + VERSION;
     public static final String AZURE_SPRING_KEY_VAULT_CERTIFICATES = "az-sp-kv-ct/" + VERSION;
 
