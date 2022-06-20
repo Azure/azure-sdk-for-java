@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class AzureEventHubsKafkaOAuth2SpringCloudStreamAutoConfigurationTests extends AbstractAzureEventHubsKafkaOAuth2AutoConfigurationTests {
+public class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
     @Test
     void shouldNotConfigureBPPWithoutKafkaMessageChannelBinder() {

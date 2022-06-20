@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class AzureEventHubsKafkaOAuth2SpringBootAutoConfigurationTests extends AbstractAzureEventHubsKafkaOAuth2AutoConfigurationTests {
+class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
     @Override
     @Test

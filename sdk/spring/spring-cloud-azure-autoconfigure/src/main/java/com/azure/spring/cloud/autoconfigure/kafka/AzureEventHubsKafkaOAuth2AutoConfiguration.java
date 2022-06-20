@@ -6,6 +6,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import org.apache.kafka.common.message.ApiVersionsRequestData;
 import org.apache.kafka.common.requests.ApiVersionsRequest;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,11 +95,13 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
     }
 
     private void configureKafkaUserAgent() {
-        if (ReflectionUtils.findMethod(ApiVersionsRequest.class, "data") != null) {
+        Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
+        if (dataMethod != null) {
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-            apiVersionsRequest.data().setClientSoftwareName(apiVersionsRequest.data().clientSoftwareName()
+            ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
+            apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
                     + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
-            apiVersionsRequest.data().setClientSoftwareVersion(VERSION);
+            apiVersionsRequestData.setClientSoftwareVersion(VERSION);
         }
     }
 
