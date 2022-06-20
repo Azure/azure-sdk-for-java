@@ -4,33 +4,33 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
-import com.azure.communication.jobrouter.models.CancelJobRequest;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.ClassificationPolicyCollection;
-import com.azure.communication.jobrouter.models.CloseJobRequest;
-import com.azure.communication.jobrouter.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.models.CompleteJobRequest;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.DistributionPolicyCollection;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicyCollection;
-import com.azure.communication.jobrouter.models.JobCollection;
-import com.azure.communication.jobrouter.models.JobPositionDetails;
-import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.models.JobStateSelector;
-import com.azure.communication.jobrouter.models.PagedClassificationPolicy;
-import com.azure.communication.jobrouter.models.PagedDistributionPolicy;
-import com.azure.communication.jobrouter.models.PagedExceptionPolicy;
-import com.azure.communication.jobrouter.models.PagedJob;
-import com.azure.communication.jobrouter.models.PagedQueue;
-import com.azure.communication.jobrouter.models.PagedWorker;
-import com.azure.communication.jobrouter.models.QueueCollection;
-import com.azure.communication.jobrouter.models.QueueStatistics;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.WorkerCollection;
-import com.azure.communication.jobrouter.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResponse;
+import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyCollection;
+import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
+import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyCollection;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollection;
+import com.azure.communication.jobrouter.implementation.models.JobCollection;
+import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
+import com.azure.communication.jobrouter.implementation.models.JobQueue;
+import com.azure.communication.jobrouter.implementation.models.JobStateSelector;
+import com.azure.communication.jobrouter.implementation.models.PagedClassificationPolicy;
+import com.azure.communication.jobrouter.implementation.models.PagedDistributionPolicy;
+import com.azure.communication.jobrouter.implementation.models.PagedExceptionPolicy;
+import com.azure.communication.jobrouter.implementation.models.PagedJob;
+import com.azure.communication.jobrouter.implementation.models.PagedQueue;
+import com.azure.communication.jobrouter.implementation.models.PagedWorker;
+import com.azure.communication.jobrouter.implementation.models.QueueCollection;
+import com.azure.communication.jobrouter.implementation.models.QueueStatistics;
+import com.azure.communication.jobrouter.implementation.models.RouterJob;
+import com.azure.communication.jobrouter.implementation.models.RouterWorker;
+import com.azure.communication.jobrouter.implementation.models.WorkerCollection;
+import com.azure.communication.jobrouter.implementation.models.WorkerStateSelector;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -486,7 +486,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
@@ -508,7 +509,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
@@ -527,19 +529,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(String id, ClassificationPolicy patch) {
-        return upsertClassificationPolicyWithResponseAsync(id, patch)
-                .flatMap(
-                        (Response<ClassificationPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertClassificationPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -552,20 +546,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(
             String id, ClassificationPolicy patch, Context context) {
         return upsertClassificationPolicyWithResponseAsync(id, patch, context)
-                .flatMap(
-                        (Response<ClassificationPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -594,7 +581,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> upsertClassificationPolicyWithResponse(
@@ -609,7 +596,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponseAsync(String id) {
@@ -628,7 +616,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponseAsync(String id, Context context) {
@@ -644,19 +633,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> getClassificationPolicyAsync(String id) {
-        return getClassificationPolicyWithResponseAsync(id)
-                .flatMap(
-                        (Response<ClassificationPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getClassificationPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -667,19 +648,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy> getClassificationPolicyAsync(String id, Context context) {
-        return getClassificationPolicyWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<ClassificationPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getClassificationPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -704,7 +677,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
+     * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> getClassificationPolicyWithResponse(String id, Context context) {
@@ -718,7 +691,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String id) {
@@ -737,7 +710,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String id, Context context) {
@@ -753,11 +726,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteClassificationPolicyAsync(String id) {
-        return deleteClassificationPolicyWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteClassificationPolicyWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -768,11 +741,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteClassificationPolicyAsync(String id, Context context) {
-        return deleteClassificationPolicyWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteClassificationPolicyWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -796,7 +769,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationPolicyWithResponse(String id, Context context) {
@@ -810,7 +783,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedClassificationPolicy>> listClassificationPoliciesSinglePageAsync(
@@ -843,7 +817,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedClassificationPolicy>> listClassificationPoliciesSinglePageAsync(
@@ -869,7 +844,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPoliciesAsync(Integer maxpagesize) {
@@ -883,7 +858,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPoliciesAsync() {
@@ -901,7 +876,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedClassificationPolicy> listClassificationPoliciesAsync(Integer maxpagesize, Context context) {
@@ -917,7 +892,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedClassificationPolicy> listClassificationPolicies(Integer maxpagesize) {
@@ -929,7 +904,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedClassificationPolicy> listClassificationPolicies() {
@@ -945,7 +920,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedClassificationPolicy> listClassificationPolicies(Integer maxpagesize, Context context) {
@@ -961,7 +936,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
@@ -983,7 +959,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
@@ -1002,19 +979,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> upsertDistributionPolicyAsync(String id, DistributionPolicy patch) {
-        return upsertDistributionPolicyWithResponseAsync(id, patch)
-                .flatMap(
-                        (Response<DistributionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertDistributionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1027,20 +996,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> upsertDistributionPolicyAsync(
             String id, DistributionPolicy patch, Context context) {
         return upsertDistributionPolicyWithResponseAsync(id, patch, context)
-                .flatMap(
-                        (Response<DistributionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1069,7 +1031,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(
@@ -1084,7 +1046,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponseAsync(String id) {
@@ -1103,7 +1066,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponseAsync(String id, Context context) {
@@ -1119,19 +1083,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> getDistributionPolicyAsync(String id) {
-        return getDistributionPolicyWithResponseAsync(id)
-                .flatMap(
-                        (Response<DistributionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDistributionPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1142,19 +1098,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributionPolicy> getDistributionPolicyAsync(String id, Context context) {
-        return getDistributionPolicyWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<DistributionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDistributionPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1179,7 +1127,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
+     * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> getDistributionPolicyWithResponse(String id, Context context) {
@@ -1193,7 +1141,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String id) {
@@ -1212,7 +1160,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String id, Context context) {
@@ -1228,11 +1176,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDistributionPolicyAsync(String id) {
-        return deleteDistributionPolicyWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDistributionPolicyWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1243,11 +1191,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDistributionPolicyAsync(String id, Context context) {
-        return deleteDistributionPolicyWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteDistributionPolicyWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1271,7 +1219,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDistributionPolicyWithResponse(String id, Context context) {
@@ -1285,7 +1233,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedDistributionPolicy>> listDistributionPoliciesSinglePageAsync(Integer maxpagesize) {
@@ -1317,7 +1266,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedDistributionPolicy>> listDistributionPoliciesSinglePageAsync(
@@ -1343,7 +1293,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPoliciesAsync(Integer maxpagesize) {
@@ -1357,7 +1307,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPoliciesAsync() {
@@ -1375,7 +1325,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedDistributionPolicy> listDistributionPoliciesAsync(Integer maxpagesize, Context context) {
@@ -1391,7 +1341,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedDistributionPolicy> listDistributionPolicies(Integer maxpagesize) {
@@ -1403,7 +1353,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedDistributionPolicy> listDistributionPolicies() {
@@ -1419,7 +1369,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedDistributionPolicy> listDistributionPolicies(Integer maxpagesize, Context context) {
@@ -1435,7 +1385,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(String id, ExceptionPolicy patch) {
@@ -1456,7 +1407,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(
@@ -1475,19 +1427,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch) {
-        return upsertExceptionPolicyWithResponseAsync(id, patch)
-                .flatMap(
-                        (Response<ExceptionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertExceptionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1500,19 +1445,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch, Context context) {
         return upsertExceptionPolicyWithResponseAsync(id, patch, context)
-                .flatMap(
-                        (Response<ExceptionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1541,7 +1480,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> upsertExceptionPolicyWithResponse(
@@ -1556,7 +1495,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponseAsync(String id) {
@@ -1575,7 +1515,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponseAsync(String id, Context context) {
@@ -1590,19 +1531,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> getExceptionPolicyAsync(String id) {
-        return getExceptionPolicyWithResponseAsync(id)
-                .flatMap(
-                        (Response<ExceptionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getExceptionPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1613,19 +1547,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExceptionPolicy> getExceptionPolicyAsync(String id, Context context) {
-        return getExceptionPolicyWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<ExceptionPolicy> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getExceptionPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1650,7 +1577,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
+     * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> getExceptionPolicyWithResponse(String id, Context context) {
@@ -1664,7 +1591,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String id) {
@@ -1683,7 +1610,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String id, Context context) {
@@ -1699,11 +1626,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteExceptionPolicyAsync(String id) {
-        return deleteExceptionPolicyWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteExceptionPolicyWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1714,11 +1641,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteExceptionPolicyAsync(String id, Context context) {
-        return deleteExceptionPolicyWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteExceptionPolicyWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1742,7 +1669,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteExceptionPolicyWithResponse(String id, Context context) {
@@ -1756,7 +1683,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedExceptionPolicy>> listExceptionPoliciesSinglePageAsync(Integer maxpagesize) {
@@ -1788,7 +1716,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedExceptionPolicy>> listExceptionPoliciesSinglePageAsync(
@@ -1814,7 +1743,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPoliciesAsync(Integer maxpagesize) {
@@ -1828,7 +1757,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPoliciesAsync() {
@@ -1846,7 +1775,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedExceptionPolicy> listExceptionPoliciesAsync(Integer maxpagesize, Context context) {
@@ -1862,7 +1791,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedExceptionPolicy> listExceptionPolicies(Integer maxpagesize) {
@@ -1874,7 +1803,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedExceptionPolicy> listExceptionPolicies() {
@@ -1890,7 +1819,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedExceptionPolicy> listExceptionPolicies(Integer maxpagesize, Context context) {
@@ -1906,7 +1835,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch) {
@@ -1927,7 +1856,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch, Context context) {
@@ -1944,19 +1873,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch) {
-        return upsertJobWithResponseAsync(id, patch)
-                .flatMap(
-                        (Response<RouterJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertJobWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1969,19 +1890,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch, Context context) {
-        return upsertJobWithResponseAsync(id, patch, context)
-                .flatMap(
-                        (Response<RouterJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertJobWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2010,7 +1923,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> upsertJobWithResponse(String id, RouterJob patch, Context context) {
@@ -2024,7 +1937,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> getJobWithResponseAsync(String id) {
@@ -2041,7 +1954,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> getJobWithResponseAsync(String id, Context context) {
@@ -2056,19 +1969,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> getJobAsync(String id) {
-        return getJobWithResponseAsync(id)
-                .flatMap(
-                        (Response<RouterJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getJobWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2079,19 +1984,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> getJobAsync(String id, Context context) {
-        return getJobWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<RouterJob> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getJobWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2116,7 +2013,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a unit of work to be routed.
+     * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterJob> getJobWithResponse(String id, Context context) {
@@ -2130,7 +2027,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String id) {
@@ -2148,7 +2045,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String id, Context context) {
@@ -2163,11 +2060,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJobAsync(String id) {
-        return deleteJobWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteJobWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2178,11 +2075,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteJobAsync(String id, Context context) {
-        return deleteJobWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteJobWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2206,7 +2103,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String id, Context context) {
@@ -2221,7 +2118,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> reclassifyJobActionWithResponseAsync(String id, Object reclassifyJobRequest) {
@@ -2246,7 +2143,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> reclassifyJobActionWithResponseAsync(
@@ -2264,19 +2161,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> reclassifyJobActionAsync(String id, Object reclassifyJobRequest) {
         return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2286,20 +2176,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> reclassifyJobActionAsync(String id) {
         final Object reclassifyJobRequest = null;
         return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2311,19 +2194,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> reclassifyJobActionAsync(String id, Object reclassifyJobRequest, Context context) {
         return reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2365,7 +2241,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> reclassifyJobActionWithResponse(String id, Object reclassifyJobRequest, Context context) {
@@ -2382,7 +2258,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> cancelJobActionWithResponseAsync(String id, String note, String dispositionCode) {
@@ -2416,7 +2292,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> cancelJobActionWithResponseAsync(
@@ -2443,19 +2319,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> cancelJobActionAsync(String id, String note, String dispositionCode) {
         return cancelJobActionWithResponseAsync(id, note, dispositionCode)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2465,21 +2334,14 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> cancelJobActionAsync(String id) {
         final String note = null;
         final String dispositionCode = null;
         return cancelJobActionWithResponseAsync(id, note, dispositionCode)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2493,19 +2355,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> cancelJobActionAsync(String id, String note, String dispositionCode, Context context) {
         return cancelJobActionWithResponseAsync(id, note, dispositionCode, context)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2552,7 +2407,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> cancelJobActionWithResponse(
@@ -2569,7 +2424,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> completeJobActionWithResponseAsync(String id, String assignmentId, String note) {
@@ -2598,7 +2453,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> completeJobActionWithResponseAsync(
@@ -2620,19 +2475,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> completeJobActionAsync(String id, String assignmentId, String note) {
         return completeJobActionWithResponseAsync(id, assignmentId, note)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2643,20 +2491,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> completeJobActionAsync(String id, String assignmentId) {
         final String note = null;
         return completeJobActionWithResponseAsync(id, assignmentId, note)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2669,19 +2510,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> completeJobActionAsync(String id, String assignmentId, String note, Context context) {
         return completeJobActionWithResponseAsync(id, assignmentId, note, context)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2726,7 +2560,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> completeJobActionWithResponse(
@@ -2747,7 +2581,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> closeJobActionWithResponseAsync(
@@ -2783,7 +2617,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> closeJobActionWithResponseAsync(
@@ -2816,20 +2650,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> closeJobActionAsync(
             String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
         return closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2840,7 +2667,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> closeJobActionAsync(String id, String assignmentId) {
@@ -2848,14 +2675,7 @@ public final class JobRoutersImpl {
         final OffsetDateTime closeTime = null;
         final String note = null;
         return closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2872,7 +2692,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> closeJobActionAsync(
@@ -2883,14 +2703,7 @@ public final class JobRoutersImpl {
             String note,
             Context context) {
         return closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2946,7 +2759,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> closeJobActionWithResponse(
@@ -2969,7 +2782,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedJob>> listJobsSinglePageAsync(
@@ -3008,7 +2821,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedJob>> listJobsSinglePageAsync(
@@ -3044,7 +2857,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobsAsync(
@@ -3059,7 +2872,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobsAsync() {
@@ -3083,7 +2896,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedJob> listJobsAsync(
@@ -3103,7 +2916,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedJob> listJobs(
@@ -3116,7 +2929,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedJob> listJobs() {
@@ -3138,7 +2951,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedJob> listJobs(
@@ -3153,7 +2966,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
+     * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponseAsync(String id) {
@@ -3172,7 +2985,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
+     * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponseAsync(String id, Context context) {
@@ -3187,19 +3000,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
+     * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobPositionDetails> getInQueuePositionAsync(String id) {
-        return getInQueuePositionWithResponseAsync(id)
-                .flatMap(
-                        (Response<JobPositionDetails> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getInQueuePositionWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3210,19 +3015,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
+     * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobPositionDetails> getInQueuePositionAsync(String id, Context context) {
-        return getInQueuePositionWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<JobPositionDetails> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getInQueuePositionWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3247,7 +3044,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job's position details.
+     * @return a job's position details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
@@ -3262,7 +3059,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponseAsync(String workerId, String offerId) {
@@ -3287,7 +3085,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponseAsync(
@@ -3305,19 +3104,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcceptJobOfferResponse> acceptJobActionAsync(String workerId, String offerId) {
-        return acceptJobActionWithResponseAsync(workerId, offerId)
-                .flatMap(
-                        (Response<AcceptJobOfferResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return acceptJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3329,19 +3121,13 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcceptJobOfferResponse> acceptJobActionAsync(String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context)
-                .flatMap(
-                        (Response<AcceptJobOfferResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3368,7 +3154,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing Id's for the worker, job, and assignment from an accepted offer.
+     * @return response containing Id's for the worker, job, and assignment from an accepted offer along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcceptJobOfferResponse> acceptJobActionWithResponse(
@@ -3384,7 +3171,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> declineJobActionWithResponseAsync(String workerId, String offerId) {
@@ -3409,7 +3196,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> declineJobActionWithResponseAsync(String workerId, String offerId, Context context) {
@@ -3426,19 +3213,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> declineJobActionAsync(String workerId, String offerId) {
-        return declineJobActionWithResponseAsync(workerId, offerId)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return declineJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3450,19 +3229,12 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> declineJobActionAsync(String workerId, String offerId, Context context) {
         return declineJobActionWithResponseAsync(workerId, offerId, context)
-                .flatMap(
-                        (Response<Object> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3489,7 +3261,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> declineJobActionWithResponse(String workerId, String offerId, Context context) {
@@ -3504,7 +3276,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> upsertQueueWithResponseAsync(String id, JobQueue patch) {
@@ -3524,7 +3297,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> upsertQueueWithResponseAsync(String id, JobQueue patch, Context context) {
@@ -3540,19 +3314,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobQueue> upsertQueueAsync(String id, JobQueue patch) {
-        return upsertQueueWithResponseAsync(id, patch)
-                .flatMap(
-                        (Response<JobQueue> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertQueueWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3564,19 +3330,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobQueue> upsertQueueAsync(String id, JobQueue patch, Context context) {
-        return upsertQueueWithResponseAsync(id, patch, context)
-                .flatMap(
-                        (Response<JobQueue> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertQueueWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3603,7 +3361,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobQueue> upsertQueueWithResponse(String id, JobQueue patch, Context context) {
@@ -3617,7 +3375,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> getQueueWithResponseAsync(String id) {
@@ -3635,7 +3394,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobQueue>> getQueueWithResponseAsync(String id, Context context) {
@@ -3650,19 +3410,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobQueue> getQueueAsync(String id) {
-        return getQueueWithResponseAsync(id)
-                .flatMap(
-                        (Response<JobQueue> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getQueueWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3673,19 +3425,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobQueue> getQueueAsync(String id, Context context) {
-        return getQueueWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<JobQueue> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getQueueWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3710,7 +3454,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
+     * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobQueue> getQueueWithResponse(String id, Context context) {
@@ -3724,7 +3468,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponseAsync(String id) {
@@ -3743,7 +3487,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponseAsync(String id, Context context) {
@@ -3758,11 +3502,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueueAsync(String id) {
-        return deleteQueueWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteQueueWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3773,11 +3517,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueueAsync(String id, Context context) {
-        return deleteQueueWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteQueueWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3801,7 +3545,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String id, Context context) {
@@ -3815,7 +3559,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedQueue>> listQueuesSinglePageAsync(Integer maxpagesize) {
@@ -3847,7 +3591,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedQueue>> listQueuesSinglePageAsync(Integer maxpagesize, Context context) {
@@ -3871,7 +3615,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueuesAsync(Integer maxpagesize) {
@@ -3884,7 +3628,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueuesAsync() {
@@ -3901,7 +3645,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedQueue> listQueuesAsync(Integer maxpagesize, Context context) {
@@ -3917,7 +3661,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedQueue> listQueues(Integer maxpagesize) {
@@ -3929,7 +3673,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedQueue> listQueues() {
@@ -3945,7 +3689,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedQueue> listQueues(Integer maxpagesize, Context context) {
@@ -3959,7 +3703,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
+     * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponseAsync(String id) {
@@ -3978,7 +3722,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
+     * @return statistics for the queue along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueStatistics>> getQueueStatisticsWithResponseAsync(String id, Context context) {
@@ -3993,19 +3737,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
+     * @return statistics for the queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueStatistics> getQueueStatisticsAsync(String id) {
-        return getQueueStatisticsWithResponseAsync(id)
-                .flatMap(
-                        (Response<QueueStatistics> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getQueueStatisticsWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4016,19 +3752,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
+     * @return statistics for the queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueStatistics> getQueueStatisticsAsync(String id, Context context) {
-        return getQueueStatisticsWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<QueueStatistics> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getQueueStatisticsWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4053,7 +3781,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the queue.
+     * @return statistics for the queue along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueStatistics> getQueueStatisticsWithResponse(String id, Context context) {
@@ -4068,7 +3796,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(String workerId, RouterWorker patch) {
@@ -4093,7 +3821,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(
@@ -4111,19 +3839,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch) {
-        return upsertWorkerWithResponseAsync(workerId, patch)
-                .flatMap(
-                        (Response<RouterWorker> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertWorkerWithResponseAsync(workerId, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4135,19 +3855,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch, Context context) {
-        return upsertWorkerWithResponseAsync(workerId, patch, context)
-                .flatMap(
-                        (Response<RouterWorker> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return upsertWorkerWithResponseAsync(workerId, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4174,7 +3886,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> upsertWorkerWithResponse(String workerId, RouterWorker patch, Context context) {
@@ -4188,7 +3900,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId) {
@@ -4207,7 +3919,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId, Context context) {
@@ -4222,19 +3934,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> getWorkerAsync(String workerId) {
-        return getWorkerWithResponseAsync(workerId)
-                .flatMap(
-                        (Response<RouterWorker> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWorkerWithResponseAsync(workerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4245,19 +3949,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> getWorkerAsync(String workerId, Context context) {
-        return getWorkerWithResponseAsync(workerId, context)
-                .flatMap(
-                        (Response<RouterWorker> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWorkerWithResponseAsync(workerId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4282,7 +3978,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity for jobs to be routed to.
+     * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterWorker> getWorkerWithResponse(String workerId, Context context) {
@@ -4296,7 +3992,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId) {
@@ -4315,7 +4011,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWorkerWithResponseAsync(String workerId, Context context) {
@@ -4330,11 +4026,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteWorkerAsync(String workerId) {
-        return deleteWorkerWithResponseAsync(workerId).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWorkerWithResponseAsync(workerId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4345,11 +4041,11 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteWorkerAsync(String workerId, Context context) {
-        return deleteWorkerWithResponseAsync(workerId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWorkerWithResponseAsync(workerId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4373,7 +4069,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWorkerWithResponse(String workerId, Context context) {
@@ -4393,7 +4089,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedWorker>> listWorkersSinglePageAsync(
@@ -4436,7 +4132,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedWorker>> listWorkersSinglePageAsync(
@@ -4481,7 +4177,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkersAsync(
@@ -4496,7 +4192,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkersAsync() {
@@ -4524,7 +4220,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PagedWorker> listWorkersAsync(
@@ -4552,7 +4248,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedWorker> listWorkers(
@@ -4565,7 +4261,7 @@ public final class JobRoutersImpl {
      *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedWorker> listWorkers() {
@@ -4591,7 +4287,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PagedWorker> listWorkers(
@@ -4611,7 +4307,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedClassificationPolicy>> listClassificationPoliciesNextSinglePageAsync(
@@ -4640,7 +4337,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of classification policies.
+     * @return a paged collection of classification policies along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedClassificationPolicy>> listClassificationPoliciesNextSinglePageAsync(
@@ -4665,7 +4363,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedDistributionPolicy>> listDistributionPoliciesNextSinglePageAsync(String nextLink) {
@@ -4693,7 +4392,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of distribution policies.
+     * @return a paged collection of distribution policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedDistributionPolicy>> listDistributionPoliciesNextSinglePageAsync(
@@ -4718,7 +4418,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedExceptionPolicy>> listExceptionPoliciesNextSinglePageAsync(String nextLink) {
@@ -4745,7 +4446,8 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of exception policies.
+     * @return a paged collection of exception policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedExceptionPolicy>> listExceptionPoliciesNextSinglePageAsync(
@@ -4770,7 +4472,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedJob>> listJobsNextSinglePageAsync(String nextLink) {
@@ -4796,7 +4498,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of jobs.
+     * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedJob>> listJobsNextSinglePageAsync(String nextLink, Context context) {
@@ -4820,7 +4522,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedQueue>> listQueuesNextSinglePageAsync(String nextLink) {
@@ -4846,7 +4548,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of queues.
+     * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedQueue>> listQueuesNextSinglePageAsync(String nextLink, Context context) {
@@ -4870,7 +4572,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedWorker>> listWorkersNextSinglePageAsync(String nextLink) {
@@ -4896,7 +4598,7 @@ public final class JobRoutersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of workers.
+     * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PagedWorker>> listWorkersNextSinglePageAsync(String nextLink, Context context) {

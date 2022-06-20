@@ -37,8 +37,10 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.jobrouter
 generate-client-as-impl: true
+custom-types: CreateClassificationPolicyOptions
 custom-types-subpackage: models
-models-subpackage: models
+models-subpackage: implementation.models
+customization-class: src/main/java/JobRouterCustomization.java
 generate-client-interfaces: false
 generate-sync-async-clients: false
 sync-methods: all
