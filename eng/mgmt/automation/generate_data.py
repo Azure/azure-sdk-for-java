@@ -348,6 +348,7 @@ def update_readme(sdk_readme_abspath: str, spec_readme: str = None):
 
             # write updated yaml
             updated_yaml_str = yaml.dump(yaml_json,
+                                         width=sys.maxsize,
                                          sort_keys=False,
                                          Dumper=ListIndentDumper)
 

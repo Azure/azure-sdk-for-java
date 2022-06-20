@@ -1,3 +1,4 @@
+import math
 import os
 import sys
 import yaml
@@ -150,6 +151,7 @@ def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: s
                 })
 
             ci_yml_str = yaml.dump(ci_yml,
+                                   width=sys.maxsize,
                                    sort_keys=False,
                                    Dumper=ListIndentDumper)
             ci_yml_str = re.sub('(\n\S)', r'\n\1', ci_yml_str)
