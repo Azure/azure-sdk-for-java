@@ -265,7 +265,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.15;1.0.0-beta.16
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.16;1.0.0-beta.17
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.1;1.0.0-beta.2
