@@ -250,6 +250,48 @@
           "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
+          "regex": true,
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "regex": true,
+          "code": "java.annotation.(attributeValueChanged|added)",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "new": "class class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.**",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "regex": true,
+          "code": "java.method.returnTypeChanged",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "regex": true,
+          "code": "java.method.returnTypeChanged",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "regex": true,
+          "code": "java.method.parameterTypeChanged",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "regex": true,
+          "code": "java.method.parameterTypeChanged",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
           "justification": "Shouldn't have been a public API and was recently released."
