@@ -138,17 +138,21 @@ def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: s
                 'releaseInBatch': release_in_batch_parameter_ref
             })
 
-            if 'parameters' in ci_yml and type(ci_yml.get('parameters')) == list:
-                # True for data-plane, False for management-plane
-                release_in_batch_default = '-resourcemanager-' not in module
+            if 'parameters' not in ci_yml:
+                ci_yml['parameters'] = []
 
-                parameters: list = ci_yml['parameters']
-                parameters.append({
-                    'name': release_parameter_name,
-                    'displayName': module,
-                    'type': 'boolean',
-                    'default': release_in_batch_default
-                })
+            if not (type(ci_yml.get('parameters')) == list):
+                logging.error('[CI][Skip] Unexpected ci.yml format')
+
+            # True for data-plane, False for management-plane
+            release_in_batch_default = '-resourcemanager-' not in module
+            parameters: list = ci_yml['parameters']
+            parameters.append({
+                'name': release_parameter_name,
+                'displayName': module,
+                'type': 'boolean',
+                'default': release_in_batch_default
+            })
 
             ci_yml_str = yaml.dump(ci_yml,
                                    width=sys.maxsize,
