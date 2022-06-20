@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -31,11 +29,6 @@ public final class TestKeys {
             throw new IllegalStateException(ex);
         }
     }
-    
-    public static final String DEFAULT_ENCODED_SECRET_KEY = "bCzY/M48bbkwBEWjmNSIEPfwApcvXOnkCxORBEbPr+4=";
-
-    public static final SecretKey DEFAULT_SECRET_KEY = new SecretKeySpec(
-            Base64.getDecoder().decode(DEFAULT_ENCODED_SECRET_KEY), "AES");
 
     // @formatter:off
     public static final String DEFAULT_RSA_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3FlqJr5TRskIQIgdE3Dd"
