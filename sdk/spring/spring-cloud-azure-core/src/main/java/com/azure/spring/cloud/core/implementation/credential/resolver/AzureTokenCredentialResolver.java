@@ -46,11 +46,14 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
         final String tenantId = azureProperties.getProfile().getTenantId();
         final String clientId = properties.getClientId();
         final boolean isClientIdSet = StringUtils.hasText(clientId);
+        final String authorityHost = azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
+
         if (StringUtils.hasText(tenantId)) {
 
             if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                 return new ClientSecretCredentialBuilderFactory(azureProperties)
                     .build()
+                    .authorityHost(authorityHost)
                     .clientId(clientId)
                     .clientSecret(properties.getClientSecret())
                     .tenantId(tenantId)
@@ -62,6 +65,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
                 ClientCertificateCredentialBuilder builder =
                     new ClientCertificateCredentialBuilderFactory(azureProperties)
                         .build()
+                        .authorityHost(authorityHost)
                         .tenantId(tenantId)
                         .clientId(clientId);
 
@@ -81,6 +85,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
                 .build()
                 .username(properties.getUsername())
                 .password(properties.getPassword())
+                .authorityHost(authorityHost)
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .build();
