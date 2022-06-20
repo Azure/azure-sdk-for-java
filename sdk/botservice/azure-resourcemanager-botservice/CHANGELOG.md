@@ -1,14 +1,22 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2022-06-20)
+
+- Azure Resource Manager BotService client library for Java. This package contains Microsoft Azure SDK for BotService Management SDK. Azure Bot Service is a platform for creating smart conversational agents. Package tag package-preview-2021-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.Bot` was modified
 
-### Bugs Fixed
+* `resourceGroupName()` was added
 
-### Other Changes
+#### `models.SlackChannelProperties` was modified
+
+* `withRegisterBeforeOAuthFlow(java.lang.Boolean)` was added
+
+#### `models.ConnectionSetting` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.4 (2022-04-21)
 
