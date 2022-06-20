@@ -17,7 +17,7 @@ public final class LinkedServiceReference {
      * Linked service reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type = "LinkedServiceReference";
+    private Type type;
 
     /*
      * Reference LinkedService name.
@@ -32,17 +32,12 @@ public final class LinkedServiceReference {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
 
-    /** Creates an instance of LinkedServiceReference class. */
-    public LinkedServiceReference() {
-        type = "LinkedServiceReference";
-    }
-
     /**
      * Get the type property: Linked service reference type.
      *
      * @return the type value.
      */
-    public String type() {
+    public Type type() {
         return this.type;
     }
 
@@ -52,7 +47,7 @@ public final class LinkedServiceReference {
      * @param type the type value to set.
      * @return the LinkedServiceReference object itself.
      */
-    public LinkedServiceReference withType(String type) {
+    public LinkedServiceReference withType(Type type) {
         this.type = type;
         return this;
     }
@@ -103,6 +98,11 @@ public final class LinkedServiceReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model LinkedServiceReference"));
+        }
         if (referenceName() == null) {
             throw LOGGER
                 .logExceptionAsError(

@@ -45,6 +45,13 @@
 - [ListByResourceGroup](#factories_listbyresourcegroup)
 - [Update](#factories_update)
 
+## GlobalParameters
+
+- [CreateOrUpdate](#globalparameters_createorupdate)
+- [Delete](#globalparameters_delete)
+- [Get](#globalparameters_get)
+- [ListByFactory](#globalparameters_listbyfactory)
+
 ## IntegrationRuntimeNodes
 
 - [Delete](#integrationruntimenodes_delete)
@@ -199,6 +206,7 @@ import com.azure.resourcemanager.datafactory.models.DelimitedTextDataset;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceDebugResource;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.MappingDataFlow;
+import com.azure.resourcemanager.datafactory.models.Type;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -259,7 +267,9 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                                         Object.class,
                                                         SerializerEncoding.JSON))
                                             .withLinkedServiceName(
-                                                new LinkedServiceReference().withReferenceName("linkedService5"))
+                                                new LinkedServiceReference()
+                                                    .withType(Type.LINKED_SERVICE_REFERENCE)
+                                                    .withReferenceName("linkedService5"))
                                             .withAnnotations(Arrays.asList())
                                             .withLocation(
                                                 new AzureBlobStorageLocation()
@@ -665,6 +675,7 @@ import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.ParameterType;
 import com.azure.resourcemanager.datafactory.models.TextFormat;
+import com.azure.resourcemanager.datafactory.models.Type;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -687,7 +698,10 @@ public final class DatasetsCreateOrUpdateSamples {
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(
                 new AzureBlobDataset()
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                    .withLinkedServiceName(
+                        new LinkedServiceReference()
+                            .withType(Type.LINKED_SERVICE_REFERENCE)
+                            .withReferenceName("exampleLinkedService"))
                     .withParameters(
                         mapOf(
                             "MyFileName",
@@ -732,7 +746,10 @@ public final class DatasetsCreateOrUpdateSamples {
             .withProperties(
                 new AzureBlobDataset()
                     .withDescription("Example description")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                    .withLinkedServiceName(
+                        new LinkedServiceReference()
+                            .withType(Type.LINKED_SERVICE_REFERENCE)
+                            .withReferenceName("exampleLinkedService"))
                     .withParameters(
                         mapOf(
                             "MyFileName",
@@ -1187,6 +1204,119 @@ public final class FactoriesUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### GlobalParameters_CreateOrUpdate
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.datafactory.models.GlobalParameterResource;
+import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
+import java.util.Map;
+
+/** Samples for GlobalParameters CreateOrUpdate. */
+public final class GlobalParametersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Create.json
+     */
+    /**
+     * Sample code: GlobalParameters_Create.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void globalParametersCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .globalParameters()
+            .define("default")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties((Map<String, GlobalParameterSpecification>) null)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Update.json
+     */
+    /**
+     * Sample code: GlobalParameters_Update.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void globalParametersUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        GlobalParameterResource resource =
+            manager
+                .globalParameters()
+                .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", Context.NONE)
+                .getValue();
+        resource.update().apply();
+    }
+}
+```
+
+### GlobalParameters_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for GlobalParameters Delete. */
+public final class GlobalParametersDeleteSamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Delete.json
+     */
+    /**
+     * Sample code: GlobalParameters_Delete.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void globalParametersDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .globalParameters()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "default", Context.NONE);
+    }
+}
+```
+
+### GlobalParameters_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for GlobalParameters Get. */
+public final class GlobalParametersGetSamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_Get.json
+     */
+    /**
+     * Sample code: GlobalParameters_Get.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void globalParametersGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .globalParameters()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", Context.NONE);
+    }
+}
+```
+
+### GlobalParameters_ListByFactory
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for GlobalParameters ListByFactory. */
+public final class GlobalParametersListByFactorySamples {
+    /*
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GlobalParameters_ListByFactory.json
+     */
+    /**
+     * Sample code: GlobalParameters_ListByFactory.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void globalParametersListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.globalParameters().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }
 ```

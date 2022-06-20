@@ -711,14 +711,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         String ifMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch)
-            .flatMap(
-                (Response<IntegrationRuntimeResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -742,14 +735,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, integrationRuntime, ifMatch)
-            .flatMap(
-                (Response<IntegrationRuntimeResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -938,14 +924,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     private Mono<IntegrationRuntimeResourceInner> getAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, String ifNoneMatch) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch)
-            .flatMap(
-                (Response<IntegrationRuntimeResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -964,14 +943,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, ifNoneMatch)
-            .flatMap(
-                (Response<IntegrationRuntimeResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1172,14 +1144,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest) {
         return updateWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, updateIntegrationRuntimeRequest)
-            .flatMap(
-                (Response<IntegrationRuntimeResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1351,7 +1316,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1512,14 +1477,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     private Mono<IntegrationRuntimeStatusResponseInner> getStatusAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return getStatusWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1687,14 +1645,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
             String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return listOutboundNetworkDependenciesEndpointsWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1866,14 +1817,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     private Mono<IntegrationRuntimeConnectionInfoInner> getConnectionInfoAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return getConnectionInfoWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeConnectionInfoInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2071,14 +2015,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
         return regenerateAuthKeyWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters)
-            .flatMap(
-                (Response<IntegrationRuntimeAuthKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2253,14 +2190,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     private Mono<IntegrationRuntimeAuthKeysInner> listAuthKeysAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return listAuthKeysWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeAuthKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2958,7 +2888,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     private Mono<Void> syncCredentialsAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return syncCredentialsWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3130,14 +3060,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     private Mono<IntegrationRuntimeMonitoringDataInner> getMonitoringDataAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return getMonitoringDataWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap(
-                (Response<IntegrationRuntimeMonitoringDataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3302,7 +3225,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> upgradeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return upgradeWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3493,7 +3416,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
         return removeLinksWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3697,14 +3620,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
         CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
         return createLinkedIntegrationRuntimeWithResponseAsync(
                 resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest)
-            .flatMap(
-                (Response<IntegrationRuntimeStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

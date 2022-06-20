@@ -20,6 +20,7 @@ import com.azure.resourcemanager.datafactory.models.DelimitedTextDataset;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceDebugResource;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.MappingDataFlow;
+import com.azure.resourcemanager.datafactory.models.Type;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -80,7 +81,9 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                                         Object.class,
                                                         SerializerEncoding.JSON))
                                             .withLinkedServiceName(
-                                                new LinkedServiceReference().withReferenceName("linkedService5"))
+                                                new LinkedServiceReference()
+                                                    .withType(Type.LINKED_SERVICE_REFERENCE)
+                                                    .withReferenceName("linkedService5"))
                                             .withAnnotations(Arrays.asList())
                                             .withLocation(
                                                 new AzureBlobStorageLocation()

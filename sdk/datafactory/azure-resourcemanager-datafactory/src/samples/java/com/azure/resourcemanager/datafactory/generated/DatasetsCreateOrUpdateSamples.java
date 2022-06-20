@@ -13,6 +13,7 @@ import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.ParameterType;
 import com.azure.resourcemanager.datafactory.models.TextFormat;
+import com.azure.resourcemanager.datafactory.models.Type;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,10 @@ public final class DatasetsCreateOrUpdateSamples {
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(
                 new AzureBlobDataset()
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                    .withLinkedServiceName(
+                        new LinkedServiceReference()
+                            .withType(Type.LINKED_SERVICE_REFERENCE)
+                            .withReferenceName("exampleLinkedService"))
                     .withParameters(
                         mapOf(
                             "MyFileName",
@@ -80,7 +84,10 @@ public final class DatasetsCreateOrUpdateSamples {
             .withProperties(
                 new AzureBlobDataset()
                     .withDescription("Example description")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                    .withLinkedServiceName(
+                        new LinkedServiceReference()
+                            .withType(Type.LINKED_SERVICE_REFERENCE)
+                            .withReferenceName("exampleLinkedService"))
                     .withParameters(
                         mapOf(
                             "MyFileName",
