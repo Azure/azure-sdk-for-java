@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
+import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
@@ -17,7 +18,6 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +25,17 @@ import java.util.Map;
 /** Volume resource. */
 @Fluent
 public final class VolumeInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Availability Zone
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /*
      * Volume properties
@@ -40,7 +44,8 @@ public final class VolumeInner extends Resource {
     private VolumeProperties innerProperties = new VolumeProperties();
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -55,6 +60,26 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the zones property: Availability Zone.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Availability Zone.
+     *
+     * @param zones the zones value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: Volume properties.
      *
      * @return the innerProperties value.
@@ -64,7 +89,7 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -579,21 +604,23 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'.
      *
      * @return the encryptionKeySource value.
      */
-    public String encryptionKeySource() {
+    public EncryptionKeySource encryptionKeySource() {
         return this.innerProperties() == null ? null : this.innerProperties().encryptionKeySource();
     }
 
     /**
-     * Set the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'.
      *
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeInner object itself.
      */
-    public VolumeInner withEncryptionKeySource(String encryptionKeySource) {
+    public VolumeInner withEncryptionKeySource(EncryptionKeySource encryptionKeySource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeProperties();
         }
@@ -912,6 +939,16 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the encrypted property: Specifies if the volume is encrypted or not. Only available on volumes created or
+     * updated after 2022-01-01.
+     *
+     * @return the encrypted value.
+     */
+    public Boolean encrypted() {
+        return this.innerProperties() == null ? null : this.innerProperties().encrypted();
+    }
+
+    /**
      * Get the placementRules property: Volume placement rules Application specific placement rules for the particular
      * volume.
      *
@@ -966,11 +1003,13 @@ public final class VolumeInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeInner.class);
 }

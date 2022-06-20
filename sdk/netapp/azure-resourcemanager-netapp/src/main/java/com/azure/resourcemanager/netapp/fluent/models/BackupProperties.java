@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.BackupType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Backup properties. */
 @Fluent
 public final class BackupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupProperties.class);
-
     /*
      * backupId UUID v4 used to identify the Backup
      */
