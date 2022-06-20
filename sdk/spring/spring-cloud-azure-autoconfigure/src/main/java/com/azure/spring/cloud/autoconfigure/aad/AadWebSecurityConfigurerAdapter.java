@@ -50,6 +50,9 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
     @Autowired
     protected AadAuthenticationProperties properties;
 
+    /**
+     * JWK resolver implementation for client authentication.
+     */
     @Autowired
     protected OAuth2ClientAuthenticationJWKResolver jwkResolver;
 

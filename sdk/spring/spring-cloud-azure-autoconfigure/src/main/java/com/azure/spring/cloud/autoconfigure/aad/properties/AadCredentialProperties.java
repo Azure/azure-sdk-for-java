@@ -60,18 +60,30 @@ public class AadCredentialProperties {
         this.clientSecret = clientSecret;
     }
 
+    /**
+     * @return The client certificate path.
+     */
     public String getClientCertificatePath() {
         return clientCertificatePath;
     }
 
+    /**
+     * @param clientCertificatePath The client certificate path.
+     */
     public void setClientCertificatePath(String clientCertificatePath) {
         this.clientCertificatePath = clientCertificatePath;
     }
 
+    /**
+     * @return The client certificate password.
+     */
     public String getClientCertificatePassword() {
         return clientCertificatePassword;
     }
 
+    /**
+     * @param clientCertificatePassword The client certificate password.
+     */
     public void setClientCertificatePassword(String clientCertificatePassword) {
         this.clientCertificatePassword = clientCertificatePassword;
     }
