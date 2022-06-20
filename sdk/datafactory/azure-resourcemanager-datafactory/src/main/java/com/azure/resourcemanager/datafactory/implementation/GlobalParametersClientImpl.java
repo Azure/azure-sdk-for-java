@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datafactory.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -27,49 +28,64 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.datafactory.fluent.ManagedVirtualNetworksClient;
-import com.azure.resourcemanager.datafactory.fluent.models.ManagedVirtualNetworkResourceInner;
-import com.azure.resourcemanager.datafactory.models.ManagedVirtualNetworkListResponse;
+import com.azure.resourcemanager.datafactory.fluent.GlobalParametersClient;
+import com.azure.resourcemanager.datafactory.fluent.models.GlobalParameterResourceInner;
+import com.azure.resourcemanager.datafactory.models.GlobalParameterListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedVirtualNetworksClient. */
-public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNetworksClient {
+/** An instance of this class provides access to all the operations defined in GlobalParametersClient. */
+public final class GlobalParametersClientImpl implements GlobalParametersClient {
     /** The proxy service used to perform REST calls. */
-    private final ManagedVirtualNetworksService service;
+    private final GlobalParametersService service;
 
     /** The service client containing this operation class. */
     private final DataFactoryManagementClientImpl client;
 
     /**
-     * Initializes an instance of ManagedVirtualNetworksClientImpl.
+     * Initializes an instance of GlobalParametersClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedVirtualNetworksClientImpl(DataFactoryManagementClientImpl client) {
+    GlobalParametersClientImpl(DataFactoryManagementClientImpl client) {
         this.service =
-            RestProxy
-                .create(ManagedVirtualNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy.create(GlobalParametersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DataFactoryManagementClientManagedVirtualNetworks to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for DataFactoryManagementClientGlobalParameters to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface ManagedVirtualNetworksService {
+    private interface GlobalParametersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/managedVirtualNetworks")
+                + "/factories/{factoryName}/globalParameters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedVirtualNetworkListResponse>> listByFactory(
+        Mono<Response<GlobalParameterListResponse>> listByFactory(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
+                + "/factories/{factoryName}/globalParameters/{globalParameterName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GlobalParameterResourceInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("factoryName") String factoryName,
+            @PathParam("globalParameterName") String globalParameterName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -77,35 +93,33 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}")
+                + "/factories/{factoryName}/globalParameters/{globalParameterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedVirtualNetworkResourceInner>> createOrUpdate(
+        Mono<Response<GlobalParameterResourceInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("factoryName") String factoryName,
-            @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+            @PathParam("globalParameterName") String globalParameterName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") ManagedVirtualNetworkResourceInner managedVirtualNetwork,
+            @BodyParam("application/json") GlobalParameterResourceInner defaultParameter,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
+        @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}")
-        @ExpectedResponses({200})
+                + "/factories/{factoryName}/globalParameters/{globalParameterName}")
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedVirtualNetworkResourceInner>> get(
+        Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("factoryName") String factoryName,
-            @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+            @PathParam("globalParameterName") String globalParameterName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -113,7 +127,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedVirtualNetworkListResponse>> listByFactoryNext(
+        Mono<Response<GlobalParameterListResponse>> listByFactoryNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -121,18 +135,17 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
     }
 
     /**
-     * Lists managed Virtual Networks.
+     * Lists Global parameters.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return a list of Global parameters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedVirtualNetworkResourceInner>> listByFactorySinglePageAsync(
+    private Mono<PagedResponse<GlobalParameterResourceInner>> listByFactorySinglePageAsync(
         String resourceGroupName, String factoryName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -166,7 +179,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .<PagedResponse<ManagedVirtualNetworkResourceInner>>map(
+            .<PagedResponse<GlobalParameterResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -179,7 +192,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
     }
 
     /**
-     * Lists managed Virtual Networks.
+     * Lists Global parameters.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -187,11 +200,10 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return a list of Global parameters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedVirtualNetworkResourceInner>> listByFactorySinglePageAsync(
+    private Mono<PagedResponse<GlobalParameterResourceInner>> listByFactorySinglePageAsync(
         String resourceGroupName, String factoryName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -235,25 +247,24 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
     }
 
     /**
-     * Lists managed Virtual Networks.
+     * Lists Global parameters.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources as paginated response with {@link PagedFlux}.
+     * @return a list of Global parameters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedVirtualNetworkResourceInner> listByFactoryAsync(
-        String resourceGroupName, String factoryName) {
+    private PagedFlux<GlobalParameterResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName) {
         return new PagedFlux<>(
             () -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists managed Virtual Networks.
+     * Lists Global parameters.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -261,10 +272,10 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources as paginated response with {@link PagedFlux}.
+     * @return a list of Global parameters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedVirtualNetworkResourceInner> listByFactoryAsync(
+    private PagedFlux<GlobalParameterResourceInner> listByFactoryAsync(
         String resourceGroupName, String factoryName, Context context) {
         return new PagedFlux<>(
             () -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
@@ -272,23 +283,22 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
     }
 
     /**
-     * Lists managed Virtual Networks.
+     * Lists Global parameters.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
+     * @return a list of Global parameters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(
-        String resourceGroupName, String factoryName) {
+    public PagedIterable<GlobalParameterResourceInner> listByFactory(String resourceGroupName, String factoryName) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName));
     }
 
     /**
-     * Lists managed Virtual Networks.
+     * Lists Global parameters.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -296,36 +306,28 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
+     * @return a list of Global parameters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(
+    public PagedIterable<GlobalParameterResourceInner> listByFactory(
         String resourceGroupName, String factoryName, Context context) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
     }
 
     /**
-     * Creates or updates a managed Virtual Network.
+     * Gets a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
+     * @param globalParameterName The global parameter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a Global parameter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedVirtualNetworkResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork,
-        String ifMatch) {
+    private Mono<Response<GlobalParameterResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String factoryName, String globalParameterName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -345,250 +347,9 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         if (factoryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
-        if (managedVirtualNetworkName == null) {
+        if (globalParameterName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managedVirtualNetworkName is required and cannot be null."));
-        }
-        if (managedVirtualNetwork == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedVirtualNetwork is required and cannot be null."));
-        } else {
-            managedVirtualNetwork.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            managedVirtualNetworkName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            managedVirtualNetwork,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedVirtualNetworkResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork,
-        String ifMatch,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (managedVirtualNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managedVirtualNetworkName is required and cannot be null."));
-        }
-        if (managedVirtualNetwork == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedVirtualNetwork is required and cannot be null."));
-        } else {
-            managedVirtualNetwork.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                managedVirtualNetworkName,
-                this.client.getApiVersion(),
-                ifMatch,
-                managedVirtualNetwork,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedVirtualNetworkResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedVirtualNetworkResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork) {
-        final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedVirtualNetworkResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch)
-            .block();
-    }
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedVirtualNetworkResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedVirtualNetwork, ifMatch, context)
-            .block();
-    }
-
-    /**
-     * Gets a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedVirtualNetworkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName, String ifNoneMatch) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (factoryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
-        }
-        if (managedVirtualNetworkName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managedVirtualNetworkName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter globalParameterName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -600,34 +361,201 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             factoryName,
-                            managedVirtualNetworkName,
+                            globalParameterName,
                             this.client.getApiVersion(),
-                            ifNoneMatch,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a managed Virtual Network.
+     * Gets a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param globalParameterName The global parameter name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Global parameter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedVirtualNetworkResourceInner>> getWithResponseAsync(
+    private Mono<Response<GlobalParameterResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String factoryName, String globalParameterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (globalParameterName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter globalParameterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                factoryName,
+                globalParameterName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Gets a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Global parameter on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GlobalParameterResourceInner> getAsync(
+        String resourceGroupName, String factoryName, String globalParameterName) {
+        return getWithResponseAsync(resourceGroupName, factoryName, globalParameterName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Global parameter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GlobalParameterResourceInner get(String resourceGroupName, String factoryName, String globalParameterName) {
+        return getAsync(resourceGroupName, factoryName, globalParameterName).block();
+    }
+
+    /**
+     * Gets a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Global parameter along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GlobalParameterResourceInner> getWithResponse(
+        String resourceGroupName, String factoryName, String globalParameterName, Context context) {
+        return getWithResponseAsync(resourceGroupName, factoryName, globalParameterName, context).block();
+    }
+
+    /**
+     * Creates or updates a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return global parameters resource type along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GlobalParameterResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String factoryName,
-        String managedVirtualNetworkName,
-        String ifNoneMatch,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (globalParameterName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter globalParameterName is required and cannot be null."));
+        }
+        if (defaultParameter == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+        } else {
+            defaultParameter.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            factoryName,
+                            globalParameterName,
+                            this.client.getApiVersion(),
+                            defaultParameter,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates or updates a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return global parameters resource type along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GlobalParameterResourceInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String factoryName,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -648,107 +576,253 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         if (factoryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
-        if (managedVirtualNetworkName == null) {
+        if (globalParameterName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managedVirtualNetworkName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter globalParameterName is required and cannot be null."));
+        }
+        if (defaultParameter == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter defaultParameter is required and cannot be null."));
+        } else {
+            defaultParameter.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(
+            .createOrUpdate(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 factoryName,
-                managedVirtualNetworkName,
+                globalParameterName,
                 this.client.getApiVersion(),
-                ifNoneMatch,
+                defaultParameter,
                 accept,
                 context);
     }
 
     /**
-     * Gets a managed Virtual Network.
+     * Creates or updates a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network on successful completion of {@link Mono}.
+     * @return global parameters resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedVirtualNetworkResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch)
+    private Mono<GlobalParameterResourceInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String factoryName,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, globalParameterName, defaultParameter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets a managed Virtual Network.
+     * Creates or updates a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network on successful completion of {@link Mono}.
+     * @return global parameters resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedVirtualNetworkResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
-        final String ifNoneMatch = null;
-        return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public GlobalParameterResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter) {
+        return createOrUpdateAsync(resourceGroupName, factoryName, globalParameterName, defaultParameter).block();
     }
 
     /**
-     * Gets a managed Virtual Network.
+     * Creates or updates a Global parameter.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedVirtualNetworkResourceInner get(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch).block();
-    }
-
-    /**
-     * Gets a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param globalParameterName The global parameter name.
+     * @param defaultParameter Global parameter resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network along with {@link Response}.
+     * @return global parameters resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedVirtualNetworkResourceInner> getWithResponse(
+    public Response<GlobalParameterResourceInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String factoryName,
-        String managedVirtualNetworkName,
-        String ifNoneMatch,
+        String globalParameterName,
+        GlobalParameterResourceInner defaultParameter,
         Context context) {
-        return getWithResponseAsync(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, context)
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, factoryName, globalParameterName, defaultParameter, context)
             .block();
+    }
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String factoryName, String globalParameterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (globalParameterName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter globalParameterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            factoryName,
+                            globalParameterName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String factoryName, String globalParameterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (factoryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
+        }
+        if (globalParameterName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter globalParameterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                factoryName,
+                globalParameterName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String globalParameterName) {
+        return deleteWithResponseAsync(resourceGroupName, factoryName, globalParameterName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String globalParameterName) {
+        deleteAsync(resourceGroupName, factoryName, globalParameterName).block();
+    }
+
+    /**
+     * Deletes a Global parameter.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param globalParameterName The global parameter name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String factoryName, String globalParameterName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, factoryName, globalParameterName, context).block();
     }
 
     /**
@@ -758,11 +832,10 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return a list of Global parameters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedVirtualNetworkResourceInner>> listByFactoryNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<GlobalParameterResourceInner>> listByFactoryNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -775,7 +848,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedVirtualNetworkResourceInner>>map(
+            .<PagedResponse<GlobalParameterResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -795,11 +868,10 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return a list of Global parameters along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedVirtualNetworkResourceInner>> listByFactoryNextSinglePageAsync(
+    private Mono<PagedResponse<GlobalParameterResourceInner>> listByFactoryNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
