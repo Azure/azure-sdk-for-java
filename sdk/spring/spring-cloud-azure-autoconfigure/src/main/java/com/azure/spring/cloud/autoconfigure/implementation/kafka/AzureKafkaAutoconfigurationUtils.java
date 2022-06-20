@@ -34,10 +34,11 @@ public final class AzureKafkaAutoconfigurationUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureKafkaAutoconfigurationUtils.class);
     //TODO(yiiuTo): add reference doc here for the log.
-    private static final String LOG_OAUTH_AUTOCONFIGURATION = "Currently %s authentication mechanism is used, recommend to use Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication"
+    private static final String LOG_OAUTH_AUTOCONFIGURATION_RECOMMENDATION = "Currently %s authentication mechanism is used, recommend to use Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication"
         + " which supports various Azure Identity credentials. To leverage the auto-configuration for OAuth2, you can just remove all your security, sasl and credential configurations of Kafka and Event Hubs."
         + " And configure Kafka bootstrap servers instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.";
-    private static final String LOG_OAUTH_PROPERTIES_CONFIGURE = "OAUTHBEARER authentication Property %s will be configured as %s to support Azure Identity credentials.";
+    private static final String LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE = "Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication will be loaded to configure your Kafka security and sasl properties to support Azure Identity credentials.";
+    private static final String LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE = "OAUTHBEARER authentication property %s will be configured as %s to support Azure Identity credentials.";
 
     static {
         Map<String, String> configs = new HashMap<>();
@@ -65,7 +66,7 @@ public final class AzureKafkaAutoconfigurationUtils {
                 && (saslMechanism == null || SASL_MECHANISM_OAUTH.equalsIgnoreCase(saslMechanism)))) {
             return true;
         }
-        LOGGER.info(LOG_OAUTH_AUTOCONFIGURATION, saslMechanism);
+        LOGGER.info(LOG_OAUTH_AUTOCONFIGURATION_RECOMMENDATION, saslMechanism);
         return false;
     }
 
@@ -83,11 +84,11 @@ public final class AzureKafkaAutoconfigurationUtils {
      * Configure necessary OAuth properties for kafka properties and log for the changes.
      */
     public static void logConfigureOAuthProperties() {
-        LOGGER.warn(LOG_OAUTH_PROPERTIES_CONFIGURE);
-        LOGGER.debug(LOG_OAUTH_PROPERTIES_CONFIGURE, SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
-        LOGGER.debug(LOG_OAUTH_PROPERTIES_CONFIGURE, SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        LOGGER.debug(LOG_OAUTH_PROPERTIES_CONFIGURE, SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
-        LOGGER.debug(LOG_OAUTH_PROPERTIES_CONFIGURE, SASL_LOGIN_CALLBACK_HANDLER_CLASS,
+        LOGGER.warn(LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE);
+        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
+        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_MECHANISM, SASL_MECHANISM_OAUTH);
+        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+        LOGGER.warn(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_LOGIN_CALLBACK_HANDLER_CLASS,
             SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
     }
 
