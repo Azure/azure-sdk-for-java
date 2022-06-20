@@ -41,7 +41,7 @@
         },
         {
             "placeholder": "OAuth2ClientCredential",
-            "_justification": "This is not a credential key"
+            "_justification": "Javadoc in azure-resourcemanager-datafactory"
         },
         {
             "file":[
