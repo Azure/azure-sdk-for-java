@@ -1369,6 +1369,7 @@ final class TestUtils {
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients()
             .forEach(httpClient -> {
+                System.out.println("TESTINGGGGG=====" + TextAnalyticsServiceVersion.values().toString());
                 Arrays.stream(TextAnalyticsServiceVersion.values()).filter(
                     TestUtils::shouldServiceVersionBeTested)
                     .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
