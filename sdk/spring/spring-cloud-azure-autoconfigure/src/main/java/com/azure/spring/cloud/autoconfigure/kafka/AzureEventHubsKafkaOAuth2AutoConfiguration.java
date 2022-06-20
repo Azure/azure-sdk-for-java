@@ -99,9 +99,11 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
         if (dataMethod != null) {
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
             ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
-            apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
-                    + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
-            apiVersionsRequestData.setClientSoftwareVersion(VERSION);
+            if (apiVersionsRequestData != null) {
+                apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
+                        + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
+                apiVersionsRequestData.setClientSoftwareVersion(VERSION);
+            }
         }
     }
 
