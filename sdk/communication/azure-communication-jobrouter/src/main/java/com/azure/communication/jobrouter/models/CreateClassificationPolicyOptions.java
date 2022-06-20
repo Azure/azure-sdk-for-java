@@ -24,6 +24,15 @@ public final class CreateClassificationPolicyOptions {
 
     private List<WorkerSelectorAttachment> workerSelectors;
 
+    /**
+     * Constructor for CreateClassificationPolicyOptions
+     * @param id ClassificationPolicy id
+     * @param name ClassificationPolicy name
+     * @param prioritizationRule One of {@link com.azure.communication.jobrouter.implementation.models.RouterRule}s
+     * @param workerSelectors List of {@link WorkerSelectorAttachment}s
+     * @param queueSelectors List of {@link QueueSelectorAttachment}s
+     * @param fallbackQueueId fallback queueId if queue selectors don't work.
+     */
     public CreateClassificationPolicyOptions(String id, String name, RouterRule prioritizationRule, List<WorkerSelectorAttachment> workerSelectors,
                                              List<QueueSelectorAttachment> queueSelectors, String fallbackQueueId) {
         this.id = id;

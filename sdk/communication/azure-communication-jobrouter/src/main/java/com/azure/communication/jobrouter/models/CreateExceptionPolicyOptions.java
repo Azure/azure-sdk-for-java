@@ -18,6 +18,11 @@ public class CreateExceptionPolicyOptions {
 
     private Map<String, ExceptionRule> exceptionRules;
 
+    /**
+     * Constructor for CreateExceptionPolicyOptions
+     * @param id ExceptionPolicy id
+     * @param exceptionRules Map of exception rules with a string key
+     */
     public CreateExceptionPolicyOptions(String id, Map<String, ExceptionRule> exceptionRules) {
         this.id = id;
         this.exceptionRules = exceptionRules;
@@ -33,7 +38,7 @@ public class CreateExceptionPolicyOptions {
 
     /**
      * Sets ExceptionPolicy name.
-     * @param name
+     * @param name ExceptionPolicy name
      * @return this
      */
     public CreateExceptionPolicyOptions setName(String name) {

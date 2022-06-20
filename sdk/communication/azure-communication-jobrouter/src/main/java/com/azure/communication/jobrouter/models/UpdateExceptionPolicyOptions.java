@@ -17,6 +17,10 @@ public class UpdateExceptionPolicyOptions {
 
     private Map<String, ExceptionRule> exceptionRules;
 
+    /**
+     * Constructor for UpdateExceptionPolicyOptions.
+     * @param id id of ExceptionPolicy.
+     */
     public UpdateExceptionPolicyOptions(String id) {
         this.id = id;
     }
@@ -31,7 +35,7 @@ public class UpdateExceptionPolicyOptions {
 
     /**
      * Sets name of ExceptionPolicy
-     * @param name
+     * @param name name of exceptionPolicy
      * @return this
      */
     public UpdateExceptionPolicyOptions setName(String name) {
@@ -49,7 +53,7 @@ public class UpdateExceptionPolicyOptions {
 
     /**
      * Sets exception rules.
-     * @param exceptionRules
+     * @param exceptionRules Map of exception rules with a string key.
      * @return this
      */
     public UpdateExceptionPolicyOptions setExceptionRules(Map<String, ExceptionRule> exceptionRules) {
