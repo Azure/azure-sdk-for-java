@@ -8,106 +8,44 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.SearchIndexerCache;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents an indexer. */
 @Fluent
-public final class SearchIndexer {
-    /*
-     * The name of the indexer.
-     */
-    @JsonProperty(value = "name")
+public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     private String name;
 
-    /*
-     * The description of the indexer.
-     */
-    @JsonProperty(value = "description")
     private String description;
 
-    /*
-     * The name of the datasource from which this indexer reads data.
-     */
-    @JsonProperty(value = "dataSourceName")
     private String dataSourceName;
 
-    /*
-     * The name of the skillset executing with this indexer.
-     */
-    @JsonProperty(value = "skillsetName")
     private String skillsetName;
 
-    /*
-     * The name of the index to which this indexer writes data.
-     */
-    @JsonProperty(value = "targetIndexName")
     private String targetIndexName;
 
-    /*
-     * The schedule for this indexer.
-     */
-    @JsonProperty(value = "schedule")
     private IndexingSchedule schedule;
 
-    /*
-     * Parameters for indexer execution.
-     */
-    @JsonProperty(value = "parameters")
     private IndexingParameters parameters;
 
-    /*
-     * Defines mappings between fields in the data source and corresponding
-     * target fields in the index.
-     */
-    @JsonProperty(value = "fieldMappings")
     private List<FieldMapping> fieldMappings;
 
-    /*
-     * Output field mappings are applied after enrichment and immediately
-     * before indexing.
-     */
-    @JsonProperty(value = "outputFieldMappings")
     private List<FieldMapping> outputFieldMappings;
 
-    /*
-     * A value indicating whether the indexer is disabled. Default is false.
-     */
-    @JsonProperty(value = "disabled")
     private Boolean isDisabled;
 
-    /*
-     * The ETag of the indexer.
-     */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
-    /*
-     * A description of an encryption key that you create in Azure Key Vault.
-     * This key is used to provide an additional level of encryption-at-rest
-     * for your indexer definition (as well as indexer execution status) when
-     * you want full assurance that no one, not even Microsoft, can decrypt
-     * them in Azure Cognitive Search. Once you have encrypted your indexer
-     * definition, it will always remain encrypted. Azure Cognitive Search will
-     * ignore attempts to set this property to null. You can change this
-     * property as needed if you want to rotate your encryption key; Your
-     * indexer definition (and indexer execution status) will be unaffected.
-     * Encryption with customer-managed keys is not available for free search
-     * services, and is only available for paid services created on or after
-     * January 1, 2019.
-     */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * Adds caching to an enrichment pipeline to allow for incremental
-     * modification steps without having to rebuild the index every time.
-     */
-    @JsonProperty(value = "cache")
     private SearchIndexerCache cache;
 
     /**
@@ -388,5 +326,108 @@ public final class SearchIndexer {
     public SearchIndexer setCache(SearchIndexerCache cache) {
         this.cache = cache;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("description", this.description, false);
+        jsonWriter.writeStringField("dataSourceName", this.dataSourceName, false);
+        jsonWriter.writeStringField("skillsetName", this.skillsetName, false);
+        jsonWriter.writeStringField("targetIndexName", this.targetIndexName, false);
+        jsonWriter.writeJsonField("schedule", this.schedule, false);
+        jsonWriter.writeJsonField("parameters", this.parameters, false);
+        JsonUtils.writeArray(
+                jsonWriter, "fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter,
+                "outputFieldMappings",
+                this.outputFieldMappings,
+                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeBooleanField("disabled", this.isDisabled, false);
+        jsonWriter.writeStringField("@odata.etag", this.eTag, false);
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
+        jsonWriter.writeJsonField("cache", this.cache, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexer fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String name = null;
+                    String description = null;
+                    String dataSourceName = null;
+                    String skillsetName = null;
+                    String targetIndexName = null;
+                    IndexingSchedule schedule = null;
+                    IndexingParameters parameters = null;
+                    List<FieldMapping> fieldMappings = null;
+                    List<FieldMapping> outputFieldMappings = null;
+                    Boolean isDisabled = null;
+                    String eTag = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    SearchIndexerCache cache = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else if ("dataSourceName".equals(fieldName)) {
+                            dataSourceName = reader.getStringValue();
+                        } else if ("skillsetName".equals(fieldName)) {
+                            skillsetName = reader.getStringValue();
+                        } else if ("targetIndexName".equals(fieldName)) {
+                            targetIndexName = reader.getStringValue();
+                        } else if ("schedule".equals(fieldName)) {
+                            schedule = JsonUtils.getNullableProperty(reader, r -> IndexingSchedule.fromJson(reader));
+                        } else if ("parameters".equals(fieldName)) {
+                            parameters =
+                                    JsonUtils.getNullableProperty(reader, r -> IndexingParameters.fromJson(reader));
+                        } else if ("fieldMappings".equals(fieldName)) {
+                            fieldMappings =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> FieldMapping.fromJson(reader)));
+                        } else if ("outputFieldMappings".equals(fieldName)) {
+                            outputFieldMappings =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> FieldMapping.fromJson(reader)));
+                        } else if ("disabled".equals(fieldName)) {
+                            isDisabled = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getStringValue();
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                        } else if ("cache".equals(fieldName)) {
+                            cache = JsonUtils.getNullableProperty(reader, r -> SearchIndexerCache.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndexer deserializedValue = new SearchIndexer();
+                    deserializedValue.setName(name);
+                    deserializedValue.setDescription(description);
+                    deserializedValue.setDataSourceName(dataSourceName);
+                    deserializedValue.setSkillsetName(skillsetName);
+                    deserializedValue.setTargetIndexName(targetIndexName);
+                    deserializedValue.setSchedule(schedule);
+                    deserializedValue.setParameters(parameters);
+                    deserializedValue.setFieldMappings(fieldMappings);
+                    deserializedValue.setOutputFieldMappings(outputFieldMappings);
+                    deserializedValue.setIsDisabled(isDisabled);
+                    deserializedValue.setETag(eTag);
+                    deserializedValue.setEncryptionKey(encryptionKey);
+                    deserializedValue.setCache(cache);
+
+                    return deserializedValue;
+                });
     }
 }

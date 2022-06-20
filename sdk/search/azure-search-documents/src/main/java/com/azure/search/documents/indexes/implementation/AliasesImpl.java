@@ -29,8 +29,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.ListAliasesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

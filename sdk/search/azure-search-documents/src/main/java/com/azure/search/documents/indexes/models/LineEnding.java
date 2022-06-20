@@ -36,7 +36,11 @@ public final class LineEnding extends ExpandableStringEnum<LineEnding> {
         return fromString(name, LineEnding.class);
     }
 
-    /** @return known LineEnding values. */
+    /**
+     * Gets known LineEnding values.
+     *
+     * @return known LineEnding values.
+     */
     public static Collection<LineEnding> values() {
         return values(LineEnding.class);
     }

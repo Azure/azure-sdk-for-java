@@ -8,17 +8,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List Datasources request. If successful, it includes the full definitions of all datasources. */
 @Immutable
-public final class ListDataSourcesResult {
-    /*
-     * The datasources in the Search service.
-     */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class ListDataSourcesResult implements JsonSerializable<ListDataSourcesResult> {
     private List<SearchIndexerDataSource> dataSources;
 
     /**
@@ -26,10 +27,7 @@ public final class ListDataSourcesResult {
      *
      * @param dataSources the dataSources value to set.
      */
-    @JsonCreator
-    public ListDataSourcesResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerDataSource> dataSources) {
+    public ListDataSourcesResult(List<SearchIndexerDataSource> dataSources) {
         this.dataSources = dataSources;
     }
 
@@ -40,5 +38,50 @@ public final class ListDataSourcesResult {
      */
     public List<SearchIndexerDataSource> getDataSources() {
         return this.dataSources;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(
+                jsonWriter, "value", this.dataSources, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ListDataSourcesResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean dataSourcesFound = false;
+                    List<SearchIndexerDataSource> dataSources = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            dataSources =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SearchIndexerDataSource.fromJson(reader)));
+                            dataSourcesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!dataSourcesFound) {
+                        missingProperties.add("value");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ListDataSourcesResult deserializedValue = new ListDataSourcesResult(dataSources);
+
+                    return deserializedValue;
+                });
     }
 }

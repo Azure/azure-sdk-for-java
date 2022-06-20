@@ -8,22 +8,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.util.List;
 
 /** The DocumentKeysOrIds model. */
 @Fluent
-public final class DocumentKeysOrIds {
-    /*
-     * document keys to be reset
-     */
-    @JsonProperty(value = "documentKeys")
+public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrIds> {
     private List<String> documentKeys;
 
-    /*
-     * datasource document identifiers to be reset
-     */
-    @JsonProperty(value = "datasourceDocumentIds")
     private List<String> datasourceDocumentIds;
 
     /**
@@ -64,5 +60,44 @@ public final class DocumentKeysOrIds {
     public DocumentKeysOrIds setDatasourceDocumentIds(List<String> datasourceDocumentIds) {
         this.datasourceDocumentIds = datasourceDocumentIds;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(
+                jsonWriter, "documentKeys", this.documentKeys, (writer, element) -> writer.writeString(element, false));
+        JsonUtils.writeArray(
+                jsonWriter,
+                "datasourceDocumentIds",
+                this.datasourceDocumentIds,
+                (writer, element) -> writer.writeString(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static DocumentKeysOrIds fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    List<String> documentKeys = null;
+                    List<String> datasourceDocumentIds = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("documentKeys".equals(fieldName)) {
+                            documentKeys = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                        } else if ("datasourceDocumentIds".equals(fieldName)) {
+                            datasourceDocumentIds = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    DocumentKeysOrIds deserializedValue = new DocumentKeysOrIds();
+                    deserializedValue.setDocumentKeys(documentKeys);
+                    deserializedValue.setDatasourceDocumentIds(datasourceDocumentIds);
+
+                    return deserializedValue;
+                });
     }
 }

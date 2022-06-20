@@ -303,7 +303,11 @@ public final class LexicalAnalyzerName extends ExpandableStringEnum<LexicalAnaly
         return fromString(name, LexicalAnalyzerName.class);
     }
 
-    /** @return known LexicalAnalyzerName values. */
+    /**
+     * Gets known LexicalAnalyzerName values.
+     *
+     * @return known LexicalAnalyzerName values.
+     */
     public static Collection<LexicalAnalyzerName> values() {
         return values(LexicalAnalyzerName.class);
     }

@@ -8,39 +8,22 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Limits the number of tokens while indexing. This token filter is implemented using Apache Lucene. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.LimitTokenFilter")
 @Fluent
 public final class LimitTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
 
-    /*
-     * The maximum number of tokens to produce. Default is 1.
-     */
-    @JsonProperty(value = "maxTokenCount")
     private Integer maxTokenCount;
 
-    /*
-     * A value indicating whether all tokens from the input must be consumed
-     * even if maxTokenCount is reached. Default is false.
-     */
-    @JsonProperty(value = "consumeAllTokens")
     private Boolean consumeAllTokens;
 
     /**
@@ -48,18 +31,8 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public LimitTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public LimitTokenFilter(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -102,5 +75,68 @@ public final class LimitTokenFilter extends TokenFilter {
     public LimitTokenFilter setConsumeAllTokens(Boolean consumeAllTokens) {
         this.consumeAllTokens = consumeAllTokens;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeIntegerField("maxTokenCount", this.maxTokenCount, false);
+        jsonWriter.writeBooleanField("consumeAllTokens", this.consumeAllTokens, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static LimitTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxTokenCount = null;
+                    Boolean consumeAllTokens = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("maxTokenCount".equals(fieldName)) {
+                            maxTokenCount = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("consumeAllTokens".equals(fieldName)) {
+                            consumeAllTokens = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.LimitTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LimitTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    LimitTokenFilter deserializedValue = new LimitTokenFilter(name);
+                    deserializedValue.setMaxTokenCount(maxTokenCount);
+                    deserializedValue.setConsumeAllTokens(consumeAllTokens);
+
+                    return deserializedValue;
+                });
     }
 }

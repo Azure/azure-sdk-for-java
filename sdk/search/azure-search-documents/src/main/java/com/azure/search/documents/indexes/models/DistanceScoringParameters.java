@@ -8,24 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Provides parameter values to a distance scoring function. */
 @Fluent
-public final class DistanceScoringParameters {
-    /*
-     * The name of the parameter passed in search queries to specify the
-     * reference location.
-     */
-    @JsonProperty(value = "referencePointParameter", required = true)
+public final class DistanceScoringParameters implements JsonSerializable<DistanceScoringParameters> {
     private String referencePointParameter;
 
-    /*
-     * The distance in kilometers from the reference location where the
-     * boosting range ends.
-     */
-    @JsonProperty(value = "boostingDistance", required = true)
     private double boostingDistance;
 
     /**
@@ -34,10 +30,7 @@ public final class DistanceScoringParameters {
      * @param referencePointParameter the referencePointParameter value to set.
      * @param boostingDistance the boostingDistance value to set.
      */
-    @JsonCreator
-    public DistanceScoringParameters(
-            @JsonProperty(value = "referencePointParameter", required = true) String referencePointParameter,
-            @JsonProperty(value = "boostingDistance", required = true) double boostingDistance) {
+    public DistanceScoringParameters(String referencePointParameter, double boostingDistance) {
         this.referencePointParameter = referencePointParameter;
         this.boostingDistance = boostingDistance;
     }
@@ -60,5 +53,54 @@ public final class DistanceScoringParameters {
      */
     public double getBoostingDistance() {
         return this.boostingDistance;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("referencePointParameter", this.referencePointParameter, false);
+        jsonWriter.writeDoubleField("boostingDistance", this.boostingDistance);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static DistanceScoringParameters fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean referencePointParameterFound = false;
+                    String referencePointParameter = null;
+                    boolean boostingDistanceFound = false;
+                    double boostingDistance = 0.0;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("referencePointParameter".equals(fieldName)) {
+                            referencePointParameter = reader.getStringValue();
+                            referencePointParameterFound = true;
+                        } else if ("boostingDistance".equals(fieldName)) {
+                            boostingDistance = reader.getDoubleValue();
+                            boostingDistanceFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!referencePointParameterFound) {
+                        missingProperties.add("referencePointParameter");
+                    }
+                    if (!boostingDistanceFound) {
+                        missingProperties.add("boostingDistance");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    DistanceScoringParameters deserializedValue =
+                            new DistanceScoringParameters(referencePointParameter, boostingDistance);
+
+                    return deserializedValue;
+                });
     }
 }

@@ -8,37 +8,21 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** Represents various service level limits. */
 @Fluent
-public final class SearchServiceLimits {
-    /*
-     * The maximum allowed fields per index.
-     */
-    @JsonProperty(value = "maxFieldsPerIndex")
+public final class SearchServiceLimits implements JsonSerializable<SearchServiceLimits> {
     private Integer maxFieldsPerIndex;
 
-    /*
-     * The maximum depth which you can nest sub-fields in an index, including
-     * the top-level complex field. For example, a/b/c has a nesting depth of
-     * 3.
-     */
-    @JsonProperty(value = "maxFieldNestingDepthPerIndex")
     private Integer maxFieldNestingDepthPerIndex;
 
-    /*
-     * The maximum number of fields of type Collection(Edm.ComplexType) allowed
-     * in an index.
-     */
-    @JsonProperty(value = "maxComplexCollectionFieldsPerIndex")
     private Integer maxComplexCollectionFieldsPerIndex;
 
-    /*
-     * The maximum number of objects in complex collections allowed per
-     * document.
-     */
-    @JsonProperty(value = "maxComplexObjectsInCollectionsPerDocument")
     private Integer maxComplexObjectsInCollectionsPerDocument;
 
     /**
@@ -126,5 +110,55 @@ public final class SearchServiceLimits {
             Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntegerField("maxFieldsPerIndex", this.maxFieldsPerIndex, false);
+        jsonWriter.writeIntegerField("maxFieldNestingDepthPerIndex", this.maxFieldNestingDepthPerIndex, false);
+        jsonWriter.writeIntegerField(
+                "maxComplexCollectionFieldsPerIndex", this.maxComplexCollectionFieldsPerIndex, false);
+        jsonWriter.writeIntegerField(
+                "maxComplexObjectsInCollectionsPerDocument", this.maxComplexObjectsInCollectionsPerDocument, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchServiceLimits fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    Integer maxFieldsPerIndex = null;
+                    Integer maxFieldNestingDepthPerIndex = null;
+                    Integer maxComplexCollectionFieldsPerIndex = null;
+                    Integer maxComplexObjectsInCollectionsPerDocument = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("maxFieldsPerIndex".equals(fieldName)) {
+                            maxFieldsPerIndex = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("maxFieldNestingDepthPerIndex".equals(fieldName)) {
+                            maxFieldNestingDepthPerIndex =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("maxComplexCollectionFieldsPerIndex".equals(fieldName)) {
+                            maxComplexCollectionFieldsPerIndex =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("maxComplexObjectsInCollectionsPerDocument".equals(fieldName)) {
+                            maxComplexObjectsInCollectionsPerDocument =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchServiceLimits deserializedValue = new SearchServiceLimits();
+                    deserializedValue.setMaxFieldsPerIndex(maxFieldsPerIndex);
+                    deserializedValue.setMaxFieldNestingDepthPerIndex(maxFieldNestingDepthPerIndex);
+                    deserializedValue.setMaxComplexCollectionFieldsPerIndex(maxComplexCollectionFieldsPerIndex);
+                    deserializedValue.setMaxComplexObjectsInCollectionsPerDocument(
+                            maxComplexObjectsInCollectionsPerDocument);
+
+                    return deserializedValue;
+                });
     }
 }

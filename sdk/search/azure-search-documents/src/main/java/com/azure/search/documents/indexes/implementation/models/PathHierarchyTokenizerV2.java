@@ -8,57 +8,28 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Tokenizer for path-like hierarchies. This tokenizer is implemented using Apache Lucene. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.PathHierarchyTokenizerV2")
 @Fluent
 public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
-    /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2";
 
-    /*
-     * The delimiter character to use. Default is "/".
-     */
-    @JsonProperty(value = "delimiter")
     private Character delimiter;
 
-    /*
-     * A value that, if set, replaces the delimiter character. Default is "/".
-     */
-    @JsonProperty(value = "replacement")
     private Character replacement;
 
-    /*
-     * The maximum token length. Default and maximum is 300.
-     */
-    @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
-    /*
-     * A value indicating whether to generate tokens in reverse order. Default
-     * is false.
-     */
-    @JsonProperty(value = "reverse")
     private Boolean reverseTokenOrder;
 
-    /*
-     * The number of initial tokens to skip. Default is 0.
-     */
-    @JsonProperty(value = "skip")
     private Integer numberOfTokensToSkip;
 
     /**
@@ -66,18 +37,8 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public PathHierarchyTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
+    public PathHierarchyTokenizerV2(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the tokenizer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -180,5 +141,85 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
     public PathHierarchyTokenizerV2 setNumberOfTokensToSkip(Integer numberOfTokensToSkip) {
         this.numberOfTokensToSkip = numberOfTokensToSkip;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeStringField("delimiter", this.delimiter == null ? null : this.delimiter.toString(), false);
+        jsonWriter.writeStringField(
+                "replacement", this.replacement == null ? null : this.replacement.toString(), false);
+        jsonWriter.writeIntegerField("maxTokenLength", this.maxTokenLength, false);
+        jsonWriter.writeBooleanField("reverse", this.reverseTokenOrder, false);
+        jsonWriter.writeIntegerField("skip", this.numberOfTokensToSkip, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static PathHierarchyTokenizerV2 fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    Character delimiter = null;
+                    Character replacement = null;
+                    Integer maxTokenLength = null;
+                    Boolean reverseTokenOrder = null;
+                    Integer numberOfTokensToSkip = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("delimiter".equals(fieldName)) {
+                            delimiter = JsonUtils.getNullableProperty(reader, r -> reader.getStringValue().charAt(0));
+                        } else if ("replacement".equals(fieldName)) {
+                            replacement = JsonUtils.getNullableProperty(reader, r -> reader.getStringValue().charAt(0));
+                        } else if ("maxTokenLength".equals(fieldName)) {
+                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("reverse".equals(fieldName)) {
+                            reverseTokenOrder = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("skip".equals(fieldName)) {
+                            numberOfTokensToSkip = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound
+                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.PathHierarchyTokenizerV2")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PathHierarchyTokenizerV2'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    PathHierarchyTokenizerV2 deserializedValue = new PathHierarchyTokenizerV2(name);
+                    deserializedValue.setDelimiter(delimiter);
+                    deserializedValue.setReplacement(replacement);
+                    deserializedValue.setMaxTokenLength(maxTokenLength);
+                    deserializedValue.setReverseTokenOrder(reverseTokenOrder);
+                    deserializedValue.setNumberOfTokensToSkip(numberOfTokensToSkip);
+
+                    return deserializedValue;
+                });
     }
 }

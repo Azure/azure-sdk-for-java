@@ -48,7 +48,11 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
         return fromString(name, RegexFlags.class);
     }
 
-    /** @return known RegexFlags values. */
+    /**
+     * Gets known RegexFlags values.
+     *
+     * @return known RegexFlags values.
+     */
     public static Collection<RegexFlags> values() {
         return values(RegexFlags.class);
     }

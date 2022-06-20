@@ -27,7 +27,11 @@ public final class IndexerExecutionStatusDetail extends ExpandableStringEnum<Ind
         return fromString(name, IndexerExecutionStatusDetail.class);
     }
 
-    /** @return known IndexerExecutionStatusDetail values. */
+    /**
+     * Gets known IndexerExecutionStatusDetail values.
+     *
+     * @return known IndexerExecutionStatusDetail values.
+     */
     public static Collection<IndexerExecutionStatusDetail> values() {
         return values(IndexerExecutionStatusDetail.class);
     }

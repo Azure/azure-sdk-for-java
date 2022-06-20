@@ -8,58 +8,24 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** Matches single or multi-word synonyms in a token stream. This token filter is implemented using Apache Lucene. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.SynonymTokenFilter")
 @Fluent
 public final class SynonymTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.SynonymTokenFilter";
 
-    /*
-     * A list of synonyms in following one of two formats: 1. incredible,
-     * unbelievable, fabulous => amazing - all terms on the left side of =>
-     * symbol will be replaced with all terms on its right side; 2. incredible,
-     * unbelievable, fabulous, amazing - comma separated list of equivalent
-     * words. Set the expand option to change how this list is interpreted.
-     */
-    @JsonProperty(value = "synonyms", required = true)
     private List<String> synonyms;
 
-    /*
-     * A value indicating whether to case-fold input for matching. Default is
-     * false.
-     */
-    @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
-    /*
-     * A value indicating whether all words in the list of synonyms (if =>
-     * notation is not used) will map to one another. If true, all words in the
-     * list of synonyms (if => notation is not used) will map to one another.
-     * The following list: incredible, unbelievable, fabulous, amazing is
-     * equivalent to: incredible, unbelievable, fabulous, amazing =>
-     * incredible, unbelievable, fabulous, amazing. If false, the following
-     * list: incredible, unbelievable, fabulous, amazing will be equivalent to:
-     * incredible, unbelievable, fabulous, amazing => incredible. Default is
-     * true.
-     */
-    @JsonProperty(value = "expand")
     private Boolean expand;
 
     /**
@@ -68,21 +34,9 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param synonyms the synonyms value to set.
      */
-    @JsonCreator
-    public SynonymTokenFilter(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "synonyms", required = true) List<String> synonyms) {
+    public SynonymTokenFilter(String name, List<String> synonyms) {
         super(name);
         this.synonyms = synonyms;
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -145,5 +99,78 @@ public final class SynonymTokenFilter extends TokenFilter {
     public SynonymTokenFilter setExpand(Boolean expand) {
         this.expand = expand;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        JsonUtils.writeArray(
+                jsonWriter, "synonyms", this.synonyms, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeBooleanField("ignoreCase", this.ignoreCase, false);
+        jsonWriter.writeBooleanField("expand", this.expand, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SynonymTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean synonymsFound = false;
+                    List<String> synonyms = null;
+                    Boolean ignoreCase = null;
+                    Boolean expand = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("synonyms".equals(fieldName)) {
+                            synonyms = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            synonymsFound = true;
+                        } else if ("ignoreCase".equals(fieldName)) {
+                            ignoreCase = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("expand".equals(fieldName)) {
+                            expand = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.SynonymTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SynonymTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!synonymsFound) {
+                        missingProperties.add("synonyms");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SynonymTokenFilter deserializedValue = new SynonymTokenFilter(name, synonyms);
+                    deserializedValue.setIgnoreCase(ignoreCase);
+                    deserializedValue.setExpand(expand);
+
+                    return deserializedValue;
+                });
     }
 }

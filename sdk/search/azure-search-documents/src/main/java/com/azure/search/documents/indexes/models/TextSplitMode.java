@@ -30,7 +30,11 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
         return fromString(name, TextSplitMode.class);
     }
 
-    /** @return known TextSplitMode values. */
+    /**
+     * Gets known TextSplitMode values.
+     *
+     * @return known TextSplitMode values.
+     */
     public static Collection<TextSplitMode> values() {
         return values(TextSplitMode.class);
     }

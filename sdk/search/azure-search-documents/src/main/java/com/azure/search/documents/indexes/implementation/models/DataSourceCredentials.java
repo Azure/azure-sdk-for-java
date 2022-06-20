@@ -8,16 +8,15 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** Represents credentials that can be used to connect to a datasource. */
 @Fluent
-public final class DataSourceCredentials {
-    /*
-     * The connection string for the datasource. Set to '<unchanged>' if you do
-     * not want the connection string updated.
-     */
-    @JsonProperty(value = "connectionString")
+public final class DataSourceCredentials implements JsonSerializable<DataSourceCredentials> {
     private String connectionString;
 
     /**
@@ -40,5 +39,34 @@ public final class DataSourceCredentials {
     public DataSourceCredentials setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectionString", this.connectionString, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static DataSourceCredentials fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String connectionString = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("connectionString".equals(fieldName)) {
+                            connectionString = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    DataSourceCredentials deserializedValue = new DataSourceCredentials();
+                    deserializedValue.setConnectionString(connectionString);
+
+                    return deserializedValue;
+                });
     }
 }

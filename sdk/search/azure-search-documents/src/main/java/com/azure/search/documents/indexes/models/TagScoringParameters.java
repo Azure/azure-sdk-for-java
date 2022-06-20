@@ -8,17 +8,18 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Provides parameter values to a tag scoring function. */
 @Fluent
-public final class TagScoringParameters {
-    /*
-     * The name of the parameter passed in search queries to specify the list
-     * of tags to compare against the target field.
-     */
-    @JsonProperty(value = "tagsParameter", required = true)
+public final class TagScoringParameters implements JsonSerializable<TagScoringParameters> {
     private String tagsParameter;
 
     /**
@@ -26,8 +27,7 @@ public final class TagScoringParameters {
      *
      * @param tagsParameter the tagsParameter value to set.
      */
-    @JsonCreator
-    public TagScoringParameters(@JsonProperty(value = "tagsParameter", required = true) String tagsParameter) {
+    public TagScoringParameters(String tagsParameter) {
         this.tagsParameter = tagsParameter;
     }
 
@@ -39,5 +39,44 @@ public final class TagScoringParameters {
      */
     public String getTagsParameter() {
         return this.tagsParameter;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tagsParameter", this.tagsParameter, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static TagScoringParameters fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean tagsParameterFound = false;
+                    String tagsParameter = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tagsParameter".equals(fieldName)) {
+                            tagsParameter = reader.getStringValue();
+                            tagsParameterFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tagsParameterFound) {
+                        missingProperties.add("tagsParameter");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    TagScoringParameters deserializedValue = new TagScoringParameters(tagsParameter);
+
+                    return deserializedValue;
+                });
     }
 }

@@ -27,7 +27,11 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
         return fromString(name, CharFilterName.class);
     }
 
-    /** @return known CharFilterName values. */
+    /**
+     * Gets known CharFilterName values.
+     *
+     * @return known CharFilterName values.
+     */
     public static Collection<CharFilterName> values() {
         return values(CharFilterName.class);
     }

@@ -8,22 +8,17 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** The SearchIndexerCache model. */
 @Fluent
-public final class SearchIndexerCache {
-    /*
-     * The connection string to the storage account where the cache data will
-     * be persisted.
-     */
-    @JsonProperty(value = "storageConnectionString")
+public final class SearchIndexerCache implements JsonSerializable<SearchIndexerCache> {
     private String storageConnectionString;
 
-    /*
-     * Specifies whether incremental reprocessing is enabled.
-     */
-    @JsonProperty(value = "enableReprocessing")
     private Boolean enableReprocessing;
 
     /**
@@ -66,5 +61,39 @@ public final class SearchIndexerCache {
     public SearchIndexerCache setEnableReprocessing(Boolean enableReprocessing) {
         this.enableReprocessing = enableReprocessing;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString, false);
+        jsonWriter.writeBooleanField("enableReprocessing", this.enableReprocessing, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerCache fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String storageConnectionString = null;
+                    Boolean enableReprocessing = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storageConnectionString".equals(fieldName)) {
+                            storageConnectionString = reader.getStringValue();
+                        } else if ("enableReprocessing".equals(fieldName)) {
+                            enableReprocessing = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndexerCache deserializedValue = new SearchIndexerCache();
+                    deserializedValue.setStorageConnectionString(storageConnectionString);
+                    deserializedValue.setEnableReprocessing(enableReprocessing);
+
+                    return deserializedValue;
+                });
     }
 }

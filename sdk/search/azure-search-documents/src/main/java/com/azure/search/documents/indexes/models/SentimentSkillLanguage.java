@@ -69,7 +69,11 @@ public final class SentimentSkillLanguage extends ExpandableStringEnum<Sentiment
         return fromString(name, SentimentSkillLanguage.class);
     }
 
-    /** @return known SentimentSkillLanguage values. */
+    /**
+     * Gets known SentimentSkillLanguage values.
+     *
+     * @return known SentimentSkillLanguage values.
+     */
     public static Collection<SentimentSkillLanguage> values() {
         return values(SentimentSkillLanguage.class);
     }

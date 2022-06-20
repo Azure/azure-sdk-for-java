@@ -8,56 +8,27 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.StopwordsList;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** Removes stop words from a token stream. This token filter is implemented using Apache Lucene. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.StopwordsTokenFilter")
 @Fluent
 public final class StopwordsTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
 
-    /*
-     * The list of stopwords. This property and the stopwords list property
-     * cannot both be set.
-     */
-    @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
-    /*
-     * A predefined list of stopwords to use. This property and the stopwords
-     * property cannot both be set. Default is English.
-     */
-    @JsonProperty(value = "stopwordsList")
     private StopwordsList stopwordsList;
 
-    /*
-     * A value indicating whether to ignore case. If true, all words are
-     * converted to lower case first. Default is false.
-     */
-    @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
-    /*
-     * A value indicating whether to ignore the last search term if it's a stop
-     * word. Default is true.
-     */
-    @JsonProperty(value = "removeTrailing")
     private Boolean removeTrailingStopWords;
 
     /**
@@ -65,18 +36,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public StopwordsTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public StopwordsTokenFilter(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -165,5 +126,81 @@ public final class StopwordsTokenFilter extends TokenFilter {
     public StopwordsTokenFilter setRemoveTrailingStopWords(Boolean removeTrailingStopWords) {
         this.removeTrailingStopWords = removeTrailingStopWords;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        JsonUtils.writeArray(
+                jsonWriter, "stopwords", this.stopwords, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeStringField(
+                "stopwordsList", this.stopwordsList == null ? null : this.stopwordsList.toString(), false);
+        jsonWriter.writeBooleanField("ignoreCase", this.ignoreCase, false);
+        jsonWriter.writeBooleanField("removeTrailing", this.removeTrailingStopWords, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static StopwordsTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    List<String> stopwords = null;
+                    StopwordsList stopwordsList = null;
+                    Boolean ignoreCase = null;
+                    Boolean removeTrailingStopWords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("stopwords".equals(fieldName)) {
+                            stopwords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                        } else if ("stopwordsList".equals(fieldName)) {
+                            stopwordsList = StopwordsList.fromString(reader.getStringValue());
+                        } else if ("ignoreCase".equals(fieldName)) {
+                            ignoreCase = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("removeTrailing".equals(fieldName)) {
+                            removeTrailingStopWords =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.StopwordsTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopwordsTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    StopwordsTokenFilter deserializedValue = new StopwordsTokenFilter(name);
+                    deserializedValue.setStopwords(stopwords);
+                    deserializedValue.setStopwordsList(stopwordsList);
+                    deserializedValue.setIgnoreCase(ignoreCase);
+                    deserializedValue.setRemoveTrailingStopWords(removeTrailingStopWords);
+
+                    return deserializedValue;
+                });
     }
 }

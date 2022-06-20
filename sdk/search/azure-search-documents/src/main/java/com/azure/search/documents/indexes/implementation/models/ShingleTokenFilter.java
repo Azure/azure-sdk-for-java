@@ -8,68 +8,30 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Creates combinations of tokens as a single token. This token filter is implemented using Apache Lucene. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.ShingleTokenFilter")
 @Fluent
 public final class ShingleTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.ShingleTokenFilter";
 
-    /*
-     * The maximum shingle size. Default and minimum value is 2.
-     */
-    @JsonProperty(value = "maxShingleSize")
     private Integer maxShingleSize;
 
-    /*
-     * The minimum shingle size. Default and minimum value is 2. Must be less
-     * than the value of maxShingleSize.
-     */
-    @JsonProperty(value = "minShingleSize")
     private Integer minShingleSize;
 
-    /*
-     * A value indicating whether the output stream will contain the input
-     * tokens (unigrams) as well as shingles. Default is true.
-     */
-    @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
 
-    /*
-     * A value indicating whether to output unigrams for those times when no
-     * shingles are available. This property takes precedence when
-     * outputUnigrams is set to false. Default is false.
-     */
-    @JsonProperty(value = "outputUnigramsIfNoShingles")
     private Boolean outputUnigramsIfNoShingles;
 
-    /*
-     * The string to use when joining adjacent tokens to form a shingle.
-     * Default is a single space (" ").
-     */
-    @JsonProperty(value = "tokenSeparator")
     private String tokenSeparator;
 
-    /*
-     * The string to insert for each position at which there is no token.
-     * Default is an underscore ("_").
-     */
-    @JsonProperty(value = "filterToken")
     private String filterToken;
 
     /**
@@ -77,18 +39,8 @@ public final class ShingleTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public ShingleTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public ShingleTokenFilter(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -219,5 +171,89 @@ public final class ShingleTokenFilter extends TokenFilter {
     public ShingleTokenFilter setFilterToken(String filterToken) {
         this.filterToken = filterToken;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeIntegerField("maxShingleSize", this.maxShingleSize, false);
+        jsonWriter.writeIntegerField("minShingleSize", this.minShingleSize, false);
+        jsonWriter.writeBooleanField("outputUnigrams", this.outputUnigrams, false);
+        jsonWriter.writeBooleanField("outputUnigramsIfNoShingles", this.outputUnigramsIfNoShingles, false);
+        jsonWriter.writeStringField("tokenSeparator", this.tokenSeparator, false);
+        jsonWriter.writeStringField("filterToken", this.filterToken, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ShingleTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer maxShingleSize = null;
+                    Integer minShingleSize = null;
+                    Boolean outputUnigrams = null;
+                    Boolean outputUnigramsIfNoShingles = null;
+                    String tokenSeparator = null;
+                    String filterToken = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("maxShingleSize".equals(fieldName)) {
+                            maxShingleSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("minShingleSize".equals(fieldName)) {
+                            minShingleSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("outputUnigrams".equals(fieldName)) {
+                            outputUnigrams = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("outputUnigramsIfNoShingles".equals(fieldName)) {
+                            outputUnigramsIfNoShingles =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("tokenSeparator".equals(fieldName)) {
+                            tokenSeparator = reader.getStringValue();
+                        } else if ("filterToken".equals(fieldName)) {
+                            filterToken = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.ShingleTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ShingleTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ShingleTokenFilter deserializedValue = new ShingleTokenFilter(name);
+                    deserializedValue.setMaxShingleSize(maxShingleSize);
+                    deserializedValue.setMinShingleSize(minShingleSize);
+                    deserializedValue.setOutputUnigrams(outputUnigrams);
+                    deserializedValue.setOutputUnigramsIfNoShingles(outputUnigramsIfNoShingles);
+                    deserializedValue.setTokenSeparator(tokenSeparator);
+                    deserializedValue.setFilterToken(filterToken);
+
+                    return deserializedValue;
+                });
     }
 }

@@ -8,49 +8,24 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /** Using the Text Analytics API, extracts linked entities from text. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Skills.Text.V3.EntityLinkingSkill")
 @Fluent
 public final class EntityLinkingSkill extends SearchIndexerSkill {
-    /*
-     * Identifies the concrete type of the skill.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Skills.Text.V3.EntityLinkingSkill";
 
-    /*
-     * A value indicating which language code to use. Default is en.
-     */
-    @JsonProperty(value = "defaultLanguageCode")
     private String defaultLanguageCode;
 
-    /*
-     * A value between 0 and 1 that be used to only include entities whose
-     * confidence score is greater than the value specified. If not set
-     * (default), or if explicitly set to null, all entities will be included.
-     */
-    @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
 
-    /*
-     * The version of the model to use when calling the Text Analytics service.
-     * It will default to the latest available when not specified. We recommend
-     * you do not specify this value unless absolutely necessary.
-     */
-    @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
     /**
@@ -59,10 +34,7 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @JsonCreator
-    public EntityLinkingSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+    public EntityLinkingSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -132,5 +104,108 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
     public EntityLinkingSkill setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeStringField("description", getDescription(), false);
+        jsonWriter.writeStringField("context", getContext(), false);
+        jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode, false);
+        jsonWriter.writeDoubleField("minimumPrecision", this.minimumPrecision, false);
+        jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static EntityLinkingSkill fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    String defaultLanguageCode = null;
+                    Double minimumPrecision = null;
+                    String modelVersion = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getStringValue();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = reader.getStringValue();
+                        } else if ("minimumPrecision".equals(fieldName)) {
+                            minimumPrecision = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                        } else if ("modelVersion".equals(fieldName)) {
+                            modelVersion = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Skills.Text.V3.EntityLinkingSkill")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.V3.EntityLinkingSkill'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    EntityLinkingSkill deserializedValue = new EntityLinkingSkill(inputs, outputs);
+                    deserializedValue.setName(name);
+                    deserializedValue.setDescription(description);
+                    deserializedValue.setContext(context);
+                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
+                    deserializedValue.setMinimumPrecision(minimumPrecision);
+                    deserializedValue.setModelVersion(modelVersion);
+
+                    return deserializedValue;
+                });
     }
 }

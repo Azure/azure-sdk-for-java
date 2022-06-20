@@ -8,16 +8,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.util.List;
 
 /** The SkillNames model. */
 @Fluent
-public final class SkillNames {
-    /*
-     * the names of skills to be reset.
-     */
-    @JsonProperty(value = "skillNames")
+public final class SkillNames implements JsonSerializable<SkillNames> {
     private List<String> skillNames;
 
     /**
@@ -38,5 +38,35 @@ public final class SkillNames {
     public SkillNames setSkillNames(List<String> skillNames) {
         this.skillNames = skillNames;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(
+                jsonWriter, "skillNames", this.skillNames, (writer, element) -> writer.writeString(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SkillNames fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    List<String> skillNames = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("skillNames".equals(fieldName)) {
+                            skillNames = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SkillNames deserializedValue = new SkillNames();
+                    deserializedValue.setSkillNames(skillNames);
+
+                    return deserializedValue;
+                });
     }
 }

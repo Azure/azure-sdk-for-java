@@ -8,18 +8,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List SynonymMaps request. If successful, it includes the full definitions of all synonym maps. */
 @Immutable
-public final class ListSynonymMapsResult {
-    /*
-     * The synonym maps in the Search service.
-     */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class ListSynonymMapsResult implements JsonSerializable<ListSynonymMapsResult> {
     private List<SynonymMap> synonymMaps;
 
     /**
@@ -27,10 +28,7 @@ public final class ListSynonymMapsResult {
      *
      * @param synonymMaps the synonymMaps value to set.
      */
-    @JsonCreator
-    public ListSynonymMapsResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SynonymMap> synonymMaps) {
+    public ListSynonymMapsResult(List<SynonymMap> synonymMaps) {
         this.synonymMaps = synonymMaps;
     }
 
@@ -41,5 +39,48 @@ public final class ListSynonymMapsResult {
      */
     public List<SynonymMap> getSynonymMaps() {
         return this.synonymMaps;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(
+                jsonWriter, "value", this.synonymMaps, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ListSynonymMapsResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean synonymMapsFound = false;
+                    List<SynonymMap> synonymMaps = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            synonymMaps =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> SynonymMap.fromJson(reader)));
+                            synonymMapsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!synonymMapsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ListSynonymMapsResult deserializedValue = new ListSynonymMapsResult(synonymMaps);
+
+                    return deserializedValue;
+                });
     }
 }

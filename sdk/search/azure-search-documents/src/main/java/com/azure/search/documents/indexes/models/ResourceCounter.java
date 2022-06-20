@@ -8,22 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents a resource's usage and quota. */
 @Fluent
-public final class ResourceCounter {
-    /*
-     * The resource usage amount.
-     */
-    @JsonProperty(value = "usage", required = true)
+public final class ResourceCounter implements JsonSerializable<ResourceCounter> {
     private long usage;
 
-    /*
-     * The resource amount quota.
-     */
-    @JsonProperty(value = "quota")
     private Long quota;
 
     /**
@@ -31,8 +29,7 @@ public final class ResourceCounter {
      *
      * @param usage the usage value to set.
      */
-    @JsonCreator
-    public ResourceCounter(@JsonProperty(value = "usage", required = true) long usage) {
+    public ResourceCounter(long usage) {
         this.usage = usage;
     }
 
@@ -63,5 +60,49 @@ public final class ResourceCounter {
     public ResourceCounter setQuota(Long quota) {
         this.quota = quota;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("usage", this.usage);
+        jsonWriter.writeLongField("quota", this.quota, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ResourceCounter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean usageFound = false;
+                    long usage = 0L;
+                    Long quota = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("usage".equals(fieldName)) {
+                            usage = reader.getLongValue();
+                            usageFound = true;
+                        } else if ("quota".equals(fieldName)) {
+                            quota = JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!usageFound) {
+                        missingProperties.add("usage");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ResourceCounter deserializedValue = new ResourceCounter(usage);
+                    deserializedValue.setQuota(quota);
+
+                    return deserializedValue;
+                });
     }
 }

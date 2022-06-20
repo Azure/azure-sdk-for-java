@@ -8,17 +8,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List Indexers request. If successful, it includes the full definitions of all indexers. */
 @Immutable
-public final class ListIndexersResult {
-    /*
-     * The indexers in the Search service.
-     */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class ListIndexersResult implements JsonSerializable<ListIndexersResult> {
     private List<SearchIndexer> indexers;
 
     /**
@@ -26,10 +27,7 @@ public final class ListIndexersResult {
      *
      * @param indexers the indexers value to set.
      */
-    @JsonCreator
-    public ListIndexersResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexer> indexers) {
+    public ListIndexersResult(List<SearchIndexer> indexers) {
         this.indexers = indexers;
     }
 
@@ -40,5 +38,49 @@ public final class ListIndexersResult {
      */
     public List<SearchIndexer> getIndexers() {
         return this.indexers;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(jsonWriter, "value", this.indexers, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ListIndexersResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean indexersFound = false;
+                    List<SearchIndexer> indexers = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            indexers =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SearchIndexer.fromJson(reader)));
+                            indexersFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!indexersFound) {
+                        missingProperties.add("value");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ListIndexersResult deserializedValue = new ListIndexersResult(indexers);
+
+                    return deserializedValue;
+                });
     }
 }

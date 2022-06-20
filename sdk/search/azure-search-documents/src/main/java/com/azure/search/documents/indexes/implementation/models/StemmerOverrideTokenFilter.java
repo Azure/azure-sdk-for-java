@@ -8,38 +8,24 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Provides the ability to override other stemming filters with custom dictionary-based stemming. Any dictionary-stemmed
  * terms will be marked as keywords so that they will not be stemmed with stemmers down the chain. Must be placed before
  * any stemming filters. This token filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.StemmerOverrideTokenFilter")
 @Fluent
 public final class StemmerOverrideTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.StemmerOverrideTokenFilter";
 
-    /*
-     * A list of stemming rules in the following format: "word => stem", for
-     * example: "ran => run".
-     */
-    @JsonProperty(value = "rules", required = true)
     private List<String> rules;
 
     /**
@@ -48,21 +34,9 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param rules the rules value to set.
      */
-    @JsonCreator
-    public StemmerOverrideTokenFilter(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "rules", required = true) List<String> rules) {
+    public StemmerOverrideTokenFilter(String name, List<String> rules) {
         super(name);
         this.rules = rules;
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -73,5 +47,68 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
      */
     public List<String> getRules() {
         return this.rules;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        JsonUtils.writeArray(jsonWriter, "rules", this.rules, (writer, element) -> writer.writeString(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static StemmerOverrideTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean rulesFound = false;
+                    List<String> rules = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("rules".equals(fieldName)) {
+                            rules = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            rulesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound
+                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.StemmerOverrideTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StemmerOverrideTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!rulesFound) {
+                        missingProperties.add("rules");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    StemmerOverrideTokenFilter deserializedValue = new StemmerOverrideTokenFilter(name, rules);
+
+                    return deserializedValue;
+                });
     }
 }

@@ -8,31 +8,16 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** Base type for normalizers. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata.type",
-        defaultImpl = LexicalNormalizer.class,
-        visible = true)
-@JsonTypeName("LexicalNormalizer")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CustomNormalizer", value = CustomNormalizer.class)})
 @Fluent
-public class LexicalNormalizer {
-    /*
-     * The name of the normalizer. It must only contain letters, digits,
-     * spaces, dashes or underscores, can only start and end with alphanumeric
-     * characters, and is limited to 128 characters. It cannot end in
-     * '.microsoft' nor '.lucene', nor be named 'asciifolding', 'standard',
-     * 'lowercase', 'uppercase', or 'elision'.
-     */
-    @JsonProperty(value = "name", required = true)
+public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
     private String name;
 
     /**
@@ -40,8 +25,7 @@ public class LexicalNormalizer {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public LexicalNormalizer(@JsonProperty(value = "name", required = true) String name) {
+    public LexicalNormalizer(String name) {
         this.name = name;
     }
 
@@ -54,5 +38,56 @@ public class LexicalNormalizer {
      */
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static LexicalNormalizer fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = null;
+
+                    // Read the first field name and determine if it's the discriminator field.
+                    reader.nextToken();
+                    if ("@odata.type".equals(reader.getFieldName())) {
+                        reader.nextToken();
+                        discriminatorValue = reader.getStringValue();
+                        readerToUse = reader;
+                    } else {
+                        // If it isn't the discriminator field buffer the JSON structure to make it
+                        // replayable and find the discriminator field value.
+                        String json = JsonUtils.bufferJsonObject(reader);
+                        JsonReader replayReader = DefaultJsonReader.fromString(json);
+                        while (replayReader.nextToken() != JsonToken.END_OBJECT) {
+                            String fieldName = replayReader.getFieldName();
+                            replayReader.nextToken();
+                            if ("@odata.type".equals(fieldName)) {
+                                discriminatorValue = replayReader.getStringValue();
+                                break;
+                            } else {
+                                replayReader.skipChildren();
+                            }
+                        }
+                        if (discriminatorValue != null) {
+                            readerToUse = DefaultJsonReader.fromString(json);
+                        }
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.CustomNormalizer".equals(discriminatorValue)) {
+                        return CustomNormalizer.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' was present and didn't match one of the expected values  or '#Microsoft.Azure.Search.CustomNormalizer'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }

@@ -8,16 +8,16 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.util.List;
 
 /** Defines parameters for a search index that influence semantic capabilities. */
 @Fluent
-public final class SemanticSettings {
-    /*
-     * The semantic configurations for the index.
-     */
-    @JsonProperty(value = "configurations")
+public final class SemanticSettings implements JsonSerializable<SemanticSettings> {
     private List<SemanticConfiguration> configurations;
 
     /**
@@ -38,5 +38,43 @@ public final class SemanticSettings {
     public SemanticSettings setConfigurations(List<SemanticConfiguration> configurations) {
         this.configurations = configurations;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(
+                jsonWriter,
+                "configurations",
+                this.configurations,
+                (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SemanticSettings fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    List<SemanticConfiguration> configurations = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("configurations".equals(fieldName)) {
+                            configurations =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SemanticConfiguration.fromJson(reader)));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SemanticSettings deserializedValue = new SemanticSettings();
+                    deserializedValue.setConfigurations(configurations);
+
+                    return deserializedValue;
+                });
     }
 }

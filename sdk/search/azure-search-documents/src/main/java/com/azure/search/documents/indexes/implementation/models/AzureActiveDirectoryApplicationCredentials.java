@@ -8,27 +8,21 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
  * Credentials of a registered application created for your search service, used for authenticated access to the
  * encryption keys stored in Azure Key Vault.
  */
 @Fluent
-public final class AzureActiveDirectoryApplicationCredentials {
-    /*
-     * An AAD Application ID that was granted the required access permissions
-     * to the Azure Key Vault that is to be used when encrypting your data at
-     * rest. The Application ID should not be confused with the Object ID for
-     * your AAD Application.
-     */
-    @JsonProperty(value = "applicationId")
+public final class AzureActiveDirectoryApplicationCredentials
+        implements JsonSerializable<AzureActiveDirectoryApplicationCredentials> {
     private String applicationId;
 
-    /*
-     * The authentication key of the specified AAD application.
-     */
-    @JsonProperty(value = "applicationSecret")
     private String applicationSecret;
 
     /**
@@ -73,5 +67,40 @@ public final class AzureActiveDirectoryApplicationCredentials {
     public AzureActiveDirectoryApplicationCredentials setApplicationSecret(String applicationSecret) {
         this.applicationSecret = applicationSecret;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId, false);
+        jsonWriter.writeStringField("applicationSecret", this.applicationSecret, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String applicationId = null;
+                    String applicationSecret = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("applicationId".equals(fieldName)) {
+                            applicationId = reader.getStringValue();
+                        } else if ("applicationSecret".equals(fieldName)) {
+                            applicationSecret = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    AzureActiveDirectoryApplicationCredentials deserializedValue =
+                            new AzureActiveDirectoryApplicationCredentials();
+                    deserializedValue.setApplicationId(applicationId);
+                    deserializedValue.setApplicationSecret(applicationSecret);
+
+                    return deserializedValue;
+                });
     }
 }

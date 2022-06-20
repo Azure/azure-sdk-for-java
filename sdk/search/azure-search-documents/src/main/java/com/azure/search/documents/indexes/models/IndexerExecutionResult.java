@@ -8,89 +8,41 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Represents the result of an individual indexer execution. */
 @Immutable
-public final class IndexerExecutionResult {
-    /*
-     * The outcome of this indexer execution.
-     */
-    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class IndexerExecutionResult implements JsonSerializable<IndexerExecutionResult> {
     private IndexerExecutionStatus status;
 
-    /*
-     * The outcome of this indexer execution.
-     */
-    @JsonProperty(value = "statusDetail", access = JsonProperty.Access.WRITE_ONLY)
     private IndexerExecutionStatusDetail statusDetail;
 
-    /*
-     * All of the state that defines and dictates the indexer's current
-     * execution.
-     */
-    @JsonProperty(value = "currentState", access = JsonProperty.Access.WRITE_ONLY)
     private IndexerCurrentState currentState;
 
-    /*
-     * The error message indicating the top-level error, if any.
-     */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /*
-     * The start time of this indexer execution.
-     */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
-    /*
-     * The end time of this indexer execution, if the execution has already
-     * completed.
-     */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
-    /*
-     * The item-level indexing errors.
-     */
-    @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexerError> errors;
 
-    /*
-     * The item-level indexing warnings.
-     */
-    @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchIndexerWarning> warnings;
 
-    /*
-     * The number of items that were processed during this indexer execution.
-     * This includes both successfully processed items and items where indexing
-     * was attempted but failed.
-     */
-    @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int itemCount;
 
-    /*
-     * The number of items that failed to be indexed during this indexer
-     * execution.
-     */
-    @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int failedItemCount;
 
-    /*
-     * Change tracking state with which an indexer execution started.
-     */
-    @JsonProperty(value = "initialTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String initialTrackingState;
 
-    /*
-     * Change tracking state with which an indexer execution finished.
-     */
-    @JsonProperty(value = "finalTrackingState", access = JsonProperty.Access.WRITE_ONLY)
     private String finalTrackingState;
 
     /**
@@ -102,18 +54,12 @@ public final class IndexerExecutionResult {
      * @param itemCount the itemCount value to set.
      * @param failedItemCount the failedItemCount value to set.
      */
-    @JsonCreator
     public IndexerExecutionResult(
-            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    IndexerExecutionStatus status,
-            @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerError> errors,
-            @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerWarning> warnings,
-            @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int itemCount,
-            @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int failedItemCount) {
+            IndexerExecutionStatus status,
+            List<SearchIndexerError> errors,
+            List<SearchIndexerWarning> warnings,
+            int itemCount,
+            int failedItemCount) {
         this.status = status;
         this.errors = errors;
         this.warnings = warnings;
@@ -228,5 +174,133 @@ public final class IndexerExecutionResult {
      */
     public String getFinalTrackingState() {
         return this.finalTrackingState;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString(), false);
+        JsonUtils.writeArray(jsonWriter, "errors", this.errors, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "warnings", this.warnings, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeIntField("itemsProcessed", this.itemCount);
+        jsonWriter.writeIntField("itemsFailed", this.failedItemCount);
+        jsonWriter.writeStringField(
+                "statusDetail", this.statusDetail == null ? null : this.statusDetail.toString(), false);
+        jsonWriter.writeJsonField("currentState", this.currentState, false);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage, false);
+        jsonWriter.writeStringField("startTime", this.startTime == null ? null : this.startTime.toString(), false);
+        jsonWriter.writeStringField("endTime", this.endTime == null ? null : this.endTime.toString(), false);
+        jsonWriter.writeStringField("initialTrackingState", this.initialTrackingState, false);
+        jsonWriter.writeStringField("finalTrackingState", this.finalTrackingState, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static IndexerExecutionResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean statusFound = false;
+                    IndexerExecutionStatus status = null;
+                    boolean errorsFound = false;
+                    List<SearchIndexerError> errors = null;
+                    boolean warningsFound = false;
+                    List<SearchIndexerWarning> warnings = null;
+                    boolean itemCountFound = false;
+                    int itemCount = 0;
+                    boolean failedItemCountFound = false;
+                    int failedItemCount = 0;
+                    IndexerExecutionStatusDetail statusDetail = null;
+                    IndexerCurrentState currentState = null;
+                    String errorMessage = null;
+                    OffsetDateTime startTime = null;
+                    OffsetDateTime endTime = null;
+                    String initialTrackingState = null;
+                    String finalTrackingState = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("status".equals(fieldName)) {
+                            status = IndexerExecutionStatus.fromString(reader.getStringValue());
+                            statusFound = true;
+                        } else if ("errors".equals(fieldName)) {
+                            errors =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SearchIndexerError.fromJson(reader)));
+                            errorsFound = true;
+                        } else if ("warnings".equals(fieldName)) {
+                            warnings =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SearchIndexerWarning.fromJson(reader)));
+                            warningsFound = true;
+                        } else if ("itemsProcessed".equals(fieldName)) {
+                            itemCount = reader.getIntValue();
+                            itemCountFound = true;
+                        } else if ("itemsFailed".equals(fieldName)) {
+                            failedItemCount = reader.getIntValue();
+                            failedItemCountFound = true;
+                        } else if ("statusDetail".equals(fieldName)) {
+                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getStringValue());
+                        } else if ("currentState".equals(fieldName)) {
+                            currentState =
+                                    JsonUtils.getNullableProperty(reader, r -> IndexerCurrentState.fromJson(reader));
+                        } else if ("errorMessage".equals(fieldName)) {
+                            errorMessage = reader.getStringValue();
+                        } else if ("startTime".equals(fieldName)) {
+                            startTime =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> OffsetDateTime.parse(reader.getStringValue()));
+                        } else if ("endTime".equals(fieldName)) {
+                            endTime =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> OffsetDateTime.parse(reader.getStringValue()));
+                        } else if ("initialTrackingState".equals(fieldName)) {
+                            initialTrackingState = reader.getStringValue();
+                        } else if ("finalTrackingState".equals(fieldName)) {
+                            finalTrackingState = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!statusFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!errorsFound) {
+                        missingProperties.add("errors");
+                    }
+                    if (!warningsFound) {
+                        missingProperties.add("warnings");
+                    }
+                    if (!itemCountFound) {
+                        missingProperties.add("itemsProcessed");
+                    }
+                    if (!failedItemCountFound) {
+                        missingProperties.add("itemsFailed");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    IndexerExecutionResult deserializedValue =
+                            new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
+                    deserializedValue.statusDetail = statusDetail;
+                    deserializedValue.currentState = currentState;
+                    deserializedValue.errorMessage = errorMessage;
+                    deserializedValue.startTime = startTime;
+                    deserializedValue.endTime = endTime;
+                    deserializedValue.initialTrackingState = initialTrackingState;
+                    deserializedValue.finalTrackingState = finalTrackingState;
+
+                    return deserializedValue;
+                });
     }
 }

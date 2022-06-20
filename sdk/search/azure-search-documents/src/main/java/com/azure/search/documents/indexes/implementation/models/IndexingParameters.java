@@ -8,40 +8,22 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.IndexingParametersConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents parameters for indexer execution. */
 @Fluent
-public final class IndexingParameters {
-    /*
-     * The number of items that are read from the data source and indexed as a
-     * single batch in order to improve performance. The default depends on the
-     * data source type.
-     */
-    @JsonProperty(value = "batchSize")
+public final class IndexingParameters implements JsonSerializable<IndexingParameters> {
     private Integer batchSize;
 
-    /*
-     * The maximum number of items that can fail indexing for indexer execution
-     * to still be considered successful. -1 means no limit. Default is 0.
-     */
-    @JsonProperty(value = "maxFailedItems")
     private Integer maxFailedItems;
 
-    /*
-     * The maximum number of items in a single batch that can fail indexing for
-     * the batch to still be considered successful. -1 means no limit. Default
-     * is 0.
-     */
-    @JsonProperty(value = "maxFailedItemsPerBatch")
     private Integer maxFailedItemsPerBatch;
 
-    /*
-     * A dictionary of indexer-specific configuration properties. Each name is
-     * the name of a specific property. Each value must be of a primitive type.
-     */
-    @JsonProperty(value = "configuration")
     private IndexingParametersConfiguration configuration;
 
     /**
@@ -130,5 +112,51 @@ public final class IndexingParameters {
     public IndexingParameters setConfiguration(IndexingParametersConfiguration configuration) {
         this.configuration = configuration;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntegerField("batchSize", this.batchSize, false);
+        jsonWriter.writeIntegerField("maxFailedItems", this.maxFailedItems, false);
+        jsonWriter.writeIntegerField("maxFailedItemsPerBatch", this.maxFailedItemsPerBatch, false);
+        jsonWriter.writeJsonField("configuration", this.configuration, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static IndexingParameters fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    Integer batchSize = null;
+                    Integer maxFailedItems = null;
+                    Integer maxFailedItemsPerBatch = null;
+                    IndexingParametersConfiguration configuration = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("batchSize".equals(fieldName)) {
+                            batchSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("maxFailedItems".equals(fieldName)) {
+                            maxFailedItems = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("maxFailedItemsPerBatch".equals(fieldName)) {
+                            maxFailedItemsPerBatch = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("configuration".equals(fieldName)) {
+                            configuration =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> IndexingParametersConfiguration.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    IndexingParameters deserializedValue = new IndexingParameters();
+                    deserializedValue.setBatchSize(batchSize);
+                    deserializedValue.setMaxFailedItems(maxFailedItems);
+                    deserializedValue.setMaxFailedItemsPerBatch(maxFailedItemsPerBatch);
+                    deserializedValue.setConfiguration(configuration);
+
+                    return deserializedValue;
+                });
     }
 }

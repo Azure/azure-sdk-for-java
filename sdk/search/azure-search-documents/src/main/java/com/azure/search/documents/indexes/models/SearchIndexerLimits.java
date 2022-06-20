@@ -8,31 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.time.Duration;
 
 /** The SearchIndexerLimits model. */
 @Immutable
-public final class SearchIndexerLimits {
-    /*
-     * The maximum duration that the indexer is permitted to run for one
-     * execution.
-     */
-    @JsonProperty(value = "maxRunTime", access = JsonProperty.Access.WRITE_ONLY)
+public final class SearchIndexerLimits implements JsonSerializable<SearchIndexerLimits> {
     private Duration maxRunTime;
 
-    /*
-     * The maximum size of a document, in bytes, which will be considered valid
-     * for indexing.
-     */
-    @JsonProperty(value = "maxDocumentExtractionSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxDocumentExtractionSize;
 
-    /*
-     * The maximum number of characters that will be extracted from a document
-     * picked up for indexing.
-     */
-    @JsonProperty(value = "maxDocumentContentCharactersToExtract", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxDocumentContentCharactersToExtract;
 
     /**
@@ -62,5 +51,48 @@ public final class SearchIndexerLimits {
      */
     public Long getMaxDocumentContentCharactersToExtract() {
         return this.maxDocumentContentCharactersToExtract;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("maxRunTime", this.maxRunTime == null ? null : this.maxRunTime.toString(), false);
+        jsonWriter.writeLongField("maxDocumentExtractionSize", this.maxDocumentExtractionSize, false);
+        jsonWriter.writeLongField(
+                "maxDocumentContentCharactersToExtract", this.maxDocumentContentCharactersToExtract, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerLimits fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    Duration maxRunTime = null;
+                    Long maxDocumentExtractionSize = null;
+                    Long maxDocumentContentCharactersToExtract = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("maxRunTime".equals(fieldName)) {
+                            maxRunTime =
+                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                        } else if ("maxDocumentExtractionSize".equals(fieldName)) {
+                            maxDocumentExtractionSize =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                        } else if ("maxDocumentContentCharactersToExtract".equals(fieldName)) {
+                            maxDocumentContentCharactersToExtract =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndexerLimits deserializedValue = new SearchIndexerLimits();
+                    deserializedValue.maxRunTime = maxRunTime;
+                    deserializedValue.maxDocumentExtractionSize = maxDocumentExtractionSize;
+                    deserializedValue.maxDocumentContentCharactersToExtract = maxDocumentContentCharactersToExtract;
+
+                    return deserializedValue;
+                });
     }
 }

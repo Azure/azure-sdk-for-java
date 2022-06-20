@@ -39,7 +39,11 @@ public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<Image
         return fromString(name, ImageAnalysisSkillLanguage.class);
     }
 
-    /** @return known ImageAnalysisSkillLanguage values. */
+    /**
+     * Gets known ImageAnalysisSkillLanguage values.
+     *
+     * @return known ImageAnalysisSkillLanguage values.
+     */
     public static Collection<ImageAnalysisSkillLanguage> values() {
         return values(ImageAnalysisSkillLanguage.class);
     }

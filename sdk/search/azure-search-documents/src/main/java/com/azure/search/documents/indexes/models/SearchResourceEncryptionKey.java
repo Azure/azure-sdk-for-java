@@ -8,53 +8,30 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.AzureActiveDirectoryApplicationCredentials;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A customer-managed encryption key in Azure Key Vault. Keys that you create and manage can be used to encrypt or
  * decrypt data-at-rest in Azure Cognitive Search, such as indexes and synonym maps.
  */
 @Fluent
-public final class SearchResourceEncryptionKey {
-    /*
-     * The name of your Azure Key Vault key to be used to encrypt your data at
-     * rest.
-     */
-    @JsonProperty(value = "keyVaultKeyName", required = true)
+public final class SearchResourceEncryptionKey implements JsonSerializable<SearchResourceEncryptionKey> {
     private String keyName;
 
-    /*
-     * The version of your Azure Key Vault key to be used to encrypt your data
-     * at rest.
-     */
-    @JsonProperty(value = "keyVaultKeyVersion", required = true)
     private String keyVersion;
 
-    /*
-     * The URI of your Azure Key Vault, also referred to as DNS name, that
-     * contains the key to be used to encrypt your data at rest. An example URI
-     * might be https://my-keyvault-name.vault.azure.net.
-     */
-    @JsonProperty(value = "keyVaultUri", required = true)
     private String vaultUrl;
 
-    /*
-     * Optional Azure Active Directory credentials used for accessing your
-     * Azure Key Vault. Not required if using managed identity instead.
-     */
-    @JsonProperty(value = "accessCredentials")
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
-    /*
-     * An explicit managed identity to use for this encryption key. If not
-     * specified and the access credentials property is null, the
-     * system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is
-     * specified, the value of this property is cleared.
-     */
-    @JsonProperty(value = "identity")
     private SearchIndexerDataIdentity identity;
 
     /**
@@ -64,11 +41,7 @@ public final class SearchResourceEncryptionKey {
      * @param keyVersion the keyVersion value to set.
      * @param vaultUrl the vaultUrl value to set.
      */
-    @JsonCreator
-    public SearchResourceEncryptionKey(
-            @JsonProperty(value = "keyVaultKeyName", required = true) String keyName,
-            @JsonProperty(value = "keyVaultKeyVersion", required = true) String keyVersion,
-            @JsonProperty(value = "keyVaultUri", required = true) String vaultUrl) {
+    public SearchResourceEncryptionKey(String keyName, String keyVersion, String vaultUrl) {
         this.keyName = keyName;
         this.keyVersion = keyVersion;
         this.vaultUrl = vaultUrl;
@@ -103,6 +76,19 @@ public final class SearchResourceEncryptionKey {
     }
 
     /**
+     * Set the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
+     * Vault. Not required if using managed identity instead.
+     *
+     * @param accessCredentials the accessCredentials value to set.
+     * @return the SearchResourceEncryptionKey object itself.
+     */
+    private SearchResourceEncryptionKey setAccessCredentials(
+            AzureActiveDirectoryApplicationCredentials accessCredentials) {
+        this.accessCredentials = accessCredentials;
+        return this;
+    }
+
+    /**
      * Get the identity property: An explicit managed identity to use for this encryption key. If not specified and the
      * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
      * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
@@ -126,6 +112,78 @@ public final class SearchResourceEncryptionKey {
     public SearchResourceEncryptionKey setIdentity(SearchIndexerDataIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultKeyName", this.keyName, false);
+        jsonWriter.writeStringField("keyVaultKeyVersion", this.keyVersion, false);
+        jsonWriter.writeStringField("keyVaultUri", this.vaultUrl, false);
+        jsonWriter.writeJsonField("accessCredentials", this.accessCredentials, false);
+        jsonWriter.writeJsonField("identity", this.identity, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean keyNameFound = false;
+                    String keyName = null;
+                    boolean keyVersionFound = false;
+                    String keyVersion = null;
+                    boolean vaultUrlFound = false;
+                    String vaultUrl = null;
+                    AzureActiveDirectoryApplicationCredentials accessCredentials = null;
+                    SearchIndexerDataIdentity identity = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("keyVaultKeyName".equals(fieldName)) {
+                            keyName = reader.getStringValue();
+                            keyNameFound = true;
+                        } else if ("keyVaultKeyVersion".equals(fieldName)) {
+                            keyVersion = reader.getStringValue();
+                            keyVersionFound = true;
+                        } else if ("keyVaultUri".equals(fieldName)) {
+                            vaultUrl = reader.getStringValue();
+                            vaultUrlFound = true;
+                        } else if ("accessCredentials".equals(fieldName)) {
+                            accessCredentials =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> AzureActiveDirectoryApplicationCredentials.fromJson(reader));
+                        } else if ("identity".equals(fieldName)) {
+                            identity =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchIndexerDataIdentity.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!keyNameFound) {
+                        missingProperties.add("keyVaultKeyName");
+                    }
+                    if (!keyVersionFound) {
+                        missingProperties.add("keyVaultKeyVersion");
+                    }
+                    if (!vaultUrlFound) {
+                        missingProperties.add("keyVaultUri");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchResourceEncryptionKey deserializedValue =
+                            new SearchResourceEncryptionKey(keyName, keyVersion, vaultUrl);
+                    deserializedValue.setAccessCredentials(accessCredentials);
+                    deserializedValue.setIdentity(identity);
+
+                    return deserializedValue;
+                });
     }
 
     /**

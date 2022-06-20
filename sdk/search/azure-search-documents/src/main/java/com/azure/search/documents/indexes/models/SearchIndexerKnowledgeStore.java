@@ -8,24 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Definition of additional projections to azure blob, table, or files, of enriched data. */
 @Fluent
-public final class SearchIndexerKnowledgeStore {
-    /*
-     * The connection string to the storage account projections will be stored
-     * in.
-     */
-    @JsonProperty(value = "storageConnectionString", required = true)
+public final class SearchIndexerKnowledgeStore implements JsonSerializable<SearchIndexerKnowledgeStore> {
     private String storageConnectionString;
 
-    /*
-     * A list of additional projections to perform during indexing.
-     */
-    @JsonProperty(value = "projections", required = true)
     private List<SearchIndexerKnowledgeStoreProjection> projections;
 
     /**
@@ -34,11 +30,8 @@ public final class SearchIndexerKnowledgeStore {
      * @param storageConnectionString the storageConnectionString value to set.
      * @param projections the projections value to set.
      */
-    @JsonCreator
     public SearchIndexerKnowledgeStore(
-            @JsonProperty(value = "storageConnectionString", required = true) String storageConnectionString,
-            @JsonProperty(value = "projections", required = true)
-                    List<SearchIndexerKnowledgeStoreProjection> projections) {
+            String storageConnectionString, List<SearchIndexerKnowledgeStoreProjection> projections) {
         this.storageConnectionString = storageConnectionString;
         this.projections = projections;
     }
@@ -60,5 +53,63 @@ public final class SearchIndexerKnowledgeStore {
      */
     public List<SearchIndexerKnowledgeStoreProjection> getProjections() {
         return this.projections;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString, false);
+        JsonUtils.writeArray(
+                jsonWriter, "projections", this.projections, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerKnowledgeStore fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean storageConnectionStringFound = false;
+                    String storageConnectionString = null;
+                    boolean projectionsFound = false;
+                    List<SearchIndexerKnowledgeStoreProjection> projections = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storageConnectionString".equals(fieldName)) {
+                            storageConnectionString = reader.getStringValue();
+                            storageConnectionStringFound = true;
+                        } else if ("projections".equals(fieldName)) {
+                            projections =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r,
+                                                            r1 ->
+                                                                    SearchIndexerKnowledgeStoreProjection.fromJson(
+                                                                            reader)));
+                            projectionsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!storageConnectionStringFound) {
+                        missingProperties.add("storageConnectionString");
+                    }
+                    if (!projectionsFound) {
+                        missingProperties.add("projections");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchIndexerKnowledgeStore deserializedValue =
+                            new SearchIndexerKnowledgeStore(storageConnectionString, projections);
+
+                    return deserializedValue;
+                });
     }
 }

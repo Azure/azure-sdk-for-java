@@ -8,25 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents information about the entity (such as Azure SQL table or CosmosDB collection) that will be indexed. */
 @Fluent
-public final class SearchIndexerDataContainer {
-    /*
-     * The name of the table or view (for Azure SQL data source) or collection
-     * (for CosmosDB data source) that will be indexed.
-     */
-    @JsonProperty(value = "name", required = true)
+public final class SearchIndexerDataContainer implements JsonSerializable<SearchIndexerDataContainer> {
     private String name;
 
-    /*
-     * A query that is applied to this data container. The syntax and meaning
-     * of this parameter is datasource-specific. Not supported by Azure SQL
-     * datasources.
-     */
-    @JsonProperty(value = "query")
     private String query;
 
     /**
@@ -34,8 +29,7 @@ public final class SearchIndexerDataContainer {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public SearchIndexerDataContainer(@JsonProperty(value = "name", required = true) String name) {
+    public SearchIndexerDataContainer(String name) {
         this.name = name;
     }
 
@@ -69,5 +63,49 @@ public final class SearchIndexerDataContainer {
     public SearchIndexerDataContainer setQuery(String query) {
         this.query = query;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("query", this.query, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerDataContainer fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String query = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("query".equals(fieldName)) {
+                            query = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchIndexerDataContainer deserializedValue = new SearchIndexerDataContainer(name);
+                    deserializedValue.setQuery(query);
+
+                    return deserializedValue;
+                });
     }
 }

@@ -42,7 +42,11 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
         return fromString(name, BlobIndexerParsingMode.class);
     }
 
-    /** @return known BlobIndexerParsingMode values. */
+    /**
+     * Gets known BlobIndexerParsingMode values.
+     *
+     * @return known BlobIndexerParsingMode values.
+     */
     public static Collection<BlobIndexerParsingMode> values() {
         return values(BlobIndexerParsingMode.class);
     }

@@ -8,18 +8,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a list skillset request. If successful, it includes the full definitions of all skillsets. */
 @Immutable
-public final class ListSkillsetsResult {
-    /*
-     * The skillsets defined in the Search service.
-     */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class ListSkillsetsResult implements JsonSerializable<ListSkillsetsResult> {
     private List<SearchIndexerSkillset> skillsets;
 
     /**
@@ -27,10 +28,7 @@ public final class ListSkillsetsResult {
      *
      * @param skillsets the skillsets value to set.
      */
-    @JsonCreator
-    public ListSkillsetsResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchIndexerSkillset> skillsets) {
+    public ListSkillsetsResult(List<SearchIndexerSkillset> skillsets) {
         this.skillsets = skillsets;
     }
 
@@ -41,5 +39,50 @@ public final class ListSkillsetsResult {
      */
     public List<SearchIndexerSkillset> getSkillsets() {
         return this.skillsets;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(
+                jsonWriter, "value", this.skillsets, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ListSkillsetsResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean skillsetsFound = false;
+                    List<SearchIndexerSkillset> skillsets = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            skillsets =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SearchIndexerSkillset.fromJson(reader)));
+                            skillsetsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!skillsetsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ListSkillsetsResult deserializedValue = new ListSkillsetsResult(skillsets);
+
+                    return deserializedValue;
+                });
     }
 }

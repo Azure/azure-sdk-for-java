@@ -72,7 +72,11 @@ public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum
         return fromString(name, KeyPhraseExtractionSkillLanguage.class);
     }
 
-    /** @return known KeyPhraseExtractionSkillLanguage values. */
+    /**
+     * Gets known KeyPhraseExtractionSkillLanguage values.
+     *
+     * @return known KeyPhraseExtractionSkillLanguage values.
+     */
     public static Collection<KeyPhraseExtractionSkillLanguage> values() {
         return values(KeyPhraseExtractionSkillLanguage.class);
     }

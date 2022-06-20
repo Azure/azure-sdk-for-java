@@ -8,36 +8,24 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Input field mapping for a skill. */
 @Fluent
-public final class InputFieldMappingEntry {
-    /*
-     * The name of the input.
-     */
-    @JsonProperty(value = "name", required = true)
+public final class InputFieldMappingEntry implements JsonSerializable<InputFieldMappingEntry> {
     private String name;
 
-    /*
-     * The source of the input.
-     */
-    @JsonProperty(value = "source")
     private String source;
 
-    /*
-     * The source context used for selecting recursive inputs.
-     */
-    @JsonProperty(value = "sourceContext")
     private String sourceContext;
 
-    /*
-     * The recursive inputs used when creating a complex type.
-     */
-    @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
 
     /**
@@ -45,8 +33,7 @@ public final class InputFieldMappingEntry {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
+    public InputFieldMappingEntry(String name) {
         this.name = name;
     }
 
@@ -114,10 +101,68 @@ public final class InputFieldMappingEntry {
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    @JsonSetter
     public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("source", this.source, false);
+        jsonWriter.writeStringField("sourceContext", this.sourceContext, false);
+        JsonUtils.writeArray(jsonWriter, "inputs", this.inputs, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static InputFieldMappingEntry fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String source = null;
+                    String sourceContext = null;
+                    List<InputFieldMappingEntry> inputs = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("source".equals(fieldName)) {
+                            source = reader.getStringValue();
+                        } else if ("sourceContext".equals(fieldName)) {
+                            sourceContext = reader.getStringValue();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    InputFieldMappingEntry deserializedValue = new InputFieldMappingEntry(name);
+                    deserializedValue.setSource(source);
+                    deserializedValue.setSourceContext(sourceContext);
+                    deserializedValue.setInputs(inputs);
+
+                    return deserializedValue;
+                });
     }
 
     /**

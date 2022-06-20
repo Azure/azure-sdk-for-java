@@ -8,33 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Defines a function that boosts scores of documents with string values matching a given list of tags. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
-@JsonTypeName("tag")
 @Fluent
 public final class TagScoringFunction extends ScoringFunction {
-    /*
-     * Indicates the type of function to use. Valid values include magnitude,
-     * freshness, distance, and tag. The function type must be lower case.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "tag";
 
-    /*
-     * Parameter values for the tag scoring function.
-     */
-    @JsonProperty(value = "tag", required = true)
     private TagScoringParameters parameters;
 
     /**
@@ -44,11 +31,7 @@ public final class TagScoringFunction extends ScoringFunction {
      * @param boost the boost value to set.
      * @param parameters the parameters value to set.
      */
-    @JsonCreator
-    public TagScoringFunction(
-            @JsonProperty(value = "fieldName", required = true) String fieldName,
-            @JsonProperty(value = "boost", required = true) double boost,
-            @JsonProperty(value = "tag", required = true) TagScoringParameters parameters) {
+    public TagScoringFunction(String fieldName, double boost, TagScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }
@@ -60,5 +43,83 @@ public final class TagScoringFunction extends ScoringFunction {
      */
     public TagScoringParameters getParameters() {
         return this.parameters;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type);
+        jsonWriter.writeStringField("fieldName", getFieldName(), false);
+        jsonWriter.writeDoubleField("boost", getBoost());
+        jsonWriter.writeStringField(
+                "interpolation", getInterpolation() == null ? null : getInterpolation().toString(), false);
+        jsonWriter.writeJsonField("tag", this.parameters, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static TagScoringFunction fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean typeFound = false;
+                    String type = null;
+                    boolean fieldNameFound = false;
+                    String fieldName = null;
+                    boolean boostFound = false;
+                    double boost = 0.0;
+                    ScoringFunctionInterpolation interpolation = null;
+                    boolean parametersFound = false;
+                    TagScoringParameters parameters = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String jsonFieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("type".equals(jsonFieldName)) {
+                            typeFound = true;
+                            type = reader.getStringValue();
+                        } else if ("fieldName".equals(jsonFieldName)) {
+                            fieldName = reader.getStringValue();
+                            fieldNameFound = true;
+                        } else if ("boost".equals(jsonFieldName)) {
+                            boost = reader.getDoubleValue();
+                            boostFound = true;
+                        } else if ("interpolation".equals(jsonFieldName)) {
+                            interpolation = ScoringFunctionInterpolation.fromString(reader.getStringValue());
+                        } else if ("tag".equals(jsonFieldName)) {
+                            parameters =
+                                    JsonUtils.getNullableProperty(reader, r -> TagScoringParameters.fromJson(reader));
+                            parametersFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!typeFound || !Objects.equals(type, "tag")) {
+                        throw new IllegalStateException(
+                                "'type' was expected to be non-null and equal to 'tag'. The found 'type' was '"
+                                        + type
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!fieldNameFound) {
+                        missingProperties.add("fieldName");
+                    }
+                    if (!boostFound) {
+                        missingProperties.add("boost");
+                    }
+                    if (!parametersFound) {
+                        missingProperties.add("tag");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    TagScoringFunction deserializedValue = new TagScoringFunction(fieldName, boost, parameters);
+                    deserializedValue.setInterpolation(interpolation);
+
+                    return deserializedValue;
+                });
     }
 }

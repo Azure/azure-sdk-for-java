@@ -8,89 +8,39 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a datasource definition, which can be used to configure an indexer. */
 @Fluent
-public final class SearchIndexerDataSource {
-    /*
-     * The name of the datasource.
-     */
-    @JsonProperty(value = "name")
+public final class SearchIndexerDataSource implements JsonSerializable<SearchIndexerDataSource> {
     private String name;
 
-    /*
-     * The description of the datasource.
-     */
-    @JsonProperty(value = "description")
     private String description;
 
-    /*
-     * The type of the datasource.
-     */
-    @JsonProperty(value = "type")
     private SearchIndexerDataSourceType type;
 
-    /*
-     * Credentials for the datasource.
-     */
-    @JsonProperty(value = "credentials")
     private DataSourceCredentials credentials;
 
-    /*
-     * The data container for the datasource.
-     */
-    @JsonProperty(value = "container")
     private SearchIndexerDataContainer container;
 
-    /*
-     * An explicit managed identity to use for this datasource. If not
-     * specified and the connection string is a managed identity, the
-     * system-assigned managed identity is used. If not specified, the value
-     * remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
-     */
-    @JsonProperty(value = "identity")
     private SearchIndexerDataIdentity identity;
 
-    /*
-     * The data change detection policy for the datasource.
-     */
-    @JsonProperty(value = "dataChangeDetectionPolicy")
     private DataChangeDetectionPolicy dataChangeDetectionPolicy;
 
-    /*
-     * The data deletion detection policy for the datasource.
-     */
-    @JsonProperty(value = "dataDeletionDetectionPolicy")
     private DataDeletionDetectionPolicy dataDeletionDetectionPolicy;
 
-    /*
-     * The ETag of the data source.
-     */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
-    /*
-     * A description of an encryption key that you create in Azure Key Vault.
-     * This key is used to provide an additional level of encryption-at-rest
-     * for your datasource definition when you want full assurance that no one,
-     * not even Microsoft, can decrypt your data source definition in Azure
-     * Cognitive Search. Once you have encrypted your data source definition,
-     * it will always remain encrypted. Azure Cognitive Search will ignore
-     * attempts to set this property to null. You can change this property as
-     * needed if you want to rotate your encryption key; Your datasource
-     * definition will be unaffected. Encryption with customer-managed keys is
-     * not available for free search services, and is only available for paid
-     * services created on or after January 1, 2019.
-     */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
     /**
@@ -308,5 +258,90 @@ public final class SearchIndexerDataSource {
     public SearchIndexerDataSource setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("description", this.description, false);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString(), false);
+        jsonWriter.writeJsonField("credentials", this.credentials, false);
+        jsonWriter.writeJsonField("container", this.container, false);
+        jsonWriter.writeJsonField("identity", this.identity, false);
+        jsonWriter.writeJsonField("dataChangeDetectionPolicy", this.dataChangeDetectionPolicy, false);
+        jsonWriter.writeJsonField("dataDeletionDetectionPolicy", this.dataDeletionDetectionPolicy, false);
+        jsonWriter.writeStringField("@odata.etag", this.eTag, false);
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerDataSource fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String name = null;
+                    String description = null;
+                    SearchIndexerDataSourceType type = null;
+                    DataSourceCredentials credentials = null;
+                    SearchIndexerDataContainer container = null;
+                    SearchIndexerDataIdentity identity = null;
+                    DataChangeDetectionPolicy dataChangeDetectionPolicy = null;
+                    DataDeletionDetectionPolicy dataDeletionDetectionPolicy = null;
+                    String eTag = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else if ("type".equals(fieldName)) {
+                            type = SearchIndexerDataSourceType.fromString(reader.getStringValue());
+                        } else if ("credentials".equals(fieldName)) {
+                            credentials =
+                                    JsonUtils.getNullableProperty(reader, r -> DataSourceCredentials.fromJson(reader));
+                        } else if ("container".equals(fieldName)) {
+                            container =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchIndexerDataContainer.fromJson(reader));
+                        } else if ("identity".equals(fieldName)) {
+                            identity =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchIndexerDataIdentity.fromJson(reader));
+                        } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
+                            dataChangeDetectionPolicy =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> DataChangeDetectionPolicy.fromJson(reader));
+                        } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
+                            dataDeletionDetectionPolicy =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> DataDeletionDetectionPolicy.fromJson(reader));
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getStringValue();
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndexerDataSource deserializedValue = new SearchIndexerDataSource();
+                    deserializedValue.setName(name);
+                    deserializedValue.setDescription(description);
+                    deserializedValue.setType(type);
+                    deserializedValue.setCredentials(credentials);
+                    deserializedValue.setContainer(container);
+                    deserializedValue.setIdentity(identity);
+                    deserializedValue.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
+                    deserializedValue.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
+                    deserializedValue.setETag(eTag);
+                    deserializedValue.setEncryptionKey(encryptionKey);
+
+                    return deserializedValue;
+                });
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Represents parameters for indexer execution.
@@ -146,85 +148,96 @@ public final class IndexingParameters {
 
         IndexingParametersConfiguration configuration = new IndexingParametersConfiguration();
 
+        Map<String, Object> additionalProperties = null;
         for (Map.Entry<String, Object> kvp : this.configuration.entrySet()) {
             String key = kvp.getKey();
             if (key == null) {
                 continue;
             }
 
-            String value = (kvp.getValue() == null) ? null : String.valueOf(kvp.getValue());
+            Object value = kvp.getValue();
             switch (key) {
                 case "parsingMode":
-                    configuration.setParsingMode(BlobIndexerParsingMode.fromString(value));
+                    configuration.setParsingMode(converter(value, BlobIndexerParsingMode::fromString));
                     break;
 
                 case "excludedFileNameExtensions":
-                    configuration.setExcludedFileNameExtensions(value);
+                    configuration.setExcludedFileNameExtensions(converter(value, Function.identity()));
                     break;
 
                 case "indexedFileNameExtensions":
-                    configuration.setIndexedFileNameExtensions(value);
+                    configuration.setIndexedFileNameExtensions(converter(value, Function.identity()));
                     break;
 
                 case "failOnUnsupportedContentType":
-                    configuration.setFailOnUnsupportedContentType(Boolean.valueOf(value));
+                    configuration.setFailOnUnsupportedContentType(converter(value, Boolean::parseBoolean));
                     break;
 
                 case "failOnUnprocessableDocument":
-                    configuration.setFailOnUnprocessableDocument(Boolean.valueOf(value));
+                    configuration.setFailOnUnprocessableDocument(converter(value, Boolean::parseBoolean));
                     break;
 
                 case "indexStorageMetadataOnlyForOversizedDocuments":
-                    configuration.setIndexStorageMetadataOnlyForOversizedDocuments(Boolean.valueOf(value));
+                    configuration.setIndexStorageMetadataOnlyForOversizedDocuments(
+                        converter(value, Boolean::parseBoolean));
                     break;
 
                 case "delimitedTextHeaders":
-                    configuration.setDelimitedTextHeaders(value);
+                    configuration.setDelimitedTextHeaders(converter(value, Function.identity()));
                     break;
 
                 case "delimitedTextDelimiter":
-                    configuration.setDelimitedTextDelimiter(value);
+                    configuration.setDelimitedTextDelimiter(converter(value, Function.identity()));
                     break;
 
                 case "firstLineContainsHeaders":
-                    configuration.setFirstLineContainsHeaders(Boolean.valueOf(value));
+                    configuration.setFirstLineContainsHeaders(converter(value, Boolean::parseBoolean));
                     break;
 
                 case "documentRoot":
-                    configuration.setDocumentRoot(value);
+                    configuration.setDocumentRoot(converter(value, Function.identity()));
                     break;
 
                 case "dataToExtract":
-                    configuration.setDataToExtract(BlobIndexerDataToExtract.fromString(value));
+                    configuration.setDataToExtract(converter(value, BlobIndexerDataToExtract::fromString));
                     break;
 
                 case "imageAction":
-                    configuration.setImageAction(BlobIndexerImageAction.fromString(value));
+                    configuration.setImageAction(converter(value, BlobIndexerImageAction::fromString));
                     break;
 
                 case "allowSkillsetToReadFileData":
-                    configuration.setAllowSkillsetToReadFileData(Boolean.valueOf(value));
+                    configuration.setAllowSkillsetToReadFileData(converter(value, Boolean::parseBoolean));
                     break;
 
                 case "pdfTextRotationAlgorithm":
-                    configuration.setPdfTextRotationAlgorithm(BlobIndexerPdfTextRotationAlgorithm.fromString(value));
+                    configuration.setPdfTextRotationAlgorithm(
+                        converter(value, BlobIndexerPdfTextRotationAlgorithm::fromString));
                     break;
 
                 case "executionEnvironment":
-                    configuration.setExecutionEnvironment(IndexerExecutionEnvironment.fromString(value));
+                    configuration.setExecutionEnvironment(converter(value, IndexerExecutionEnvironment::fromString));
                     break;
 
                 case "queryTimeout":
-                    configuration.setQueryTimeout(value);
+                    configuration.setQueryTimeout(converter(value, Function.identity()));
                     break;
 
                 default:
-                    configuration.setAdditionalProperties(key, value);
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(key, value);
                     break;
             }
         }
 
-        return configuration;
+        return configuration.setAdditionalProperties(additionalProperties);
+    }
+
+    static <T> T converter(Object value, Function<String, T> conv) {
+        return value == null ? null : conv.apply(String.valueOf(value));
     }
 
     /**

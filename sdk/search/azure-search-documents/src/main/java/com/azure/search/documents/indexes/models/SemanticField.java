@@ -8,15 +8,15 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** A field that is used as part of the semantic configuration. */
 @Fluent
-public final class SemanticField {
-    /*
-     * The fieldName property.
-     */
-    @JsonProperty(value = "fieldName")
+public final class SemanticField implements JsonSerializable<SemanticField> {
     private String fieldName;
 
     /**
@@ -37,5 +37,34 @@ public final class SemanticField {
     public SemanticField setFieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fieldName", this.fieldName, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SemanticField fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String fieldName = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String jsonFieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("fieldName".equals(jsonFieldName)) {
+                            fieldName = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SemanticField deserializedValue = new SemanticField();
+                    deserializedValue.setFieldName(fieldName);
+
+                    return deserializedValue;
+                });
     }
 }

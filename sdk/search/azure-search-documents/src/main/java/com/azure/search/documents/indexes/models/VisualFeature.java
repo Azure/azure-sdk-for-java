@@ -45,7 +45,11 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
         return fromString(name, VisualFeature.class);
     }
 
-    /** @return known VisualFeature values. */
+    /**
+     * Gets known VisualFeature values.
+     *
+     * @return known VisualFeature values.
+     */
     public static Collection<VisualFeature> values() {
         return values(VisualFeature.class);
     }

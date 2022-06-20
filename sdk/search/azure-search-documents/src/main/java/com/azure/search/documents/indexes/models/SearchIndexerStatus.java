@@ -8,36 +8,24 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Represents the current status and execution history of an indexer. */
 @Immutable
-public final class SearchIndexerStatus {
-    /*
-     * Overall indexer status.
-     */
-    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class SearchIndexerStatus implements JsonSerializable<SearchIndexerStatus> {
     private IndexerStatus status;
 
-    /*
-     * The result of the most recent or an in-progress indexer execution.
-     */
-    @JsonProperty(value = "lastResult", access = JsonProperty.Access.WRITE_ONLY)
     private IndexerExecutionResult lastResult;
 
-    /*
-     * History of the recent indexer executions, sorted in reverse
-     * chronological order.
-     */
-    @JsonProperty(value = "executionHistory", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<IndexerExecutionResult> executionHistory;
 
-    /*
-     * The execution limits for the indexer.
-     */
-    @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private SearchIndexerLimits limits;
 
     /**
@@ -47,14 +35,8 @@ public final class SearchIndexerStatus {
      * @param executionHistory the executionHistory value to set.
      * @param limits the limits value to set.
      */
-    @JsonCreator
     public SearchIndexerStatus(
-            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    IndexerStatus status,
-            @JsonProperty(value = "executionHistory", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<IndexerExecutionResult> executionHistory,
-            @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    SearchIndexerLimits limits) {
+            IndexerStatus status, List<IndexerExecutionResult> executionHistory, SearchIndexerLimits limits) {
         this.status = status;
         this.executionHistory = executionHistory;
         this.limits = limits;
@@ -95,5 +77,77 @@ public final class SearchIndexerStatus {
      */
     public SearchIndexerLimits getLimits() {
         return this.limits;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString(), false);
+        JsonUtils.writeArray(
+                jsonWriter,
+                "executionHistory",
+                this.executionHistory,
+                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeJsonField("limits", this.limits, false);
+        jsonWriter.writeJsonField("lastResult", this.lastResult, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerStatus fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean statusFound = false;
+                    IndexerStatus status = null;
+                    boolean executionHistoryFound = false;
+                    List<IndexerExecutionResult> executionHistory = null;
+                    boolean limitsFound = false;
+                    SearchIndexerLimits limits = null;
+                    IndexerExecutionResult lastResult = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("status".equals(fieldName)) {
+                            status = IndexerStatus.fromString(reader.getStringValue());
+                            statusFound = true;
+                        } else if ("executionHistory".equals(fieldName)) {
+                            executionHistory =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> IndexerExecutionResult.fromJson(reader)));
+                            executionHistoryFound = true;
+                        } else if ("limits".equals(fieldName)) {
+                            limits = JsonUtils.getNullableProperty(reader, r -> SearchIndexerLimits.fromJson(reader));
+                            limitsFound = true;
+                        } else if ("lastResult".equals(fieldName)) {
+                            lastResult =
+                                    JsonUtils.getNullableProperty(reader, r -> IndexerExecutionResult.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!statusFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!executionHistoryFound) {
+                        missingProperties.add("executionHistory");
+                    }
+                    if (!limitsFound) {
+                        missingProperties.add("limits");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchIndexerStatus deserializedValue = new SearchIndexerStatus(status, executionHistory, limits);
+                    deserializedValue.lastResult = lastResult;
+
+                    return deserializedValue;
+                });
     }
 }

@@ -8,52 +8,28 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.RegexFlags;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache
  * Lucene.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
 @Fluent
 public final class PatternTokenizer extends LexicalTokenizer {
-    /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
 
-    /*
-     * A regular expression pattern to match token separators. Default is an
-     * expression that matches one or more non-word characters.
-     */
-    @JsonProperty(value = "pattern")
     private String pattern;
 
-    /*
-     * Regular expression flags.
-     */
-    @JsonProperty(value = "flags")
     private RegexFlags flags;
 
-    /*
-     * The zero-based ordinal of the matching group in the regular expression
-     * pattern to extract into tokens. Use -1 if you want to use the entire
-     * pattern to split the input into tokens, irrespective of matching groups.
-     * Default is -1.
-     */
-    @JsonProperty(value = "group")
     private Integer group;
 
     /**
@@ -61,18 +37,8 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public PatternTokenizer(@JsonProperty(value = "name", required = true) String name) {
+    public PatternTokenizer(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the tokenizer.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -139,5 +105,73 @@ public final class PatternTokenizer extends LexicalTokenizer {
     public PatternTokenizer setGroup(Integer group) {
         this.group = group;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeStringField("pattern", this.pattern, false);
+        jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString(), false);
+        jsonWriter.writeIntegerField("group", this.group, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static PatternTokenizer fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    String pattern = null;
+                    RegexFlags flags = null;
+                    Integer group = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("pattern".equals(fieldName)) {
+                            pattern = reader.getStringValue();
+                        } else if ("flags".equals(fieldName)) {
+                            flags = RegexFlags.fromString(reader.getStringValue());
+                        } else if ("group".equals(fieldName)) {
+                            group = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.PatternTokenizer")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternTokenizer'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    PatternTokenizer deserializedValue = new PatternTokenizer(name);
+                    deserializedValue.setPattern(pattern);
+                    deserializedValue.setFlags(flags);
+                    deserializedValue.setGroup(group);
+
+                    return deserializedValue;
+                });
     }
 }

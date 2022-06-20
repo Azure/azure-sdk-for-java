@@ -42,7 +42,11 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
         return fromString(name, SearchIndexerDataSourceType.class);
     }
 
-    /** @return known SearchIndexerDataSourceType values. */
+    /**
+     * Gets known SearchIndexerDataSourceType values.
+     *
+     * @return known SearchIndexerDataSourceType values.
+     */
     public static Collection<SearchIndexerDataSourceType> values() {
         return values(SearchIndexerDataSourceType.class);
     }

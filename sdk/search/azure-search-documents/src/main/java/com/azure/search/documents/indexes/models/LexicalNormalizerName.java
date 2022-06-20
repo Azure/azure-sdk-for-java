@@ -39,7 +39,11 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
         return fromString(name, LexicalNormalizerName.class);
     }
 
-    /** @return known LexicalNormalizerName values. */
+    /**
+     * Gets known LexicalNormalizerName values.
+     *
+     * @return known LexicalNormalizerName values.
+     */
     public static Collection<LexicalNormalizerName> values() {
         return values(LexicalNormalizerName.class);
     }

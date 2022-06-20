@@ -8,51 +8,23 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** Represents a synonym map definition. */
 @Fluent
-public final class SynonymMap {
-    /*
-     * The name of the synonym map.
-     */
-    @JsonProperty(value = "name")
+public final class SynonymMap implements JsonSerializable<SynonymMap> {
     private String name;
 
-    /*
-     * The format of the synonym map. Only the 'solr' format is currently
-     * supported.
-     */
-    @JsonProperty(value = "format")
     private String format = "solr";
 
-    /*
-     * A series of synonym rules in the specified synonym map format. The rules
-     * must be separated by newlines.
-     */
-    @JsonProperty(value = "synonyms")
     private String synonyms;
 
-    /*
-     * A description of an encryption key that you create in Azure Key Vault.
-     * This key is used to provide an additional level of encryption-at-rest
-     * for your data when you want full assurance that no one, not even
-     * Microsoft, can decrypt your data in Azure Cognitive Search. Once you
-     * have encrypted your data, it will always remain encrypted. Azure
-     * Cognitive Search will ignore attempts to set this property to null. You
-     * can change this property as needed if you want to rotate your encryption
-     * key; Your data will be unaffected. Encryption with customer-managed keys
-     * is not available for free search services, and is only available for
-     * paid services created on or after January 1, 2019.
-     */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * The ETag of the synonym map.
-     */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
     /**
@@ -71,8 +43,7 @@ public final class SynonymMap {
      * @param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by
      *     newlines.
      */
-    @JsonCreator
-    public SynonymMap(@JsonProperty(value = "name") String name, @JsonProperty(value = "synonyms") String synonyms) {
+    public SynonymMap(String name, String synonyms) {
         this.format = "solr";
         this.name = name;
         this.synonyms = synonyms;
@@ -85,6 +56,17 @@ public final class SynonymMap {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The name of the synonym map.
+     *
+     * @param name the name value to set.
+     * @return the SynonymMap object itself.
+     */
+    private SynonymMap setName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -159,6 +141,52 @@ public final class SynonymMap {
     public SynonymMap setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("synonyms", this.synonyms, false);
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
+        jsonWriter.writeStringField("@odata.etag", this.eTag, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SynonymMap fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String name = null;
+                    String synonyms = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    String eTag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("synonyms".equals(fieldName)) {
+                            synonyms = reader.getStringValue();
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SynonymMap deserializedValue = new SynonymMap();
+                    deserializedValue.setName(name);
+                    deserializedValue.setSynonyms(synonyms);
+                    deserializedValue.setEncryptionKey(encryptionKey);
+                    deserializedValue.setETag(eTag);
+
+                    return deserializedValue;
+                });
     }
 
     /**

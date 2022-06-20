@@ -34,7 +34,11 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
         return fromString(name, BlobIndexerImageAction.class);
     }
 
-    /** @return known BlobIndexerImageAction values. */
+    /**
+     * Gets known BlobIndexerImageAction values.
+     *
+     * @return known BlobIndexerImageAction values.
+     */
     public static Collection<BlobIndexerImageAction> values() {
         return values(BlobIndexerImageAction.class);
     }

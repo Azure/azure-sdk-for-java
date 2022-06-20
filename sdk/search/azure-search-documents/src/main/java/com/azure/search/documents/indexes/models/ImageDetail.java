@@ -30,7 +30,11 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
         return fromString(name, ImageDetail.class);
     }
 
-    /** @return known ImageDetail values. */
+    /**
+     * Gets known ImageDetail values.
+     *
+     * @return known ImageDetail values.
+     */
     public static Collection<ImageDetail> values() {
         return values(ImageDetail.class);
     }

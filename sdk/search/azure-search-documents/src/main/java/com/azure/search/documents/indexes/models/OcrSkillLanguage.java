@@ -105,7 +105,11 @@ public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguag
         return fromString(name, OcrSkillLanguage.class);
     }
 
-    /** @return known OcrSkillLanguage values. */
+    /**
+     * Gets known OcrSkillLanguage values.
+     *
+     * @return known OcrSkillLanguage values.
+     */
     public static Collection<OcrSkillLanguage> values() {
         return values(OcrSkillLanguage.class);
     }

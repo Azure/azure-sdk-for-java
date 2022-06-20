@@ -8,18 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Defines weights on index fields for which matches should boost scoring in search queries. */
 @Fluent
-public final class TextWeights {
-    /*
-     * The dictionary of per-field weights to boost document scoring. The keys
-     * are field names and the values are the weights for each field.
-     */
-    @JsonProperty(value = "weights", required = true)
+public final class TextWeights implements JsonSerializable<TextWeights> {
     private Map<String, Double> weights;
 
     /**
@@ -27,8 +29,7 @@ public final class TextWeights {
      *
      * @param weights the weights value to set.
      */
-    @JsonCreator
-    public TextWeights(@JsonProperty(value = "weights", required = true) Map<String, Double> weights) {
+    public TextWeights(Map<String, Double> weights) {
         this.weights = weights;
     }
 
@@ -40,5 +41,53 @@ public final class TextWeights {
      */
     public Map<String, Double> getWeights() {
         return this.weights;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeMap(jsonWriter, "weights", this.weights, (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static TextWeights fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean weightsFound = false;
+                    Map<String, Double> weights = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("weights".equals(fieldName)) {
+                            if (weights == null) {
+                                weights = new LinkedHashMap<>();
+                            }
+
+                            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                fieldName = reader.getFieldName();
+                                reader.nextToken();
+
+                                weights.put(fieldName, reader.getDoubleValue());
+                            }
+                            weightsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!weightsFound) {
+                        missingProperties.add("weights");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    TextWeights deserializedValue = new TextWeights(weights);
+
+                    return deserializedValue;
+                });
     }
 }

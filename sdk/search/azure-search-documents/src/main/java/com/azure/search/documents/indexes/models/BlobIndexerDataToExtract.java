@@ -33,7 +33,11 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
         return fromString(name, BlobIndexerDataToExtract.class);
     }
 
-    /** @return known BlobIndexerDataToExtract values. */
+    /**
+     * Gets known BlobIndexerDataToExtract values.
+     *
+     * @return known BlobIndexerDataToExtract values.
+     */
     public static Collection<BlobIndexerDataToExtract> values() {
         return values(BlobIndexerDataToExtract.class);
     }

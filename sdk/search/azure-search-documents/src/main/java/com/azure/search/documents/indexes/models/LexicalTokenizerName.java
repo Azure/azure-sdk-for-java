@@ -64,7 +64,11 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
         return fromString(name, LexicalTokenizerName.class);
     }
 
-    /** @return known LexicalTokenizerName values. */
+    /**
+     * Gets known LexicalTokenizerName values.
+     *
+     * @return known LexicalTokenizerName values.
+     */
     public static Collection<LexicalTokenizerName> values() {
         return values(LexicalTokenizerName.class);
     }

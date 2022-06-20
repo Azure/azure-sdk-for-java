@@ -31,7 +31,11 @@ public final class BlobIndexerPdfTextRotationAlgorithm
         return fromString(name, BlobIndexerPdfTextRotationAlgorithm.class);
     }
 
-    /** @return known BlobIndexerPdfTextRotationAlgorithm values. */
+    /**
+     * Gets known BlobIndexerPdfTextRotationAlgorithm values.
+     *
+     * @return known BlobIndexerPdfTextRotationAlgorithm values.
+     */
     public static Collection<BlobIndexerPdfTextRotationAlgorithm> values() {
         return values(BlobIndexerPdfTextRotationAlgorithm.class);
     }

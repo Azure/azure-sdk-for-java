@@ -8,18 +8,19 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Provides parameter values to a freshness scoring function. */
 @Fluent
-public final class FreshnessScoringParameters {
-    /*
-     * The expiration period after which boosting will stop for a particular
-     * document.
-     */
-    @JsonProperty(value = "boostingDuration", required = true)
+public final class FreshnessScoringParameters implements JsonSerializable<FreshnessScoringParameters> {
     private Duration boostingDuration;
 
     /**
@@ -27,9 +28,7 @@ public final class FreshnessScoringParameters {
      *
      * @param boostingDuration the boostingDuration value to set.
      */
-    @JsonCreator
-    public FreshnessScoringParameters(
-            @JsonProperty(value = "boostingDuration", required = true) Duration boostingDuration) {
+    public FreshnessScoringParameters(Duration boostingDuration) {
         this.boostingDuration = boostingDuration;
     }
 
@@ -41,5 +40,46 @@ public final class FreshnessScoringParameters {
      */
     public Duration getBoostingDuration() {
         return this.boostingDuration;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField(
+                "boostingDuration", this.boostingDuration == null ? null : this.boostingDuration.toString(), false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static FreshnessScoringParameters fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean boostingDurationFound = false;
+                    Duration boostingDuration = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("boostingDuration".equals(fieldName)) {
+                            boostingDuration =
+                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            boostingDurationFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!boostingDurationFound) {
+                        missingProperties.add("boostingDuration");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    FreshnessScoringParameters deserializedValue = new FreshnessScoringParameters(boostingDuration);
+
+                    return deserializedValue;
+                });
     }
 }

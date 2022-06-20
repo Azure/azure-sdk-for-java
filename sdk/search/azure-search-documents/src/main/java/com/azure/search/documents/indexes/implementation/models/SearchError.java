@@ -8,30 +8,22 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Describes an error condition for the Azure Cognitive Search API. */
 @Immutable
-public final class SearchError {
-    /*
-     * One of a server-defined set of error codes.
-     */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
+public final class SearchError implements JsonSerializable<SearchError> {
     private String code;
 
-    /*
-     * A human-readable representation of the error.
-     */
-    @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /*
-     * An array of details about specific errors that led to this reported
-     * error.
-     */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchError> details;
 
     /**
@@ -39,9 +31,7 @@ public final class SearchError {
      *
      * @param message the message value to set.
      */
-    @JsonCreator
-    public SearchError(
-            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
+    public SearchError(String message) {
         this.message = message;
     }
 
@@ -70,5 +60,58 @@ public final class SearchError {
      */
     public List<SearchError> getDetails() {
         return this.details;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message, false);
+        jsonWriter.writeStringField("code", this.code, false);
+        JsonUtils.writeArray(
+                jsonWriter, "details", this.details, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchError fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean messageFound = false;
+                    String message = null;
+                    String code = null;
+                    List<SearchError> details = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("message".equals(fieldName)) {
+                            message = reader.getStringValue();
+                            messageFound = true;
+                        } else if ("code".equals(fieldName)) {
+                            code = reader.getStringValue();
+                        } else if ("details".equals(fieldName)) {
+                            details =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchError.fromJson(reader)));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!messageFound) {
+                        missingProperties.add("message");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchError deserializedValue = new SearchError(message);
+                    deserializedValue.code = code;
+                    deserializedValue.details = details;
+
+                    return deserializedValue;
+                });
     }
 }

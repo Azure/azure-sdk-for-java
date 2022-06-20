@@ -30,7 +30,11 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
         return fromString(name, PiiDetectionSkillMaskingMode.class);
     }
 
-    /** @return known PiiDetectionSkillMaskingMode values. */
+    /**
+     * Gets known PiiDetectionSkillMaskingMode values.
+     *
+     * @return known PiiDetectionSkillMaskingMode values.
+     */
     public static Collection<PiiDetectionSkillMaskingMode> values() {
         return values(PiiDetectionSkillMaskingMode.class);
     }

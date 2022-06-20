@@ -8,48 +8,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** Base type for tokenizers. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata.type",
-        defaultImpl = LexicalTokenizer.class,
-        visible = true)
-@JsonTypeName("LexicalTokenizer")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicTokenizer", value = ClassicTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.EdgeNGramTokenizer", value = EdgeNGramTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.KeywordTokenizer", value = KeywordTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.KeywordTokenizerV2", value = KeywordTokenizerV2.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer",
-            value = MicrosoftLanguageTokenizer.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer",
-            value = MicrosoftLanguageStemmingTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.NGramTokenizer", value = NGramTokenizer.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2",
-            value = PathHierarchyTokenizerV2.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternTokenizer", value = PatternTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizer", value = LuceneStandardTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizerV2", value = LuceneStandardTokenizerV2.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer", value = UaxUrlEmailTokenizer.class)
-})
 @Fluent
-public class LexicalTokenizer {
-    /*
-     * The name of the tokenizer. It must only contain letters, digits, spaces,
-     * dashes or underscores, can only start and end with alphanumeric
-     * characters, and is limited to 128 characters.
-     */
-    @JsonProperty(value = "name", required = true)
+public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
     private String name;
 
     /**
@@ -57,8 +25,7 @@ public class LexicalTokenizer {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public LexicalTokenizer(@JsonProperty(value = "name", required = true) String name) {
+    public LexicalTokenizer(String name) {
         this.name = name;
     }
 
@@ -70,5 +37,79 @@ public class LexicalTokenizer {
      */
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static LexicalTokenizer fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = null;
+
+                    // Read the first field name and determine if it's the discriminator field.
+                    reader.nextToken();
+                    if ("@odata.type".equals(reader.getFieldName())) {
+                        reader.nextToken();
+                        discriminatorValue = reader.getStringValue();
+                        readerToUse = reader;
+                    } else {
+                        // If it isn't the discriminator field buffer the JSON structure to make it
+                        // replayable and find the discriminator field value.
+                        String json = JsonUtils.bufferJsonObject(reader);
+                        JsonReader replayReader = DefaultJsonReader.fromString(json);
+                        while (replayReader.nextToken() != JsonToken.END_OBJECT) {
+                            String fieldName = replayReader.getFieldName();
+                            replayReader.nextToken();
+                            if ("@odata.type".equals(fieldName)) {
+                                discriminatorValue = replayReader.getStringValue();
+                                break;
+                            } else {
+                                replayReader.skipChildren();
+                            }
+                        }
+                        if (discriminatorValue != null) {
+                            readerToUse = DefaultJsonReader.fromString(json);
+                        }
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.ClassicTokenizer".equals(discriminatorValue)) {
+                        return ClassicTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.EdgeNGramTokenizer".equals(discriminatorValue)) {
+                        return EdgeNGramTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.KeywordTokenizer".equals(discriminatorValue)) {
+                        return KeywordTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.KeywordTokenizerV2".equals(discriminatorValue)) {
+                        return KeywordTokenizerV2.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.MicrosoftLanguageTokenizer".equals(discriminatorValue)) {
+                        return MicrosoftLanguageTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer"
+                            .equals(discriminatorValue)) {
+                        return MicrosoftLanguageStemmingTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.NGramTokenizer".equals(discriminatorValue)) {
+                        return NGramTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PathHierarchyTokenizerV2".equals(discriminatorValue)) {
+                        return PathHierarchyTokenizerV2.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PatternTokenizer".equals(discriminatorValue)) {
+                        return PatternTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StandardTokenizer".equals(discriminatorValue)) {
+                        return LuceneStandardTokenizer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StandardTokenizerV2".equals(discriminatorValue)) {
+                        return LuceneStandardTokenizerV2.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.UaxUrlEmailTokenizer".equals(discriminatorValue)) {
+                        return UaxUrlEmailTokenizer.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.ClassicTokenizer', '#Microsoft.Azure.Search.EdgeNGramTokenizer', '#Microsoft.Azure.Search.KeywordTokenizer', '#Microsoft.Azure.Search.KeywordTokenizerV2', '#Microsoft.Azure.Search.MicrosoftLanguageTokenizer', '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer', '#Microsoft.Azure.Search.NGramTokenizer', '#Microsoft.Azure.Search.PathHierarchyTokenizerV2', '#Microsoft.Azure.Search.PatternTokenizer', '#Microsoft.Azure.Search.StandardTokenizer', '#Microsoft.Azure.Search.StandardTokenizerV2', or '#Microsoft.Azure.Search.UaxUrlEmailTokenizer'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }

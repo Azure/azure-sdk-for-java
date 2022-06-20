@@ -8,58 +8,32 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents service-level resource counters and quotas. */
 @Fluent
-public final class SearchServiceCounters {
-    /*
-     * Total number of aliases.
-     */
-    @JsonProperty(value = "aliasesCount")
+public final class SearchServiceCounters implements JsonSerializable<SearchServiceCounters> {
     private ResourceCounter aliasCounter;
 
-    /*
-     * Total number of documents across all indexes in the service.
-     */
-    @JsonProperty(value = "documentCount", required = true)
     private ResourceCounter documentCounter;
 
-    /*
-     * Total number of indexes.
-     */
-    @JsonProperty(value = "indexesCount", required = true)
     private ResourceCounter indexCounter;
 
-    /*
-     * Total number of indexers.
-     */
-    @JsonProperty(value = "indexersCount", required = true)
     private ResourceCounter indexerCounter;
 
-    /*
-     * Total number of data sources.
-     */
-    @JsonProperty(value = "dataSourcesCount", required = true)
     private ResourceCounter dataSourceCounter;
 
-    /*
-     * Total size of used storage in bytes.
-     */
-    @JsonProperty(value = "storageSize", required = true)
     private ResourceCounter storageSizeCounter;
 
-    /*
-     * Total number of synonym maps.
-     */
-    @JsonProperty(value = "synonymMaps", required = true)
     private ResourceCounter synonymMapCounter;
 
-    /*
-     * Total number of skillsets.
-     */
-    @JsonProperty(value = "skillsetCount")
     private ResourceCounter skillsetCounter;
 
     /**
@@ -72,14 +46,13 @@ public final class SearchServiceCounters {
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @param synonymMapCounter the synonymMapCounter value to set.
      */
-    @JsonCreator
     public SearchServiceCounters(
-            @JsonProperty(value = "documentCount", required = true) ResourceCounter documentCounter,
-            @JsonProperty(value = "indexesCount", required = true) ResourceCounter indexCounter,
-            @JsonProperty(value = "indexersCount", required = true) ResourceCounter indexerCounter,
-            @JsonProperty(value = "dataSourcesCount", required = true) ResourceCounter dataSourceCounter,
-            @JsonProperty(value = "storageSize", required = true) ResourceCounter storageSizeCounter,
-            @JsonProperty(value = "synonymMaps", required = true) ResourceCounter synonymMapCounter) {
+            ResourceCounter documentCounter,
+            ResourceCounter indexCounter,
+            ResourceCounter indexerCounter,
+            ResourceCounter dataSourceCounter,
+            ResourceCounter storageSizeCounter,
+            ResourceCounter synonymMapCounter) {
         this.documentCounter = documentCounter;
         this.indexCounter = indexCounter;
         this.indexerCounter = indexerCounter;
@@ -180,5 +153,112 @@ public final class SearchServiceCounters {
     public SearchServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
         this.skillsetCounter = skillsetCounter;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("documentCount", this.documentCounter, false);
+        jsonWriter.writeJsonField("indexesCount", this.indexCounter, false);
+        jsonWriter.writeJsonField("indexersCount", this.indexerCounter, false);
+        jsonWriter.writeJsonField("dataSourcesCount", this.dataSourceCounter, false);
+        jsonWriter.writeJsonField("storageSize", this.storageSizeCounter, false);
+        jsonWriter.writeJsonField("synonymMaps", this.synonymMapCounter, false);
+        jsonWriter.writeJsonField("aliasesCount", this.aliasCounter, false);
+        jsonWriter.writeJsonField("skillsetCount", this.skillsetCounter, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchServiceCounters fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean documentCounterFound = false;
+                    ResourceCounter documentCounter = null;
+                    boolean indexCounterFound = false;
+                    ResourceCounter indexCounter = null;
+                    boolean indexerCounterFound = false;
+                    ResourceCounter indexerCounter = null;
+                    boolean dataSourceCounterFound = false;
+                    ResourceCounter dataSourceCounter = null;
+                    boolean storageSizeCounterFound = false;
+                    ResourceCounter storageSizeCounter = null;
+                    boolean synonymMapCounterFound = false;
+                    ResourceCounter synonymMapCounter = null;
+                    ResourceCounter aliasCounter = null;
+                    ResourceCounter skillsetCounter = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("documentCount".equals(fieldName)) {
+                            documentCounter =
+                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            documentCounterFound = true;
+                        } else if ("indexesCount".equals(fieldName)) {
+                            indexCounter = JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            indexCounterFound = true;
+                        } else if ("indexersCount".equals(fieldName)) {
+                            indexerCounter =
+                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            indexerCounterFound = true;
+                        } else if ("dataSourcesCount".equals(fieldName)) {
+                            dataSourceCounter =
+                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            dataSourceCounterFound = true;
+                        } else if ("storageSize".equals(fieldName)) {
+                            storageSizeCounter =
+                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            storageSizeCounterFound = true;
+                        } else if ("synonymMaps".equals(fieldName)) {
+                            synonymMapCounter =
+                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            synonymMapCounterFound = true;
+                        } else if ("aliasesCount".equals(fieldName)) {
+                            aliasCounter = JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                        } else if ("skillsetCount".equals(fieldName)) {
+                            skillsetCounter =
+                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!documentCounterFound) {
+                        missingProperties.add("documentCount");
+                    }
+                    if (!indexCounterFound) {
+                        missingProperties.add("indexesCount");
+                    }
+                    if (!indexerCounterFound) {
+                        missingProperties.add("indexersCount");
+                    }
+                    if (!dataSourceCounterFound) {
+                        missingProperties.add("dataSourcesCount");
+                    }
+                    if (!storageSizeCounterFound) {
+                        missingProperties.add("storageSize");
+                    }
+                    if (!synonymMapCounterFound) {
+                        missingProperties.add("synonymMaps");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchServiceCounters deserializedValue =
+                            new SearchServiceCounters(
+                                    documentCounter,
+                                    indexCounter,
+                                    indexerCounter,
+                                    dataSourceCounter,
+                                    storageSizeCounter,
+                                    synonymMapCounter);
+                    deserializedValue.setAliasCounter(aliasCounter);
+                    deserializedValue.setSkillsetCounter(skillsetCounter);
+
+                    return deserializedValue;
+                });
     }
 }

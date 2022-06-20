@@ -51,7 +51,11 @@ public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLan
         return fromString(name, SplitSkillLanguage.class);
     }
 
-    /** @return known SplitSkillLanguage values. */
+    /**
+     * Gets known SplitSkillLanguage values.
+     *
+     * @return known SplitSkillLanguage values.
+     */
     public static Collection<SplitSkillLanguage> values() {
         return values(SplitSkillLanguage.class);
     }

@@ -8,80 +8,35 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Using the Text Analytics API, extracts personal information from an input text and gives you the option of masking
  * it.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Skills.Text.PIIDetectionSkill")
 @Fluent
 public final class PiiDetectionSkill extends SearchIndexerSkill {
-    /*
-     * Identifies the concrete type of the skill.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Skills.Text.PIIDetectionSkill";
 
-    /*
-     * A value indicating which language code to use. Default is en.
-     */
-    @JsonProperty(value = "defaultLanguageCode")
     private String defaultLanguageCode;
 
-    /*
-     * A value between 0 and 1 that be used to only include entities whose
-     * confidence score is greater than the value specified. If not set
-     * (default), or if explicitly set to null, all entities will be included.
-     */
-    @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
 
-    /*
-     * A parameter that provides various ways to mask the personal information
-     * detected in the input text. Default is 'none'.
-     */
-    @JsonProperty(value = "maskingMode")
     private PiiDetectionSkillMaskingMode maskingMode;
 
-    /*
-     * The character used to mask the text if the maskingMode parameter is set
-     * to replace. Default is '*'.
-     */
-    @JsonProperty(value = "maskingCharacter")
     private String maskingCharacter;
 
-    /*
-     * The version of the model to use when calling the Text Analytics service.
-     * It will default to the latest available when not specified. We recommend
-     * you do not specify this value unless absolutely necessary.
-     */
-    @JsonProperty(value = "modelVersion")
     private String modelVersion;
 
-    /*
-     * A list of PII entity categories that should be extracted and masked.
-     */
-    @JsonProperty(value = "piiCategories")
     private List<String> piiCategories;
 
-    /*
-     * If specified, will set the PII domain to include only a subset of the
-     * entity categories. Possible values include: 'phi', 'none'. Default is
-     * 'none'.
-     */
-    @JsonProperty(value = "domain")
     private String domain;
 
     /**
@@ -90,10 +45,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @JsonCreator
-    public PiiDetectionSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+    public PiiDetectionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -249,5 +201,133 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     public PiiDetectionSkill setDomain(String domain) {
         this.domain = domain;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeStringField("description", getDescription(), false);
+        jsonWriter.writeStringField("context", getContext(), false);
+        jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode, false);
+        jsonWriter.writeDoubleField("minimumPrecision", this.minimumPrecision, false);
+        jsonWriter.writeStringField(
+                "maskingMode", this.maskingMode == null ? null : this.maskingMode.toString(), false);
+        jsonWriter.writeStringField("maskingCharacter", this.maskingCharacter, false);
+        jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
+        JsonUtils.writeArray(
+                jsonWriter,
+                "piiCategories",
+                this.piiCategories,
+                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeStringField("domain", this.domain, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static PiiDetectionSkill fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    String defaultLanguageCode = null;
+                    Double minimumPrecision = null;
+                    PiiDetectionSkillMaskingMode maskingMode = null;
+                    String maskingCharacter = null;
+                    String modelVersion = null;
+                    List<String> piiCategories = null;
+                    String domain = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getStringValue();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = reader.getStringValue();
+                        } else if ("minimumPrecision".equals(fieldName)) {
+                            minimumPrecision = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                        } else if ("maskingMode".equals(fieldName)) {
+                            maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getStringValue());
+                        } else if ("maskingCharacter".equals(fieldName)) {
+                            maskingCharacter = reader.getStringValue();
+                        } else if ("modelVersion".equals(fieldName)) {
+                            modelVersion = reader.getStringValue();
+                        } else if ("piiCategories".equals(fieldName)) {
+                            piiCategories = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                        } else if ("domain".equals(fieldName)) {
+                            domain = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Skills.Text.PIIDetectionSkill")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.PIIDetectionSkill'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    PiiDetectionSkill deserializedValue = new PiiDetectionSkill(inputs, outputs);
+                    deserializedValue.setName(name);
+                    deserializedValue.setDescription(description);
+                    deserializedValue.setContext(context);
+                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
+                    deserializedValue.setMinimumPrecision(minimumPrecision);
+                    deserializedValue.setMaskingMode(maskingMode);
+                    deserializedValue.setMaskingCharacter(maskingCharacter);
+                    deserializedValue.setModelVersion(modelVersion);
+                    deserializedValue.setPiiCategories(piiCategories);
+                    deserializedValue.setDomain(domain);
+
+                    return deserializedValue;
+                });
     }
 }

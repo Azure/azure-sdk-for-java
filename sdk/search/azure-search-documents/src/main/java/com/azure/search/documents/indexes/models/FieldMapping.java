@@ -8,29 +8,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Defines a mapping between a field in a data source and a target field in an index. */
 @Fluent
-public final class FieldMapping {
-    /*
-     * The name of the field in the data source.
-     */
-    @JsonProperty(value = "sourceFieldName", required = true)
+public final class FieldMapping implements JsonSerializable<FieldMapping> {
     private String sourceFieldName;
 
-    /*
-     * The name of the target field in the index. Same as the source field name
-     * by default.
-     */
-    @JsonProperty(value = "targetFieldName")
     private String targetFieldName;
 
-    /*
-     * A function to apply to each source field value before indexing.
-     */
-    @JsonProperty(value = "mappingFunction")
     private FieldMappingFunction mappingFunction;
 
     /**
@@ -38,8 +31,7 @@ public final class FieldMapping {
      *
      * @param sourceFieldName the sourceFieldName value to set.
      */
-    @JsonCreator
-    public FieldMapping(@JsonProperty(value = "sourceFieldName", required = true) String sourceFieldName) {
+    public FieldMapping(String sourceFieldName) {
         this.sourceFieldName = sourceFieldName;
     }
 
@@ -92,5 +84,55 @@ public final class FieldMapping {
     public FieldMapping setMappingFunction(FieldMappingFunction mappingFunction) {
         this.mappingFunction = mappingFunction;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceFieldName", this.sourceFieldName, false);
+        jsonWriter.writeStringField("targetFieldName", this.targetFieldName, false);
+        jsonWriter.writeJsonField("mappingFunction", this.mappingFunction, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static FieldMapping fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean sourceFieldNameFound = false;
+                    String sourceFieldName = null;
+                    String targetFieldName = null;
+                    FieldMappingFunction mappingFunction = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("sourceFieldName".equals(fieldName)) {
+                            sourceFieldName = reader.getStringValue();
+                            sourceFieldNameFound = true;
+                        } else if ("targetFieldName".equals(fieldName)) {
+                            targetFieldName = reader.getStringValue();
+                        } else if ("mappingFunction".equals(fieldName)) {
+                            mappingFunction =
+                                    JsonUtils.getNullableProperty(reader, r -> FieldMappingFunction.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!sourceFieldNameFound) {
+                        missingProperties.add("sourceFieldName");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    FieldMapping deserializedValue = new FieldMapping(sourceFieldName);
+                    deserializedValue.setTargetFieldName(targetFieldName);
+                    deserializedValue.setMappingFunction(mappingFunction);
+
+                    return deserializedValue;
+                });
     }
 }

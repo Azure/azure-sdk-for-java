@@ -8,30 +8,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Defines how the Suggest API should apply to a group of fields in the index. */
 @Fluent
-public final class SearchSuggester {
-    /*
-     * The name of the suggester.
-     */
-    @JsonProperty(value = "name", required = true)
+public final class SearchSuggester implements JsonSerializable<SearchSuggester> {
     private String name;
 
-    /*
-     * A value indicating the capabilities of the suggester.
-     */
-    @JsonProperty(value = "searchMode")
     private String searchMode = "analyzingInfixMatching";
 
-    /*
-     * The list of field names to which the suggester applies. Each field must
-     * be searchable.
-     */
-    @JsonProperty(value = "sourceFields", required = true)
     private List<String> sourceFields;
 
     /**
@@ -40,10 +32,7 @@ public final class SearchSuggester {
      * @param name the name value to set.
      * @param sourceFields the sourceFields value to set.
      */
-    @JsonCreator
-    public SearchSuggester(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "sourceFields", required = true) List<String> sourceFields) {
+    public SearchSuggester(String name, List<String> sourceFields) {
         this.searchMode = "analyzingInfixMatching";
         this.name = name;
         this.sourceFields = sourceFields;
@@ -75,5 +64,54 @@ public final class SearchSuggester {
      */
     public List<String> getSourceFields() {
         return this.sourceFields;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        JsonUtils.writeArray(
+                jsonWriter, "sourceFields", this.sourceFields, (writer, element) -> writer.writeString(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchSuggester fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean sourceFieldsFound = false;
+                    List<String> sourceFields = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("sourceFields".equals(fieldName)) {
+                            sourceFields = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            sourceFieldsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!sourceFieldsFound) {
+                        missingProperties.add("sourceFields");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchSuggester deserializedValue = new SearchSuggester(name, sourceFields);
+
+                    return deserializedValue;
+                });
     }
 }

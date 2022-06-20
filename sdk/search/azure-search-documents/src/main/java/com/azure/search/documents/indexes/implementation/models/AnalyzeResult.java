@@ -8,18 +8,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /** The result of testing an analyzer on text. */
 @Fluent
-public final class AnalyzeResult {
-    /*
-     * The list of tokens returned by the analyzer specified in the request.
-     */
-    @JsonProperty(value = "tokens", required = true)
+public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     private List<AnalyzedTokenInfo> tokens;
 
     /**
@@ -27,8 +28,7 @@ public final class AnalyzeResult {
      *
      * @param tokens the tokens value to set.
      */
-    @JsonCreator
-    public AnalyzeResult(@JsonProperty(value = "tokens", required = true) List<AnalyzedTokenInfo> tokens) {
+    public AnalyzeResult(List<AnalyzedTokenInfo> tokens) {
         this.tokens = tokens;
     }
 
@@ -39,5 +39,49 @@ public final class AnalyzeResult {
      */
     public List<AnalyzedTokenInfo> getTokens() {
         return this.tokens;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(jsonWriter, "tokens", this.tokens, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static AnalyzeResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean tokensFound = false;
+                    List<AnalyzedTokenInfo> tokens = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tokens".equals(fieldName)) {
+                            tokens =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> AnalyzedTokenInfo.fromJson(reader)));
+                            tokensFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tokensFound) {
+                        missingProperties.add("tokens");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    AnalyzeResult deserializedValue = new AnalyzeResult(tokens);
+
+                    return deserializedValue;
+                });
     }
 }

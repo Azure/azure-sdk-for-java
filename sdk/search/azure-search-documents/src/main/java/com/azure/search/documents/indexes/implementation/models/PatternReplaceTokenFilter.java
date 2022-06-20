@@ -8,11 +8,14 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A character filter that replaces characters in the input string. It uses a regular expression to identify character
@@ -20,31 +23,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * "aa bb aa bb", pattern "(aa)\s+(bb)", and replacement "$1#$2", the result would be "aa#bb aa#bb". This token filter
  * is implemented using Apache Lucene.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.PatternReplaceTokenFilter")
 @Fluent
 public final class PatternReplaceTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.PatternReplaceTokenFilter";
 
-    /*
-     * A regular expression pattern.
-     */
-    @JsonProperty(value = "pattern", required = true)
     private String pattern;
 
-    /*
-     * The replacement text.
-     */
-    @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
     /**
@@ -54,23 +38,10 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
      * @param pattern the pattern value to set.
      * @param replacement the replacement value to set.
      */
-    @JsonCreator
-    public PatternReplaceTokenFilter(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "pattern", required = true) String pattern,
-            @JsonProperty(value = "replacement", required = true) String replacement) {
+    public PatternReplaceTokenFilter(String name, String pattern, String replacement) {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -89,5 +60,78 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
      */
     public String getReplacement() {
         return this.replacement;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeStringField("pattern", this.pattern, false);
+        jsonWriter.writeStringField("replacement", this.replacement, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static PatternReplaceTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean patternFound = false;
+                    String pattern = null;
+                    boolean replacementFound = false;
+                    String replacement = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("pattern".equals(fieldName)) {
+                            pattern = reader.getStringValue();
+                            patternFound = true;
+                        } else if ("replacement".equals(fieldName)) {
+                            replacement = reader.getStringValue();
+                            replacementFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound
+                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.PatternReplaceTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternReplaceTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!patternFound) {
+                        missingProperties.add("pattern");
+                    }
+                    if (!replacementFound) {
+                        missingProperties.add("replacement");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    PatternReplaceTokenFilter deserializedValue =
+                            new PatternReplaceTokenFilter(name, pattern, replacement);
+
+                    return deserializedValue;
+                });
     }
 }

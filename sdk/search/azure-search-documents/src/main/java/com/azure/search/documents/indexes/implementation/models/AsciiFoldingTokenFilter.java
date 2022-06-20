@@ -8,37 +8,24 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Converts alphabetic, numeric, and symbolic Unicode characters which are not in the first 127 ASCII characters (the
  * "Basic Latin" Unicode block) into their ASCII equivalents, if such equivalents exist. This token filter is
  * implemented using Apache Lucene.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.AsciiFoldingTokenFilter")
 @Fluent
 public final class AsciiFoldingTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.AsciiFoldingTokenFilter";
 
-    /*
-     * A value indicating whether the original token will be kept. Default is
-     * false.
-     */
-    @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
     /**
@@ -46,18 +33,8 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public AsciiFoldingTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public AsciiFoldingTokenFilter(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -78,5 +55,64 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     public AsciiFoldingTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static AsciiFoldingTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    Boolean preserveOriginal = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("preserveOriginal".equals(fieldName)) {
+                            preserveOriginal = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound
+                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.AsciiFoldingTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.AsciiFoldingTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    AsciiFoldingTokenFilter deserializedValue = new AsciiFoldingTokenFilter(name);
+                    deserializedValue.setPreserveOriginal(preserveOriginal);
+
+                    return deserializedValue;
+                });
     }
 }

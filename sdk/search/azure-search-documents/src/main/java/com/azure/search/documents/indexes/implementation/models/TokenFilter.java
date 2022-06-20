@@ -8,67 +8,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** Base type for token filters. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata.type",
-        defaultImpl = TokenFilter.class,
-        visible = true)
-@JsonTypeName("TokenFilter")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.AsciiFoldingTokenFilter", value = AsciiFoldingTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CjkBigramTokenFilter", value = CjkBigramTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CommonGramTokenFilter", value = CommonGramTokenFilter.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter",
-            value = DictionaryDecompounderTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.EdgeNGramTokenFilter", value = EdgeNGramTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2", value = EdgeNGramTokenFilterV2.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ElisionTokenFilter", value = ElisionTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.KeepTokenFilter", value = KeepTokenFilter.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter",
-            value = KeywordMarkerTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.LengthTokenFilter", value = LengthTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.LimitTokenFilter", value = LimitTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.NGramTokenFilter", value = NGramTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.NGramTokenFilterV2", value = NGramTokenFilterV2.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.PatternCaptureTokenFilter",
-            value = PatternCaptureTokenFilter.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.PatternReplaceTokenFilter",
-            value = PatternReplaceTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PhoneticTokenFilter", value = PhoneticTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ShingleTokenFilter", value = ShingleTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SnowballTokenFilter", value = SnowballTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StemmerTokenFilter", value = StemmerTokenFilter.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.StemmerOverrideTokenFilter",
-            value = StemmerOverrideTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StopwordsTokenFilter", value = StopwordsTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SynonymTokenFilter", value = SynonymTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.TruncateTokenFilter", value = TruncateTokenFilter.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.UniqueTokenFilter", value = UniqueTokenFilter.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.Azure.Search.WordDelimiterTokenFilter",
-            value = WordDelimiterTokenFilter.class)
-})
 @Fluent
-public class TokenFilter {
-    /*
-     * The name of the token filter. It must only contain letters, digits,
-     * spaces, dashes or underscores, can only start and end with alphanumeric
-     * characters, and is limited to 128 characters.
-     */
-    @JsonProperty(value = "name", required = true)
+public class TokenFilter implements JsonSerializable<TokenFilter> {
     private String name;
 
     /**
@@ -76,8 +25,7 @@ public class TokenFilter {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public TokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public TokenFilter(String name) {
         this.name = name;
     }
 
@@ -89,5 +37,104 @@ public class TokenFilter {
      */
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static TokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = null;
+
+                    // Read the first field name and determine if it's the discriminator field.
+                    reader.nextToken();
+                    if ("@odata.type".equals(reader.getFieldName())) {
+                        reader.nextToken();
+                        discriminatorValue = reader.getStringValue();
+                        readerToUse = reader;
+                    } else {
+                        // If it isn't the discriminator field buffer the JSON structure to make it
+                        // replayable and find the discriminator field value.
+                        String json = JsonUtils.bufferJsonObject(reader);
+                        JsonReader replayReader = DefaultJsonReader.fromString(json);
+                        while (replayReader.nextToken() != JsonToken.END_OBJECT) {
+                            String fieldName = replayReader.getFieldName();
+                            replayReader.nextToken();
+                            if ("@odata.type".equals(fieldName)) {
+                                discriminatorValue = replayReader.getStringValue();
+                                break;
+                            } else {
+                                replayReader.skipChildren();
+                            }
+                        }
+                        if (discriminatorValue != null) {
+                            readerToUse = DefaultJsonReader.fromString(json);
+                        }
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.AsciiFoldingTokenFilter".equals(discriminatorValue)) {
+                        return AsciiFoldingTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.CjkBigramTokenFilter".equals(discriminatorValue)) {
+                        return CjkBigramTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.CommonGramTokenFilter".equals(discriminatorValue)) {
+                        return CommonGramTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter".equals(discriminatorValue)) {
+                        return DictionaryDecompounderTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.EdgeNGramTokenFilter".equals(discriminatorValue)) {
+                        return EdgeNGramTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.EdgeNGramTokenFilterV2".equals(discriminatorValue)) {
+                        return EdgeNGramTokenFilterV2.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.ElisionTokenFilter".equals(discriminatorValue)) {
+                        return ElisionTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.KeepTokenFilter".equals(discriminatorValue)) {
+                        return KeepTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.KeywordMarkerTokenFilter".equals(discriminatorValue)) {
+                        return KeywordMarkerTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.LengthTokenFilter".equals(discriminatorValue)) {
+                        return LengthTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.LimitTokenFilter".equals(discriminatorValue)) {
+                        return LimitTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.NGramTokenFilter".equals(discriminatorValue)) {
+                        return NGramTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.NGramTokenFilterV2".equals(discriminatorValue)) {
+                        return NGramTokenFilterV2.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PatternCaptureTokenFilter".equals(discriminatorValue)) {
+                        return PatternCaptureTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PatternReplaceTokenFilter".equals(discriminatorValue)) {
+                        return PatternReplaceTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PhoneticTokenFilter".equals(discriminatorValue)) {
+                        return PhoneticTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.ShingleTokenFilter".equals(discriminatorValue)) {
+                        return ShingleTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.SnowballTokenFilter".equals(discriminatorValue)) {
+                        return SnowballTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StemmerTokenFilter".equals(discriminatorValue)) {
+                        return StemmerTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StemmerOverrideTokenFilter".equals(discriminatorValue)) {
+                        return StemmerOverrideTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StopwordsTokenFilter".equals(discriminatorValue)) {
+                        return StopwordsTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.SynonymTokenFilter".equals(discriminatorValue)) {
+                        return SynonymTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.TruncateTokenFilter".equals(discriminatorValue)) {
+                        return TruncateTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.UniqueTokenFilter".equals(discriminatorValue)) {
+                        return UniqueTokenFilter.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.WordDelimiterTokenFilter".equals(discriminatorValue)) {
+                        return WordDelimiterTokenFilter.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.AsciiFoldingTokenFilter', '#Microsoft.Azure.Search.CjkBigramTokenFilter', '#Microsoft.Azure.Search.CommonGramTokenFilter', '#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter', '#Microsoft.Azure.Search.EdgeNGramTokenFilter', '#Microsoft.Azure.Search.EdgeNGramTokenFilterV2', '#Microsoft.Azure.Search.ElisionTokenFilter', '#Microsoft.Azure.Search.KeepTokenFilter', '#Microsoft.Azure.Search.KeywordMarkerTokenFilter', '#Microsoft.Azure.Search.LengthTokenFilter', '#Microsoft.Azure.Search.LimitTokenFilter', '#Microsoft.Azure.Search.NGramTokenFilter', '#Microsoft.Azure.Search.NGramTokenFilterV2', '#Microsoft.Azure.Search.PatternCaptureTokenFilter', '#Microsoft.Azure.Search.PatternReplaceTokenFilter', '#Microsoft.Azure.Search.PhoneticTokenFilter', '#Microsoft.Azure.Search.ShingleTokenFilter', '#Microsoft.Azure.Search.SnowballTokenFilter', '#Microsoft.Azure.Search.StemmerTokenFilter', '#Microsoft.Azure.Search.StemmerOverrideTokenFilter', '#Microsoft.Azure.Search.StopwordsTokenFilter', '#Microsoft.Azure.Search.SynonymTokenFilter', '#Microsoft.Azure.Search.TruncateTokenFilter', '#Microsoft.Azure.Search.UniqueTokenFilter', or '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }

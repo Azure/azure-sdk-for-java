@@ -8,24 +8,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents a schedule for indexer execution. */
 @Fluent
-public final class IndexingSchedule {
-    /*
-     * The interval of time between indexer executions.
-     */
-    @JsonProperty(value = "interval", required = true)
+public final class IndexingSchedule implements JsonSerializable<IndexingSchedule> {
     private Duration interval;
 
-    /*
-     * The time when an indexer should start running.
-     */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /**
@@ -33,8 +31,7 @@ public final class IndexingSchedule {
      *
      * @param interval the interval value to set.
      */
-    @JsonCreator
-    public IndexingSchedule(@JsonProperty(value = "interval", required = true) Duration interval) {
+    public IndexingSchedule(Duration interval) {
         this.interval = interval;
     }
 
@@ -65,5 +62,52 @@ public final class IndexingSchedule {
     public IndexingSchedule setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("interval", this.interval == null ? null : this.interval.toString(), false);
+        jsonWriter.writeStringField("startTime", this.startTime == null ? null : this.startTime.toString(), false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static IndexingSchedule fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean intervalFound = false;
+                    Duration interval = null;
+                    OffsetDateTime startTime = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("interval".equals(fieldName)) {
+                            interval =
+                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            intervalFound = true;
+                        } else if ("startTime".equals(fieldName)) {
+                            startTime =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> OffsetDateTime.parse(reader.getStringValue()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!intervalFound) {
+                        missingProperties.add("interval");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    IndexingSchedule deserializedValue = new IndexingSchedule(interval);
+                    deserializedValue.setStartTime(startTime);
+
+                    return deserializedValue;
+                });
     }
 }

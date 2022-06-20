@@ -126,7 +126,11 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
         return fromString(name, TokenFilterName.class);
     }
 
-    /** @return known TokenFilterName values. */
+    /**
+     * Gets known TokenFilterName values.
+     *
+     * @return known TokenFilterName values.
+     */
     public static Collection<TokenFilterName> values() {
         return values(TokenFilterName.class);
     }

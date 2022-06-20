@@ -8,33 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Defines a function that boosts scores based on the value of a date-time field. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
-@JsonTypeName("freshness")
 @Fluent
 public final class FreshnessScoringFunction extends ScoringFunction {
-    /*
-     * Indicates the type of function to use. Valid values include magnitude,
-     * freshness, distance, and tag. The function type must be lower case.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "freshness";
 
-    /*
-     * Parameter values for the freshness scoring function.
-     */
-    @JsonProperty(value = "freshness", required = true)
     private FreshnessScoringParameters parameters;
 
     /**
@@ -44,11 +31,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      * @param boost the boost value to set.
      * @param parameters the parameters value to set.
      */
-    @JsonCreator
-    public FreshnessScoringFunction(
-            @JsonProperty(value = "fieldName", required = true) String fieldName,
-            @JsonProperty(value = "boost", required = true) double boost,
-            @JsonProperty(value = "freshness", required = true) FreshnessScoringParameters parameters) {
+    public FreshnessScoringFunction(String fieldName, double boost, FreshnessScoringParameters parameters) {
         super(fieldName, boost);
         this.parameters = parameters;
     }
@@ -60,5 +43,85 @@ public final class FreshnessScoringFunction extends ScoringFunction {
      */
     public FreshnessScoringParameters getParameters() {
         return this.parameters;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type);
+        jsonWriter.writeStringField("fieldName", getFieldName(), false);
+        jsonWriter.writeDoubleField("boost", getBoost());
+        jsonWriter.writeStringField(
+                "interpolation", getInterpolation() == null ? null : getInterpolation().toString(), false);
+        jsonWriter.writeJsonField("freshness", this.parameters, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static FreshnessScoringFunction fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean typeFound = false;
+                    String type = null;
+                    boolean fieldNameFound = false;
+                    String fieldName = null;
+                    boolean boostFound = false;
+                    double boost = 0.0;
+                    ScoringFunctionInterpolation interpolation = null;
+                    boolean parametersFound = false;
+                    FreshnessScoringParameters parameters = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String jsonFieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("type".equals(jsonFieldName)) {
+                            typeFound = true;
+                            type = reader.getStringValue();
+                        } else if ("fieldName".equals(jsonFieldName)) {
+                            fieldName = reader.getStringValue();
+                            fieldNameFound = true;
+                        } else if ("boost".equals(jsonFieldName)) {
+                            boost = reader.getDoubleValue();
+                            boostFound = true;
+                        } else if ("interpolation".equals(jsonFieldName)) {
+                            interpolation = ScoringFunctionInterpolation.fromString(reader.getStringValue());
+                        } else if ("freshness".equals(jsonFieldName)) {
+                            parameters =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> FreshnessScoringParameters.fromJson(reader));
+                            parametersFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!typeFound || !Objects.equals(type, "freshness")) {
+                        throw new IllegalStateException(
+                                "'type' was expected to be non-null and equal to 'freshness'. The found 'type' was '"
+                                        + type
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!fieldNameFound) {
+                        missingProperties.add("fieldName");
+                    }
+                    if (!boostFound) {
+                        missingProperties.add("boost");
+                    }
+                    if (!parametersFound) {
+                        missingProperties.add("freshness");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    FreshnessScoringFunction deserializedValue =
+                            new FreshnessScoringFunction(fieldName, boost, parameters);
+                    deserializedValue.setInterpolation(interpolation);
+
+                    return deserializedValue;
+                });
     }
 }

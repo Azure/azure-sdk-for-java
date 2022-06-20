@@ -8,18 +8,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchAlias;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List Aliases request. If successful, it includes the associated index mappings for all aliases. */
 @Immutable
-public final class ListAliasesResult {
-    /*
-     * The aliases in the Search service.
-     */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+public final class ListAliasesResult implements JsonSerializable<ListAliasesResult> {
     private List<SearchAlias> aliases;
 
     /**
@@ -27,10 +28,7 @@ public final class ListAliasesResult {
      *
      * @param aliases the aliases value to set.
      */
-    @JsonCreator
-    public ListAliasesResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchAlias> aliases) {
+    public ListAliasesResult(List<SearchAlias> aliases) {
         this.aliases = aliases;
     }
 
@@ -41,5 +39,47 @@ public final class ListAliasesResult {
      */
     public List<SearchAlias> getAliases() {
         return this.aliases;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(jsonWriter, "value", this.aliases, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ListAliasesResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean aliasesFound = false;
+                    List<SearchAlias> aliases = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            aliases =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchAlias.fromJson(reader)));
+                            aliasesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!aliasesFound) {
+                        missingProperties.add("value");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ListAliasesResult deserializedValue = new ListAliasesResult(aliases);
+
+                    return deserializedValue;
+                });
     }
 }

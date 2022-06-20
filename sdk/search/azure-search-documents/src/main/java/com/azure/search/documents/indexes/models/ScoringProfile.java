@@ -8,39 +8,24 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** Defines parameters for a search index that influence scoring in search queries. */
 @Fluent
-public final class ScoringProfile {
-    /*
-     * The name of the scoring profile.
-     */
-    @JsonProperty(value = "name", required = true)
+public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
     private String name;
 
-    /*
-     * Parameters that boost scoring based on text matches in certain index
-     * fields.
-     */
-    @JsonProperty(value = "text")
     private TextWeights textWeights;
 
-    /*
-     * The collection of functions that influence the scoring of documents.
-     */
-    @JsonProperty(value = "functions")
     private List<ScoringFunction> functions;
 
-    /*
-     * A value indicating how the results of individual scoring functions
-     * should be combined. Defaults to "Sum". Ignored if there are no scoring
-     * functions.
-     */
-    @JsonProperty(value = "functionAggregation")
     private ScoringFunctionAggregation functionAggregation;
 
     /**
@@ -48,8 +33,7 @@ public final class ScoringProfile {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public ScoringProfile(@JsonProperty(value = "name", required = true) String name) {
+    public ScoringProfile(String name) {
         this.name = name;
     }
 
@@ -97,7 +81,6 @@ public final class ScoringProfile {
      * @param functions the functions value to set.
      * @return the ScoringProfile object itself.
      */
-    @JsonSetter
     public ScoringProfile setFunctions(List<ScoringFunction> functions) {
         this.functions = functions;
         return this;
@@ -123,6 +106,69 @@ public final class ScoringProfile {
     public ScoringProfile setFunctionAggregation(ScoringFunctionAggregation functionAggregation) {
         this.functionAggregation = functionAggregation;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeJsonField("text", this.textWeights, false);
+        JsonUtils.writeArray(
+                jsonWriter, "functions", this.functions, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeStringField(
+                "functionAggregation",
+                this.functionAggregation == null ? null : this.functionAggregation.toString(),
+                false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static ScoringProfile fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    TextWeights textWeights = null;
+                    List<ScoringFunction> functions = null;
+                    ScoringFunctionAggregation functionAggregation = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("text".equals(fieldName)) {
+                            textWeights = JsonUtils.getNullableProperty(reader, r -> TextWeights.fromJson(reader));
+                        } else if ("functions".equals(fieldName)) {
+                            functions =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> ScoringFunction.fromJson(reader)));
+                        } else if ("functionAggregation".equals(fieldName)) {
+                            functionAggregation = ScoringFunctionAggregation.fromString(reader.getStringValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    ScoringProfile deserializedValue = new ScoringProfile(name);
+                    deserializedValue.setTextWeights(textWeights);
+                    deserializedValue.setFunctions(functions);
+                    deserializedValue.setFunctionAggregation(functionAggregation);
+
+                    return deserializedValue;
+                });
     }
 
     /**

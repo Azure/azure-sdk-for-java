@@ -51,7 +51,11 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
         return fromString(name, CustomEntityLookupSkillLanguage.class);
     }
 
-    /** @return known CustomEntityLookupSkillLanguage values. */
+    /**
+     * Gets known CustomEntityLookupSkillLanguage values.
+     *
+     * @return known CustomEntityLookupSkillLanguage values.
+     */
     public static Collection<CustomEntityLookupSkillLanguage> values() {
         return values(CustomEntityLookupSkillLanguage.class);
     }

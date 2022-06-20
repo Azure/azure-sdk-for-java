@@ -45,7 +45,11 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
         return fromString(name, EntityCategory.class);
     }
 
-    /** @return known EntityCategory values. */
+    /**
+     * Gets known EntityCategory values.
+     *
+     * @return known EntityCategory values.
+     */
     public static Collection<EntityCategory> values() {
         return values(EntityCategory.class);
     }

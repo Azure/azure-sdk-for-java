@@ -8,79 +8,34 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The AML skill allows you to extend AI enrichment with a custom Azure Machine Learning (AML) model. Once an AML model
  * is trained and deployed, an AML skill integrates it into AI enrichment.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Skills.Custom.AmlSkill")
 @Fluent
 public final class AzureMachineLearningSkill extends SearchIndexerSkill {
-    /*
-     * Identifies the concrete type of the skill.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Skills.Custom.AmlSkill";
 
-    /*
-     * (Required for no authentication or key authentication) The scoring URI
-     * of the AML service to which the JSON payload will be sent. Only the
-     * https URI scheme is allowed.
-     */
-    @JsonProperty(value = "uri")
     private String scoringUri;
 
-    /*
-     * (Required for key authentication) The key for the AML service.
-     */
-    @JsonProperty(value = "key")
     private String authenticationKey;
 
-    /*
-     * (Required for token authentication). The Azure Resource Manager resource
-     * ID of the AML service. It should be in the format
-     * subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.MachineLearningServices/workspaces/{workspace-name}/services/{service_name}.
-     */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /*
-     * (Optional) When specified, indicates the timeout for the http client
-     * making the API call.
-     */
-    @JsonProperty(value = "timeout")
     private Duration timeout;
 
-    /*
-     * (Optional for token authentication). The region the AML service is
-     * deployed in.
-     */
-    @JsonProperty(value = "region")
     private String region;
 
-    /*
-     * (Optional) When specified, indicates the number of calls the indexer
-     * will make in parallel to the endpoint you have provided. You can
-     * decrease this value if your endpoint is failing under too high of a
-     * request load, or raise it if your endpoint is able to accept more
-     * requests and you would like an increase in the performance of the
-     * indexer. If not set, a default value of 5 is used. The
-     * degreeOfParallelism can be set to a maximum of 10 and a minimum of 1.
-     */
-    @JsonProperty(value = "degreeOfParallelism")
     private Integer degreeOfParallelism;
 
     /**
@@ -89,20 +44,8 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @JsonCreator
-    public AzureMachineLearningSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+    public AzureMachineLearningSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the skill.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -239,5 +182,124 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     public AzureMachineLearningSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeStringField("description", getDescription(), false);
+        jsonWriter.writeStringField("context", getContext(), false);
+        jsonWriter.writeStringField("uri", this.scoringUri, false);
+        jsonWriter.writeStringField("key", this.authenticationKey, false);
+        jsonWriter.writeStringField("resourceId", this.resourceId, false);
+        jsonWriter.writeStringField("timeout", this.timeout == null ? null : this.timeout.toString(), false);
+        jsonWriter.writeStringField("region", this.region, false);
+        jsonWriter.writeIntegerField("degreeOfParallelism", this.degreeOfParallelism, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static AzureMachineLearningSkill fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    String scoringUri = null;
+                    String authenticationKey = null;
+                    String resourceId = null;
+                    Duration timeout = null;
+                    String region = null;
+                    Integer degreeOfParallelism = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getStringValue();
+                        } else if ("uri".equals(fieldName)) {
+                            scoringUri = reader.getStringValue();
+                        } else if ("key".equals(fieldName)) {
+                            authenticationKey = reader.getStringValue();
+                        } else if ("resourceId".equals(fieldName)) {
+                            resourceId = reader.getStringValue();
+                        } else if ("timeout".equals(fieldName)) {
+                            timeout =
+                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                        } else if ("region".equals(fieldName)) {
+                            region = reader.getStringValue();
+                        } else if ("degreeOfParallelism".equals(fieldName)) {
+                            degreeOfParallelism = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Skills.Custom.AmlSkill")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Custom.AmlSkill'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    AzureMachineLearningSkill deserializedValue = new AzureMachineLearningSkill(inputs, outputs);
+                    deserializedValue.setName(name);
+                    deserializedValue.setDescription(description);
+                    deserializedValue.setContext(context);
+                    deserializedValue.setScoringUri(scoringUri);
+                    deserializedValue.setAuthenticationKey(authenticationKey);
+                    deserializedValue.setResourceId(resourceId);
+                    deserializedValue.setTimeout(timeout);
+                    deserializedValue.setRegion(region);
+                    deserializedValue.setDegreeOfParallelism(degreeOfParallelism);
+
+                    return deserializedValue;
+                });
     }
 }

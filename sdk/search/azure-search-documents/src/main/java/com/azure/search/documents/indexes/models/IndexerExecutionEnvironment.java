@@ -30,7 +30,11 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
         return fromString(name, IndexerExecutionEnvironment.class);
     }
 
-    /** @return known IndexerExecutionEnvironment values. */
+    /**
+     * Gets known IndexerExecutionEnvironment values.
+     *
+     * @return known IndexerExecutionEnvironment values.
+     */
     public static Collection<IndexerExecutionEnvironment> values() {
         return values(IndexerExecutionEnvironment.class);
     }

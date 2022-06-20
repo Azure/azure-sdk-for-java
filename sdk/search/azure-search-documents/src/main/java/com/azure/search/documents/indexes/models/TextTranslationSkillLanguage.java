@@ -240,7 +240,11 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
         return fromString(name, TextTranslationSkillLanguage.class);
     }
 
-    /** @return known TextTranslationSkillLanguage values. */
+    /**
+     * Gets known TextTranslationSkillLanguage values.
+     *
+     * @return known TextTranslationSkillLanguage values.
+     */
     public static Collection<TextTranslationSkillLanguage> values() {
         return values(TextTranslationSkillLanguage.class);
     }

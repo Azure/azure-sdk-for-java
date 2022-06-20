@@ -8,104 +8,41 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
  * using Apache Lucene.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.WordDelimiterTokenFilter")
 @Fluent
 public final class WordDelimiterTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.WordDelimiterTokenFilter";
 
-    /*
-     * A value indicating whether to generate part words. If set, causes parts
-     * of words to be generated; for example "AzureSearch" becomes "Azure"
-     * "Search". Default is true.
-     */
-    @JsonProperty(value = "generateWordParts")
     private Boolean generateWordParts;
 
-    /*
-     * A value indicating whether to generate number subwords. Default is true.
-     */
-    @JsonProperty(value = "generateNumberParts")
     private Boolean generateNumberParts;
 
-    /*
-     * A value indicating whether maximum runs of word parts will be catenated.
-     * For example, if this is set to true, "Azure-Search" becomes
-     * "AzureSearch". Default is false.
-     */
-    @JsonProperty(value = "catenateWords")
     private Boolean catenateWords;
 
-    /*
-     * A value indicating whether maximum runs of number parts will be
-     * catenated. For example, if this is set to true, "1-2" becomes "12".
-     * Default is false.
-     */
-    @JsonProperty(value = "catenateNumbers")
     private Boolean catenateNumbers;
 
-    /*
-     * A value indicating whether all subword parts will be catenated. For
-     * example, if this is set to true, "Azure-Search-1" becomes
-     * "AzureSearch1". Default is false.
-     */
-    @JsonProperty(value = "catenateAll")
     private Boolean catenateAll;
 
-    /*
-     * A value indicating whether to split words on caseChange. For example, if
-     * this is set to true, "AzureSearch" becomes "Azure" "Search". Default is
-     * true.
-     */
-    @JsonProperty(value = "splitOnCaseChange")
     private Boolean splitOnCaseChange;
 
-    /*
-     * A value indicating whether original words will be preserved and added to
-     * the subword list. Default is false.
-     */
-    @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
-    /*
-     * A value indicating whether to split on numbers. For example, if this is
-     * set to true, "Azure1Search" becomes "Azure" "1" "Search". Default is
-     * true.
-     */
-    @JsonProperty(value = "splitOnNumerics")
     private Boolean splitOnNumerics;
 
-    /*
-     * A value indicating whether to remove trailing "'s" for each subword.
-     * Default is true.
-     */
-    @JsonProperty(value = "stemEnglishPossessive")
     private Boolean stemEnglishPossessive;
 
-    /*
-     * A list of tokens to protect from being delimited.
-     */
-    @JsonProperty(value = "protectedWords")
     private List<String> protectedWords;
 
     /**
@@ -113,18 +50,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public WordDelimiterTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+    public WordDelimiterTokenFilter(String name) {
         super(name);
-    }
-
-    /**
-     * Get the odataType property: Identifies the concrete type of the token filter.
-     *
-     * @return the odataType value.
-     */
-    public String getOdataType() {
-        return this.odataType;
     }
 
     /**
@@ -341,5 +268,114 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("name", getName(), false);
+        jsonWriter.writeBooleanField("generateWordParts", this.generateWordParts, false);
+        jsonWriter.writeBooleanField("generateNumberParts", this.generateNumberParts, false);
+        jsonWriter.writeBooleanField("catenateWords", this.catenateWords, false);
+        jsonWriter.writeBooleanField("catenateNumbers", this.catenateNumbers, false);
+        jsonWriter.writeBooleanField("catenateAll", this.catenateAll, false);
+        jsonWriter.writeBooleanField("splitOnCaseChange", this.splitOnCaseChange, false);
+        jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal, false);
+        jsonWriter.writeBooleanField("splitOnNumerics", this.splitOnNumerics, false);
+        jsonWriter.writeBooleanField("stemEnglishPossessive", this.stemEnglishPossessive, false);
+        JsonUtils.writeArray(
+                jsonWriter,
+                "protectedWords",
+                this.protectedWords,
+                (writer, element) -> writer.writeString(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static WordDelimiterTokenFilter fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean nameFound = false;
+                    String name = null;
+                    Boolean generateWordParts = null;
+                    Boolean generateNumberParts = null;
+                    Boolean catenateWords = null;
+                    Boolean catenateNumbers = null;
+                    Boolean catenateAll = null;
+                    Boolean splitOnCaseChange = null;
+                    Boolean preserveOriginal = null;
+                    Boolean splitOnNumerics = null;
+                    Boolean stemEnglishPossessive = null;
+                    List<String> protectedWords = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("generateWordParts".equals(fieldName)) {
+                            generateWordParts = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("generateNumberParts".equals(fieldName)) {
+                            generateNumberParts = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("catenateWords".equals(fieldName)) {
+                            catenateWords = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("catenateNumbers".equals(fieldName)) {
+                            catenateNumbers = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("catenateAll".equals(fieldName)) {
+                            catenateAll = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("splitOnCaseChange".equals(fieldName)) {
+                            splitOnCaseChange = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("preserveOriginal".equals(fieldName)) {
+                            preserveOriginal = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("splitOnNumerics".equals(fieldName)) {
+                            splitOnNumerics = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("stemEnglishPossessive".equals(fieldName)) {
+                            stemEnglishPossessive =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("protectedWords".equals(fieldName)) {
+                            protectedWords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound
+                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.WordDelimiterTokenFilter")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    WordDelimiterTokenFilter deserializedValue = new WordDelimiterTokenFilter(name);
+                    deserializedValue.setGenerateWordParts(generateWordParts);
+                    deserializedValue.setGenerateNumberParts(generateNumberParts);
+                    deserializedValue.setCatenateWords(catenateWords);
+                    deserializedValue.setCatenateNumbers(catenateNumbers);
+                    deserializedValue.setCatenateAll(catenateAll);
+                    deserializedValue.setSplitOnCaseChange(splitOnCaseChange);
+                    deserializedValue.setPreserveOriginal(preserveOriginal);
+                    deserializedValue.setSplitOnNumerics(splitOnNumerics);
+                    deserializedValue.setStemEnglishPossessive(stemEnglishPossessive);
+                    deserializedValue.setProtectedWords(protectedWords);
+
+                    return deserializedValue;
+                });
     }
 }

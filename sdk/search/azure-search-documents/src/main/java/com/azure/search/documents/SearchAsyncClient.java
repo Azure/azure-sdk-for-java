@@ -862,7 +862,7 @@ public final class SearchAsyncClient {
 
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result)),
-                    createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
+                    createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
                     result.getCoverage(), result.getAnswers());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
@@ -880,14 +880,6 @@ public final class SearchAsyncClient {
     private static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
-    }
-
-    private static Map<String, List<FacetResult>> getFacets(SearchDocumentsResult result) {
-        if (result.getFacets() == null) {
-            return null;
-        }
-
-        return result.getFacets();
     }
 
     /**

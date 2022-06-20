@@ -8,35 +8,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Specifies the identity for a datasource to use. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity")
 @Fluent
 public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDataIdentity {
-    /*
-     * Identifies the concrete type of the identity.
-     */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity";
 
-    /*
-     * The fully qualified Azure resource Id of a user assigned managed
-     * identity typically in the form
-     * "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
-     * that should have been assigned to the search service.
-     */
-    @JsonProperty(value = "userAssignedIdentity", required = true)
     private String userAssignedIdentity;
 
     /**
@@ -44,9 +29,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      *
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      */
-    @JsonCreator
-    public SearchIndexerDataUserAssignedIdentity(
-            @JsonProperty(value = "userAssignedIdentity", required = true) String userAssignedIdentity) {
+    public SearchIndexerDataUserAssignedIdentity(String userAssignedIdentity) {
         this.userAssignedIdentity = userAssignedIdentity;
     }
 
@@ -60,5 +43,61 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      */
     public String getUserAssignedIdentity() {
         return this.userAssignedIdentity;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", odataType);
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerDataUserAssignedIdentity fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean odataTypeFound = false;
+                    String odataType = null;
+                    boolean userAssignedIdentityFound = false;
+                    String userAssignedIdentity = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@odata.type".equals(fieldName)) {
+                            odataTypeFound = true;
+                            odataType = reader.getStringValue();
+                        } else if ("userAssignedIdentity".equals(fieldName)) {
+                            userAssignedIdentity = reader.getStringValue();
+                            userAssignedIdentityFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    if (!odataTypeFound
+                            || !Objects.equals(
+                                    odataType, "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity")) {
+                        throw new IllegalStateException(
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity'. The found '@odata.type' was '"
+                                        + odataType
+                                        + "'.");
+                    }
+
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!userAssignedIdentityFound) {
+                        missingProperties.add("userAssignedIdentity");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchIndexerDataUserAssignedIdentity deserializedValue =
+                            new SearchIndexerDataUserAssignedIdentity(userAssignedIdentity);
+
+                    return deserializedValue;
+                });
     }
 }

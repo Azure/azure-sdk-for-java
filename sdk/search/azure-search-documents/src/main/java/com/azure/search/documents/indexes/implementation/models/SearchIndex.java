@@ -8,6 +8,11 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzer;
@@ -18,115 +23,39 @@ import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SemanticSettings;
 import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a search index definition, which describes the fields and search behavior of an index. */
 @Fluent
-public final class SearchIndex {
-    /*
-     * The name of the index.
-     */
-    @JsonProperty(value = "name")
+public final class SearchIndex implements JsonSerializable<SearchIndex> {
     private String name;
 
-    /*
-     * The fields of the index.
-     */
-    @JsonProperty(value = "fields")
     private List<SearchField> fields;
 
-    /*
-     * The scoring profiles for the index.
-     */
-    @JsonProperty(value = "scoringProfiles")
     private List<ScoringProfile> scoringProfiles;
 
-    /*
-     * The name of the scoring profile to use if none is specified in the
-     * query. If this property is not set and no scoring profile is specified
-     * in the query, then default scoring (tf-idf) will be used.
-     */
-    @JsonProperty(value = "defaultScoringProfile")
     private String defaultScoringProfile;
 
-    /*
-     * Options to control Cross-Origin Resource Sharing (CORS) for the index.
-     */
-    @JsonProperty(value = "corsOptions")
     private CorsOptions corsOptions;
 
-    /*
-     * The suggesters for the index.
-     */
-    @JsonProperty(value = "suggesters")
     private List<SearchSuggester> suggesters;
 
-    /*
-     * The analyzers for the index.
-     */
-    @JsonProperty(value = "analyzers")
     private List<LexicalAnalyzer> analyzers;
 
-    /*
-     * The tokenizers for the index.
-     */
-    @JsonProperty(value = "tokenizers")
     private List<LexicalTokenizer> tokenizers;
 
-    /*
-     * The token filters for the index.
-     */
-    @JsonProperty(value = "tokenFilters")
     private List<TokenFilter> tokenFilters;
 
-    /*
-     * The character filters for the index.
-     */
-    @JsonProperty(value = "charFilters")
     private List<CharFilter> charFilters;
 
-    /*
-     * The normalizers for the index.
-     */
-    @JsonProperty(value = "normalizers")
     private List<LexicalNormalizer> normalizers;
 
-    /*
-     * A description of an encryption key that you create in Azure Key Vault.
-     * This key is used to provide an additional level of encryption-at-rest
-     * for your data when you want full assurance that no one, not even
-     * Microsoft, can decrypt your data in Azure Cognitive Search. Once you
-     * have encrypted your data, it will always remain encrypted. Azure
-     * Cognitive Search will ignore attempts to set this property to null. You
-     * can change this property as needed if you want to rotate your encryption
-     * key; Your data will be unaffected. Encryption with customer-managed keys
-     * is not available for free search services, and is only available for
-     * paid services created on or after January 1, 2019.
-     */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * The type of similarity algorithm to be used when scoring and ranking the
-     * documents matching a search query. The similarity algorithm can only be
-     * defined at index creation time and cannot be modified on existing
-     * indexes. If null, the ClassicSimilarity algorithm is used.
-     */
-    @JsonProperty(value = "similarity")
     private SimilarityAlgorithm similarity;
 
-    /*
-     * Defines parameters for a search index that influence semantic
-     * capabilities.
-     */
-    @JsonProperty(value = "semantic")
     private SemanticSettings semanticSettings;
 
-    /*
-     * The ETag of the index.
-     */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
     /**
@@ -447,5 +376,152 @@ public final class SearchIndex {
     public SearchIndex setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        JsonUtils.writeArray(jsonWriter, "fields", this.fields, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter,
+                "scoringProfiles",
+                this.scoringProfiles,
+                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile, false);
+        jsonWriter.writeJsonField("corsOptions", this.corsOptions, false);
+        JsonUtils.writeArray(
+                jsonWriter, "suggesters", this.suggesters, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "analyzers", this.analyzers, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "charFilters", this.charFilters, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "normalizers", this.normalizers, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
+        jsonWriter.writeJsonField("similarity", this.similarity, false);
+        jsonWriter.writeJsonField("semantic", this.semanticSettings, false);
+        jsonWriter.writeStringField("@odata.etag", this.eTag, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndex fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    String name = null;
+                    List<SearchField> fields = null;
+                    List<ScoringProfile> scoringProfiles = null;
+                    String defaultScoringProfile = null;
+                    CorsOptions corsOptions = null;
+                    List<SearchSuggester> suggesters = null;
+                    List<LexicalAnalyzer> analyzers = null;
+                    List<LexicalTokenizer> tokenizers = null;
+                    List<TokenFilter> tokenFilters = null;
+                    List<CharFilter> charFilters = null;
+                    List<LexicalNormalizer> normalizers = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    SimilarityAlgorithm similarity = null;
+                    SemanticSettings semanticSettings = null;
+                    String eTag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                        } else if ("fields".equals(fieldName)) {
+                            fields =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchField.fromJson(reader)));
+                        } else if ("scoringProfiles".equals(fieldName)) {
+                            scoringProfiles =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> ScoringProfile.fromJson(reader)));
+                        } else if ("defaultScoringProfile".equals(fieldName)) {
+                            defaultScoringProfile = reader.getStringValue();
+                        } else if ("corsOptions".equals(fieldName)) {
+                            corsOptions = JsonUtils.getNullableProperty(reader, r -> CorsOptions.fromJson(reader));
+                        } else if ("suggesters".equals(fieldName)) {
+                            suggesters =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> SearchSuggester.fromJson(reader)));
+                        } else if ("analyzers".equals(fieldName)) {
+                            analyzers =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> LexicalAnalyzer.fromJson(reader)));
+                        } else if ("tokenizers".equals(fieldName)) {
+                            tokenizers =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> LexicalTokenizer.fromJson(reader)));
+                        } else if ("tokenFilters".equals(fieldName)) {
+                            tokenFilters =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> TokenFilter.fromJson(reader)));
+                        } else if ("charFilters".equals(fieldName)) {
+                            charFilters =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r -> JsonUtils.getNullableProperty(r, r1 -> CharFilter.fromJson(reader)));
+                        } else if ("normalizers".equals(fieldName)) {
+                            normalizers =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> LexicalNormalizer.fromJson(reader)));
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                        } else if ("similarity".equals(fieldName)) {
+                            similarity =
+                                    JsonUtils.getNullableProperty(reader, r -> SimilarityAlgorithm.fromJson(reader));
+                        } else if ("semantic".equals(fieldName)) {
+                            semanticSettings =
+                                    JsonUtils.getNullableProperty(reader, r -> SemanticSettings.fromJson(reader));
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndex deserializedValue = new SearchIndex();
+                    deserializedValue.setName(name);
+                    deserializedValue.setFields(fields);
+                    deserializedValue.setScoringProfiles(scoringProfiles);
+                    deserializedValue.setDefaultScoringProfile(defaultScoringProfile);
+                    deserializedValue.setCorsOptions(corsOptions);
+                    deserializedValue.setSuggesters(suggesters);
+                    deserializedValue.setAnalyzers(analyzers);
+                    deserializedValue.setTokenizers(tokenizers);
+                    deserializedValue.setTokenFilters(tokenFilters);
+                    deserializedValue.setCharFilters(charFilters);
+                    deserializedValue.setNormalizers(normalizers);
+                    deserializedValue.setEncryptionKey(encryptionKey);
+                    deserializedValue.setSimilarity(similarity);
+                    deserializedValue.setSemanticSettings(semanticSettings);
+                    deserializedValue.setETag(eTag);
+
+                    return deserializedValue;
+                });
     }
 }

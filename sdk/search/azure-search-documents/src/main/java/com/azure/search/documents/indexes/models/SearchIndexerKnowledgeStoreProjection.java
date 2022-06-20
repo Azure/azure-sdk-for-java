@@ -8,28 +8,21 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import java.util.List;
 
 /** Container object for various projection selectors. */
 @Fluent
-public final class SearchIndexerKnowledgeStoreProjection {
-    /*
-     * Projections to Azure Table storage.
-     */
-    @JsonProperty(value = "tables")
+public final class SearchIndexerKnowledgeStoreProjection
+        implements JsonSerializable<SearchIndexerKnowledgeStoreProjection> {
     private List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables;
 
-    /*
-     * Projections to Azure Blob storage.
-     */
-    @JsonProperty(value = "objects")
     private List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects;
 
-    /*
-     * Projections to Azure File storage.
-     */
-    @JsonProperty(value = "files")
     private List<SearchIndexerKnowledgeStoreFileProjectionSelector> files;
 
     /**
@@ -93,5 +86,70 @@ public final class SearchIndexerKnowledgeStoreProjection {
             List<SearchIndexerKnowledgeStoreFileProjectionSelector> files) {
         this.files = files;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(jsonWriter, "tables", this.tables, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(
+                jsonWriter, "objects", this.objects, (writer, element) -> writer.writeJson(element, false));
+        JsonUtils.writeArray(jsonWriter, "files", this.files, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables = null;
+                    List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects = null;
+                    List<SearchIndexerKnowledgeStoreFileProjectionSelector> files = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tables".equals(fieldName)) {
+                            tables =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r,
+                                                            r1 ->
+                                                                    SearchIndexerKnowledgeStoreTableProjectionSelector
+                                                                            .fromJson(reader)));
+                        } else if ("objects".equals(fieldName)) {
+                            objects =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r,
+                                                            r1 ->
+                                                                    SearchIndexerKnowledgeStoreObjectProjectionSelector
+                                                                            .fromJson(reader)));
+                        } else if ("files".equals(fieldName)) {
+                            files =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r,
+                                                            r1 ->
+                                                                    SearchIndexerKnowledgeStoreFileProjectionSelector
+                                                                            .fromJson(reader)));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    SearchIndexerKnowledgeStoreProjection deserializedValue =
+                            new SearchIndexerKnowledgeStoreProjection();
+                    deserializedValue.setTables(tables);
+                    deserializedValue.setObjects(objects);
+                    deserializedValue.setFiles(files);
+
+                    return deserializedValue;
+                });
     }
 }

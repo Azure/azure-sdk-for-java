@@ -8,108 +8,40 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /** An object that contains information about the matches that were found, and related metadata. */
 @Fluent
-public final class CustomEntity {
-    /*
-     * The top-level entity descriptor. Matches in the skill output will be
-     * grouped by this name, and it should represent the "normalized" form of
-     * the text being found.
-     */
-    @JsonProperty(value = "name", required = true)
+public final class CustomEntity implements JsonSerializable<CustomEntity> {
     private String name;
 
-    /*
-     * This field can be used as a passthrough for custom metadata about the
-     * matched text(s). The value of this field will appear with every match of
-     * its entity in the skill output.
-     */
-    @JsonProperty(value = "description")
     private String description;
 
-    /*
-     * This field can be used as a passthrough for custom metadata about the
-     * matched text(s). The value of this field will appear with every match of
-     * its entity in the skill output.
-     */
-    @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * This field can be used as a passthrough for custom metadata about the
-     * matched text(s). The value of this field will appear with every match of
-     * its entity in the skill output.
-     */
-    @JsonProperty(value = "subtype")
     private String subtype;
 
-    /*
-     * This field can be used as a passthrough for custom metadata about the
-     * matched text(s). The value of this field will appear with every match of
-     * its entity in the skill output.
-     */
-    @JsonProperty(value = "id")
     private String id;
 
-    /*
-     * Defaults to false. Boolean value denoting whether comparisons with the
-     * entity name should be sensitive to character casing. Sample case
-     * insensitive matches of "Microsoft" could be: microsoft, microSoft,
-     * MICROSOFT.
-     */
-    @JsonProperty(value = "caseSensitive")
     private Boolean caseSensitive;
 
-    /*
-     * Defaults to false. Boolean value denoting whether comparisons with the
-     * entity name should be sensitive to accent.
-     */
-    @JsonProperty(value = "accentSensitive")
     private Boolean accentSensitive;
 
-    /*
-     * Defaults to 0. Maximum value of 5. Denotes the acceptable number of
-     * divergent characters that would still constitute a match with the entity
-     * name. The smallest possible fuzziness for any given match is returned.
-     * For instance, if the edit distance is set to 3, "Windows10" would still
-     * match "Windows", "Windows10" and "Windows 7". When case sensitivity is
-     * set to false, case differences do NOT count towards fuzziness tolerance,
-     * but otherwise do.
-     */
-    @JsonProperty(value = "fuzzyEditDistance")
     private Integer fuzzyEditDistance;
 
-    /*
-     * Changes the default case sensitivity value for this entity. It be used
-     * to change the default value of all aliases caseSensitive values.
-     */
-    @JsonProperty(value = "defaultCaseSensitive")
     private Boolean defaultCaseSensitive;
 
-    /*
-     * Changes the default accent sensitivity value for this entity. It be used
-     * to change the default value of all aliases accentSensitive values.
-     */
-    @JsonProperty(value = "defaultAccentSensitive")
     private Boolean defaultAccentSensitive;
 
-    /*
-     * Changes the default fuzzy edit distance value for this entity. It can be
-     * used to change the default value of all aliases fuzzyEditDistance
-     * values.
-     */
-    @JsonProperty(value = "defaultFuzzyEditDistance")
     private Integer defaultFuzzyEditDistance;
 
-    /*
-     * An array of complex objects that can be used to specify alternative
-     * spellings or synonyms to the root entity name.
-     */
-    @JsonProperty(value = "aliases")
     private List<CustomEntityAlias> aliases;
 
     /**
@@ -117,8 +49,7 @@ public final class CustomEntity {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public CustomEntity(@JsonProperty(value = "name", required = true) String name) {
+    public CustomEntity(String name) {
         this.name = name;
     }
 
@@ -380,5 +311,106 @@ public final class CustomEntity {
     public CustomEntity setAliases(List<CustomEntityAlias> aliases) {
         this.aliases = aliases;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("description", this.description, false);
+        jsonWriter.writeStringField("type", this.type, false);
+        jsonWriter.writeStringField("subtype", this.subtype, false);
+        jsonWriter.writeStringField("id", this.id, false);
+        jsonWriter.writeBooleanField("caseSensitive", this.caseSensitive, false);
+        jsonWriter.writeBooleanField("accentSensitive", this.accentSensitive, false);
+        jsonWriter.writeIntegerField("fuzzyEditDistance", this.fuzzyEditDistance, false);
+        jsonWriter.writeBooleanField("defaultCaseSensitive", this.defaultCaseSensitive, false);
+        jsonWriter.writeBooleanField("defaultAccentSensitive", this.defaultAccentSensitive, false);
+        jsonWriter.writeIntegerField("defaultFuzzyEditDistance", this.defaultFuzzyEditDistance, false);
+        JsonUtils.writeArray(
+                jsonWriter, "aliases", this.aliases, (writer, element) -> writer.writeJson(element, false));
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    public static CustomEntity fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String description = null;
+                    String type = null;
+                    String subtype = null;
+                    String id = null;
+                    Boolean caseSensitive = null;
+                    Boolean accentSensitive = null;
+                    Integer fuzzyEditDistance = null;
+                    Boolean defaultCaseSensitive = null;
+                    Boolean defaultAccentSensitive = null;
+                    Integer defaultFuzzyEditDistance = null;
+                    List<CustomEntityAlias> aliases = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            name = reader.getStringValue();
+                            nameFound = true;
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getStringValue();
+                        } else if ("type".equals(fieldName)) {
+                            type = reader.getStringValue();
+                        } else if ("subtype".equals(fieldName)) {
+                            subtype = reader.getStringValue();
+                        } else if ("id".equals(fieldName)) {
+                            id = reader.getStringValue();
+                        } else if ("caseSensitive".equals(fieldName)) {
+                            caseSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("accentSensitive".equals(fieldName)) {
+                            accentSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("fuzzyEditDistance".equals(fieldName)) {
+                            fuzzyEditDistance = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("defaultCaseSensitive".equals(fieldName)) {
+                            defaultCaseSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("defaultAccentSensitive".equals(fieldName)) {
+                            defaultAccentSensitive =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("defaultFuzzyEditDistance".equals(fieldName)) {
+                            defaultFuzzyEditDistance = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("aliases".equals(fieldName)) {
+                            aliases =
+                                    JsonUtils.readArray(
+                                            reader,
+                                            r ->
+                                                    JsonUtils.getNullableProperty(
+                                                            r, r1 -> CustomEntityAlias.fromJson(reader)));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    CustomEntity deserializedValue = new CustomEntity(name);
+                    deserializedValue.setDescription(description);
+                    deserializedValue.setType(type);
+                    deserializedValue.setSubtype(subtype);
+                    deserializedValue.setId(id);
+                    deserializedValue.setCaseSensitive(caseSensitive);
+                    deserializedValue.setAccentSensitive(accentSensitive);
+                    deserializedValue.setFuzzyEditDistance(fuzzyEditDistance);
+                    deserializedValue.setDefaultCaseSensitive(defaultCaseSensitive);
+                    deserializedValue.setDefaultAccentSensitive(defaultAccentSensitive);
+                    deserializedValue.setDefaultFuzzyEditDistance(defaultFuzzyEditDistance);
+                    deserializedValue.setAliases(aliases);
+
+                    return deserializedValue;
+                });
     }
 }

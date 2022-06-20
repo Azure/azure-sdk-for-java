@@ -93,7 +93,11 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
         return fromString(name, EntityRecognitionSkillLanguage.class);
     }
 
-    /** @return known EntityRecognitionSkillLanguage values. */
+    /**
+     * Gets known EntityRecognitionSkillLanguage values.
+     *
+     * @return known EntityRecognitionSkillLanguage values.
+     */
     public static Collection<EntityRecognitionSkillLanguage> values() {
         return values(EntityRecognitionSkillLanguage.class);
     }

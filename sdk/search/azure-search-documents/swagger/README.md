@@ -110,7 +110,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.0.60'
+use: '@autorest/java@4.0.62'
 sync-methods: none
 generate-client-interfaces: false
 context-client-method-parameter: true
@@ -121,6 +121,7 @@ license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
 require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
+stream-style-serialization: true
 ```
 
 ### Set odata.metadata Accept header in operations
