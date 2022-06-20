@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for EventGrid Management</name>
-  <description>This package contains Microsoft Azure SDK for EventGrid Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure EventGrid Management Client. Package tag package-2021-10-preview.</description>
+  <description>This package contains Microsoft Azure SDK for EventGrid Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure EventGrid Management Client. Package tag package-2022-06.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -39,7 +39,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
-    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
