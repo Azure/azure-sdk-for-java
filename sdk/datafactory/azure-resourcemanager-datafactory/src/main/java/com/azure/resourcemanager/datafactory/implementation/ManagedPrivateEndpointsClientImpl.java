@@ -542,14 +542,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 managedPrivateEndpointName,
                 managedPrivateEndpoint,
                 ifMatch)
-            .flatMap(
-                (Response<ManagedPrivateEndpointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -580,14 +573,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
                 managedPrivateEndpointName,
                 managedPrivateEndpoint,
                 ifMatch)
-            .flatMap(
-                (Response<ManagedPrivateEndpointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -821,14 +807,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         String ifNoneMatch) {
         return getWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch)
-            .flatMap(
-                (Response<ManagedPrivateEndpointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -852,14 +831,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         final String ifNoneMatch = null;
         return getWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch)
-            .flatMap(
-                (Response<ManagedPrivateEndpointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1072,7 +1044,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
         String managedPrivateEndpointName) {
         return deleteWithResponseAsync(
                 resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

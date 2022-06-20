@@ -48,6 +48,10 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SubvolumeInfoInner innerModel() {
         return this.innerObject;
     }
