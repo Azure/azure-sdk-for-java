@@ -10,6 +10,7 @@ import java.util.function.Function;
 
 /**
  * Resolver interface to resolve a function that returns a {@link JWK} implementation through a {@link ClientRegistration}.
+ * @since 4.3.0
  */
 public interface OAuth2ClientAuthenticationJWKResolver {
 

@@ -59,12 +59,14 @@ public class AadOAuth2ClientAuthenticationJWKResolver implements OAuth2ClientAut
                 Assert.notNull(clientCertificatePath, "clientCertificatePath cannot be null");
                 Assert.notNull(clientCertificatePassword, "clientCertificatePassword cannot be null");
                 String fileExtension = clientCertificatePath.substring(clientCertificatePath.lastIndexOf(".") + 1);
-                Assert.isTrue("pfx".equals(fileExtension), "Only support file with '.pfx' extension.");
+                Assert.isTrue("pfx".equals(fileExtension) || "p12".equals(fileExtension),
+                    "Only files with the '.pfx' or '.p12' extension are supported.");
                 try (FileInputStream inputStream = new FileInputStream(clientCertificatePath)) {
                     KeyStore keyStore = KeyStore.getInstance("PKCS12");
-                    keyStore.load(inputStream, clientCertificatePassword.toCharArray());
+                    char[] password = clientCertificatePassword.toCharArray();
+                    keyStore.load(inputStream, password);
                     String alias = keyStore.aliases().nextElement();
-                    PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, clientCertificatePassword.toCharArray());
+                    PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);
                     X509Certificate x509Certificate = (X509Certificate) keyStore.getCertificate(alias);
                     PublicKey publicKey = x509Certificate.getPublicKey();
                     return new RSAKey.Builder((RSAPublicKey) publicKey)

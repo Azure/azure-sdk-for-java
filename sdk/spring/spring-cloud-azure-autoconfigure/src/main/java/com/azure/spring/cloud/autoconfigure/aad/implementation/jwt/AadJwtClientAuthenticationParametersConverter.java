@@ -19,12 +19,8 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jose.jws.JwsAlgorithm;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
-import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -32,6 +28,7 @@ import org.springframework.util.MultiValueMap;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,7 +39,7 @@ import java.util.function.Function;
  * (JWS) to be used for client authentication at the Azure AD Authorization Server's Token Endpoint.
  *
  * @param <T> the type of {@link AbstractOAuth2AuthorizationGrantRequest}
- * @since 4.3
+ * @since 4.3.0
  */
 public final class AadJwtClientAuthenticationParametersConverter<T extends AbstractOAuth2AuthorizationGrantRequest>
     implements Converter<T, MultiValueMap<String, String>> {
@@ -95,23 +92,21 @@ public final class AadJwtClientAuthenticationParametersConverter<T extends Abstr
             throw new OAuth2AuthorizationException(oauth2Error);
         }
 
-        JwsHeader.Builder headersBuilder = JwsHeader.with(jwsAlgorithm);
-        headersBuilder.type("JWT").x509SHA1Thumbprint(jwk.getX509CertThumbprint().toString());
+        Map<String, Object> jwsHeader = new HashMap<>();
+        jwsHeader.put("typ", "JWT");
+        jwsHeader.put("alg", SignatureAlgorithm.RS256.getName());
+        jwsHeader.put("x5t", jwk.getX509CertThumbprint().toString());
+
+        Map<String, Object> jwtClaimsSet = new HashMap<>();
         Instant issuedAt = Instant.now();
         Instant expiresAt = issuedAt.plus(Duration.ofSeconds(60L));
-
-        // @formatter:off
-        JwtClaimsSet.Builder claimsBuilder = JwtClaimsSet.builder()
-                .issuer(clientRegistration.getClientId())
-                .subject(clientRegistration.getClientId())
-                .audience(Collections.singletonList(clientRegistration.getProviderDetails().getTokenUri()))
-                .id(UUID.randomUUID().toString())
-                .issuedAt(issuedAt)
-                .expiresAt(expiresAt);
-        // @formatter:on
-
-        JwsHeader jwsHeader = headersBuilder.build();
-        JwtClaimsSet jwtClaimsSet = claimsBuilder.build();
+        jwtClaimsSet.put(JwtClaimNames.ISS, clientRegistration.getClientId());
+        jwtClaimsSet.put(JwtClaimNames.SUB, clientRegistration.getClientId());
+        jwtClaimsSet.put(JwtClaimNames.AUD,
+            Collections.singletonList(clientRegistration.getProviderDetails().getTokenUri()));
+        jwtClaimsSet.put(JwtClaimNames.JTI, UUID.randomUUID().toString());
+        jwtClaimsSet.put(JwtClaimNames.IAT, issuedAt);
+        jwtClaimsSet.put(JwtClaimNames.EXP, expiresAt);
 
         JwsEncoderHolder jwsEncoderHolder = this.jwsEncoders.compute(clientRegistration.getRegistrationId(),
             (clientRegistrationId, currentJwsEncoderHolder) -> {
@@ -119,11 +114,12 @@ public final class AadJwtClientAuthenticationParametersConverter<T extends Abstr
                     return currentJwsEncoderHolder;
                 }
                 JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(jwk));
-                return new JwsEncoderHolder(new NimbusJwtEncoder(jwkSource), jwk);
+                return new JwsEncoderHolder(new AadJwtEncoder(jwkSource), jwk);
             });
 
-        JwtEncoder jwtEncoder = jwsEncoderHolder.getJwsEncoder();
-        Jwt jwt = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet));
+        AadJwtEncoder jwtEncoder = jwsEncoderHolder.getJwtEncoder();
+
+        Jwt jwt = jwtEncoder.encode(jwsHeader, jwtClaimsSet);
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         parameters.set(OAuth2ParameterNames.CLIENT_ASSERTION_TYPE, CLIENT_ASSERTION_TYPE_VALUE);
@@ -140,8 +136,7 @@ public final class AadJwtClientAuthenticationParametersConverter<T extends Abstr
                 jwsAlgorithm = MacAlgorithm.from(jwk.getAlgorithm().getName());
             }
         }
-        Assert.isTrue(KeyType.RSA.equals(jwk.getKeyType()), "The key type should be RSA.");
-        if (jwsAlgorithm == null) {
+        if (jwsAlgorithm == null && KeyType.RSA.equals(jwk.getKeyType())) {
             jwsAlgorithm = SignatureAlgorithm.RS256;
         }
         return jwsAlgorithm;
@@ -149,17 +144,17 @@ public final class AadJwtClientAuthenticationParametersConverter<T extends Abstr
 
     private static final class JwsEncoderHolder {
 
-        private final JwtEncoder jwsEncoder;
+        private final AadJwtEncoder jwtEncoder;
 
         private final JWK jwk;
 
-        private JwsEncoderHolder(JwtEncoder jwsEncoder, JWK jwk) {
-            this.jwsEncoder = jwsEncoder;
+        private JwsEncoderHolder(AadJwtEncoder jwtEncoder, JWK jwk) {
+            this.jwtEncoder = jwtEncoder;
             this.jwk = jwk;
         }
 
-        private JwtEncoder getJwsEncoder() {
-            return this.jwsEncoder;
+        private AadJwtEncoder getJwtEncoder() {
+            return this.jwtEncoder;
         }
 
         private JWK getJwk() {
