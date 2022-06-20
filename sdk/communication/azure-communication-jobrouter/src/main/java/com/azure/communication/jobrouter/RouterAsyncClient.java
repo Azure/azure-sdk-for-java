@@ -1310,17 +1310,17 @@ public final class RouterAsyncClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResponse> acceptJobOffer(String offerId, String workerId) {
+    public Mono<AcceptJobOfferResponse> acceptJobOffer(String workerId, String offerId) {
         try {
-            return withContext(context -> acceptJobOfferWithResponse(offerId, workerId, context)
+            return withContext(context -> acceptJobOfferWithResponse(workerId, offerId, context)
                 .flatMap(
                     (Response<AcceptJobOfferResponse> res) -> {
                         if (res.getValue() != null) {
@@ -1337,25 +1337,25 @@ public final class RouterAsyncClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String offerId, String workerId) {
+    public Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String workerId, String offerId) {
         try {
-            return withContext(context -> acceptJobOfferWithResponse(offerId, workerId, context));
+            return withContext(context -> acceptJobOfferWithResponse(workerId, offerId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String offerId, String workerId, Context context) {
+    Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
         try {
-            return jobRouter.acceptJobActionWithResponseAsync(offerId, workerId, context);
+            return jobRouter.acceptJobActionWithResponseAsync(workerId, offerId, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1364,17 +1364,17 @@ public final class RouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @return any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobOffer(String offerId, String workerId) {
+    public Mono<Object> declineJobOffer(String workerId, String offerId) {
         try {
-            return withContext(context -> declineJobOfferWithResponse(offerId, workerId, context)
+            return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context)
                 .flatMap(
                     (Response<Object> res) -> {
                         if (res.getValue() != null) {
@@ -1391,25 +1391,25 @@ public final class RouterAsyncClient {
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @return any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobOfferWithResponse(String offerId, String workerId) {
+    public Mono<Response<Object>> declineJobOfferWithResponse(String workerId, String offerId) {
         try {
-            return withContext(context -> declineJobOfferWithResponse(offerId, workerId, context));
+            return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<Object>> declineJobOfferWithResponse(String offerId, String workerId, Context context) {
+    Mono<Response<Object>> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
         try {
-            return jobRouter.declineJobActionWithResponseAsync(offerId, workerId, context);
+            return jobRouter.declineJobActionWithResponseAsync(workerId, offerId, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

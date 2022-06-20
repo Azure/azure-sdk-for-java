@@ -309,8 +309,8 @@ public final class JobRoutersImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<AcceptJobOfferResponse>> acceptJobAction(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("offerId") String offerId,
                 @PathParam("workerId") String workerId,
+                @PathParam("offerId") String offerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -320,8 +320,8 @@ public final class JobRoutersImpl {
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Object>> declineJobAction(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("offerId") String offerId,
                 @PathParam("workerId") String workerId,
+                @PathParam("offerId") String offerId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -3257,22 +3257,22 @@ public final class JobRoutersImpl {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponseAsync(String offerId, String workerId) {
+    public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponseAsync(String workerId, String offerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.acceptJobAction(
                                 this.client.getEndpoint(),
-                                offerId,
                                 workerId,
+                                offerId,
                                 this.client.getApiVersion(),
                                 accept,
                                 context));
@@ -3281,8 +3281,8 @@ public final class JobRoutersImpl {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3291,25 +3291,25 @@ public final class JobRoutersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcceptJobOfferResponse>> acceptJobActionWithResponseAsync(
-            String offerId, String workerId, Context context) {
+            String workerId, String offerId, Context context) {
         final String accept = "application/json";
         return service.acceptJobAction(
-                this.client.getEndpoint(), offerId, workerId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), workerId, offerId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResponse> acceptJobActionAsync(String offerId, String workerId) {
-        return acceptJobActionWithResponseAsync(offerId, workerId)
+    public Mono<AcceptJobOfferResponse> acceptJobActionAsync(String workerId, String offerId) {
+        return acceptJobActionWithResponseAsync(workerId, offerId)
                 .flatMap(
                         (Response<AcceptJobOfferResponse> res) -> {
                             if (res.getValue() != null) {
@@ -3323,8 +3323,8 @@ public final class JobRoutersImpl {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3332,8 +3332,8 @@ public final class JobRoutersImpl {
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResponse> acceptJobActionAsync(String offerId, String workerId, Context context) {
-        return acceptJobActionWithResponseAsync(offerId, workerId, context)
+    public Mono<AcceptJobOfferResponse> acceptJobActionAsync(String workerId, String offerId, Context context) {
+        return acceptJobActionWithResponseAsync(workerId, offerId, context)
                 .flatMap(
                         (Response<AcceptJobOfferResponse> res) -> {
                             if (res.getValue() != null) {
@@ -3347,23 +3347,23 @@ public final class JobRoutersImpl {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResponse acceptJobAction(String offerId, String workerId) {
-        return acceptJobActionAsync(offerId, workerId).block();
+    public AcceptJobOfferResponse acceptJobAction(String workerId, String offerId) {
+        return acceptJobActionAsync(workerId, offerId).block();
     }
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3372,29 +3372,29 @@ public final class JobRoutersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcceptJobOfferResponse> acceptJobActionWithResponse(
-            String offerId, String workerId, Context context) {
-        return acceptJobActionWithResponseAsync(offerId, workerId, context).block();
+            String workerId, String offerId, Context context) {
+        return acceptJobActionWithResponseAsync(workerId, offerId, context).block();
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobActionWithResponseAsync(String offerId, String workerId) {
+    public Mono<Response<Object>> declineJobActionWithResponseAsync(String workerId, String offerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.declineJobAction(
                                 this.client.getEndpoint(),
-                                offerId,
                                 workerId,
+                                offerId,
                                 this.client.getApiVersion(),
                                 accept,
                                 context));
@@ -3403,8 +3403,8 @@ public final class JobRoutersImpl {
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3412,25 +3412,25 @@ public final class JobRoutersImpl {
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobActionWithResponseAsync(String offerId, String workerId, Context context) {
+    public Mono<Response<Object>> declineJobActionWithResponseAsync(String workerId, String offerId, Context context) {
         final String accept = "application/json";
         return service.declineJobAction(
-                this.client.getEndpoint(), offerId, workerId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), workerId, offerId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobActionAsync(String offerId, String workerId) {
-        return declineJobActionWithResponseAsync(offerId, workerId)
+    public Mono<Object> declineJobActionAsync(String workerId, String offerId) {
+        return declineJobActionWithResponseAsync(workerId, offerId)
                 .flatMap(
                         (Response<Object> res) -> {
                             if (res.getValue() != null) {
@@ -3444,8 +3444,8 @@ public final class JobRoutersImpl {
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3453,8 +3453,8 @@ public final class JobRoutersImpl {
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobActionAsync(String offerId, String workerId, Context context) {
-        return declineJobActionWithResponseAsync(offerId, workerId, context)
+    public Mono<Object> declineJobActionAsync(String workerId, String offerId, Context context) {
+        return declineJobActionWithResponseAsync(workerId, offerId, context)
                 .flatMap(
                         (Response<Object> res) -> {
                             if (res.getValue() != null) {
@@ -3468,23 +3468,23 @@ public final class JobRoutersImpl {
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object declineJobAction(String offerId, String workerId) {
-        return declineJobActionAsync(offerId, workerId).block();
+    public Object declineJobAction(String workerId, String offerId) {
+        return declineJobActionAsync(workerId, offerId).block();
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -3492,8 +3492,8 @@ public final class JobRoutersImpl {
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> declineJobActionWithResponse(String offerId, String workerId, Context context) {
-        return declineJobActionWithResponseAsync(offerId, workerId, context).block();
+    public Response<Object> declineJobActionWithResponse(String workerId, String offerId, Context context) {
+        return declineJobActionWithResponseAsync(workerId, offerId, context).block();
     }
 
     /**

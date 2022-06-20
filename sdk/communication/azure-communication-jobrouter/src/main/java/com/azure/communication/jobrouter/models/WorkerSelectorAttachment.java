@@ -9,14 +9,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * An attachment which attaches WorkerSelectors to workers.
- */
+/** An attachment which attaches WorkerSelectors to workers. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = WorkerSelectorAttachment.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = WorkerSelectorAttachment.class)
 @JsonTypeName("WorkerSelectorAttachment")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "conditional", value = ConditionalWorkerSelector.class),
@@ -26,5 +24,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "weighted-allocation-worker-selector", value = WeightedAllocationWorkerSelector.class)
 })
 @Immutable
-public class WorkerSelectorAttachment {
-}
+public class WorkerSelectorAttachment {}

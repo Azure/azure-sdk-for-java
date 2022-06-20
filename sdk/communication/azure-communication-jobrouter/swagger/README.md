@@ -32,13 +32,13 @@ To update generated files for JobRouter service, run the following command
 ## Code generation settings
 ``` yaml
 tag: package-jobrouter-2021-10-20
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/initial-jobrouter-pr/specification/communication/data-plane/JobRouter/preview/2021-10-20-preview2/communicationservicejobrouter.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/JobRouter/preview/2021-10-20-preview2/communicationservicejobrouter.json
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.jobrouter
 generate-client-as-impl: true
 custom-types-subpackage: models
-models-subpackage: implementation.models
+models-subpackage: models
 generate-client-interfaces: false
 generate-sync-async-clients: false
 sync-methods: all

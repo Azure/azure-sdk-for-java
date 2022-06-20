@@ -823,23 +823,23 @@ public final class RouterClient {
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResponse acceptJobOffer(String offerId, String workerId) {
-        return this.client.acceptJobOffer(offerId, workerId).block();
+    public AcceptJobOfferResponse acceptJobOffer(String workerId, String offerId) {
+        return this.client.acceptJobOffer(workerId, offerId).block();
     }
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -847,30 +847,30 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResponse> acceptJobOfferWithResponse(String offerId, String workerId, Context context) {
-        return this.client.acceptJobOfferWithResponse(offerId, workerId, context).block();
+    public Response<AcceptJobOfferResponse> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
+        return this.client.acceptJobOfferWithResponse(workerId, offerId, context).block();
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @return any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object declineJobOffer(String offerId, String workerId) {
-        return this.client.declineJobOffer(offerId, workerId).block();
+    public Object declineJobOffer(String workerId, String offerId) {
+        return this.client.declineJobOffer(workerId, offerId).block();
     }
 
     /**
      * Declines an offer to work on a job.
      *
-     * @param offerId Id of the offer.
      * @param workerId Id of the worker.
+     * @param offerId Id of the offer.
      * @param context The context to associate with this operation.
      * @return any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,8 +878,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> declineJobOfferWithResponse(String offerId, String workerId, Context context) {
-        return this.client.declineJobOfferWithResponse(offerId, workerId, context).block();
+    public Response<Object> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
+        return this.client.declineJobOfferWithResponse(workerId, offerId, context).block();
     }
 
     /**
