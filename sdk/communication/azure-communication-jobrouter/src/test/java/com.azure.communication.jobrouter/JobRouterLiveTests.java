@@ -26,6 +26,8 @@ import com.azure.communication.jobrouter.implementation.models.StaticRule;
 import com.azure.communication.jobrouter.implementation.models.StaticWorkerSelector;
 import com.azure.communication.jobrouter.implementation.models.WorkerSelector;
 import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAttachment;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -198,16 +200,17 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         /**
          * Create classification policy
          */
-        ClassificationPolicy classificationPolicy = new ClassificationPolicy()
-            .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRule()
-                .setValue(1))
-            .setFallbackQueueId(jobQueue.getId())
-            .setQueueSelectors(queueSelectors)
-            .setWorkerSelectors(workerSelectors);
+        CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
+            classificationPolicyId,
+            classificationPolicyName,
+            new StaticRule().setValue(1),
+            workerSelectors,
+            queueSelectors,
+            jobQueue.getId()
+        );
 
         // Action
-        ClassificationPolicy result = routerClient.createClassificationPolicy(classificationPolicyId, classificationPolicy);
+        ClassificationPolicy result = routerClient.createClassificationPolicy(createClassificationPolicyOptions);
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());
@@ -246,12 +249,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        ExceptionPolicy exceptionPolicy = new ExceptionPolicy()
-            .setName(exceptionPolicyName)
-            .setExceptionRules(exceptionRules);
+        CreateExceptionPolicyOptions createExceptionPolicyOptions = new CreateExceptionPolicyOptions(
+            exceptionPolicyId, exceptionRules)
+            .setName(exceptionPolicyName);
 
         // Action
-        ExceptionPolicy result = routerClient.createExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+        ExceptionPolicy result = routerClient.createExceptionPolicy(createExceptionPolicyOptions);
 
         // Verify
         assertEquals(exceptionPolicyId, result.getId());

@@ -21,6 +21,11 @@ import com.azure.communication.jobrouter.implementation.models.QueueStatistics;
 import com.azure.communication.jobrouter.implementation.models.RouterJob;
 import com.azure.communication.jobrouter.implementation.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.models.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -67,23 +72,21 @@ public final class RouterClient {
     /**
      * Create a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy createClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
-        return this.client.createClassificationPolicy(id, classificationPolicy).block();
+    public ClassificationPolicy createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
+        return this.client.createClassificationPolicy(createClassificationPolicyOptions).block();
     }
 
     /**
      * Create a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
      * @param context The context to associate with this operation.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,8 +94,9 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy, Context context) {
-        return this.client.upsertClassificationPolicyWithResponse(id, classificationPolicy, context).block();
+    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions, Context context) {
+        ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+        return this.client.upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context).block();
     }
 
     /**
@@ -107,7 +111,7 @@ public final class RouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClassificationPolicy updateClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
-        return this.client.createClassificationPolicy(id, classificationPolicy).block();
+        return this.client.updateClassificationPolicy(id, classificationPolicy).block();
     }
 
     /**
@@ -359,23 +363,21 @@ public final class RouterClient {
     /**
      * Create an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param createExceptionPolicyOptions Create options for Exception Policy.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy createExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
-        return this.client.createExceptionPolicy(id, exceptionPolicy).block();
+    public ExceptionPolicy createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
+        return this.client.createExceptionPolicy(createExceptionPolicyOptions).block();
     }
 
     /**
      * Create an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param createExceptionPolicyOptions Create options for Exception Policy.
      * @param context The context to associate with this operation.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,23 +385,23 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
-        return this.client.upsertExceptionPolicyWithResponse(id, exceptionPolicy, context).block();
+    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions, Context context) {
+        ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+        return this.client.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context).block();
     }
 
     /**
      * Update an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param updateExceptionPolicyOptions Options to update ExceptionPolicy.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy updateExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
-        return this.client.createExceptionPolicy(id, exceptionPolicy).block();
+    public ExceptionPolicy updateExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
+        return this.client.updateExceptionPolicy(updateExceptionPolicyOptions).block();
     }
 
     /**

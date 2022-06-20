@@ -19,6 +19,8 @@ import com.azure.communication.jobrouter.implementation.models.ExceptionRule;
 import com.azure.communication.jobrouter.implementation.models.PagedExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.implementation.models.WaitTimeExceptionTrigger;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.util.Collections;
@@ -40,8 +42,8 @@ public class ExceptionPolicyExample {
          * Define an exception trigger.
          * This sets off exception when there are at least 10 jobs in a queue.
          */
-        QueueLengthExceptionTrigger exceptionTrigger = new QueueLengthExceptionTrigger();
-        exceptionTrigger.setThreshold(10);
+        QueueLengthExceptionTrigger exceptionTrigger = new QueueLengthExceptionTrigger()
+            .setThreshold(10);
 
         /**
          * Define an exception action.
@@ -52,16 +54,16 @@ public class ExceptionPolicyExample {
         /**
          * Defining exception rule combining the trigger and action.
          */
-        ExceptionRule exceptionRule = new ExceptionRule();
-        exceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction));
-        exceptionRule.setTrigger(exceptionTrigger);
+        ExceptionRule exceptionRule = new ExceptionRule()
+            .setActions(Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction))
+            .setTrigger(exceptionTrigger);
 
         /**
          * Create the exception policy.
          */
-        ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
-        exceptionPolicy.setExceptionRules(Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
-        routerClient.createExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+        CreateExceptionPolicyOptions createExceptionPolicyOptions = new CreateExceptionPolicyOptions(exceptionPolicyId,
+            Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
+        routerClient.createExceptionPolicy(createExceptionPolicyOptions);
 
         System.out.printf("Successfully created exception policy with id: %s %n", exceptionPolicyId);
 
@@ -75,12 +77,13 @@ public class ExceptionPolicyExample {
         waitTimeExceptionRule.setTrigger(waitTimeExceptionTrigger);
         waitTimeExceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
 
-        exceptionPolicy.setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));
+        UpdateExceptionPolicyOptions updateExceptionPolicyOptions = new UpdateExceptionPolicyOptions(createExceptionPolicyOptions.getId())
+            .setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));
 
         /**
-         * Upsert policy using routerClient.
+         * Update policy using routerClient.
          */
-        routerClient.createExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+        routerClient.updateExceptionPolicy(updateExceptionPolicyOptions);
 
         System.out.println("Exception policy has been successfully updated.");
     }

@@ -22,7 +22,7 @@ public final class ExceptionRule {
      * triggered. Key is the Id of each exception action.
      */
     @JsonProperty(value = "actions", required = true)
-    private Map<String, Object> actions;
+    private Map<String, ExceptionAction> actions;
 
     /**
      * Get the trigger property: The trigger for this exception rule.
@@ -50,7 +50,7 @@ public final class ExceptionRule {
      *
      * @return the actions value.
      */
-    public Map<String, Object> getActions() {
+    public Map<String, ExceptionAction> getActions() {
         return this.actions;
     }
 
@@ -61,7 +61,7 @@ public final class ExceptionRule {
      * @param actions the actions value to set.
      * @return the ExceptionRule object itself.
      */
-    public ExceptionRule setActions(Map<String, Object> actions) {
+    public ExceptionRule setActions(Map<String, ExceptionAction> actions) {
         this.actions = actions;
         return this;
     }

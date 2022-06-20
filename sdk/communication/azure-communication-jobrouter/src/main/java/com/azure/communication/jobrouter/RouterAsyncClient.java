@@ -23,6 +23,11 @@ import com.azure.communication.jobrouter.implementation.models.QueueStatistics;
 import com.azure.communication.jobrouter.implementation.models.RouterJob;
 import com.azure.communication.jobrouter.implementation.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.models.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -71,17 +76,17 @@ public final class RouterAsyncClient {
     /**
      * Creates a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> createClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+    public Mono<ClassificationPolicy> createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
-            return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context)
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+            return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
                         if (res.getValue() != null) {
@@ -98,17 +103,17 @@ public final class RouterAsyncClient {
     /**
      * Creates a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
+    public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
-            return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context));
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
+            return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -547,17 +552,17 @@ public final class RouterAsyncClient {
     /**
      * Creates an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param createExceptionPolicyOptions Create options for Exception Policy.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> createExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+    public Mono<ExceptionPolicy> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         try {
-            return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context)
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+            return withContext(context -> upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context)
                 .flatMap(
                     (Response<ExceptionPolicy> res) -> {
                         if (res.getValue() != null) {
@@ -593,17 +598,17 @@ public final class RouterAsyncClient {
     /**
      * Updates an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param updateExceptionPolicyOptions Options to update ExceptionPolicy.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> updateExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+    public Mono<ExceptionPolicy> updateExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
         try {
-            return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context)
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
+            return withContext(context -> upsertExceptionPolicyWithResponse(updateExceptionPolicyOptions.getId(), exceptionPolicy, context)
                 .flatMap(
                     (Response<ExceptionPolicy> res) -> {
                         if (res.getValue() != null) {

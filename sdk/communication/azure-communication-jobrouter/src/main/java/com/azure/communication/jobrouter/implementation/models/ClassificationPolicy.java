@@ -33,7 +33,7 @@ public final class ClassificationPolicy {
      * The queue selectors to resolve a queue for a given job.
      */
     @JsonProperty(value = "queueSelectors")
-    private List<Object> queueSelectors;
+    private List<QueueSelectorAttachment> queueSelectors;
 
     /*
      * A rule of one of the following types:
@@ -52,7 +52,7 @@ public final class ClassificationPolicy {
      * The worker label selectors to attach to a given job.
      */
     @JsonProperty(value = "workerSelectors")
-    private List<Object> workerSelectors;
+    private List<WorkerSelectorAttachment> workerSelectors;
 
     /**
      * Get the id property: Unique identifier of this policy.
@@ -108,7 +108,7 @@ public final class ClassificationPolicy {
      *
      * @return the queueSelectors value.
      */
-    public List<Object> getQueueSelectors() {
+    public List<QueueSelectorAttachment> getQueueSelectors() {
         return this.queueSelectors;
     }
 
@@ -118,7 +118,7 @@ public final class ClassificationPolicy {
      * @param queueSelectors the queueSelectors value to set.
      * @return the ClassificationPolicy object itself.
      */
-    public ClassificationPolicy setQueueSelectors(List<Object> queueSelectors) {
+    public ClassificationPolicy setQueueSelectors(List<QueueSelectorAttachment> queueSelectors) {
         this.queueSelectors = queueSelectors;
         return this;
     }
@@ -156,7 +156,7 @@ public final class ClassificationPolicy {
      *
      * @return the workerSelectors value.
      */
-    public List<Object> getWorkerSelectors() {
+    public List<WorkerSelectorAttachment> getWorkerSelectors() {
         return this.workerSelectors;
     }
 
@@ -166,7 +166,7 @@ public final class ClassificationPolicy {
      * @param workerSelectors the workerSelectors value to set.
      * @return the ClassificationPolicy object itself.
      */
-    public ClassificationPolicy setWorkerSelectors(List<Object> workerSelectors) {
+    public ClassificationPolicy setWorkerSelectors(List<WorkerSelectorAttachment> workerSelectors) {
         this.workerSelectors = workerSelectors;
         return this;
     }
