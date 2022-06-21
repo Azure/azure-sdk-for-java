@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Transaction;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -115,14 +114,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(prefix, checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
-            Transaction transaction = jedis.multi();
-            //Case 1: Checkpoint & it's prefix is not in the Redis Cache
-            //Add the key to redis as a (prefix, key)
-            //Case 2: Checkpoint is not in Redis Cache, but prefix is
-            //Add the key as a member to the prefix group
-
-            //Case 3: Checkpoint already exists, but had not been modified by another client
-            //Case 4: Checkpoint already exists, has been modified by another client
             jedisPool.returnResource(jedis);
         }
         return null;
