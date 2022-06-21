@@ -633,9 +633,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param onError A function to call when an error occurs during lock renewal.
      *
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string or {@code maxLockRenewalDuration} is negative.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
-     * @throws IllegalArgumentException if {@code maxLockRenewalDuration} is negative.
      */
     public void renewSessionLock(Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId(), maxLockRenewalDuration, onError);
