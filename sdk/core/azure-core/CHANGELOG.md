@@ -10,9 +10,10 @@
   - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
   - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
   - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
-- Added `ProgressReporter` and `ProgressReceiver` to provide ability to track transfers.
+- Added `ProgressReporter` and `ProgressListener` to provide ability to track progress of I/O operations.
 - Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
   - Added ability to get and set `ProgressReporter` on `Context`.
+- Added `HttpPipelineCallContext.getContext()`.
 
 ### Breaking Changes
 
@@ -20,6 +21,7 @@
 
 - Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
   could block file deletion on Windows.
+- Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
 
 ### Other Changes
 
