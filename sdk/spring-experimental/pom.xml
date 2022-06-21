@@ -8,8 +8,23 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <modules>
-      <module>../../eng/code-quality-reports</module>
-      <module>spring-cloud-azure-native-configuration</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>spring-cloud-azure-native-configuration</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>dev</id>
+      <modules>
+        <module>../../eng/code-quality-reports</module>
+        <module>spring-cloud-azure-native-configuration</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

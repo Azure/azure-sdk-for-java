@@ -8,10 +8,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>azure-ai-formrecognizer</module>
-  </modules>
-
-  <modules>
       <module>azure-ai-formrecognizer</module>
       <module>azure-ai-formrecognizer-perf</module>
   </modules>
