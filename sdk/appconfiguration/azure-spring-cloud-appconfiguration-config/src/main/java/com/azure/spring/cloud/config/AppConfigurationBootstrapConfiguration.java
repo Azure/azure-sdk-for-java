@@ -2,13 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
-import com.azure.spring.cloud.config.resource.Connection;
-import com.azure.spring.cloud.config.resource.ConnectionPool;
-import com.azure.spring.cloud.config.stores.ClientStore;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,11 +12,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
+import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
  * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when
@@ -34,37 +28,6 @@ import java.util.Optional;
 public class AppConfigurationBootstrapConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBootstrapConfiguration.class);
-
-    /**
-     * Creates Connections Pool. Contains basic connection info to each App Configuration Store.
-     *
-     * @param properties Configured properties to setup connections.
-     * @return ConnectionPool
-     */
-    @Bean
-    public ConnectionPool initConnectionString(AppConfigurationProperties properties) {
-        ConnectionPool pool = new ConnectionPool();
-        List<ConfigStore> stores = properties.getStores();
-
-        for (ConfigStore store : stores) {
-            if (store.isEnabled() && StringUtils.hasText(store.getEndpoint())
-                && StringUtils.hasText(store.getConnectionString())) {
-                pool.put(store.getEndpoint(), new Connection(store.getConnectionString()));
-            } else if (StringUtils.hasText(store.getEndpoint())) {
-                AppConfigManagedIdentityProperties msiProps = properties.getManagedIdentity();
-                if (msiProps != null && msiProps.getClientId() != null) {
-                    pool.put(store.getEndpoint(), new Connection(store.getEndpoint(), msiProps.getClientId()));
-                } else {
-                    pool.put(store.getEndpoint(), new Connection(store.getEndpoint(), ""));
-                }
-
-            }
-        }
-
-        Assert.notEmpty(pool.getAll(), "Connection string pool for the configuration stores is empty");
-
-        return pool;
-    }
 
     /**
      *
@@ -120,7 +83,6 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
-     * @param pool Basic connection info for connecting to each config store.
      * @param env used to check it if it is a dev environment
      * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App
      * Configuration.
@@ -131,7 +93,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     public ClientStore buildClientStores(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ConnectionPool pool, Environment env,
+        AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
@@ -166,7 +128,9 @@ public class AppConfigurationBootstrapConfiguration {
             isKeyVaultConfigured = true;
         }
 
-        return new ClientStore(appProperties, pool, tokenCredentialProvider, clientProvider, isDev,
-            isKeyVaultConfigured);
+        ClientManager clientManager = new ClientManager(properties, appProperties, tokenCredentialProvider,
+            clientProvider, isDev, isKeyVaultConfigured);
+
+        return new ClientStore(clientManager);
     }
 }

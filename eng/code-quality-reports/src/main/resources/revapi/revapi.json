@@ -90,6 +90,7 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.State",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationBootstrapConfiguration",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
@@ -281,6 +282,30 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
+          "justification": "Not a public api"
         }
       ]
     }
