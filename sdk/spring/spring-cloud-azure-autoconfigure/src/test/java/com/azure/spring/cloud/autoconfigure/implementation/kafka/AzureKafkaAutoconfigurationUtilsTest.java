@@ -31,13 +31,12 @@ class AzureKafkaAutoconfigurationUtilsTest {
         Map<String, String> targetConfigs = new HashMap<>();
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
-        shouldConfigureOAuthTargetProperties();
+        shouldConfigureOAuthTargetProperties(targetConfigs);
     }
 
     @Test
     void testWhenSecurityProtocolConfiguredOthers() {
         Map<String, Object> sourceConfigs = new HashMap<>();
-        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, DEFAULT_SECURITY_PROTOCOL);
         assertFalse(needConfigureSaslOAuth(sourceConfigs));
     }
@@ -50,13 +49,12 @@ class AzureKafkaAutoconfigurationUtilsTest {
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
-        shouldConfigureOAuthTargetProperties();
+        shouldConfigureOAuthTargetProperties(targetConfigs);
     }
 
     @Test
     void testWhenSaslMechanismConfiguredOthers() {
         Map<String, Object> sourceConfigs = new HashMap<>();
-        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         sourceConfigs.put(SASL_MECHANISM, DEFAULT_SASL_MECHANISM);
         assertFalse(needConfigureSaslOAuth(sourceConfigs));
@@ -74,12 +72,10 @@ class AzureKafkaAutoconfigurationUtilsTest {
         targetConfigs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, "fake-value");
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
-        shouldConfigureOAuthTargetProperties();
+        shouldConfigureOAuthTargetProperties(targetConfigs);
     }
 
-    private void shouldConfigureOAuthTargetProperties() {
-        Map<String, Object> sourceConfigs = new HashMap<>();
-        Map<String, String> targetConfigs = new HashMap<>();
+    private void shouldConfigureOAuthTargetProperties(Map<String, String> targetConfigs) {
         assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, targetConfigs.get(SECURITY_PROTOCOL_CONFIG));
         assertEquals(SASL_MECHANISM_OAUTH, targetConfigs.get(SASL_MECHANISM));
         assertEquals(SASL_JAAS_CONFIG_OAUTH, targetConfigs.get(SASL_JAAS_CONFIG));
