@@ -6,8 +6,8 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -69,12 +69,12 @@ public final class GalleryApplicationVersionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery Application Version. The provisioning state,
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
      * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

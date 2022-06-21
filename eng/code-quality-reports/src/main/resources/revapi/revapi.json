@@ -238,6 +238,18 @@
           "justification": "To support Schema Registry Avro Serializer's signature, EventData extends from MessageContent."
         },
         {
+          "regex": true,
+          "code": "java.class.noLongerInheritsFromClass",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
+          "justification": "To support for storage services and keyvault services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|removed|attributeValueChanged|attributeAdded|attributeRemoved)",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
+          "justification": "To support for storage services and keyvault services to share values of common properties."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
           "justification": "Shouldn't have been a public API and was recently released."
@@ -250,6 +262,11 @@
         {
           "code": "java.annotation.added",
           "new": "class com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration",
+          "justification": "Fixes a bug."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
           "justification": "Fixes a bug."
         },
         {

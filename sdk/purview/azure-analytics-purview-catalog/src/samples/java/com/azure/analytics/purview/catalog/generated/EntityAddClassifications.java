@@ -13,12 +13,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityAddClassifications {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entityaddclassifications.entityaddclassifications
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entityaddclassifications.entityaddclassifications
         BinaryData classifications =
                 BinaryData.fromString(
                         "[{\"entityGuid\":\"cc0730ba-9b30-41f0-6953-559d17626d2b\",\"typeName\":\"MICROSOFT.FINANCIAL.US.ABA_ROUTING_NUMBER\"},{\"entityGuid\":\"cc0730ba-9b30-41f0-6953-559d17626d2b\",\"typeName\":\"MICROSOFT.FINANCIAL.CREDIT_CARD_NUMBER\"}]");
@@ -26,6 +26,6 @@ public class EntityAddClassifications {
         Response<Void> response =
                 entityClient.addClassificationsWithResponse(
                         "cc0730ba-9b30-41f0-6953-559d17626d2b", classifications, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entityaddclassifications.entityaddclassifications
+        // END:com.azure.analytics.purview.catalog.generated.entityaddclassifications.entityaddclassifications
     }
 }

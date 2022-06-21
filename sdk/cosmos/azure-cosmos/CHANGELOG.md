@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.31.0-beta.1 (Unreleased)
+### 4.32.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -10,12 +10,20 @@
 
 #### Other Changes
 
+### 4.31.0 (2022-06-08)
+
+#### Bugs Fixed
+* Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
+
+#### Other Changes
+* Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. 
+
 ### 4.30.1 (2022-06-01)
 
 #### Other Changes
 * Made CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
 * Added system property to allow overriding proxy setting for client telemetry endpoint. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
-* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
+* Added additional information about the reason on Rntbd channel health check failures. - See [PR 29253](https://github.com/Azure/azure-sdk-for-java/pull/29253)
 
 ### 4.30.0 (2022-05-20)
 #### Bugs Fixed
@@ -76,6 +84,9 @@
 #### Bugs Fixed
 * Fixed an issue in `ChangeFeedProcessor` related to `leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
 * Fixed an issue with `query plan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
+
+#### Other Changes
+* Added support for logging `CosmosDiagnostics` for empty pages through system property for cross partition query - See [PR 26869](https://github.com/Azure/azure-sdk-for-java/pull/26869)
 
 ### 4.26.0-beta.1 (2022-01-25)
 #### Features Added

@@ -180,15 +180,7 @@ public final class ComponentAvailableFeaturesClientImpl implements ComponentAvai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAvailableFeaturesInner> getAsync(
         String resourceGroupName, String resourceName) {
-        return getWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAvailableFeaturesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

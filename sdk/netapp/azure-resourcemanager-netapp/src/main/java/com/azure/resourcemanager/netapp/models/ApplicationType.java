@@ -24,7 +24,11 @@ public final class ApplicationType extends ExpandableStringEnum<ApplicationType>
         return fromString(name, ApplicationType.class);
     }
 
-    /** @return known ApplicationType values. */
+    /**
+     * Gets known ApplicationType values.
+     *
+     * @return known ApplicationType values.
+     */
     public static Collection<ApplicationType> values() {
         return values(ApplicationType.class);
     }

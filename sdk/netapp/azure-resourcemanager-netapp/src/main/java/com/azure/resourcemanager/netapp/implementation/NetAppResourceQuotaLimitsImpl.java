@@ -13,10 +13,9 @@ import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaLimits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppResourceQuotaLimitsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppResourceQuotaLimitsImpl.class);
 
     private final NetAppResourceQuotaLimitsClient innerClient;
 

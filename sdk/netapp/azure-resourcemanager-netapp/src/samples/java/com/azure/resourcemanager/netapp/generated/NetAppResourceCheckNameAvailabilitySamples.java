@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
 /** Samples for NetAppResource CheckNameAvailability. */
 public final class NetAppResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
