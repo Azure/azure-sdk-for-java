@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -79,6 +80,7 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> getConstitution(
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -97,6 +99,7 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> getConsortiumMembers(
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -115,6 +118,7 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> getEnclaveQuotes(
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -133,6 +137,7 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> listCollections(
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -151,6 +156,7 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> listLedgerEntries(
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -170,6 +176,7 @@ public final class ConfidentialLedgersImpl {
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData entry,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -189,6 +196,7 @@ public final class ConfidentialLedgersImpl {
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("transactionId") String transactionId,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -208,6 +216,7 @@ public final class ConfidentialLedgersImpl {
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("transactionId") String transactionId,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -227,6 +236,7 @@ public final class ConfidentialLedgersImpl {
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("transactionId") String transactionId,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -245,6 +255,7 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> getCurrentLedgerEntry(
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -264,6 +275,7 @@ public final class ConfidentialLedgersImpl {
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam(value = "userId", encoded = true) String userId,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -283,6 +295,7 @@ public final class ConfidentialLedgersImpl {
                 @HostParam("ledgerUri") String ledgerUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam(value = "userId", encoded = true) String userId,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -303,6 +316,7 @@ public final class ConfidentialLedgersImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam(value = "userId", encoded = true) String userId,
                 @BodyParam("application/merge-patch+json") BinaryData userDetails,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -321,20 +335,13 @@ public final class ConfidentialLedgersImpl {
         Mono<Response<BinaryData>> listLedgerEntriesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("ledgerUri") String ledgerUri,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * The constitution is a script that assesses and applies proposals from consortium members.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -355,25 +362,19 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConstitutionWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getConstitution(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * The constitution is a script that assesses and applies proposals from consortium members.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -395,20 +396,17 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConstitutionWithResponseAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getConstitution(
-                this.client.getLedgerUri(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getLedgerUri(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
      * The constitution is a script that assesses and applies proposals from consortium members.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -434,14 +432,6 @@ public final class ConfidentialLedgersImpl {
     /**
      * Consortium members can manage the Confidential Ledger.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -464,25 +454,19 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConsortiumMembersWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getConsortiumMembers(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Consortium members can manage the Confidential Ledger.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -508,20 +492,17 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConsortiumMembersWithResponseAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getConsortiumMembers(
-                this.client.getLedgerUri(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getLedgerUri(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
      * Consortium members can manage the Confidential Ledger.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -551,14 +532,6 @@ public final class ConfidentialLedgersImpl {
     /**
      * A quote is an SGX enclave measurement that can be used to verify the validity of a node and its enclave.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -585,25 +558,19 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnclaveQuotesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEnclaveQuotes(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * A quote is an SGX enclave measurement that can be used to verify the validity of a node and its enclave.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -633,20 +600,17 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnclaveQuotesWithResponseAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getEnclaveQuotes(
-                this.client.getLedgerUri(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getLedgerUri(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
      * A quote is an SGX enclave measurement that can be used to verify the validity of a node and its enclave.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -679,14 +643,6 @@ public final class ConfidentialLedgersImpl {
     /**
      * Collection ids are user-created collections of ledger entries.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -707,25 +663,19 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCollectionsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listCollections(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Collection ids are user-created collections of ledger entries.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -748,20 +698,17 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCollectionsWithResponseAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listCollections(
-                this.client.getLedgerUri(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getLedgerUri(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
      * Collection ids are user-created collections of ledger entries.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -794,7 +741,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
@@ -828,11 +774,13 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLedgerEntriesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listLedgerEntries(
                                         this.client.getLedgerUri(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -855,7 +803,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
@@ -891,9 +838,11 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLedgerEntriesSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listLedgerEntries(
                         this.client.getLedgerUri(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -916,7 +865,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
@@ -968,7 +916,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
@@ -1021,7 +968,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
      *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
@@ -1066,7 +1012,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1104,12 +1049,14 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> postLedgerEntryWithResponseAsync(
             BinaryData entry, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.postLedgerEntry(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 entry,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1122,7 +1069,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1161,10 +1107,12 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> postLedgerEntryWithResponseAsync(
             BinaryData entry, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.postLedgerEntry(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 entry,
+                accept,
                 requestOptions,
                 context);
     }
@@ -1177,7 +1125,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1227,7 +1174,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1258,12 +1204,14 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLedgerEntryWithResponseAsync(
             String transactionId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLedgerEntry(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 transactionId,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1278,7 +1226,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1310,10 +1257,12 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLedgerEntryWithResponseAsync(
             String transactionId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getLedgerEntry(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 transactionId,
+                accept,
                 requestOptions,
                 context);
     }
@@ -1328,7 +1277,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1362,14 +1310,6 @@ public final class ConfidentialLedgersImpl {
 
     /**
      * Gets a receipt certifying ledger contents at a particular transaction id.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1412,26 +1352,20 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getReceiptWithResponseAsync(String transactionId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getReceipt(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 transactionId,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets a receipt certifying ledger contents at a particular transaction id.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1476,24 +1410,18 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getReceiptWithResponseAsync(
             String transactionId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getReceipt(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 transactionId,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets a receipt certifying ledger contents at a particular transaction id.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1541,14 +1469,6 @@ public final class ConfidentialLedgersImpl {
     /**
      * Gets the status of an entry identified by a transaction id.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1570,26 +1490,20 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTransactionStatusWithResponseAsync(
             String transactionId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTransactionStatus(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 transactionId,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets the status of an entry identified by a transaction id.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1613,24 +1527,18 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTransactionStatusWithResponseAsync(
             String transactionId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getTransactionStatus(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 transactionId,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets the status of an entry identified by a transaction id.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1662,7 +1570,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1687,11 +1594,13 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCurrentLedgerEntryWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getCurrentLedgerEntry(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1704,7 +1613,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1731,8 +1639,13 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCurrentLedgerEntryWithResponseAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getCurrentLedgerEntry(
-                this.client.getLedgerUri(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getLedgerUri(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1743,7 +1656,6 @@ public final class ConfidentialLedgersImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
      *
@@ -1774,14 +1686,6 @@ public final class ConfidentialLedgersImpl {
     /**
      * Deletes a user from the Confidential Ledger.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1792,26 +1696,20 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUserWithResponseAsync(String userId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteUser(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 userId,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a user from the Confidential Ledger.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1825,24 +1723,18 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUserWithResponseAsync(
             String userId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteUser(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 userId,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a user from the Confidential Ledger.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1859,14 +1751,6 @@ public final class ConfidentialLedgersImpl {
 
     /**
      * Gets a user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1887,26 +1771,20 @@ public final class ConfidentialLedgersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUserWithResponseAsync(String userId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getUser(
                                 this.client.getLedgerUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 userId,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets a user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1929,24 +1807,18 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUserWithResponseAsync(
             String userId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getUser(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 userId,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets a user.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1972,14 +1844,6 @@ public final class ConfidentialLedgersImpl {
 
     /**
      * A JSON merge patch is applied for existing users.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2012,6 +1876,7 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateUserWithResponseAsync(
             String userId, BinaryData userDetails, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateUser(
@@ -2019,20 +1884,13 @@ public final class ConfidentialLedgersImpl {
                                 this.client.getServiceVersion().getVersion(),
                                 userId,
                                 userDetails,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * A JSON merge patch is applied for existing users.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2066,25 +1924,19 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateUserWithResponseAsync(
             String userId, BinaryData userDetails, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateUser(
                 this.client.getLedgerUri(),
                 this.client.getServiceVersion().getVersion(),
                 userId,
                 userDetails,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * A JSON merge patch is applied for existing users.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2152,10 +2004,11 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listLedgerEntriesNext(
-                                        nextLink, this.client.getLedgerUri(), requestOptions, context))
+                                        nextLink, this.client.getLedgerUri(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2201,7 +2054,8 @@ public final class ConfidentialLedgersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listLedgerEntriesNext(nextLink, this.client.getLedgerUri(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listLedgerEntriesNext(nextLink, this.client.getLedgerUri(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -6,6 +6,7 @@ package com.azure.security.confidentialledger.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -71,20 +72,13 @@ public final class ConfidentialLedgerIdentityServicesImpl {
                 @HostParam("identityServiceUri") String identityServiceUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("ledgerId") String ledgerId,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -107,26 +101,20 @@ public final class ConfidentialLedgerIdentityServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
             String ledgerId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLedgerIdentity(
                                 this.client.getIdentityServiceUri(),
                                 this.client.getServiceVersion().getVersion(),
                                 ledgerId,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -150,24 +138,18 @@ public final class ConfidentialLedgerIdentityServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
             String ledgerId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getLedgerIdentity(
                 this.client.getIdentityServiceUri(),
                 this.client.getServiceVersion().getVersion(),
                 ledgerId,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *

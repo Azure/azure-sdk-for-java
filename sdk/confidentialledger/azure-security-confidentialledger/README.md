@@ -66,7 +66,7 @@ ConfidentialLedgerIdentityServiceBaseClient identityServiceClient = new Confiden
 String ledgerId = "<confidential-ledger-url>"
     .replaceAll("\\w+://", "")
     .replaceAll("\\..*", "");
-DynamicResponse response = identityServiceClient.getLedgerIdentity(ledgerId).send();
+Response<BinaryData> response = identityServiceClient.getLedgerIdentity(ledgerId).send();
 JsonReader jsonReader = Json.createReader(new StringReader(response.getBody().toString()));
 JsonObject result = jsonReader.readObject();
 String tlsCert = result.getString("ledgerTlsCertificate");
