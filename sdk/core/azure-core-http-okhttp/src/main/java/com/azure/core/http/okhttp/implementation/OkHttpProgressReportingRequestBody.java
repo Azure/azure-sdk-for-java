@@ -19,7 +19,7 @@ import java.util.Objects;
  * An {@link okhttp3.RequestBody} subtype that adds progress
  * reporting functionality on top of other {@link okhttp3.RequestBody}.
  */
-public class OkHttpProgressReportingRequestBody extends RequestBody {
+public final class OkHttpProgressReportingRequestBody extends RequestBody {
     private final RequestBody delegate;
     private final ProgressReporter progressReporter;
 
