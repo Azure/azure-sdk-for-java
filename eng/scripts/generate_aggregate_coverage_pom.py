@@ -29,6 +29,8 @@ parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-
 
 include_groups = []
 
+exclude_projects = ['com.azure.resourcemanager:azure-resourcemanager-samples']
+
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
 
@@ -144,6 +146,7 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list):
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
     if not project_identifier in project_list_identifiers \
+        or project_identifier in exclude_projects \
         or parent_pom not in valid_parents \
         or group_id.text not in include_groups:
         return
