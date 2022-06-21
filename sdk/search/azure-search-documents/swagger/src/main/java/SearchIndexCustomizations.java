@@ -5,8 +5,6 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.PropertyCustomization;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.slf4j.Logger;
 
 /**
@@ -88,12 +86,10 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeIndexAction(ClassCustomization classCustomization) {
-        classCustomization.addImports(JsonSerialize.class.getName())
-            .addAnnotation("JsonSerialize(using = IndexActionSerializer.class)")
+        classCustomization
             .customizeAst(ast -> ast.getClassByName("IndexAction").get()
                 .addPrivateField(String.class, "rawDocument"))
             .getProperty("rawDocument")
-            .addAnnotation("JsonIgnore")
             .generateGetterAndSetter();
 
         classCustomization.getMethod("getRawDocument")

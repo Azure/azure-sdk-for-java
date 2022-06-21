@@ -38,8 +38,8 @@ public abstract class DataDeletionDetectionPolicy implements JsonSerializable<Da
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -52,6 +52,7 @@ public abstract class DataDeletionDetectionPolicy implements JsonSerializable<Da
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -61,9 +62,7 @@ public abstract class DataDeletionDetectionPolicy implements JsonSerializable<Da
                         return SoftDeleteColumnDeletionDetectionPolicy.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values  or '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'");
                     }
                 });
     }

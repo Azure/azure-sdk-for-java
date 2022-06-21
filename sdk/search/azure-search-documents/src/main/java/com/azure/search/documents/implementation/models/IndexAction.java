@@ -12,13 +12,11 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Represents an index action that operates on a document. */
 @Fluent
-@JsonSerialize(using = IndexActionSerializer.class)
 public final class IndexAction {
 
     /*
@@ -81,7 +79,7 @@ public final class IndexAction {
         additionalProperties.put(key, value);
     }
 
-    @JsonIgnore private String rawDocument;
+    private String rawDocument;
 
     /**
      * Gets the raw JSON document.

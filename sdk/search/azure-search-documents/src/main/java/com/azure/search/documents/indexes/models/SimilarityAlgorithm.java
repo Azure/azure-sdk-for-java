@@ -42,8 +42,8 @@ public abstract class SimilarityAlgorithm implements JsonSerializable<Similarity
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -56,6 +56,7 @@ public abstract class SimilarityAlgorithm implements JsonSerializable<Similarity
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -67,7 +68,7 @@ public abstract class SimilarityAlgorithm implements JsonSerializable<Similarity
                         return BM25SimilarityAlgorithm.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.ClassicSimilarity', or '#Microsoft.Azure.Search.BM25Similarity'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.ClassicSimilarity', or '#Microsoft.Azure.Search.BM25Similarity'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

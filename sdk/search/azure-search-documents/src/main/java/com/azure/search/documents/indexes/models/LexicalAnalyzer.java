@@ -60,8 +60,8 @@ public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyze
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -74,6 +74,7 @@ public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyze
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -89,7 +90,7 @@ public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyze
                         return StopAnalyzer.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.CustomAnalyzer', '#Microsoft.Azure.Search.PatternAnalyzer', '#Microsoft.Azure.Search.StandardAnalyzer', or '#Microsoft.Azure.Search.StopAnalyzer'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.CustomAnalyzer', '#Microsoft.Azure.Search.PatternAnalyzer', '#Microsoft.Azure.Search.StandardAnalyzer', or '#Microsoft.Azure.Search.StopAnalyzer'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

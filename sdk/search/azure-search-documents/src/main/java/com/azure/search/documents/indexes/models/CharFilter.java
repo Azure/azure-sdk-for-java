@@ -60,8 +60,8 @@ public abstract class CharFilter implements JsonSerializable<CharFilter> {
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -74,6 +74,7 @@ public abstract class CharFilter implements JsonSerializable<CharFilter> {
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -85,7 +86,7 @@ public abstract class CharFilter implements JsonSerializable<CharFilter> {
                         return PatternReplaceCharFilter.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.MappingCharFilter', or '#Microsoft.Azure.Search.PatternReplaceCharFilter'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.MappingCharFilter', or '#Microsoft.Azure.Search.PatternReplaceCharFilter'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

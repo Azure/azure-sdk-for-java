@@ -99,8 +99,8 @@ public abstract class ScoringFunction implements JsonSerializable<ScoringFunctio
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -113,6 +113,7 @@ public abstract class ScoringFunction implements JsonSerializable<ScoringFunctio
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -128,7 +129,7 @@ public abstract class ScoringFunction implements JsonSerializable<ScoringFunctio
                         return TagScoringFunction.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field 'type' was present and didn't match one of the expected values , 'distance', 'freshness', 'magnitude', or 'tag'. It was: '"
+                                "Discriminator field 'type' didn't match one of the expected values 'distance', 'freshness', 'magnitude', or 'tag'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

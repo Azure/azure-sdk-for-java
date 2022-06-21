@@ -60,8 +60,8 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -74,6 +74,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -131,7 +132,7 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
                         return WordDelimiterTokenFilter.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.AsciiFoldingTokenFilter', '#Microsoft.Azure.Search.CjkBigramTokenFilter', '#Microsoft.Azure.Search.CommonGramTokenFilter', '#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter', '#Microsoft.Azure.Search.EdgeNGramTokenFilter', '#Microsoft.Azure.Search.EdgeNGramTokenFilterV2', '#Microsoft.Azure.Search.ElisionTokenFilter', '#Microsoft.Azure.Search.KeepTokenFilter', '#Microsoft.Azure.Search.KeywordMarkerTokenFilter', '#Microsoft.Azure.Search.LengthTokenFilter', '#Microsoft.Azure.Search.LimitTokenFilter', '#Microsoft.Azure.Search.NGramTokenFilter', '#Microsoft.Azure.Search.NGramTokenFilterV2', '#Microsoft.Azure.Search.PatternCaptureTokenFilter', '#Microsoft.Azure.Search.PatternReplaceTokenFilter', '#Microsoft.Azure.Search.PhoneticTokenFilter', '#Microsoft.Azure.Search.ShingleTokenFilter', '#Microsoft.Azure.Search.SnowballTokenFilter', '#Microsoft.Azure.Search.StemmerTokenFilter', '#Microsoft.Azure.Search.StemmerOverrideTokenFilter', '#Microsoft.Azure.Search.StopwordsTokenFilter', '#Microsoft.Azure.Search.SynonymTokenFilter', '#Microsoft.Azure.Search.TruncateTokenFilter', '#Microsoft.Azure.Search.UniqueTokenFilter', or '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.AsciiFoldingTokenFilter', '#Microsoft.Azure.Search.CjkBigramTokenFilter', '#Microsoft.Azure.Search.CommonGramTokenFilter', '#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter', '#Microsoft.Azure.Search.EdgeNGramTokenFilter', '#Microsoft.Azure.Search.EdgeNGramTokenFilterV2', '#Microsoft.Azure.Search.ElisionTokenFilter', '#Microsoft.Azure.Search.KeepTokenFilter', '#Microsoft.Azure.Search.KeywordMarkerTokenFilter', '#Microsoft.Azure.Search.LengthTokenFilter', '#Microsoft.Azure.Search.LimitTokenFilter', '#Microsoft.Azure.Search.NGramTokenFilter', '#Microsoft.Azure.Search.NGramTokenFilterV2', '#Microsoft.Azure.Search.PatternCaptureTokenFilter', '#Microsoft.Azure.Search.PatternReplaceTokenFilter', '#Microsoft.Azure.Search.PhoneticTokenFilter', '#Microsoft.Azure.Search.ShingleTokenFilter', '#Microsoft.Azure.Search.SnowballTokenFilter', '#Microsoft.Azure.Search.StemmerTokenFilter', '#Microsoft.Azure.Search.StemmerOverrideTokenFilter', '#Microsoft.Azure.Search.StopwordsTokenFilter', '#Microsoft.Azure.Search.SynonymTokenFilter', '#Microsoft.Azure.Search.TruncateTokenFilter', '#Microsoft.Azure.Search.UniqueTokenFilter', or '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

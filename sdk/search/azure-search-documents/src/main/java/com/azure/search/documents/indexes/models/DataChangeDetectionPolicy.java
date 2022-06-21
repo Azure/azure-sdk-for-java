@@ -38,8 +38,8 @@ public abstract class DataChangeDetectionPolicy implements JsonSerializable<Data
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -52,6 +52,7 @@ public abstract class DataChangeDetectionPolicy implements JsonSerializable<Data
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -63,7 +64,7 @@ public abstract class DataChangeDetectionPolicy implements JsonSerializable<Data
                         return SqlIntegratedChangeTrackingPolicy.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy', or '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy', or '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

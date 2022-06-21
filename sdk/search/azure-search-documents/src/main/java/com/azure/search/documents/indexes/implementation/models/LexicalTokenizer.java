@@ -60,8 +60,8 @@ public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -74,6 +74,7 @@ public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -106,7 +107,7 @@ public class LexicalTokenizer implements JsonSerializable<LexicalTokenizer> {
                         return UaxUrlEmailTokenizer.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Azure.Search.ClassicTokenizer', '#Microsoft.Azure.Search.EdgeNGramTokenizer', '#Microsoft.Azure.Search.KeywordTokenizer', '#Microsoft.Azure.Search.KeywordTokenizerV2', '#Microsoft.Azure.Search.MicrosoftLanguageTokenizer', '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer', '#Microsoft.Azure.Search.NGramTokenizer', '#Microsoft.Azure.Search.PathHierarchyTokenizerV2', '#Microsoft.Azure.Search.PatternTokenizer', '#Microsoft.Azure.Search.StandardTokenizer', '#Microsoft.Azure.Search.StandardTokenizerV2', or '#Microsoft.Azure.Search.UaxUrlEmailTokenizer'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.ClassicTokenizer', '#Microsoft.Azure.Search.EdgeNGramTokenizer', '#Microsoft.Azure.Search.KeywordTokenizer', '#Microsoft.Azure.Search.KeywordTokenizerV2', '#Microsoft.Azure.Search.MicrosoftLanguageTokenizer', '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer', '#Microsoft.Azure.Search.NGramTokenizer', '#Microsoft.Azure.Search.PathHierarchyTokenizerV2', '#Microsoft.Azure.Search.PatternTokenizer', '#Microsoft.Azure.Search.StandardTokenizer', '#Microsoft.Azure.Search.StandardTokenizerV2', or '#Microsoft.Azure.Search.UaxUrlEmailTokenizer'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

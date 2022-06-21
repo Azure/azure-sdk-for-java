@@ -156,8 +156,8 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -170,6 +170,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -215,7 +216,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                         return PiiDetectionSkill.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values , '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', '#Microsoft.Skills.Text.SentimentSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Custom.AmlSkill', or '#Microsoft.Skills.Text.PIIDetectionSkill'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', '#Microsoft.Skills.Text.SentimentSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Custom.AmlSkill', or '#Microsoft.Skills.Text.PIIDetectionSkill'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

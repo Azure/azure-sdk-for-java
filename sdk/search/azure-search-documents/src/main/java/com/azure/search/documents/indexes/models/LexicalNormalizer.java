@@ -61,8 +61,8 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
                         discriminatorValue = reader.getStringValue();
                         readerToUse = reader;
                     } else {
-                        // If it isn't the discriminator field buffer the JSON structure to make it
-                        // replayable and find the discriminator field value.
+                        // If it isn't the discriminator field buffer the JSON to make it replayable and find the
+                        // discriminator field value.
                         String json = JsonUtils.bufferJsonObject(reader);
                         JsonReader replayReader = DefaultJsonReader.fromString(json);
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
@@ -75,6 +75,7 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
                                 replayReader.skipChildren();
                             }
                         }
+
                         if (discriminatorValue != null) {
                             readerToUse = DefaultJsonReader.fromString(json);
                         }
@@ -84,9 +85,7 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
                         return CustomNormalizer.fromJson(readerToUse);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' was present and didn't match one of the expected values  or '#Microsoft.Azure.Search.CustomNormalizer'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.CustomNormalizer'");
                     }
                 });
     }
