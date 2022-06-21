@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -87,7 +88,9 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.sadd(prefix, jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
+            Transaction transaction = jedis.multi();
+            transaction.sadd(prefix, jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
+
             jedisPool.returnResource(jedis);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(Exceptions
