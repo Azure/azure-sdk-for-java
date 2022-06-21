@@ -16,6 +16,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
@@ -49,6 +50,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -74,8 +78,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -160,6 +171,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -209,10 +224,9 @@ public final class EntityAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -226,6 +240,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -251,8 +268,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -296,6 +320,7 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -305,8 +330,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listByGuidsWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> listByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return this.serviceClient.listByGuidsWithResponseAsync(guids, requestOptions);
     }
 
     /**
@@ -325,6 +350,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -350,8 +378,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -438,6 +473,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -483,14 +522,6 @@ public final class EntityAsyncClient {
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique attributes.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -534,6 +565,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -561,6 +596,7 @@ public final class EntityAsyncClient {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -570,8 +606,8 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.deleteByGuidsWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> deleteByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return this.serviceClient.deleteByGuidsWithResponseAsync(guids, requestOptions);
     }
 
     /**
@@ -630,8 +666,8 @@ public final class EntityAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -645,6 +681,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -670,8 +709,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -733,14 +779,6 @@ public final class EntityAsyncClient {
      * attribute type and entity references. It does not support updating complex types like arrays, and maps. Null
      * updates are not possible.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -790,6 +828,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -818,6 +860,7 @@ public final class EntityAsyncClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -829,8 +872,8 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateEntityAttributeByGuidWithResponseAsync(guid, body, requestOptions);
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateEntityAttributeByGuidWithResponseAsync(guid, name, body, requestOptions);
     }
 
     /**
@@ -879,6 +922,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1122,8 +1169,8 @@ public final class EntityAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
@@ -1138,6 +1185,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1163,8 +1213,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1251,6 +1308,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1276,8 +1336,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1362,6 +1429,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1463,6 +1534,10 @@ public final class EntityAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1687,6 +1762,10 @@ public final class EntityAsyncClient {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -1754,8 +1833,8 @@ public final class EntityAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
@@ -1770,6 +1849,9 @@ public final class EntityAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1795,8 +1877,15 @@ public final class EntityAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1895,6 +1984,10 @@ public final class EntityAsyncClient {
      *     ]
      *     displayText: String
      *     guid: String
+     *     isIncomplete: Boolean
+     *     labels: [
+     *         String
+     *     ]
      *     meaningNames: [
      *         String
      *     ]
@@ -1928,5 +2021,362 @@ public final class EntityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getHeaderWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * Remove business metadata from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBusinessMetadataWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteBusinessMetadataWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * Add business metadata to an entity.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>isOverwrite</td><td>Boolean</td><td>No</td><td>Whether to overwrite the existing business metadata on the entity or not, default is false.</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.addOrUpdateBusinessMetadataWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * Delete business metadata attributes from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBusinessMetadataAttributesWithResponse(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteBusinessMetadataAttributesWithResponseAsync(bmName, guid, requestOptions);
+    }
+
+    /**
+     * Add or update business metadata attributes.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataAttributesWithResponse(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return this.serviceClient.addOrUpdateBusinessMetadataAttributesWithResponseAsync(bmName, guid, requestOptions);
+    }
+
+    /**
+     * Get the sample Template for uploading/creating bulk BusinessMetaData.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the sample Template for uploading/creating bulk BusinessMetaData along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getSampleBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getSampleBusinessMetadataTemplateWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Upload the file for creating Business Metadata in BULK.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     failedImportInfoList: [
+     *         {
+     *             childObjectName: String
+     *             importStatus: String(SUCCESS/FAILED)
+     *             parentObjectName: String
+     *             remarks: String
+     *         }
+     *     ]
+     *     successImportInfoList: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return bulkImportResponse along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> importBusinessMetadataWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.importBusinessMetadataWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * delete given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteLabelsWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * Set labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.setLabelsWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * add given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addLabelWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.addLabelWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be removed. If any labels in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be provided
+     * in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be
+     * unique across entities, eg. qualifiedName. The REST request would look something like this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteLabelsByUniqueAttributeWithResponse(
+            String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions);
+    }
+
+    /**
+     * Set labels to a given entity identified by its type and unique attributes, if labels is null/empty, existing
+     * labels will all be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be
+     * provided in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue
+     * should be unique across entities, eg. qualifiedName. The REST request would look something like this: POST
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.setLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions);
+    }
+
+    /**
+     * Add given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be added. In addition to the typeName path parameter, attribute key-value pair(s) can be provided in
+     * the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like this: PUT
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.addLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions);
     }
 }

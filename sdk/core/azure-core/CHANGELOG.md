@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
 - Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
   - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
   - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
@@ -13,6 +14,9 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
+  could block file deletion on Windows.
 
 ### Other Changes
 

@@ -19,30 +19,22 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = CollectionClientBuilder.class)
 public final class CollectionClient {
-    @Generated private final CollectionAsyncClient asyncClient;
+    @Generated private final CollectionAsyncClient client;
 
     /**
      * Initializes an instance of CollectionClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    CollectionClient(CollectionAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    CollectionClient(CollectionAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Creates or updates an entity to a collection. Existing entity is matched using its unique guid if supplied or by
      * its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -55,6 +47,9 @@ public final class CollectionClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -80,8 +75,15 @@ public final class CollectionClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -166,6 +168,10 @@ public final class CollectionClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -206,21 +212,13 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateWithResponse(collection, entity, requestOptions).block();
+        return this.client.createOrUpdateWithResponse(collection, entity, requestOptions).block();
     }
 
     /**
      * Creates or updates entities in bulk to a collection. Existing entity is matched using its unique guid if supplied
      * or by its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -233,6 +231,9 @@ public final class CollectionClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -258,8 +259,15 @@ public final class CollectionClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -346,6 +354,10 @@ public final class CollectionClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -386,19 +398,11 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateBulkWithResponse(
             String collection, BinaryData entities, RequestOptions requestOptions) {
-        return this.asyncClient.createOrUpdateBulkWithResponse(collection, entities, requestOptions).block();
+        return this.client.createOrUpdateBulkWithResponse(collection, entities, requestOptions).block();
     }
 
     /**
      * Move existing entities to the target collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -453,6 +457,10 @@ public final class CollectionClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -493,7 +501,7 @@ public final class CollectionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> moveEntitiesToCollectionWithResponse(
             String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
-        return this.asyncClient
+        return this.client
                 .moveEntitiesToCollectionWithResponse(collection, moveEntitiesRequest, requestOptions)
                 .block();
     }

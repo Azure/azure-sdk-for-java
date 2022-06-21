@@ -11,6 +11,7 @@ import com.azure.resourcemanager.datafactory.models.FactoryIdentity;
 import com.azure.resourcemanager.datafactory.models.FactoryRepoConfiguration;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
+import com.azure.resourcemanager.datafactory.models.PurviewConfiguration;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -151,6 +152,29 @@ public final class FactoryInner extends Resource {
      */
     public String version() {
         return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the purviewConfiguration property: Purview information of the factory.
+     *
+     * @return the purviewConfiguration value.
+     */
+    public PurviewConfiguration purviewConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().purviewConfiguration();
+    }
+
+    /**
+     * Set the purviewConfiguration property: Purview information of the factory.
+     *
+     * @param purviewConfiguration the purviewConfiguration value to set.
+     * @return the FactoryInner object itself.
+     */
+    public FactoryInner withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FactoryProperties();
+        }
+        this.innerProperties().withPurviewConfiguration(purviewConfiguration);
+        return this;
     }
 
     /**

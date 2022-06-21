@@ -80,6 +80,10 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AccountInner innerModel() {
         return this.innerObject;
     }

@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DiscoveryQueryId {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryid
         DiscoveryClient discoveryClient =
                 new DiscoveryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryid
         BinaryData searchRequest =
                 BinaryData.fromString(
                         "{\"filter\":{\"and\":[{\"id\":\"bfecbcc3-1838-45fe-96d6-112de8a170f9\"}]},\"keywords\":null,\"limit\":10}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = discoveryClient.queryWithResponse(searchRequest, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryid
+        // END:com.azure.analytics.purview.catalog.generated.discoveryquery.discoveryqueryid
     }
 }
