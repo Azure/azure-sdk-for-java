@@ -4,10 +4,9 @@ package com.azure.spring.cloud.feature.manager.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.validation.annotation.Validated;
-
-import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeature;
 
 /**
  * The definition of a dynamic feature.
@@ -25,15 +24,16 @@ public class FeatureDefinition {
      * Definition of a Dynamic Feature.
      * 
      * @param feature name of the feature
-     * @param dynamicFeature dynamic feature object to be made into a definition
+     * @param assigner name of the assigner used
+     * @param variantMap Map of names of variants and the the FeatureVariants
      */
-    public FeatureDefinition(String feature, DynamicFeature dynamicFeature) {
+    public FeatureDefinition(String feature, String assigner, Map<String, FeatureVariant> variantMap) {
         this.name = feature;
-        this.assigner = dynamicFeature.getAssigner();
+        this.assigner = assigner;
         this.variants = new ArrayList<FeatureVariant>();
 
-        for (int i = 0; i < dynamicFeature.getVariants().size(); i++) {
-            variants.add(dynamicFeature.getVariants().get(String.valueOf(i)));
+        for (int i = 0; i < variantMap.size(); i++) {
+            variants.add(variantMap.get(String.valueOf(i)));
         }
     }
 

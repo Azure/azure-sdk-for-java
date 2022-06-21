@@ -41,7 +41,7 @@ public class DynamicFeatureManager {
      * @param propertiesProvider Object Provider for accessing client IDynamicFeatureProperties
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      */
-    public DynamicFeatureManager(ApplicationContext context,
+    DynamicFeatureManager(ApplicationContext context,
         ObjectProvider<IDynamicFeatureProperties> propertiesProvider,
         FeatureManagementProperties featureManagementConfigurations) {
         this.context = context;
@@ -74,7 +74,8 @@ public class DynamicFeatureManager {
 
         DynamicFeature dynamicFeature = featureManagementConfigurations.getDynamicFeatures().get(featureName);
 
-        FeatureDefinition featureDefinition = new FeatureDefinition(featureName, dynamicFeature);
+        FeatureDefinition featureDefinition = new FeatureDefinition(featureName, dynamicFeature.getAssigner(),
+            dynamicFeature.getVariants());
 
         validateDynamicFeature(featureDefinition, featureName);
 

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.implementation;
+package com.azure.spring.cloud.feature.manager;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -8,16 +8,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.azure.spring.cloud.feature.manager.DynamicFeatureManager;
-import com.azure.spring.cloud.feature.manager.FeatureManager;
-import com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementConfigProperties;
+import com.azure.spring.cloud.feature.manager.implementation.FeatureManagementProperties;
 
 /**
  * Configuration for setting up FeatureManager
  */
 @Configuration
 @EnableConfigurationProperties({ FeatureManagementConfigProperties.class, FeatureManagementProperties.class })
-public class FeatureManagementConfiguration {
+class FeatureManagementConfiguration {
 
     /**
      * Creates Feature Manager
@@ -28,7 +27,7 @@ public class FeatureManagementConfiguration {
      * @return FeatureManager
      */
     @Bean
-    public FeatureManager featureManager(ApplicationContext context,
+    FeatureManager featureManager(ApplicationContext context,
         FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties) {
         return new FeatureManager(context, featureManagementConfigurations, properties);
     }
@@ -42,7 +41,7 @@ public class FeatureManagementConfiguration {
      * @return DynamicFeatureManager
      */
     @Bean
-    public DynamicFeatureManager dynamicFeatureManager(ApplicationContext context,
+    DynamicFeatureManager dynamicFeatureManager(ApplicationContext context,
         ObjectProvider<IDynamicFeatureProperties> propertiesProvider,
         FeatureManagementProperties featureManagementConfigurations) {
         return new DynamicFeatureManager(context, propertiesProvider, featureManagementConfigurations);
