@@ -46,11 +46,16 @@ class BlobOutputStreamTest extends APISpec {
 
         outputStream.write(data)
         outputStream.close()
-        // call again, no exceptions should be thrown
-        outputStream.close()
-        outputStream.close()
+        def etag = blockBlobClient.getProperties().getETag()
 
         then:
+        assert etag == blockBlobClient.getProperties().getETag()
+        // call again, no exceptions should be thrown
+        outputStream.close()
+        assert etag == blockBlobClient.getProperties().getETag()
+        outputStream.close()
+        assert etag == blockBlobClient.getProperties().getETag()
+
         blockBlobClient.getProperties().getBlobSize() == data.length
         convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
