@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The report for session host information. */
 @Immutable
 public final class SessionHostHealthCheckReport {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostHealthCheckReport.class);
-
     /*
      * Represents the name of the health check operation performed.
      */
