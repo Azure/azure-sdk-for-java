@@ -59,7 +59,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        ProgressReporter progressReporter = Contexts.with(context).getRequestProgressReporter();
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.

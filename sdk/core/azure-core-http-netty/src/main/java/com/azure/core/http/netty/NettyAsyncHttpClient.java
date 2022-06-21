@@ -291,7 +291,7 @@ class NettyAsyncHttpClient implements HttpClient {
      */
     private void addRequestHandlers(Connection connection, Context context) {
         connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
-        ProgressReporter progressReporter = Contexts.with(context).getRequestProgressReporter();
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
         if (progressReporter != null) {
             connection.addHandlerLast(

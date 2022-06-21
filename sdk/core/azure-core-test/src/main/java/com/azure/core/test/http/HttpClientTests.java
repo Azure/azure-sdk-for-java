@@ -303,7 +303,7 @@ public abstract class HttpClientTests {
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setRequestProgressReporter(
+            .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
@@ -332,7 +332,7 @@ public abstract class HttpClientTests {
 
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
-            .setRequestProgressReporter(
+            .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
 

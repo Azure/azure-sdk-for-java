@@ -39,8 +39,8 @@ public final class Contexts {
      * @param progressReporter The {@link ProgressReporter} instance.
      * @return Itself.
      */
-    public Contexts setRequestProgressReporter(ProgressReporter progressReporter) {
-        context = context.addData(Keys.REQUEST_PROGRESS_REPORTER, progressReporter);
+    public Contexts setHttpRequestProgressReporter(ProgressReporter progressReporter) {
+        context = context.addData(Keys.HTTP_REQUEST_PROGRESS_REPORTER, progressReporter);
         return this;
     }
 
@@ -48,8 +48,8 @@ public final class Contexts {
      * Retrieves request's {@link ProgressReporter} from the {@link Context}.
      * @return The {@link ProgressReporter}.
      */
-    public ProgressReporter getRequestProgressReporter() {
-        return (ProgressReporter) context.getData(Keys.REQUEST_PROGRESS_REPORTER).orElse(null);
+    public ProgressReporter getHttpRequestProgressReporter() {
+        return (ProgressReporter) context.getData(Keys.HTTP_REQUEST_PROGRESS_REPORTER).orElse(null);
     }
 
     /**
@@ -70,6 +70,6 @@ public final class Contexts {
         /**
          * A {@link Context} key for the outgoing request's {@link ProgressReporter}.
          */
-        public static final String REQUEST_PROGRESS_REPORTER = "com.azure.core.request.progress.reporter";
+        public static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.azure.core.http.request.progress.reporter";
     }
 }

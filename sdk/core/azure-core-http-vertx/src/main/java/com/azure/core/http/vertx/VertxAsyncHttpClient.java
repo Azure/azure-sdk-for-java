@@ -55,7 +55,7 @@ class VertxAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        ProgressReporter progressReporter = Contexts.with(context).getRequestProgressReporter();
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         return Mono.create(sink ->
             toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
                 vertxHttpRequest.exceptionHandler(sink::error);
