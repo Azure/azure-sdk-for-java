@@ -31,7 +31,7 @@
 <!--  </build>-->
 
 
-  <dependencies>
+<!--  <dependencies>-->
 <!--    <dependency>-->
 <!--      <groupId>com.azure.spring</groupId>-->
 <!--      <artifactId>spring-messaging-azure</artifactId>-->
@@ -117,7 +117,7 @@
 <!--      <artifactId>spring-cloud-azure-trace-sleuth</artifactId>-->
 <!--      <version>4.3.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} &ndash;&gt;-->
 <!--    </dependency>-->
-  </dependencies>
+<!--  </dependencies>-->
 
   <profiles>
     <profile>
