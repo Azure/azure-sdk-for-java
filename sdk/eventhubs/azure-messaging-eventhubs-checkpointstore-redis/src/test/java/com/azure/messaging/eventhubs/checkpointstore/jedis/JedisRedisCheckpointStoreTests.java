@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
+import redis.clients.jedis.JedisPool;
 
 /**
  * Unit tests for {@link  JedisRedisCheckpointStore}
@@ -12,7 +12,8 @@ import org.mockito.MockitoAnnotations;
 public class JedisRedisCheckpointStoreTests {
     @Test
     public void testListCheckpoints() {
-
+        JedisPool jedisPool = Mockito.mock(JedisPool.class);
+        JedisRedisCheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
     }
 
 }
