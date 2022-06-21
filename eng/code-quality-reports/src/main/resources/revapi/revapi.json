@@ -250,45 +250,59 @@
           "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
-          "regex": true,
           "code": "java.annotation.attributeValueChanged",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
           "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
           "justification": "To support JWT Client Authentication."
         },
         {
-          "regex": true,
           "code": "java.annotation.(attributeValueChanged|added)",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
           "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
           "justification": "To support JWT Client Authentication."
         },
         {
-          "regex": true,
           "code": "java.class.removed",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.OAuth2ClientRepositoryConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.ResourceServerWithOBOOAuth2AuthorizedClientManagerConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.WebApplicationWithoutResourceServerOAuth2AuthorizedClientManagerConfiguration",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.OAuth2ClientRepositoryConfiguration",
           "justification": "To support JWT Client Authentication."
         },
         {
-          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.ResourceServerWithOBOOAuth2AuthorizedClientManagerConfiguration",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration.WebApplicationWithoutResourceServerOAuth2AuthorizedClientManagerConfiguration",
+          "justification": "To support JWT Client Authentication."
+        },
+        {
           "code": "java.method.returnTypeChanged",
+          "old:": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
           "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
           "justification": "To support JWT Client Authentication."
         },
         {
-          "regex": true,
           "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
           "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
           "justification": "To support JWT Client Authentication."
         },
         {
-          "regex": true,
           "code": "java.method.parameterTypeChanged",
-          "new": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "old": "parameter com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
           "justification": "To support JWT Client Authentication."
         },
         {
-          "regex": true,
           "code": "java.method.parameterTypeChanged",
-          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "old": "parameter com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
           "justification": "To support JWT Client Authentication."
         },
         {
