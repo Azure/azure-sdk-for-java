@@ -73,7 +73,7 @@ public final class ProgressReporter {
      */
     private ProgressReporter(ProgressListener progressListener) {
         this.progressListener = Objects.requireNonNull(progressListener,
-            "'progressReceiver' must not be null");
+            "'progressListener' must not be null");
         this.parent = null;
     }
 
