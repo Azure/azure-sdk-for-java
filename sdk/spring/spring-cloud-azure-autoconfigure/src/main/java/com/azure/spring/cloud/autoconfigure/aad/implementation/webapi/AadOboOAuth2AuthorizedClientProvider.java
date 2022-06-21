@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
@@ -53,7 +54,9 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  *
  * @see AuthorizationGrantType
  * @see OAuth2AuthorizedClientProvider
+ * @deprecated use {@link JwtBearerOAuth2AuthorizedClientProvider} instead.
  */
+@Deprecated
 public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadOboOAuth2AuthorizedClientProvider.class);

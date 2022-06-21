@@ -49,9 +49,10 @@ This section includes changes in `spring-cloud-azure-starter-active-directory` m
 
 #### Breaking Changes
 + Deprecated classes and properties type changed [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
-    + Deprecated *~~AadAuthorizationGrantType~~*, use `AuthorizationGrantType` instead.
-    + Deprecated *~~AadOAuth2AuthenticatedPrincipal~~*, *~~AadJwtBearerTokenAuthenticationConverter~~*, use the default converter `JwtAuthenticationConverter` instead in `AadResourceServerWebSecurityConfigurerAdapter`.
+    + Deprecated ~~AadAuthorizationGrantType~~, use `AuthorizationGrantType` instead.
+    + Deprecated ~~AadOAuth2AuthenticatedPrincipal~~, ~~AadJwtBearerTokenAuthenticationConverter~~, use the default converter `JwtAuthenticationConverter` instead in `AadResourceServerWebSecurityConfigurerAdapter`.
     + The type of property *authorizationGrantType* is changed to `AuthorizationGrantType` in `AuthorizationClientProperties` class.
+    + Deprecated ~~AadOboOAuth2AuthorizedClientProvider~~, use `JwtBearerOAuth2AuthorizedClientProvider` instead.
 
 ### Spring Cloud Azure Starter Active Directory B2C
 This section includes changes in `spring-cloud-azure-starter-active-directory-b2c` module.
