@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
 
 ### 4.31.0 (2022-06-08)
 

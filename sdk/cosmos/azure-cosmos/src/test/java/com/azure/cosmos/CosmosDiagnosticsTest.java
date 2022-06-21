@@ -37,6 +37,9 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
@@ -323,9 +326,20 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             diagnostics = readResponse.getDiagnostics().toString();
             assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"", sessionToken));
 
+            // use batch operation to check that user-set session token is being passed in
+            // need to use batch since we only pass session token on multiple region write or batch operation
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(
+                BridgeInternal.getProperties(createResponse).getId()));
+            batch.deleteItemOperation(BridgeInternal.getProperties(createResponse).getId());
+            batch.createItemOperation(internalObjectNode);
+            CosmosBatchResponse batchResponse = cosmosContainer.executeCosmosBatch(batch,
+                new CosmosBatchRequestOptions().setSessionToken("0:-1#2"));
+            diagnostics = batchResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
+
             // validate that on failed operation request timeline is populated
             try {
-                cosmosContainer.createItem(internalObjectNode, new CosmosItemRequestOptions().setSessionToken("0:-1#2"));
+                cosmosContainer.createItem(internalObjectNode);
                 fail("expected 409");
             } catch (CosmosException e) {
                 diagnostics = e.getDiagnostics().toString();
@@ -333,8 +347,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
                 assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
                 assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
-                // validate request session token manually passed in is in diagnostics
-                assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
         } finally {

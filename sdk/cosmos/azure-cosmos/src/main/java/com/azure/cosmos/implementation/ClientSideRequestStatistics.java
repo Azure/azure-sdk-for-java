@@ -99,11 +99,7 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
-        if (request.requestContext.sessionToken != null) {
-            storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        } else {
-            storeResponseStatistics.requestSessionToken = request.getOriginalSessionToken();
-        }
+        storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         activityId = request.getActivityId().toString();
 
 
