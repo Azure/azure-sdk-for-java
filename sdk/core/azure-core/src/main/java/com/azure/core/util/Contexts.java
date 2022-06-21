@@ -35,7 +35,7 @@ public final class Contexts {
     }
 
     /**
-     * Adds {@link ProgressReporter} instance to the {@link Context}.
+     * Adds request's {@link ProgressReporter} instance to the {@link Context}.
      * @param progressReporter The {@link ProgressReporter} instance.
      * @return Itself.
      */
@@ -45,7 +45,7 @@ public final class Contexts {
     }
 
     /**
-     * Retrieves {@link ProgressReporter} from the {@link Context}.
+     * Retrieves request's {@link ProgressReporter} from the {@link Context}.
      * @return The {@link ProgressReporter}.
      */
     public ProgressReporter getRequestProgressReporter() {
@@ -60,10 +60,16 @@ public final class Contexts {
         return context;
     }
 
+    /**
+     * Defines {@link Context} keys commonly used in Azure SDKs.
+     */
     public static final class Keys {
         private Keys() {
         }
 
+        /**
+         * A {@link Context} key for the outgoing request's {@link ProgressReporter}.
+         */
         public static final String REQUEST_PROGRESS_REPORTER = "com.azure.core.request.progress.reporter";
     }
 }

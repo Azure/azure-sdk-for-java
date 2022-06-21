@@ -8,13 +8,13 @@ package com.azure.core.util;
  */
 public class ProgressReporterJavaDocCodeSnippets {
 
-    // BEGIN: com.azure.core.util.ProgressReporter
+    // BEGIN: com.azure.core.util.ProgressReportingE2ESample
     /**
      * A simple operation that simulates I/O activity.
      * @param progressReporter The {@link ProgressReporter}.
      */
     public static void simpleOperation(ProgressReporter progressReporter) {
-        for (long i = 0 ; i < 100; i++) {
+        for (long i = 0; i < 100; i++) {
             // Simulate 100 I/Os with 10 progress.
             progressReporter.reportProgress(10);
         }
@@ -45,5 +45,5 @@ public class ProgressReporterJavaDocCodeSnippets {
             .withProgressReceiver(progress -> System.out.println("Complex operation progress " + progress));
         complexOperation(complexOperationProgressReporter);
     }
-    // END: com.azure.core.util.ProgressReporter
+    // END: com.azure.core.util.ProgressReportingE2ESample
 }

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProgressReporterTest {
 
-    private final ListProgressReceiver listener = new ListProgressReceiver();
+    private final ListProgressListener listener = new ListProgressListener();
 
     @Test
     public void listenerMustNotBeNull() {
@@ -93,11 +93,11 @@ public class ProgressReporterTest {
         assertEquals(Arrays.asList(1L, 8L, 1L, 4L, 15L, 20L, 9L), listener.getProgresses());
     }
 
-    private static class ListProgressReceiver implements ProgressReceiver {
+    private static class ListProgressListener implements ProgressListener {
         private final List<Long> progresses = new ArrayList<>();
 
         @Override
-        public void reportProgress(long bytesTransferred) {
+        public void handleProgress(long bytesTransferred) {
             progresses.add(bytesTransferred);
         }
 
