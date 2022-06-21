@@ -114,6 +114,18 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(prefix, checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
+
+            //Case 1: new checkpoint
+            if (!jedis.exists(prefix) || !jedis.exists(key)) {
+                jedis.sadd(prefix, key);
+                try {
+                    jedis.hset(key, "checkpoint", jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(Exceptions
+                        .propagate(e));
+                }
+            }
+            //TO DO: Case 2: checkpoint already exists in Redis cache
             jedisPool.returnResource(jedis);
         }
         return null;
