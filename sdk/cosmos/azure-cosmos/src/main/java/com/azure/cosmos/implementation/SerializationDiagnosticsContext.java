@@ -67,7 +67,7 @@ public class SerializationDiagnosticsContext {
             jsonGenerator.writeStringField("startTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.startTimeUTC));
             jsonGenerator.writeStringField("endTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.endTimeUTC));
             if (duration != null) {
-                jsonGenerator.writeNumberField("durationInMilliSecs", (double)(duration.toNanos() / (1000L * 1000L)));
+                jsonGenerator.writeNumberField("durationInMilliSecs", (double)duration.toNanos() / (1000d * 1000d));
             }
 
             jsonGenerator.writeEndObject();

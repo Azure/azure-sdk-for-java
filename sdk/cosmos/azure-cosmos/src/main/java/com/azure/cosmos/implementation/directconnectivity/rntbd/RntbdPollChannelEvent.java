@@ -51,7 +51,7 @@ public class RntbdPollChannelEvent extends RntbdChannelAcquisitionEvent {
             if (event.getCompleteTime() != null) {
                 writer.writeNumberField(
                     "durationInMilliSecs",
-                    (double) (Duration.between(event.getCompleteTime(), event.getCompleteTime()).toNanos() / (1000L * 1000L)));
+                    (double) Duration.between(event.getCompleteTime(), event.getCompleteTime()).toNanos() / (1000d * 1000d));
             }
 
             if (event.details != null && event.details.size() > 0) {

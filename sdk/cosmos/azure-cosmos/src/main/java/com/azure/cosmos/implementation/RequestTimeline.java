@@ -183,7 +183,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             }
 
             if (duration != null) {
-                this.durationInMilliSecs = (double)(duration.toNanos() / (1000L * 1000L));
+                this.durationInMilliSecs = (double)(duration.toNanos()) / (1000d * 1000d);
             } else {
                 this.durationInMilliSecs = 0.0D;
             }

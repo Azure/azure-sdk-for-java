@@ -59,7 +59,7 @@ public class RntbdChannelAcquisitionEvent {
 
             writer.writeStringField(event.eventType.toString(), event.createdTime.toString());
             if (event.completeTime != null) {
-                writer.writeNumberField("durationInMilliSecs", (double) (Duration.between(event.createdTime, event.completeTime).toNanos() / (1000L * 1000L)));
+                writer.writeNumberField("durationInMilliSecs", (double) Duration.between(event.createdTime, event.completeTime).toNanos() / (1000d * 1000d));
             }
 
             writer.writeEndObject();
