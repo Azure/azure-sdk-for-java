@@ -40,12 +40,12 @@ package com.azure.core.util;
  * public static void main&#40;String[] args&#41; &#123;
  *     &#47;&#47; Execute simpleOperation
  *     ProgressReporter simpleOperationProgressReporter = ProgressReporter
- *         .withProgressReceiver&#40;progress -&gt; System.out.println&#40;&quot;Simple operation progress &quot; + progress&#41;&#41;;
+ *         .withProgressListener&#40;progress -&gt; System.out.println&#40;&quot;Simple operation progress &quot; + progress&#41;&#41;;
  *     simpleOperation&#40;simpleOperationProgressReporter&#41;;
  *
  *     &#47;&#47; Execute complexOperation
  *     ProgressReporter complexOperationProgressReporter = ProgressReporter
- *         .withProgressReceiver&#40;progress -&gt; System.out.println&#40;&quot;Complex operation progress &quot; + progress&#41;&#41;;
+ *         .withProgressListener&#40;progress -&gt; System.out.println&#40;&quot;Complex operation progress &quot; + progress&#41;&#41;;
  *     complexOperation&#40;complexOperationProgressReporter&#41;;
  * &#125;
  * </pre>
