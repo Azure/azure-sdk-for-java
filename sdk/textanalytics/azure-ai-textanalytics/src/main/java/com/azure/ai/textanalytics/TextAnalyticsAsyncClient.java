@@ -8,8 +8,8 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOptions;
+import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -31,9 +31,8 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeMultiCategoryClassifyPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeSingleCategoryClassifyPagedFlux;
+import com.azure.ai.textanalytics.util.AnalyzeLabelClassificationPagedFlux;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1764,33 +1763,72 @@ public final class TextAnalyticsAsyncClient {
 
     // Single Category
 
+    /**
+     * a
+     *
+     * @param documents
+     * @param language
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedFlux>
-        beginAnalyzeSingleCategoryClassify(Iterable<String> documents, String language,
-            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
+        beginAnalyzeSingleLabelClassification(Iterable<String> documents, String language,
+            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
         return null;
     }
 
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedFlux>
-        beginAnalyzeSingleCategoryClassify(Iterable<TextDocumentInput> documents,
-            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
+        beginAnalyzeSingleLabelClassification(Iterable<TextDocumentInput> documents,
+            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
         return null;
     }
 
     // Multi Category
 
+    /**
+     *  a
+     *
+     * @param documents
+     * @param language
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedFlux>
-        beginAnalyzeMultiCategoryClassify(Iterable<String> documents, String language,
-            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
+        beginAnalyzeMultiLabelClassification(Iterable<String> documents, String language,
+            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
         return null;
     }
 
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedFlux>
-        beginAnalyzeMultiCategoryClassify(Iterable<TextDocumentInput> documents,
-            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
+        beginAnalyzeMultiLabelClassification(Iterable<TextDocumentInput> documents,
+            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
         return null;
     }
 

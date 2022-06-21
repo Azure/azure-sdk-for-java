@@ -2421,7 +2421,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void singleCategoryClassifyAction(HttpClient httpClient,
+    public void singleLabelClassificationAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
@@ -2434,9 +2434,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getSingleCategoryClassifyResults().forEach(
+                actionsResult -> actionsResult.getSingleLabelClassificationResults().forEach(
                     customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomSingleCategory(documentResult))));
+                        documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 
@@ -2455,9 +2455,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
+                actionsResult -> actionsResult.getMultiLabelClassificationResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomMultiCategory(documentResult))));
+                        documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 }

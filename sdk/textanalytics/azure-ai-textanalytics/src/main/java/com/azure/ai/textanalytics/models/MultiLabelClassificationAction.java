@@ -13,7 +13,7 @@ import com.azure.core.annotation.Fluent;
  * https://aka.ms/azsdk/textanalytics/customfunctionalities
  */
 @Fluent
-public final class MultiCategoryClassifyAction {
+public final class MultiLabelClassificationAction {
     private final String projectName;
     private final String deploymentName;
     private String actionName;
@@ -26,7 +26,7 @@ public final class MultiCategoryClassifyAction {
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      */
-    public MultiCategoryClassifyAction(String projectName, String deploymentName) {
+    public MultiLabelClassificationAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
     }
@@ -45,9 +45,9 @@ public final class MultiCategoryClassifyAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link MultiCategoryClassifyAction} object itself.
+     * @return The {@link MultiLabelClassificationAction} object itself.
      */
-    public MultiCategoryClassifyAction setActionName(String actionName) {
+    public MultiLabelClassificationAction setActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -88,9 +88,9 @@ public final class MultiCategoryClassifyAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link MultiCategoryClassifyAction} object itself.
+     * @return The {@link MultiLabelClassificationAction} object itself.
      */
-    public MultiCategoryClassifyAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public MultiLabelClassificationAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

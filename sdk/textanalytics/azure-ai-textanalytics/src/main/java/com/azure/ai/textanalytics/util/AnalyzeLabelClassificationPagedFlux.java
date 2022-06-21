@@ -16,15 +16,15 @@ import java.util.function.Supplier;
  * @see ContinuablePagedFluxCore
  */
 @Immutable
-public final class AnalyzeSingleCategoryClassifyPagedFlux extends ContinuablePagedFluxCore<String,
-    SingleCategoryClassifyResultCollection, PagedResponse<SingleCategoryClassifyResultCollection>> {
+public final class AnalyzeLabelClassificationPagedFlux extends ContinuablePagedFluxCore<String,
+    LabelClassificationResultCollection, PagedResponse<LabelClassificationResultCollection>> {
     /**
-     * Creates an instance of {@link AnalyzeSingleCategoryClassifyPagedFlux}
+     * Creates an instance of {@link AnalyzeLabelClassificationPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */
-    public AnalyzeSingleCategoryClassifyPagedFlux(
-        Supplier<PageRetriever<String, PagedResponse<SingleCategoryClassifyResultCollection>>>
+    public AnalyzeLabelClassificationPagedFlux(
+        Supplier<PageRetriever<String, PagedResponse<LabelClassificationResultCollection>>>
             pageRetrieverProvider) {
         super(pageRetrieverProvider);
     }

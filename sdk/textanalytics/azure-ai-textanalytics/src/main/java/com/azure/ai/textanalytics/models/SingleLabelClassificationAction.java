@@ -13,7 +13,7 @@ import com.azure.core.annotation.Fluent;
  * https://aka.ms/azsdk/textanalytics/customfunctionalities
  */
 @Fluent
-public final class SingleCategoryClassifyAction {
+public final class SingleLabelClassificationAction {
     private final String projectName;
     private final String deploymentName;
     private String actionName;
@@ -26,7 +26,7 @@ public final class SingleCategoryClassifyAction {
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      */
-    public SingleCategoryClassifyAction(String projectName, String deploymentName) {
+    public SingleLabelClassificationAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
     }
@@ -45,9 +45,9 @@ public final class SingleCategoryClassifyAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link SingleCategoryClassifyAction} object itself.
+     * @return The {@link SingleLabelClassificationAction} object itself.
      */
-    public SingleCategoryClassifyAction setActionName(String actionName) {
+    public SingleLabelClassificationAction setActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -88,9 +88,9 @@ public final class SingleCategoryClassifyAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link SingleCategoryClassifyAction} object itself.
+     * @return The {@link SingleLabelClassificationAction} object itself.
      */
-    public SingleCategoryClassifyAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public SingleLabelClassificationAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

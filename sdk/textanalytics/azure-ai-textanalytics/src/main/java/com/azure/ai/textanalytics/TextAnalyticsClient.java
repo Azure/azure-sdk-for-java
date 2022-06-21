@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOptions;
+import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -28,9 +28,8 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeMultiCategoryClassifyPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeSingleCategoryClassifyPagedIterable;
+import com.azure.ai.textanalytics.util.AnalyzeLabelClassificationPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1658,31 +1657,73 @@ public final class TextAnalyticsClient {
             context).getSyncPoller();
     }
 
+    /**
+     * a
+     *
+     * @param documents
+     * @param language
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedIterable>
-        beginAnalyzeSingleCategoryClassify(Iterable<String> documents, String language, String projectName,
-            String deploymentName, AnalyzeCategoryClassifyOptions options) {
+    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
+        beginAnalyzeSingleLabelClassification(Iterable<String> documents, String language, String projectName,
+            String deploymentName, AnalyzeLabelClassificationOptions options) {
         return null;
     }
 
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @param context
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedIterable>
-        beginAnalyzeMultiCategoryClassify(Iterable<String> documents, String language, String projectName,
-            String deploymentName, AnalyzeCategoryClassifyOptions options) {
+    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
+        beginAnalyzeSingleLabelClassification(Iterable<TextDocumentInput> documents, String projectName,
+        String deploymentName, AnalyzeLabelClassificationOptions options, Context context) {
         return null;
     }
 
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param language
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedIterable>
-        beginAnalyzeSingleCategoryClassify(Iterable<TextDocumentInput> documents, String projectName,
-            String deploymentName, AnalyzeCategoryClassifyOptions options, Context context) {
+    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
+        beginAnalyzeMultiLabelClassification(Iterable<String> documents, String language, String projectName,
+            String deploymentName, AnalyzeLabelClassificationOptions options) {
         return null;
     }
 
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @param context
+     * @return
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedIterable>
-        beginAnalyzeMultiCategoryClassify(Iterable<TextDocumentInput> documents, String projectName,
-            String deploymentName, AnalyzeCategoryClassifyOptions options, Context context) {
+    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
+        beginAnalyzeMultiLabelClassification(Iterable<TextDocumentInput> documents, String projectName,
+            String deploymentName, AnalyzeLabelClassificationOptions options, Context context) {
         return null;
     }
 

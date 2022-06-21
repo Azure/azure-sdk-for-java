@@ -3,45 +3,45 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.SingleCategoryClassifyResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.LabelClassificationResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link SingleCategoryClassifyResult} model. It classify the text document one single category.
+ * The {@link LabelClassificationResult} model. It classify the text document one single category.
  */
 @Immutable
-public final class SingleCategoryClassifyResult extends TextAnalyticsResult {
-    private ClassificationCategory classification;
+public final class LabelClassificationResult extends TextAnalyticsResult {
+    private IterableStream<ClassificationCategory> classifications;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        SingleCategoryClassifyResultPropertiesHelper.setAccessor(
-            new SingleCategoryClassifyResultPropertiesHelper.SingleCategoryClassifyResultAccessor() {
+        LabelClassificationResultPropertiesHelper.setAccessor(
+            new LabelClassificationResultPropertiesHelper.LabelClassificationResultAccessor() {
                 @Override
-                public void setClassification(
-                    SingleCategoryClassifyResult singleCategoryClassifyResult,
-                    ClassificationCategory classification) {
-                    singleCategoryClassifyResult.setClassification(classification);
+                public void setClassifications(
+                    LabelClassificationResult labelClassificationResult,
+                    IterableStream<ClassificationCategory> classifications) {
+                    labelClassificationResult.setClassifications(classifications);
                 }
 
                 @Override
-                public void setWarnings(SingleCategoryClassifyResult singleCategoryClassifyResult,
+                public void setWarnings(LabelClassificationResult labelClassificationResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
-                    singleCategoryClassifyResult.setWarnings(warnings);
+                    labelClassificationResult.setWarnings(warnings);
                 }
             });
 
     }
 
     /**
-     * Creates a {@link SingleCategoryClassifyResult} model.
+     * Creates a {@link LabelClassificationResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public SingleCategoryClassifyResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public LabelClassificationResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
@@ -51,9 +51,9 @@ public final class SingleCategoryClassifyResult extends TextAnalyticsResult {
      *
      * @return The {@link ClassificationCategory}.
      */
-    public ClassificationCategory getClassification() {
+    public IterableStream<ClassificationCategory> getClassifications() {
         throwExceptionIfError();
-        return classification;
+        return classifications;
     }
 
     /**
@@ -65,8 +65,8 @@ public final class SingleCategoryClassifyResult extends TextAnalyticsResult {
         return this.warnings;
     }
 
-    private void setClassification(ClassificationCategory classification) {
-        this.classification = classification;
+    private void setClassifications(IterableStream<ClassificationCategory> classifications) {
+        this.classifications = classifications;
     }
 
     private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {

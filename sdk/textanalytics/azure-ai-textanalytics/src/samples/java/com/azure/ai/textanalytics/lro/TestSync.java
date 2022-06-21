@@ -5,16 +5,13 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOptions;
+import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOptions;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
-import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.LabelClassificationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AnalyzeMultiCategoryClassifyPagedIterable;
-import com.azure.ai.textanalytics.util.AnalyzeSingleCategoryClassifyPagedIterable;
-import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
-import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeLabelClassificationPagedIterable;
+import com.azure.ai.textanalytics.util.LabelClassificationResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -48,11 +45,11 @@ public class TestSync {
                 + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                 + "if diarrhea worsen.");
 
-        AnalyzeCategoryClassifyOptions options = new AnalyzeCategoryClassifyOptions()
+        AnalyzeLabelClassificationOptions options = new AnalyzeLabelClassificationOptions()
                                                      .setServiceLogsDisabled(true);
 
-        SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedIterable> syncPoller =
-            client.beginAnalyzeSingleCategoryClassify(documents,
+        SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable> syncPoller =
+            client.beginAnalyzeSingleLabelClassification(documents,
                 "en", "{project_name}", "{deployment_name}", options);
 
         syncPoller.waitForCompletion();
@@ -77,11 +74,11 @@ public class TestSync {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        AnalyzeCategoryClassifyOptions options = new AnalyzeCategoryClassifyOptions()
+        AnalyzeLabelClassificationOptions options = new AnalyzeLabelClassificationOptions()
                                                      .setServiceLogsDisabled(true);
 
-        SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedIterable> syncPoller =
-            client.beginAnalyzeSingleCategoryClassify(documents, "{project_name}",
+        SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable> syncPoller =
+            client.beginAnalyzeSingleLabelClassification(documents, "{project_name}",
                 "{deployment_name}", options, Context.NONE);
 
         syncPoller.waitForCompletion();
@@ -91,22 +88,22 @@ public class TestSync {
     }
 
     private static void processAnalyzeCategoryClassificationResultCollection(
-        SingleCategoryClassifyResultCollection documentsResults) {
+        LabelClassificationResultCollection documentsResults) {
         System.out.printf("Project name: %s, deployment name: %s.%n",
             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-        for (SingleCategoryClassifyResult documentResult : documentsResults) {
+        for (LabelClassificationResult documentResult : documentsResults) {
             System.out.println("Document ID: " + documentResult.getId());
             if (!documentResult.isError()) {
-                ClassificationCategory classificationCategory = documentResult.getClassification();
-                System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                    classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
+                    System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                        classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                }
             } else {
                 System.out.printf("\tCannot classify category of document. Error: %s%n",
                     documentResult.getError().getMessage());
             }
         }
     }
-
 
     public static void multiClassificationStringInput() {
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
@@ -122,11 +119,11 @@ public class TestSync {
                 + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                 + "if diarrhea worsen.");
 
-        final AnalyzeCategoryClassifyOptions analyzeCategoryClassifyOptions = new AnalyzeCategoryClassifyOptions();
+        final AnalyzeLabelClassificationOptions analyzeLabelClassificationOptions = new AnalyzeLabelClassificationOptions();
 
-        final SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedIterable> syncPoller =
-            client.beginAnalyzeMultiCategoryClassify(documents, "en", "{project_name}", "{deployment_name}",
-                analyzeCategoryClassifyOptions);
+        final SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable> syncPoller =
+            client.beginAnalyzeMultiLabelClassification(documents, "en", "{project_name}", "{deployment_name}",
+                analyzeLabelClassificationOptions);
 
         syncPoller.waitForCompletion();
 
@@ -150,11 +147,11 @@ public class TestSync {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        final AnalyzeCategoryClassifyOptions analyzeCategoryClassifyOptions = new AnalyzeCategoryClassifyOptions();
+        final AnalyzeLabelClassificationOptions analyzeLabelClassificationOptions = new AnalyzeLabelClassificationOptions();
 
-        final SyncPoller<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedIterable> syncPoller =
-            client.beginAnalyzeMultiCategoryClassify(documents, "{project_name}", "{deployment_name}",
-                analyzeCategoryClassifyOptions, Context.NONE);
+        final SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable> syncPoller =
+            client.beginAnalyzeMultiLabelClassification(documents, "{project_name}", "{deployment_name}",
+                analyzeLabelClassificationOptions, Context.NONE);
 
         syncPoller.waitForCompletion();
 
@@ -162,10 +159,10 @@ public class TestSync {
             documentsResults -> processMultiCategoryClassificationResult(documentsResults));
     }
 
-    private static void processMultiCategoryClassificationResult(MultiCategoryClassifyResultCollection documentsResults) {
+    private static void processMultiCategoryClassificationResult(LabelClassificationResultCollection documentsResults) {
         System.out.printf("Project name: %s, deployment name: %s.%n",
             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-        for (MultiCategoryClassifyResult documentResult : documentsResults) {
+        for (LabelClassificationResult documentResult : documentsResults) {
             System.out.println("Document ID: " + documentResult.getId());
             if (!documentResult.isError()) {
                 for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {

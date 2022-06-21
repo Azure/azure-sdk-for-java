@@ -3,45 +3,44 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeMultiCategoryClassifyOperationDetailPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeLabelClassificationOperationDetailPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeMultiCategoryClassifyOperationDetail} model.
+ * The {@link AnalyzeLabelClassificationOperationDetail} model.
  */
 @Immutable
-public final class AnalyzeMultiCategoryClassifyOperationDetail {
+public final class AnalyzeLabelClassificationOperationDetail {
     private String operationId;
     private OffsetDateTime createdAt;
     private OffsetDateTime expiresAt;
     private OffsetDateTime lastModifiedAt;
 
     static {
-        AnalyzeMultiCategoryClassifyOperationDetailPropertiesHelper.setAccessor(
-            new AnalyzeMultiCategoryClassifyOperationDetailPropertiesHelper
-                    .AnalyzeMultiCategoryClassifyOperationDetailAccessor() {
+        AnalyzeLabelClassificationOperationDetailPropertiesHelper.setAccessor(
+            new AnalyzeLabelClassificationOperationDetailPropertiesHelper.AnalyzeLabelClassificationOperationDetailAccessor() {
                 @Override
-                public void setOperationId(AnalyzeMultiCategoryClassifyOperationDetail operationResult,
+                public void setOperationId(AnalyzeLabelClassificationOperationDetail operationResult,
                     String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
                 @Override
-                public void setExpiresAt(AnalyzeMultiCategoryClassifyOperationDetail operationDetail,
+                public void setExpiresAt(AnalyzeLabelClassificationOperationDetail operationDetail,
                     OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AnalyzeMultiCategoryClassifyOperationDetail operationDetail,
+                public void setCreatedAt(AnalyzeLabelClassificationOperationDetail operationDetail,
                     OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
-                public void setLastModifiedAt(AnalyzeMultiCategoryClassifyOperationDetail operationDetail,
+                public void setLastModifiedAt(AnalyzeLabelClassificationOperationDetail operationDetail,
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
@@ -50,9 +49,9 @@ public final class AnalyzeMultiCategoryClassifyOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeMultiCategoryClassifyOperationDetail}.
+     * Gets the operationId property of the {@link AnalyzeLabelClassificationOperationDetail}.
      *
-     * @return The operationId property of the {@link AnalyzeMultiCategoryClassifyOperationDetail}.
+     * @return The operationId property of the {@link AnalyzeLabelClassificationOperationDetail}.
      */
     public String getOperationId() {
         return operationId;

@@ -2484,7 +2484,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void singleCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void singleLabelClassificationAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
@@ -2496,9 +2496,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getSingleCategoryClassifyResults().forEach(
+                actionsResult -> actionsResult.getSingleLabelClassificationResults().forEach(
                     customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomSingleCategory(documentResult))));
+                        documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 
@@ -2516,9 +2516,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
+                actionsResult -> actionsResult.getMultiLabelClassificationResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomMultiCategory(documentResult))));
+                        documentResult -> validateLabelClassificationResult(documentResult))));
         });
     }
 }

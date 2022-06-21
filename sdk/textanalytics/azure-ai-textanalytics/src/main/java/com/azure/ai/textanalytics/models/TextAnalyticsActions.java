@@ -20,8 +20,8 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
-    private Iterable<SingleCategoryClassifyAction> singleCategoryClassifyActions;
-    private Iterable<MultiCategoryClassifyAction> multiCategoryClassifyActions;
+    private Iterable<SingleLabelClassificationAction> singleLabelClassificationActions;
+    private Iterable<MultiLabelClassificationAction> multiLabelClassificationActions;
 
     /**
      * Gets the custom name for the actions.
@@ -208,62 +208,62 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link SingleCategoryClassifyAction} to be executed.
+     * Gets the list of {@link SingleLabelClassificationAction} to be executed.
      *
      * See the service documentation for regional support of custom single classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @return the list of {@link SingleCategoryClassifyAction} to be executed.
+     * @return the list of {@link SingleLabelClassificationAction} to be executed.
      */
-    public Iterable<SingleCategoryClassifyAction> getSingleCategoryClassifyActions() {
-        return singleCategoryClassifyActions;
+    public Iterable<SingleLabelClassificationAction> getSingleLabelClassificationActions() {
+        return singleLabelClassificationActions;
     }
 
     /**
-     * Sets the list of {@link SingleCategoryClassifyAction} to be executed.
+     * Sets the list of {@link SingleLabelClassificationAction} to be executed.
      *
      * See the service documentation for regional support of custom single classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @param singleCategoryClassifyActions The list of
-     * {@link SingleCategoryClassifyAction} to be executed.
+     * @param singleLabelClassificationActions The list of
+     * {@link SingleLabelClassificationAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setSingleCategoryClassifyActions(
-        SingleCategoryClassifyAction... singleCategoryClassifyActions) {
-        this.singleCategoryClassifyActions = singleCategoryClassifyActions == null
-                                                 ? null : Arrays.asList(singleCategoryClassifyActions);
+    public TextAnalyticsActions setSingleLabelClassificationActions(
+        SingleLabelClassificationAction... singleLabelClassificationActions) {
+        this.singleLabelClassificationActions = singleLabelClassificationActions == null
+                                                 ? null : Arrays.asList(singleLabelClassificationActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link MultiCategoryClassifyAction} to be executed.
+     * Gets the list of {@link MultiLabelClassificationAction} to be executed.
      *
      * See the service documentation for regional support of custom multi classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @return the list of {@link MultiCategoryClassifyAction} to be executed.
+     * @return the list of {@link MultiLabelClassificationAction} to be executed.
      */
-    public Iterable<MultiCategoryClassifyAction> getMultiCategoryClassifyActions() {
-        return multiCategoryClassifyActions;
+    public Iterable<MultiLabelClassificationAction> getMultiLabelClassificationActions() {
+        return multiLabelClassificationActions;
     }
 
     /**
-     * Sets the list of {@link MultiCategoryClassifyAction} to be executed.
+     * Sets the list of {@link MultiLabelClassificationAction} to be executed.
      *
      * See the service documentation for regional support of custom multi classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @param multiCategoryClassifyActions The list of {@link MultiCategoryClassifyAction} to
+     * @param multiLabelClassificationActions The list of {@link MultiLabelClassificationAction} to
      * be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setMultiCategoryClassifyActions(
-        MultiCategoryClassifyAction... multiCategoryClassifyActions) {
-        this.multiCategoryClassifyActions = multiCategoryClassifyActions == null
-                                                ? null : Arrays.asList(multiCategoryClassifyActions);
+    public TextAnalyticsActions setMultiLabelClassificationActions(
+        MultiLabelClassificationAction... multiLabelClassificationActions) {
+        this.multiLabelClassificationActions = multiLabelClassificationActions == null
+                                                ? null : Arrays.asList(multiLabelClassificationActions);
         return this;
     }
 }

@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyActionResult;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.LabelClassificationResult;
+import com.azure.ai.textanalytics.models.MultiLabelClassificationAction;
+import com.azure.ai.textanalytics.models.MultiLabelClassificationActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassificationResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class ClassifyDocumentMultiCategoryAsync {
         // See the service documentation for regional support and how to train a model to classify your documents,
         // see https://aka.ms/azsdk/textanalytics/customfunctionalities
         client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setMultiCategoryClassifyActions(
-                new MultiCategoryClassifyAction("{project_name}", "{deployment_name}")),
+            new TextAnalyticsActions().setMultiLabelClassificationActions(
+                new MultiLabelClassificationAction("{project_name}", "{deployment_name}")),
             "en",
             null)
             .flatMap(result -> {
@@ -73,12 +73,12 @@ public class ClassifyDocumentMultiCategoryAsync {
     }
 
     private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
-        for (MultiCategoryClassifyActionResult actionResult : actionsResult.getMultiCategoryClassifyResults()) {
+        for (MultiLabelClassificationActionResult actionResult : actionsResult.getMultiLabelClassificationResults()) {
             if (!actionResult.isError()) {
-                final MultiCategoryClassifyResultCollection documentsResults = actionResult.getDocumentsResults();
+                final LabelClassificationResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (MultiCategoryClassifyResult documentResult : documentsResults) {
+                for (LabelClassificationResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
                         for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {

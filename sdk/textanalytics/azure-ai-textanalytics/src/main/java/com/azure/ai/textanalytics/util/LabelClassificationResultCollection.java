@@ -3,39 +3,39 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.MultiCategoryClassifyResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
+import com.azure.ai.textanalytics.implementation.LabelClassificationResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.LabelClassificationResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link MultiCategoryClassifyResult} along with project name,
+ * A collection model that contains a list of {@link LabelClassificationResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class MultiCategoryClassifyResultCollection extends IterableStream<MultiCategoryClassifyResult> {
+public final class LabelClassificationResultCollection extends IterableStream<LabelClassificationResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        MultiCategoryClassifyResultCollectionPropertiesHelper.setAccessor(
-            new MultiCategoryClassifyResultCollectionPropertiesHelper.MultiCategoryClassifyResultCollectionAccessor() {
+        LabelClassificationResultCollectionPropertiesHelper.setAccessor(
+            new LabelClassificationResultCollectionPropertiesHelper.LabelClassificationResultCollectionAccessor() {
                 @Override
-                public void setProjectName(MultiCategoryClassifyResultCollection resultCollection,
+                public void setProjectName(LabelClassificationResultCollection resultCollection,
                     String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
                 @Override
-                public void setDeploymentName(MultiCategoryClassifyResultCollection resultCollection,
+                public void setDeploymentName(LabelClassificationResultCollection resultCollection,
                     String deploymentName) {
                     resultCollection.setDeploymentName(deploymentName);
                 }
 
                 @Override
-                public void setStatistics(MultiCategoryClassifyResultCollection resultCollection,
+                public void setStatistics(LabelClassificationResultCollection resultCollection,
                     TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
@@ -43,13 +43,12 @@ public final class MultiCategoryClassifyResultCollection extends IterableStream<
     }
 
     /**
-     * Create a {@link MultiCategoryClassifyResultCollection} model that maintains a list of
-     * {@link MultiCategoryClassifyResult} along with model version and batch's statistics.
+     * Create a {@link LabelClassificationResultCollection} model that maintains a list of
+     * {@link LabelClassificationResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link MultiCategoryClassifyResult}.
+     * @param documentResults A list of {@link LabelClassificationResult}.
      */
-    public MultiCategoryClassifyResultCollection(
-        Iterable<MultiCategoryClassifyResult> documentResults) {
+    public LabelClassificationResultCollection(Iterable<LabelClassificationResult> documentResults) {
         super(documentResults);
     }
 
