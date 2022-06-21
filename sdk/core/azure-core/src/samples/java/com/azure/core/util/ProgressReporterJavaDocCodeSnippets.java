@@ -37,12 +37,12 @@ public class ProgressReporterJavaDocCodeSnippets {
     public static void main(String[] args) {
         // Execute simpleOperation
         ProgressReporter simpleOperationProgressReporter = ProgressReporter
-            .withProgressReceiver(progress -> System.out.println("Simple operation progress " + progress));
+            .withProgressListener(progress -> System.out.println("Simple operation progress " + progress));
         simpleOperation(simpleOperationProgressReporter);
 
         // Execute complexOperation
         ProgressReporter complexOperationProgressReporter = ProgressReporter
-            .withProgressReceiver(progress -> System.out.println("Complex operation progress " + progress));
+            .withProgressListener(progress -> System.out.println("Complex operation progress " + progress));
         complexOperation(complexOperationProgressReporter);
     }
     // END: com.azure.core.util.ProgressReportingE2ESample

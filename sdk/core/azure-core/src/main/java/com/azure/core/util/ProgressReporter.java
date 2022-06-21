@@ -93,7 +93,7 @@ public final class ProgressReporter {
      * @return The {@link ProgressReporter} instance.
      * @throws NullPointerException If {@code progressReceiver} is null.
      */
-    public static ProgressReporter withProgressReceiver(ProgressListener progressListener) {
+    public static ProgressReporter withProgressListener(ProgressListener progressListener) {
         return new ProgressReporter(progressListener);
     }
 

@@ -19,19 +19,19 @@ public class ProgressReporterTest {
 
     @Test
     public void listenerMustNotBeNull() {
-        assertThrows(NullPointerException.class, () -> ProgressReporter.withProgressReceiver(null));
+        assertThrows(NullPointerException.class, () -> ProgressReporter.withProgressListener(null));
     }
 
     @Test
     public void whenNothingHappens() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
         assertEquals(Collections.emptyList(), listener.getProgresses());
     }
 
     @Test
     public void canReportProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
         progressReporter.reportProgress(1);
         progressReporter.reportProgress(3);
@@ -42,7 +42,7 @@ public class ProgressReporterTest {
 
     @Test
     public void canResetProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
         progressReporter.reportProgress(5);
         progressReporter.reset();
@@ -52,7 +52,7 @@ public class ProgressReporterTest {
 
     @Test
     public void canResetProgressInTheMiddle() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
         progressReporter.reportProgress(5);
         progressReporter.reset();
@@ -63,7 +63,7 @@ public class ProgressReporterTest {
 
     @Test
     public void childrenCanReportProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
         ProgressReporter child1 = progressReporter.createChild();
         ProgressReporter child2 = progressReporter.createChild();
 
@@ -78,7 +78,7 @@ public class ProgressReporterTest {
 
     @Test
     public void childrenCanResetProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
         ProgressReporter child1 = progressReporter.createChild();
         ProgressReporter child2 = progressReporter.createChild();
 
