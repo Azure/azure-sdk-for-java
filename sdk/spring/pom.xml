@@ -8,6 +8,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
+  <dependencies></dependencies>
   <profiles>
     <profile>
       <id>default</id>
