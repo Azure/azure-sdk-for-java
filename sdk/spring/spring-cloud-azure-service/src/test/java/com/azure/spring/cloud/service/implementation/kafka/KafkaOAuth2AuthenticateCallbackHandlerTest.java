@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class KafkaOAuth2AuthenticateCallbackHandlerTest {
+class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     private static final List<String> KAFKA_BOOTSTRAP_SERVER = Arrays.asList("namespace.servicebus.windows.net:9093");
     private static final String TOKEN_CREDENTIAL_FIELD_NAME = "credential";

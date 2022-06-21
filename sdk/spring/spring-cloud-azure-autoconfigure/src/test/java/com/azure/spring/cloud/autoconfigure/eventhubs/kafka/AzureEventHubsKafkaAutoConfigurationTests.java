@@ -182,7 +182,7 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     }
 
     @Test
-    void shouldNotOverrideKafkaPropertiesWithConnectionStringAutoConfiguration() {
+    void shouldNotOverrideConnectionStringPropertiesWithOAuth2AutoConfiguration() {
         new ApplicationContextRunner()
                 .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class, AzureEventHubsKafkaAutoConfiguration.class,
                         AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,

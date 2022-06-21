@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryC
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -59,11 +60,31 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     }
 
     @Test
-    protected abstract void testBindSpringBootKafkaProperties();
+    void testBindSpringBootKafkaProperties() {
+        configureCustomConfiguration()
+                .withPropertyValues(
+                        SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
+                        SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
+                        "spring.cloud.azure.credential.client-id=azure-client-id"
+                )
+                .run(context -> assertBootPropertiesConfigureCorrectly(context));
+    }
 
     @Test
-    protected abstract void testBindAzureGlobalProperties();
+    void testBindAzureGlobalProperties() {
+        configureCustomConfiguration()
+                .withPropertyValues(
+                        "spring.cloud.azure.credential.client-id=azure-client-id"
+                )
+                .run(context -> assertGlobalPropertiesConfigureCorrectly(context));
+    }
 
+    protected ApplicationContextRunner configureCustomConfiguration() {
+        return this.contextRunner;
+    }
+
+    protected abstract void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context);
+    protected abstract void assertGlobalPropertiesConfigureCorrectly(AssertableApplicationContext context);
 
     protected void shouldConfigureOAuthProperties(Map<String, Object> configurationProperties) {
         assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, configurationProperties.get(SECURITY_PROTOCOL_CONFIG));

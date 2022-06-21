@@ -12,8 +12,7 @@ import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
-import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
+import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -30,64 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
-
-    @Override
-    protected void testBindSpringBootKafkaProperties() {
-        this.contextRunner
-            .withPropertyValues(
-                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
-                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
-                "spring.cloud.azure.credential.client-id=azure-client-id"
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-                assertThat(context).hasSingleBean(KafkaProperties.class);
-
-                AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
-                assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
-                KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                assertEquals("kafka-client-id", kafkaProperties.getProperties().get(CLIENT_ID));
-                assertEquals("kafka-client-id", kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
-                assertEquals("kafka-producer-client-id", kafkaProperties.buildProducerProperties().get(CLIENT_ID));
-
-                AzureKafkaProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
-                    kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
-                assertEquals("kafka-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
-                AzureKafkaProperties azureBuiltKafkaProducerProp = buildAzureProperties(
-                    kafkaProperties.buildProducerProperties(), azureGlobalProperties);
-                assertEquals("kafka-producer-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
-            });
-    }
-
-    @Override
-    protected void testBindAzureGlobalProperties() {
-        this.contextRunner
-            .withUserConfiguration(KafkaBinderConfiguration.class)
-            .withPropertyValues(
-                "spring.cloud.azure.credential.client-id=azure-client-id"
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-                assertThat(context).hasSingleBean(KafkaProperties.class);
-                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-
-                AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
-                assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
-                KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                assertNull(kafkaProperties.getProperties().get(CLIENT_ID));
-                assertNull(kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
-                assertNull(kafkaProperties.buildProducerProperties().get(CLIENT_ID));
-
-                AzureKafkaProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
-                    kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
-                assertEquals("azure-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
-                AzureKafkaProperties azureBuiltKafkaProducerProp = buildAzureProperties(
-                    kafkaProperties.buildProducerProperties(), azureGlobalProperties);
-                assertEquals("azure-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
-            });
-    }
 
     @Test
     void testFactoryConfigureOAuthAndTokenCredential() {
@@ -118,4 +59,46 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
             });
     }
 
+
+    @Override
+    protected void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context) {
+        assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
+        assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+        assertThat(context).hasSingleBean(KafkaProperties.class);
+
+        AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
+        assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
+        KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+        assertEquals("kafka-client-id", kafkaProperties.getProperties().get(CLIENT_ID));
+        assertEquals("kafka-client-id", kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
+        assertEquals("kafka-producer-client-id", kafkaProperties.buildProducerProperties().get(CLIENT_ID));
+
+        AzureKafkaProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+                kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
+        assertEquals("kafka-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
+        AzureKafkaProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+                kafkaProperties.buildProducerProperties(), azureGlobalProperties);
+        assertEquals("kafka-producer-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
+    }
+
+    @Override
+    protected void assertGlobalPropertiesConfigureCorrectly(AssertableApplicationContext context) {
+        assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
+        assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+        assertThat(context).hasSingleBean(KafkaProperties.class);
+
+        AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
+        assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
+        KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+        assertNull(kafkaProperties.getProperties().get(CLIENT_ID));
+        assertNull(kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
+        assertNull(kafkaProperties.buildProducerProperties().get(CLIENT_ID));
+
+        AzureKafkaProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+                kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
+        assertEquals("azure-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
+        AzureKafkaProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+                kafkaProperties.buildProducerProperties(), azureGlobalProperties);
+        assertEquals("azure-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
+    }
 }
