@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.messaging.eventhubs.checkpointstore.redis;
+package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -12,6 +12,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
@@ -51,16 +52,23 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         try (Jedis jedis = jedisPool.getResource()) {
             Set<String> members = jedis.smembers(prefix);
-            jedisPool.returnResource(jedis);
-            return Flux.fromStream(members.stream().map(json ->
-            {
+            ArrayList<Checkpoint> list = new ArrayList<>();
+            for (String member : members) {
+                //get the associated JSON representation for each for the members
+                String checkpointJSON = jedis.hmget(member, "checkpoint").get(0);
+                //convert JSON representation into Checkpoint
                 try {
-                    return jacksonAdapter.deserialize(json, Checkpoint.class, SerializerEncoding.JSON); }
+                    Checkpoint checkpoint = jacksonAdapter.deserialize(checkpointJSON, Checkpoint.class, SerializerEncoding.JSON);
+                    list.add(checkpoint);
+                }
                 catch (IOException e) {
                     throw LOGGER.logExceptionAsError(Exceptions
                         .propagate(e)); }
-            }));
+            }
+            jedisPool.returnResource(jedis);
+            return Flux.fromStream(list.stream());
         }
+
     }
     /**
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
@@ -70,7 +78,25 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      */
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
-        return null;
+        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        try (Jedis jedis = jedisPool.getResource()) {
+            Set<String> members = jedis.smembers(prefix);
+            ArrayList<PartitionOwnership> list = new ArrayList<>();
+            for (String member : members) {
+                //get the associated JSON representation for each for the members
+                String partitionOwnershipJSON = jedis.hmget(member, "partitionOwnership").get(0);
+                //convert JSON representation into PartitionOwnership
+                try {
+                    PartitionOwnership partitionOwnership = jacksonAdapter.deserialize(partitionOwnershipJSON, PartitionOwnership.class, SerializerEncoding.JSON);
+                    list.add(partitionOwnership);
+                }
+                catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(Exceptions
+                        .propagate(e)); }
+            }
+            jedisPool.returnResource(jedis);
+            return Flux.fromStream(list.stream());
+        }
     }
 
     /**
@@ -87,20 +113,26 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
+        String key = keyBuilder(prefix, checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
             Transaction transaction = jedis.multi();
-            transaction.sadd(prefix, jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
+            //Case 1: Checkpoint & it's prefix is not in the Redis Cache
+            //Add the key to redis as a (prefix, key)
+            //Case 2: Checkpoint is not in Redis Cache, but prefix is
+            //Add the key as a member to the prefix group
 
+            //Case 3: Checkpoint already exists, but had not been modified by another client
+            //Case 4: Checkpoint already exists, has been modified by another client
             jedisPool.returnResource(jedis);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(Exceptions
-                .propagate(e));
         }
         return null;
     }
 
     private String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
+    }
+    private String keyBuilder(String prefix, String partitionId) {
+        return prefix + "/" + partitionId;
     }
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));

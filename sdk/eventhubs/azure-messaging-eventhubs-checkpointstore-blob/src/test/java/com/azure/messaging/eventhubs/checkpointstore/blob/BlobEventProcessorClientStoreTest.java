@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,11 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -59,6 +57,32 @@ public class BlobEventProcessorClientStoreTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
+    }
+
+    // List Ownership
+    // 1. No ownership records exist
+    // 2. Ownership records exist
+    // 3. Authentication error (API for getBlobs) -> Sees HttpResponseException
+
+    @Test
+    public void authError() {
+        //Arrange
+        BlobContainerAsyncClient client = Mockito.mock(BlobContainerAsyncClient.class);
+        when(client.listBlobs(argThat(arg -> {
+            return arg.getPrefix().equals("");
+        }))).thenReturn(Flux.error(new HttpResponseException()));
+
+        BlobCheckpointStore store = new BlobCheckpointStore(client);
+        String fqdn = "";
+        String consumerGRoup = "";
+        String eventHub = "";
+
+        // Act & Assert
+        StepVerifier.create(store.listCheckpoints(fqdn, eventHub, consumerGRoup))
+            .consumeErrorWith((error) -> {
+
+            })
+            .verify();
     }
 
     @Test
