@@ -38,6 +38,8 @@ import java.util.function.Function;
  * A {@link Converter} that customizes the OAuth 2.0 Access Token Request parameters by adding a signed JSON Web Token
  * (JWS) to be used for client authentication at the Azure AD Authorization Server's Token Endpoint.
  *
+ * A specially customized version for Azure AD based on 'NimbusJwtClientAuthenticationParametersConverter' implementation.
+ *
  * @param <T> the type of {@link AbstractOAuth2AuthorizationGrantRequest}
  * @since 4.3.0
  */

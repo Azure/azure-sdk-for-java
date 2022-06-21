@@ -41,8 +41,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * constructor.
  *
  * <p>
- * <b>NOTE:</b> It is compatible with spring-security 5.5.X and 5.6.X versions, it can be replaced
- * by NimbusJwsEncoder when the minimum supported version is 5.6.X.
+ * <b>NOTE:</b> A specially customized version for Azure AD based on 'NimbusJwsEncoder' or 'JwtEncoder' implementation.
+ * It is compatible with spring-security 5.5.X and 5.6.X versions, it can be replaced by 'NimbusJwsEncoder' when the minimum supported version is 5.6.X.
  *
  * @since 4.3.0
  */
