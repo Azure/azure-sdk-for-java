@@ -2,10 +2,10 @@
 page_type: sample
 languages:
 - java
-  products:
+products:
 - azure
 - azure-monitor
-  urlFragment: query-azuremonitor-java-samples
+urlFragment: query-azuremonitor-java-samples
 ---
 
 # Azure Monitor Logs and Metrics query client library samples for Java
