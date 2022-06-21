@@ -57,31 +57,6 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Example
 ```java readme-sample-createClient
-ConfidentialLedgerIdentityServiceBaseClient identityServiceClient = new ConfidentialLedgerClientBuilder()
-    .ledgerUri(new URL("<confidential-ledger-url>"))
-    .identityServiceUri(new URL("<confidential-ledger-identity-service-url>"))
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildConfidentialLedgerIdentityServiceBaseClient();
-
-String ledgerId = "<confidential-ledger-url>"
-    .replaceAll("\\w+://", "")
-    .replaceAll("\\..*", "");
-Response<BinaryData> response = identityServiceClient.getLedgerIdentity(ledgerId).send();
-JsonReader jsonReader = Json.createReader(new StringReader(response.getBody().toString()));
-JsonObject result = jsonReader.readObject();
-String tlsCert = result.getString("ledgerTlsCertificate");
-reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
-    .secure(sslContextSpec -> sslContextSpec.sslContext(SslContextBuilder.forClient()
-        .trustManager(new ByteArrayInputStream(tlsCert.getBytes(StandardCharsets.UTF_8)))));
-HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
-
-System.out.println("Creating Confidential Ledger client with the certificate...");
-
-ConfidentialLedgerBaseClient confidentialLedgerClient = new ConfidentialLedgerClientBuilder()
-    .ledgerUri(new URL("<confidential-ledger-url"))
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .httpClient(httpClient)
-    .buildConfidentialLedgerBaseClient();
 ```
 
 ## Key concepts
