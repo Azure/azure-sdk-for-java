@@ -59,15 +59,15 @@ public class SerializationDiagnosticsContext {
 
         @Override
         public void serialize(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-            Duration durationinMS = serializationDiagnostics.startTimeUTC == null ?
+            Duration duration = serializationDiagnostics.startTimeUTC == null ?
                 null : serializationDiagnostics.endTimeUTC == null ?
                 Duration.ZERO : Duration.between(serializationDiagnostics.startTimeUTC, serializationDiagnostics.endTimeUTC);
             jsonGenerator.writeStartObject();
             jsonGenerator.writeObjectField("serializationType", serializationDiagnostics.serializationType);
             jsonGenerator.writeStringField("startTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.startTimeUTC));
             jsonGenerator.writeStringField("endTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.endTimeUTC));
-            if (durationinMS != null) {
-                jsonGenerator.writeNumberField("durationInMicroSec", durationinMS.toNanos() / 1000);
+            if (duration != null) {
+                jsonGenerator.writeNumberField("durationInMilliSecs", (double)(duration.toNanos() / (1000L * 1000L)));
             }
 
             jsonGenerator.writeEndObject();

@@ -50,8 +50,8 @@ public class RntbdPollChannelEvent extends RntbdChannelAcquisitionEvent {
 
             if (event.getCompleteTime() != null) {
                 writer.writeNumberField(
-                    "durationInMicroSec",
-                    Duration.between(event.getCompleteTime(), event.getCompleteTime()).toNanos()/1000L);
+                    "durationInMilliSecs",
+                    (double) (Duration.between(event.getCompleteTime(), event.getCompleteTime()).toNanos() / (1000L * 1000L)));
             }
 
             if (event.details != null && event.details.size() > 0) {
