@@ -50,6 +50,7 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public abstract class DocumentAnalysisClientTestBase extends TestBase {
@@ -793,8 +794,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Map<String, DocumentField> stateTaxInfoFields1 = stateTaxInfoFieldsList.get(0).getValueMap();
         Map<String, DocumentField> stateTaxInfoFields2 = stateTaxInfoFieldsList.get(1).getValueMap();
 
-        assertEquals("87654321", stateTaxInfoFields1.get("EmployerStateIdNumber")
-            .getValueString());
+        Assertions.assertNotNull(stateTaxInfoFields1.get("EmployerStateIdNumber").getValueString());
         assertEquals("PA", stateTaxInfoFields1.get("State")
             .getValueString());
         assertEquals(1135.65f, stateTaxInfoFields1.get("StateIncomeTax").getValueFloat());
