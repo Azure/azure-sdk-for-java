@@ -257,7 +257,6 @@
         },
         {
           "code": "java.annotation.added",
-          "annotationType": "@org.springframework.context.annotation.Conditional",
           "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
           "justification": "To support JWT Client Authentication."
         },

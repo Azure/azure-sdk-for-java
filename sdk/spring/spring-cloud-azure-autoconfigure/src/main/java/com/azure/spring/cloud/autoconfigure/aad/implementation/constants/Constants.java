@@ -39,9 +39,8 @@ public final class Constants {
     public static final Set<SimpleGrantedAuthority> DEFAULT_AUTHORITY_SET;
 
     /**
-     * @deprecated use {@link AuthorizationGrantType#JWT_BEARER} instead.
+     * The same with {@link AuthorizationGrantType#JWT_BEARER}.
      */
-    @Deprecated
     public static final AuthorizationGrantType ON_BEHALF_OF = new AuthorizationGrantType("on_behalf_of");
     public static final AuthorizationGrantType AZURE_DELEGATED = new AuthorizationGrantType("azure_delegated");
 
