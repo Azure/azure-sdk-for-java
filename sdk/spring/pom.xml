@@ -37,11 +37,11 @@
 <!--      <artifactId>spring-messaging-azure</artifactId>-->
 <!--      <version>4.3.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure.spring:spring-messaging-azure;current} &ndash;&gt;-->
 <!--    </dependency>-->
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-messaging-azure-eventhubs</artifactId>
-      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.azure.spring</groupId>-->
+<!--      <artifactId>spring-messaging-azure-eventhubs</artifactId>-->
+<!--      <version>4.3.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} &ndash;&gt;-->
+<!--    </dependency>-->
 <!--    <dependency>-->
 <!--      <groupId>com.azure.spring</groupId>-->
 <!--      <artifactId>spring-messaging-azure-servicebus</artifactId>-->
