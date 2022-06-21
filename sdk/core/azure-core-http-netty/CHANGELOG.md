@@ -4,9 +4,15 @@
 
 ### Features Added
 
-- Added ability to track progress by passing `ProgressReporter` in the `Context`. 
-  I.e., `Contexts.with(context).setProgressReporter(progressReporter)`
-  before calling `HttpClient.send(HttpRequest, Context)` API.
+- Added ability to track progress by passing `ProgressReporter` in the `Context`. For example:
+  ```java
+  HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+  ProgressReporter progressReporter = ProgressReporter.withProgressListener(progress -> System.out.println(progress));
+  Context context = Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext();
+  HttpRequest request = new HttpRequest(
+      HttpMethod.PUT, new URL("http://example.com"), new HttpHeaders(), BinaryData.fromString("sample body"))
+  httpClient.send(request, context).subscribe();
+  ```
 
 ### Breaking Changes
 
