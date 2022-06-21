@@ -8,30 +8,29 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <profiles>
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>spring-messaging-azure</module>
-        <module>spring-messaging-azure-eventhubs</module>
-        <module>spring-messaging-azure-servicebus</module>
-        <module>spring-messaging-azure-storage-queue</module>
-        <module>spring-integration-azure-core</module>
-        <module>spring-integration-azure-eventhubs</module>
-        <module>spring-integration-azure-servicebus</module>
-        <module>spring-integration-azure-storage-queue</module>
-        <module>spring-cloud-azure-core</module>
-        <module>spring-cloud-azure-service</module>
-        <module>spring-cloud-azure-resourcemanager</module>
-        <module>spring-cloud-azure-actuator</module>
-        <module>spring-cloud-azure-actuator-autoconfigure</module>
-        <module>spring-cloud-azure-autoconfigure</module>
-        <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
-        <module>spring-cloud-azure-stream-binder-eventhubs</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-core</module>
-        <module>spring-cloud-azure-stream-binder-servicebus</module>
-        <module>spring-cloud-azure-trace-sleuth</module>
-      </modules>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
       <dependencies>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -120,28 +119,7 @@
         </dependency>
       </dependencies>
 
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
+  <profiles>
     <profile>
       <id>default</id>
       <activation>
@@ -243,4 +221,5 @@
       </modules>
     </profile>
   </profiles>
+
 </project>
