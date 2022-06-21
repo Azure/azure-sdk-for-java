@@ -54,9 +54,9 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
 
     private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
         if (needConfigureSaslOAuth(mergedConfiguration)) {
-            AzureKafkaProperties azureKafkaConsumerProperties =
+            AzureKafkaProperties azureKafkaProperties =
                 buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-            convertAzurePropertiesToConfigMap(azureKafkaConsumerProperties, sourceProperties);
+            convertAzurePropertiesToConfigMap(azureKafkaProperties, sourceProperties);
             configureOAuthProperties(sourceProperties);
         }
     }

@@ -32,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
     @Override
-    @Test
     protected void testBindSpringBootKafkaProperties() {
         this.contextRunner
             .withPropertyValues(
@@ -62,7 +61,6 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
     }
 
     @Override
-    @Test
     protected void testBindAzureGlobalProperties() {
         this.contextRunner
             .withUserConfiguration(KafkaBinderConfiguration.class)

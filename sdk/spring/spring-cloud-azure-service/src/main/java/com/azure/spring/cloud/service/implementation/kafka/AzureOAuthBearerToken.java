@@ -2,71 +2,63 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
-import com.azure.core.credential.AccessToken;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.JWTParser;
-import org.apache.kafka.common.errors.SaslAuthenticationException;
-import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
-
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.azure.core.credential.AccessToken;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
+import org.apache.kafka.common.errors.SaslAuthenticationException;
+import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
+
 /**
  * Implementation of {@link OAuthBearerToken} for Azure Event Hubs.
  */
 public class AzureOAuthBearerToken implements OAuthBearerToken {
-    private final String token;
-    private final Long startTimeMs;
-    private final long lifetimeMs;
-    private final Set<String> scope;
-    private final String principalName;
     private final AccessToken accessToken;
+    private final JWTClaimsSet claims;
 
     public AzureOAuthBearerToken(AccessToken accessToken) {
-        this.token = accessToken.getToken();
         this.accessToken = accessToken;
-        JWTClaimsSet claims;
         try {
-            claims = JWTParser.parse(token).getJWTClaimsSet();
+            claims = JWTParser.parse(accessToken.getToken()).getJWTClaimsSet();
         } catch (ParseException exception) {
             throw new SaslAuthenticationException("Unable to parse the access token", exception);
         }
-        startTimeMs = claims.getIssueTime().getTime();
-        lifetimeMs = claims.getExpirationTime().getTime();
-        // Referring to https://docs.microsoft.com/azure/active-directory/develop/access-tokens#payload-claims, the scp
-        // claim is a String which is presented as a space separated list.
-        scope = Optional.ofNullable(claims.getClaim("scp"))
-                .map(s -> Arrays.stream(((String) s).split(" ")).collect(Collectors.toSet()))
-                .orElse(null);
-        principalName = (String) claims.getClaim("upn");
     }
 
     @Override
     public String value() {
-        return this.token;
+        return accessToken.getToken();
     }
 
     @Override
     public Long startTimeMs() {
-        return startTimeMs;
+        return claims.getIssueTime().getTime();
     }
 
     @Override
     public long lifetimeMs() {
-        return this.lifetimeMs;
+        return claims.getExpirationTime().getTime();
     }
 
     @Override
     public Set<String> scope() {
-        return scope;
+        // Referring to https://docs.microsoft.com/azure/active-directory/develop/access-tokens#payload-claims, the scp
+        // claim is a String which is presented as a space separated list.
+        return Optional.ofNullable(claims.getClaim("scp"))
+                .map(s -> Arrays.stream(((String) s)
+                .split(" "))
+                .collect(Collectors.toSet()))
+                .orElse(null);
     }
 
     @Override
     public String principalName() {
-        return principalName;
+        return (String) claims.getClaim("upn");
     }
 
     public boolean isExpired() {

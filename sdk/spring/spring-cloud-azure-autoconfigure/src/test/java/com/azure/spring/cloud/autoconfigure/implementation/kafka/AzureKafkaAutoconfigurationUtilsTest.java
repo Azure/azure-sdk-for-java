@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
@@ -21,21 +20,15 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureKafkaAutoconfigurationUtilsTest {
-    private final Map<String, Object> sourceConfigs = new HashMap<>();
-    private final Map<String, String> targetConfigs = new HashMap<>();
-
-    @BeforeEach
-    public void setup() {
-        sourceConfigs.clear();
-        targetConfigs.clear();
-    }
 
     @Test
     void testWhenSecurityProtocolNotConfigured() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        Map<String, String> targetConfigs = new HashMap<>();
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
         shouldConfigureOAuthTargetProperties();
@@ -43,12 +36,16 @@ class AzureKafkaAutoconfigurationUtilsTest {
 
     @Test
     void testWhenSecurityProtocolConfiguredOthers() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, DEFAULT_SECURITY_PROTOCOL);
         assertFalse(needConfigureSaslOAuth(sourceConfigs));
     }
 
     @Test
     void testWhenSaslMechanismNotConfigured() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
@@ -58,6 +55,8 @@ class AzureKafkaAutoconfigurationUtilsTest {
 
     @Test
     void testWhenSaslMechanismConfiguredOthers() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         sourceConfigs.put(SASL_MECHANISM, DEFAULT_SASL_MECHANISM);
         assertFalse(needConfigureSaslOAuth(sourceConfigs));
@@ -65,6 +64,8 @@ class AzureKafkaAutoconfigurationUtilsTest {
 
     @Test
     void testWhenSaslMechanismConfiguredOAUTH() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        Map<String, String> targetConfigs = new HashMap<>();
         sourceConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         sourceConfigs.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
@@ -77,6 +78,8 @@ class AzureKafkaAutoconfigurationUtilsTest {
     }
 
     private void shouldConfigureOAuthTargetProperties() {
+        Map<String, Object> sourceConfigs = new HashMap<>();
+        Map<String, String> targetConfigs = new HashMap<>();
         assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, targetConfigs.get(SECURITY_PROTOCOL_CONFIG));
         assertEquals(SASL_MECHANISM_OAUTH, targetConfigs.get(SASL_MECHANISM));
         assertEquals(SASL_JAAS_CONFIG_OAUTH, targetConfigs.get(SASL_JAAS_CONFIG));

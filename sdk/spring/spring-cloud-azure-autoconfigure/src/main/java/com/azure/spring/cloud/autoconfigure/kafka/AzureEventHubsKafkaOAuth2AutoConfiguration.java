@@ -89,8 +89,8 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
         }
     }
 
-    private TokenCredential resolveSpringCloudAzureTokenCredential(AzureKafkaProperties azureKafkaConsumerProperties) {
-        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureKafkaConsumerProperties);
+    private TokenCredential resolveSpringCloudAzureTokenCredential(AzureKafkaProperties azureKafkaProperties) {
+        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureKafkaProperties);
         return tokenCredential == null ? defaultTokenCredential : tokenCredential;
     }
 
@@ -101,7 +101,7 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
             ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
             if (apiVersionsRequestData != null) {
                 apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
-                        + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
+                        + "/" + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
                 apiVersionsRequestData.setClientSoftwareVersion(VERSION);
             }
         }

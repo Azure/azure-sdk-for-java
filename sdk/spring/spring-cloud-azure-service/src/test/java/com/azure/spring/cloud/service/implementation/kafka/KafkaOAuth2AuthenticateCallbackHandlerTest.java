@@ -12,7 +12,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -33,9 +32,6 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
     private static final String TOKEN_CREDENTIAL_FIELD_NAME = "credential";
     private static final String AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME = "properties";
     private static final String GET_TOKEN_CREDENTIAL_METHOD_NAME = "getTokenCredential";
-    private final Map<String, Object> configs = new HashMap<>();
-
-    private KafkaOAuth2AuthenticateCallbackHandler handler;
 
     private TokenCredential tokenCredential = new TokenCredential() {
         @Override
@@ -44,16 +40,13 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
         }
     };
 
-    @BeforeEach
-    public void setup() {
-        configs.clear();
-        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
-        handler = new KafkaOAuth2AuthenticateCallbackHandler();
-    }
-
     @Test
     void testTokenCredentialShouldConfig() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(AZURE_TOKEN_CREDENTIAL, tokenCredential);
+
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
         TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);
@@ -65,6 +58,9 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     @Test
     void testCreateDefaultTokenCredential() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
         TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);
@@ -76,7 +72,11 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     @Test
     void testCreateTokenCredentialByResolver() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(managedIdentityEnabled.propertyKey(), "true");
+
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
 
         AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
@@ -91,19 +91,29 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     @Test
     void testMultipleBootstrapServersShouldThrowException() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList(KAFKA_BOOTSTRAP_SERVER, "localhost:9092"));
+
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
+
         assertThrows(IllegalArgumentException.class, () -> handler.configure(configs, null, null));
     }
 
     @Test
     void testNoneBootstrapServersShouldThrowException() {
-        configs.clear();
+        Map<String, Object> configs = new HashMap<>();
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
+
         assertThrows(IllegalArgumentException.class, () -> handler.configure(configs, null, null));
     }
 
     @Test
     void testInvalidBootstrapServerValueShouldThrowException() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
         configs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("localhost:9092"));
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         assertThrows(IllegalArgumentException.class, () -> handler.configure(configs, null, null));
     }
 }

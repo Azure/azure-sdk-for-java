@@ -27,7 +27,7 @@ import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
+abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     protected static final String SPRING_BOOT_KAFKA_PROPERTIES_PREFIX = "spring.kafka.properties.";
     protected static final String SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX = "spring.kafka.producer.properties.";
     protected static final String SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.configuration.";

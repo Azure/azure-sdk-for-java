@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
+class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
     @Test
     void shouldNotConfigureBPPWithoutKafkaMessageChannelBinder() {
@@ -35,7 +35,6 @@ public class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafka
 
 
     @Override
-    @Test
     protected void testBindSpringBootKafkaProperties() {
         this.contextRunner
                 .withUserConfiguration(KafkaBinderConfiguration.class)
@@ -63,7 +62,6 @@ public class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafka
 
 
     @Override
-    @Test
     protected void testBindAzureGlobalProperties() {
         this.contextRunner
                 .withUserConfiguration(KafkaBinderConfiguration.class)
