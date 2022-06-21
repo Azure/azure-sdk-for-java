@@ -7,7 +7,53 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 /**
- * {@link ProgressReporter} offers a convenient way to add progress tracking to network operations.
+ * {@link ProgressReporter} offers a convenient way to add progress tracking to I/O operations.
+ * <p>
+ * The {@link ProgressReporter} can be used to track a single operation as well as the progress of
+ * complex operations that involve multiple sub-operations. In the latter case {@link ProgressReporter}
+ * forms a tree where child nodes track the progress of sub-operations and report to the parent which in turn
+ * aggregates the total progress. The reporting tree can have arbitrary level of nesting.
+ *
+ * <!-- src_embed com.azure.core.util.ProgressReporter -->
+ * <pre>
+ * &#47;**
+ *  * A simple operation that simulates I&#47;O activity.
+ *  * &#64;param progressReporter The &#123;&#64;link ProgressReporter&#125;.
+ *  *&#47;
+ * public static void simpleOperation&#40;ProgressReporter progressReporter&#41; &#123;
+ *     for &#40;long i = 0 ; i &lt; 100; i++&#41; &#123;
+ *         &#47;&#47; Simulate 100 I&#47;Os with 10 progress.
+ *         progressReporter.reportProgress&#40;10&#41;;
+ *     &#125;
+ * &#125;
+ *
+ * &#47;**
+ *  * A complex operation that simulates I&#47;O activity by invoking multiple &#123;&#64;link #simpleOperation&#40;ProgressReporter&#41;&#125;.
+ *  * &#64;param progressReporter The &#123;&#64;link ProgressReporter&#125;.
+ *  *&#47;
+ * public static void complexOperation&#40;ProgressReporter progressReporter&#41; &#123;
+ *     simpleOperation&#40;progressReporter.createChild&#40;&#41;&#41;;
+ *     simpleOperation&#40;progressReporter.createChild&#40;&#41;&#41;;
+ *     simpleOperation&#40;progressReporter.createChild&#40;&#41;&#41;;
+ * &#125;
+ *
+ * &#47;**
+ *  * The main method.
+ *  * &#64;param args Program arguments.
+ *  *&#47;
+ * public static void main&#40;String[] args&#41; &#123;
+ *     &#47;&#47; Execute simpleOperation
+ *     ProgressReporter simpleOperationProgressReporter = ProgressReporter
+ *         .withProgressReceiver&#40;progress -&gt; System.out.println&#40;&quot;Simple operation progress &quot; + progress&#41;&#41;;
+ *     simpleOperation&#40;simpleOperationProgressReporter&#41;;
+ *
+ *     &#47;&#47; Execute complexOperation
+ *     ProgressReporter complexOperationProgressReporter = ProgressReporter
+ *         .withProgressReceiver&#40;progress -&gt; System.out.println&#40;&quot;Complex operation progress &quot; + progress&#41;&#41;;
+ *     complexOperation&#40;complexOperationProgressReporter&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.core.util.ProgressReporter -->
  */
 public final class ProgressReporter {
 
@@ -60,7 +106,11 @@ public final class ProgressReporter {
     }
 
     /**
-     * Resets progress to zero.
+     * Resets progress to zero and notifies.
+     * <p>
+     * If this is a root {@link ProgressReporter} then attached {@link ProgressReceiver} is notified.
+     * Otherwise, already accumulated progress is subtracted from the parent {@link ProgressReporter}'s progress.
+     * </p>
      */
     public void reset() {
         long accumulated = PROGRESS_ATOMIC_UPDATER.getAndSet(this, 0L);
@@ -73,13 +123,20 @@ public final class ProgressReporter {
     }
 
     /**
-     * Accumulates provided number of transferred bytes.
-     * @param bytesTransferred The number of bytes to be accumulated.
+     * Accumulates the provided {@code progress} and notifies.
+     *
+     * <p>
+     * If this is a root {@link ProgressReporter}
+     * then attached {@link ProgressReceiver} is notified about accumulated progress.
+     * Otherwise, the provided {@code progress} is reported to the parent {@link ProgressReporter}.
+     * </p>
+     *
+     * @param progress The number to be accumulated.
      */
-    public void reportProgress(long bytesTransferred) {
-        long totalProgress = PROGRESS_ATOMIC_UPDATER.addAndGet(this, bytesTransferred);
+    public void reportProgress(long progress) {
+        long totalProgress = PROGRESS_ATOMIC_UPDATER.addAndGet(this, progress);
         if (parent != null) {
-            parent.reportProgress(bytesTransferred);
+            parent.reportProgress(progress);
         }
         if (progressReceiver != null) {
             progressReceiver.reportProgress(totalProgress);

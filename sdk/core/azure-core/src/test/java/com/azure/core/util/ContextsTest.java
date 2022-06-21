@@ -37,12 +37,12 @@ public class ContextsTest {
         ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(
             bytesTransferred -> { });
 
-        contexts.setProgressReporter(progressReporter);
+        contexts.setRequestProgressReporter(progressReporter);
 
-        assertSame(progressReporter, contexts.getProgressReporter());
+        assertSame(progressReporter, contexts.getRequestProgressReporter());
 
         Context newContext = contexts.getContext();
-        assertSame(progressReporter, Contexts.with(newContext).getProgressReporter());
+        assertSame(progressReporter, Contexts.with(newContext).getRequestProgressReporter());
     }
 
     @Test
@@ -50,10 +50,10 @@ public class ContextsTest {
         Contexts contexts = Contexts.empty();
         ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(
             bytesTransferred -> { });
-        Context newContext = contexts.setProgressReporter(progressReporter).getContext();
+        Context newContext = contexts.setRequestProgressReporter(progressReporter).getContext();
 
-        Context newNewContext = Contexts.with(newContext).setProgressReporter(null).getContext();
+        Context newNewContext = Contexts.with(newContext).setRequestProgressReporter(null).getContext();
 
-        assertNull(Contexts.with(newNewContext).getProgressReporter());
+        assertNull(Contexts.with(newNewContext).getRequestProgressReporter());
     }
 }

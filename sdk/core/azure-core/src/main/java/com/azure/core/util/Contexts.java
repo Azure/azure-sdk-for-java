@@ -10,8 +10,6 @@ import java.util.Objects;
  */
 public final class Contexts {
 
-    private static final String PROGRESS_REPORTER_CONTEXT_KEY = "com.azure.core.util.ProgressReporter";
-
     private Context context;
 
     private Contexts(Context context) {
@@ -41,8 +39,8 @@ public final class Contexts {
      * @param progressReporter The {@link ProgressReporter} instance.
      * @return Itself.
      */
-    public Contexts setProgressReporter(ProgressReporter progressReporter) {
-        context = context.addData(PROGRESS_REPORTER_CONTEXT_KEY, progressReporter);
+    public Contexts setRequestProgressReporter(ProgressReporter progressReporter) {
+        context = context.addData(Keys.REQUEST_PROGRESS_REPORTER, progressReporter);
         return this;
     }
 
@@ -50,8 +48,8 @@ public final class Contexts {
      * Retrieves {@link ProgressReporter} from the {@link Context}.
      * @return The {@link ProgressReporter}.
      */
-    public ProgressReporter getProgressReporter() {
-        return (ProgressReporter) context.getData(PROGRESS_REPORTER_CONTEXT_KEY).orElse(null);
+    public ProgressReporter getRequestProgressReporter() {
+        return (ProgressReporter) context.getData(Keys.REQUEST_PROGRESS_REPORTER).orElse(null);
     }
 
     /**
@@ -60,5 +58,12 @@ public final class Contexts {
      */
     public Context getContext() {
         return context;
+    }
+
+    public static final class Keys {
+        private Keys() {
+        }
+
+        public static final String REQUEST_PROGRESS_REPORTER = "com.azure.core.request.progress.reporter";
     }
 }
