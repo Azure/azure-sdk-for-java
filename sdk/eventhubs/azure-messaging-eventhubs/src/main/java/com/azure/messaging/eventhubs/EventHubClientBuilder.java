@@ -815,7 +815,7 @@ public class EventHubClientBuilder implements
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         String identifier;
-        if (clientOptions != null && clientOptions instanceof AmqpClientOptions) {
+        if (clientOptions instanceof AmqpClientOptions) {
             String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
             identifier = clientOptionIdentifier == null ? UUID.randomUUID().toString() : clientOptionIdentifier;
         } else {
