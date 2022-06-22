@@ -39,7 +39,7 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
                     AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
-                    KafkaAutoConfiguration.class));
+                    KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class));
 
 
     @Test

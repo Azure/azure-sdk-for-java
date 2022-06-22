@@ -19,10 +19,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.cloud.stream.binder.kafka.KafkaMessageChannelBinder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.util.ReflectionUtils;
 
@@ -42,7 +40,6 @@ import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProp
  * @since 4.3.0
  */
 @Configuration(proxyBeanMethods = false)
-@Import(AzureEventHubsKafkaOAuth2AutoConfiguration.AzureKafkaSpringCloudStreamConfiguration.class)
 @ConditionalOnClass(KafkaTemplate.class)
 public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
@@ -103,16 +100,6 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
                         + "/" + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
                 apiVersionsRequestData.setClientSoftwareVersion(VERSION);
             }
-        }
-    }
-
-    @ConditionalOnClass(KafkaMessageChannelBinder.class)
-    @Configuration(proxyBeanMethods = false)
-    static class AzureKafkaSpringCloudStreamConfiguration {
-        @Bean
-        KafkaBinderConfigurationPropertiesBeanPostProcessor kafkaBinderConfigurationPropertiesBeanPostProcessor(
-            AzureGlobalProperties azureGlobalProperties) {
-            return new KafkaBinderConfigurationPropertiesBeanPostProcessor(azureGlobalProperties);
         }
     }
 

@@ -30,13 +30,13 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 .withClassLoader(new FilteredClassLoader(KafkaMessageChannelBinder.class))
                 .run(context -> {
                     assertThat(context)
-                            .doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.AzureKafkaSpringCloudStreamConfiguration.class);
+                            .doesNotHaveBean(AzureKafkaSpringCloudStreamConfiguration.class);
                     assertThat(context).doesNotHaveBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                 });
     }
 
     @Test
-    void testNotBindSpringCloudStreamKafkaBinderProperties() {
+    void testNotBindKafkaBinderProperties() {
         this.contextRunner
                 .withUserConfiguration(KafkaBinderConfiguration.class)
                 .withPropertyValues(
@@ -44,7 +44,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                         SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id"
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureKafkaSpringCloudStreamConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
@@ -58,7 +58,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
 
     @Test
     @SuppressWarnings("unchecked")
-    void testBindSpringCloudStreamKafkaBinderProperties() {
+    void testBindKafkaBinderProperties() {
         this.contextRunner
                 .withUserConfiguration(KafkaBinderConfiguration.class)
                 .withPropertyValues(
@@ -69,7 +69,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                         "spring.cloud.azure.credential.client-id=azure-client-id"
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureKafkaSpringCloudStreamConfiguration.class);
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
                     assertThat(context).hasSingleBean(KafkaTopicProvisioner.class);
