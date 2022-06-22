@@ -27,12 +27,15 @@ import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CON
  * {@link AuthenticateCallbackHandler} implementation for OAuth2 authentication with Azure Event Hubs.
  */
 public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallbackHandler {
-    private TokenCredential credential;
-    private AzureOAuthBearerToken accessToken;
-    private String tokenAudience;
+
+    private static final Duration ACCESS_TOKEN_REQUEST_BLOCK_TIME = Duration.ofSeconds(30);
 
     private final AzureKafkaProperties properties;
     private final AzureTokenCredentialResolver tokenCredentialResolver;
+
+    private TokenCredential credential;
+    private AzureOAuthBearerToken accessToken;
+    private String tokenAudience;
 
     public KafkaOAuth2AuthenticateCallbackHandler() {
         this(new AzureKafkaProperties(), new AzureTokenCredentialResolver());
@@ -92,7 +95,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             TokenRequestContext request = new TokenRequestContext();
             request.addScopes(tokenAudience);
             request.setTenantId(properties.getProfile().getTenantId());
-            AccessToken accessToken = credential.getToken(request).block(Duration.ofSeconds(30));
+            AccessToken accessToken = credential.getToken(request).block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);
             if (accessToken != null) {
                 this.accessToken = new AzureOAuthBearerToken(accessToken);
             }
