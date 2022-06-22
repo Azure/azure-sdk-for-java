@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Added synchronous implementation of `HttpClient.sendSync`.
 
 ## 1.10.1 (2022-06-03)
 
