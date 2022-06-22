@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConnectionMonitors Get. */
 public final class ConnectionMonitorsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherConnectionMonitorGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherConnectionMonitorGet.json
      */
     /**
      * Sample code: Get connection monitor.

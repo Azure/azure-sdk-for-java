@@ -39,6 +39,10 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DeploymentInner innerModel() {
         return this.innerObject;
     }

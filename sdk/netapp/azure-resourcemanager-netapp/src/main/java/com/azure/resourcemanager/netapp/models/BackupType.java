@@ -27,7 +27,11 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
         return fromString(name, BackupType.class);
     }
 
-    /** @return known BackupType values. */
+    /**
+     * Gets known BackupType values.
+     *
+     * @return known BackupType values.
+     */
     public static Collection<BackupType> values() {
         return values(BackupType.class);
     }

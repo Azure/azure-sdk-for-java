@@ -68,13 +68,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.4.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -93,6 +93,14 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <!-- Kafka -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>3.0.1</version> <!-- {x-version-update;org.apache.kafka:kafka-clients;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -129,6 +137,20 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>org.apache.kafka:kafka-clients:[3.0.1]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

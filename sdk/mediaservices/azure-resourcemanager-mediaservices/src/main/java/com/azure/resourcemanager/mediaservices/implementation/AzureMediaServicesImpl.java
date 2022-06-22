@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -30,6 +31,8 @@ import com.azure.resourcemanager.mediaservices.fluent.JobsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
 import com.azure.resourcemanager.mediaservices.fluent.LocationsClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationResultsClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationStatusesClient;
 import com.azure.resourcemanager.mediaservices.fluent.MediaservicesClient;
 import com.azure.resourcemanager.mediaservices.fluent.OperationResultsClient;
 import com.azure.resourcemanager.mediaservices.fluent.OperationStatusesClient;
@@ -47,7 +50,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -76,6 +78,18 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -184,6 +198,30 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public LocationsClient getLocations() {
         return this.locations;
+    }
+
+    /** The MediaServiceOperationStatusesClient object to access its operations. */
+    private final MediaServiceOperationStatusesClient mediaServiceOperationStatuses;
+
+    /**
+     * Gets the MediaServiceOperationStatusesClient object to access its operations.
+     *
+     * @return the MediaServiceOperationStatusesClient object.
+     */
+    public MediaServiceOperationStatusesClient getMediaServiceOperationStatuses() {
+        return this.mediaServiceOperationStatuses;
+    }
+
+    /** The MediaServiceOperationResultsClient object to access its operations. */
+    private final MediaServiceOperationResultsClient mediaServiceOperationResults;
+
+    /**
+     * Gets the MediaServiceOperationResultsClient object to access its operations.
+     *
+     * @return the MediaServiceOperationResultsClient object.
+     */
+    public MediaServiceOperationResultsClient getMediaServiceOperationResults() {
+        return this.mediaServiceOperationResults;
     }
 
     /** The AssetsClient object to access its operations. */
@@ -364,12 +402,15 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.apiVersion = "2021-11-01";
         this.accountFilters = new AccountFiltersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.mediaservices = new MediaservicesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.mediaServiceOperationStatuses = new MediaServiceOperationStatusesClientImpl(this);
+        this.mediaServiceOperationResults = new MediaServiceOperationResultsClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetFilters = new AssetFiltersClientImpl(this);
         this.tracks = new TracksClientImpl(this);
@@ -401,10 +442,7 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**

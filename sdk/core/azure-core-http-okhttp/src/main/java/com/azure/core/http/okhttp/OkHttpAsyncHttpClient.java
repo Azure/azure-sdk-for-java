@@ -14,6 +14,7 @@ import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
+import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestBody;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -23,6 +24,8 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -60,6 +63,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
@@ -74,7 +78,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            Mono.fromCallable(() -> toOkHttpRequest(request))
+            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter))
                 .subscribe(okHttpRequest -> {
                     try {
                         Call call = httpClient.newCall(okHttpRequest);
@@ -90,7 +94,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        Request okHttpRequest = toOkHttpRequest(request);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+
+        Request okHttpRequest = toOkHttpRequest(request, progressReporter);
         try {
             Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
             return toHttpResponse(request, okHttpResponse, eagerlyReadResponse);
@@ -103,9 +109,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * Converts the given azure-core request to okhttp request.
      *
      * @param request the azure-core request
+     * @param progressReporter the {@link ProgressReporter}. Can be null.
      * @return the okhttp request
      */
-    private okhttp3.Request toOkHttpRequest(HttpRequest request) {
+    private okhttp3.Request toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -124,6 +131,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         RequestBody okHttpRequestBody = toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders());
+        if (progressReporter != null) {
+            okHttpRequestBody = new OkHttpProgressReportingRequestBody(okHttpRequestBody, progressReporter);
+        }
         return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody)
             .build();
     }

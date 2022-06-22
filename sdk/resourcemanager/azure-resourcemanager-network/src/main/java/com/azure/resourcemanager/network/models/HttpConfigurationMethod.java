@@ -27,7 +27,11 @@ public final class HttpConfigurationMethod extends ExpandableStringEnum<HttpConf
         return fromString(name, HttpConfigurationMethod.class);
     }
 
-    /** @return known HttpConfigurationMethod values. */
+    /**
+     * Gets known HttpConfigurationMethod values.
+     *
+     * @return known HttpConfigurationMethod values.
+     */
     public static Collection<HttpConfigurationMethod> values() {
         return values(HttpConfigurationMethod.class);
     }
