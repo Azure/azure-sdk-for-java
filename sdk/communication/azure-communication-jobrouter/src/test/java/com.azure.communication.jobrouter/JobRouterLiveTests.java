@@ -8,10 +8,10 @@ import com.azure.communication.jobrouter.implementation.models.AzureFunctionRule
 import com.azure.communication.jobrouter.implementation.models.BestWorkerMode;
 import com.azure.communication.jobrouter.implementation.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.implementation.models.ChannelConfiguration;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionRule;
 import com.azure.communication.jobrouter.implementation.models.JobQueue;
 import com.azure.communication.jobrouter.implementation.models.LabelOperator;

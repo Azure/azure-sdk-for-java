@@ -6,10 +6,10 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
 import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResponse;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
 import com.azure.communication.jobrouter.implementation.models.JobQueue;
 import com.azure.communication.jobrouter.implementation.models.JobStateSelector;
@@ -27,6 +27,7 @@ import com.azure.communication.jobrouter.implementation.convertors.Classificatio
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.implementation.convertors.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -122,17 +123,17 @@ public final class RouterAsyncClient {
     /**
      * Updates a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param updateClassificationPolicyOptions Request options to update classification policy.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> updateClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+    public Mono<ClassificationPolicy> updateClassificationPolicy(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         try {
-            return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context)
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+            return withContext(context -> upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
                         if (res.getValue() != null) {
@@ -149,17 +150,17 @@ public final class RouterAsyncClient {
     /**
      * Updates a classification policy.
      *
-     * @param id Id of the classification policy.
-     * @param classificationPolicy Model of classification policy properties to be patched.
+     * @param updateClassificationPolicyOptions Request options to update classification policy.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> updateClassificationPolicyWithResponse(String id, ClassificationPolicy classificationPolicy) {
+    public Mono<Response<ClassificationPolicy>> updateClassificationPolicyWithResponse(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         try {
-            return withContext(context -> upsertClassificationPolicyWithResponse(id, classificationPolicy, context));
+            ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateClassificationPolicyOptions);
+            return withContext(context -> upsertClassificationPolicyWithResponse(updateClassificationPolicyOptions.getId(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -3,8 +3,9 @@
 
 package com.azure.communication.jobrouter.implementation.convertors;
 
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
 
 /**
  * Converts request options for create and update Classification Policy to {@link ClassificationPolicy}.
@@ -23,5 +24,14 @@ public class ClassificationPolicyAdapter {
             .setFallbackQueueId(createClassificationPolicyOptions.getFallbackQueueId())
             .setQueueSelectors(createClassificationPolicyOptions.getQueueSelectors())
             .setWorkerSelectors(createClassificationPolicyOptions.getWorkerSelectors());
+    }
+
+    public static ClassificationPolicy convertUpdateOptionsToClassificationPolicy(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
+        return new ClassificationPolicy()
+            .setName(updateClassificationPolicyOptions.getName())
+            .setFallbackQueueId(updateClassificationPolicyOptions.getFallbackQueueId())
+            .setQueueSelectors(updateClassificationPolicyOptions.getQueueSelectors())
+            .setPrioritizationRule(updateClassificationPolicyOptions.getPrioritizationRule())
+            .setWorkerSelectors(updateClassificationPolicyOptions.getWorkerSelectors());
     }
 }

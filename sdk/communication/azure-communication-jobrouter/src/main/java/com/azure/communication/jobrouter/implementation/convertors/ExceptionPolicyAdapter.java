@@ -3,8 +3,7 @@
 
 package com.azure.communication.jobrouter.implementation.convertors;
 
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 

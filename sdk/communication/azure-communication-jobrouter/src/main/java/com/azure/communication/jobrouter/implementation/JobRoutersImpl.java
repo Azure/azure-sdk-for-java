@@ -6,14 +6,14 @@ package com.azure.communication.jobrouter.implementation;
 
 import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyCollection;
 import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyCollection;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollection;
 import com.azure.communication.jobrouter.implementation.models.JobCollection;
 import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
