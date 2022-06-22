@@ -261,44 +261,6 @@ public final class EncryptedBlobClientBuilder implements
             .build();
     }
 
-    private BlobAsyncClient getUnencryptedBlobClient() {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .containerName(containerName)
-            .blobName(blobName)
-            .snapshot(snapshot)
-            .customerProvidedKey(
-                customerProvidedKey == null ? null : new CustomerProvidedKey(customerProvidedKey.getEncryptionKey()))
-            .encryptionScope(encryptionScope == null ? null : encryptionScope.getEncryptionScope())
-            .versionId(versionId)
-            .serviceVersion(version)
-            .pipeline(this.httpPipeline)
-            .httpClient(httpClient)
-            .configuration(configuration)
-            .retryOptions(this.retryOptions)
-            .clientOptions(this.clientOptions);
-        // Is this missing some things? Refactor to use the pipeline builder code below?
-
-        if (storageSharedKeyCredential != null) {
-            builder.credential(storageSharedKeyCredential);
-        } else if (tokenCredential != null) {
-            builder.credential(tokenCredential);
-        } else if (azureSasCredential != null) {
-            builder.credential(azureSasCredential);
-        } else if (sasToken != null) {
-            builder.credential(new AzureSasCredential(sasToken));
-        }
-
-        for (HttpPipelinePolicy policy : perCallPolicies) {
-            builder.addPolicy(policy);
-        }
-        for (HttpPipelinePolicy policy : perRetryPolicies) {
-            builder.addPolicy(policy);
-        }
-
-        return builder.buildAsyncClient();
-    }
-
     private HttpPipeline getHttpPipeline() {
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, LOGGER);
@@ -319,8 +281,7 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption,
-                getUnencryptedBlobClient()));
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
@@ -333,7 +294,7 @@ public final class EncryptedBlobClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption, getUnencryptedBlobClient()));
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
         policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));

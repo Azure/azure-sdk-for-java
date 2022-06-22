@@ -11,13 +11,11 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -66,8 +64,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  */
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
-    private static final ClientLogger LOGGER = new ClientLogger(BlobDecryptionPolicy.class);
-
     /**
      * The {@link AsyncKeyEncryptionKeyResolver} used to select the correct key for decrypting existing blobs.
      */
@@ -84,8 +80,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     private final boolean requiresEncryption;
 
-    private final BlobAsyncClient blobClient;
-    private LogLevel v1UsageLogLevel = LogLevel.WARNING;
 
     /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
@@ -102,11 +96,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param requiresEncryption Whether encryption is enforced by this client.
      */
     BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
-        boolean requiresEncryption, BlobAsyncClient blobClient) {
+        boolean requiresEncryption) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
         this.requiresEncryption = requiresEncryption;
-        this.blobClient = blobClient;
     }
 
     @Override
@@ -116,9 +109,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
         if (initialRangeHeader == null) {
             return next.process().flatMap(httpResponse -> {
-                // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
-                // response
-                if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null) {
+                if (isDownloadRequest(httpResponse)) {
                     HttpHeaders responseHeaders = httpResponse.getHeaders();
 
                     /*
@@ -144,14 +135,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     encryptedRange.setAdjustedDownloadCount(
                         Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
 
-                    /*
-                     * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
-                     * block size. Padding is only ever present in track 1.
-                     */
-                    boolean padding = encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
-                        && (encryptedRange.toBlobRange().getOffset()
-                        + encryptedRange.toBlobRange().getCount()
-                        > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+                    boolean padding = hasPadding(responseHeaders, encryptionData, encryptedRange);
 
                     Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
                         encryptionData, httpResponse.getRequest().getUrl().toString());
@@ -176,8 +160,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
                 }
                 return next.process().map(httpResponse -> {
-                    if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody()
-                        != null) {
+                    if (isDownloadRequest(httpResponse)) {
                         HttpHeaders responseHeaders = httpResponse.getHeaders();
                         // Checking that encryption data at least exists on the download call even if we didn't use
                         // it for deserialization ensures that the download response was not an error response.
@@ -191,10 +174,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                          * We expect padding only if we are at the end of a blob and it is not a multiple of the
                          * encryption block size. Padding is only ever present in track 1.
                          */
-                        boolean padding = encryptionData.getEncryptionAgent().getProtocol()
-                            .equals(ENCRYPTION_PROTOCOL_V1)
-                            && (encryptedRange.toBlobRange().getOffset() + encryptedRange.toBlobRange().getCount()
-                            > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+                        boolean padding = hasPadding(httpResponse.getHeaders(), encryptionData, encryptedRange);
 
                         Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(),
                             encryptedRange, padding, encryptionData,
@@ -206,6 +186,24 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     }
                 });
         }
+    }
+
+    private boolean hasPadding(HttpHeaders responseHeaders, EncryptionData encryptionData,
+            EncryptedBlobRange encryptedRange) {
+        /*
+         * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
+         * block size. Padding is only ever present in track 1.
+         */
+        return encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
+                && (encryptedRange.toBlobRange().getOffset()
+                + encryptedRange.toBlobRange().getCount()
+                > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+    }
+
+    private boolean isDownloadRequest(HttpResponse httpResponse) {
+        // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
+        // response
+        return httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null;
     }
 
     /**
@@ -225,31 +223,16 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // The number of bytes that have been sent to the downstream so far.
         AtomicLong totalOutputBytes = new AtomicLong(0);
 
-        Flux<ByteBuffer> dataToTrim;
-        // Blob being downloaded is not encrypted
-        if (encryptionData == null) {
-            dataToTrim = encryptedFlux;
-        } else {
-            dataToTrim = getKeyEncryptionKey(encryptionData)
-                .flatMapMany(contentEncryptionKey -> {
-                    switch (encryptionData.getEncryptionAgent().getProtocol()) {
-                        case ENCRYPTION_PROTOCOL_V1:
-                            return decryptV1(encryptedFlux, encryptedBlobRange, padding,
-                                encryptionData, requestUri, totalInputBytes, contentEncryptionKey);
-                        case ENCRYPTION_PROTOCOL_V2:
-                            return decryptV2(encryptedFlux, encryptionData, contentEncryptionKey);
-                        default:
-                            throw LOGGER.logExceptionAsError(
-                                new IllegalStateException("Encryption protocol not recognized: "
-                                    + encryptionData.getEncryptionAgent().getProtocol()));
-                    }
-                });
-        }
+        Decryptor decryptor = Decryptor.getDecryptor(keyResolver, keyWrapper, encryptionData);
+        Flux<ByteBuffer> dataToTrim = decryptor.getKeyEncryptionKey()
+                .flatMapMany(key -> decryptor.decrypt(encryptedFlux, encryptedBlobRange, padding, requestUri,
+                        totalInputBytes, key));
 
         return trimData(encryptedBlobRange, totalOutputBytes, dataToTrim);
     }
 
-    private Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange, AtomicLong totalOutputBytes, Flux<ByteBuffer> dataToTrim) {
+    Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange,
+            AtomicLong totalOutputBytes, Flux<ByteBuffer> dataToTrim) {
         return dataToTrim.map(plaintextByteBuffer -> {
             int decryptedBytes = plaintextByteBuffer.limit();
 
@@ -270,7 +253,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * the whole offsetAdjustment would be too much.
                  */
                 int remainingAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
-                    - (int) totalOutputBytes.longValue();
+                        - (int) totalOutputBytes.longValue();
 
                 /*
                  * Setting the position past the limit will throw. This is in the case of very small
@@ -298,7 +281,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             } else {
                 // Calculate the end of the user-requested data so we can trim anything after.
                 beginningOfEndAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
-                    + encryptedBlobRange.getOriginalRange().getCount();
+                        + encryptedBlobRange.getOriginalRange().getCount();
             }
 
             /*
@@ -307,7 +290,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
              */
             if (decryptedBytes + totalOutputBytes.longValue() > beginningOfEndAdjustment) {
                 long amountPastEnd // past the end of user-requested data.
-                    = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
+                        = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
                 /*
                  * Note that amountPastEnd can only be up to 16 for v1 or 4mb for v2, so the cast is safe. We do not
                  * need to worry about limit() throwing because we allocated at least enough space for decryptedBytes
@@ -316,7 +299,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * the same as position.
                  */
                 int newLimit = totalOutputBytes.longValue() <= beginningOfEndAdjustment
-                    ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
+                        ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
                 plaintextByteBuffer.limit(newLimit);
             } else if (decryptedBytes + totalOutputBytes.longValue() > encryptedBlobRange.getAmountPlaintextToSkip()) {
                 /*
@@ -336,247 +319,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             totalOutputBytes.addAndGet(decryptedBytes);
             return plaintextByteBuffer;
         });
-    }
-
-    private Flux<ByteBuffer> decryptV2(Flux<ByteBuffer> encryptedFlux, EncryptionData encryptionData,
-        byte[] contentEncryptionKey) {
-        // Buffer an exact region with the nonce and tag
-        final int gcmEncryptionRegionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
-        final int nonceLength = encryptionData.getEncryptedRegionInfo().getNonceLength();
-        BufferStagingArea stagingArea =
-            new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
-                gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
-
-        return UploadUtils.chunkSource(encryptedFlux,
-                new com.azure.storage.common.ParallelTransferOptions()
-                    .setBlockSizeLong((long) gcmEncryptionRegionLength
-                        + TAG_LENGTH + nonceLength))
-            .flatMapSequential(stagingArea::write)
-            .concatWith(Flux.defer(stagingArea::flush))
-            .flatMapSequential(aggregator -> {
-                // Get the IV out of the beginning of the aggregator
-                byte[] gmcIv = aggregator.getFirstNBytes(nonceLength);
-
-                Cipher gmcCipher;
-                try {
-                    gmcCipher = getCipher(contentEncryptionKey, encryptionData, gmcIv, false);
-                } catch (InvalidKeyException e) {
-                    return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
-                }
-
-                ByteBuffer decryptedRegion = ByteBuffer.allocate(gcmEncryptionRegionLength);
-                return aggregator.asFlux()
-                    .map(buffer -> {
-                        // Write into the preallocated buffer and always return this buffer.
-                        try {
-                            gmcCipher.update(buffer, decryptedRegion);
-                        } catch (ShortBufferException e) {
-                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                        }
-                        return decryptedRegion;
-                    }).then(Mono.fromCallable(() -> {
-                        // We have already written all the data to the cipher. Passing in a final
-                        // empty buffer allows us to force completion and return the filled buffer.
-                        gmcCipher.doFinal(EMPTY_BUFFER, decryptedRegion);
-                        decryptedRegion.flip();
-                        return decryptedRegion;
-                    })).flux();
-            });
-    }
-
-    private Flux<ByteBuffer> decryptV1(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
-        boolean padding, EncryptionData encryptionData, String requestUri,
-        AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
-        LOGGER.log(this.v1UsageLogLevel, () -> "Downloaded data found to be encrypted with v1 encryption, "
-            + "which is no longer secure. Uri: " + requestUri);
-        this.v1UsageLogLevel = LogLevel.INFORMATIONAL; // Log subsequently at a lower level to not pollute logs
-        /*
-         * Calculate the IV.
-         *
-         * If we are starting at the beginning, we can grab the IV from the encryptionData. Otherwise,
-         * Reactor makes it difficult to grab the first 16 bytes of data to pass as an IV to the cipher.
-         * As a workaround, we initialize the cipher with a garbage IV (empty byte array) and attempt to
-         * decrypt the first 16 bytes (the actual IV for the relevant data). We throw away this "decrypted"
-         * data. Now, though, because each block of 16 is used as the IV for the next, the original 16 bytes
-         * of downloaded data are in position to be used as the IV for the data actually requested and we
-         * are in the desired state.
-         */
-        byte[] iv;
-
-        /*
-         * Adjusting the range by <= 16 means we only adjusted to align on an encryption block boundary
-         * (padding will add 1-16 bytes as it will prefer to pad 16 bytes instead of 0) and therefore the
-         * key is in the metadata.
-         */
-        if (encryptedBlobRange.getOffsetAdjustment() <= ENCRYPTION_BLOCK_SIZE) {
-            iv = encryptionData.getContentEncryptionIV();
-        } else {
-            // Rather than try to buffer just the 16 bytes of the iv, we "decrypt" them with this garbage iv.
-            // This makes counting easier.
-            // We end up throwing that garbage decrypted data away when we trim the cipher uses the ciphertext as the iv
-            // for the data we actually want.
-            iv = new byte[ENCRYPTION_BLOCK_SIZE];
-        }
-
-        Cipher cipher;
-        try {
-            cipher = getCipher(contentEncryptionKey, encryptionData, iv, padding);
-        } catch (InvalidKeyException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-        }
-
-        return encryptedFlux.map(encryptedByteBuffer -> {
-            /*
-             * If we could potentially decrypt more bytes than encryptedByteBuffer can hold, allocate more
-             * room. Note that, because getOutputSize returns the size needed to store
-             * max(updateOutputSize, finalizeOutputSize), this is likely to produce a ByteBuffer slightly
-             * larger than what the real outputSize is. This is accounted for below.
-             */
-            ByteBuffer plaintextByteBuffer = ByteBuffer
-                .allocate(cipher.getOutputSize(encryptedByteBuffer.remaining()));
-
-            // First, determine if we should update or finalize and fill the output buffer.
-            int bytesToInput = encryptedByteBuffer.remaining();
-            try {
-                // We will have reached the end of the downloaded range, finalize.
-                if (totalInputBytes.longValue() + bytesToInput >= encryptedBlobRange.getAdjustedDownloadCount()) {
-                    cipher.doFinal(encryptedByteBuffer, plaintextByteBuffer);
-                } else {
-                    // We won't reach the end of the downloaded range, update.
-                    cipher.update(encryptedByteBuffer, plaintextByteBuffer);
-                }
-            } catch (GeneralSecurityException e) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-            }
-            totalInputBytes.addAndGet(bytesToInput);
-
-            // Flip the buffer to set the position back to 0 and set the limit to the data size.
-            plaintextByteBuffer.flip();
-            return plaintextByteBuffer;
-        });
-    }
-
-    /**
-     * Returns the key encryption key for blob. First tries to get key encryption key from KeyResolver, then falls back
-     * to IKey stored on this EncryptionPolicy.
-     *
-     * @param encryptionData A {@link EncryptionData}
-     * @return Key encryption key as a byte array
-     */
-    private Mono<byte[]> getKeyEncryptionKey(EncryptionData encryptionData) {
-        /*
-         * 1. Invoke the key resolver if specified to get the key. If the resolver is specified but does not have a
-         * mapping for the key id, an error should be thrown. This is important for key rotation scenario.
-         * 2. If resolver is not specified but a key is specified, match the key id on the key and use it.
-         */
-        Mono<? extends AsyncKeyEncryptionKey> keyMono;
-
-        if (this.keyResolver != null) {
-            keyMono = this.keyResolver.buildAsyncKeyEncryptionKey(encryptionData.getWrappedContentKey().getKeyId())
-                .onErrorResume(NullPointerException.class, e -> {
-                    /*
-                     * keyResolver returns null if it cannot find the key, but Reactor throws on null values
-                     * passing through workflows, so we propagate this case with an IllegalArgumentException
-                     */
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                });
-        } else {
-            keyMono = this.keyWrapper.getKeyId().flatMap(keyId -> {
-                if (encryptionData.getWrappedContentKey().getKeyId().equals(keyId)) {
-                    return Mono.just(this.keyWrapper);
-                } else {
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. "
-                        + "The key id stored on the service does not match the specified key.")));
-                }
-            });
-        }
-
-        return keyMono.flatMap(keyEncryptionKey -> keyEncryptionKey.unwrapKey(
-                encryptionData.getWrappedContentKey().getAlgorithm(),
-                encryptionData.getWrappedContentKey().getEncryptedKey()
-            ))
-            .flatMap(keyBytes -> {
-                switch (encryptionData.getEncryptionAgent().getProtocol()) {
-                    case ENCRYPTION_PROTOCOL_V2:
-                        /*
-                         * Reverse the process in EncryptedBlobAsyncClient. The first three bytes of the unwrapped key
-                         * are the protocol version. Verify its integrity.
-                         */
-                        ByteArrayInputStream keyStream = new ByteArrayInputStream(keyBytes);
-                        byte[] protocolBytes = new byte[3];
-                        try {
-                            keyStream.read(protocolBytes);
-                            if (ByteBuffer.wrap(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8))
-                                .compareTo(ByteBuffer.wrap(protocolBytes)) != 0) {
-                                return Mono.error(LOGGER.logExceptionAsError(
-                                    new IllegalStateException("Padded wrapped key did not match protocol version")));
-                            }
-                            // Ignore the next five bytes that were used as padding to 8-byte align
-                            for (int i = 0; i < 5; i++) {
-                                keyStream.read();
-                            }
-                            if (keyStream.available() != (AES_KEY_SIZE_BITS / 8)) {
-                                return Mono.error(LOGGER.logExceptionAsError(
-                                    new IllegalStateException("Wrapped key bytes were incorrect length")));
-                            }
-                            byte[] strippedKeyBytes = new byte[AES_KEY_SIZE_BITS / 8];
-                            // The remaining bytes are the key
-                            keyStream.read(strippedKeyBytes);
-                            return Mono.just(strippedKeyBytes);
-                        } catch (IOException e) {
-                            return Mono.error(LOGGER.logThrowableAsError(e));
-                        }
-                    case ENCRYPTION_PROTOCOL_V1:
-                        return Mono.just(keyBytes);
-                    default:
-                        return Mono.error(LOGGER.logExceptionAsError(
-                            new IllegalStateException("Invalid protocol version: "
-                                + encryptionData.getEncryptionAgent().getProtocol())));
-                }
-            });
-    }
-
-    /**
-     * Creates a {@link Cipher} using given content encryption key, encryption data, iv, and padding.
-     *
-     * @param contentEncryptionKey The content encryption key, used to decrypt the contents of the blob.
-     * @param encryptionData {@link EncryptionData}
-     * @param iv IV used to initialize the Cipher.  If IV is null, encryptionData
-     * @param padding If cipher should use padding. Padding is necessary to decrypt all the way to end of a blob.
-     * Otherwise, don't use padding.
-     * @return {@link Cipher}
-     * @throws InvalidKeyException The key provided is invalid
-     */
-    private Cipher getCipher(byte[] contentEncryptionKey, EncryptionData encryptionData,
-        byte[] iv, boolean padding) throws InvalidKeyException {
-        SecretKey keySpec = new SecretKeySpec(contentEncryptionKey, 0, contentEncryptionKey.length,
-            AES);
-        try {
-            switch (encryptionData.getEncryptionAgent().getAlgorithm()) {
-                case AES_CBC_256:
-                    Cipher cipher;
-                    if (padding) {
-                        cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
-                    } else {
-                        cipher = Cipher.getInstance(AES_CBC_NO_PADDING);
-                    }
-                    IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
-
-                    cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
-                    return cipher;
-                case AES_GCM_256:
-                    cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
-                    cipher.init(Cipher.DECRYPT_MODE, keySpec, new GCMParameterSpec(TAG_LENGTH * 8, iv));
-                    return cipher;
-                default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Invalid Encryption Algorithm found on the resource. This version of the client library "
-                            + "does not support the specified encryption algorithm: "
-                            + encryptionData.getEncryptionAgent().getAlgorithm()));
-            }
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-        }
     }
 
     private Long blobSize(HttpHeaders headers) {
