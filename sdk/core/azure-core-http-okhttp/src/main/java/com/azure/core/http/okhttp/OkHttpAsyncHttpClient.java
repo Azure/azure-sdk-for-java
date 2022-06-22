@@ -40,7 +40,7 @@ import java.util.Objects;
  */
 class OkHttpAsyncHttpClient implements HttpClient {
 
-    private static final Mono<RequestBody> EMPTY_REQUEST_BODY_MONO = Mono.just(RequestBody.create(new byte[0]));
+    private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(new byte[0]);
 
     final OkHttpClient httpClient;
 
@@ -70,7 +70,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            toOkHttpRequest(request).subscribe(okHttpRequest -> {
+            Mono.fromCallable(() -> toOkHttpRequest(request)).subscribe(okHttpRequest -> {
                 try {
                     Call call = httpClient.newCall(okHttpRequest);
                     call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
@@ -86,9 +86,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * Converts the given azure-core request to okhttp request.
      *
      * @param request the azure-core request
-     * @return the Mono emitting okhttp request
+     * @return the okhttp request
      */
-    private Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
+    private okhttp3.Request toOkHttpRequest(HttpRequest request) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -101,14 +101,14 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         if (request.getHttpMethod() == HttpMethod.GET) {
-            return Mono.just(requestBuilder.get().build());
+            return requestBuilder.get().build();
         } else if (request.getHttpMethod() == HttpMethod.HEAD) {
-            return Mono.just(requestBuilder.head().build());
+            return requestBuilder.head().build();
         }
 
-        return toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders())
-            .map(okhttpRequestBody -> requestBuilder.method(request.getHttpMethod().toString(), okhttpRequestBody)
-                .build());
+        RequestBody okHttpRequestBody = toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders());
+        return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody)
+            .build();
     }
 
     /**
@@ -118,34 +118,33 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @param headers the headers associated with the original request
      * @return the Mono emitting okhttp request
      */
-    private Mono<RequestBody> toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
+    private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
+        if (bodyContent == null) {
+            return EMPTY_REQUEST_BODY;
+        }
+
         String contentType = headers.getValue("Content-Type");
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-        if (bodyContent == null) {
-            return EMPTY_REQUEST_BODY_MONO;
-        }
-
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof ByteArrayContent) {
-            return Mono.just(RequestBody.create(content.toBytes(), mediaType));
-        } else if (content instanceof StringContent
+        if (content instanceof ByteArrayContent
+            || content instanceof StringContent
             || content instanceof SerializableContent) {
-            return Mono.fromCallable(() -> RequestBody.create(content.toBytes(), mediaType));
+            return RequestBody.create(content.toBytes(), mediaType);
         } else {
             long effectiveContentLength = getRequestContentLength(content, headers);
             if (content instanceof InputStreamContent) {
                 // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return Mono.just(new OkHttpInputStreamRequestBody(
-                    (InputStreamContent) content, effectiveContentLength, mediaType));
+                return new OkHttpInputStreamRequestBody(
+                    (InputStreamContent) content, effectiveContentLength, mediaType);
             } else if (content instanceof FileContent) {
                 // The OkHttpFileRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return Mono.just(new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType));
+                return new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType);
             } else {
                 // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return Mono.just(new OkHttpFluxRequestBody(
-                    content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis()));
+                return new OkHttpFluxRequestBody(
+                    content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis());
             }
         }
     }
