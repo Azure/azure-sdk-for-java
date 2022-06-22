@@ -61,6 +61,13 @@ public interface AccountFilter {
     List<FilterTrackSelection> tracks();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner object.
      *
      * @return the inner object.
