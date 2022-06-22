@@ -34,22 +34,22 @@ pr:
       - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 parameters:
-- name: release_azureanalyticspurviewadministration
-  displayName: 'azure-analytics-purview-administration'
-  type: boolean
-  default: true
-- name: release_azureanalyticspurviewcatalog
-  displayName: 'azure-analytics-purview-catalog'
-  type: boolean
-  default: true
-- name: release_azureanalyticspurviewscanning
-  displayName: 'azure-analytics-purview-scanning'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagerpurview
-  displayName: 'azure-resourcemanager-purview'
-  type: boolean
-  default: false
+  - name: release_azureanalyticspurviewadministration
+    displayName: azure-analytics-purview-administration
+    type: boolean
+    default: true
+  - name: release_azureanalyticspurviewcatalog
+    displayName: azure-analytics-purview-catalog
+    type: boolean
+    default: true
+  - name: release_azureanalyticspurviewscanning
+    displayName: azure-analytics-purview-scanning
+    type: boolean
+    default: true
+  - name: release_azureresourcemanagerpurview
+    displayName: azure-resourcemanager-purview
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -60,7 +60,8 @@ extends:
       - name: azure-analytics-purview-administration
         groupId: com.azure
         safeName: azureanalyticspurviewadministration
-        releaseInBatch: ${{ parameters.release_azureanalyticspurviewadministration }}
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewadministration
+          }}
       - name: azure-analytics-purview-catalog
         groupId: com.azure
         safeName: azureanalyticspurviewcatalog
@@ -73,3 +74,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
         releaseInBatch: ${{ parameters.release_azureresourcemanagerpurview }}
+      - name: azure-analytics-purview-account
+        groupId: com.azure
+        safeName: azureanalyticspurviewaccount
