@@ -802,6 +802,58 @@ public class BinaryDataJavaDocCodeSnippet {
         // END: com.azure.util.BinaryData.toByteBuffer
     }
 
+    /**
+     * Codesnippets for {@link BinaryData#isReplayable()},
+     * {@link BinaryData#toReplayableBinaryData()}
+     */
+    public void replayablity() {
+        // BEGIN: com.azure.util.BinaryData.replayability
+        BinaryData binaryData = binaryDataProducer();
+
+        if (!binaryData.isReplayable()) {
+            binaryData = binaryData.toReplayableBinaryData();
+        }
+
+        streamConsumer(binaryData.toStream());
+        streamConsumer(binaryData.toStream());
+        // END: com.azure.util.BinaryData.replayability
+    }
+
+    private BinaryData binaryDataProducer() {
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        return BinaryData.fromBytes(data);
+    }
+
+    private void streamConsumer(InputStream stream) {
+        // no-op
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#isReplayable()},
+     * {@link BinaryData#toReplayableBinaryData()}
+     */
+    public void replayablityAsync() {
+        // BEGIN: com.azure.util.BinaryData.replayabilityAsync
+        Mono.fromCallable(() -> binaryDataProducer())
+            .flatMap(binaryData -> {
+                if (binaryData.isReplayable()) {
+                    return Mono.just(binaryData);
+                } else  {
+                    return binaryData.toReplayableBinaryDataAsync();
+                }
+            })
+            .flatMap(replayableBinaryData ->
+                fluxConsumer(replayableBinaryData.toFluxByteBuffer())
+                    .then(fluxConsumer(replayableBinaryData.toFluxByteBuffer())))
+            .subscribe();
+        // END: com.azure.util.BinaryData.replayabilityAsync
+    }
+
+    private Mono<Void> fluxConsumer(Flux<ByteBuffer> flux) {
+        // no-op
+        return Mono.empty();
+    }
+
     public static class MyJsonSerializer implements JsonSerializer {
         private final ClientLogger logger = new ClientLogger(MyJsonSerializer.class);
         private final ObjectMapper mapper;

@@ -1535,6 +1535,36 @@ public final class BinaryData {
      * regardless of what this method returns.
      * </p>
      *
+     * <!-- src_embed com.azure.util.BinaryData.replayability -->
+     * <pre>
+     * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     *
+     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     * &#125;
+     *
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayability -->
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
+     * <pre>
+     * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
+     *     .flatMap&#40;binaryData -&gt; &#123;
+     *         if &#40;binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *             return Mono.just&#40;binaryData&#41;;
+     *         &#125; else  &#123;
+     *             return binaryData.toReplayableBinaryDataAsync&#40;&#41;;
+     *         &#125;
+     *     &#125;&#41;
+     *     .flatMap&#40;replayableBinaryData -&gt;
+     *         fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;
+     *             .then&#40;fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayabilityAsync -->
+     *
      * @return a flag indicating whether the content can be repeatedly consumed using all accessors.
      */
     public boolean isReplayable() {
@@ -1555,6 +1585,19 @@ public final class BinaryData {
      * Replayability does not imply thread-safety. The caller must not use data accessors of returned
      * {@link BinaryData} simultaneously.
      * </p>
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayability -->
+     * <pre>
+     * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     *
+     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     * &#125;
+     *
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayability -->
      *
      * @return Replayable {@link BinaryData}.
      */
@@ -1580,6 +1623,23 @@ public final class BinaryData {
      * Replayability does not imply thread-safety. The caller must not use data accessors of returned
      * {@link BinaryData} simultaneously.
      * </p>
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
+     * <pre>
+     * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
+     *     .flatMap&#40;binaryData -&gt; &#123;
+     *         if &#40;binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *             return Mono.just&#40;binaryData&#41;;
+     *         &#125; else  &#123;
+     *             return binaryData.toReplayableBinaryDataAsync&#40;&#41;;
+     *         &#125;
+     *     &#125;&#41;
+     *     .flatMap&#40;replayableBinaryData -&gt;
+     *         fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;
+     *             .then&#40;fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayabilityAsync -->
      *
      * @return A {@link Mono} of {@link BinaryData} representing the replayable {@link BinaryData}.
      */
