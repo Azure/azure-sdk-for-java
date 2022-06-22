@@ -252,7 +252,7 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
     with open(api_specs_file, 'w') as fout:
         fout.write(comment)
-        fout.write(yaml.dump(api_specs, Dumper=ListIndentDumper))
+        fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
 
 
 def get_and_update_service_from_api_specs(
