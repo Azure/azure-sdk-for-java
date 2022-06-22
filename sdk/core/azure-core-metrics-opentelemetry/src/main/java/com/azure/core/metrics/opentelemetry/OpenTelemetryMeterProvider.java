@@ -3,7 +3,6 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.AzureMeter;
 import com.azure.core.util.metrics.AzureMeterProvider;
@@ -103,13 +102,5 @@ public final class OpenTelemetryMeterProvider implements AzureMeterProvider {
     public AzureMeter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
         return new OpenTelemetryMeter(libraryName, libraryVersion, options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AzureAttributeBuilder createAttributeBuilder() {
-        return new OpenTelemetryAzureAttributeBuilder();
     }
 }

@@ -13,12 +13,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.metrics.AzureLongCounter;
-import com.azure.core.util.metrics.AzureLongHistogram;
-import com.azure.core.util.metrics.AzureMeter;
-import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -78,7 +73,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private static final String DELIVERY_TAG_KEY = "deliveryTag";
     private static final String PENDING_SENDS_SIZE_KEY = "pending_sends_size";
-    private final static AzureMeterProvider METER_PROVIDER = AzureMeterProvider.getDefaultProvider();
     private final String entityPath;
     private final Sender sender;
     private final SendLinkHandler handler;
@@ -104,10 +98,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private final String activeTimeoutMessage;
     private final Scheduler scheduler;
 
-    private final AzureLongCounter sentBytesMetric;
-    private final AzureLongHistogram rttMetric;
-    private final AutoCloseable queueSizeGauge;
-    private final AttributeCache<DeliveryState.DeliveryStateType> attributes;
+    private final AmqpMetricsProvider metricsProvider;
 
     private final Object errorConditionLock = new Object();
 
@@ -131,7 +122,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
      */
     ReactorSender(AmqpConnection amqpConnection, String entityPath, Sender sender, SendLinkHandler handler,
                   ReactorProvider reactorProvider, TokenManager tokenManager, MessageSerializer messageSerializer,
-                  AmqpRetryOptions retryOptions, Scheduler scheduler, AzureMeter meter) {
+                  AmqpRetryOptions retryOptions, Scheduler scheduler, AmqpMetricsProvider metricsProvider) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.sender = Objects.requireNonNull(sender, "'sender' cannot be null.");
         this.handler = Objects.requireNonNull(handler, "'handler' cannot be null.");
@@ -141,27 +132,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
         this.retry = RetryUtil.getRetryPolicy(retryOptions);
         this.tokenManager = tokenManager;
-        if (meter != null && meter.isEnabled()) {
-            this.rttMetric = meter.createLongHistogram("az.amqp.send.duration", "Duration of AMQP protocol call", "ms");
-            this.sentBytesMetric = meter.createLongCounter("az.amqp.send.bytes", "Encoded AMQP message size", "bytes");
 
-            AzureAttributeBuilder queueSizeAttributes = METER_PROVIDER.createAttributeBuilder()
-                .add("namespace", amqpConnection.getFullyQualifiedNamespace())
-                .add("entity", entityPath);
-
-            this.queueSizeGauge = meter.createLongGauge("az.amqp.send.queue.size",  "Count of pending messages in queue", null,
-                () -> new AzureMeter.GaugePoint<>((long) pendingSendsMap.size(), queueSizeAttributes));
-
-            this.attributes = new AttributeCache<>("delivery_state", DeliveryState.DeliveryStateType.Accepted, (attributeBuilder) -> {
-                attributeBuilder.add("namespace", amqpConnection.getFullyQualifiedNamespace())
-                    .add("entity", entityPath);
-            });
-        } else {
-            this.rttMetric = null;
-            this.sentBytesMetric = null;
-            this.queueSizeGauge = null;
-            this.attributes = null;
-        }
+        this.metricsProvider = metricsProvider;
 
         String connectionId = handler.getConnectionId() == null ? NOT_APPLICABLE : handler.getConnectionId();
         String linkName = getLinkName() == null ? NOT_APPLICABLE : getLinkName();
@@ -425,13 +397,6 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
      * @return A mono that completes when the send link has closed.
      */
     Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
-        if (queueSizeGauge != null) {
-            try {
-                queueSizeGauge.close();
-            } catch (Exception e) {
-                logger.info("Could not close gauge. Ignoring.", e);
-            }
-        }
         if (isDisposed.getAndSet(true)) {
             return isClosedMono.asMono();
         }
@@ -484,7 +449,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
         return activeEndpointFlux.then(Mono.create(sink -> {
             sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),
-                deliveryState, rttMetric, sentBytesMetric, attributes));
+                deliveryState, metricsProvider));
         }));
     }
 
@@ -500,6 +465,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             this.pendingSendsMap.put(deliveryTag, workItem);
             this.pendingSendsQueue.offer(new WeightedDeliveryTag(deliveryTag, workItem.hasBeenRetried() ? 1 : 0));
         }
+
+        metricsProvider.recordSendQueue(1);
 
         this.scheduleWorkOnDispatcher();
     }
@@ -527,6 +494,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 if (weightedDelivery != null) {
                     deliveryTag = weightedDelivery.getDeliveryTag();
                     workItem = this.pendingSendsMap.get(deliveryTag);
+                    metricsProvider.recordSendQueue(-1);
                 } else {
                     workItem = null;
                     deliveryTag = null;
@@ -571,6 +539,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
                     .log("Sent message.");
 
+                metricsProvider.recordSendBytes(sentMsgSize);
                 workItem.setWaitingForAck();
                 scheduler.schedule(new SendTimeout(deliveryTag), retryOptions.getTryTimeout().toMillis(),
                     TimeUnit.MILLISECONDS);
@@ -581,7 +550,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     .addKeyValue("payloadActualSize", workItem.getEncodedMessageSize())
                     .log("Sendlink advance failed.");
 
+                DeliveryState outcome = null;
                 if (delivery != null) {
+                    outcome = delivery.getRemoteState();
                     delivery.free();
                 }
 
@@ -594,7 +565,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     "Entity(%s): send operation failed while advancing delivery(tag: %s).",
                     entityPath, deliveryTag), context);
 
-                workItem.error(exception);
+                workItem.error(exception, outcome);
             }
         }
     }
@@ -608,7 +579,6 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             .log("Process delivered message.");
 
         final RetriableWorkItem workItem = pendingSendsMap.remove(deliveryTag);
-
         if (workItem == null) {
             logger.atVerbose()
                 .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
@@ -653,7 +623,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             final Duration retryInterval = retry.calculateRetryDelay(exception, retryAttempt);
 
             if (retryInterval == null || retryInterval.compareTo(workItem.getTimeoutTracker().remaining()) > 0) {
-                cleanupFailedSend(workItem, exception);
+                cleanupFailedSend(workItem, exception, outcome);
             } else {
                 workItem.setLastKnownException(exception);
                 try {
@@ -665,18 +635,19 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                         new AmqpException(false,
                             String.format(Locale.US, "Entity(%s): send operation failed while scheduling a"
                                 + " retry on Reactor, see cause for more details.", entityPath),
-                            schedulerException, handler.getErrorContext(sender)));
+                            schedulerException, handler.getErrorContext(sender)),
+                        outcome);
                 }
             }
         } else if (outcome instanceof Released) {
             cleanupFailedSend(workItem, new OperationCancelledException(outcome.toString(),
-                handler.getErrorContext(sender)));
+                handler.getErrorContext(sender)), outcome);
         } else if (outcome instanceof Declared) {
             final Declared declared = (Declared) outcome;
             workItem.success(declared);
         } else {
             cleanupFailedSend(workItem, new AmqpException(false, outcome.toString(),
-                handler.getErrorContext(sender)));
+                handler.getErrorContext(sender)), outcome);
         }
     }
 
@@ -691,9 +662,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         }
     }
 
-    private void cleanupFailedSend(final RetriableWorkItem workItem, final Exception exception) {
+    private void cleanupFailedSend(final RetriableWorkItem workItem, final Exception exception, final DeliveryState deliveryState) {
         //TODO (conniey): is there some timeout task I should handle?
-        workItem.error(exception);
+        workItem.error(exception, deliveryState);
     }
 
     private void completeClose() {
@@ -724,8 +695,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     .log("Disposing pending sends with error.");
             }
 
-            pendingSendsMap.forEach((key, value) -> value.error(error));
+            pendingSendsMap.forEach((key, value) -> value.error(error, null));
             pendingSendsMap.clear();
+
+            metricsProvider.recordSendQueue(-1 * pendingSendsQueue.size());
             pendingSendsQueue.clear();
         }
 
@@ -746,8 +719,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     .log("Disposing pending sends.");
             }
 
-            pendingSendsMap.forEach((key, value) -> value.error(new AmqpException(true, message, context)));
+            pendingSendsMap.forEach((key, value) -> value.error(new AmqpException(true, message, context), null));
             pendingSendsMap.clear();
+
+            metricsProvider.recordSendQueue(-1 * pendingSendsQueue.size());
             pendingSendsQueue.clear();
         }
 
@@ -838,7 +813,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     handler.getErrorContext(sender));
             }
 
-            workItem.error(exception);
+            workItem.error(exception, null);
         }
     }
 }

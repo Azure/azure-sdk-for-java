@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
@@ -49,11 +50,13 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
+    private final AmqpMetricsProvider metricsProvider;
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        super(connectionId, hostname, entityPath);
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.metricsProvider = Objects.requireNonNull(metricsProvider, "'metricsProvider' cannot be null.");
     }
 
     public String getLinkName() {
@@ -61,11 +64,11 @@ public class ReceiveLinkHandler extends LinkHandler {
     }
 
     public Flux<Delivery> getDeliveredMessages() {
-        return deliveries.asFlux().doOnNext(queuedDeliveries::remove);
+        return deliveries.asFlux().doOnNext(this::removeQueuedDelivery);
     }
 
     /**
-     * Closes the handler by completing the completing the queued deliveries and deliveries then publishes {@link
+     * Closes the handler by completing the queued deliveries and deliveries then publishes {@link
      * EndpointState#CLOSED}. {@link #getEndpointStates()} is completely closed when {@link #onLinkRemoteClose(Event)},
      * {@link #onLinkRemoteDetach(Event)}, or {@link #onLinkFinal(Event)} is called.
      */
@@ -142,12 +145,12 @@ public class ReceiveLinkHandler extends LinkHandler {
                         .addKeyValue(LINK_NAME_KEY, linkName)
                         .addKeyValue("updatedLinkCredit", link.getCredit())
                         .addKeyValue("remoteCredit", link.getRemoteCredit())
-                        .addKeyValue("delivery.isSettled", delivery.isSettled())
+                        .addKeyValue("delivery.isSettled", wasSettled)
                         .log("onDelivery. Was already settled.");
                 } else {
                     logger.atWarning()
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue("delivery.isSettled", delivery.isSettled())
+                        .addKeyValue("delivery.isSettled", wasSettled)
                         .log("Settled delivery with no link.");
                 }
             } else {
@@ -161,6 +164,8 @@ public class ReceiveLinkHandler extends LinkHandler {
                     delivery.settle();
                 } else {
                     queuedDeliveries.add(delivery);
+                    metricsProvider.recordReceiveQueue(1);
+
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
                         logger.atWarning()
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -242,11 +247,19 @@ public class ReceiveLinkHandler extends LinkHandler {
             return false;
         });
 
+        metricsProvider.recordReceiveQueue(-1 * queuedDeliveries.size());
+
         queuedDeliveries.forEach(delivery -> {
             // abandon the queued deliveries as the receive link handler is closed
             delivery.disposition(new Modified());
             delivery.settle();
         });
         queuedDeliveries.clear();
+    }
+
+
+    private void removeQueuedDelivery(Delivery delivery) {
+        queuedDeliveries.remove(delivery);
+        metricsProvider.recordReceiveQueue(-1);
     }
 }

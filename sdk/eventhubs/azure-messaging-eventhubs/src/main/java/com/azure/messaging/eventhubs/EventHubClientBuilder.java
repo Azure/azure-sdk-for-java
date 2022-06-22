@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -32,7 +33,10 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -173,6 +177,9 @@ public class EventHubClientBuilder implements
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
+    private static final String EVENTHUBS_VERSION = CoreUtils
+        .getProperties(EVENTHUBS_PROPERTIES_FILE)
+        .getOrDefault(VERSION_KEY, UNKNOWN);
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
@@ -895,7 +902,10 @@ public class EventHubClientBuilder implements
                     connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                final AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("azure-messaging-eventhubs", EVENTHUBS_VERSION, new MetricsOptions());
+                final AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, connectionOptions.getFullyQualifiedNamespace(), getEventHubName());
+
+                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, metricsProvider);
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
                     connectionOptions, getEventHubName(), provider, handlerProvider, tokenManagerProvider,

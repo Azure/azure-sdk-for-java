@@ -3,7 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.AzureLongHistogram;
@@ -45,7 +45,7 @@ public class OpenTelemetryMetricsBenchmark {
         .registerMetricReader(SDK_METER_READER)
         .build();
 
-    private static final AzureAttributeBuilder COMMON_ATTRIBUTES = new OpenTelemetryAzureAttributeBuilder()
+    private static final AzureAttributeCollection COMMON_ATTRIBUTES = new OpenTelemetryAzureAttributeCollection()
         .add("az.messaging.destination", "fqdn")
         .add("az.messaging.entity", "entityName");
 
@@ -155,10 +155,10 @@ public class OpenTelemetryMetricsBenchmark {
             this.eventHubName = eventHubName;
         }
 
-        private final ConcurrentMap<String, AzureAttributeBuilder[]> allAttributes = new ConcurrentHashMap<>();
+        private final ConcurrentMap<String, AzureAttributeCollection[]> allAttributes = new ConcurrentHashMap<>();
 
-        AzureAttributeBuilder getOrCreate(String partitionId, boolean error, ErrorCode errorCode) {
-            AzureAttributeBuilder[] attributes = allAttributes.computeIfAbsent(partitionId, this::createAttributes);
+        AzureAttributeCollection getOrCreate(String partitionId, boolean error, ErrorCode errorCode) {
+            AzureAttributeCollection[] attributes = allAttributes.computeIfAbsent(partitionId, this::createAttributes);
 
             int index = ERROR_DIMENSIONS_LENGTH - 1; // ok
             if (error) {
@@ -168,8 +168,8 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes[index];
         }
 
-        private AzureAttributeBuilder[]  createAttributes(String partitionId) {
-            AzureAttributeBuilder[] attributes = new AzureAttributeBuilder[ERROR_DIMENSIONS_LENGTH];
+        private AzureAttributeCollection[]  createAttributes(String partitionId) {
+            AzureAttributeCollection[] attributes = new AzureAttributeCollection[ERROR_DIMENSIONS_LENGTH];
             for (int i = 0; i < ERROR_DIMENSIONS_LENGTH - 2; i++) {
                 attributes[i] =  getAttributes(partitionId, ErrorCode.values()[i].name());
             }
@@ -179,8 +179,8 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes;
         }
 
-        private AzureAttributeBuilder getAttributes(String partitionId, String errorCode) {
-            return meterProvider.createAttributeBuilder()
+        private AzureAttributeCollection getAttributes(String partitionId, String errorCode) {
+            return METER.createAttributeBuilder()
                 .add("az.messaging.destination", fullyQualifiedNamespace)
                 .add("az.messaging.entity", eventHubName)
                 .add("az.messaging.partition_id", partitionId)

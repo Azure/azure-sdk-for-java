@@ -3,7 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
@@ -34,7 +34,7 @@ public class MetricsJavaDocCodeSnippets {
     public void createCounter() {
         Context currentContext = Context.NONE;
         // BEGIN: com.azure.core.util.metrics.AzureMeter.longCounter
-        AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder()
+        AzureAttributeCollection attributes = defaultMeter.createAttributeBuilder()
             .add("endpoint", "http://service-endpoint.azure.com")
             .add("error", true);
 
@@ -60,7 +60,7 @@ public class MetricsJavaDocCodeSnippets {
         AzureLongHistogram amqpLinkDuration = meter
             .createLongHistogram("az.core.amqp.link.duration", "AMQP link response time.", "ms");
 
-        AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder()
+        AzureAttributeCollection attributes = meter.createAttributeBuilder()
             .add("endpoint", "http://service-endpoint.azure.com");
 
         // when measured operation starts, record the measurement
@@ -84,11 +84,11 @@ public class MetricsJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag
 
         // Create attributes for possible error codes. Can be done lazily once specific error code is received.
-        AzureAttributeBuilder successAttributes = meterProvider.createAttributeBuilder()
+        AzureAttributeCollection successAttributes = defaultMeter.createAttributeBuilder()
             .add("endpoint", "http://service-endpoint.azure.com")
             .add("error", true);
 
-        AzureAttributeBuilder errorAttributes =  meterProvider.createAttributeBuilder()
+        AzureAttributeCollection errorAttributes =  defaultMeter.createAttributeBuilder()
             .add("endpoint", "http://service-endpoint.azure.com")
             .add("error", false);
 

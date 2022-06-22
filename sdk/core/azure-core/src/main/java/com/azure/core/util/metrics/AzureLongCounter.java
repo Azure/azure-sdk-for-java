@@ -3,7 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 
 /**
@@ -20,5 +20,5 @@ public interface AzureLongCounter {
      * @param attributes Collection of attributes representing metric dimensions.
      * @param context The explicit context to associate with this measurement.
      */
-    void add(long value, AzureAttributeBuilder attributes, Context context);
+    void add(long value, AzureAttributeCollection attributes, Context context);
 }

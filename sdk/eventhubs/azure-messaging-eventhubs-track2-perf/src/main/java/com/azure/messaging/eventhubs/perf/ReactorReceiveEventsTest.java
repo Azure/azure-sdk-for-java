@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -18,6 +19,9 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -89,7 +93,9 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
             connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
             connectionOptions.getAuthorizationScope());
         final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+        final AzureMeter meter = AzureMeterProvider.getDefaultProvider().createMeter("test", "1.0.0", new MetricsOptions());
+        final AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, connectionOptions.getFullyQualifiedNamespace(), "test");
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, metricsProvider);
         final PerfMessageSerializer messageSerializer = new PerfMessageSerializer();
         connection = new ReactorConnection(connectionId,
             connectionOptions, provider, handlerProvider, tokenManagerProvider,

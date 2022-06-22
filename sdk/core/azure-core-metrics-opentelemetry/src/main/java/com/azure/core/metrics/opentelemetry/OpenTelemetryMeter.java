@@ -3,7 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -11,15 +11,13 @@ import com.azure.core.util.metrics.AzureLongCounter;
 import com.azure.core.util.metrics.AzureLongHistogram;
 import com.azure.core.util.metrics.AzureMeter;
 import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.LongCounterBuilder;
-import io.opentelemetry.api.metrics.LongGaugeBuilder;
 import io.opentelemetry.api.metrics.LongHistogramBuilder;
+import io.opentelemetry.api.metrics.LongUpDownCounterBuilder;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.metrics.MeterProvider;
 
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * {@inheritDoc}
@@ -87,32 +85,18 @@ class OpenTelemetryMeter implements AzureMeter {
     }
 
     @Override
-    public AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> valueSupplier) {
+    public AzureLongCounter createLongUpDownCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
-        Objects.requireNonNull(valueSupplier, "'valueSupplier' cannot be null.");
 
-        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name)
-            .setDescription(description)
-            .ofLongs();
+        LongUpDownCounterBuilder otelMetricBuilder = meter.upDownCounterBuilder(name)
+            .setDescription(description);
+
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
         }
 
-        return  otelMetricBuilder.buildWithCallback(measurement -> {
-
-            GaugePoint<Long> value = valueSupplier.get();
-
-            AzureAttributeBuilder attributeCollection = value.getAttributes();
-            Attributes attributes = Attributes.empty();
-            if (attributeCollection instanceof OpenTelemetryAzureAttributeBuilder) {
-                attributes = ((OpenTelemetryAzureAttributeBuilder) attributeCollection).build();
-            } else if (attributeCollection != null) {
-                LOGGER.warning("Expected instance of `OpenTelemetryAttributeBuilder` in `attributeCollection`, but got {}, ignoring it.", attributeCollection.getClass());
-            }
-
-            measurement.record(value.getValue(), attributes);
-        });
+        return new OpenTelemetryLongUpDownCounter(otelMetricBuilder.build());
     }
 
     /**
@@ -121,5 +105,31 @@ class OpenTelemetryMeter implements AzureMeter {
     @Override
     public boolean isEnabled() {
         return this.isEnabled;
+    }
+
+    /*@Override
+    public AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> callback) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(description, "'description' cannot be null.");
+
+        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name)
+            .setDescription(description)
+            .ofLongs();
+
+        if (!CoreUtils.isNullOrEmpty(unit)) {
+            otelMetricBuilder.setUnit(unit);
+        }
+
+        return new OpenTelemetryLongGauge(otelMetricBuilder.buildWithCallback(
+            (m) -> m.record(callback.get().getValue(),  Utils.getAttributes(callback.get().getAttributes()))));
+    }*/
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureAttributeCollection createAttributeBuilder() {
+        return new OpenTelemetryAzureAttributeCollection();
     }
 }

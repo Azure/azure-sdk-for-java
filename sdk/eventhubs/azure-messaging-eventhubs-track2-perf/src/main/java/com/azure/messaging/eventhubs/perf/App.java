@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.perf.test.core.PerfStressProgram;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 
 /**
  * Runs the Event Hubs performance tests.
@@ -16,6 +17,10 @@ public class App {
      * @throws RuntimeException If not able to load test classes.
      */
     public static void main(String[] args) {
+
+        AutoConfiguredOpenTelemetrySdk.initialize();
+
+
         final Class<?>[] testClasses = new Class<?>[]{
             ReceiveEventsTest.class,
             SendEventDataTest.class,

@@ -3,7 +3,6 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AzureAttributeBuilder;
 import com.azure.core.util.MetricsOptions;
 
 /**
@@ -24,13 +23,5 @@ public class MicrometerMeterProvider implements AzureMeterProvider {
     @Override
     public AzureMeter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         return new MicrometerMeter(libraryName, libraryVersion, options);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AzureAttributeBuilder createAttributeBuilder() {
-        return new MicrometerTags();
     }
 }

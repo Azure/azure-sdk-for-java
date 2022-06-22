@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -24,6 +25,8 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.AzureMeter;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import com.azure.messaging.eventhubs.TestUtils;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -50,6 +53,8 @@ import java.util.Map;
 @Tag(TestUtils.INTEGRATION)
 class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER = new AmqpMetricsProvider(
+        AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), "host", "my-hub");
     private static String product;
     private static String clientVersion;
 
@@ -89,7 +94,7 @@ class CBSChannelTest extends IntegrationTestBase {
 
         retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(1));
         reactorProvider = new ReactorProvider();
-        handlerProvider = new ReactorHandlerProvider(reactorProvider);
+        handlerProvider = new ReactorHandlerProvider(reactorProvider, DEFAULT_METRICS_PROVIDER);
 
         clientOptions.setHeaders(
             Arrays.asList(new Header("name", product), new Header("version", clientVersion)));

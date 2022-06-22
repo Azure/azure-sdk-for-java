@@ -14,7 +14,6 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -52,6 +51,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * An AMQP connection backed by proton-j.
@@ -87,7 +87,6 @@ public class ReactorConnection implements AmqpConnection {
     private final ReceiverSettleMode receiverSettleMode;
     private final Duration operationTimeout;
     private final Composite subscriptions;
-    private final MetricsOptions metricsOptions;
 
     private ReactorExecutor executor;
 
@@ -110,8 +109,7 @@ public class ReactorConnection implements AmqpConnection {
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
                              ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
                              MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-                             ReceiverSettleMode receiverSettleMode,
-                             MetricsOptions metricsOptions) {
+                             ReceiverSettleMode receiverSettleMode) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -127,7 +125,7 @@ public class ReactorConnection implements AmqpConnection {
         this.operationTimeout = connectionOptions.getRetry().getTryTimeout();
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
-        this.metricsOptions = metricsOptions;
+
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .flatMap(reactorConnection -> {
                 final Mono<AmqpEndpointState> activeEndpoint = getEndpointStates()
@@ -195,12 +193,8 @@ public class ReactorConnection implements AmqpConnection {
     public Mono<AmqpManagementNode> getManagementNode(String entityPath) {
         return Mono.defer(() -> {
             if (isDisposed()) {
-                // TODO(limolkova) this can be simplified with FluxUtil.monoError(LoggingEventBuilder), not using it for now
-                // to allow using azure-core-amqp with stable azure-core 1.24.0 to simplify dependency management
-                // we should switch to it once monoError(LoggingEventBuilder) ships in stable azure-core
-                return Mono.error(logger.atError()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .log(Exceptions.propagate(new IllegalStateException("Connection is disposed. Cannot get management instance."))));
+                return monoError(logger.atError().addKeyValue(ENTITY_PATH_KEY, entityPath),
+                    Exceptions.propagate(new IllegalStateException("Connection is disposed. Cannot get management instance.")));
             }
 
             final AmqpManagementNode existing = managementNodes.get(entityPath);
@@ -341,7 +335,7 @@ public class ReactorConnection implements AmqpConnection {
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(this, session, handler, sessionName, reactorProvider,
             handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
-            connectionOptions.getRetry(), metricsOptions);
+            connectionOptions.getRetry());
     }
 
     /**
@@ -625,7 +619,7 @@ public class ReactorConnection implements AmqpConnection {
                     .log("onReactorError: Disposing.");
 
                 closeAsync(new AmqpShutdownSignal(false, false,
-                    "onReactorError: " + exception.toString()))
+                    "onReactorError:" + exception))
                     .subscribe();
             }
         }

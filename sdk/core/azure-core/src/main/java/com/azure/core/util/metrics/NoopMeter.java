@@ -3,8 +3,9 @@
 
 package com.azure.core.util.metrics;
 
+import com.azure.core.util.AzureAttributeCollection;
+
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
  * {@inheritDoc}
@@ -12,11 +13,32 @@ import java.util.function.Supplier;
 final class NoopMeter implements AzureMeter {
 
     public static final AzureMeter INSTANCE = new NoopMeter();
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
     private static final AzureLongHistogram NOOP_LONG_HISTOGRAM = (value, attributes, context) -> {
     };
 
     private static final AzureLongCounter NOOP_LONG_COUNTER = (value, attributes, context) -> {
+    };
+
+    private static final AzureAttributeCollection NOOP_ATTRIBUTES = new AzureAttributeCollection() {
+        @Override
+        public AzureAttributeCollection add(String key, String value) {
+            return this;
+        }
+
+        @Override
+        public AzureAttributeCollection add(String key, long value) {
+            return this;
+        }
+
+        @Override
+        public AzureAttributeCollection add(String key, double value) {
+            return this;
+        }
+
+        @Override
+        public AzureAttributeCollection add(String key, boolean value) {
+            return this;
+        }
     };
 
     private NoopMeter() {
@@ -42,8 +64,21 @@ final class NoopMeter implements AzureMeter {
         return NOOP_LONG_COUNTER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> callback) {
-        return NOOP_CLOSEABLE;
+    public AzureLongCounter createLongUpDownCounter(String name, String description, String unit) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(description, "'description' cannot be null.");
+        return NOOP_LONG_COUNTER;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureAttributeCollection createAttributeBuilder() {
+        return NOOP_ATTRIBUTES;
     }
 }

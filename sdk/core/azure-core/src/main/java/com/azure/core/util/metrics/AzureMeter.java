@@ -3,9 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AzureAttributeBuilder;
-
-import java.util.function.Supplier;
+import com.azure.core.util.AzureAttributeCollection;
 
 /**
  * Meter is generally associated with Azure Service Client instance and allows creating
@@ -28,7 +26,7 @@ import java.util.function.Supplier;
  * AzureLongHistogram amqpLinkDuration = meter
  *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
  *
- * AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder&#40;&#41;
+ * AzureAttributeBuilder attributes = meter.createAttributeBuilder&#40;&#41;
  *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
  *
  * &#47;&#47; when measured operation starts, record the measurement
@@ -61,7 +59,7 @@ public interface AzureMeter {
      * AzureLongHistogram amqpLinkDuration = meter
      *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
      *
-     * AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder&#40;&#41;
+     * AzureAttributeBuilder attributes = meter.createAttributeBuilder&#40;&#41;
      *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
      *
      * &#47;&#47; when measured operation starts, record the measurement
@@ -91,7 +89,7 @@ public interface AzureMeter {
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#counter for more details.
      * <!-- src_embed com.azure.core.util.metrics.AzureMeter.longCounter -->
      * <pre>
-     * AzureAttributeBuilder attributes = meterProvider.createAttributeBuilder&#40;&#41;
+     * AzureAttributeBuilder attributes = defaultMeter.createAttributeBuilder&#40;&#41;
      *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
      *     .add&#40;&quot;error&quot;, true&#41;;
      *
@@ -110,9 +108,9 @@ public interface AzureMeter {
      */
     AzureLongCounter createLongCounter(String name, String description, String unit);
 
-    AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> callback);
+    AzureLongCounter createLongUpDownCounter(String name, String description, String unit);
 
-    class GaugePoint<T> {
+    /*class GaugePoint<T> {
         private final T value;
         private final AzureAttributeBuilder attributes;
 
@@ -129,6 +127,46 @@ public interface AzureMeter {
             return attributes;
         }
     }
+
+
+    AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> callback);*/
+
+
+    /**
+     * Creates and returns attribute collection implementation specific to the meter implementation.
+     * Attribute collections differ in how they support different types of attributes and internal
+     * data structures they use.
+     *
+     * For the best performance, client libraries should create and cache attribute collections
+     * for the client lifetime and pass cached instance when recoding new measurements.
+     *
+     * <!-- src_embed com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag -->
+     * <pre>
+     *
+     * &#47;&#47; Create attributes for possible error codes. Can be done lazily once specific error code is received.
+     * AzureAttributeBuilder successAttributes = defaultMeter.createAttributeBuilder&#40;&#41;
+     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
+     *     .add&#40;&quot;error&quot;, true&#41;;
+     *
+     * AzureAttributeBuilder errorAttributes =  defaultMeter.createAttributeBuilder&#40;&#41;
+     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
+     *     .add&#40;&quot;error&quot;, false&#41;;
+     *
+     * AzureLongCounter httpConnections = defaultMeter.createLongCounter&#40;&quot;az.core.http.connections&quot;,
+     *     &quot;Number of created HTTP connections&quot;, null&#41;;
+     *
+     * boolean success = false;
+     * try &#123;
+     *     success = doThings&#40;&#41;;
+     * &#125; finally &#123;
+     *     httpConnections.add&#40;1, success ? successAttributes : errorAttributes, currentContext&#41;;
+     * &#125;
+     *
+     * </pre>
+     * <!-- end com.azure.core.util.metrics.AzureMeter.longCounter#errorFlag -->
+     * @return an instance of {@code AzureAttributeBuilder}
+     */
+    AzureAttributeCollection createAttributeBuilder();
 
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,

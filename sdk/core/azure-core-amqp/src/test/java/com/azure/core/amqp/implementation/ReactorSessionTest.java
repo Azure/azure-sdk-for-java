@@ -9,14 +9,15 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -60,6 +61,8 @@ public class ReactorSessionTest {
     private static final String ENTITY_PATH = "test-entity-path";
     private static final String NAME = "test-session-name";
     private static final Duration TIMEOUT = Duration.ofSeconds(45);
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER =
+        new AmqpMetricsProvider(AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOST, ENTITY_PATH);
 
     private SessionHandler handler;
     private ReactorSession reactorSession;
@@ -100,7 +103,7 @@ public class ReactorSessionTest {
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
+        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60), DEFAULT_METRICS_PROVIDER);
         this.cbsNodeSupplier = Mono.just(cbsNode);
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -121,7 +124,7 @@ public class ReactorSessionTest {
 
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
         this.reactorSession = new ReactorSession(amqpConnection, session, handler, NAME, reactorProvider,
-            reactorHandlerProvider, cbsNodeSupplier, tokenManagerProvider, serializer, options, null);
+            reactorHandlerProvider, cbsNodeSupplier, tokenManagerProvider, serializer, options);
     }
 
     @AfterEach
@@ -180,7 +183,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, DEFAULT_METRICS_PROVIDER);
 
         when(session.sender(linkName)).thenReturn(sender);
         when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
@@ -223,7 +226,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, DEFAULT_METRICS_PROVIDER);
 
         final Event closeSendEvent = mock(Event.class);
         when(closeSendEvent.getLink()).thenReturn(sender);
@@ -265,7 +268,7 @@ public class ReactorSessionTest {
         final String entityPath = transactionLinkName;
 
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, DEFAULT_METRICS_PROVIDER);
 
         when(session.sender(linkName)).thenReturn(sender);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);

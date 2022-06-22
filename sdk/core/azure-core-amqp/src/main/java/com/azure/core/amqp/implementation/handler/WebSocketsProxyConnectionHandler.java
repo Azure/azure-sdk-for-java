@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpErrorCode;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.CoreUtils;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -55,8 +56,8 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @throws IllegalStateException if a proxy address is unavailable for the given {@code proxyOptions}.
      */
     public WebSocketsProxyConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
-        ProxyOptions proxyOptions, SslPeerDetails peerDetails) {
-        super(connectionId, connectionOptions, peerDetails);
+                                            ProxyOptions proxyOptions, SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
+        super(connectionId, connectionOptions, peerDetails, metricsProvider);
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();

@@ -7,11 +7,13 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
@@ -59,6 +61,8 @@ public class WebSocketsProxyConnectionHandlerTest {
         new Header("foo-bar", "some-values"));
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
         .setHeaders(HEADER_LIST);
+    private static final AmqpMetricsProvider DEFAULT_METRICS_HELPER = new AmqpMetricsProvider(
+        AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOSTNAME, "my-hub");
 
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2192);
 
@@ -109,11 +113,11 @@ public class WebSocketsProxyConnectionHandlerTest {
     @Test
     public void constructorNull() {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(null, connectionOptions,
-            PROXY_OPTIONS, peerDetails));
+            PROXY_OPTIONS, peerDetails, DEFAULT_METRICS_HELPER));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, null,
-            PROXY_OPTIONS, peerDetails));
+            PROXY_OPTIONS, peerDetails, DEFAULT_METRICS_HELPER));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-            connectionOptions, PROXY_OPTIONS, null));
+            connectionOptions, PROXY_OPTIONS, null, DEFAULT_METRICS_HELPER));
     }
 
     /**
@@ -126,7 +130,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, PROXY_OPTIONS,
-            peerDetails);
+            peerDetails, DEFAULT_METRICS_HELPER);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -145,7 +149,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, peerDetails);
+            ProxyOptions.SYSTEM_DEFAULTS, peerDetails, DEFAULT_METRICS_HELPER);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -168,7 +172,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions,
-            peerDetails);
+            peerDetails, DEFAULT_METRICS_HELPER);
 
         // Act and Assert
         Assertions.assertEquals(address.getHostName(), handler.getHostname());

@@ -6,15 +6,15 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.AzureLongCounter;
-import io.opentelemetry.api.metrics.LongCounter;
+import io.opentelemetry.api.metrics.LongUpDownCounter;
 
 /**
  * {@inheritDoc}
  */
-class OpenTelemetryLongCounter implements AzureLongCounter {
-    private final LongCounter counter;
+class OpenTelemetryLongUpDownCounter implements AzureLongCounter {
+    private final LongUpDownCounter counter;
 
-    OpenTelemetryLongCounter(LongCounter counter) {
+    OpenTelemetryLongUpDownCounter(LongUpDownCounter counter) {
         this.counter = counter;
     }
 

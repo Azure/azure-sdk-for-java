@@ -3,6 +3,8 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.Source;
 import org.apache.qpid.proton.engine.Delivery;
@@ -32,6 +34,9 @@ public class ReceiveLinkHandlerTest {
     private static final String HOSTNAME = "test-hostname";
     private static final String LINK_NAME = "test-link-name";
     private static final String ENTITY_PATH = "test-entity-path";
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER =
+        new AmqpMetricsProvider(AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOSTNAME, ENTITY_PATH);
+
 
     @Mock
     private Delivery delivery;
@@ -42,7 +47,7 @@ public class ReceiveLinkHandlerTest {
     @Mock
     private Source source;
 
-    private final ReceiveLinkHandler handler = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH);
+    private final ReceiveLinkHandler handler = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, DEFAULT_METRICS_PROVIDER);
 
     private AutoCloseable mocksCloseable;
 
@@ -186,13 +191,13 @@ public class ReceiveLinkHandlerTest {
     public void constructor() {
         // Act
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH));
+            () -> new ReceiveLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH, DEFAULT_METRICS_PROVIDER));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH));
+            () -> new ReceiveLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH, DEFAULT_METRICS_PROVIDER));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH));
+            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH, DEFAULT_METRICS_PROVIDER));
         assertThrows(NullPointerException.class,
-            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null));
+            () -> new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null, DEFAULT_METRICS_PROVIDER));
     }
 
     /**

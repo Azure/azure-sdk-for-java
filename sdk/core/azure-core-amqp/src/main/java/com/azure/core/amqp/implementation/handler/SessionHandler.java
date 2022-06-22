@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -26,13 +27,15 @@ public class SessionHandler extends Handler {
     private final String sessionName;
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
+    private final AmqpMetricsProvider metricsProvider;
 
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
-                          Duration openTimeout) {
+                          Duration openTimeout, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname);
         this.sessionName = sessionName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
+        this.metricsProvider = metricsProvider;
     }
 
     public AmqpErrorContext getErrorContext() {
@@ -77,7 +80,6 @@ public class SessionHandler extends Handler {
         } else {
             logBuilder = logger.atInfo();
         }
-
 
         logBuilder.addKeyValue(SESSION_NAME_KEY, sessionName)
             .addKeyValue("sessionIncCapacity", session.getIncomingCapacity())
@@ -138,6 +140,8 @@ public class SessionHandler extends Handler {
         addErrorCondition(logger.atInfo(), condition)
             .addKeyValue(SESSION_NAME_KEY, sessionName)
             .log("onSessionFinal.");
+
+        metricsProvider.recordSessionError(condition);
         close();
     }
 

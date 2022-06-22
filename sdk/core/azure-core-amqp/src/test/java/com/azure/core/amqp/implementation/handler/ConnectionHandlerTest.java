@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -13,6 +14,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.UserAgentUtil;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
@@ -68,6 +70,9 @@ public class ConnectionHandlerTest {
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2919);
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER =
+        new AmqpMetricsProvider(AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOSTNAME, "my-hub");
+
 
     @Captor
     private ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
@@ -88,7 +93,7 @@ public class ConnectionHandlerTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
             AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
             VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
-        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
+        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, DEFAULT_METRICS_PROVIDER);
     }
 
     @AfterEach
@@ -106,9 +111,9 @@ public class ConnectionHandlerTest {
 
     @Test
     void constructorNull() {
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails, DEFAULT_METRICS_PROVIDER));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, DEFAULT_METRICS_PROVIDER));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, DEFAULT_METRICS_PROVIDER));
     }
 
     @Test
@@ -123,7 +128,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails, DEFAULT_METRICS_PROVIDER);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -137,7 +142,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION, null);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, DEFAULT_METRICS_PROVIDER);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());

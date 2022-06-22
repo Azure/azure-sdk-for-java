@@ -26,6 +26,7 @@ import java.util.Objects;
 public class ReactorHandlerProvider {
     private static final ClientLogger LOGGER = new ClientLogger(ReactorHandlerProvider.class);
     private final ReactorProvider provider;
+    private final AmqpMetricsProvider metricsProvider;
 
     /**
      * Creates a new instance with the reactor provider to handle {@link ReactorDispatcher ReactorDispatchers} to its
@@ -35,8 +36,9 @@ public class ReactorHandlerProvider {
      *
      * @throws NullPointerException If {@code provider} is {@code null}.
      */
-    public ReactorHandlerProvider(ReactorProvider provider) {
+    public ReactorHandlerProvider(ReactorProvider provider, AmqpMetricsProvider metricsProvider) {
         this.provider = Objects.requireNonNull(provider, "'provider' cannot be null.");
+        this.metricsProvider = metricsProvider;
     }
 
     /**
@@ -56,7 +58,7 @@ public class ReactorHandlerProvider {
         if (options.getTransportType() == AmqpTransportType.AMQP) {
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
-            return new ConnectionHandler(connectionId, options, peerDetails);
+            return new ConnectionHandler(connectionId, options, peerDetails, metricsProvider);
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {
@@ -84,7 +86,7 @@ public class ReactorHandlerProvider {
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
-            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails);
+            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails, metricsProvider);
         } else if (isSystemProxyConfigured) {
             LOGGER.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
                 options.getFullyQualifiedNamespace(), options.getPort());
@@ -92,14 +94,14 @@ public class ReactorHandlerProvider {
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
             return new WebSocketsProxyConnectionHandler(connectionId, options, ProxyOptions.SYSTEM_DEFAULTS,
-                peerDetails);
+                peerDetails, metricsProvider);
         }
 
         final SslPeerDetails peerDetails = isCustomEndpointConfigured
             ? Proton.sslPeerDetails(options.getHostname(), options.getPort())
             : Proton.sslPeerDetails(options.getFullyQualifiedNamespace(), options.getPort());
 
-        return new WebSocketsConnectionHandler(connectionId, options, peerDetails);
+        return new WebSocketsConnectionHandler(connectionId, options, peerDetails, metricsProvider);
     }
 
     /**
@@ -115,7 +117,7 @@ public class ReactorHandlerProvider {
         Duration openTimeout) {
 
         return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(),
-            openTimeout);
+            openTimeout, metricsProvider);
     }
 
     /**
@@ -129,7 +131,7 @@ public class ReactorHandlerProvider {
      */
     public SendLinkHandler createSendLinkHandler(String connectionId, String hostname,
         String senderName, String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath);
+        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, metricsProvider);
     }
 
     /**
@@ -143,6 +145,10 @@ public class ReactorHandlerProvider {
     public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname,
         String receiverName, String entityPath) {
 
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath);
+        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, metricsProvider);
+    }
+
+    public AmqpMetricsProvider getMetricsProvider() {
+        return metricsProvider;
     }
 }

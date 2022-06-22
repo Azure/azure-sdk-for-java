@@ -14,6 +14,7 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -73,7 +74,8 @@ public class ReactorHandlerProviderTest {
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER;
-
+    private static final AmqpMetricsProvider DEFAULT_METRICS_HELPER = new AmqpMetricsProvider(
+        AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), FULLY_QUALIFIED_DOMAIN_NAME, "my-hub");
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
         Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
 
@@ -107,7 +109,7 @@ public class ReactorHandlerProviderTest {
         when(reactorProvider.createReactor(eq(CONNECTION_ID), anyInt())).thenReturn(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
 
-        provider = new ReactorHandlerProvider(reactorProvider);
+        provider = new ReactorHandlerProvider(reactorProvider, DEFAULT_METRICS_HELPER);
 
         originalProxySelector = ProxySelector.getDefault();
 
@@ -128,7 +130,7 @@ public class ReactorHandlerProviderTest {
     @Test
     public void constructorNull() {
         // Act
-        assertThrows(NullPointerException.class, () -> new ReactorHandlerProvider(null));
+        assertThrows(NullPointerException.class, () -> new ReactorHandlerProvider(null, DEFAULT_METRICS_HELPER));
     }
 
     @Test

@@ -3,8 +3,10 @@
 
 package com.azure.core.metrics.opentelemetry;
 
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 
 import java.util.Optional;
@@ -60,5 +62,17 @@ class Utils {
 
         LOGGER.verbose("No context is found under `PARENT_TRACE_CONTEXT_KEY`, getting current context");
         return io.opentelemetry.context.Context.current();
+    }
+
+    static Attributes getAttributes(AzureAttributeCollection azureAttributeCollection){
+        if (azureAttributeCollection instanceof OpenTelemetryAzureAttributeCollection) {
+            return ((OpenTelemetryAzureAttributeCollection) azureAttributeCollection).build();
+        }
+
+        if (azureAttributeCollection != null) {
+            LOGGER.warning("Expected instance of `OpenTelemetryAttributeBuilder` in `attributeCollection`, but got {}, ignoring it.", azureAttributeCollection.getClass());
+        }
+
+        return Attributes.empty();
     }
 }

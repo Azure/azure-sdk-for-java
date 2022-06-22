@@ -3,6 +3,8 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -34,6 +36,9 @@ public class SendLinkHandlerTest {
     private static final String HOSTNAME = "test-hostname";
     private static final String LINK_NAME = "test-link-name";
     private static final String ENTITY_PATH = "test-entity-path";
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER = new AmqpMetricsProvider(
+        AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOSTNAME, ENTITY_PATH);
+
 
     @Mock
     private Delivery delivery;
@@ -44,7 +49,7 @@ public class SendLinkHandlerTest {
     @Mock
     private Target target;
 
-    private final SendLinkHandler handler = new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH);
+    private final SendLinkHandler handler = new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, DEFAULT_METRICS_PROVIDER);
 
     private AutoCloseable mocksCloseable;
 
@@ -73,13 +78,13 @@ public class SendLinkHandlerTest {
     public void constructor() {
         // Act
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH));
+            () -> new SendLinkHandler(null, HOSTNAME, LINK_NAME, ENTITY_PATH, DEFAULT_METRICS_PROVIDER));
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH));
+            () -> new SendLinkHandler(CONNECTION_ID, null, LINK_NAME, ENTITY_PATH, DEFAULT_METRICS_PROVIDER));
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH));
+            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, null, ENTITY_PATH, DEFAULT_METRICS_PROVIDER));
         assertThrows(NullPointerException.class,
-            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null));
+            () -> new SendLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, null, DEFAULT_METRICS_PROVIDER));
     }
 
     /**

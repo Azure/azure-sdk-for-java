@@ -14,6 +14,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -65,6 +66,8 @@ import static org.mockito.Mockito.when;
 
 class ReactorReceiverTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER =
+        new AmqpMetricsProvider(AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), "host", "my-hub");
 
     @Mock
     private Receiver receiver;
@@ -109,14 +112,14 @@ class ReactorReceiverTest {
 
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
-            "test-receiver-name", entityPath);
+            "test-receiver-name", entityPath, DEFAULT_METRICS_PROVIDER);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
         reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, receiverHandler, tokenManager,
-            reactorDispatcher, retryOptions, null);
+            reactorDispatcher, retryOptions, DEFAULT_METRICS_PROVIDER);
     }
 
     @AfterEach

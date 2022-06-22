@@ -3,20 +3,21 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.Tag;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
 /**
@@ -24,8 +25,10 @@ import java.util.function.Supplier;
  */
 class MicrometerMeter implements AzureMeter {
     private static final MicrometerTags EMPTY = new MicrometerTags();
-    private static final Map<InstrumentInfo, Counter> COUNTER_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
-    private static final Map<InstrumentInfo, DistributionSummary> SUMMARY_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<Meter.Id, DistributionSummary> SUMMARY_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<Meter.Id, Counter> COUNTER_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<Meter.Id, SettableGauge> SETTABLE_GAUGE_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
+
     private final MeterRegistry registry;
 
     MicrometerMeter(String libraryName, String libraryVersion, MetricsOptions options) {
@@ -59,15 +62,16 @@ class MicrometerMeter implements AzureMeter {
      * {@inheritDoc}
      */
     @Override
-    public AutoCloseable createLongGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> valueSupplier) {
-        Gauge.Builder<Supplier<Number>> gaugeBuilder = Gauge.builder(name, () -> valueSupplier.get().getValue())
-            .description(description);
+    public AzureLongCounter createLongUpDownCounter(String name, String description, String unit) {
+        return new MicrometerLongUpDownLongCounter(name, description, unit);
+    }
 
-        if (!CoreUtils.isNullOrEmpty(unit)) {
-            gaugeBuilder.baseUnit(unit);
-        }
-
-        return new CloseableGauge(gaugeBuilder.register(registry));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureAttributeCollection createAttributeBuilder() {
+        return new MicrometerTags();
     }
 
     /**
@@ -93,21 +97,22 @@ class MicrometerMeter implements AzureMeter {
          * {@inheritDoc}
          */
         @Override
-        public void record(long value, AzureAttributeBuilder attributes, Context context) {
+        public void record(long value, AzureAttributeCollection attributes, Context context) {
             MicrometerTags tags = EMPTY;
             if (attributes instanceof MicrometerTags) {
                 tags = ((MicrometerTags) attributes);
             }
 
-            DistributionSummary summary = SUMMARY_CACHE.computeIfAbsent(new InstrumentInfo(name, tags), this::createSummary);
+            Meter.Id id = new Meter.Id(name, tags.get(), unit, description, Meter.Type.DISTRIBUTION_SUMMARY);
+            DistributionSummary summary = SUMMARY_CACHE.computeIfAbsent(id, this::createSummary);
             summary.record(value);
         }
 
-        private DistributionSummary createSummary(InstrumentInfo info) {
-            DistributionSummary.Builder summaryBuilder = DistributionSummary.builder(info.getName())
+        private DistributionSummary createSummary(Meter.Id id) {
+            DistributionSummary.Builder summaryBuilder = DistributionSummary.builder(id.getName())
                 .description(description)
                 .publishPercentileHistogram(true)
-                .tags(info.getTags());
+                .tags(id.getTags());
 
             if (!CoreUtils.isNullOrEmpty(unit)) {
                 summaryBuilder.baseUnit(unit);
@@ -135,20 +140,20 @@ class MicrometerMeter implements AzureMeter {
          * {@inheritDoc}
          */
         @Override
-        public void add(long value, AzureAttributeBuilder attributes, Context context) {
+        public void add(long value, AzureAttributeCollection attributes, Context context) {
             MicrometerTags tags = EMPTY;
             if (attributes instanceof MicrometerTags) {
                 tags = ((MicrometerTags) attributes);
             }
-
-            Counter counter = COUNTER_CACHE.computeIfAbsent(new InstrumentInfo(name, tags), this::createCounter);
+            Meter.Id id = new Meter.Id(name, tags.get(), unit, description, Meter.Type.COUNTER);
+            Counter counter = COUNTER_CACHE.computeIfAbsent(id, this::createCounter);
             counter.increment(value);
         }
 
-        private Counter createCounter(InstrumentInfo info) {
-            Counter.Builder counterBuilder = Counter.builder(info.name)
+        private Counter createCounter(Meter.Id id) {
+            Counter.Builder counterBuilder = Counter.builder(id.getName())
                 .description(description)
-                .tags(info.getTags());
+                .tags(id.getTags());
 
             if (!CoreUtils.isNullOrEmpty(unit)) {
                 counterBuilder.baseUnit(unit);
@@ -158,59 +163,93 @@ class MicrometerMeter implements AzureMeter {
         }
     }
 
-    private static final class CloseableGauge implements AutoCloseable {
+    private final class SettableGauge implements AutoCloseable {
+        private final AtomicLong value = new AtomicLong();
         private final Gauge gauge;
-        public CloseableGauge(Gauge gauge) {
-            this.gauge = gauge;
+
+        public SettableGauge(Meter.Id id) {
+            Gauge.Builder<Supplier<Number>> gaugeBuilder = Gauge.builder(id.getName(), value::get)
+                .description(id.getDescription())
+                .tags(id.getTags());
+
+            if (!CoreUtils.isNullOrEmpty(id.getBaseUnit())) {
+                gaugeBuilder.baseUnit(id.getBaseUnit());
+            }
+
+            this.gauge = gaugeBuilder.register(registry);
+        }
+
+        public void add(long delta) {
+            this.value.addAndGet(delta);
         }
 
         @Override
-        public void close() throws Exception {
-            gauge.close();
+        public void close()  {
+            this.gauge.close();
         }
     }
 
     /**
-     * Implements instrument cache key based on metric name and attribute set.
+     * Simple wrapper over Micrometer {@link Counter}
      */
-    private static final class InstrumentInfo {
+    private final class MicrometerLongUpDownLongCounter implements AzureLongCounter {
         private final String name;
-        private final MicrometerTags tags;
+        private final String description;
+        private final String unit;
 
-        InstrumentInfo(String name, MicrometerTags tags) {
+        MicrometerLongUpDownLongCounter(String name, String description, String unit) {
             this.name = name;
-            this.tags = tags;
+            this.description = description;
+            this.unit = unit;
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public Iterable<Tag> getTags() {
-            return tags.get();
-        }
-
+        /**
+         * {@inheritDoc}
+         */
         @Override
-        public boolean equals(Object o) {
-            if (o == this) {
-                return true;
+        public void add(long value, AzureAttributeCollection attributes, Context context) {
+            MicrometerTags tags = EMPTY;
+            if (attributes instanceof MicrometerTags) {
+                tags = ((MicrometerTags) attributes);
             }
 
-            if (!(o instanceof InstrumentInfo)) {
-                return false;
-            }
-
-            InstrumentInfo other = (InstrumentInfo) o;
-
-            return this.name.equals(other.name) && this.tags == other.tags;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 7;
-            hash = 31 * hash + name.hashCode();
-            hash = 31 * hash + tags.hashCode();
-            return hash;
+            Meter.Id id = new Meter.Id(name, tags.get(), unit, description, Meter.Type.COUNTER);
+            SettableGauge gauge = SETTABLE_GAUGE_CACHE.computeIfAbsent(id, i -> new SettableGauge(i));
+            gauge.add(value);
         }
     }
+
+    /*
+    private final class MicrometerGauge implements AutoCloseable {
+        private final Gauge gauge;
+
+        MicrometerGauge(String name, String description, String unit, Supplier<GaugePoint<Long>> valueSupplier) {
+            MicrometerTags tags = EMPTY;
+
+            // Micrometer does not support gauges with dynamic attributes
+            AzureAttributeBuilder attributes = valueSupplier.get().getAttributes();
+            if (attributes instanceof MicrometerTags) {
+                tags = ((MicrometerTags) attributes);
+            }
+            Meter.Id id = new Meter.Id(name, tags.get(), unit, description, Meter.Type.GAUGE);
+            this.gauge = GAUGE_CACHE.computeIfAbsent(id, i -> createGauge(i, () -> valueSupplier.get().getValue()));
+        }
+
+        private Gauge createGauge(Meter.Id id, Supplier<Number> supplier) {
+            Gauge.Builder<Supplier<Number>> summaryBuilder = Gauge.builder(id.getName(), supplier)
+                .description(id.getDescription())
+                .tags(id.getTags());
+
+            if (!CoreUtils.isNullOrEmpty(id.getBaseUnit())) {
+                summaryBuilder.baseUnit(id.getBaseUnit());
+            }
+
+            return summaryBuilder.register(registry);
+        }
+
+        @Override
+        public void close() {
+            this.gauge.close();
+        }
+    }*/
 }

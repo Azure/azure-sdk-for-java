@@ -6,11 +6,13 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
@@ -51,6 +53,9 @@ public class WebSocketsConnectionHandlerTest {
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
     private static final String PRODUCT = "my-product";
     private static final String CLIENT_VERSION = "1.5.1-alpha";
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER = new AmqpMetricsProvider(
+        AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOSTNAME, "my-hub");
+
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2919);
 
     private WebSocketsConnectionHandler handler;
@@ -73,7 +78,7 @@ public class WebSocketsConnectionHandlerTest {
             AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
             scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
+        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, DEFAULT_METRICS_PROVIDER);
     }
 
     @AfterEach
@@ -188,7 +193,7 @@ public class WebSocketsConnectionHandlerTest {
             CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpoint, port);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails)) {
+            peerDetails, DEFAULT_METRICS_PROVIDER)) {
 
             // Act
             handler.onConnectionInit(event);

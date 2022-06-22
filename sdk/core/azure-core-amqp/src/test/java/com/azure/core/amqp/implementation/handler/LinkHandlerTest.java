@@ -7,6 +7,8 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
+import com.azure.core.util.metrics.AzureMeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -50,6 +52,8 @@ public class LinkHandlerTest {
     private static final String CONNECTION_ID = "connection-id";
     private static final String HOSTNAME = "test-hostname";
     private static final String ENTITY_PATH = "test-entity-path";
+    private static final AmqpMetricsProvider DEFAULT_METRICS_PROVIDER = new AmqpMetricsProvider(AzureMeterProvider.getDefaultProvider().createMeter("noop", null, null), HOSTNAME, ENTITY_PATH);
+
 
     @Mock
     private Event event;
@@ -404,7 +408,7 @@ public class LinkHandlerTest {
 
     private static final class MockLinkHandler extends LinkHandler {
         MockLinkHandler(String connectionId, String hostname, String entityPath) {
-            super(connectionId, hostname, entityPath);
+            super(connectionId, hostname, entityPath, DEFAULT_METRICS_PROVIDER);
         }
     }
 }

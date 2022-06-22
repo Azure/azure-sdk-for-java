@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ExceptionUtil;
@@ -50,6 +51,7 @@ public class ConnectionHandler extends Handler {
     private final Map<String, Object> connectionProperties;
     private final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
+    private final AmqpMetricsProvider metricProvider;
 
     /**
      * Creates a handler that handles proton-j's connection events.
@@ -58,7 +60,7 @@ public class ConnectionHandler extends Handler {
      * @param connectionOptions Options used when creating the AMQP connection.
      */
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails) {
+        SslPeerDetails peerDetails, AmqpMetricsProvider metricProvider) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
         add(new Handshaker());
@@ -80,6 +82,8 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
         this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
+
+        this.metricProvider = metricProvider;
     }
 
     /**
@@ -185,6 +189,8 @@ public class ConnectionHandler extends Handler {
 
         connection.setProperties(properties);
         connection.open();
+
+        metricProvider.recordConnectionInit();
     }
 
     @Override
@@ -311,6 +317,7 @@ public class ConnectionHandler extends Handler {
         logErrorCondition("onConnectionFinal", connection, error);
         onNext(EndpointState.CLOSED);
 
+        metricProvider.recordConnectionClosed(error);
         // Complete the processors because they no longer have any work to do.
         close();
     }

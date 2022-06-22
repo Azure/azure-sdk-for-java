@@ -3,7 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AzureAttributeBuilder;
+import com.azure.core.util.AzureAttributeCollection;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ public class NoopMeterTests {
         assertFalse(noopMeter.isEnabled());
 
         AzureLongHistogram histogram = noopMeter.createLongHistogram("name", "description", null);
-        AzureAttributeBuilder attributes = AzureMeterProvider.getDefaultProvider().createAttributeBuilder();
+        AzureAttributeCollection attributes = noopMeter.createAttributeBuilder();
         assertNotNull(attributes);
 
         attributes.add("foo", "bar")
@@ -44,7 +44,7 @@ public class NoopMeterTests {
     public void noopCounterMeasurement() {
         AzureMeter noopMeter = AzureMeterProvider.getDefaultProvider().createMeter("foo", null, null);
         AzureLongCounter counter = noopMeter.createLongCounter("name", "description", null);
-        AzureAttributeBuilder attributes = AzureMeterProvider.getDefaultProvider().createAttributeBuilder()
+        AzureAttributeCollection attributes = noopMeter.createAttributeBuilder()
             .add("foo", 42L)
             .add("bar", 0.42d);
         counter.add(42L, attributes, Context.NONE);
