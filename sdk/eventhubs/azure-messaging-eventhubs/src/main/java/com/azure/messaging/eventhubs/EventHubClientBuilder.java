@@ -817,7 +817,7 @@ public class EventHubClientBuilder implements
         String identifier;
         if (clientOptions instanceof AmqpClientOptions) {
             String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
-            identifier = clientOptionIdentifier == null ? UUID.randomUUID().toString() : clientOptionIdentifier;
+            identifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
         } else {
             identifier = UUID.randomUUID().toString();
         }

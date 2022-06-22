@@ -7,7 +7,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 
 /**
- * A set of AMQP client options.
+ * General configuration options for AMQP clients.
  */
 public final class AmqpClientOptions extends ClientOptions {
     private String identifier;
@@ -27,16 +27,17 @@ public final class AmqpClientOptions extends ClientOptions {
     }
 
     /**
-     * Gets the identifier for the amqp client.
-     * @return Amqp client identifier.
+     * Gets the identifier for the AMQP client.
+     * @return AMQP client identifier.
      */
     public String getIdentifier() {
         return identifier;
     }
 
     /**
-     * Sets the identifier for the amqp client.
-     * @param identifier a specific string to identify amqp client.
+     * Sets the identifier for the AMQP client.
+     * @param identifier A specific string to identify AMQP client. If null or empty, a UUID will be used as the
+     *                   identifier.
      * @return The updated {@link AmqpClientOptions} object.
      */
     public AmqpClientOptions setIdentifier(String identifier) {
