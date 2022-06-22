@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class ElisionTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.ElisionTokenFilter";
+    private String odataType;
 
     private List<String> articles;
 
@@ -116,7 +116,7 @@ public final class ElisionTokenFilter extends TokenFilter {
                     }
                     ElisionTokenFilter deserializedValue = new ElisionTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setArticles(articles);
+                    deserializedValue.articles = articles;
 
                     return deserializedValue;
                 });

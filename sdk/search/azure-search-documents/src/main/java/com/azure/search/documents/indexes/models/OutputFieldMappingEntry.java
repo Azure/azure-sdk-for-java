@@ -108,7 +108,7 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     OutputFieldMappingEntry deserializedValue = new OutputFieldMappingEntry(name);
-                    deserializedValue.setTargetName(targetName);
+                    deserializedValue.targetName = targetName;
 
                     return deserializedValue;
                 });

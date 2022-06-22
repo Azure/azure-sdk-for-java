@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill that extracts text from image files. */
 @Fluent
 public final class OcrSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Vision.OcrSkill";
+    private String odataType;
 
     private OcrSkillLanguage defaultLanguageCode;
 
@@ -198,9 +198,9 @@ public final class OcrSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setShouldDetectOrientation(shouldDetectOrientation);
-                    deserializedValue.setLineEnding(lineEnding);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.shouldDetectOrientation = shouldDetectOrientation;
+                    deserializedValue.lineEnding = lineEnding;
 
                     return deserializedValue;
                 });

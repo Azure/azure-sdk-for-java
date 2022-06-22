@@ -20,7 +20,7 @@ public class Utils {
     /*
      * Set of modifiers that cannot be combined with final because it causes a violation.
      */
-    private static final Set INVALID_FINAL_COMBINATION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    private static final Set<Integer> INVALID_FINAL_COMBINATION = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         TokenTypes.LITERAL_TRANSIENT,
         TokenTypes.LITERAL_VOLATILE,
         TokenTypes.LITERAL_DEFAULT,
@@ -30,7 +30,7 @@ public class Utils {
     /*
      * Set of annotations that cannot be combined with modifier 'final' because it would break serialization.
      */
-    private static final Set INVALID_FINAL_ANNOTATIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    private static final Set<String> INVALID_FINAL_ANNOTATIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "JsonProperty",
         "JsonAlias",
         "JacksonXmlProperty"

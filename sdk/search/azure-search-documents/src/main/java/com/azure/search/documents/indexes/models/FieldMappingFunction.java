@@ -120,7 +120,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     FieldMappingFunction deserializedValue = new FieldMappingFunction(name);
-                    deserializedValue.setParameters(parameters);
+                    deserializedValue.parameters = parameters;
 
                     return deserializedValue;
                 });

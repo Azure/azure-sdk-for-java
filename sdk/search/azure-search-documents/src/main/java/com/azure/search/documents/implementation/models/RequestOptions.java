@@ -75,7 +75,7 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
                         }
                     }
                     RequestOptions deserializedValue = new RequestOptions();
-                    deserializedValue.setXMsClientRequestId(xMsClientRequestId);
+                    deserializedValue.xMsClientRequestId = xMsClientRequestId;
 
                     return deserializedValue;
                 });

@@ -75,7 +75,7 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
                         }
                     }
                     SemanticSettings deserializedValue = new SemanticSettings();
-                    deserializedValue.setConfigurations(configurations);
+                    deserializedValue.configurations = configurations;
 
                     return deserializedValue;
                 });

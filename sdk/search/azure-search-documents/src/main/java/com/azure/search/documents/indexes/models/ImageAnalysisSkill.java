@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill that analyzes image files. It extracts a rich set of visual features based on the image content. */
 @Fluent
 public final class ImageAnalysisSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Vision.ImageAnalysisSkill";
+    private String odataType;
 
     private ImageAnalysisSkillLanguage defaultLanguageCode;
 
@@ -205,9 +205,9 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setVisualFeatures(visualFeatures);
-                    deserializedValue.setDetails(details);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.visualFeatures = visualFeatures;
+                    deserializedValue.details = details;
 
                     return deserializedValue;
                 });

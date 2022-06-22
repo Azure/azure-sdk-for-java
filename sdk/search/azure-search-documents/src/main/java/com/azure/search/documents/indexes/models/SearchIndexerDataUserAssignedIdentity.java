@@ -19,7 +19,7 @@ import java.util.List;
 /** Specifies the identity for a datasource to use. */
 @Fluent
 public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDataIdentity {
-    private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity";
+    private String odataType;
 
     private final String userAssignedIdentity;
 

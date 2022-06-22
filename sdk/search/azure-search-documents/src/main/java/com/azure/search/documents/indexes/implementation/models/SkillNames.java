@@ -71,7 +71,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
                         }
                     }
                     SkillNames deserializedValue = new SkillNames();
-                    deserializedValue.setSkillNames(skillNames);
+                    deserializedValue.skillNames = skillNames;
 
                     return deserializedValue;
                 });

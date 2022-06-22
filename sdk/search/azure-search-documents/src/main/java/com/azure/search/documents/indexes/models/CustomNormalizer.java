@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class CustomNormalizer extends LexicalNormalizer {
-    private String odataType = "#Microsoft.Azure.Search.CustomNormalizer";
+    private String odataType;
 
     private List<TokenFilterName> tokenFilters;
 
@@ -162,8 +162,8 @@ public final class CustomNormalizer extends LexicalNormalizer {
                     }
                     CustomNormalizer deserializedValue = new CustomNormalizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setTokenFilters(tokenFilters);
-                    deserializedValue.setCharFilters(charFilters);
+                    deserializedValue.tokenFilters = tokenFilters;
+                    deserializedValue.charFilters = charFilters;
 
                     return deserializedValue;
                 });

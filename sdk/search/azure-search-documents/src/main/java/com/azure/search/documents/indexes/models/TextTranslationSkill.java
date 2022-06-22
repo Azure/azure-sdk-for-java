@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill to translate text from one language to another. */
 @Fluent
 public final class TextTranslationSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.TranslationSkill";
+    private String odataType;
 
     private final TextTranslationSkillLanguage defaultToLanguageCode;
 
@@ -204,8 +204,8 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultFromLanguageCode(defaultFromLanguageCode);
-                    deserializedValue.setSuggestedFrom(suggestedFrom);
+                    deserializedValue.defaultFromLanguageCode = defaultFromLanguageCode;
+                    deserializedValue.suggestedFrom = suggestedFrom;
 
                     return deserializedValue;
                 });

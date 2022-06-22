@@ -159,11 +159,11 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
                         }
                     }
                     SearchServiceLimits deserializedValue = new SearchServiceLimits();
-                    deserializedValue.setMaxFieldsPerIndex(maxFieldsPerIndex);
-                    deserializedValue.setMaxFieldNestingDepthPerIndex(maxFieldNestingDepthPerIndex);
-                    deserializedValue.setMaxComplexCollectionFieldsPerIndex(maxComplexCollectionFieldsPerIndex);
-                    deserializedValue.setMaxComplexObjectsInCollectionsPerDocument(
-                            maxComplexObjectsInCollectionsPerDocument);
+                    deserializedValue.maxFieldsPerIndex = maxFieldsPerIndex;
+                    deserializedValue.maxFieldNestingDepthPerIndex = maxFieldNestingDepthPerIndex;
+                    deserializedValue.maxComplexCollectionFieldsPerIndex = maxComplexCollectionFieldsPerIndex;
+                    deserializedValue.maxComplexObjectsInCollectionsPerDocument =
+                            maxComplexObjectsInCollectionsPerDocument;
 
                     return deserializedValue;
                 });

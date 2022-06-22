@@ -19,7 +19,7 @@ import java.util.List;
 /** Defines a function that boosts scores of documents with string values matching a given list of tags. */
 @Fluent
 public final class TagScoringFunction extends ScoringFunction {
-    private String type = "tag";
+    private String type;
 
     private final TagScoringParameters parameters;
 

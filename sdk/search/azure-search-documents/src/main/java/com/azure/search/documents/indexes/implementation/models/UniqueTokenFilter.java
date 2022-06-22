@@ -19,7 +19,7 @@ import java.util.List;
 /** Filters out tokens with same text as the previous token. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class UniqueTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.UniqueTokenFilter";
+    private String odataType;
 
     private Boolean onlyOnSamePosition;
 
@@ -114,7 +114,7 @@ public final class UniqueTokenFilter extends TokenFilter {
                     }
                     UniqueTokenFilter deserializedValue = new UniqueTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setOnlyOnSamePosition(onlyOnSamePosition);
+                    deserializedValue.onlyOnSamePosition = onlyOnSamePosition;
 
                     return deserializedValue;
                 });

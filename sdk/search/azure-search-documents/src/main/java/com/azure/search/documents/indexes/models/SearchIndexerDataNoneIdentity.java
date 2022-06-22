@@ -16,7 +16,7 @@ import com.azure.json.JsonWriter;
 /** Clears the identity property of a datasource. */
 @Immutable
 public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdentity {
-    private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity";
+    private String odataType;
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

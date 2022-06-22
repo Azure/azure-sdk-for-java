@@ -20,7 +20,7 @@ import java.util.List;
 /** Tokenizes the input into n-grams of the given size(s). This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class NGramTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.NGramTokenizer";
+    private String odataType;
 
     private Integer minGram;
 
@@ -173,9 +173,9 @@ public final class NGramTokenizer extends LexicalTokenizer {
                     }
                     NGramTokenizer deserializedValue = new NGramTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMinGram(minGram);
-                    deserializedValue.setMaxGram(maxGram);
-                    deserializedValue.setTokenChars(tokenChars);
+                    deserializedValue.minGram = minGram;
+                    deserializedValue.maxGram = maxGram;
+                    deserializedValue.tokenChars = tokenChars;
 
                     return deserializedValue;
                 });

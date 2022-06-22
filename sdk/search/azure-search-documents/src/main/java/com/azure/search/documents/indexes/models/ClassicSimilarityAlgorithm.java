@@ -20,7 +20,7 @@ import com.azure.json.JsonWriter;
  */
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
-    private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
+    private String odataType;
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

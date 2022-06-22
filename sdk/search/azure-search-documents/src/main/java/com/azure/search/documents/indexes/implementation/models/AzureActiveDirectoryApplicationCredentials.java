@@ -104,8 +104,8 @@ public final class AzureActiveDirectoryApplicationCredentials
                     }
                     AzureActiveDirectoryApplicationCredentials deserializedValue =
                             new AzureActiveDirectoryApplicationCredentials();
-                    deserializedValue.setApplicationId(applicationId);
-                    deserializedValue.setApplicationSecret(applicationSecret);
+                    deserializedValue.applicationId = applicationId;
+                    deserializedValue.applicationSecret = applicationSecret;
 
                     return deserializedValue;
                 });

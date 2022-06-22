@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class ClassicTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.ClassicTokenizer";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -117,7 +117,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
                     }
                     ClassicTokenizer deserializedValue = new ClassicTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
+                    deserializedValue.maxTokenLength = maxTokenLength;
 
                     return deserializedValue;
                 });

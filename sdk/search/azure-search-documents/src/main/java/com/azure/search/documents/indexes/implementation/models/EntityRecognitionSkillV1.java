@@ -24,7 +24,7 @@ import java.util.List;
 /** Text analytics entity recognition. */
 @Fluent
 public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.EntityRecognitionSkill";
+    private String odataType;
 
     private List<EntityCategory> categories;
 
@@ -239,10 +239,10 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setCategories(categories);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setIncludeTypelessEntities(includeTypelessEntities);
-                    deserializedValue.setMinimumPrecision(minimumPrecision);
+                    deserializedValue.categories = categories;
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.includeTypelessEntities = includeTypelessEntities;
+                    deserializedValue.minimumPrecision = minimumPrecision;
 
                     return deserializedValue;
                 });

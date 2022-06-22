@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill looks for text from a custom, user-defined list of words and phrases. */
 @Fluent
 public final class CustomEntityLookupSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
+    private String odataType;
 
     private CustomEntityLookupSkillLanguage defaultLanguageCode;
 
@@ -289,12 +289,12 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setEntitiesDefinitionUri(entitiesDefinitionUri);
-                    deserializedValue.setInlineEntitiesDefinition(inlineEntitiesDefinition);
-                    deserializedValue.setGlobalDefaultCaseSensitive(globalDefaultCaseSensitive);
-                    deserializedValue.setGlobalDefaultAccentSensitive(globalDefaultAccentSensitive);
-                    deserializedValue.setGlobalDefaultFuzzyEditDistance(globalDefaultFuzzyEditDistance);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.entitiesDefinitionUri = entitiesDefinitionUri;
+                    deserializedValue.inlineEntitiesDefinition = inlineEntitiesDefinition;
+                    deserializedValue.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
+                    deserializedValue.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
+                    deserializedValue.globalDefaultFuzzyEditDistance = globalDefaultFuzzyEditDistance;
 
                     return deserializedValue;
                 });

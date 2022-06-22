@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class PiiDetectionSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.PIIDetectionSkill";
+    private String odataType;
 
     private String defaultLanguageCode;
 
@@ -316,13 +316,13 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setMinimumPrecision(minimumPrecision);
-                    deserializedValue.setMaskingMode(maskingMode);
-                    deserializedValue.setMaskingCharacter(maskingCharacter);
-                    deserializedValue.setModelVersion(modelVersion);
-                    deserializedValue.setPiiCategories(piiCategories);
-                    deserializedValue.setDomain(domain);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.minimumPrecision = minimumPrecision;
+                    deserializedValue.maskingMode = maskingMode;
+                    deserializedValue.maskingCharacter = maskingCharacter;
+                    deserializedValue.modelVersion = modelVersion;
+                    deserializedValue.piiCategories = piiCategories;
+                    deserializedValue.domain = domain;
 
                     return deserializedValue;
                 });

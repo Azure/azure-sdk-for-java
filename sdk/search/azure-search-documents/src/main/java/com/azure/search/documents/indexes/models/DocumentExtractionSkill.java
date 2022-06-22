@@ -20,7 +20,7 @@ import java.util.Map;
 /** A skill that extracts content from a file within the enrichment pipeline. */
 @Fluent
 public final class DocumentExtractionSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Util.DocumentExtractionSkill";
+    private String odataType;
 
     private String parsingMode;
 
@@ -202,9 +202,9 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setParsingMode(parsingMode);
-                    deserializedValue.setDataToExtract(dataToExtract);
-                    deserializedValue.setConfiguration(configuration);
+                    deserializedValue.parsingMode = parsingMode;
+                    deserializedValue.dataToExtract = dataToExtract;
+                    deserializedValue.configuration = configuration;
 
                     return deserializedValue;
                 });

@@ -20,7 +20,7 @@ import com.azure.json.JsonWriter;
  */
 @Fluent
 public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
-    private String odataType = "#Microsoft.Azure.Search.BM25Similarity";
+    private String odataType;
 
     private Double k1;
 
@@ -122,8 +122,8 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
 
                     BM25SimilarityAlgorithm deserializedValue = new BM25SimilarityAlgorithm();
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setK1(k1);
-                    deserializedValue.setB(b);
+                    deserializedValue.k1 = k1;
+                    deserializedValue.b = b;
 
                     return deserializedValue;
                 });

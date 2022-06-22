@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class SnowballTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.SnowballTokenFilter";
+    private String odataType;
 
     private final SnowballTokenFilterLanguage language;
 

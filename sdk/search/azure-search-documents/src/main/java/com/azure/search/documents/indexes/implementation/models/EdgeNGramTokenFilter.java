@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class EdgeNGramTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenFilter";
+    private String odataType;
 
     private Integer minGram;
 
@@ -168,9 +168,9 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
                     }
                     EdgeNGramTokenFilter deserializedValue = new EdgeNGramTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMinGram(minGram);
-                    deserializedValue.setMaxGram(maxGram);
-                    deserializedValue.setSide(side);
+                    deserializedValue.minGram = minGram;
+                    deserializedValue.maxGram = maxGram;
+                    deserializedValue.side = side;
 
                     return deserializedValue;
                 });

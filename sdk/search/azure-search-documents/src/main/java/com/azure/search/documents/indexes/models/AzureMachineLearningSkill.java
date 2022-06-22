@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class AzureMachineLearningSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Custom.AmlSkill";
+    private String odataType;
 
     private String scoringUri;
 
@@ -289,12 +289,12 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setScoringUri(scoringUri);
-                    deserializedValue.setAuthenticationKey(authenticationKey);
-                    deserializedValue.setResourceId(resourceId);
-                    deserializedValue.setTimeout(timeout);
-                    deserializedValue.setRegion(region);
-                    deserializedValue.setDegreeOfParallelism(degreeOfParallelism);
+                    deserializedValue.scoringUri = scoringUri;
+                    deserializedValue.authenticationKey = authenticationKey;
+                    deserializedValue.resourceId = resourceId;
+                    deserializedValue.timeout = timeout;
+                    deserializedValue.region = region;
+                    deserializedValue.degreeOfParallelism = degreeOfParallelism;
 
                     return deserializedValue;
                 });

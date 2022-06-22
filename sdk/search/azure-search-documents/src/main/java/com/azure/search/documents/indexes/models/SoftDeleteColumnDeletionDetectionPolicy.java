@@ -19,7 +19,7 @@ import com.azure.json.JsonWriter;
  */
 @Fluent
 public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
-    private String odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
+    private String odataType;
 
     private String softDeleteColumnName;
 
@@ -114,8 +114,8 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
                     SoftDeleteColumnDeletionDetectionPolicy deserializedValue =
                             new SoftDeleteColumnDeletionDetectionPolicy();
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setSoftDeleteColumnName(softDeleteColumnName);
-                    deserializedValue.setSoftDeleteMarkerValue(softDeleteMarkerValue);
+                    deserializedValue.softDeleteColumnName = softDeleteColumnName;
+                    deserializedValue.softDeleteMarkerValue = softDeleteMarkerValue;
 
                     return deserializedValue;
                 });

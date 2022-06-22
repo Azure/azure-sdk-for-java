@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class StemmerOverrideTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.StemmerOverrideTokenFilter";
+    private String odataType;
 
     private final List<String> rules;
 

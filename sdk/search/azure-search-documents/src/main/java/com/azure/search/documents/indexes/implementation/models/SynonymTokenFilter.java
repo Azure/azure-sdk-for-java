@@ -19,7 +19,7 @@ import java.util.List;
 /** Matches single or multi-word synonyms in a token stream. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class SynonymTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.SynonymTokenFilter";
+    private String odataType;
 
     private final List<String> synonyms;
 
@@ -174,8 +174,8 @@ public final class SynonymTokenFilter extends TokenFilter {
                     }
                     SynonymTokenFilter deserializedValue = new SynonymTokenFilter(name, synonyms);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setIgnoreCase(ignoreCase);
-                    deserializedValue.setExpand(expand);
+                    deserializedValue.ignoreCase = ignoreCase;
+                    deserializedValue.expand = expand;
 
                     return deserializedValue;
                 });

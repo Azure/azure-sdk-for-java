@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class CustomAnalyzer extends LexicalAnalyzer {
-    private String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
+    private String odataType;
 
     private final LexicalTokenizerName tokenizer;
 
@@ -185,8 +185,8 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
                     }
                     CustomAnalyzer deserializedValue = new CustomAnalyzer(name, tokenizer);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setTokenFilters(tokenFilters);
-                    deserializedValue.setCharFilters(charFilters);
+                    deserializedValue.tokenFilters = tokenFilters;
+                    deserializedValue.charFilters = charFilters;
 
                     return deserializedValue;
                 });

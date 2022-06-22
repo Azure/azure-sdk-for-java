@@ -19,7 +19,7 @@ import java.util.List;
 /** Truncates the terms to a specific length. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class TruncateTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.TruncateTokenFilter";
+    private String odataType;
 
     private Integer length;
 
@@ -112,7 +112,7 @@ public final class TruncateTokenFilter extends TokenFilter {
                     }
                     TruncateTokenFilter deserializedValue = new TruncateTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setLength(length);
+                    deserializedValue.length = length;
 
                     return deserializedValue;
                 });

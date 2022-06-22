@@ -229,11 +229,11 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     AnalyzeRequest deserializedValue = new AnalyzeRequest(text);
-                    deserializedValue.setAnalyzer(analyzer);
-                    deserializedValue.setTokenizer(tokenizer);
-                    deserializedValue.setNormalizer(normalizer);
-                    deserializedValue.setTokenFilters(tokenFilters);
-                    deserializedValue.setCharFilters(charFilters);
+                    deserializedValue.analyzer = analyzer;
+                    deserializedValue.tokenizer = tokenizer;
+                    deserializedValue.normalizer = normalizer;
+                    deserializedValue.tokenFilters = tokenFilters;
+                    deserializedValue.charFilters = charFilters;
 
                     return deserializedValue;
                 });

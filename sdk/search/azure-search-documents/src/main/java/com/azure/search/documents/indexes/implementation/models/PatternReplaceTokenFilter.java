@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Fluent
 public final class PatternReplaceTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.PatternReplaceTokenFilter";
+    private String odataType;
 
     private final String pattern;
 

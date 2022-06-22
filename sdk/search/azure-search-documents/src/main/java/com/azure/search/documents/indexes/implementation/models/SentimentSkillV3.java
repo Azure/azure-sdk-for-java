@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Fluent
 public final class SentimentSkillV3 extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.V3.SentimentSkill";
+    private String odataType;
 
     private String defaultLanguageCode;
 
@@ -205,9 +205,9 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setIncludeOpinionMining(includeOpinionMining);
-                    deserializedValue.setModelVersion(modelVersion);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.includeOpinionMining = includeOpinionMining;
+                    deserializedValue.modelVersion = modelVersion;
 
                     return deserializedValue;
                 });

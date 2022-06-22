@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill to split a string into chunks of text. */
 @Fluent
 public final class SplitSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.SplitSkill";
+    private String odataType;
 
     private SplitSkillLanguage defaultLanguageCode;
 
@@ -194,9 +194,9 @@ public final class SplitSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setTextSplitMode(textSplitMode);
-                    deserializedValue.setMaximumPageLength(maximumPageLength);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.textSplitMode = textSplitMode;
+                    deserializedValue.maximumPageLength = maximumPageLength;
 
                     return deserializedValue;
                 });

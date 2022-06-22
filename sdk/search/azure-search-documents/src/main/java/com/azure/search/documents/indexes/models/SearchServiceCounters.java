@@ -257,8 +257,8 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                                     dataSourceCounter,
                                     storageSizeCounter,
                                     synonymMapCounter);
-                    deserializedValue.setAliasCounter(aliasCounter);
-                    deserializedValue.setSkillsetCounter(skillsetCounter);
+                    deserializedValue.aliasCounter = aliasCounter;
+                    deserializedValue.skillsetCounter = skillsetCounter;
 
                     return deserializedValue;
                 });

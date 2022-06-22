@@ -16,7 +16,7 @@ import com.azure.json.JsonWriter;
 /** An empty object that represents the default cognitive service resource for a skillset. */
 @Fluent
 public final class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
-    private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
+    private String odataType;
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

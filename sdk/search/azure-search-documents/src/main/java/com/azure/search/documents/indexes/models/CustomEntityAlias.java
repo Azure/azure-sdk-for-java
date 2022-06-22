@@ -160,9 +160,9 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CustomEntityAlias deserializedValue = new CustomEntityAlias(text);
-                    deserializedValue.setCaseSensitive(caseSensitive);
-                    deserializedValue.setAccentSensitive(accentSensitive);
-                    deserializedValue.setFuzzyEditDistance(fuzzyEditDistance);
+                    deserializedValue.caseSensitive = caseSensitive;
+                    deserializedValue.accentSensitive = accentSensitive;
+                    deserializedValue.fuzzyEditDistance = fuzzyEditDistance;
 
                     return deserializedValue;
                 });

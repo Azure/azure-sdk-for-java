@@ -19,7 +19,7 @@ import java.util.List;
 /** Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter. */
 @Fluent
 public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
-    private String odataType = "#Microsoft.Azure.Search.StandardAnalyzer";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -141,8 +141,8 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
                     }
                     LuceneStandardAnalyzer deserializedValue = new LuceneStandardAnalyzer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
-                    deserializedValue.setStopwords(stopwords);
+                    deserializedValue.maxTokenLength = maxTokenLength;
+                    deserializedValue.stopwords = stopwords;
 
                     return deserializedValue;
                 });

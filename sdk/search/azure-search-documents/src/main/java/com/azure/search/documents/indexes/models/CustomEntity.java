@@ -401,17 +401,17 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CustomEntity deserializedValue = new CustomEntity(name);
-                    deserializedValue.setDescription(description);
-                    deserializedValue.setType(type);
-                    deserializedValue.setSubtype(subtype);
-                    deserializedValue.setId(id);
-                    deserializedValue.setCaseSensitive(caseSensitive);
-                    deserializedValue.setAccentSensitive(accentSensitive);
-                    deserializedValue.setFuzzyEditDistance(fuzzyEditDistance);
-                    deserializedValue.setDefaultCaseSensitive(defaultCaseSensitive);
-                    deserializedValue.setDefaultAccentSensitive(defaultAccentSensitive);
-                    deserializedValue.setDefaultFuzzyEditDistance(defaultFuzzyEditDistance);
-                    deserializedValue.setAliases(aliases);
+                    deserializedValue.description = description;
+                    deserializedValue.type = type;
+                    deserializedValue.subtype = subtype;
+                    deserializedValue.id = id;
+                    deserializedValue.caseSensitive = caseSensitive;
+                    deserializedValue.accentSensitive = accentSensitive;
+                    deserializedValue.fuzzyEditDistance = fuzzyEditDistance;
+                    deserializedValue.defaultCaseSensitive = defaultCaseSensitive;
+                    deserializedValue.defaultAccentSensitive = defaultAccentSensitive;
+                    deserializedValue.defaultFuzzyEditDistance = defaultFuzzyEditDistance;
+                    deserializedValue.aliases = aliases;
 
                     return deserializedValue;
                 });

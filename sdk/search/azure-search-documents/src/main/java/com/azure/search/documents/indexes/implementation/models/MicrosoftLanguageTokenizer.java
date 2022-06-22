@@ -20,7 +20,7 @@ import java.util.List;
 /** Divides text using language-specific rules. */
 @Fluent
 public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -171,9 +171,9 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
                     }
                     MicrosoftLanguageTokenizer deserializedValue = new MicrosoftLanguageTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
-                    deserializedValue.setIsSearchTokenizer(isSearchTokenizer);
-                    deserializedValue.setLanguage(language);
+                    deserializedValue.maxTokenLength = maxTokenLength;
+                    deserializedValue.isSearchTokenizer = isSearchTokenizer;
+                    deserializedValue.language = language;
 
                     return deserializedValue;
                 });

@@ -19,7 +19,7 @@ import com.azure.json.JsonWriter;
  */
 @Immutable
 public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetectionPolicy {
-    private String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
+    private String odataType;
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

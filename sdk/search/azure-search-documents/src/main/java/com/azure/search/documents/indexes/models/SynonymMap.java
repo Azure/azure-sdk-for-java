@@ -19,7 +19,7 @@ import com.azure.json.JsonWriter;
 public final class SynonymMap implements JsonSerializable<SynonymMap> {
     private String name;
 
-    private String format = "solr";
+    private String format;
 
     private String synonyms;
 
@@ -151,6 +151,7 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
+        jsonWriter.writeStringField("format", this.format, false);
         jsonWriter.writeStringField("synonyms", this.synonyms, false);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
         jsonWriter.writeStringField("@odata.etag", this.eTag, false);
@@ -169,6 +170,7 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
                 jsonReader,
                 reader -> {
                     String name = null;
+                    String format = null;
                     String synonyms = null;
                     SearchResourceEncryptionKey encryptionKey = null;
                     String eTag = null;
@@ -178,6 +180,8 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
 
                         if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
+                        } else if ("format".equals(fieldName)) {
+                            format = reader.getStringValue();
                         } else if ("synonyms".equals(fieldName)) {
                             synonyms = reader.getStringValue();
                         } else if ("encryptionKey".equals(fieldName)) {
@@ -189,10 +193,11 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
                         }
                     }
                     SynonymMap deserializedValue = new SynonymMap();
-                    deserializedValue.setName(name);
-                    deserializedValue.setSynonyms(synonyms);
-                    deserializedValue.setEncryptionKey(encryptionKey);
-                    deserializedValue.setETag(eTag);
+                    deserializedValue.name = name;
+                    deserializedValue.format = format;
+                    deserializedValue.synonyms = synonyms;
+                    deserializedValue.encryptionKey = encryptionKey;
+                    deserializedValue.eTag = eTag;
 
                     return deserializedValue;
                 });

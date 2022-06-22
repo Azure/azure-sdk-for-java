@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill that uses text analytics for key phrase extraction. */
 @Fluent
 public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill";
+    private String odataType;
 
     private KeyPhraseExtractionSkillLanguage defaultLanguageCode;
 
@@ -199,9 +199,9 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setMaxKeyPhraseCount(maxKeyPhraseCount);
-                    deserializedValue.setModelVersion(modelVersion);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.maxKeyPhraseCount = maxKeyPhraseCount;
+                    deserializedValue.modelVersion = modelVersion;
 
                     return deserializedValue;
                 });

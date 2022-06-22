@@ -19,7 +19,7 @@ import java.util.List;
 /** Defines a data change detection policy that captures changes based on the value of a high water mark column. */
 @Fluent
 public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
-    private String odataType = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy";
+    private String odataType;
 
     private final String highWaterMarkColumnName;
 

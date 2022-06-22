@@ -160,9 +160,9 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     InputFieldMappingEntry deserializedValue = new InputFieldMappingEntry(name);
-                    deserializedValue.setSource(source);
-                    deserializedValue.setSourceContext(sourceContext);
-                    deserializedValue.setInputs(inputs);
+                    deserializedValue.source = source;
+                    deserializedValue.sourceContext = sourceContext;
+                    deserializedValue.inputs = inputs;
 
                     return deserializedValue;
                 });

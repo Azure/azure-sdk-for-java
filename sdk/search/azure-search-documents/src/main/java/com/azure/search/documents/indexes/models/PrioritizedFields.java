@@ -148,9 +148,9 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
                         }
                     }
                     PrioritizedFields deserializedValue = new PrioritizedFields();
-                    deserializedValue.setTitleField(titleField);
-                    deserializedValue.setPrioritizedContentFields(prioritizedContentFields);
-                    deserializedValue.setPrioritizedKeywordsFields(prioritizedKeywordsFields);
+                    deserializedValue.titleField = titleField;
+                    deserializedValue.prioritizedContentFields = prioritizedContentFields;
+                    deserializedValue.prioritizedKeywordsFields = prioritizedKeywordsFields;
 
                     return deserializedValue;
                 });

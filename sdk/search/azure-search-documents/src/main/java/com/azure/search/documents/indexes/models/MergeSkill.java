@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class MergeSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.MergeSkill";
+    private String odataType;
 
     private String insertPreTag;
 
@@ -171,8 +171,8 @@ public final class MergeSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setInsertPreTag(insertPreTag);
-                    deserializedValue.setInsertPostTag(insertPostTag);
+                    deserializedValue.insertPreTag = insertPreTag;
+                    deserializedValue.insertPostTag = insertPostTag;
 
                     return deserializedValue;
                 });

@@ -326,16 +326,16 @@ public final class SearchIndexerDataSource implements JsonSerializable<SearchInd
                         }
                     }
                     SearchIndexerDataSource deserializedValue = new SearchIndexerDataSource();
-                    deserializedValue.setName(name);
-                    deserializedValue.setDescription(description);
-                    deserializedValue.setType(type);
-                    deserializedValue.setCredentials(credentials);
-                    deserializedValue.setContainer(container);
-                    deserializedValue.setIdentity(identity);
-                    deserializedValue.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
-                    deserializedValue.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
-                    deserializedValue.setETag(eTag);
-                    deserializedValue.setEncryptionKey(encryptionKey);
+                    deserializedValue.name = name;
+                    deserializedValue.description = description;
+                    deserializedValue.type = type;
+                    deserializedValue.credentials = credentials;
+                    deserializedValue.container = container;
+                    deserializedValue.identity = identity;
+                    deserializedValue.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
+                    deserializedValue.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
+                    deserializedValue.eTag = eTag;
+                    deserializedValue.encryptionKey = encryptionKey;
 
                     return deserializedValue;
                 });

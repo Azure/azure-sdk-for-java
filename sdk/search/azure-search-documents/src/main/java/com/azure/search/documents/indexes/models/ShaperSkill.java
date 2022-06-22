@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class ShaperSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Util.ShaperSkill";
+    private String odataType;
 
     /**
      * Creates an instance of ShaperSkill class.

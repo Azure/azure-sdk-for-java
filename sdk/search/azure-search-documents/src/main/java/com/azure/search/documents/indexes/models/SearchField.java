@@ -516,18 +516,18 @@ public final class SearchField implements JsonSerializable<SearchField> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SearchField deserializedValue = new SearchField(name, type);
-                    deserializedValue.setKey(key);
-                    deserializedValue.setHidden(hidden);
-                    deserializedValue.setSearchable(searchable);
-                    deserializedValue.setFilterable(filterable);
-                    deserializedValue.setSortable(sortable);
-                    deserializedValue.setFacetable(facetable);
-                    deserializedValue.setAnalyzerName(analyzerName);
-                    deserializedValue.setSearchAnalyzerName(searchAnalyzerName);
-                    deserializedValue.setIndexAnalyzerName(indexAnalyzerName);
-                    deserializedValue.setNormalizerName(normalizerName);
-                    deserializedValue.setSynonymMapNames(synonymMapNames);
-                    deserializedValue.setFields(fields);
+                    deserializedValue.key = key;
+                    deserializedValue.hidden = hidden;
+                    deserializedValue.searchable = searchable;
+                    deserializedValue.filterable = filterable;
+                    deserializedValue.sortable = sortable;
+                    deserializedValue.facetable = facetable;
+                    deserializedValue.analyzerName = analyzerName;
+                    deserializedValue.searchAnalyzerName = searchAnalyzerName;
+                    deserializedValue.indexAnalyzerName = indexAnalyzerName;
+                    deserializedValue.normalizerName = normalizerName;
+                    deserializedValue.synonymMapNames = synonymMapNames;
+                    deserializedValue.fields = fields;
 
                     return deserializedValue;
                 });

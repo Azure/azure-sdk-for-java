@@ -19,7 +19,7 @@ import java.util.List;
 /** Tokenizes urls and emails as one token. This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -114,7 +114,7 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
                     }
                     UaxUrlEmailTokenizer deserializedValue = new UaxUrlEmailTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
+                    deserializedValue.maxTokenLength = maxTokenLength;
 
                     return deserializedValue;
                 });

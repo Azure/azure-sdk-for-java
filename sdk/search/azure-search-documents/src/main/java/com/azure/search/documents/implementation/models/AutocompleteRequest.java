@@ -337,14 +337,14 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     AutocompleteRequest deserializedValue = new AutocompleteRequest(searchText, suggesterName);
-                    deserializedValue.setAutocompleteMode(autocompleteMode);
-                    deserializedValue.setFilter(filter);
-                    deserializedValue.setUseFuzzyMatching(useFuzzyMatching);
-                    deserializedValue.setHighlightPostTag(highlightPostTag);
-                    deserializedValue.setHighlightPreTag(highlightPreTag);
-                    deserializedValue.setMinimumCoverage(minimumCoverage);
-                    deserializedValue.setSearchFields(searchFields);
-                    deserializedValue.setTop(top);
+                    deserializedValue.autocompleteMode = autocompleteMode;
+                    deserializedValue.filter = filter;
+                    deserializedValue.useFuzzyMatching = useFuzzyMatching;
+                    deserializedValue.highlightPostTag = highlightPostTag;
+                    deserializedValue.highlightPreTag = highlightPreTag;
+                    deserializedValue.minimumCoverage = minimumCoverage;
+                    deserializedValue.searchFields = searchFields;
+                    deserializedValue.top = top;
 
                     return deserializedValue;
                 });

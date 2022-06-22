@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class CommonGramTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.CommonGramTokenFilter";
+    private String odataType;
 
     private final List<String> commonWords;
 
@@ -170,8 +170,8 @@ public final class CommonGramTokenFilter extends TokenFilter {
                     }
                     CommonGramTokenFilter deserializedValue = new CommonGramTokenFilter(name, commonWords);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setIgnoreCase(ignoreCase);
-                    deserializedValue.setUseQueryMode(useQueryMode);
+                    deserializedValue.ignoreCase = ignoreCase;
+                    deserializedValue.useQueryMode = useQueryMode;
 
                     return deserializedValue;
                 });

@@ -19,7 +19,7 @@ import java.util.List;
 /** Removes words that are too long or too short. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class LengthTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.LengthTokenFilter";
+    private String odataType;
 
     private Integer minLength;
 
@@ -140,8 +140,8 @@ public final class LengthTokenFilter extends TokenFilter {
                     }
                     LengthTokenFilter deserializedValue = new LengthTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMinLength(minLength);
-                    deserializedValue.setMaxLength(maxLength);
+                    deserializedValue.minLength = minLength;
+                    deserializedValue.maxLength = maxLength;
 
                     return deserializedValue;
                 });

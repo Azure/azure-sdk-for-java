@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Fluent
 public final class PatternReplaceCharFilter extends CharFilter {
-    private String odataType = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
+    private String odataType;
 
     private final String pattern;
 

@@ -134,7 +134,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SearchAlias deserializedValue = new SearchAlias(name, indexes);
-                    deserializedValue.setETag(eTag);
+                    deserializedValue.eTag = eTag;
 
                     return deserializedValue;
                 });

@@ -166,9 +166,9 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     ScoringProfile deserializedValue = new ScoringProfile(name);
-                    deserializedValue.setTextWeights(textWeights);
-                    deserializedValue.setFunctions(functions);
-                    deserializedValue.setFunctionAggregation(functionAggregation);
+                    deserializedValue.textWeights = textWeights;
+                    deserializedValue.functions = functions;
+                    deserializedValue.functionAggregation = functionAggregation;
 
                     return deserializedValue;
                 });

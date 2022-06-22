@@ -19,7 +19,7 @@ import java.util.List;
 /** Limits the number of tokens while indexing. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class LimitTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.LimitTokenFilter";
+    private String odataType;
 
     private Integer maxTokenCount;
 
@@ -140,8 +140,8 @@ public final class LimitTokenFilter extends TokenFilter {
                     }
                     LimitTokenFilter deserializedValue = new LimitTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenCount(maxTokenCount);
-                    deserializedValue.setConsumeAllTokens(consumeAllTokens);
+                    deserializedValue.maxTokenCount = maxTokenCount;
+                    deserializedValue.consumeAllTokens = consumeAllTokens;
 
                     return deserializedValue;
                 });

@@ -563,23 +563,23 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                         }
                     }
                     IndexingParametersConfiguration deserializedValue = new IndexingParametersConfiguration();
-                    deserializedValue.setParsingMode(parsingMode);
-                    deserializedValue.setExcludedFileNameExtensions(excludedFileNameExtensions);
-                    deserializedValue.setIndexedFileNameExtensions(indexedFileNameExtensions);
-                    deserializedValue.setFailOnUnsupportedContentType(failOnUnsupportedContentType);
-                    deserializedValue.setFailOnUnprocessableDocument(failOnUnprocessableDocument);
-                    deserializedValue.setIndexStorageMetadataOnlyForOversizedDocuments(
-                            indexStorageMetadataOnlyForOversizedDocuments);
-                    deserializedValue.setDelimitedTextHeaders(delimitedTextHeaders);
-                    deserializedValue.setDelimitedTextDelimiter(delimitedTextDelimiter);
-                    deserializedValue.setFirstLineContainsHeaders(firstLineContainsHeaders);
-                    deserializedValue.setDocumentRoot(documentRoot);
-                    deserializedValue.setDataToExtract(dataToExtract);
-                    deserializedValue.setImageAction(imageAction);
-                    deserializedValue.setAllowSkillsetToReadFileData(allowSkillsetToReadFileData);
-                    deserializedValue.setPdfTextRotationAlgorithm(pdfTextRotationAlgorithm);
-                    deserializedValue.setExecutionEnvironment(executionEnvironment);
-                    deserializedValue.setQueryTimeout(queryTimeout);
+                    deserializedValue.parsingMode = parsingMode;
+                    deserializedValue.excludedFileNameExtensions = excludedFileNameExtensions;
+                    deserializedValue.indexedFileNameExtensions = indexedFileNameExtensions;
+                    deserializedValue.failOnUnsupportedContentType = failOnUnsupportedContentType;
+                    deserializedValue.failOnUnprocessableDocument = failOnUnprocessableDocument;
+                    deserializedValue.indexStorageMetadataOnlyForOversizedDocuments =
+                            indexStorageMetadataOnlyForOversizedDocuments;
+                    deserializedValue.delimitedTextHeaders = delimitedTextHeaders;
+                    deserializedValue.delimitedTextDelimiter = delimitedTextDelimiter;
+                    deserializedValue.firstLineContainsHeaders = firstLineContainsHeaders;
+                    deserializedValue.documentRoot = documentRoot;
+                    deserializedValue.dataToExtract = dataToExtract;
+                    deserializedValue.imageAction = imageAction;
+                    deserializedValue.allowSkillsetToReadFileData = allowSkillsetToReadFileData;
+                    deserializedValue.pdfTextRotationAlgorithm = pdfTextRotationAlgorithm;
+                    deserializedValue.executionEnvironment = executionEnvironment;
+                    deserializedValue.queryTimeout = queryTimeout;
 
                     return deserializedValue;
                 });

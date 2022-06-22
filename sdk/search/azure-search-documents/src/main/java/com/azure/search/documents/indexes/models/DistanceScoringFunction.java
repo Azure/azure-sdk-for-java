@@ -19,7 +19,7 @@ import java.util.List;
 /** Defines a function that boosts scores based on distance from a geographic location. */
 @Fluent
 public final class DistanceScoringFunction extends ScoringFunction {
-    private String type = "distance";
+    private String type;
 
     private final DistanceScoringParameters parameters;
 

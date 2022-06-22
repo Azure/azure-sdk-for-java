@@ -19,7 +19,7 @@ import java.util.List;
 /** A skill that enables scenarios that require a Boolean operation to determine the data to assign to an output. */
 @Fluent
 public final class ConditionalSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Util.ConditionalSkill";
+    private String odataType;
 
     /**
      * Creates an instance of ConditionalSkill class.

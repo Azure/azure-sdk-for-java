@@ -23,7 +23,7 @@ import java.util.List;
 /** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
 @Fluent
 public final class SentimentSkillV1 extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.SentimentSkill";
+    private String odataType;
 
     private SentimentSkillLanguage defaultLanguageCode;
 
@@ -145,7 +145,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
 
                     return deserializedValue;
                 });

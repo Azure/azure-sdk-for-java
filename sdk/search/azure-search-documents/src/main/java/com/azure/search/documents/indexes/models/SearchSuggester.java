@@ -22,7 +22,7 @@ import java.util.List;
 public final class SearchSuggester implements JsonSerializable<SearchSuggester> {
     private final String name;
 
-    private String searchMode = "analyzingInfixMatching";
+    private String searchMode;
 
     private final List<String> sourceFields;
 
@@ -72,6 +72,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
         jsonWriter.writeStringField("name", this.name, false);
         JsonUtils.writeArray(
                 jsonWriter, "sourceFields", this.sourceFields, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeStringField("searchMode", this.searchMode, false);
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -91,6 +92,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
                     String name = null;
                     boolean sourceFieldsFound = false;
                     List<String> sourceFields = null;
+                    String searchMode = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -101,6 +103,8 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
                         } else if ("sourceFields".equals(fieldName)) {
                             sourceFields = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             sourceFieldsFound = true;
+                        } else if ("searchMode".equals(fieldName)) {
+                            searchMode = reader.getStringValue();
                         } else {
                             reader.skipChildren();
                         }
@@ -118,6 +122,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SearchSuggester deserializedValue = new SearchSuggester(name, sourceFields);
+                    deserializedValue.searchMode = searchMode;
 
                     return deserializedValue;
                 });

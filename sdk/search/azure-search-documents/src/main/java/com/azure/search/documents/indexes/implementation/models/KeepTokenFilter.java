@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class KeepTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.KeepTokenFilter";
+    private String odataType;
 
     private final List<String> keepWords;
 
@@ -138,7 +138,7 @@ public final class KeepTokenFilter extends TokenFilter {
                     }
                     KeepTokenFilter deserializedValue = new KeepTokenFilter(name, keepWords);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setLowerCaseKeepWords(lowerCaseKeepWords);
+                    deserializedValue.lowerCaseKeepWords = lowerCaseKeepWords;
 
                     return deserializedValue;
                 });

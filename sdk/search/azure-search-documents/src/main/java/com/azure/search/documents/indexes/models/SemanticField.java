@@ -69,7 +69,7 @@ public final class SemanticField implements JsonSerializable<SemanticField> {
                         }
                     }
                     SemanticField deserializedValue = new SemanticField();
-                    deserializedValue.setFieldName(fieldName);
+                    deserializedValue.fieldName = fieldName;
 
                     return deserializedValue;
                 });

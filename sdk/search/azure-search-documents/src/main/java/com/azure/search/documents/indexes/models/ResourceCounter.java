@@ -108,7 +108,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     ResourceCounter deserializedValue = new ResourceCounter(usage);
-                    deserializedValue.setQuota(quota);
+                    deserializedValue.quota = quota;
 
                     return deserializedValue;
                 });

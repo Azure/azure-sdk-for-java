@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class LanguageDetectionSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.LanguageDetectionSkill";
+    private String odataType;
 
     private String defaultCountryHint;
 
@@ -173,8 +173,8 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setDefaultCountryHint(defaultCountryHint);
-                    deserializedValue.setModelVersion(modelVersion);
+                    deserializedValue.defaultCountryHint = defaultCountryHint;
+                    deserializedValue.modelVersion = modelVersion;
 
                     return deserializedValue;
                 });

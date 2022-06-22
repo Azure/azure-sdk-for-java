@@ -19,7 +19,7 @@ import java.util.List;
 /** Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class KeywordTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.KeywordTokenizer";
+    private String odataType;
 
     private Integer bufferSize;
 
@@ -112,7 +112,7 @@ public final class KeywordTokenizer extends LexicalTokenizer {
                     }
                     KeywordTokenizer deserializedValue = new KeywordTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setBufferSize(bufferSize);
+                    deserializedValue.bufferSize = bufferSize;
 
                     return deserializedValue;
                 });

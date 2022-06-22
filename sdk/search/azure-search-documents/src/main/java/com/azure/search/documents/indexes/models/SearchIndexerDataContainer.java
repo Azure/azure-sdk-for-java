@@ -111,7 +111,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SearchIndexerDataContainer deserializedValue = new SearchIndexerDataContainer(name);
-                    deserializedValue.setQuery(query);
+                    deserializedValue.query = query;
 
                     return deserializedValue;
                 });

@@ -20,7 +20,7 @@ import java.util.List;
 /** Language specific stemming filter. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class StemmerTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.StemmerTokenFilter";
+    private String odataType;
 
     private final StemmerTokenFilterLanguage language;
 

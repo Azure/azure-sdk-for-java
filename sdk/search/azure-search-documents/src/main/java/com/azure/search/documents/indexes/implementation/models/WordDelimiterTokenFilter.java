@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class WordDelimiterTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.WordDelimiterTokenFilter";
+    private String odataType;
 
     private Boolean generateWordParts;
 
@@ -370,16 +370,16 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                     }
                     WordDelimiterTokenFilter deserializedValue = new WordDelimiterTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setGenerateWordParts(generateWordParts);
-                    deserializedValue.setGenerateNumberParts(generateNumberParts);
-                    deserializedValue.setCatenateWords(catenateWords);
-                    deserializedValue.setCatenateNumbers(catenateNumbers);
-                    deserializedValue.setCatenateAll(catenateAll);
-                    deserializedValue.setSplitOnCaseChange(splitOnCaseChange);
-                    deserializedValue.setPreserveOriginal(preserveOriginal);
-                    deserializedValue.setSplitOnNumerics(splitOnNumerics);
-                    deserializedValue.setStemEnglishPossessive(stemEnglishPossessive);
-                    deserializedValue.setProtectedWords(protectedWords);
+                    deserializedValue.generateWordParts = generateWordParts;
+                    deserializedValue.generateNumberParts = generateNumberParts;
+                    deserializedValue.catenateWords = catenateWords;
+                    deserializedValue.catenateNumbers = catenateNumbers;
+                    deserializedValue.catenateAll = catenateAll;
+                    deserializedValue.splitOnCaseChange = splitOnCaseChange;
+                    deserializedValue.preserveOriginal = preserveOriginal;
+                    deserializedValue.splitOnNumerics = splitOnNumerics;
+                    deserializedValue.stemEnglishPossessive = stemEnglishPossessive;
+                    deserializedValue.protectedWords = protectedWords;
 
                     return deserializedValue;
                 });

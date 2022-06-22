@@ -143,9 +143,9 @@ public final class SearchIndexerKnowledgeStoreProjection
                     }
                     SearchIndexerKnowledgeStoreProjection deserializedValue =
                             new SearchIndexerKnowledgeStoreProjection();
-                    deserializedValue.setTables(tables);
-                    deserializedValue.setObjects(objects);
-                    deserializedValue.setFiles(files);
+                    deserializedValue.tables = tables;
+                    deserializedValue.objects = objects;
+                    deserializedValue.files = files;
 
                     return deserializedValue;
                 });

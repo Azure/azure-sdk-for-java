@@ -116,7 +116,7 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CorsOptions deserializedValue = new CorsOptions(allowedOrigins);
-                    deserializedValue.setMaxAgeInSeconds(maxAgeInSeconds);
+                    deserializedValue.maxAgeInSeconds = maxAgeInSeconds;
 
                     return deserializedValue;
                 });

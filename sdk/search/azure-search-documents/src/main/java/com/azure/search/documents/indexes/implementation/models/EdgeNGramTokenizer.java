@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class EdgeNGramTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenizer";
+    private String odataType;
 
     private Integer minGram;
 
@@ -176,9 +176,9 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
                     }
                     EdgeNGramTokenizer deserializedValue = new EdgeNGramTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMinGram(minGram);
-                    deserializedValue.setMaxGram(maxGram);
-                    deserializedValue.setTokenChars(tokenChars);
+                    deserializedValue.minGram = minGram;
+                    deserializedValue.maxGram = maxGram;
+                    deserializedValue.tokenChars = tokenChars;
 
                     return deserializedValue;
                 });

@@ -156,10 +156,10 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
                         }
                     }
                     IndexingParameters deserializedValue = new IndexingParameters();
-                    deserializedValue.setBatchSize(batchSize);
-                    deserializedValue.setMaxFailedItems(maxFailedItems);
-                    deserializedValue.setMaxFailedItemsPerBatch(maxFailedItemsPerBatch);
-                    deserializedValue.setConfiguration(configuration);
+                    deserializedValue.batchSize = batchSize;
+                    deserializedValue.maxFailedItems = maxFailedItems;
+                    deserializedValue.maxFailedItemsPerBatch = maxFailedItemsPerBatch;
+                    deserializedValue.configuration = configuration;
 
                     return deserializedValue;
                 });

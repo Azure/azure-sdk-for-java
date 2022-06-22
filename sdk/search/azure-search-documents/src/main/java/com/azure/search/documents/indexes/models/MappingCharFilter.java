@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class MappingCharFilter extends CharFilter {
-    private String odataType = "#Microsoft.Azure.Search.MappingCharFilter";
+    private String odataType;
 
     private final List<String> mappings;
 

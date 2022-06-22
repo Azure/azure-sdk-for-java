@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class StopAnalyzer extends LexicalAnalyzer {
-    private String odataType = "#Microsoft.Azure.Search.StopAnalyzer";
+    private String odataType;
 
     private List<String> stopwords;
 
@@ -116,7 +116,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
                     }
                     StopAnalyzer deserializedValue = new StopAnalyzer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setStopwords(stopwords);
+                    deserializedValue.stopwords = stopwords;
 
                     return deserializedValue;
                 });

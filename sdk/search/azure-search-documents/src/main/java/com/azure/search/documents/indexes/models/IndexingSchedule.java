@@ -113,7 +113,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     IndexingSchedule deserializedValue = new IndexingSchedule(interval);
-                    deserializedValue.setStartTime(startTime);
+                    deserializedValue.startTime = startTime;
 
                     return deserializedValue;
                 });

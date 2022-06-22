@@ -19,7 +19,7 @@ import java.util.List;
 /** Defines a function that boosts scores based on the magnitude of a numeric field. */
 @Fluent
 public final class MagnitudeScoringFunction extends ScoringFunction {
-    private String type = "magnitude";
+    private String type;
 
     private final MagnitudeScoringParameters parameters;
 

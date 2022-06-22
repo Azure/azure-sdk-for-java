@@ -19,7 +19,7 @@ import java.util.List;
 /** Tokenizer for path-like hierarchies. This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2";
+    private String odataType;
 
     private Character delimiter;
 
@@ -219,11 +219,11 @@ public final class PathHierarchyTokenizerV2 extends LexicalTokenizer {
                     }
                     PathHierarchyTokenizerV2 deserializedValue = new PathHierarchyTokenizerV2(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setDelimiter(delimiter);
-                    deserializedValue.setReplacement(replacement);
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
-                    deserializedValue.setReverseTokenOrder(reverseTokenOrder);
-                    deserializedValue.setNumberOfTokensToSkip(numberOfTokensToSkip);
+                    deserializedValue.delimiter = delimiter;
+                    deserializedValue.replacement = replacement;
+                    deserializedValue.maxTokenLength = maxTokenLength;
+                    deserializedValue.reverseTokenOrder = reverseTokenOrder;
+                    deserializedValue.numberOfTokensToSkip = numberOfTokensToSkip;
 
                     return deserializedValue;
                 });

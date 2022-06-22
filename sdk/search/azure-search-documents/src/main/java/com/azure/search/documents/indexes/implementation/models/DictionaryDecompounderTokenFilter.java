@@ -19,7 +19,7 @@ import java.util.List;
 /** Decomposes compound words found in many Germanic languages. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class DictionaryDecompounderTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter";
+    private String odataType;
 
     private final List<String> wordList;
 
@@ -222,10 +222,10 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
                     DictionaryDecompounderTokenFilter deserializedValue =
                             new DictionaryDecompounderTokenFilter(name, wordList);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMinWordSize(minWordSize);
-                    deserializedValue.setMinSubwordSize(minSubwordSize);
-                    deserializedValue.setMaxSubwordSize(maxSubwordSize);
-                    deserializedValue.setOnlyLongestMatch(onlyLongestMatch);
+                    deserializedValue.minWordSize = minWordSize;
+                    deserializedValue.minSubwordSize = minSubwordSize;
+                    deserializedValue.maxSubwordSize = maxSubwordSize;
+                    deserializedValue.onlyLongestMatch = onlyLongestMatch;
 
                     return deserializedValue;
                 });

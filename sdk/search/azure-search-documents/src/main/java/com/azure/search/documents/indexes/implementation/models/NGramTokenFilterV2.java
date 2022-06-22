@@ -19,7 +19,7 @@ import java.util.List;
 /** Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class NGramTokenFilterV2 extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.NGramTokenFilterV2";
+    private String odataType;
 
     private Integer minGram;
 
@@ -140,8 +140,8 @@ public final class NGramTokenFilterV2 extends TokenFilter {
                     }
                     NGramTokenFilterV2 deserializedValue = new NGramTokenFilterV2(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMinGram(minGram);
-                    deserializedValue.setMaxGram(maxGram);
+                    deserializedValue.minGram = minGram;
+                    deserializedValue.maxGram = maxGram;
 
                     return deserializedValue;
                 });

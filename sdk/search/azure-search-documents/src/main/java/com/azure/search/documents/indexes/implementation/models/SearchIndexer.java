@@ -412,19 +412,19 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                         }
                     }
                     SearchIndexer deserializedValue = new SearchIndexer();
-                    deserializedValue.setName(name);
-                    deserializedValue.setDescription(description);
-                    deserializedValue.setDataSourceName(dataSourceName);
-                    deserializedValue.setSkillsetName(skillsetName);
-                    deserializedValue.setTargetIndexName(targetIndexName);
-                    deserializedValue.setSchedule(schedule);
-                    deserializedValue.setParameters(parameters);
-                    deserializedValue.setFieldMappings(fieldMappings);
-                    deserializedValue.setOutputFieldMappings(outputFieldMappings);
-                    deserializedValue.setIsDisabled(isDisabled);
-                    deserializedValue.setETag(eTag);
-                    deserializedValue.setEncryptionKey(encryptionKey);
-                    deserializedValue.setCache(cache);
+                    deserializedValue.name = name;
+                    deserializedValue.description = description;
+                    deserializedValue.dataSourceName = dataSourceName;
+                    deserializedValue.skillsetName = skillsetName;
+                    deserializedValue.targetIndexName = targetIndexName;
+                    deserializedValue.schedule = schedule;
+                    deserializedValue.parameters = parameters;
+                    deserializedValue.fieldMappings = fieldMappings;
+                    deserializedValue.outputFieldMappings = outputFieldMappings;
+                    deserializedValue.isDisabled = isDisabled;
+                    deserializedValue.eTag = eTag;
+                    deserializedValue.encryptionKey = encryptionKey;
+                    deserializedValue.cache = cache;
 
                     return deserializedValue;
                 });

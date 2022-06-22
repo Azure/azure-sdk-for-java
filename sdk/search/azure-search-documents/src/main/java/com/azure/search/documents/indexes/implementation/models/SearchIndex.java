@@ -474,21 +474,21 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                         }
                     }
                     SearchIndex deserializedValue = new SearchIndex();
-                    deserializedValue.setName(name);
-                    deserializedValue.setFields(fields);
-                    deserializedValue.setScoringProfiles(scoringProfiles);
-                    deserializedValue.setDefaultScoringProfile(defaultScoringProfile);
-                    deserializedValue.setCorsOptions(corsOptions);
-                    deserializedValue.setSuggesters(suggesters);
-                    deserializedValue.setAnalyzers(analyzers);
-                    deserializedValue.setTokenizers(tokenizers);
-                    deserializedValue.setTokenFilters(tokenFilters);
-                    deserializedValue.setCharFilters(charFilters);
-                    deserializedValue.setNormalizers(normalizers);
-                    deserializedValue.setEncryptionKey(encryptionKey);
-                    deserializedValue.setSimilarity(similarity);
-                    deserializedValue.setSemanticSettings(semanticSettings);
-                    deserializedValue.setETag(eTag);
+                    deserializedValue.name = name;
+                    deserializedValue.fields = fields;
+                    deserializedValue.scoringProfiles = scoringProfiles;
+                    deserializedValue.defaultScoringProfile = defaultScoringProfile;
+                    deserializedValue.corsOptions = corsOptions;
+                    deserializedValue.suggesters = suggesters;
+                    deserializedValue.analyzers = analyzers;
+                    deserializedValue.tokenizers = tokenizers;
+                    deserializedValue.tokenFilters = tokenFilters;
+                    deserializedValue.charFilters = charFilters;
+                    deserializedValue.normalizers = normalizers;
+                    deserializedValue.encryptionKey = encryptionKey;
+                    deserializedValue.similarity = similarity;
+                    deserializedValue.semanticSettings = semanticSettings;
+                    deserializedValue.eTag = eTag;
 
                     return deserializedValue;
                 });

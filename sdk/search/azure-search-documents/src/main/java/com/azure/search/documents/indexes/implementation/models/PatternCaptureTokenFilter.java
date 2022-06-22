@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Fluent
 public final class PatternCaptureTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.PatternCaptureTokenFilter";
+    private String odataType;
 
     private final List<String> patterns;
 
@@ -140,7 +140,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
                     }
                     PatternCaptureTokenFilter deserializedValue = new PatternCaptureTokenFilter(name, patterns);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setPreserveOriginal(preserveOriginal);
+                    deserializedValue.preserveOriginal = preserveOriginal;
 
                     return deserializedValue;
                 });

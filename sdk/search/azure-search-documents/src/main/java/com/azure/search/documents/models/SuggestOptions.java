@@ -309,15 +309,15 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
                         }
                     }
                     SuggestOptions deserializedValue = new SuggestOptions();
-                    deserializedValue.setFilter(filter);
-                    deserializedValue.setUseFuzzyMatching(useFuzzyMatching);
-                    deserializedValue.setHighlightPostTag(highlightPostTag);
-                    deserializedValue.setHighlightPreTag(highlightPreTag);
-                    deserializedValue.setMinimumCoverage(minimumCoverage);
-                    deserializedValue.setOrderBy(orderBy);
-                    deserializedValue.setSearchFields(searchFields);
-                    deserializedValue.setSelect(select);
-                    deserializedValue.setTop(top);
+                    deserializedValue.filter = filter;
+                    deserializedValue.useFuzzyMatching = useFuzzyMatching;
+                    deserializedValue.highlightPostTag = highlightPostTag;
+                    deserializedValue.highlightPreTag = highlightPreTag;
+                    deserializedValue.minimumCoverage = minimumCoverage;
+                    deserializedValue.orderBy = orderBy;
+                    deserializedValue.searchFields = searchFields;
+                    deserializedValue.select = select;
+                    deserializedValue.top = top;
 
                     return deserializedValue;
                 });

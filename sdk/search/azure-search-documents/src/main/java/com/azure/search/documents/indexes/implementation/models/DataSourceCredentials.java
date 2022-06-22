@@ -71,7 +71,7 @@ public final class DataSourceCredentials implements JsonSerializable<DataSourceC
                         }
                     }
                     DataSourceCredentials deserializedValue = new DataSourceCredentials();
-                    deserializedValue.setConnectionString(connectionString);
+                    deserializedValue.connectionString = connectionString;
 
                     return deserializedValue;
                 });

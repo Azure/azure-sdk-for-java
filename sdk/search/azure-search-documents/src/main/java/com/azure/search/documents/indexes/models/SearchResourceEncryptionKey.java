@@ -183,8 +183,8 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
                     }
                     SearchResourceEncryptionKey deserializedValue =
                             new SearchResourceEncryptionKey(keyName, keyVersion, vaultUrl);
-                    deserializedValue.setAccessCredentials(accessCredentials);
-                    deserializedValue.setIdentity(identity);
+                    deserializedValue.accessCredentials = accessCredentials;
+                    deserializedValue.identity = identity;
 
                     return deserializedValue;
                 });

@@ -368,15 +368,15 @@ public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SuggestRequest deserializedValue = new SuggestRequest(searchText, suggesterName);
-                    deserializedValue.setFilter(filter);
-                    deserializedValue.setUseFuzzyMatching(useFuzzyMatching);
-                    deserializedValue.setHighlightPostTag(highlightPostTag);
-                    deserializedValue.setHighlightPreTag(highlightPreTag);
-                    deserializedValue.setMinimumCoverage(minimumCoverage);
-                    deserializedValue.setOrderBy(orderBy);
-                    deserializedValue.setSearchFields(searchFields);
-                    deserializedValue.setSelect(select);
-                    deserializedValue.setTop(top);
+                    deserializedValue.filter = filter;
+                    deserializedValue.useFuzzyMatching = useFuzzyMatching;
+                    deserializedValue.highlightPostTag = highlightPostTag;
+                    deserializedValue.highlightPreTag = highlightPreTag;
+                    deserializedValue.minimumCoverage = minimumCoverage;
+                    deserializedValue.orderBy = orderBy;
+                    deserializedValue.searchFields = searchFields;
+                    deserializedValue.select = select;
+                    deserializedValue.top = top;
 
                     return deserializedValue;
                 });

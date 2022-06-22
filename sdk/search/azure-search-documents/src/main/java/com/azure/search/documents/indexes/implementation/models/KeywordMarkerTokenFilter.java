@@ -19,7 +19,7 @@ import java.util.List;
 /** Marks terms as keywords. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class KeywordMarkerTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter";
+    private String odataType;
 
     private final List<String> keywords;
 
@@ -137,7 +137,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
                     }
                     KeywordMarkerTokenFilter deserializedValue = new KeywordMarkerTokenFilter(name, keywords);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setIgnoreCase(ignoreCase);
+                    deserializedValue.ignoreCase = ignoreCase;
 
                     return deserializedValue;
                 });

@@ -19,7 +19,7 @@ import java.util.List;
 /** Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class KeywordTokenizerV2 extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -114,7 +114,7 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
                     }
                     KeywordTokenizerV2 deserializedValue = new KeywordTokenizerV2(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
+                    deserializedValue.maxTokenLength = maxTokenLength;
 
                     return deserializedValue;
                 });

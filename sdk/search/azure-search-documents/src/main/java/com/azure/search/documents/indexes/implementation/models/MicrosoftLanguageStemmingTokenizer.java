@@ -20,7 +20,7 @@ import java.util.List;
 /** Divides text using language-specific rules and reduces words to their base forms. */
 @Fluent
 public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -171,9 +171,9 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                     }
                     MicrosoftLanguageStemmingTokenizer deserializedValue = new MicrosoftLanguageStemmingTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
-                    deserializedValue.setIsSearchTokenizer(isSearchTokenizer);
-                    deserializedValue.setLanguage(language);
+                    deserializedValue.maxTokenLength = maxTokenLength;
+                    deserializedValue.isSearchTokenizer = isSearchTokenizer;
+                    deserializedValue.language = language;
 
                     return deserializedValue;
                 });

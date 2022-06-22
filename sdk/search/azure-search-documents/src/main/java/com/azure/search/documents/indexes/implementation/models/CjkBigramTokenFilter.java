@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class CjkBigramTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.CjkBigramTokenFilter";
+    private String odataType;
 
     private List<CjkBigramTokenFilterScripts> ignoreScripts;
 
@@ -152,8 +152,8 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                     }
                     CjkBigramTokenFilter deserializedValue = new CjkBigramTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setIgnoreScripts(ignoreScripts);
-                    deserializedValue.setOutputUnigrams(outputUnigrams);
+                    deserializedValue.ignoreScripts = ignoreScripts;
+                    deserializedValue.outputUnigrams = outputUnigrams;
 
                     return deserializedValue;
                 });

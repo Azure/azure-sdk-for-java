@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class PatternTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
+    private String odataType;
 
     private String pattern;
 
@@ -174,9 +174,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
                     }
                     PatternTokenizer deserializedValue = new PatternTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setPattern(pattern);
-                    deserializedValue.setFlags(flags);
-                    deserializedValue.setGroup(group);
+                    deserializedValue.pattern = pattern;
+                    deserializedValue.flags = flags;
+                    deserializedValue.group = group;
 
                     return deserializedValue;
                 });

@@ -101,8 +101,8 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
                         }
                     }
                     DocumentKeysOrIds deserializedValue = new DocumentKeysOrIds();
-                    deserializedValue.setDocumentKeys(documentKeys);
-                    deserializedValue.setDatasourceDocumentIds(datasourceDocumentIds);
+                    deserializedValue.documentKeys = documentKeys;
+                    deserializedValue.datasourceDocumentIds = datasourceDocumentIds;
 
                     return deserializedValue;
                 });

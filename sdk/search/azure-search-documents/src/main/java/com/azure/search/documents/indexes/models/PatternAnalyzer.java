@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public final class PatternAnalyzer extends LexicalAnalyzer {
-    private String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
+    private String odataType;
 
     private Boolean lowerCaseTerms;
 
@@ -208,10 +208,10 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                     }
                     PatternAnalyzer deserializedValue = new PatternAnalyzer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setLowerCaseTerms(lowerCaseTerms);
-                    deserializedValue.setPattern(pattern);
-                    deserializedValue.setFlags(flags);
-                    deserializedValue.setStopwords(stopwords);
+                    deserializedValue.lowerCaseTerms = lowerCaseTerms;
+                    deserializedValue.pattern = pattern;
+                    deserializedValue.flags = flags;
+                    deserializedValue.stopwords = stopwords;
 
                     return deserializedValue;
                 });

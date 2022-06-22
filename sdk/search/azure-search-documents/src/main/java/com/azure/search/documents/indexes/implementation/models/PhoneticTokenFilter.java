@@ -20,7 +20,7 @@ import java.util.List;
 /** Create tokens for phonetic matches. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class PhoneticTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.PhoneticTokenFilter";
+    private String odataType;
 
     private PhoneticEncoder encoder;
 
@@ -142,8 +142,8 @@ public final class PhoneticTokenFilter extends TokenFilter {
                     }
                     PhoneticTokenFilter deserializedValue = new PhoneticTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setEncoder(encoder);
-                    deserializedValue.setReplaceOriginalTokens(replaceOriginalTokens);
+                    deserializedValue.encoder = encoder;
+                    deserializedValue.replaceOriginalTokens = replaceOriginalTokens;
 
                     return deserializedValue;
                 });

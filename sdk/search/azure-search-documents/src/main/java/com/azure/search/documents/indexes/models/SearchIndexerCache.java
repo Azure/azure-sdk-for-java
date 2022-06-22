@@ -97,8 +97,8 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
                         }
                     }
                     SearchIndexerCache deserializedValue = new SearchIndexerCache();
-                    deserializedValue.setStorageConnectionString(storageConnectionString);
-                    deserializedValue.setEnableReprocessing(enableReprocessing);
+                    deserializedValue.storageConnectionString = storageConnectionString;
+                    deserializedValue.enableReprocessing = enableReprocessing;
 
                     return deserializedValue;
                 });

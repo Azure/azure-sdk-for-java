@@ -257,11 +257,11 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SearchIndexerSkillset deserializedValue = new SearchIndexerSkillset(name, skills);
-                    deserializedValue.setDescription(description);
-                    deserializedValue.setCognitiveServicesAccount(cognitiveServicesAccount);
-                    deserializedValue.setKnowledgeStore(knowledgeStore);
-                    deserializedValue.setETag(eTag);
-                    deserializedValue.setEncryptionKey(encryptionKey);
+                    deserializedValue.description = description;
+                    deserializedValue.cognitiveServicesAccount = cognitiveServicesAccount;
+                    deserializedValue.knowledgeStore = knowledgeStore;
+                    deserializedValue.eTag = eTag;
+                    deserializedValue.encryptionKey = encryptionKey;
 
                     return deserializedValue;
                 });

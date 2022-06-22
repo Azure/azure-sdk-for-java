@@ -21,7 +21,7 @@ import java.util.Map;
 /** A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code. */
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
+    private String odataType;
 
     private final String uri;
 
@@ -268,11 +268,11 @@ public final class WebApiSkill extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setHttpHeaders(httpHeaders);
-                    deserializedValue.setHttpMethod(httpMethod);
-                    deserializedValue.setTimeout(timeout);
-                    deserializedValue.setBatchSize(batchSize);
-                    deserializedValue.setDegreeOfParallelism(degreeOfParallelism);
+                    deserializedValue.httpHeaders = httpHeaders;
+                    deserializedValue.httpMethod = httpMethod;
+                    deserializedValue.timeout = timeout;
+                    deserializedValue.batchSize = batchSize;
+                    deserializedValue.degreeOfParallelism = degreeOfParallelism;
 
                     return deserializedValue;
                 });

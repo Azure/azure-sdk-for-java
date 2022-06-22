@@ -105,7 +105,7 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
                         }
                     }
                     IndexAction deserializedValue = new IndexAction();
-                    deserializedValue.setActionType(actionType);
+                    deserializedValue.actionType = actionType;
                     return deserializedValue;
                 });
     }

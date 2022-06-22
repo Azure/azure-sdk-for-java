@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Fluent
 public final class AsciiFoldingTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.AsciiFoldingTokenFilter";
+    private String odataType;
 
     private Boolean preserveOriginal;
 
@@ -116,7 +116,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
                     }
                     AsciiFoldingTokenFilter deserializedValue = new AsciiFoldingTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setPreserveOriginal(preserveOriginal);
+                    deserializedValue.preserveOriginal = preserveOriginal;
 
                     return deserializedValue;
                 });

@@ -20,7 +20,7 @@ import java.util.List;
 /** Removes stop words from a token stream. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class StopwordsTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.StopwordsTokenFilter";
+    private String odataType;
 
     private List<String> stopwords;
 
@@ -202,10 +202,10 @@ public final class StopwordsTokenFilter extends TokenFilter {
                     }
                     StopwordsTokenFilter deserializedValue = new StopwordsTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setStopwords(stopwords);
-                    deserializedValue.setStopwordsList(stopwordsList);
-                    deserializedValue.setIgnoreCase(ignoreCase);
-                    deserializedValue.setRemoveTrailingStopWords(removeTrailingStopWords);
+                    deserializedValue.stopwords = stopwords;
+                    deserializedValue.stopwordsList = stopwordsList;
+                    deserializedValue.ignoreCase = ignoreCase;
+                    deserializedValue.removeTrailingStopWords = removeTrailingStopWords;
 
                     return deserializedValue;
                 });

@@ -19,7 +19,7 @@ import java.util.List;
 /** Defines a function that boosts scores based on the value of a date-time field. */
 @Fluent
 public final class FreshnessScoringFunction extends ScoringFunction {
-    private String type = "freshness";
+    private String type;
 
     private final FreshnessScoringParameters parameters;
 

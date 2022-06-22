@@ -19,7 +19,7 @@ import java.util.List;
 /** Creates combinations of tokens as a single token. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class ShingleTokenFilter extends TokenFilter {
-    private String odataType = "#Microsoft.Azure.Search.ShingleTokenFilter";
+    private String odataType;
 
     private Integer maxShingleSize;
 
@@ -253,12 +253,12 @@ public final class ShingleTokenFilter extends TokenFilter {
                     }
                     ShingleTokenFilter deserializedValue = new ShingleTokenFilter(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxShingleSize(maxShingleSize);
-                    deserializedValue.setMinShingleSize(minShingleSize);
-                    deserializedValue.setOutputUnigrams(outputUnigrams);
-                    deserializedValue.setOutputUnigramsIfNoShingles(outputUnigramsIfNoShingles);
-                    deserializedValue.setTokenSeparator(tokenSeparator);
-                    deserializedValue.setFilterToken(filterToken);
+                    deserializedValue.maxShingleSize = maxShingleSize;
+                    deserializedValue.minShingleSize = minShingleSize;
+                    deserializedValue.outputUnigrams = outputUnigrams;
+                    deserializedValue.outputUnigramsIfNoShingles = outputUnigramsIfNoShingles;
+                    deserializedValue.tokenSeparator = tokenSeparator;
+                    deserializedValue.filterToken = filterToken;
 
                     return deserializedValue;
                 });

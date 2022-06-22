@@ -19,7 +19,7 @@ import java.util.List;
 /** Breaks text following the Unicode Text Segmentation rules. This tokenizer is implemented using Apache Lucene. */
 @Fluent
 public final class LuceneStandardTokenizer extends LexicalTokenizer {
-    private String odataType = "#Microsoft.Azure.Search.StandardTokenizer";
+    private String odataType;
 
     private Integer maxTokenLength;
 
@@ -114,7 +114,7 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
                     }
                     LuceneStandardTokenizer deserializedValue = new LuceneStandardTokenizer(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.setMaxTokenLength(maxTokenLength);
+                    deserializedValue.maxTokenLength = maxTokenLength;
 
                     return deserializedValue;
                 });

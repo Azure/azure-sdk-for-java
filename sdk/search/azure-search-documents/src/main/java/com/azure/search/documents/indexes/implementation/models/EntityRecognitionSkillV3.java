@@ -22,7 +22,7 @@ import java.util.List;
 /** Using the Text Analytics API, extracts entities of different types from text. */
 @Fluent
 public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.V3.EntityRecognitionSkill";
+    private String odataType;
 
     private List<String> categories;
 
@@ -228,10 +228,10 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
-                    deserializedValue.setCategories(categories);
-                    deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setMinimumPrecision(minimumPrecision);
-                    deserializedValue.setModelVersion(modelVersion);
+                    deserializedValue.categories = categories;
+                    deserializedValue.defaultLanguageCode = defaultLanguageCode;
+                    deserializedValue.minimumPrecision = minimumPrecision;
+                    deserializedValue.modelVersion = modelVersion;
 
                     return deserializedValue;
                 });

@@ -19,7 +19,7 @@ import java.util.List;
 /** A cognitive service resource provisioned with a key that is attached to a skillset. */
 @Fluent
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
-    private String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
+    private String odataType;
 
     private String key;
 

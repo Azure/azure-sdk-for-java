@@ -134,7 +134,7 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
                     }
                     MagnitudeScoringParameters deserializedValue =
                             new MagnitudeScoringParameters(boostingRangeStart, boostingRangeEnd);
-                    deserializedValue.setShouldBoostBeyondRangeByConstant(shouldBoostBeyondRangeByConstant);
+                    deserializedValue.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
 
                     return deserializedValue;
                 });
