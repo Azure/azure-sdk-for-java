@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PublicIpAddresses ListByResourceGroup. */
 public final class PublicIpAddressesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PublicIpAddressList.json
      */
     /**
      * Sample code: List resource group public IP addresses.

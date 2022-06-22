@@ -72,7 +72,11 @@ public final class VirtualNetworkGatewaySkuTier extends ExpandableStringEnum<Vir
         return fromString(name, VirtualNetworkGatewaySkuTier.class);
     }
 
-    /** @return known VirtualNetworkGatewaySkuTier values. */
+    /**
+     * Gets known VirtualNetworkGatewaySkuTier values.
+     *
+     * @return known VirtualNetworkGatewaySkuTier values.
+     */
     public static Collection<VirtualNetworkGatewaySkuTier> values() {
         return values(VirtualNetworkGatewaySkuTier.class);
     }

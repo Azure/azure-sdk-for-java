@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.SecurityGroupViewParameters;
 /** Samples for NetworkWatchers GetVMSecurityRules. */
 public final class NetworkWatchersGetVMSecurityRulesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherSecurityGroupViewGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherSecurityGroupViewGet.json
      */
     /**
      * Sample code: Get security group view.

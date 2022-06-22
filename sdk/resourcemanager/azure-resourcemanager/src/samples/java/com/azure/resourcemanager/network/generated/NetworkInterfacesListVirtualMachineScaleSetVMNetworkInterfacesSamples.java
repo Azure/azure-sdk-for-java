@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkInterfaces ListVirtualMachineScaleSetVMNetworkInterfaces. */
 public final class NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VmssVmNetworkInterfaceList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VmssVmNetworkInterfaceList.json
      */
     /**
      * Sample code: List virtual machine scale set vm network interfaces.

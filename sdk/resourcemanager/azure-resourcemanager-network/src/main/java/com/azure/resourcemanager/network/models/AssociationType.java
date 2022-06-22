@@ -27,7 +27,11 @@ public final class AssociationType extends ExpandableStringEnum<AssociationType>
         return fromString(name, AssociationType.class);
     }
 
-    /** @return known AssociationType values. */
+    /**
+     * Gets known AssociationType values.
+     *
+     * @return known AssociationType values.
+     */
     public static Collection<AssociationType> values() {
         return values(AssociationType.class);
     }

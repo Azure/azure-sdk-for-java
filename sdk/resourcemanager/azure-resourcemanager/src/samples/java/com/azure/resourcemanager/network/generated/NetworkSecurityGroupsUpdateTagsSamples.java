@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for NetworkSecurityGroups UpdateTags. */
 public final class NetworkSecurityGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupUpdateTags.json
      */
     /**
      * Sample code: Update network security group tags.

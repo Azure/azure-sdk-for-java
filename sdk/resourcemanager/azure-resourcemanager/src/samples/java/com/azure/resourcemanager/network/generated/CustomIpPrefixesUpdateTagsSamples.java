@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for CustomIpPrefixes UpdateTags. */
 public final class CustomIpPrefixesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CustomIpPrefixUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/CustomIpPrefixUpdateTags.json
      */
     /**
      * Sample code: Update public IP address tags.
