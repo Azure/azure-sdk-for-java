@@ -335,10 +335,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void requestHeaderDiagnostics() {
-        CosmosClient testDirectClient = null;
+    public void requestSessionTokenDiagnostics() {
+        CosmosClient testSessionTokenClient = null;
         try {
-            testDirectClient = new CosmosClientBuilder()
+            testSessionTokenClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .consistencyLevel(ConsistencyLevel.SESSION)
@@ -346,7 +346,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .directMode()
                 .buildClient();
             CosmosContainer cosmosContainer =
-                testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+                testSessionTokenClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
@@ -375,8 +375,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
 
         } finally {
-            if (testDirectClient != null) {
-                testDirectClient.close();
+            if (testSessionTokenClient != null) {
+                testSessionTokenClient.close();
             }
         }
     }
