@@ -55,7 +55,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      * JWK resolver implementation for client authentication.
      */
     @Autowired
-    protected ObjectProvider<OAuth2ClientAuthenticationJWKResolver> jwkResolvers;
+    protected ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers;
 
     /**
      * configure
@@ -125,7 +125,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
             AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(
                     ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes());
-            OAuth2ClientAuthenticationJWKResolver jwkResolver = jwkResolvers.getIfUnique();
+            OAuth2ClientAuthenticationJwkResolver jwkResolver = jwkResolvers.getIfUnique();
             if (jwkResolver != null) {
                 converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkResolver::resolve));
             }

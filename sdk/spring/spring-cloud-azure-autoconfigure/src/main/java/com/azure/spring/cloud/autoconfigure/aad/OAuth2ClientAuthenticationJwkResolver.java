@@ -7,14 +7,14 @@ import com.nimbusds.jose.jwk.JWK;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 
 /**
- * Resolver interface to resolve a function that returns a {@link JWK} implementation through a {@link ClientRegistration}.
+ * Resolver interface to resolve a {@link JWK} implementation through a {@link ClientRegistration}.
  * @since 4.3.0
  */
 @FunctionalInterface
-public interface OAuth2ClientAuthenticationJWKResolver {
+public interface OAuth2ClientAuthenticationJwkResolver {
 
     /**
-     * @return a resolver function.
+     * @return a a {@link JWK}.
      */
     JWK resolve(ClientRegistration clientRegistration);
 }

@@ -21,7 +21,6 @@ import java.util.function.Function;
 
 import static com.azure.spring.cloud.autoconfigure.aad.TestClientRegistrations.clientRegistration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -31,7 +30,7 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.JW
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_JWT;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.NONE;
 
-public class AadOAuth2ClientAuthenticationJWKResolverTests {
+public class AadOAuth2ClientAuthenticationJwkResolverTests {
 
     private Function<ClientRegistration, JWK> jwkFunction;
 
@@ -52,12 +51,10 @@ public class AadOAuth2ClientAuthenticationJWKResolverTests {
 
     @Test
     void resolveJwkFunction() {
-        AadOAuth2ClientAuthenticationJWKResolver jwkResolver =
-            new AadOAuth2ClientAuthenticationJWKResolver("D:\\test\\test.pfx", "test");
-        Function<ClientRegistration, JWK> function = jwkResolver.resolve();
-        assertNotNull(function);
-        assertNull(function.apply(clientRegistration(JWT_BEARER, CLIENT_SECRET_JWT).build()));
-        assertNull(function.apply(clientRegistration(JWT_BEARER, NONE).build()));
+        AadOAuth2ClientAuthenticationJwkResolver jwkResolver =
+            new AadOAuth2ClientAuthenticationJwkResolver("D:\\test\\test.pfx", "test");
+        assertNull(jwkResolver.resolve(clientRegistration(JWT_BEARER, CLIENT_SECRET_JWT).build()));
+        assertNull(jwkResolver.resolve(clientRegistration(JWT_BEARER, NONE).build()));
     }
 
     @Test

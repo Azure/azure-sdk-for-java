@@ -28,24 +28,24 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
 /**
- * An {@link RSAKey} resolver function implementation parses the certificate locally.
+ * An {@link RSAKey} resolver implementation parses the certificate locally.
  *
  * @since 4.3.0
  * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/active-directory-certificate-credentials">Certificate credentials</a>
  */
-public class AadOAuth2ClientAuthenticationJWKResolver implements OAuth2ClientAuthenticationJWKResolver {
+public class AadOAuth2ClientAuthenticationJwkResolver implements OAuth2ClientAuthenticationJwkResolver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AadOAuth2ClientAuthenticationJWKResolver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AadOAuth2ClientAuthenticationJwkResolver.class);
 
     private final String clientCertificatePath;
     private final String clientCertificatePassword;
 
     /**
-     * Creates a new instance of {@link AadOAuth2ClientAuthenticationJWKResolver}
+     * Creates a new instance of {@link AadOAuth2ClientAuthenticationJwkResolver}
      * @param clientCertificatePath the client certificate path
      * @param clientCertificatePassword the client certificate password
      */
-    public AadOAuth2ClientAuthenticationJWKResolver(String clientCertificatePath,
+    public AadOAuth2ClientAuthenticationJwkResolver(String clientCertificatePath,
                                                     String clientCertificatePassword) {
         Assert.notNull(clientCertificatePath, "clientCertificatePath cannot be null");
         Assert.notNull(clientCertificatePassword, "clientCertificatePassword cannot be null");
