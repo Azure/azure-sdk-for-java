@@ -29,7 +29,7 @@ parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-
 
 include_groups = []
 
-exclude_projects = ['com.azure.resourcemanager:azure-resourcemanager-samples']
+exclude_projects = []
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -63,7 +63,7 @@ jacoco_build = '''
 '''
 
 
-def create_aggregate_coverage_pom(project_list: str, groups: str):
+def create_aggregate_coverage_pom(project_list: str, groups: str, projects_to_exclude: str):
 
     if groups is None:
         include_groups.append('com.azure')
@@ -72,6 +72,10 @@ def create_aggregate_coverage_pom(project_list: str, groups: str):
     else:
         for group in groups.split(','):
             include_groups.append(group)
+
+    if projects_to_exclude is not None:
+        for project_to_exclude in projects_to_exclude.split(','):
+            exclude_projects.append(project_to_exclude)
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
@@ -197,9 +201,10 @@ def main():
     parser = argparse.ArgumentParser(description='Generated a POM for creating an aggregate code coverage report.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--groups', '--g', type=str)
+    parser.add_argument('--exclude-projects', '--ep', type=str)
     args = parser.parse_args()
     start_time = time.time()
-    create_aggregate_coverage_pom(args.project_list, args.groups)
+    create_aggregate_coverage_pom(args.project_list, args.groups, args.exclude_projects)
     elapsed_time = time.time() - start_time
 
     print('Effective POM File for aggregate code coverage')
