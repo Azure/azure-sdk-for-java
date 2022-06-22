@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualRouters ListByResourceGroup. */
 public final class VirtualRoutersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterListByResourceGroup.json
      */
     /**
      * Sample code: List all Virtual Router for a given resource group.

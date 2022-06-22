@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for SecurityPartnerProviders CreateOrUpdate. */
 public final class SecurityPartnerProvidersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/SecurityPartnerProviderPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/SecurityPartnerProviderPut.json
      */
     /**
      * Sample code: Create Security Partner Provider.

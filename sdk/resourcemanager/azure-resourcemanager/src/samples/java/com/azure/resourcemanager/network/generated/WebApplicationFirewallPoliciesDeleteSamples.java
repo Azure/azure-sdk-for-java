@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApplicationFirewallPolicies Delete. */
 public final class WebApplicationFirewallPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/WafPolicyDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/WafPolicyDelete.json
      */
     /**
      * Sample code: Deletes a WAF policy within a resource group.

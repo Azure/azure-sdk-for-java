@@ -39,7 +39,11 @@ public final class SecurityRuleProtocol extends ExpandableStringEnum<SecurityRul
         return fromString(name, SecurityRuleProtocol.class);
     }
 
-    /** @return known SecurityRuleProtocol values. */
+    /**
+     * Gets known SecurityRuleProtocol values.
+     *
+     * @return known SecurityRuleProtocol values.
+     */
     public static Collection<SecurityRuleProtocol> values() {
         return values(SecurityRuleProtocol.class);
     }

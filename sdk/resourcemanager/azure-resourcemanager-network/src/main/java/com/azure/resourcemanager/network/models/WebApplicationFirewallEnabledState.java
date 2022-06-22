@@ -27,7 +27,11 @@ public final class WebApplicationFirewallEnabledState extends ExpandableStringEn
         return fromString(name, WebApplicationFirewallEnabledState.class);
     }
 
-    /** @return known WebApplicationFirewallEnabledState values. */
+    /**
+     * Gets known WebApplicationFirewallEnabledState values.
+     *
+     * @return known WebApplicationFirewallEnabledState values.
+     */
     public static Collection<WebApplicationFirewallEnabledState> values() {
         return values(WebApplicationFirewallEnabledState.class);
     }

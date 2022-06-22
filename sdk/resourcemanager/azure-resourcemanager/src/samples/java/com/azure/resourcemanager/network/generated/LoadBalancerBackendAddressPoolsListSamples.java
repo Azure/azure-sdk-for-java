@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadBalancerBackendAddressPools List. */
 public final class LoadBalancerBackendAddressPoolsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LBBackendAddressPoolListWithBackendAddressesPoolType.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LBBackendAddressPoolListWithBackendAddressesPoolType.json
      */
     /**
      * Sample code: Load balancer with BackendAddressPool containing BackendAddresses.
@@ -27,7 +27,7 @@ public final class LoadBalancerBackendAddressPoolsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerBackendAddressPoolList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerBackendAddressPoolList.json
      */
     /**
      * Sample code: LoadBalancerBackendAddressPoolList.
