@@ -1,5 +1,15 @@
 # Release History
 
+## 2.8.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.8.0-beta.1 (2022-06-21)
 - Adds support for Dynamic Features and adds support for the new Feature Management Schema, the Environment Variable AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION needs to be set to `2`, otherwise Dynamic Features will not be enabled.
 - Adds Support for Dynamic Features.

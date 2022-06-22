@@ -151,11 +151,11 @@ com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.2;1.0.0-beta.3
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
-com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.7.0;2.8.0-beta.1
-com.azure.spring:azure-spring-cloud-appconfiguration-config;2.7.0;2.8.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;2.6.0;4.0.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management;2.6.0;4.0.0-beta.1
-com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.7.0;2.8.0-beta.1
+com.azure.spring:azure-spring-cloud-appconfiguration-config-web;2.7.0;2.8.0-beta.2
+com.azure.spring:azure-spring-cloud-appconfiguration-config;2.7.0;2.8.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management-web;2.6.0;4.0.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management;2.6.0;4.0.0-beta.2
+com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.7.0;2.8.0-beta.2
 com.azure.spring:spring-cloud-azure-dependencies;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-messaging-azure;4.2.0;4.3.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;4.2.0;4.3.0-beta.1
