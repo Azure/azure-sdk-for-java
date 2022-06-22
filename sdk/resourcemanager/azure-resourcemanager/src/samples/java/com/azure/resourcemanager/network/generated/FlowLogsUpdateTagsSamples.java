@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for FlowLogs UpdateTags. */
 public final class FlowLogsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherFlowLogUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherFlowLogUpdateTags.json
      */
     /**
      * Sample code: Update flow log tags.

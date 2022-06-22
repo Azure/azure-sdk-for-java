@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PublicIpPrefixes GetByResourceGroup. */
 public final class PublicIpPrefixesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpPrefixGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PublicIpPrefixGet.json
      */
     /**
      * Sample code: Get public IP prefix.

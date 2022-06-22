@@ -17,10 +17,9 @@ import com.azure.resourcemanager.netapp.models.Backup;
 import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.RestoreStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupsImpl implements Backups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupsImpl.class);
 
     private final BackupsClient innerClient;
 
@@ -147,7 +146,7 @@ public final class BackupsImpl implements Backups {
     public Backup getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class BackupsImpl implements Backups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,21 +162,21 @@ public final class BackupsImpl implements Backups {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String backupName = Utils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
@@ -190,7 +189,7 @@ public final class BackupsImpl implements Backups {
     public Response<Backup> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -198,7 +197,7 @@ public final class BackupsImpl implements Backups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,21 +205,21 @@ public final class BackupsImpl implements Backups {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String backupName = Utils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
@@ -231,7 +230,7 @@ public final class BackupsImpl implements Backups {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -239,7 +238,7 @@ public final class BackupsImpl implements Backups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -247,21 +246,21 @@ public final class BackupsImpl implements Backups {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String backupName = Utils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
@@ -272,7 +271,7 @@ public final class BackupsImpl implements Backups {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -280,7 +279,7 @@ public final class BackupsImpl implements Backups {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -288,21 +287,21 @@ public final class BackupsImpl implements Backups {
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String backupName = Utils.getValueFromIdByName(id, "backups");
         if (backupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));

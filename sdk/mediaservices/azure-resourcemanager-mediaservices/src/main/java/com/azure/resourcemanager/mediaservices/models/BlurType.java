@@ -36,7 +36,11 @@ public final class BlurType extends ExpandableStringEnum<BlurType> {
         return fromString(name, BlurType.class);
     }
 
-    /** @return known BlurType values. */
+    /**
+     * Gets known BlurType values.
+     *
+     * @return known BlurType values.
+     */
     public static Collection<BlurType> values() {
         return values(BlurType.class);
     }

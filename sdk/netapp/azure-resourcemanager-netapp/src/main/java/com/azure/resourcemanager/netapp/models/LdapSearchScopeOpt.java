@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LDAP search scope. */
 @Fluent
 public final class LdapSearchScopeOpt {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LdapSearchScopeOpt.class);
-
     /*
      * This specifies the user DN, which overrides the base DN for user
      * lookups.

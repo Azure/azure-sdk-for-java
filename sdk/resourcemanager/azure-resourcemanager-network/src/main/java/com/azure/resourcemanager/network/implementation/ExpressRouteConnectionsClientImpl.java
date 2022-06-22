@@ -176,7 +176,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -247,7 +247,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         } else {
             putExpressRouteConnectionParameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -529,7 +529,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +587,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -617,14 +617,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     public Mono<ExpressRouteConnectionInner> getAsync(
         String resourceGroupName, String expressRouteGatewayName, String connectionName) {
         return getWithResponseAsync(resourceGroupName, expressRouteGatewayName, connectionName)
-            .flatMap(
-                (Response<ExpressRouteConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -700,7 +693,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -757,7 +750,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -956,7 +949,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1008,7 +1001,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1035,14 +1028,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteConnectionListInner> listAsync(String resourceGroupName, String expressRouteGatewayName) {
         return listWithResponseAsync(resourceGroupName, expressRouteGatewayName)
-            .flatMap(
-                (Response<ExpressRouteConnectionListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

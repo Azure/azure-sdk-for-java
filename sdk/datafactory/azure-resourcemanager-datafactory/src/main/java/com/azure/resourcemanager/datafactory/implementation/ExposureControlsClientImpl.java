@@ -217,14 +217,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
     private Mono<ExposureControlResponseInner> getFeatureValueAsync(
         String locationId, ExposureControlRequest exposureControlRequest) {
         return getFeatureValueWithResponseAsync(locationId, exposureControlRequest)
-            .flatMap(
-                (Response<ExposureControlResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -389,14 +382,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
     private Mono<ExposureControlResponseInner> getFeatureValueByFactoryAsync(
         String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
         return getFeatureValueByFactoryWithResponseAsync(resourceGroupName, factoryName, exposureControlRequest)
-            .flatMap(
-                (Response<ExposureControlResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -570,14 +556,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
     private Mono<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryAsync(
         String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
         return queryFeatureValuesByFactoryWithResponseAsync(resourceGroupName, factoryName, exposureControlBatchRequest)
-            .flatMap(
-                (Response<ExposureControlBatchResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

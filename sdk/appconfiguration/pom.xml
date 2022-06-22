@@ -8,50 +8,15 @@
   <artifactId>azure-appconfiguration-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <profiles>
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-data-appconfiguration</module>
-      </modules>
-
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-data-appconfiguration</module>
-        <module>azure-data-appconfiguration-perf</module>
-        <module>azure-resourcemanager-appconfiguration</module>
-        <module>azure-spring-cloud-test-appconfiguration-config</module>
-        <module>azure-spring-cloud-appconfiguration-config</module>
-        <module>azure-spring-cloud-appconfiguration-config-web</module>
-        <module>azure-spring-cloud-feature-management</module>
-        <module>azure-spring-cloud-feature-management-web</module>
-        <module>azure-spring-cloud-starter-appconfiguration-config</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+      <module>azure-data-appconfiguration</module>
+      <module>azure-data-appconfiguration-perf</module>
+      <module>azure-resourcemanager-appconfiguration</module>
+      <module>azure-spring-cloud-test-appconfiguration-config</module>
+      <module>azure-spring-cloud-appconfiguration-config</module>
+      <module>azure-spring-cloud-appconfiguration-config-web</module>
+      <module>azure-spring-cloud-feature-management</module>
+      <module>azure-spring-cloud-feature-management-web</module>
+      <module>azure-spring-cloud-starter-appconfiguration-config</module>
+  </modules>
 </project>

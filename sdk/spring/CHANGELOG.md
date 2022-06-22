@@ -21,6 +21,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
     +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
 + Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29306](https://github.com/Azure/azure-sdk-for-java/pull/29306).
     + Add properties `spring.cloud.azure.keyvault`.
++ Support OAuth2 authentication configuration for Spring ecosystems of Kafka [#29404](https://github.com/Azure/azure-sdk-for-java/pull/29404).
+
+#### Breaking Changes
+- Deprecate support of connection string or Azure Resource Manager based authentication for Spring ecosystems of Kafka [#29404](https://github.com/Azure/azure-sdk-for-java/pull/29404).
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
@@ -30,6 +34,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
+- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398). 
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
@@ -59,6 +64,7 @@ This section includes changes in `spring-cloud-azure-starter-active-directory-b2
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
 
 #### Breaking Changes
 + Deprecated classes and properties type changed [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).

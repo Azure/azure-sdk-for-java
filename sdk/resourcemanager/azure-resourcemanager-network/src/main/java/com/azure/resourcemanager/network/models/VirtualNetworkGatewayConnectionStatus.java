@@ -34,7 +34,11 @@ public final class VirtualNetworkGatewayConnectionStatus
         return fromString(name, VirtualNetworkGatewayConnectionStatus.class);
     }
 
-    /** @return known VirtualNetworkGatewayConnectionStatus values. */
+    /**
+     * Gets known VirtualNetworkGatewayConnectionStatus values.
+     *
+     * @return known VirtualNetworkGatewayConnectionStatus values.
+     */
     public static Collection<VirtualNetworkGatewayConnectionStatus> values() {
         return values(VirtualNetworkGatewayConnectionStatus.class);
     }

@@ -31,7 +31,11 @@ public final class ApplicationGatewayLoadDistributionAlgorithm
         return fromString(name, ApplicationGatewayLoadDistributionAlgorithm.class);
     }
 
-    /** @return known ApplicationGatewayLoadDistributionAlgorithm values. */
+    /**
+     * Gets known ApplicationGatewayLoadDistributionAlgorithm values.
+     *
+     * @return known ApplicationGatewayLoadDistributionAlgorithm values.
+     */
     public static Collection<ApplicationGatewayLoadDistributionAlgorithm> values() {
         return values(ApplicationGatewayLoadDistributionAlgorithm.class);
     }

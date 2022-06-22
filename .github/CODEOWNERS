@@ -148,7 +148,7 @@
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @mssfang @samvaity
+/sdk/search/                                        @alzimmermsft
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang

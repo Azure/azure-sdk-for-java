@@ -27,7 +27,11 @@ public final class VpnGatewayTunnelingProtocol extends ExpandableStringEnum<VpnG
         return fromString(name, VpnGatewayTunnelingProtocol.class);
     }
 
-    /** @return known VpnGatewayTunnelingProtocol values. */
+    /**
+     * Gets known VpnGatewayTunnelingProtocol values.
+     *
+     * @return known VpnGatewayTunnelingProtocol values.
+     */
     public static Collection<VpnGatewayTunnelingProtocol> values() {
         return values(VpnGatewayTunnelingProtocol.class);
     }

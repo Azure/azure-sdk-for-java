@@ -30,7 +30,11 @@ public final class LiveOutputResourceState extends ExpandableStringEnum<LiveOutp
         return fromString(name, LiveOutputResourceState.class);
     }
 
-    /** @return known LiveOutputResourceState values. */
+    /**
+     * Gets known LiveOutputResourceState values.
+     *
+     * @return known LiveOutputResourceState values.
+     */
     public static Collection<LiveOutputResourceState> values() {
         return values(LiveOutputResourceState.class);
     }

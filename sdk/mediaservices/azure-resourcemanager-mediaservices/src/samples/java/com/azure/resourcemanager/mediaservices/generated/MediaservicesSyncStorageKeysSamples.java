@@ -10,7 +10,7 @@ import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
 /** Samples for Mediaservices SyncStorageKeys. */
 public final class MediaservicesSyncStorageKeysSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/accounts-sync-storage-keys.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accounts-sync-storage-keys.json
      */
     /**
      * Sample code: Synchronizes Storage Account Keys.

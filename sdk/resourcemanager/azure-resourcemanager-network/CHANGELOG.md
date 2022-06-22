@@ -4,11 +4,20 @@
 
 ### Features Added
 
+- Supported `priority` in `ApplicationGatewayRequestRoutingRule`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Renamed class `OrderByOrder` to `FirewallPolicyIdpsQuerySortOrder`.
+- Renamed class `SingleQueryResultDirection` to `FirewallPolicyIdpsSignatureDirection`.
+- Renamed class `SingleQueryResultMode` to `FirewallPolicyIdpsSignatureMode`.
+- Renamed class `SingleQueryResultSeverity` to `FirewallPolicyIdpsSignatureSeverity`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-08-01`.
 
 ## 2.15.0 (2022-05-25)
 
