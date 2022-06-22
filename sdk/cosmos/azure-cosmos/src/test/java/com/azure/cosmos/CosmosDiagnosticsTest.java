@@ -28,6 +28,9 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -37,9 +40,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
@@ -284,7 +284,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             testDirectClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .consistencyLevel(ConsistencyLevel.SESSION)
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
@@ -308,7 +307,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
-            assertThat(diagnostics).contains("\"requestSessionToken\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
             // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
@@ -316,6 +314,45 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), testDirectClient.asyncClient());
             isValidJSON(diagnostics);
+
+            // validate that on failed operation request timeline is populated
+            try {
+                cosmosContainer.createItem(internalObjectNode);
+                fail("expected 409");
+            } catch (CosmosException e) {
+                diagnostics = e.getDiagnostics().toString();
+                assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+                assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
+                assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
+                assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
+                validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
+            }
+        } finally {
+            if (testDirectClient != null) {
+                testDirectClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void requestHeaderDiagnostics() {
+        CosmosClient testDirectClient = null;
+        try {
+            testDirectClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert that request session token was not sent to backend (null)
+            assertThat(diagnostics).contains("\"requestSessionToken\":null");
 
             // read item to validate response and request session tokens are equal
             String sessionToken = createResponse.getSessionToken();
@@ -330,25 +367,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // need to use batch since we only pass session token on multiple region write or batch operation
             CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(
                 BridgeInternal.getProperties(createResponse).getId()));
-            batch.deleteItemOperation(BridgeInternal.getProperties(createResponse).getId());
+            internalObjectNode = getInternalObjectNode();
             batch.createItemOperation(internalObjectNode);
             CosmosBatchResponse batchResponse = cosmosContainer.executeCosmosBatch(batch,
                 new CosmosBatchRequestOptions().setSessionToken("0:-1#2"));
             diagnostics = batchResponse.getDiagnostics().toString();
             assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
 
-            // validate that on failed operation request timeline is populated
-            try {
-                cosmosContainer.createItem(internalObjectNode);
-                fail("expected 409");
-            } catch (CosmosException e) {
-                diagnostics = e.getDiagnostics().toString();
-                assertThat(diagnostics).contains("\"backendLatencyInMs\"");
-                assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
-                assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
-                assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
-                validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
-            }
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
