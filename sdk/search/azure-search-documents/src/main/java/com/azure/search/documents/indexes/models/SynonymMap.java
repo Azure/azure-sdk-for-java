@@ -27,6 +27,10 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
 
     private String eTag;
 
+    private SynonymMap() {
+        this(null, null);
+    }
+
     /**
      * Constructor of {@link SynonymMap}.
      *
@@ -153,6 +157,13 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SynonymMap from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynonymMap if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     */
     public static SynonymMap fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -170,9 +181,7 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
                         } else if ("synonyms".equals(fieldName)) {
                             synonyms = reader.getStringValue();
                         } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();
                         } else {

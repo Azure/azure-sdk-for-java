@@ -20,11 +20,11 @@ import java.util.List;
 /** Defines how the Suggest API should apply to a group of fields in the index. */
 @Fluent
 public final class SearchSuggester implements JsonSerializable<SearchSuggester> {
-    private String name;
+    private final String name;
 
     private String searchMode = "analyzingInfixMatching";
 
-    private List<String> sourceFields;
+    private final List<String> sourceFields;
 
     /**
      * Creates an instance of SearchSuggester class.
@@ -75,6 +75,14 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchSuggester from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchSuggester if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchSuggester fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -91,7 +99,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("sourceFields".equals(fieldName)) {
-                            sourceFields = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            sourceFields = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             sourceFieldsFound = true;
                         } else {
                             reader.skipChildren();

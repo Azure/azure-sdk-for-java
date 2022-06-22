@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Truncates the terms to a specific length. This token filter is implemented using Apache Lucene. */
 @Fluent
@@ -62,11 +61,19 @@ public final class TruncateTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of TruncateTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TruncateTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static TruncateTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -76,7 +83,6 @@ public final class TruncateTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -88,7 +94,7 @@ public final class TruncateTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.TruncateTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.TruncateTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.TruncateTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -105,6 +111,7 @@ public final class TruncateTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     TruncateTokenFilter deserializedValue = new TruncateTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setLength(length);
 
                     return deserializedValue;

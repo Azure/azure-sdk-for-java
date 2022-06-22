@@ -23,9 +23,9 @@ import java.util.List;
  */
 @Fluent
 public final class SearchAlias implements JsonSerializable<SearchAlias> {
-    private String name;
+    private final String name;
 
-    private List<String> indexes;
+    private final List<String> indexes;
 
     private String eTag;
 
@@ -88,6 +88,14 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchAlias from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchAlias if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchAlias fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -105,7 +113,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("indexes".equals(fieldName)) {
-                            indexes = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            indexes = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             indexesFound = true;
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();

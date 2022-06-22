@@ -16,7 +16,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.RegexFlags;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens. This tokenizer is implemented using Apache
@@ -118,11 +117,19 @@ public final class PatternTokenizer extends LexicalTokenizer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of PatternTokenizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatternTokenizer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static PatternTokenizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -134,7 +141,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -150,7 +156,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.PatternTokenizer")) {
+                    if (!"#Microsoft.Azure.Search.PatternTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternTokenizer'. The found '@odata.type' was '"
                                         + odataType
@@ -167,6 +173,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     PatternTokenizer deserializedValue = new PatternTokenizer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setPattern(pattern);
                     deserializedValue.setFlags(flags);
                     deserializedValue.setGroup(group);

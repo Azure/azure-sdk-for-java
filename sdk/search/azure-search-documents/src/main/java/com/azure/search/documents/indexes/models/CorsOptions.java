@@ -20,7 +20,7 @@ import java.util.List;
 /** Defines options to control Cross-Origin Resource Sharing (CORS) for an index. */
 @Fluent
 public final class CorsOptions implements JsonSerializable<CorsOptions> {
-    private List<String> allowedOrigins;
+    private final List<String> allowedOrigins;
 
     private Long maxAgeInSeconds;
 
@@ -78,6 +78,14 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CorsOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorsOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static CorsOptions fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -90,7 +98,7 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
                         reader.nextToken();
 
                         if ("allowedOrigins".equals(fieldName)) {
-                            allowedOrigins = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            allowedOrigins = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             allowedOriginsFound = true;
                         } else if ("maxAgeInSeconds".equals(fieldName)) {
                             maxAgeInSeconds = JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());

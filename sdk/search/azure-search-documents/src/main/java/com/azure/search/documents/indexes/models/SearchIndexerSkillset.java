@@ -20,7 +20,7 @@ import java.util.List;
 /** A list of skills. */
 @Fluent
 public final class SearchIndexerSkillset implements JsonSerializable<SearchIndexerSkillset> {
-    private String name;
+    private final String name;
 
     private String description;
 
@@ -199,6 +199,14 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerSkillset from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerSkillset if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexerSkillset fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -220,29 +228,18 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("skills".equals(fieldName)) {
-                            skills =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SearchIndexerSkill.fromJson(reader)));
+                            skills = JsonUtils.readArray(reader, reader1 -> SearchIndexerSkill.fromJson(reader1));
                             skillsFound = true;
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
                         } else if ("cognitiveServices".equals(fieldName)) {
-                            cognitiveServicesAccount =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> CognitiveServicesAccount.fromJson(reader));
+                            cognitiveServicesAccount = CognitiveServicesAccount.fromJson(reader);
                         } else if ("knowledgeStore".equals(fieldName)) {
-                            knowledgeStore =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchIndexerKnowledgeStore.fromJson(reader));
+                            knowledgeStore = SearchIndexerKnowledgeStore.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();
                         } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

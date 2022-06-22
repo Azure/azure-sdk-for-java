@@ -8,101 +8,38 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Parameters for filtering, sorting, fuzzy matching, and other suggestions query behaviors. */
 @Fluent
-public final class SuggestRequest {
-    /*
-     * An OData expression that filters the documents considered for
-     * suggestions.
-     */
-    @JsonProperty(value = "filter")
+public final class SuggestRequest implements JsonSerializable<SuggestRequest> {
     private String filter;
 
-    /*
-     * A value indicating whether to use fuzzy matching for the suggestion
-     * query. Default is false. When set to true, the query will find
-     * suggestions even if there's a substituted or missing character in the
-     * search text. While this provides a better experience in some scenarios,
-     * it comes at a performance cost as fuzzy suggestion searches are slower
-     * and consume more resources.
-     */
-    @JsonProperty(value = "fuzzy")
     private Boolean useFuzzyMatching;
 
-    /*
-     * A string tag that is appended to hit highlights. Must be set with
-     * highlightPreTag. If omitted, hit highlighting of suggestions is
-     * disabled.
-     */
-    @JsonProperty(value = "highlightPostTag")
     private String highlightPostTag;
 
-    /*
-     * A string tag that is prepended to hit highlights. Must be set with
-     * highlightPostTag. If omitted, hit highlighting of suggestions is
-     * disabled.
-     */
-    @JsonProperty(value = "highlightPreTag")
     private String highlightPreTag;
 
-    /*
-     * A number between 0 and 100 indicating the percentage of the index that
-     * must be covered by a suggestion query in order for the query to be
-     * reported as a success. This parameter can be useful for ensuring search
-     * availability even for services with only one replica. The default is 80.
-     */
-    @JsonProperty(value = "minimumCoverage")
     private Double minimumCoverage;
 
-    /*
-     * The comma-separated list of OData $orderby expressions by which to sort
-     * the results. Each expression can be either a field name or a call to
-     * either the geo.distance() or the search.score() functions. Each
-     * expression can be followed by asc to indicate ascending, or desc to
-     * indicate descending. The default is ascending order. Ties will be broken
-     * by the match scores of documents. If no $orderby is specified, the
-     * default sort order is descending by document match score. There can be
-     * at most 32 $orderby clauses.
-     */
-    @JsonProperty(value = "orderby")
     private String orderBy;
 
-    /*
-     * The search text to use to suggest documents. Must be at least 1
-     * character, and no more than 100 characters.
-     */
-    @JsonProperty(value = "search", required = true)
-    private String searchText;
+    private final String searchText;
 
-    /*
-     * The comma-separated list of field names to search for the specified
-     * search text. Target fields must be included in the specified suggester.
-     */
-    @JsonProperty(value = "searchFields")
     private String searchFields;
 
-    /*
-     * The comma-separated list of fields to retrieve. If unspecified, only the
-     * key field will be included in the results.
-     */
-    @JsonProperty(value = "select")
     private String select;
 
-    /*
-     * The name of the suggester as specified in the suggesters collection
-     * that's part of the index definition.
-     */
-    @JsonProperty(value = "suggesterName", required = true)
-    private String suggesterName;
+    private final String suggesterName;
 
-    /*
-     * The number of suggestions to retrieve. This must be a value between 1
-     * and 100. The default is 5.
-     */
-    @JsonProperty(value = "top")
     private Integer top;
 
     /**
@@ -111,10 +48,7 @@ public final class SuggestRequest {
      * @param searchText the searchText value to set.
      * @param suggesterName the suggesterName value to set.
      */
-    @JsonCreator
-    public SuggestRequest(
-            @JsonProperty(value = "search", required = true) String searchText,
-            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
+    public SuggestRequest(String searchText, String suggesterName) {
         this.searchText = searchText;
         this.suggesterName = suggesterName;
     }
@@ -345,5 +279,106 @@ public final class SuggestRequest {
     public SuggestRequest setTop(Integer top) {
         this.top = top;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("search", this.searchText, false);
+        jsonWriter.writeStringField("suggesterName", this.suggesterName, false);
+        jsonWriter.writeStringField("filter", this.filter, false);
+        jsonWriter.writeBooleanField("fuzzy", this.useFuzzyMatching, false);
+        jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag, false);
+        jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag, false);
+        jsonWriter.writeDoubleField("minimumCoverage", this.minimumCoverage, false);
+        jsonWriter.writeStringField("orderby", this.orderBy, false);
+        jsonWriter.writeStringField("searchFields", this.searchFields, false);
+        jsonWriter.writeStringField("select", this.select, false);
+        jsonWriter.writeIntegerField("top", this.top, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Reads an instance of SuggestRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuggestRequest if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
+    public static SuggestRequest fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean searchTextFound = false;
+                    String searchText = null;
+                    boolean suggesterNameFound = false;
+                    String suggesterName = null;
+                    String filter = null;
+                    Boolean useFuzzyMatching = null;
+                    String highlightPostTag = null;
+                    String highlightPreTag = null;
+                    Double minimumCoverage = null;
+                    String orderBy = null;
+                    String searchFields = null;
+                    String select = null;
+                    Integer top = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("search".equals(fieldName)) {
+                            searchText = reader.getStringValue();
+                            searchTextFound = true;
+                        } else if ("suggesterName".equals(fieldName)) {
+                            suggesterName = reader.getStringValue();
+                            suggesterNameFound = true;
+                        } else if ("filter".equals(fieldName)) {
+                            filter = reader.getStringValue();
+                        } else if ("fuzzy".equals(fieldName)) {
+                            useFuzzyMatching = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("highlightPostTag".equals(fieldName)) {
+                            highlightPostTag = reader.getStringValue();
+                        } else if ("highlightPreTag".equals(fieldName)) {
+                            highlightPreTag = reader.getStringValue();
+                        } else if ("minimumCoverage".equals(fieldName)) {
+                            minimumCoverage = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                        } else if ("orderby".equals(fieldName)) {
+                            orderBy = reader.getStringValue();
+                        } else if ("searchFields".equals(fieldName)) {
+                            searchFields = reader.getStringValue();
+                        } else if ("select".equals(fieldName)) {
+                            select = reader.getStringValue();
+                        } else if ("top".equals(fieldName)) {
+                            top = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!searchTextFound) {
+                        missingProperties.add("search");
+                    }
+                    if (!suggesterNameFound) {
+                        missingProperties.add("suggesterName");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SuggestRequest deserializedValue = new SuggestRequest(searchText, suggesterName);
+                    deserializedValue.setFilter(filter);
+                    deserializedValue.setUseFuzzyMatching(useFuzzyMatching);
+                    deserializedValue.setHighlightPostTag(highlightPostTag);
+                    deserializedValue.setHighlightPreTag(highlightPreTag);
+                    deserializedValue.setMinimumCoverage(minimumCoverage);
+                    deserializedValue.setOrderBy(orderBy);
+                    deserializedValue.setSearchFields(searchFields);
+                    deserializedValue.setSelect(select);
+                    deserializedValue.setTop(top);
+
+                    return deserializedValue;
+                });
     }
 }

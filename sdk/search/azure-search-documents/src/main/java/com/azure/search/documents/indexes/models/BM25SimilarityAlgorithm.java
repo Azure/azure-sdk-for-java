@@ -12,7 +12,6 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.util.Objects;
 
 /**
  * Ranking function based on the Okapi BM25 similarity algorithm. BM25 is a TF-IDF-like algorithm that includes length
@@ -84,11 +83,18 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of BM25SimilarityAlgorithm from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BM25SimilarityAlgorithm if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     */
     public static BM25SimilarityAlgorithm fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     Double k1 = null;
                     Double b = null;
@@ -97,7 +103,6 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("k1".equals(fieldName)) {
                             k1 = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
@@ -108,7 +113,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.BM25Similarity")) {
+                    if (!"#Microsoft.Azure.Search.BM25Similarity".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.BM25Similarity'. The found '@odata.type' was '"
                                         + odataType
@@ -116,6 +121,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
                     }
 
                     BM25SimilarityAlgorithm deserializedValue = new BM25SimilarityAlgorithm();
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setK1(k1);
                     deserializedValue.setB(b);
 

@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Grammar-based tokenizer that is suitable for processing most European-language documents. This tokenizer is
@@ -67,11 +66,19 @@ public final class ClassicTokenizer extends LexicalTokenizer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ClassicTokenizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClassicTokenizer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static ClassicTokenizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -81,7 +88,6 @@ public final class ClassicTokenizer extends LexicalTokenizer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -93,7 +99,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.ClassicTokenizer")) {
+                    if (!"#Microsoft.Azure.Search.ClassicTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ClassicTokenizer'. The found '@odata.type' was '"
                                         + odataType
@@ -110,6 +116,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     ClassicTokenizer deserializedValue = new ClassicTokenizer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMaxTokenLength(maxTokenLength);
 
                     return deserializedValue;

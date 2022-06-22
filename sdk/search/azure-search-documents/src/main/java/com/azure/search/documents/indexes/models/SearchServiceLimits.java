@@ -124,6 +124,13 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchServiceLimits from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchServiceLimits if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static SearchServiceLimits fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

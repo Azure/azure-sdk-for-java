@@ -117,6 +117,13 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of PrioritizedFields from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrioritizedFields if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static PrioritizedFields fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -129,21 +136,13 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
                         reader.nextToken();
 
                         if ("titleField".equals(fieldName)) {
-                            titleField = JsonUtils.getNullableProperty(reader, r -> SemanticField.fromJson(reader));
+                            titleField = SemanticField.fromJson(reader);
                         } else if ("prioritizedContentFields".equals(fieldName)) {
                             prioritizedContentFields =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SemanticField.fromJson(reader)));
+                                    JsonUtils.readArray(reader, reader1 -> SemanticField.fromJson(reader1));
                         } else if ("prioritizedKeywordsFields".equals(fieldName)) {
                             prioritizedKeywordsFields =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SemanticField.fromJson(reader)));
+                                    JsonUtils.readArray(reader, reader1 -> SemanticField.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

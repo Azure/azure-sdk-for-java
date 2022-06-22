@@ -20,7 +20,7 @@ import java.util.List;
 /** Defines parameters for a search index that influence scoring in search queries. */
 @Fluent
 public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
-    private String name;
+    private final String name;
 
     private TextWeights textWeights;
 
@@ -122,6 +122,14 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ScoringProfile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScoringProfile if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ScoringProfile fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -139,14 +147,9 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("text".equals(fieldName)) {
-                            textWeights = JsonUtils.getNullableProperty(reader, r -> TextWeights.fromJson(reader));
+                            textWeights = TextWeights.fromJson(reader);
                         } else if ("functions".equals(fieldName)) {
-                            functions =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> ScoringFunction.fromJson(reader)));
+                            functions = JsonUtils.readArray(reader, reader1 -> ScoringFunction.fromJson(reader1));
                         } else if ("functionAggregation".equals(fieldName)) {
                             functionAggregation = ScoringFunctionAggregation.fromString(reader.getStringValue());
                         } else {

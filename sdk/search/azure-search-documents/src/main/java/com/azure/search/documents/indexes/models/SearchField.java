@@ -20,9 +20,9 @@ import java.util.List;
 /** Represents a field in an index definition, which describes the name, data type, and search behavior of a field. */
 @Fluent
 public final class SearchField implements JsonSerializable<SearchField> {
-    private String name;
+    private final String name;
 
-    private SearchFieldDataType type;
+    private final SearchFieldDataType type;
 
     private Boolean key;
 
@@ -437,6 +437,14 @@ public final class SearchField implements JsonSerializable<SearchField> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchField from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchField if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchField fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -488,12 +496,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         } else if ("normalizer".equals(fieldName)) {
                             normalizerName = LexicalNormalizerName.fromString(reader.getStringValue());
                         } else if ("synonymMaps".equals(fieldName)) {
-                            synonymMapNames = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            synonymMapNames = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("fields".equals(fieldName)) {
-                            fields =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchField.fromJson(reader)));
+                            fields = JsonUtils.readArray(reader, reader1 -> SearchField.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

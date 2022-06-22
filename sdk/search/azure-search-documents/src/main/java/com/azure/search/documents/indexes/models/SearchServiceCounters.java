@@ -22,17 +22,17 @@ import java.util.List;
 public final class SearchServiceCounters implements JsonSerializable<SearchServiceCounters> {
     private ResourceCounter aliasCounter;
 
-    private ResourceCounter documentCounter;
+    private final ResourceCounter documentCounter;
 
-    private ResourceCounter indexCounter;
+    private final ResourceCounter indexCounter;
 
-    private ResourceCounter indexerCounter;
+    private final ResourceCounter indexerCounter;
 
-    private ResourceCounter dataSourceCounter;
+    private final ResourceCounter dataSourceCounter;
 
-    private ResourceCounter storageSizeCounter;
+    private final ResourceCounter storageSizeCounter;
 
-    private ResourceCounter synonymMapCounter;
+    private final ResourceCounter synonymMapCounter;
 
     private ResourceCounter skillsetCounter;
 
@@ -169,6 +169,14 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchServiceCounters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchServiceCounters if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchServiceCounters fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -192,33 +200,27 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                         reader.nextToken();
 
                         if ("documentCount".equals(fieldName)) {
-                            documentCounter =
-                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            documentCounter = ResourceCounter.fromJson(reader);
                             documentCounterFound = true;
                         } else if ("indexesCount".equals(fieldName)) {
-                            indexCounter = JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            indexCounter = ResourceCounter.fromJson(reader);
                             indexCounterFound = true;
                         } else if ("indexersCount".equals(fieldName)) {
-                            indexerCounter =
-                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            indexerCounter = ResourceCounter.fromJson(reader);
                             indexerCounterFound = true;
                         } else if ("dataSourcesCount".equals(fieldName)) {
-                            dataSourceCounter =
-                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            dataSourceCounter = ResourceCounter.fromJson(reader);
                             dataSourceCounterFound = true;
                         } else if ("storageSize".equals(fieldName)) {
-                            storageSizeCounter =
-                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            storageSizeCounter = ResourceCounter.fromJson(reader);
                             storageSizeCounterFound = true;
                         } else if ("synonymMaps".equals(fieldName)) {
-                            synonymMapCounter =
-                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            synonymMapCounter = ResourceCounter.fromJson(reader);
                             synonymMapCounterFound = true;
                         } else if ("aliasesCount".equals(fieldName)) {
-                            aliasCounter = JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            aliasCounter = ResourceCounter.fromJson(reader);
                         } else if ("skillsetCount".equals(fieldName)) {
-                            skillsetCounter =
-                                    JsonUtils.getNullableProperty(reader, r -> ResourceCounter.fromJson(reader));
+                            skillsetCounter = ResourceCounter.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

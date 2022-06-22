@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Marks terms as keywords. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class KeywordMarkerTokenFilter extends TokenFilter {
     private String odataType = "#Microsoft.Azure.Search.KeywordMarkerTokenFilter";
 
-    private List<String> keywords;
+    private final List<String> keywords;
 
     private Boolean ignoreCase;
 
@@ -79,11 +78,19 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of KeywordMarkerTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeywordMarkerTokenFilter if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static KeywordMarkerTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -95,13 +102,12 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("keywords".equals(fieldName)) {
-                            keywords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            keywords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             keywordsFound = true;
                         } else if ("ignoreCase".equals(fieldName)) {
                             ignoreCase = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
@@ -110,8 +116,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.KeywordMarkerTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.KeywordMarkerTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeywordMarkerTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -131,6 +136,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     KeywordMarkerTokenFilter deserializedValue = new KeywordMarkerTokenFilter(name, keywords);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setIgnoreCase(ignoreCase);
 
                     return deserializedValue;

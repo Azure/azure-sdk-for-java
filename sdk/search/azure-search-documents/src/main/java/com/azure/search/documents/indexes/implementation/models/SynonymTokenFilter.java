@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Matches single or multi-word synonyms in a token stream. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class SynonymTokenFilter extends TokenFilter {
     private String odataType = "#Microsoft.Azure.Search.SynonymTokenFilter";
 
-    private List<String> synonyms;
+    private final List<String> synonyms;
 
     private Boolean ignoreCase;
 
@@ -113,11 +112,19 @@ public final class SynonymTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SynonymTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynonymTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static SynonymTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -130,13 +137,12 @@ public final class SynonymTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("synonyms".equals(fieldName)) {
-                            synonyms = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            synonyms = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             synonymsFound = true;
                         } else if ("ignoreCase".equals(fieldName)) {
                             ignoreCase = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
@@ -147,7 +153,7 @@ public final class SynonymTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.SynonymTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.SynonymTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SynonymTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -167,6 +173,7 @@ public final class SynonymTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     SynonymTokenFilter deserializedValue = new SynonymTokenFilter(name, synonyms);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setIgnoreCase(ignoreCase);
                     deserializedValue.setExpand(expand);
 

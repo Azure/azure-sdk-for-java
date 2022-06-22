@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Creates combinations of tokens as a single token. This token filter is implemented using Apache Lucene. */
 @Fluent
@@ -187,11 +186,19 @@ public final class ShingleTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ShingleTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShingleTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static ShingleTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -206,7 +213,6 @@ public final class ShingleTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -229,7 +235,7 @@ public final class ShingleTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.ShingleTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.ShingleTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ShingleTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -246,6 +252,7 @@ public final class ShingleTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     ShingleTokenFilter deserializedValue = new ShingleTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMaxShingleSize(maxShingleSize);
                     deserializedValue.setMinShingleSize(minShingleSize);
                     deserializedValue.setOutputUnigrams(outputUnigrams);

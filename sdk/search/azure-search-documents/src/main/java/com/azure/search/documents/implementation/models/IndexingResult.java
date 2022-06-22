@@ -8,41 +8,25 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Status of an indexing operation for a single document. */
 @Immutable
-public final class IndexingResult {
-    /*
-     * The key of a document that was in the indexing request.
-     */
-    @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String key;
+public final class IndexingResult implements JsonSerializable<IndexingResult> {
+    private final String key;
 
-    /*
-     * The error message explaining why the indexing operation failed for the
-     * document identified by the key; null if indexing succeeded.
-     */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /*
-     * A value indicating whether the indexing operation succeeded for the
-     * document identified by the key.
-     */
-    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private boolean succeeded;
+    private final boolean succeeded;
 
-    /*
-     * The status code of the indexing operation. Possible values include: 200
-     * for a successful update or delete, 201 for successful document creation,
-     * 400 for a malformed input document, 404 for document not found, 409 for
-     * a version conflict, 422 when the index is temporarily unavailable, or
-     * 503 for when the service is too busy.
-     */
-    @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int statusCode;
+    private final int statusCode;
 
     /**
      * Creates an instance of IndexingResult class.
@@ -51,12 +35,7 @@ public final class IndexingResult {
      * @param succeeded the succeeded value to set.
      * @param statusCode the statusCode value to set.
      */
-    @JsonCreator
-    public IndexingResult(
-            @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
-            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
-            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    int statusCode) {
+    public IndexingResult(String key, boolean succeeded, int statusCode) {
         this.key = key;
         this.succeeded = succeeded;
         this.statusCode = statusCode;
@@ -101,5 +80,75 @@ public final class IndexingResult {
      */
     public int getStatusCode() {
         return this.statusCode;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key, false);
+        jsonWriter.writeBooleanField("status", this.succeeded);
+        jsonWriter.writeIntField("statusCode", this.statusCode);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Reads an instance of IndexingResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexingResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
+    public static IndexingResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean keyFound = false;
+                    String key = null;
+                    boolean succeededFound = false;
+                    boolean succeeded = false;
+                    boolean statusCodeFound = false;
+                    int statusCode = 0;
+                    String errorMessage = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("key".equals(fieldName)) {
+                            key = reader.getStringValue();
+                            keyFound = true;
+                        } else if ("status".equals(fieldName)) {
+                            succeeded = reader.getBooleanValue();
+                            succeededFound = true;
+                        } else if ("statusCode".equals(fieldName)) {
+                            statusCode = reader.getIntValue();
+                            statusCodeFound = true;
+                        } else if ("errorMessage".equals(fieldName)) {
+                            errorMessage = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!keyFound) {
+                        missingProperties.add("key");
+                    }
+                    if (!succeededFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!statusCodeFound) {
+                        missingProperties.add("statusCode");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    IndexingResult deserializedValue = new IndexingResult(key, succeeded, statusCode);
+                    deserializedValue.errorMessage = errorMessage;
+
+                    return deserializedValue;
+                });
     }
 }

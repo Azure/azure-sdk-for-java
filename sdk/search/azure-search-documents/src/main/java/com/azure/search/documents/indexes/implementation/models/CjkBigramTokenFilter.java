@@ -16,7 +16,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Forms bigrams of CJK terms that are generated from the standard tokenizer. This token filter is implemented using
@@ -95,11 +94,19 @@ public final class CjkBigramTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CjkBigramTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CjkBigramTokenFilter if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static CjkBigramTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -110,7 +117,6 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -119,7 +125,8 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                             ignoreScripts =
                                     JsonUtils.readArray(
                                             reader,
-                                            r -> CjkBigramTokenFilterScripts.fromString(reader.getStringValue()));
+                                            reader1 ->
+                                                    CjkBigramTokenFilterScripts.fromString(reader1.getStringValue()));
                         } else if ("outputUnigrams".equals(fieldName)) {
                             outputUnigrams = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
                         } else {
@@ -127,7 +134,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.CjkBigramTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.CjkBigramTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CjkBigramTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -144,6 +151,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CjkBigramTokenFilter deserializedValue = new CjkBigramTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setIgnoreScripts(ignoreScripts);
                     deserializedValue.setOutputUnigrams(outputUnigrams);
 

@@ -13,32 +13,34 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.EntityCategory;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillLanguage;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Using the Text Analytics API, extracts entities of different types from text. */
+/** Text analytics entity recognition. */
 @Fluent
-public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.V3.EntityRecognitionSkill";
+public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
+    private String odataType = "#Microsoft.Skills.Text.EntityRecognitionSkill";
 
-    private List<String> categories;
+    private List<EntityCategory> categories;
 
-    private String defaultLanguageCode;
+    private EntityRecognitionSkillLanguage defaultLanguageCode;
+
+    private Boolean includeTypelessEntities;
 
     private Double minimumPrecision;
 
-    private String modelVersion;
-
     /**
-     * Creates an instance of EntityRecognitionSkillV3 class.
+     * Creates an instance of EntityRecognitionSkillV1 class.
      *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    public EntityRecognitionSkillV3(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+    public EntityRecognitionSkillV1(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -47,7 +49,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      *
      * @return the categories value.
      */
-    public List<String> getCategories() {
+    public List<EntityCategory> getCategories() {
         return this.categories;
     }
 
@@ -55,9 +57,9 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * Set the categories property: A list of entity categories that should be extracted.
      *
      * @param categories the categories value to set.
-     * @return the EntityRecognitionSkillV3 object itself.
+     * @return the EntityRecognitionSkillV1 object itself.
      */
-    public EntityRecognitionSkillV3 setCategories(List<String> categories) {
+    public EntityRecognitionSkillV1 setCategories(List<EntityCategory> categories) {
         this.categories = categories;
         return this;
     }
@@ -67,7 +69,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      *
      * @return the defaultLanguageCode value.
      */
-    public String getDefaultLanguageCode() {
+    public EntityRecognitionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -75,10 +77,34 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
-     * @return the EntityRecognitionSkillV3 object itself.
+     * @return the EntityRecognitionSkillV1 object itself.
      */
-    public EntityRecognitionSkillV3 setDefaultLanguageCode(String defaultLanguageCode) {
+    public EntityRecognitionSkillV1 setDefaultLanguageCode(EntityRecognitionSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
+        return this;
+    }
+
+    /**
+     * Get the includeTypelessEntities property: Determines whether or not to include entities which are well known but
+     * don't conform to a pre-defined type. If this configuration is not set (default), set to null or set to false,
+     * entities which don't conform to one of the pre-defined types will not be surfaced.
+     *
+     * @return the includeTypelessEntities value.
+     */
+    public Boolean isIncludeTypelessEntities() {
+        return this.includeTypelessEntities;
+    }
+
+    /**
+     * Set the includeTypelessEntities property: Determines whether or not to include entities which are well known but
+     * don't conform to a pre-defined type. If this configuration is not set (default), set to null or set to false,
+     * entities which don't conform to one of the pre-defined types will not be surfaced.
+     *
+     * @param includeTypelessEntities the includeTypelessEntities value to set.
+     * @return the EntityRecognitionSkillV1 object itself.
+     */
+    public EntityRecognitionSkillV1 setIncludeTypelessEntities(Boolean includeTypelessEntities) {
+        this.includeTypelessEntities = includeTypelessEntities;
         return this;
     }
 
@@ -99,34 +125,10 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * be included.
      *
      * @param minimumPrecision the minimumPrecision value to set.
-     * @return the EntityRecognitionSkillV3 object itself.
+     * @return the EntityRecognitionSkillV1 object itself.
      */
-    public EntityRecognitionSkillV3 setMinimumPrecision(Double minimumPrecision) {
+    public EntityRecognitionSkillV1 setMinimumPrecision(Double minimumPrecision) {
         this.minimumPrecision = minimumPrecision;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
-     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
-     * necessary.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
-     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
-     * necessary.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the EntityRecognitionSkillV3 object itself.
-     */
-    public EntityRecognitionSkillV3 setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
         return this;
     }
 
@@ -141,23 +143,29 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
         JsonUtils.writeArray(
-                jsonWriter, "categories", this.categories, (writer, element) -> writer.writeString(element, false));
-        jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode, false);
+                jsonWriter,
+                "categories",
+                this.categories,
+                (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField(
+                "defaultLanguageCode",
+                this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString(),
+                false);
+        jsonWriter.writeBooleanField("includeTypelessEntities", this.includeTypelessEntities, false);
         jsonWriter.writeDoubleField("minimumPrecision", this.minimumPrecision, false);
-        jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
         return jsonWriter.writeEndObject().flush();
     }
 
     /**
-     * Reads an instance of EntityRecognitionSkillV3 from the JsonReader.
+     * Reads an instance of EntityRecognitionSkillV1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EntityRecognitionSkillV3 if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of EntityRecognitionSkillV1 if the JsonReader was pointing to an instance of it, or null if
      *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
      */
-    public static EntityRecognitionSkillV3 fromJson(JsonReader jsonReader) {
+    public static EntityRecognitionSkillV1 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
@@ -169,10 +177,10 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                     String name = null;
                     String description = null;
                     String context = null;
-                    List<String> categories = null;
-                    String defaultLanguageCode = null;
+                    List<EntityCategory> categories = null;
+                    EntityRecognitionSkillLanguage defaultLanguageCode = null;
+                    Boolean includeTypelessEntities = null;
                     Double minimumPrecision = null;
-                    String modelVersion = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -192,21 +200,24 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("categories".equals(fieldName)) {
-                            categories = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            categories =
+                                    JsonUtils.readArray(
+                                            reader, reader1 -> EntityCategory.fromString(reader1.getStringValue()));
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = reader.getStringValue();
+                            defaultLanguageCode = EntityRecognitionSkillLanguage.fromString(reader.getStringValue());
+                        } else if ("includeTypelessEntities".equals(fieldName)) {
+                            includeTypelessEntities =
+                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
                         } else if ("minimumPrecision".equals(fieldName)) {
                             minimumPrecision = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
-                        } else if ("modelVersion".equals(fieldName)) {
-                            modelVersion = reader.getStringValue();
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!"#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(odataType)) {
+                    if (!"#Microsoft.Skills.Text.EntityRecognitionSkill".equals(odataType)) {
                         throw new IllegalStateException(
-                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.V3.EntityRecognitionSkill'. The found '@odata.type' was '"
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.EntityRecognitionSkill'. The found '@odata.type' was '"
                                         + odataType
                                         + "'.");
                     }
@@ -223,15 +234,15 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                         throw new IllegalStateException(
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
-                    EntityRecognitionSkillV3 deserializedValue = new EntityRecognitionSkillV3(inputs, outputs);
+                    EntityRecognitionSkillV1 deserializedValue = new EntityRecognitionSkillV1(inputs, outputs);
                     deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
                     deserializedValue.setCategories(categories);
                     deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
+                    deserializedValue.setIncludeTypelessEntities(includeTypelessEntities);
                     deserializedValue.setMinimumPrecision(minimumPrecision);
-                    deserializedValue.setModelVersion(modelVersion);
 
                     return deserializedValue;
                 });

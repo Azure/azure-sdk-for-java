@@ -14,10 +14,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /** A skill that extracts content from a file within the enrichment pipeline. */
 @Fluent
@@ -122,11 +120,19 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of DocumentExtractionSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentExtractionSkill if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static DocumentExtractionSkill fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean inputsFound = false;
                     List<InputFieldMappingEntry> inputs = null;
@@ -143,23 +149,12 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -172,25 +167,18 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                         } else if ("dataToExtract".equals(fieldName)) {
                             dataToExtract = reader.getStringValue();
                         } else if ("configuration".equals(fieldName)) {
-                            if (configuration == null) {
-                                configuration = new LinkedHashMap<>();
-                            }
-
-                            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                                fieldName = reader.getFieldName();
-                                reader.nextToken();
-
-                                configuration.put(
-                                        fieldName,
-                                        JsonUtils.getNullableProperty(reader, r -> JsonUtils.readUntypedField(reader)));
-                            }
+                            configuration =
+                                    JsonUtils.readMap(
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1, r -> JsonUtils.readUntypedField(reader1)));
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Skills.Util.DocumentExtractionSkill")) {
+                    if (!"#Microsoft.Skills.Util.DocumentExtractionSkill".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Util.DocumentExtractionSkill'. The found '@odata.type' was '"
                                         + odataType
@@ -210,6 +198,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     DocumentExtractionSkill deserializedValue = new DocumentExtractionSkill(inputs, outputs);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);

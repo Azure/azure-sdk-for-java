@@ -20,7 +20,7 @@ import java.util.List;
 /** Provides parameter values to a tag scoring function. */
 @Fluent
 public final class TagScoringParameters implements JsonSerializable<TagScoringParameters> {
-    private String tagsParameter;
+    private final String tagsParameter;
 
     /**
      * Creates an instance of TagScoringParameters class.
@@ -48,6 +48,14 @@ public final class TagScoringParameters implements JsonSerializable<TagScoringPa
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of TagScoringParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagScoringParameters if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static TagScoringParameters fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

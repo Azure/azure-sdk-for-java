@@ -50,6 +50,13 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of RequestOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestOptions if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static RequestOptions fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

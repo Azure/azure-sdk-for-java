@@ -7,28 +7,22 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.IndexActionType;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /** Represents an index action that operates on a document. */
 @Fluent
-public final class IndexAction {
+public final class IndexAction implements JsonSerializable<IndexAction> {
 
-    /*
-     * The operation to perform on a document in an indexing batch.
-     */
-    @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
 
-    /*
-     * Represents an index action that operates on a document.
-     */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /**
      * Get the actionType property: The operation to perform on a document in an indexing batch.
@@ -55,7 +49,6 @@ public final class IndexAction {
      *
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -71,12 +64,50 @@ public final class IndexAction {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField(
+                "@search.action", this.actionType == null ? null : this.actionType.toString(), false);
+        if (additionalProperties != null) {
+            additionalProperties.forEach(
+                    (key, value) -> {
+                        jsonWriter.writeFieldName(key);
+                        JsonUtils.writeUntypedField(jsonWriter, value);
+                    });
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Reads an instance of IndexAction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexAction if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
+    public static IndexAction fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    IndexActionType actionType = null;
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@search.action".equals(fieldName)) {
+                            actionType = IndexActionType.fromString(reader.getStringValue());
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+                            additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                        }
+                    }
+                    IndexAction deserializedValue = new IndexAction();
+                    deserializedValue.setActionType(actionType);
+                    return deserializedValue;
+                });
     }
 
     private String rawDocument;

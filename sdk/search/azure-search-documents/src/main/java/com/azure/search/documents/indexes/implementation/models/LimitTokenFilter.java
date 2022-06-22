@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Limits the number of tokens while indexing. This token filter is implemented using Apache Lucene. */
 @Fluent
@@ -87,11 +86,19 @@ public final class LimitTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of LimitTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LimitTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static LimitTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -102,7 +109,6 @@ public final class LimitTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -116,7 +122,7 @@ public final class LimitTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.LimitTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.LimitTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LimitTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -133,6 +139,7 @@ public final class LimitTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     LimitTokenFilter deserializedValue = new LimitTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMaxTokenCount(maxTokenCount);
                     deserializedValue.setConsumeAllTokens(consumeAllTokens);
 

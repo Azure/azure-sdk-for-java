@@ -276,6 +276,13 @@ public final class SearchIndexerDataSource implements JsonSerializable<SearchInd
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerDataSource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerDataSource if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     */
     public static SearchIndexerDataSource fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -301,30 +308,19 @@ public final class SearchIndexerDataSource implements JsonSerializable<SearchInd
                         } else if ("type".equals(fieldName)) {
                             type = SearchIndexerDataSourceType.fromString(reader.getStringValue());
                         } else if ("credentials".equals(fieldName)) {
-                            credentials =
-                                    JsonUtils.getNullableProperty(reader, r -> DataSourceCredentials.fromJson(reader));
+                            credentials = DataSourceCredentials.fromJson(reader);
                         } else if ("container".equals(fieldName)) {
-                            container =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchIndexerDataContainer.fromJson(reader));
+                            container = SearchIndexerDataContainer.fromJson(reader);
                         } else if ("identity".equals(fieldName)) {
-                            identity =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchIndexerDataIdentity.fromJson(reader));
+                            identity = SearchIndexerDataIdentity.fromJson(reader);
                         } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
-                            dataChangeDetectionPolicy =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> DataChangeDetectionPolicy.fromJson(reader));
+                            dataChangeDetectionPolicy = DataChangeDetectionPolicy.fromJson(reader);
                         } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
-                            dataDeletionDetectionPolicy =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> DataDeletionDetectionPolicy.fromJson(reader));
+                            dataDeletionDetectionPolicy = DataDeletionDetectionPolicy.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();
                         } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

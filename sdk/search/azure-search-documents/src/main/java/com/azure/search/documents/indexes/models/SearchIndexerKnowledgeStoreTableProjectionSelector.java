@@ -11,8 +11,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.core.JsonToken;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class SearchIndexerKnowledgeStoreTableProjectionSelector
         extends SearchIndexerKnowledgeStoreProjectionSelector {
-    private String tableName;
+    private final String tableName;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreTableProjectionSelector class.
@@ -52,6 +52,14 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerKnowledgeStoreTableProjectionSelector from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerKnowledgeStoreTableProjectionSelector if the JsonReader was pointing to an
+     *     instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexerKnowledgeStoreTableProjectionSelector fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -76,12 +84,7 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
                         } else if ("sourceContext".equals(fieldName)) {
                             sourceContext = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                         } else if ("tableName".equals(fieldName)) {
                             tableName = reader.getStringValue();
                             tableNameFound = true;

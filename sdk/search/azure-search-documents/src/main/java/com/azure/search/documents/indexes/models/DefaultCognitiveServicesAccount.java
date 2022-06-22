@@ -12,7 +12,6 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.util.Objects;
 
 /** An empty object that represents the default cognitive service resource for a skillset. */
 @Fluent
@@ -27,11 +26,18 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of DefaultCognitiveServicesAccount from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultCognitiveServicesAccount if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     */
     public static DefaultCognitiveServicesAccount fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     String description = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -39,7 +45,6 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
@@ -48,8 +53,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.DefaultCognitiveServices")) {
+                    if (!"#Microsoft.Azure.Search.DefaultCognitiveServices".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DefaultCognitiveServices'. The found '@odata.type' was '"
                                         + odataType
@@ -57,6 +61,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
                     }
 
                     DefaultCognitiveServicesAccount deserializedValue = new DefaultCognitiveServicesAccount();
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setDescription(description);
 
                     return deserializedValue;

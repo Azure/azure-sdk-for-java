@@ -125,6 +125,13 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of IndexerCurrentState from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexerCurrentState if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static IndexerCurrentState fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -151,9 +158,10 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
                         } else if ("resetDocsFinalChangeTrackingState".equals(fieldName)) {
                             resetDocsFinalChangeTrackingState = reader.getStringValue();
                         } else if ("resetDocumentKeys".equals(fieldName)) {
-                            resetDocumentKeys = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            resetDocumentKeys = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("resetDatasourceDocumentIds".equals(fieldName)) {
-                            resetDatasourceDocumentIds = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            resetDatasourceDocumentIds =
+                                    JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

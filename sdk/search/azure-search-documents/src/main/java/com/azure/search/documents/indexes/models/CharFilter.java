@@ -18,7 +18,7 @@ import com.azure.json.JsonWriter;
 /** Base type for character filters. */
 @Fluent
 public abstract class CharFilter implements JsonSerializable<CharFilter> {
-    private String name;
+    private final String name;
 
     /**
      * Creates an instance of CharFilter class.
@@ -46,6 +46,15 @@ public abstract class CharFilter implements JsonSerializable<CharFilter> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CharFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CharFilter if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static CharFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

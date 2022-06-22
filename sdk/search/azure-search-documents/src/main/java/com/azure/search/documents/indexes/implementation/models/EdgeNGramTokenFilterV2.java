@@ -16,7 +16,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Generates n-grams of the given size(s) starting from the front or the back of an input token. This token filter is
@@ -114,11 +113,19 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of EdgeNGramTokenFilterV2 from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdgeNGramTokenFilterV2 if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static EdgeNGramTokenFilterV2 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -130,7 +137,6 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -146,8 +152,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2")) {
+                    if (!"#Microsoft.Azure.Search.EdgeNGramTokenFilterV2".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.EdgeNGramTokenFilterV2'. The found '@odata.type' was '"
                                         + odataType
@@ -164,6 +169,7 @@ public final class EdgeNGramTokenFilterV2 extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     EdgeNGramTokenFilterV2 deserializedValue = new EdgeNGramTokenFilterV2(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMinGram(minGram);
                     deserializedValue.setMaxGram(maxGram);
                     deserializedValue.setSide(side);

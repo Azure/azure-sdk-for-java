@@ -22,9 +22,9 @@ import java.util.List;
  */
 @Immutable
 public final class SearchIndexStatistics implements JsonSerializable<SearchIndexStatistics> {
-    private long documentCount;
+    private final long documentCount;
 
-    private long storageSize;
+    private final long storageSize;
 
     /**
      * Creates an instance of SearchIndexStatistics class.
@@ -63,6 +63,14 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexStatistics if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexStatistics fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

@@ -21,7 +21,7 @@ import java.util.List;
 /** Provides parameter values to a freshness scoring function. */
 @Fluent
 public final class FreshnessScoringParameters implements JsonSerializable<FreshnessScoringParameters> {
-    private Duration boostingDuration;
+    private final Duration boostingDuration;
 
     /**
      * Creates an instance of FreshnessScoringParameters class.
@@ -50,6 +50,14 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of FreshnessScoringParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FreshnessScoringParameters if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static FreshnessScoringParameters fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

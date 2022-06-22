@@ -75,6 +75,13 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of DocumentKeysOrIds from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentKeysOrIds if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static DocumentKeysOrIds fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -86,9 +93,9 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
                         reader.nextToken();
 
                         if ("documentKeys".equals(fieldName)) {
-                            documentKeys = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            documentKeys = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("datasourceDocumentIds".equals(fieldName)) {
-                            datasourceDocumentIds = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            datasourceDocumentIds = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

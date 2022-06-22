@@ -18,7 +18,7 @@ import com.azure.json.JsonWriter;
 /** Base type for analyzers. */
 @Fluent
 public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
-    private String name;
+    private final String name;
 
     /**
      * Creates an instance of LexicalAnalyzer class.
@@ -46,6 +46,15 @@ public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyze
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of LexicalAnalyzer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LexicalAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static LexicalAnalyzer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

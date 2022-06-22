@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Construct bigrams for frequently occurring terms while indexing. Single terms are still indexed too, with bigrams
@@ -25,7 +24,7 @@ import java.util.Objects;
 public final class CommonGramTokenFilter extends TokenFilter {
     private String odataType = "#Microsoft.Azure.Search.CommonGramTokenFilter";
 
-    private List<String> commonWords;
+    private final List<String> commonWords;
 
     private Boolean ignoreCase;
 
@@ -109,11 +108,19 @@ public final class CommonGramTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CommonGramTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonGramTokenFilter if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static CommonGramTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -126,13 +133,12 @@ public final class CommonGramTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("commonWords".equals(fieldName)) {
-                            commonWords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            commonWords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             commonWordsFound = true;
                         } else if ("ignoreCase".equals(fieldName)) {
                             ignoreCase = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
@@ -143,8 +149,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.CommonGramTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.CommonGramTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CommonGramTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -164,6 +169,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CommonGramTokenFilter deserializedValue = new CommonGramTokenFilter(name, commonWords);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setIgnoreCase(ignoreCase);
                     deserializedValue.setUseQueryMode(useQueryMode);
 

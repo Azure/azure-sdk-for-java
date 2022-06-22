@@ -18,9 +18,9 @@ import com.azure.json.JsonWriter;
 /** Base type for functions that can modify document scores during ranking. */
 @Fluent
 public abstract class ScoringFunction implements JsonSerializable<ScoringFunction> {
-    private String fieldName;
+    private final String fieldName;
 
-    private double boost;
+    private final double boost;
 
     private ScoringFunctionInterpolation interpolation;
 
@@ -85,6 +85,15 @@ public abstract class ScoringFunction implements JsonSerializable<ScoringFunctio
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ScoringFunction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScoringFunction if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static ScoringFunction fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

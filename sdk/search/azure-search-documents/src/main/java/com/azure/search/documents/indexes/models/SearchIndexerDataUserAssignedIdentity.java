@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Specifies the identity for a datasource to use. */
 @Fluent
 public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDataIdentity {
     private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity";
 
-    private String userAssignedIdentity;
+    private final String userAssignedIdentity;
 
     /**
      * Creates an instance of SearchIndexerDataUserAssignedIdentity class.
@@ -53,11 +52,19 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerDataUserAssignedIdentity from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerDataUserAssignedIdentity if the JsonReader was pointing to an instance of it,
+     *     or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static SearchIndexerDataUserAssignedIdentity fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean userAssignedIdentityFound = false;
                     String userAssignedIdentity = null;
@@ -66,7 +73,6 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("userAssignedIdentity".equals(fieldName)) {
                             userAssignedIdentity = reader.getStringValue();
@@ -76,9 +82,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(
-                                    odataType, "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity")) {
+                    if (!"#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity'. The found '@odata.type' was '"
                                         + odataType
@@ -96,6 +100,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
                     }
                     SearchIndexerDataUserAssignedIdentity deserializedValue =
                             new SearchIndexerDataUserAssignedIdentity(userAssignedIdentity);
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

@@ -16,7 +16,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Divides text using language-specific rules and reduces words to their base forms. */
 @Fluent
@@ -115,11 +114,19 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of MicrosoftLanguageStemmingTokenizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftLanguageStemmingTokenizer if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static MicrosoftLanguageStemmingTokenizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -131,7 +138,6 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -147,9 +153,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(
-                                    odataType, "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer")) {
+                    if (!"#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer'. The found '@odata.type' was '"
                                         + odataType
@@ -166,6 +170,7 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     MicrosoftLanguageStemmingTokenizer deserializedValue = new MicrosoftLanguageStemmingTokenizer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMaxTokenLength(maxTokenLength);
                     deserializedValue.setIsSearchTokenizer(isSearchTokenizer);
                     deserializedValue.setLanguage(language);

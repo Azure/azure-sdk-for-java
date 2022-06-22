@@ -8,38 +8,30 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /** A result containing a document found by a suggestion query, plus associated metadata. */
 @Fluent
-public final class SuggestResult {
-    /*
-     * The text of the suggestion result.
-     */
-    @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String text;
+public final class SuggestResult implements JsonSerializable<SuggestResult> {
+    private final String text;
 
-    /*
-     * A result containing a document found by a suggestion query, plus
-     * associated metadata.
-     */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SuggestResult class.
      *
      * @param text the text value to set.
      */
-    @JsonCreator
-    public SuggestResult(
-            @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    String text) {
+    public SuggestResult(String text) {
         this.text = text;
     }
 
@@ -58,7 +50,6 @@ public final class SuggestResult {
      *
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -75,11 +66,62 @@ public final class SuggestResult {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@search.text", this.text, false);
+        if (additionalProperties != null) {
+            additionalProperties.forEach(
+                    (key, value) -> {
+                        jsonWriter.writeFieldName(key);
+                        JsonUtils.writeUntypedField(jsonWriter, value);
+                    });
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Reads an instance of SuggestResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuggestResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
+    public static SuggestResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean textFound = false;
+                    String text = null;
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("@search.text".equals(fieldName)) {
+                            text = reader.getStringValue();
+                            textFound = true;
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!textFound) {
+                        missingProperties.add("@search.text");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SuggestResult deserializedValue = new SuggestResult(text);
+
+                    return deserializedValue;
+                });
     }
 }

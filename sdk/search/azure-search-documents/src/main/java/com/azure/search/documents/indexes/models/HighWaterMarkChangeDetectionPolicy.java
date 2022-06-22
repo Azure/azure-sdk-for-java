@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Defines a data change detection policy that captures changes based on the value of a high water mark column. */
 @Fluent
 public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
     private String odataType = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy";
 
-    private String highWaterMarkColumnName;
+    private final String highWaterMarkColumnName;
 
     /**
      * Creates an instance of HighWaterMarkChangeDetectionPolicy class.
@@ -50,11 +49,19 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of HighWaterMarkChangeDetectionPolicy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HighWaterMarkChangeDetectionPolicy if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static HighWaterMarkChangeDetectionPolicy fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean highWaterMarkColumnNameFound = false;
                     String highWaterMarkColumnName = null;
@@ -63,7 +70,6 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("highWaterMarkColumnName".equals(fieldName)) {
                             highWaterMarkColumnName = reader.getStringValue();
@@ -73,9 +79,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(
-                                    odataType, "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy")) {
+                    if (!"#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy'. The found '@odata.type' was '"
                                         + odataType
@@ -93,6 +97,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
                     }
                     HighWaterMarkChangeDetectionPolicy deserializedValue =
                             new HighWaterMarkChangeDetectionPolicy(highWaterMarkColumnName);
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

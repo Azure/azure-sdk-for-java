@@ -20,7 +20,7 @@ import java.util.List;
 /** Represents information about the entity (such as Azure SQL table or CosmosDB collection) that will be indexed. */
 @Fluent
 public final class SearchIndexerDataContainer implements JsonSerializable<SearchIndexerDataContainer> {
-    private String name;
+    private final String name;
 
     private String query;
 
@@ -73,6 +73,14 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerDataContainer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerDataContainer if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexerDataContainer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

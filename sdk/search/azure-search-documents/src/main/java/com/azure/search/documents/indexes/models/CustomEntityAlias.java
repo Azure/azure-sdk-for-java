@@ -20,7 +20,7 @@ import java.util.List;
 /** A complex object that can be used to specify alternative spellings or synonyms to the root entity name. */
 @Fluent
 public final class CustomEntityAlias implements JsonSerializable<CustomEntityAlias> {
-    private String text;
+    private final String text;
 
     private Boolean caseSensitive;
 
@@ -116,6 +116,14 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CustomEntityAlias from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntityAlias if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static CustomEntityAlias fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

@@ -20,9 +20,9 @@ import java.util.List;
 /** Provides parameter values to a distance scoring function. */
 @Fluent
 public final class DistanceScoringParameters implements JsonSerializable<DistanceScoringParameters> {
-    private String referencePointParameter;
+    private final String referencePointParameter;
 
-    private double boostingDistance;
+    private final double boostingDistance;
 
     /**
      * Creates an instance of DistanceScoringParameters class.
@@ -63,6 +63,14 @@ public final class DistanceScoringParameters implements JsonSerializable<Distanc
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of DistanceScoringParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistanceScoringParameters if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static DistanceScoringParameters fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

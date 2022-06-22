@@ -11,8 +11,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.core.JsonToken;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +41,14 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerKnowledgeStoreFileProjectionSelector from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerKnowledgeStoreFileProjectionSelector if the JsonReader was pointing to an
+     *     instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexerKnowledgeStoreFileProjectionSelector fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -68,12 +76,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
                         } else if ("sourceContext".equals(fieldName)) {
                             sourceContext = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

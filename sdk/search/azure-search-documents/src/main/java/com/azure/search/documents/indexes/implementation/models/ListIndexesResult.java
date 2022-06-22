@@ -20,7 +20,7 @@ import java.util.List;
 /** Response from a List Indexes request. If successful, it includes the full definitions of all indexes. */
 @Immutable
 public final class ListIndexesResult implements JsonSerializable<ListIndexesResult> {
-    private List<SearchIndex> indexes;
+    private final List<SearchIndex> indexes;
 
     /**
      * Creates an instance of ListIndexesResult class.
@@ -47,6 +47,14 @@ public final class ListIndexesResult implements JsonSerializable<ListIndexesResu
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ListIndexesResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListIndexesResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ListIndexesResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -58,10 +66,7 @@ public final class ListIndexesResult implements JsonSerializable<ListIndexesResu
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            indexes =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchIndex.fromJson(reader)));
+                            indexes = JsonUtils.readArray(reader, reader1 -> SearchIndex.fromJson(reader1));
                             indexesFound = true;
                         } else {
                             reader.skipChildren();

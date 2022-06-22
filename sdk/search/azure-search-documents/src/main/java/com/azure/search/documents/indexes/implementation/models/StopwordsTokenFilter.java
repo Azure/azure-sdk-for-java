@@ -16,7 +16,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.StopwordsList;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Removes stop words from a token stream. This token filter is implemented using Apache Lucene. */
 @Fluent
@@ -142,11 +141,19 @@ public final class StopwordsTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of StopwordsTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StopwordsTokenFilter if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static StopwordsTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -159,13 +166,12 @@ public final class StopwordsTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("stopwords".equals(fieldName)) {
-                            stopwords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            stopwords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("stopwordsList".equals(fieldName)) {
                             stopwordsList = StopwordsList.fromString(reader.getStringValue());
                         } else if ("ignoreCase".equals(fieldName)) {
@@ -178,7 +184,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.StopwordsTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.StopwordsTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopwordsTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -195,6 +201,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     StopwordsTokenFilter deserializedValue = new StopwordsTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setStopwords(stopwords);
                     deserializedValue.setStopwordsList(stopwordsList);
                     deserializedValue.setIgnoreCase(ignoreCase);

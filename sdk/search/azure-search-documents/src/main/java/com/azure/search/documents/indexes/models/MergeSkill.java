@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A skill for merging two or more strings into a single unified string, with an optional user-defined delimiter
@@ -98,11 +97,19 @@ public final class MergeSkill extends SearchIndexerSkill {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of MergeSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MergeSkill if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static MergeSkill fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean inputsFound = false;
                     List<InputFieldMappingEntry> inputs = null;
@@ -118,23 +125,12 @@ public final class MergeSkill extends SearchIndexerSkill {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -151,7 +147,7 @@ public final class MergeSkill extends SearchIndexerSkill {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Skills.Text.MergeSkill")) {
+                    if (!"#Microsoft.Skills.Text.MergeSkill".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.MergeSkill'. The found '@odata.type' was '"
                                         + odataType
@@ -171,6 +167,7 @@ public final class MergeSkill extends SearchIndexerSkill {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     MergeSkill deserializedValue = new MergeSkill(inputs, outputs);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);

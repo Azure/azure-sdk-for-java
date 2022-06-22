@@ -22,7 +22,7 @@ import java.util.List;
 public final class SearchError implements JsonSerializable<SearchError> {
     private String code;
 
-    private String message;
+    private final String message;
 
     private List<SearchError> details;
 
@@ -72,6 +72,14 @@ public final class SearchError implements JsonSerializable<SearchError> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchError from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchError if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchError fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -90,10 +98,7 @@ public final class SearchError implements JsonSerializable<SearchError> {
                         } else if ("code".equals(fieldName)) {
                             code = reader.getStringValue();
                         } else if ("details".equals(fieldName)) {
-                            details =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchError.fromJson(reader)));
+                            details = JsonUtils.readArray(reader, reader1 -> SearchError.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

@@ -51,6 +51,13 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SemanticSettings from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SemanticSettings if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static SemanticSettings fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -62,11 +69,7 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
 
                         if ("configurations".equals(fieldName)) {
                             configurations =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SemanticConfiguration.fromJson(reader)));
+                                    JsonUtils.readArray(reader, reader1 -> SemanticConfiguration.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

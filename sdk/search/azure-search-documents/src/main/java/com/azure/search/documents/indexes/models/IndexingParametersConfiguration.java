@@ -484,6 +484,13 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of IndexingParametersConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexingParametersConfiguration if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     */
     public static IndexingParametersConfiguration fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

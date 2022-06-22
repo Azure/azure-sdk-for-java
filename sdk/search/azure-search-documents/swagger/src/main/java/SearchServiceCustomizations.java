@@ -3,6 +3,7 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
@@ -54,6 +55,8 @@ public class SearchServiceCustomizations extends Customization {
         addVarArgsOverload(publicCustomization.getClass("ScoringProfile"), "functions", "ScoringFunction");
 
         // More complex customizations.
+        customizeSearchIndexerSkill(publicCustomization.getClass("SearchIndexerSkill"),
+            libraryCustomization.getRawEditor());
         customizeMagnitudeScoringParameters(publicCustomization.getClass("MagnitudeScoringParameters"));
         customizeSearchFieldDataType(publicCustomization.getClass("SearchFieldDataType"));
         customizeCognitiveServicesAccountKey(publicCustomization.getClass("CognitiveServicesAccountKey"));
@@ -77,6 +80,9 @@ public class SearchServiceCustomizations extends Customization {
             publicCustomization.getClass("SearchIndexerKnowledgeStoreFileProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreObjectProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreTableProjectionSelector"));
+
+        bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
+            publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -93,6 +99,35 @@ public class SearchServiceCustomizations extends Customization {
         ));
     }
 
+    private void customizeSearchIndexerSkill(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+
+        String fileContents = editor.getFileContent(classCustomization.getFileName());
+
+        fileContents = updateSkillDeserialization(fileContents, "EntityRecognitionSkillV1", "EntityRecognitionSkill");
+        fileContents = updateSkillDeserialization(fileContents, "EntityRecognitionSkillV3", "EntityRecognitionSkill");
+        fileContents = updateSkillDeserialization(fileContents, "SentimentSkillV1", "SentimentSkill");
+        fileContents = updateSkillDeserialization(fileContents, "SentimentSkillV3", "SentimentSkill");
+
+        fileContents = fileContents.replace("return SentimentSkillV1.fromJson(readerToUse);",
+            joinWithNewline(
+                "SentimentSkillV1 v1Skill = SentimentSkillV1.fromJson(readerToUse);",
+                "return (v1Skill == null) ? null : new SentimentSkill(v1Skill);"
+            ));
+
+        editor.replaceFile(classCustomization.getFileName(), fileContents);
+    }
+
+    private String updateSkillDeserialization(String fileContents, String codegenSkillName, String skillName) {
+        String target = String.format("return %1$s.fromJson(readerToUse);", codegenSkillName);
+        String replacement = String.format(joinWithNewline(
+            "%1$s codegenSkill = %1$s.fromJson(readerToUse);",
+            "return (codegenSkill == null) ? null : new %2$s(codegenSkill);"
+        ), codegenSkillName, skillName);
+
+        return fileContents.replace(target, replacement);
+    }
+
     private void customizeMagnitudeScoringParameters(ClassCustomization classCustomization) {
         classCustomization.getMethod("isShouldBoostBeyondRangeByConstant")
             .rename("shouldBoostBeyondRangeByConstant");
@@ -100,6 +135,7 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
         setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
+        classCustomization.getProperty("key").setModifier(Modifier.PRIVATE);
         classCustomization.addMethod(joinWithNewline(
             "/**",
             " * Set the key property: The key used to provision the cognitive service",
@@ -164,6 +200,12 @@ public class SearchServiceCustomizations extends Customization {
         classCustomization.removeMethod("getFormat");
         classCustomization.removeMethod("setFormat");
         classCustomization.getMethod("setName").setModifier(Modifier.PRIVATE);
+
+        classCustomization.addConstructor(joinWithNewline(
+            "private SynonymMap() {",
+            "    this(null, null);",
+            "}"
+        ));
 
         classCustomization.addConstructor(joinWithNewline(
                 "public SynonymMap(String name) {",
@@ -308,6 +350,7 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchIndexerSkillset(ClassCustomization classCustomization) {
+        classCustomization.getProperty("skills").setModifier(Modifier.PRIVATE);
         JavadocCustomization originalConstructorJavadocs = classCustomization.getConstructor("SearchIndexerSkillset")
             .replaceParameters("String name, List<SearchIndexerSkill> skills")
             .getJavadoc();
@@ -336,7 +379,7 @@ public class SearchServiceCustomizations extends Customization {
         addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
     }
 
-    private void addKnowledgeStoreProjectionFluentSetterOverrides(ClassCustomization... classCustomizations) {
+    private static void addKnowledgeStoreProjectionFluentSetterOverrides(ClassCustomization... classCustomizations) {
         for (ClassCustomization classCustomization : classCustomizations) {
             String className = classCustomization.getClassName();
 
@@ -370,6 +413,12 @@ public class SearchServiceCustomizations extends Customization {
                     "    return this;",
                     "}"), Collections.singletonList("java.util.List"))
                 .addAnnotation("@Override");
+        }
+    }
+
+    private static void bulkRemoveFromJsonMethods(ClassCustomization... classCustomizations) {
+        for (ClassCustomization classCustomization : classCustomizations) {
+            classCustomization.removeMethod("fromJson(JsonReader jsonReader)");
         }
     }
 

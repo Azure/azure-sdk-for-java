@@ -15,14 +15,13 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /** Represents a function that transforms a value from a data source before indexing. */
 @Fluent
 public final class FieldMappingFunction implements JsonSerializable<FieldMappingFunction> {
-    private String name;
+    private final String name;
 
     private Map<String, Object> parameters;
 
@@ -78,6 +77,14 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of FieldMappingFunction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FieldMappingFunction if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static FieldMappingFunction fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -93,18 +100,12 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("parameters".equals(fieldName)) {
-                            if (parameters == null) {
-                                parameters = new LinkedHashMap<>();
-                            }
-
-                            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                                fieldName = reader.getFieldName();
-                                reader.nextToken();
-
-                                parameters.put(
-                                        fieldName,
-                                        JsonUtils.getNullableProperty(reader, r -> JsonUtils.readUntypedField(reader)));
-                            }
+                            parameters =
+                                    JsonUtils.readMap(
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1, r -> JsonUtils.readUntypedField(reader1)));
                         } else {
                             reader.skipChildren();
                         }

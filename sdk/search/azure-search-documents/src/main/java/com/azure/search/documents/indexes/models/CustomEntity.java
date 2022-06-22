@@ -20,7 +20,7 @@ import java.util.List;
 /** An object that contains information about the matches that were found, and related metadata. */
 @Fluent
 public final class CustomEntity implements JsonSerializable<CustomEntity> {
-    private String name;
+    private final String name;
 
     private String description;
 
@@ -332,6 +332,14 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CustomEntity from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntity if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static CustomEntity fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -378,12 +386,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
                         } else if ("defaultFuzzyEditDistance".equals(fieldName)) {
                             defaultFuzzyEditDistance = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
                         } else if ("aliases".equals(fieldName)) {
-                            aliases =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> CustomEntityAlias.fromJson(reader)));
+                            aliases = JsonUtils.readArray(reader, reader1 -> CustomEntityAlias.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

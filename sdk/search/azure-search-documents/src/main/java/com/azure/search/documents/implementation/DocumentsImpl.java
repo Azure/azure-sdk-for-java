@@ -23,8 +23,6 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.IndexDocumentsResult;
@@ -402,22 +400,17 @@ public final class DocumentsImpl {
                 (facets == null)
                         ? new ArrayList<>()
                         : facets.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        String highlightFieldsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(highlightFields, CollectionFormat.CSV);
-        String orderByConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
+        String highlightFieldsConverted = (highlightFields == null) ? null : String.join(",", highlightFields);
+        String orderByConverted = (orderBy == null) ? null : String.join(",", orderBy);
         List<String> scoringParametersConverted =
                 (scoringParameters == null)
                         ? new ArrayList<>()
                         : scoringParameters.stream()
                                 .map(item -> Objects.toString(item, ""))
                                 .collect(Collectors.toList());
-        String searchFieldsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
-        String selectConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String semanticFieldsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(semanticFields, CollectionFormat.CSV);
+        String searchFieldsConverted = (searchFields == null) ? null : String.join(",", searchFields);
+        String selectConverted = (select == null) ? null : String.join(",", select);
+        String semanticFieldsConverted = (semanticFields == null) ? null : String.join(",", semanticFields);
         return service.searchGet(
                 this.client.getEndpoint(),
                 this.client.getIndexName(),
@@ -505,8 +498,7 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(selectedFields, CollectionFormat.CSV);
+        String selectedFieldsConverted = (selectedFields == null) ? null : String.join(",", selectedFields);
         return service.get(
                 this.client.getEndpoint(),
                 this.client.getIndexName(),
@@ -592,12 +584,9 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String orderByConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
-        String searchFieldsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
-        String selectConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String orderByConverted = (orderBy == null) ? null : String.join(",", orderBy);
+        String searchFieldsConverted = (searchFields == null) ? null : String.join(",", searchFields);
+        String selectConverted = (select == null) ? null : String.join(",", select);
         return service.suggestGet(
                 this.client.getEndpoint(),
                 this.client.getIndexName(),
@@ -747,8 +736,7 @@ public final class DocumentsImpl {
             topInternal = autocompleteOptions.getTop();
         }
         Integer top = topInternal;
-        String searchFieldsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
+        String searchFieldsConverted = (searchFields == null) ? null : String.join(",", searchFields);
         return service.autocompleteGet(
                 this.client.getEndpoint(),
                 this.client.getIndexName(),

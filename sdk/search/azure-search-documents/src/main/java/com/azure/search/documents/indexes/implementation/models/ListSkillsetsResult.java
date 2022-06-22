@@ -21,7 +21,7 @@ import java.util.List;
 /** Response from a list skillset request. If successful, it includes the full definitions of all skillsets. */
 @Immutable
 public final class ListSkillsetsResult implements JsonSerializable<ListSkillsetsResult> {
-    private List<SearchIndexerSkillset> skillsets;
+    private final List<SearchIndexerSkillset> skillsets;
 
     /**
      * Creates an instance of ListSkillsetsResult class.
@@ -49,6 +49,14 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ListSkillsetsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListSkillsetsResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ListSkillsetsResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -60,12 +68,7 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            skillsets =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SearchIndexerSkillset.fromJson(reader)));
+                            skillsets = JsonUtils.readArray(reader, reader1 -> SearchIndexerSkillset.fromJson(reader1));
                             skillsetsFound = true;
                         } else {
                             reader.skipChildren();

@@ -5,7 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.documents.indexes.models;
+package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
@@ -13,27 +13,27 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
 import java.util.ArrayList;
 import java.util.List;
 
-/** A skill that uses text analytics for key phrase extraction. */
+/** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
 @Fluent
-public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
-    private String odataType = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill";
+public final class SentimentSkillV1 extends SearchIndexerSkill {
+    private String odataType = "#Microsoft.Skills.Text.SentimentSkill";
 
-    private KeyPhraseExtractionSkillLanguage defaultLanguageCode;
-
-    private Integer maxKeyPhraseCount;
-
-    private String modelVersion;
+    private SentimentSkillLanguage defaultLanguageCode;
 
     /**
-     * Creates an instance of KeyPhraseExtractionSkill class.
+     * Creates an instance of SentimentSkillV1 class.
      *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    public KeyPhraseExtractionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+    public SentimentSkillV1(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
 
@@ -42,7 +42,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      *
      * @return the defaultLanguageCode value.
      */
-    public KeyPhraseExtractionSkillLanguage getDefaultLanguageCode() {
+    public SentimentSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
     }
 
@@ -50,56 +50,10 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
-     * @return the KeyPhraseExtractionSkill object itself.
+     * @return the SentimentSkillV1 object itself.
      */
-    public KeyPhraseExtractionSkill setDefaultLanguageCode(KeyPhraseExtractionSkillLanguage defaultLanguageCode) {
+    public SentimentSkillV1 setDefaultLanguageCode(SentimentSkillLanguage defaultLanguageCode) {
         this.defaultLanguageCode = defaultLanguageCode;
-        return this;
-    }
-
-    /**
-     * Get the maxKeyPhraseCount property: A number indicating how many key phrases to return. If absent, all identified
-     * key phrases will be returned.
-     *
-     * @return the maxKeyPhraseCount value.
-     */
-    public Integer getMaxKeyPhraseCount() {
-        return this.maxKeyPhraseCount;
-    }
-
-    /**
-     * Set the maxKeyPhraseCount property: A number indicating how many key phrases to return. If absent, all identified
-     * key phrases will be returned.
-     *
-     * @param maxKeyPhraseCount the maxKeyPhraseCount value to set.
-     * @return the KeyPhraseExtractionSkill object itself.
-     */
-    public KeyPhraseExtractionSkill setMaxKeyPhraseCount(Integer maxKeyPhraseCount) {
-        this.maxKeyPhraseCount = maxKeyPhraseCount;
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
-     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
-     * necessary.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
-     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
-     * necessary.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the KeyPhraseExtractionSkill object itself.
-     */
-    public KeyPhraseExtractionSkill setModelVersion(String modelVersion) {
-        this.modelVersion = modelVersion;
         return this;
     }
 
@@ -117,21 +71,19 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                 "defaultLanguageCode",
                 this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString(),
                 false);
-        jsonWriter.writeIntegerField("maxKeyPhraseCount", this.maxKeyPhraseCount, false);
-        jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
         return jsonWriter.writeEndObject().flush();
     }
 
     /**
-     * Reads an instance of KeyPhraseExtractionSkill from the JsonReader.
+     * Reads an instance of SentimentSkillV1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyPhraseExtractionSkill if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * @return An instance of SentimentSkillV1 if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
      */
-    public static KeyPhraseExtractionSkill fromJson(JsonReader jsonReader) {
+    public static SentimentSkillV1 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
@@ -143,9 +95,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                     String name = null;
                     String description = null;
                     String context = null;
-                    KeyPhraseExtractionSkillLanguage defaultLanguageCode = null;
-                    Integer maxKeyPhraseCount = null;
-                    String modelVersion = null;
+                    SentimentSkillLanguage defaultLanguageCode = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -165,19 +115,15 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = KeyPhraseExtractionSkillLanguage.fromString(reader.getStringValue());
-                        } else if ("maxKeyPhraseCount".equals(fieldName)) {
-                            maxKeyPhraseCount = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
-                        } else if ("modelVersion".equals(fieldName)) {
-                            modelVersion = reader.getStringValue();
+                            defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getStringValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!"#Microsoft.Skills.Text.KeyPhraseExtractionSkill".equals(odataType)) {
+                    if (!"#Microsoft.Skills.Text.SentimentSkill".equals(odataType)) {
                         throw new IllegalStateException(
-                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.KeyPhraseExtractionSkill'. The found '@odata.type' was '"
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SentimentSkill'. The found '@odata.type' was '"
                                         + odataType
                                         + "'.");
                     }
@@ -194,14 +140,12 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                         throw new IllegalStateException(
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
-                    KeyPhraseExtractionSkill deserializedValue = new KeyPhraseExtractionSkill(inputs, outputs);
+                    SentimentSkillV1 deserializedValue = new SentimentSkillV1(inputs, outputs);
                     deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);
                     deserializedValue.setDefaultLanguageCode(defaultLanguageCode);
-                    deserializedValue.setMaxKeyPhraseCount(maxKeyPhraseCount);
-                    deserializedValue.setModelVersion(modelVersion);
 
                     return deserializedValue;
                 });

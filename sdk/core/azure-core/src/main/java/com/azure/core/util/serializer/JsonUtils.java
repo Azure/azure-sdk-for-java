@@ -198,7 +198,8 @@ public final class JsonUtils {
      * {@link JsonToken#FIELD_NAME} and throw an {@link IllegalStateException}. {@link JsonToken#FIELD_NAME} is a valid
      * starting location to support partial object reads.
      * <p>
-     * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
+     * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized and
+     * {@link #readMap(JsonReader, Function)} if a JSON map is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic, passing the reader and current
@@ -230,7 +231,8 @@ public final class JsonUtils {
      * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an
      * {@link IllegalStateException}.
      * <p>
-     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized.
+     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized and
+     * {@link #readMap(JsonReader, Function)} if a JSON map is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic.
@@ -247,7 +249,8 @@ public final class JsonUtils {
             return null;
         } else if (jsonReader.currentToken() != JsonToken.START_ARRAY) {
             // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + jsonReader.currentToken());
+            throw new IllegalStateException("Unexpected token to begin array deserialization: "
+                + jsonReader.currentToken());
         }
 
         List<T> array = new ArrayList<>();
@@ -257,6 +260,47 @@ public final class JsonUtils {
         }
 
         return array;
+    }
+
+    /**
+     * Handles basic logic for deserializing a map before passing it into the deserialization function.
+     * <p>
+     * This will initialize the {@link JsonReader} for map reading and then check if the current token is
+     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw
+     * an {@link IllegalStateException}.
+     * <p>
+     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized and
+     * {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @param deserializationFunc The function that handles deserialization logic.
+     * @param <T> The type of array element that is being deserialized.
+     * @return The deserialized array, or null if the {@link JsonToken#NULL} represents the object.
+     * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_ARRAY}.
+     */
+    public static <T> Map<String, T> readMap(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
+        if (jsonReader.currentToken() == null) {
+            jsonReader.nextToken();
+        }
+
+        if (jsonReader.currentToken() == JsonToken.NULL) {
+            return null;
+        } else if (jsonReader.currentToken() != JsonToken.START_OBJECT) {
+            // Otherwise, this is an invalid state, throw an exception.
+            throw new IllegalStateException("Unexpected token to begin map deserialization: "
+                + jsonReader.currentToken());
+        }
+
+        Map<String, T> map = new LinkedHashMap<>();
+
+        while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
+            String fieldName = jsonReader.getFieldName();
+            jsonReader.nextToken();
+
+            map.put(fieldName, deserializationFunc.apply(jsonReader));
+        }
+
+        return map;
     }
 
     /**

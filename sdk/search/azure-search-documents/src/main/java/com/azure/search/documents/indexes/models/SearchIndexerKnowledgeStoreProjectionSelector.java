@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.List;
 
@@ -138,49 +136,5 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
         jsonWriter.writeStringField("sourceContext", this.sourceContext, false);
         JsonUtils.writeArray(jsonWriter, "inputs", this.inputs, (writer, element) -> writer.writeJson(element, false));
         return jsonWriter.writeEndObject().flush();
-    }
-
-    public static SearchIndexerKnowledgeStoreProjectionSelector fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
-                reader -> {
-                    String referenceKeyName = null;
-                    String generatedKeyName = null;
-                    String source = null;
-                    String sourceContext = null;
-                    List<InputFieldMappingEntry> inputs = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("referenceKeyName".equals(fieldName)) {
-                            referenceKeyName = reader.getStringValue();
-                        } else if ("generatedKeyName".equals(fieldName)) {
-                            generatedKeyName = reader.getStringValue();
-                        } else if ("source".equals(fieldName)) {
-                            source = reader.getStringValue();
-                        } else if ("sourceContext".equals(fieldName)) {
-                            sourceContext = reader.getStringValue();
-                        } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    SearchIndexerKnowledgeStoreProjectionSelector deserializedValue =
-                            new SearchIndexerKnowledgeStoreProjectionSelector();
-                    deserializedValue.setReferenceKeyName(referenceKeyName);
-                    deserializedValue.setGeneratedKeyName(generatedKeyName);
-                    deserializedValue.setSource(source);
-                    deserializedValue.setSourceContext(sourceContext);
-                    deserializedValue.setInputs(inputs);
-
-                    return deserializedValue;
-                });
     }
 }

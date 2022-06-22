@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A character filter that applies mappings defined with the mappings option. Matching is greedy (longest pattern
@@ -26,7 +25,7 @@ import java.util.Objects;
 public final class MappingCharFilter extends CharFilter {
     private String odataType = "#Microsoft.Azure.Search.MappingCharFilter";
 
-    private List<String> mappings;
+    private final List<String> mappings;
 
     /**
      * Creates an instance of MappingCharFilter class.
@@ -59,11 +58,19 @@ public final class MappingCharFilter extends CharFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of MappingCharFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MappingCharFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static MappingCharFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -74,20 +81,19 @@ public final class MappingCharFilter extends CharFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("mappings".equals(fieldName)) {
-                            mappings = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            mappings = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             mappingsFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.MappingCharFilter")) {
+                    if (!"#Microsoft.Azure.Search.MappingCharFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.MappingCharFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -107,6 +113,7 @@ public final class MappingCharFilter extends CharFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     MappingCharFilter deserializedValue = new MappingCharFilter(name, mappings);
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

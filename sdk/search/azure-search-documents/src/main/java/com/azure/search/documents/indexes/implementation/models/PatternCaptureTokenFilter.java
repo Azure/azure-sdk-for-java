@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Uses Java regexes to emit multiple tokens - one for each capture group in one or more patterns. This token filter is
@@ -25,7 +24,7 @@ import java.util.Objects;
 public final class PatternCaptureTokenFilter extends TokenFilter {
     private String odataType = "#Microsoft.Azure.Search.PatternCaptureTokenFilter";
 
-    private List<String> patterns;
+    private final List<String> patterns;
 
     private Boolean preserveOriginal;
 
@@ -82,11 +81,19 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of PatternCaptureTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatternCaptureTokenFilter if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static PatternCaptureTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -98,13 +105,12 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("patterns".equals(fieldName)) {
-                            patterns = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            patterns = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             patternsFound = true;
                         } else if ("preserveOriginal".equals(fieldName)) {
                             preserveOriginal = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
@@ -113,8 +119,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.PatternCaptureTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.PatternCaptureTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternCaptureTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -134,6 +139,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     PatternCaptureTokenFilter deserializedValue = new PatternCaptureTokenFilter(name, patterns);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setPreserveOriginal(preserveOriginal);
 
                     return deserializedValue;

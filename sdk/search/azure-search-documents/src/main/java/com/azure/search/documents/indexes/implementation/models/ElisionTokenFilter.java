@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). This token filter is
@@ -66,11 +65,19 @@ public final class ElisionTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ElisionTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElisionTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static ElisionTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -80,19 +87,18 @@ public final class ElisionTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("articles".equals(fieldName)) {
-                            articles = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            articles = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.ElisionTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.ElisionTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ElisionTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -109,6 +115,7 @@ public final class ElisionTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     ElisionTokenFilter deserializedValue = new ElisionTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setArticles(articles);
 
                     return deserializedValue;

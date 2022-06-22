@@ -20,9 +20,9 @@ import java.util.List;
 /** Defines a specific configuration to be used in the context of semantic capabilities. */
 @Fluent
 public final class SemanticConfiguration implements JsonSerializable<SemanticConfiguration> {
-    private String name;
+    private final String name;
 
-    private PrioritizedFields prioritizedFields;
+    private final PrioritizedFields prioritizedFields;
 
     /**
      * Creates an instance of SemanticConfiguration class.
@@ -63,6 +63,14 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SemanticConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SemanticConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SemanticConfiguration fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -79,8 +87,7 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("prioritizedFields".equals(fieldName)) {
-                            prioritizedFields =
-                                    JsonUtils.getNullableProperty(reader, r -> PrioritizedFields.fromJson(reader));
+                            prioritizedFields = PrioritizedFields.fromJson(reader);
                             prioritizedFieldsFound = true;
                         } else {
                             reader.skipChildren();

@@ -20,7 +20,7 @@ import java.util.List;
 /** Response from a List Datasources request. If successful, it includes the full definitions of all datasources. */
 @Immutable
 public final class ListDataSourcesResult implements JsonSerializable<ListDataSourcesResult> {
-    private List<SearchIndexerDataSource> dataSources;
+    private final List<SearchIndexerDataSource> dataSources;
 
     /**
      * Creates an instance of ListDataSourcesResult class.
@@ -48,6 +48,14 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ListDataSourcesResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListDataSourcesResult if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ListDataSourcesResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -60,11 +68,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
 
                         if ("value".equals(fieldName)) {
                             dataSources =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SearchIndexerDataSource.fromJson(reader)));
+                                    JsonUtils.readArray(reader, reader1 -> SearchIndexerDataSource.fromJson(reader1));
                             dataSourcesFound = true;
                         } else {
                             reader.skipChildren();

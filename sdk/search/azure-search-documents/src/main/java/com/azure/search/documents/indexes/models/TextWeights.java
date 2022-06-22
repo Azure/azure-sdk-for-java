@@ -15,14 +15,13 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /** Defines weights on index fields for which matches should boost scoring in search queries. */
 @Fluent
 public final class TextWeights implements JsonSerializable<TextWeights> {
-    private Map<String, Double> weights;
+    private final Map<String, Double> weights;
 
     /**
      * Creates an instance of TextWeights class.
@@ -50,6 +49,14 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of TextWeights from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TextWeights if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static TextWeights fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -61,16 +68,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
                         reader.nextToken();
 
                         if ("weights".equals(fieldName)) {
-                            if (weights == null) {
-                                weights = new LinkedHashMap<>();
-                            }
-
-                            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                                fieldName = reader.getFieldName();
-                                reader.nextToken();
-
-                                weights.put(fieldName, reader.getDoubleValue());
-                            }
+                            weights = JsonUtils.readMap(reader, reader1 -> reader1.getDoubleValue());
                             weightsFound = true;
                         } else {
                             reader.skipChildren();

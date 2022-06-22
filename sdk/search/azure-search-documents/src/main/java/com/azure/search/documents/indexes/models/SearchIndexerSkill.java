@@ -14,22 +14,24 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV1;
 import com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkillV3;
+import com.azure.search.documents.indexes.implementation.models.SentimentSkillV1;
 import com.azure.search.documents.indexes.implementation.models.SentimentSkillV3;
 import java.util.List;
 
 /** Base type for skills. */
 @Fluent
-public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> {
+public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> {
     private String name;
 
     private String description;
 
     private String context;
 
-    private List<InputFieldMappingEntry> inputs;
+    private final List<InputFieldMappingEntry> inputs;
 
-    private List<OutputFieldMappingEntry> outputs;
+    private final List<OutputFieldMappingEntry> outputs;
 
     /**
      * Creates an instance of SearchIndexerSkill class.
@@ -142,6 +144,15 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerSkill if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static SearchIndexerSkill fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -190,16 +201,14 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                         return ShaperSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.MergeSkill".equals(discriminatorValue)) {
                         return MergeSkill.fromJson(readerToUse);
-                    } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {
-                        return EntityRecognitionSkill.fromJson(readerToUse);
-                    } else if ("#Microsoft.Skills.Text.SentimentSkill".equals(discriminatorValue)) {
-                        return SentimentSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.V3.SentimentSkill".equals(discriminatorValue)) {
-                        return SentimentSkillV3.fromJson(readerToUse);
+                        SentimentSkillV3 codegenSkill = SentimentSkillV3.fromJson(readerToUse);
+                        return (codegenSkill == null) ? null : new SentimentSkill(codegenSkill);
                     } else if ("#Microsoft.Skills.Text.V3.EntityLinkingSkill".equals(discriminatorValue)) {
                         return EntityLinkingSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(discriminatorValue)) {
-                        return EntityRecognitionSkillV3.fromJson(readerToUse);
+                        EntityRecognitionSkillV3 codegenSkill = EntityRecognitionSkillV3.fromJson(readerToUse);
+                        return (codegenSkill == null) ? null : new EntityRecognitionSkill(codegenSkill);
                     } else if ("#Microsoft.Skills.Text.SplitSkill".equals(discriminatorValue)) {
                         return SplitSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.CustomEntityLookupSkill".equals(discriminatorValue)) {
@@ -214,9 +223,15 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                         return AzureMachineLearningSkill.fromJson(readerToUse);
                     } else if ("#Microsoft.Skills.Text.PIIDetectionSkill".equals(discriminatorValue)) {
                         return PiiDetectionSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {
+                        EntityRecognitionSkillV1 codegenSkill = EntityRecognitionSkillV1.fromJson(readerToUse);
+                        return (codegenSkill == null) ? null : new EntityRecognitionSkill(codegenSkill);
+                    } else if ("#Microsoft.Skills.Text.SentimentSkill".equals(discriminatorValue)) {
+                        SentimentSkillV1 codegenSkill = SentimentSkillV1.fromJson(readerToUse);
+                        return (codegenSkill == null) ? null : new SentimentSkill(codegenSkill);
                     } else {
                         throw new IllegalStateException(
-                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', '#Microsoft.Skills.Text.SentimentSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Custom.AmlSkill', or '#Microsoft.Skills.Text.PIIDetectionSkill'. It was: '"
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Custom.AmlSkill', '#Microsoft.Skills.Text.PIIDetectionSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', or '#Microsoft.Skills.Text.SentimentSkill'. It was: '"
                                         + discriminatorValue
                                         + "'.");
                     }

@@ -12,7 +12,6 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.util.Objects;
 
 /**
  * Defines a data deletion detection policy that implements a soft-deletion strategy. It determines whether an item
@@ -75,11 +74,18 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SoftDeleteColumnDeletionDetectionPolicy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftDeleteColumnDeletionDetectionPolicy if the JsonReader was pointing to an instance of
+     *     it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     */
     public static SoftDeleteColumnDeletionDetectionPolicy fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     String softDeleteColumnName = null;
                     String softDeleteMarkerValue = null;
@@ -88,7 +94,6 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("softDeleteColumnName".equals(fieldName)) {
                             softDeleteColumnName = reader.getStringValue();
@@ -99,9 +104,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(
-                                    odataType, "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy")) {
+                    if (!"#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'. The found '@odata.type' was '"
                                         + odataType
@@ -110,6 +113,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
 
                     SoftDeleteColumnDeletionDetectionPolicy deserializedValue =
                             new SoftDeleteColumnDeletionDetectionPolicy();
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setSoftDeleteColumnName(softDeleteColumnName);
                     deserializedValue.setSoftDeleteMarkerValue(softDeleteMarkerValue);
 

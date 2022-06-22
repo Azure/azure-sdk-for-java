@@ -21,7 +21,7 @@ import java.util.List;
 /** Response from a List Aliases request. If successful, it includes the associated index mappings for all aliases. */
 @Immutable
 public final class ListAliasesResult implements JsonSerializable<ListAliasesResult> {
-    private List<SearchAlias> aliases;
+    private final List<SearchAlias> aliases;
 
     /**
      * Creates an instance of ListAliasesResult class.
@@ -48,6 +48,14 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ListAliasesResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListAliasesResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ListAliasesResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -59,10 +67,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            aliases =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchAlias.fromJson(reader)));
+                            aliases = JsonUtils.readArray(reader, reader1 -> SearchAlias.fromJson(reader1));
                             aliasesFound = true;
                         } else {
                             reader.skipChildren();

@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A character filter that replaces characters in the input string. It uses a regular expression to identify character
@@ -27,9 +26,9 @@ import java.util.Objects;
 public final class PatternReplaceTokenFilter extends TokenFilter {
     private String odataType = "#Microsoft.Azure.Search.PatternReplaceTokenFilter";
 
-    private String pattern;
+    private final String pattern;
 
-    private String replacement;
+    private final String replacement;
 
     /**
      * Creates an instance of PatternReplaceTokenFilter class.
@@ -72,11 +71,19 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of PatternReplaceTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatternReplaceTokenFilter if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static PatternReplaceTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -89,7 +96,6 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -105,8 +111,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.PatternReplaceTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.PatternReplaceTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternReplaceTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -130,6 +135,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
                     }
                     PatternReplaceTokenFilter deserializedValue =
                             new PatternReplaceTokenFilter(name, pattern, replacement);
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

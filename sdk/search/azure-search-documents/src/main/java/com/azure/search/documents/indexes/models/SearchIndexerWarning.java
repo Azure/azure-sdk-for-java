@@ -22,7 +22,7 @@ import java.util.List;
 public final class SearchIndexerWarning implements JsonSerializable<SearchIndexerWarning> {
     private String key;
 
-    private String message;
+    private final String message;
 
     private String name;
 
@@ -98,6 +98,14 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerWarning from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerWarning if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexerWarning fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

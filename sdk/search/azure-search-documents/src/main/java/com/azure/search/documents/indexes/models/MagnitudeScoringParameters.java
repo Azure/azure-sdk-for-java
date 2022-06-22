@@ -20,9 +20,9 @@ import java.util.List;
 /** Provides parameter values to a magnitude scoring function. */
 @Fluent
 public final class MagnitudeScoringParameters implements JsonSerializable<MagnitudeScoringParameters> {
-    private double boostingRangeStart;
+    private final double boostingRangeStart;
 
-    private double boostingRangeEnd;
+    private final double boostingRangeEnd;
 
     private Boolean shouldBoostBeyondRangeByConstant;
 
@@ -86,6 +86,14 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of MagnitudeScoringParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MagnitudeScoringParameters if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static MagnitudeScoringParameters fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

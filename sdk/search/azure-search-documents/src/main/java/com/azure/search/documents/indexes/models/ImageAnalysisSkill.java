@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** A skill that analyzes image files. It extracts a rich set of visual features based on the image content. */
 @Fluent
@@ -125,11 +124,19 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ImageAnalysisSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageAnalysisSkill if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static ImageAnalysisSkill fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean inputsFound = false;
                     List<InputFieldMappingEntry> inputs = null;
@@ -146,23 +153,12 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -174,15 +170,18 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                             defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getStringValue());
                         } else if ("visualFeatures".equals(fieldName)) {
                             visualFeatures =
-                                    JsonUtils.readArray(reader, r -> VisualFeature.fromString(reader.getStringValue()));
+                                    JsonUtils.readArray(
+                                            reader, reader1 -> VisualFeature.fromString(reader1.getStringValue()));
                         } else if ("details".equals(fieldName)) {
-                            details = JsonUtils.readArray(reader, r -> ImageDetail.fromString(reader.getStringValue()));
+                            details =
+                                    JsonUtils.readArray(
+                                            reader, reader1 -> ImageDetail.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Skills.Vision.ImageAnalysisSkill")) {
+                    if (!"#Microsoft.Skills.Vision.ImageAnalysisSkill".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Vision.ImageAnalysisSkill'. The found '@odata.type' was '"
                                         + odataType
@@ -202,6 +201,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     ImageAnalysisSkill deserializedValue = new ImageAnalysisSkill(inputs, outputs);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);

@@ -20,7 +20,7 @@ import java.util.List;
 /** Input field mapping for a skill. */
 @Fluent
 public final class InputFieldMappingEntry implements JsonSerializable<InputFieldMappingEntry> {
-    private String name;
+    private final String name;
 
     private String source;
 
@@ -116,6 +116,14 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of InputFieldMappingEntry from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputFieldMappingEntry if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static InputFieldMappingEntry fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -137,12 +145,7 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
                         } else if ("sourceContext".equals(fieldName)) {
                             sourceContext = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

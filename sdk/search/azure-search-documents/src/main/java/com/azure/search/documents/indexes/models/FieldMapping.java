@@ -20,7 +20,7 @@ import java.util.List;
 /** Defines a mapping between a field in a data source and a target field in an index. */
 @Fluent
 public final class FieldMapping implements JsonSerializable<FieldMapping> {
-    private String sourceFieldName;
+    private final String sourceFieldName;
 
     private String targetFieldName;
 
@@ -95,6 +95,14 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of FieldMapping from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FieldMapping if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static FieldMapping fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -113,8 +121,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
                         } else if ("targetFieldName".equals(fieldName)) {
                             targetFieldName = reader.getStringValue();
                         } else if ("mappingFunction".equals(fieldName)) {
-                            mappingFunction =
-                                    JsonUtils.getNullableProperty(reader, r -> FieldMappingFunction.fromJson(reader));
+                            mappingFunction = FieldMappingFunction.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

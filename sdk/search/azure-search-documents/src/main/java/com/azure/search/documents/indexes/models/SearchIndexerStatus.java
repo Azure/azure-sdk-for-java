@@ -20,13 +20,13 @@ import java.util.List;
 /** Represents the current status and execution history of an indexer. */
 @Immutable
 public final class SearchIndexerStatus implements JsonSerializable<SearchIndexerStatus> {
-    private IndexerStatus status;
+    private final IndexerStatus status;
 
     private IndexerExecutionResult lastResult;
 
-    private List<IndexerExecutionResult> executionHistory;
+    private final List<IndexerExecutionResult> executionHistory;
 
-    private SearchIndexerLimits limits;
+    private final SearchIndexerLimits limits;
 
     /**
      * Creates an instance of SearchIndexerStatus class.
@@ -93,6 +93,14 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerStatus if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchIndexerStatus fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -113,18 +121,13 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                             statusFound = true;
                         } else if ("executionHistory".equals(fieldName)) {
                             executionHistory =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> IndexerExecutionResult.fromJson(reader)));
+                                    JsonUtils.readArray(reader, reader1 -> IndexerExecutionResult.fromJson(reader1));
                             executionHistoryFound = true;
                         } else if ("limits".equals(fieldName)) {
-                            limits = JsonUtils.getNullableProperty(reader, r -> SearchIndexerLimits.fromJson(reader));
+                            limits = SearchIndexerLimits.fromJson(reader);
                             limitsFound = true;
                         } else if ("lastResult".equals(fieldName)) {
-                            lastResult =
-                                    JsonUtils.getNullableProperty(reader, r -> IndexerExecutionResult.fromJson(reader));
+                            lastResult = IndexerExecutionResult.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

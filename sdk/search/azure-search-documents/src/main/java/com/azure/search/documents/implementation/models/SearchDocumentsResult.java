@@ -8,71 +8,33 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JsonUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /** Response containing search results from an index. */
 @Immutable
-public final class SearchDocumentsResult {
-    /*
-     * The total count of results found by the search operation, or null if the
-     * count was not requested. If present, the count may be greater than the
-     * number of results in this response. This can happen if you use the $top
-     * or $skip parameters, or if Azure Cognitive Search can't return all the
-     * requested documents in a single Search response.
-     */
-    @JsonProperty(value = "@odata.count", access = JsonProperty.Access.WRITE_ONLY)
+public final class SearchDocumentsResult implements JsonSerializable<SearchDocumentsResult> {
     private Long count;
 
-    /*
-     * A value indicating the percentage of the index that was included in the
-     * query, or null if minimumCoverage was not specified in the request.
-     */
-    @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
     private Double coverage;
 
-    /*
-     * The facet query results for the search operation, organized as a
-     * collection of buckets for each faceted field; null if the query did not
-     * include any facet expressions.
-     */
-    @JsonProperty(value = "@search.facets", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<FacetResult>> facets;
 
-    /*
-     * The answers query results for the search operation; null if the answers
-     * query parameter was not specified or set to 'none'.
-     */
-    @JsonProperty(value = "@search.answers", access = JsonProperty.Access.WRITE_ONLY)
     private List<AnswerResult> answers;
 
-    /*
-     * Continuation JSON payload returned when Azure Cognitive Search can't
-     * return all the requested results in a single Search response. You can
-     * use this JSON along with @odata.nextLink to formulate another POST
-     * Search request to get the next part of the search response.
-     */
-    @JsonProperty(value = "@search.nextPageParameters", access = JsonProperty.Access.WRITE_ONLY)
     private SearchRequest nextPageParameters;
 
-    /*
-     * The sequence of results returned by the query.
-     */
-    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<SearchResult> results;
+    private final List<SearchResult> results;
 
-    /*
-     * Continuation URL returned when Azure Cognitive Search can't return all
-     * the requested results in a single Search response. You can use this URL
-     * to formulate another GET or POST Search request to get the next part of
-     * the search response. Make sure to use the same verb (GET or POST) as the
-     * request that produced this response.
-     */
-    @JsonProperty(value = "@odata.nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -80,10 +42,7 @@ public final class SearchDocumentsResult {
      *
      * @param results the results value to set.
      */
-    @JsonCreator
-    public SearchDocumentsResult(
-            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-                    List<SearchResult> results) {
+    public SearchDocumentsResult(List<SearchResult> results) {
         this.results = results;
     }
 
@@ -159,5 +118,97 @@ public final class SearchDocumentsResult {
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        jsonWriter.writeStartObject();
+        JsonUtils.writeArray(jsonWriter, "value", this.results, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeLongField("@odata.count", this.count, false);
+        jsonWriter.writeDoubleField("@search.coverage", this.coverage, false);
+        JsonUtils.writeMap(
+                jsonWriter,
+                "@search.facets",
+                this.facets,
+                (writer, element) ->
+                        JsonUtils.writeArray(
+                                jsonWriter,
+                                "@search.facets",
+                                element,
+                                (writer1, element1) -> writer1.writeJson(element1, false)));
+        JsonUtils.writeArray(
+                jsonWriter, "@search.answers", this.answers, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeJsonField("@search.nextPageParameters", this.nextPageParameters, false);
+        jsonWriter.writeStringField("@odata.nextLink", this.nextLink, false);
+        return jsonWriter.writeEndObject().flush();
+    }
+
+    /**
+     * Reads an instance of SearchDocumentsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchDocumentsResult if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
+    public static SearchDocumentsResult fromJson(JsonReader jsonReader) {
+        return JsonUtils.readObject(
+                jsonReader,
+                reader -> {
+                    boolean resultsFound = false;
+                    List<SearchResult> results = null;
+                    Long count = null;
+                    Double coverage = null;
+                    Map<String, List<FacetResult>> facets = null;
+                    List<AnswerResult> answers = null;
+                    SearchRequest nextPageParameters = null;
+                    String nextLink = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            results = JsonUtils.readArray(reader, reader1 -> SearchResult.fromJson(reader1));
+                            resultsFound = true;
+                        } else if ("@odata.count".equals(fieldName)) {
+                            count = JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                        } else if ("@search.coverage".equals(fieldName)) {
+                            coverage = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                        } else if ("@search.facets".equals(fieldName)) {
+                            facets =
+                                    JsonUtils.readMap(
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.readArray(
+                                                            reader1, reader2 -> FacetResult.fromJson(reader2)));
+                        } else if ("@search.answers".equals(fieldName)) {
+                            answers = JsonUtils.readArray(reader, reader1 -> AnswerResult.fromJson(reader1));
+                        } else if ("@search.nextPageParameters".equals(fieldName)) {
+                            nextPageParameters = SearchRequest.fromJson(reader);
+                        } else if ("@odata.nextLink".equals(fieldName)) {
+                            nextLink = reader.getStringValue();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!resultsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
+                        throw new IllegalStateException(
+                                "Missing required property/properties: " + String.join(", ", missingProperties));
+                    }
+                    SearchDocumentsResult deserializedValue = new SearchDocumentsResult(results);
+                    deserializedValue.count = count;
+                    deserializedValue.coverage = coverage;
+                    deserializedValue.facets = facets;
+                    deserializedValue.answers = answers;
+                    deserializedValue.nextPageParameters = nextPageParameters;
+                    deserializedValue.nextLink = nextLink;
+
+                    return deserializedValue;
+                });
     }
 }

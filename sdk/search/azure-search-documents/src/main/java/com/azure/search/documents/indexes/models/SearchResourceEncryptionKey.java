@@ -24,11 +24,11 @@ import java.util.List;
  */
 @Fluent
 public final class SearchResourceEncryptionKey implements JsonSerializable<SearchResourceEncryptionKey> {
-    private String keyName;
+    private final String keyName;
 
-    private String keyVersion;
+    private final String keyVersion;
 
-    private String vaultUrl;
+    private final String vaultUrl;
 
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
@@ -125,6 +125,14 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchResourceEncryptionKey from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchResourceEncryptionKey if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -151,13 +159,9 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
                             vaultUrl = reader.getStringValue();
                             vaultUrlFound = true;
                         } else if ("accessCredentials".equals(fieldName)) {
-                            accessCredentials =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> AzureActiveDirectoryApplicationCredentials.fromJson(reader));
+                            accessCredentials = AzureActiveDirectoryApplicationCredentials.fromJson(reader);
                         } else if ("identity".equals(fieldName)) {
-                            identity =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchIndexerDataIdentity.fromJson(reader));
+                            identity = SearchIndexerDataIdentity.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

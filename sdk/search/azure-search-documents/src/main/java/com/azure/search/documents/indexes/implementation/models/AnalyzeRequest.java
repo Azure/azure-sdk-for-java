@@ -25,7 +25,7 @@ import java.util.List;
 /** Specifies some text and analysis components used to break that text into tokens. */
 @Fluent
 public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
-    private String text;
+    private final String text;
 
     private LexicalAnalyzerName analyzer;
 
@@ -175,6 +175,14 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of AnalyzeRequest from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeRequest if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static AnalyzeRequest fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -202,11 +210,11 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
                                     JsonUtils.readArray(
-                                            reader, r -> TokenFilterName.fromString(reader.getStringValue()));
+                                            reader, reader1 -> TokenFilterName.fromString(reader1.getStringValue()));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
                                     JsonUtils.readArray(
-                                            reader, r -> CharFilterName.fromString(reader.getStringValue()));
+                                            reader, reader1 -> CharFilterName.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

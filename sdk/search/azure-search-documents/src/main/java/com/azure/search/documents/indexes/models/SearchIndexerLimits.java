@@ -63,6 +63,13 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerLimits from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerLimits if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static SearchIndexerLimits fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

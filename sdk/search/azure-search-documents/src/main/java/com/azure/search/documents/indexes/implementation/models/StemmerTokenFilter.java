@@ -16,14 +16,13 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Language specific stemming filter. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class StemmerTokenFilter extends TokenFilter {
     private String odataType = "#Microsoft.Azure.Search.StemmerTokenFilter";
 
-    private StemmerTokenFilterLanguage language;
+    private final StemmerTokenFilterLanguage language;
 
     /**
      * Creates an instance of StemmerTokenFilter class.
@@ -54,11 +53,19 @@ public final class StemmerTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of StemmerTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StemmerTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static StemmerTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -69,7 +76,6 @@ public final class StemmerTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -82,7 +88,7 @@ public final class StemmerTokenFilter extends TokenFilter {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.StemmerTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.StemmerTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StemmerTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -102,6 +108,7 @@ public final class StemmerTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     StemmerTokenFilter deserializedValue = new StemmerTokenFilter(name, language);
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

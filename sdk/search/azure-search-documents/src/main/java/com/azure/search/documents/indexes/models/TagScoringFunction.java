@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Defines a function that boosts scores of documents with string values matching a given list of tags. */
 @Fluent
 public final class TagScoringFunction extends ScoringFunction {
     private String type = "tag";
 
-    private TagScoringParameters parameters;
+    private final TagScoringParameters parameters;
 
     /**
      * Creates an instance of TagScoringFunction class.
@@ -57,11 +56,19 @@ public final class TagScoringFunction extends ScoringFunction {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of TagScoringFunction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagScoringFunction if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static TagScoringFunction fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean typeFound = false;
                     String type = null;
                     boolean fieldNameFound = false;
                     String fieldName = null;
@@ -75,7 +82,6 @@ public final class TagScoringFunction extends ScoringFunction {
                         reader.nextToken();
 
                         if ("type".equals(jsonFieldName)) {
-                            typeFound = true;
                             type = reader.getStringValue();
                         } else if ("fieldName".equals(jsonFieldName)) {
                             fieldName = reader.getStringValue();
@@ -86,15 +92,14 @@ public final class TagScoringFunction extends ScoringFunction {
                         } else if ("interpolation".equals(jsonFieldName)) {
                             interpolation = ScoringFunctionInterpolation.fromString(reader.getStringValue());
                         } else if ("tag".equals(jsonFieldName)) {
-                            parameters =
-                                    JsonUtils.getNullableProperty(reader, r -> TagScoringParameters.fromJson(reader));
+                            parameters = TagScoringParameters.fromJson(reader);
                             parametersFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!typeFound || !Objects.equals(type, "tag")) {
+                    if (!"tag".equals(type)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'tag'. The found 'type' was '"
                                         + type
@@ -117,6 +122,7 @@ public final class TagScoringFunction extends ScoringFunction {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     TagScoringFunction deserializedValue = new TagScoringFunction(fieldName, boost, parameters);
+                    deserializedValue.type = type;
                     deserializedValue.setInterpolation(interpolation);
 
                     return deserializedValue;

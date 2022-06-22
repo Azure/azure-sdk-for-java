@@ -98,6 +98,13 @@ public final class SearchIndexerKnowledgeStoreProjection
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerKnowledgeStoreProjection from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerKnowledgeStoreProjection if the JsonReader was pointing to an instance of it,
+     *     or null if it was pointing to JSON null.
+     */
     public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -113,32 +120,23 @@ public final class SearchIndexerKnowledgeStoreProjection
                             tables =
                                     JsonUtils.readArray(
                                             reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r,
-                                                            r1 ->
-                                                                    SearchIndexerKnowledgeStoreTableProjectionSelector
-                                                                            .fromJson(reader)));
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreTableProjectionSelector.fromJson(
+                                                            reader1));
                         } else if ("objects".equals(fieldName)) {
                             objects =
                                     JsonUtils.readArray(
                                             reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r,
-                                                            r1 ->
-                                                                    SearchIndexerKnowledgeStoreObjectProjectionSelector
-                                                                            .fromJson(reader)));
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreObjectProjectionSelector.fromJson(
+                                                            reader1));
                         } else if ("files".equals(fieldName)) {
                             files =
                                     JsonUtils.readArray(
                                             reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r,
-                                                            r1 ->
-                                                                    SearchIndexerKnowledgeStoreFileProjectionSelector
-                                                                            .fromJson(reader)));
+                                            reader1 ->
+                                                    SearchIndexerKnowledgeStoreFileProjectionSelector.fromJson(
+                                                            reader1));
                         } else {
                             reader.skipChildren();
                         }

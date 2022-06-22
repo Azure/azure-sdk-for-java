@@ -48,6 +48,13 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SkillNames from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkillNames if the JsonReader was pointing to an instance of it, or null if it was pointing
+     *     to JSON null.
+     */
     public static SkillNames fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -58,7 +65,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
                         reader.nextToken();
 
                         if ("skillNames".equals(fieldName)) {
-                            skillNames = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            skillNames = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

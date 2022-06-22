@@ -409,6 +409,13 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndex from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndex if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static SearchIndex fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -435,69 +442,31 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                         if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                         } else if ("fields".equals(fieldName)) {
-                            fields =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> SearchField.fromJson(reader)));
+                            fields = JsonUtils.readArray(reader, reader1 -> SearchField.fromJson(reader1));
                         } else if ("scoringProfiles".equals(fieldName)) {
-                            scoringProfiles =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> ScoringProfile.fromJson(reader)));
+                            scoringProfiles = JsonUtils.readArray(reader, reader1 -> ScoringProfile.fromJson(reader1));
                         } else if ("defaultScoringProfile".equals(fieldName)) {
                             defaultScoringProfile = reader.getStringValue();
                         } else if ("corsOptions".equals(fieldName)) {
-                            corsOptions = JsonUtils.getNullableProperty(reader, r -> CorsOptions.fromJson(reader));
+                            corsOptions = CorsOptions.fromJson(reader);
                         } else if ("suggesters".equals(fieldName)) {
-                            suggesters =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SearchSuggester.fromJson(reader)));
+                            suggesters = JsonUtils.readArray(reader, reader1 -> SearchSuggester.fromJson(reader1));
                         } else if ("analyzers".equals(fieldName)) {
-                            analyzers =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> LexicalAnalyzer.fromJson(reader)));
+                            analyzers = JsonUtils.readArray(reader, reader1 -> LexicalAnalyzer.fromJson(reader1));
                         } else if ("tokenizers".equals(fieldName)) {
-                            tokenizers =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> LexicalTokenizer.fromJson(reader)));
+                            tokenizers = JsonUtils.readArray(reader, reader1 -> LexicalTokenizer.fromJson(reader1));
                         } else if ("tokenFilters".equals(fieldName)) {
-                            tokenFilters =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> TokenFilter.fromJson(reader)));
+                            tokenFilters = JsonUtils.readArray(reader, reader1 -> TokenFilter.fromJson(reader1));
                         } else if ("charFilters".equals(fieldName)) {
-                            charFilters =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> CharFilter.fromJson(reader)));
+                            charFilters = JsonUtils.readArray(reader, reader1 -> CharFilter.fromJson(reader1));
                         } else if ("normalizers".equals(fieldName)) {
-                            normalizers =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> LexicalNormalizer.fromJson(reader)));
+                            normalizers = JsonUtils.readArray(reader, reader1 -> LexicalNormalizer.fromJson(reader1));
                         } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                         } else if ("similarity".equals(fieldName)) {
-                            similarity =
-                                    JsonUtils.getNullableProperty(reader, r -> SimilarityAlgorithm.fromJson(reader));
+                            similarity = SimilarityAlgorithm.fromJson(reader);
                         } else if ("semantic".equals(fieldName)) {
-                            semanticSettings =
-                                    JsonUtils.getNullableProperty(reader, r -> SemanticSettings.fromJson(reader));
+                            semanticSettings = SemanticSettings.fromJson(reader);
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();
                         } else {

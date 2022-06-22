@@ -15,17 +15,15 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /** A skill that can call a Web API endpoint, allowing you to extend a skillset by having it call your custom code. */
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
     private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
 
-    private String uri;
+    private final String uri;
 
     private Map<String, String> httpHeaders;
 
@@ -178,11 +176,19 @@ public final class WebApiSkill extends SearchIndexerSkill {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of WebApiSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebApiSkill if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static WebApiSkill fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean inputsFound = false;
                     List<InputFieldMappingEntry> inputs = null;
@@ -203,23 +209,12 @@ public final class WebApiSkill extends SearchIndexerSkill {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -231,16 +226,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                             uri = reader.getStringValue();
                             uriFound = true;
                         } else if ("httpHeaders".equals(fieldName)) {
-                            if (httpHeaders == null) {
-                                httpHeaders = new LinkedHashMap<>();
-                            }
-
-                            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                                fieldName = reader.getFieldName();
-                                reader.nextToken();
-
-                                httpHeaders.put(fieldName, reader.getStringValue());
-                            }
+                            httpHeaders = JsonUtils.readMap(reader, reader1 -> reader1.getStringValue());
                         } else if ("httpMethod".equals(fieldName)) {
                             httpMethod = reader.getStringValue();
                         } else if ("timeout".equals(fieldName)) {
@@ -255,7 +241,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Skills.Custom.WebApiSkill")) {
+                    if (!"#Microsoft.Skills.Custom.WebApiSkill".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Custom.WebApiSkill'. The found '@odata.type' was '"
                                         + odataType
@@ -278,6 +264,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     WebApiSkill deserializedValue = new WebApiSkill(inputs, outputs, uri);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);

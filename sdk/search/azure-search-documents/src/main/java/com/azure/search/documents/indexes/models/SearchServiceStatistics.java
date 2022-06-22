@@ -20,9 +20,9 @@ import java.util.List;
 /** Response from a get service statistics request. If successful, it includes service level counters and limits. */
 @Fluent
 public final class SearchServiceStatistics implements JsonSerializable<SearchServiceStatistics> {
-    private SearchServiceCounters counters;
+    private final SearchServiceCounters counters;
 
-    private SearchServiceLimits limits;
+    private final SearchServiceLimits limits;
 
     /**
      * Creates an instance of SearchServiceStatistics class.
@@ -61,6 +61,14 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchServiceStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchServiceStatistics if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static SearchServiceStatistics fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -74,11 +82,10 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
                         reader.nextToken();
 
                         if ("counters".equals(fieldName)) {
-                            counters =
-                                    JsonUtils.getNullableProperty(reader, r -> SearchServiceCounters.fromJson(reader));
+                            counters = SearchServiceCounters.fromJson(reader);
                             countersFound = true;
                         } else if ("limits".equals(fieldName)) {
-                            limits = JsonUtils.getNullableProperty(reader, r -> SearchServiceLimits.fromJson(reader));
+                            limits = SearchServiceLimits.fromJson(reader);
                             limitsFound = true;
                         } else {
                             reader.skipChildren();

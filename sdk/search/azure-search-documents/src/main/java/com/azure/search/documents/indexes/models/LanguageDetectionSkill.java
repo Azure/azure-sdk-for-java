@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A skill that detects the language of input text and reports a single language code for every document submitted on
@@ -100,11 +99,19 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of LanguageDetectionSkill from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LanguageDetectionSkill if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static LanguageDetectionSkill fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean inputsFound = false;
                     List<InputFieldMappingEntry> inputs = null;
@@ -120,23 +127,12 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
+                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> OutputFieldMappingEntry.fromJson(reader)));
+                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -153,8 +149,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Skills.Text.LanguageDetectionSkill")) {
+                    if (!"#Microsoft.Skills.Text.LanguageDetectionSkill".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.LanguageDetectionSkill'. The found '@odata.type' was '"
                                         + odataType
@@ -174,6 +169,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     LanguageDetectionSkill deserializedValue = new LanguageDetectionSkill(inputs, outputs);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setName(name);
                     deserializedValue.setDescription(description);
                     deserializedValue.setContext(context);

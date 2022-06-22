@@ -20,7 +20,7 @@ import java.util.List;
 /** Represents a resource's usage and quota. */
 @Fluent
 public final class ResourceCounter implements JsonSerializable<ResourceCounter> {
-    private long usage;
+    private final long usage;
 
     private Long quota;
 
@@ -70,6 +70,14 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ResourceCounter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceCounter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ResourceCounter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

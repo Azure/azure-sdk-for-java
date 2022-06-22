@@ -21,7 +21,7 @@ import java.util.List;
 /** The result of testing an analyzer on text. */
 @Fluent
 public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
-    private List<AnalyzedTokenInfo> tokens;
+    private final List<AnalyzedTokenInfo> tokens;
 
     /**
      * Creates an instance of AnalyzeResult class.
@@ -48,6 +48,14 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of AnalyzeResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static AnalyzeResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -59,12 +67,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                         reader.nextToken();
 
                         if ("tokens".equals(fieldName)) {
-                            tokens =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> AnalyzedTokenInfo.fromJson(reader)));
+                            tokens = JsonUtils.readArray(reader, reader1 -> AnalyzedTokenInfo.fromJson(reader1));
                             tokensFound = true;
                         } else {
                             reader.skipChildren();

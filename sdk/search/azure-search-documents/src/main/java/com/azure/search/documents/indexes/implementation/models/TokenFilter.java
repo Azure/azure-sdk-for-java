@@ -18,7 +18,7 @@ import com.azure.json.JsonWriter;
 /** Base type for token filters. */
 @Fluent
 public class TokenFilter implements JsonSerializable<TokenFilter> {
-    private String name;
+    private final String name;
 
     /**
      * Creates an instance of TokenFilter class.
@@ -46,6 +46,15 @@ public class TokenFilter implements JsonSerializable<TokenFilter> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of TokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static TokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

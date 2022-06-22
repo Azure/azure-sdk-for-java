@@ -8,19 +8,15 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.core.JsonToken;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Abstract class to share properties between concrete selectors. */
 @Fluent
 public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
         extends SearchIndexerKnowledgeStoreProjectionSelector {
-    private String storageContainer;
+    private final String storageContainer;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreBlobProjectionSelector class.
@@ -50,64 +46,6 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
         JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
         jsonWriter.writeStringField("storageContainer", this.storageContainer, false);
         return jsonWriter.writeEndObject().flush();
-    }
-
-    public static SearchIndexerKnowledgeStoreBlobProjectionSelector fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
-                reader -> {
-                    String referenceKeyName = null;
-                    String generatedKeyName = null;
-                    String source = null;
-                    String sourceContext = null;
-                    List<InputFieldMappingEntry> inputs = null;
-                    boolean storageContainerFound = false;
-                    String storageContainer = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("referenceKeyName".equals(fieldName)) {
-                            referenceKeyName = reader.getStringValue();
-                        } else if ("generatedKeyName".equals(fieldName)) {
-                            generatedKeyName = reader.getStringValue();
-                        } else if ("source".equals(fieldName)) {
-                            source = reader.getStringValue();
-                        } else if ("sourceContext".equals(fieldName)) {
-                            sourceContext = reader.getStringValue();
-                        } else if ("inputs".equals(fieldName)) {
-                            inputs =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> InputFieldMappingEntry.fromJson(reader)));
-                        } else if ("storageContainer".equals(fieldName)) {
-                            storageContainer = reader.getStringValue();
-                            storageContainerFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!storageContainerFound) {
-                        missingProperties.add("storageContainer");
-                    }
-
-                    if (!CoreUtils.isNullOrEmpty(missingProperties)) {
-                        throw new IllegalStateException(
-                                "Missing required property/properties: " + String.join(", ", missingProperties));
-                    }
-                    SearchIndexerKnowledgeStoreBlobProjectionSelector deserializedValue =
-                            new SearchIndexerKnowledgeStoreBlobProjectionSelector(storageContainer);
-                    deserializedValue.setReferenceKeyName(referenceKeyName);
-                    deserializedValue.setGeneratedKeyName(generatedKeyName);
-                    deserializedValue.setSource(source);
-                    deserializedValue.setSourceContext(sourceContext);
-                    deserializedValue.setInputs(inputs);
-
-                    return deserializedValue;
-                });
     }
 
     @Override

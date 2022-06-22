@@ -352,6 +352,13 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static SearchIndexer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -384,30 +391,22 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                         } else if ("targetIndexName".equals(fieldName)) {
                             targetIndexName = reader.getStringValue();
                         } else if ("schedule".equals(fieldName)) {
-                            schedule = JsonUtils.getNullableProperty(reader, r -> IndexingSchedule.fromJson(reader));
+                            schedule = IndexingSchedule.fromJson(reader);
                         } else if ("parameters".equals(fieldName)) {
-                            parameters =
-                                    JsonUtils.getNullableProperty(reader, r -> IndexingParameters.fromJson(reader));
+                            parameters = IndexingParameters.fromJson(reader);
                         } else if ("fieldMappings".equals(fieldName)) {
-                            fieldMappings =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> FieldMapping.fromJson(reader)));
+                            fieldMappings = JsonUtils.readArray(reader, reader1 -> FieldMapping.fromJson(reader1));
                         } else if ("outputFieldMappings".equals(fieldName)) {
                             outputFieldMappings =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> FieldMapping.fromJson(reader)));
+                                    JsonUtils.readArray(reader, reader1 -> FieldMapping.fromJson(reader1));
                         } else if ("disabled".equals(fieldName)) {
                             isDisabled = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();
                         } else if ("encryptionKey".equals(fieldName)) {
-                            encryptionKey =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchResourceEncryptionKey.fromJson(reader));
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
                         } else if ("cache".equals(fieldName)) {
-                            cache = JsonUtils.getNullableProperty(reader, r -> SearchIndexerCache.fromJson(reader));
+                            cache = SearchIndexerCache.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

@@ -18,7 +18,7 @@ import com.azure.json.JsonWriter;
 /** Base type for normalizers. */
 @Fluent
 public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
-    private String name;
+    private final String name;
 
     /**
      * Creates an instance of LexicalNormalizer class.
@@ -47,6 +47,15 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of LexicalNormalizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LexicalNormalizer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static LexicalNormalizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

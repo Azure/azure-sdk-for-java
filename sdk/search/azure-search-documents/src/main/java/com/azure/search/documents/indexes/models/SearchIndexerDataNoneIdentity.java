@@ -12,7 +12,6 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.util.Objects;
 
 /** Clears the identity property of a datasource. */
 @Immutable
@@ -26,26 +25,31 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerDataNoneIdentity from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerDataNoneIdentity if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     */
     public static SearchIndexerDataNoneIdentity fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity")) {
+                    if (!"#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity'. The found '@odata.type' was '"
                                         + odataType
@@ -53,6 +57,7 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
                     }
 
                     SearchIndexerDataNoneIdentity deserializedValue = new SearchIndexerDataNoneIdentity();
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

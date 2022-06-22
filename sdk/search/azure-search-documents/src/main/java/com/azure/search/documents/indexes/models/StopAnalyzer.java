@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Divides text at non-letters; Applies the lowercase and stopword token filters. This analyzer is implemented using
@@ -66,11 +65,19 @@ public final class StopAnalyzer extends LexicalAnalyzer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of StopAnalyzer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StopAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static StopAnalyzer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -80,19 +87,18 @@ public final class StopAnalyzer extends LexicalAnalyzer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("stopwords".equals(fieldName)) {
-                            stopwords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            stopwords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.StopAnalyzer")) {
+                    if (!"#Microsoft.Azure.Search.StopAnalyzer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopAnalyzer'. The found '@odata.type' was '"
                                         + odataType
@@ -109,6 +115,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     StopAnalyzer deserializedValue = new StopAnalyzer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setStopwords(stopwords);
 
                     return deserializedValue;

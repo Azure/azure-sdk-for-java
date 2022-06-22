@@ -11,11 +11,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.core.JsonToken;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -149,11 +148,19 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of PatternAnalyzer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatternAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static PatternAnalyzer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -166,7 +173,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -178,13 +184,13 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                         } else if ("flags".equals(fieldName)) {
                             flags = RegexFlags.fromString(reader.getStringValue());
                         } else if ("stopwords".equals(fieldName)) {
-                            stopwords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            stopwords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.PatternAnalyzer")) {
+                    if (!"#Microsoft.Azure.Search.PatternAnalyzer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternAnalyzer'. The found '@odata.type' was '"
                                         + odataType
@@ -201,6 +207,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     PatternAnalyzer deserializedValue = new PatternAnalyzer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setLowerCaseTerms(lowerCaseTerms);
                     deserializedValue.setPattern(pattern);
                     deserializedValue.setFlags(flags);

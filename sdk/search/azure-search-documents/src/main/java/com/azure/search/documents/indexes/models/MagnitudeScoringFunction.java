@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Defines a function that boosts scores based on the magnitude of a numeric field. */
 @Fluent
 public final class MagnitudeScoringFunction extends ScoringFunction {
     private String type = "magnitude";
 
-    private MagnitudeScoringParameters parameters;
+    private final MagnitudeScoringParameters parameters;
 
     /**
      * Creates an instance of MagnitudeScoringFunction class.
@@ -57,11 +56,19 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of MagnitudeScoringFunction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MagnitudeScoringFunction if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static MagnitudeScoringFunction fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean typeFound = false;
                     String type = null;
                     boolean fieldNameFound = false;
                     String fieldName = null;
@@ -75,7 +82,6 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
                         reader.nextToken();
 
                         if ("type".equals(jsonFieldName)) {
-                            typeFound = true;
                             type = reader.getStringValue();
                         } else if ("fieldName".equals(jsonFieldName)) {
                             fieldName = reader.getStringValue();
@@ -86,16 +92,14 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
                         } else if ("interpolation".equals(jsonFieldName)) {
                             interpolation = ScoringFunctionInterpolation.fromString(reader.getStringValue());
                         } else if ("magnitude".equals(jsonFieldName)) {
-                            parameters =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> MagnitudeScoringParameters.fromJson(reader));
+                            parameters = MagnitudeScoringParameters.fromJson(reader);
                             parametersFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!typeFound || !Objects.equals(type, "magnitude")) {
+                    if (!"magnitude".equals(type)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'magnitude'. The found 'type' was '"
                                         + type
@@ -119,6 +123,7 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
                     }
                     MagnitudeScoringFunction deserializedValue =
                             new MagnitudeScoringFunction(fieldName, boost, parameters);
+                    deserializedValue.type = type;
                     deserializedValue.setInterpolation(interpolation);
 
                     return deserializedValue;

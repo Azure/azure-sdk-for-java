@@ -124,6 +124,13 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of IndexingParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IndexingParameters if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static IndexingParameters fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -143,9 +150,7 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
                         } else if ("maxFailedItemsPerBatch".equals(fieldName)) {
                             maxFailedItemsPerBatch = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
                         } else if ("configuration".equals(fieldName)) {
-                            configuration =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> IndexingParametersConfiguration.fromJson(reader));
+                            configuration = IndexingParametersConfiguration.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

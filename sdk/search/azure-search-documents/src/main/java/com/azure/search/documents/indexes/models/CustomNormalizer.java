@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Allows you to configure normalization for filterable, sortable, and facetable fields, which by default operate with
@@ -105,11 +104,19 @@ public final class CustomNormalizer extends LexicalNormalizer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CustomNormalizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomNormalizer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static CustomNormalizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -120,7 +127,6 @@ public final class CustomNormalizer extends LexicalNormalizer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -128,17 +134,17 @@ public final class CustomNormalizer extends LexicalNormalizer {
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
                                     JsonUtils.readArray(
-                                            reader, r -> TokenFilterName.fromString(reader.getStringValue()));
+                                            reader, reader1 -> TokenFilterName.fromString(reader1.getStringValue()));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
                                     JsonUtils.readArray(
-                                            reader, r -> CharFilterName.fromString(reader.getStringValue()));
+                                            reader, reader1 -> CharFilterName.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.CustomNormalizer")) {
+                    if (!"#Microsoft.Azure.Search.CustomNormalizer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CustomNormalizer'. The found '@odata.type' was '"
                                         + odataType
@@ -155,6 +161,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CustomNormalizer deserializedValue = new CustomNormalizer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setTokenFilters(tokenFilters);
                     deserializedValue.setCharFilters(charFilters);
 

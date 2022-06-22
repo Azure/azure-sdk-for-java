@@ -21,7 +21,7 @@ import java.util.List;
 /** Response from a List SynonymMaps request. If successful, it includes the full definitions of all synonym maps. */
 @Immutable
 public final class ListSynonymMapsResult implements JsonSerializable<ListSynonymMapsResult> {
-    private List<SynonymMap> synonymMaps;
+    private final List<SynonymMap> synonymMaps;
 
     /**
      * Creates an instance of ListSynonymMapsResult class.
@@ -49,6 +49,14 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ListSynonymMapsResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListSynonymMapsResult if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ListSynonymMapsResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -60,10 +68,7 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            synonymMaps =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r -> JsonUtils.getNullableProperty(r, r1 -> SynonymMap.fromJson(reader)));
+                            synonymMaps = JsonUtils.readArray(reader, reader1 -> SynonymMap.fromJson(reader1));
                             synonymMapsFound = true;
                         } else {
                             reader.skipChildren();

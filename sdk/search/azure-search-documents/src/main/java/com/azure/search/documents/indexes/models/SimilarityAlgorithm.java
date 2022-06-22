@@ -28,6 +28,14 @@ public abstract class SimilarityAlgorithm implements JsonSerializable<Similarity
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SimilarityAlgorithm from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimilarityAlgorithm if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     */
     public static SimilarityAlgorithm fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

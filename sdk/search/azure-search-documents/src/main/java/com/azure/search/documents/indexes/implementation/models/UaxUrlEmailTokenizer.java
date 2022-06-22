@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Tokenizes urls and emails as one token. This tokenizer is implemented using Apache Lucene. */
 @Fluent
@@ -64,11 +63,19 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of UaxUrlEmailTokenizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UaxUrlEmailTokenizer if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static UaxUrlEmailTokenizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -78,7 +85,6 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -90,7 +96,7 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.UaxUrlEmailTokenizer")) {
+                    if (!"#Microsoft.Azure.Search.UaxUrlEmailTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.UaxUrlEmailTokenizer'. The found '@odata.type' was '"
                                         + odataType
@@ -107,6 +113,7 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     UaxUrlEmailTokenizer deserializedValue = new UaxUrlEmailTokenizer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMaxTokenLength(maxTokenLength);
 
                     return deserializedValue;

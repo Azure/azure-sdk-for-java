@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
@@ -292,11 +291,19 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of WordDelimiterTokenFilter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WordDelimiterTokenFilter if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static WordDelimiterTokenFilter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -315,7 +322,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -340,14 +346,13 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                             stemEnglishPossessive =
                                     JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
                         } else if ("protectedWords".equals(fieldName)) {
-                            protectedWords = JsonUtils.readArray(reader, r -> reader.getStringValue());
+                            protectedWords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.WordDelimiterTokenFilter")) {
+                    if (!"#Microsoft.Azure.Search.WordDelimiterTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.WordDelimiterTokenFilter'. The found '@odata.type' was '"
                                         + odataType
@@ -364,6 +369,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     WordDelimiterTokenFilter deserializedValue = new WordDelimiterTokenFilter(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setGenerateWordParts(generateWordParts);
                     deserializedValue.setGenerateNumberParts(generateNumberParts);
                     deserializedValue.setCatenateWords(catenateWords);

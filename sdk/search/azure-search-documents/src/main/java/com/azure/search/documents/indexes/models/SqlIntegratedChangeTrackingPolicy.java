@@ -12,7 +12,6 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.util.Objects;
 
 /**
  * Defines a data change detection policy that captures changes using the Integrated Change Tracking feature of Azure
@@ -29,27 +28,31 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SqlIntegratedChangeTrackingPolicy from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlIntegratedChangeTrackingPolicy if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     */
     public static SqlIntegratedChangeTrackingPolicy fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(
-                                    odataType, "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy")) {
+                    if (!"#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy'. The found '@odata.type' was '"
                                         + odataType
@@ -57,6 +60,7 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
                     }
 
                     SqlIntegratedChangeTrackingPolicy deserializedValue = new SqlIntegratedChangeTrackingPolicy();
+                    deserializedValue.odataType = odataType;
 
                     return deserializedValue;
                 });

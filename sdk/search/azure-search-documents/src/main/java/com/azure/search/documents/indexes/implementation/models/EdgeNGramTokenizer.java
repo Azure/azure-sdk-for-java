@@ -16,7 +16,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.TokenCharacterKind;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Tokenizes the input from an edge into n-grams of the given size(s). This tokenizer is implemented using Apache
@@ -118,11 +117,19 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of EdgeNGramTokenizer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdgeNGramTokenizer if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static EdgeNGramTokenizer fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
@@ -134,7 +141,6 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -146,13 +152,13 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
                         } else if ("tokenChars".equals(fieldName)) {
                             tokenChars =
                                     JsonUtils.readArray(
-                                            reader, r -> TokenCharacterKind.fromString(reader.getStringValue()));
+                                            reader, reader1 -> TokenCharacterKind.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!odataTypeFound || !Objects.equals(odataType, "#Microsoft.Azure.Search.EdgeNGramTokenizer")) {
+                    if (!"#Microsoft.Azure.Search.EdgeNGramTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.EdgeNGramTokenizer'. The found '@odata.type' was '"
                                         + odataType
@@ -169,6 +175,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     EdgeNGramTokenizer deserializedValue = new EdgeNGramTokenizer(name);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setMinGram(minGram);
                     deserializedValue.setMaxGram(maxGram);
                     deserializedValue.setTokenChars(tokenChars);

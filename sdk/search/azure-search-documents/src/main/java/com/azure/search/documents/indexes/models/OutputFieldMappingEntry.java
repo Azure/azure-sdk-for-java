@@ -20,7 +20,7 @@ import java.util.List;
 /** Output field mapping for a skill. */
 @Fluent
 public final class OutputFieldMappingEntry implements JsonSerializable<OutputFieldMappingEntry> {
-    private String name;
+    private final String name;
 
     private String targetName;
 
@@ -70,6 +70,14 @@ public final class OutputFieldMappingEntry implements JsonSerializable<OutputFie
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of OutputFieldMappingEntry from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputFieldMappingEntry if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static OutputFieldMappingEntry fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,

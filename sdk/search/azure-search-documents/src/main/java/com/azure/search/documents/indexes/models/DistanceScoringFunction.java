@@ -15,14 +15,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Defines a function that boosts scores based on distance from a geographic location. */
 @Fluent
 public final class DistanceScoringFunction extends ScoringFunction {
     private String type = "distance";
 
-    private DistanceScoringParameters parameters;
+    private final DistanceScoringParameters parameters;
 
     /**
      * Creates an instance of DistanceScoringFunction class.
@@ -57,11 +56,19 @@ public final class DistanceScoringFunction extends ScoringFunction {
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of DistanceScoringFunction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistanceScoringFunction if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static DistanceScoringFunction fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean typeFound = false;
                     String type = null;
                     boolean fieldNameFound = false;
                     String fieldName = null;
@@ -75,7 +82,6 @@ public final class DistanceScoringFunction extends ScoringFunction {
                         reader.nextToken();
 
                         if ("type".equals(jsonFieldName)) {
-                            typeFound = true;
                             type = reader.getStringValue();
                         } else if ("fieldName".equals(jsonFieldName)) {
                             fieldName = reader.getStringValue();
@@ -86,16 +92,14 @@ public final class DistanceScoringFunction extends ScoringFunction {
                         } else if ("interpolation".equals(jsonFieldName)) {
                             interpolation = ScoringFunctionInterpolation.fromString(reader.getStringValue());
                         } else if ("distance".equals(jsonFieldName)) {
-                            parameters =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> DistanceScoringParameters.fromJson(reader));
+                            parameters = DistanceScoringParameters.fromJson(reader);
                             parametersFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!typeFound || !Objects.equals(type, "distance")) {
+                    if (!"distance".equals(type)) {
                         throw new IllegalStateException(
                                 "'type' was expected to be non-null and equal to 'distance'. The found 'type' was '"
                                         + type
@@ -119,6 +123,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
                     }
                     DistanceScoringFunction deserializedValue =
                             new DistanceScoringFunction(fieldName, boost, parameters);
+                    deserializedValue.type = type;
                     deserializedValue.setInterpolation(interpolation);
 
                     return deserializedValue;

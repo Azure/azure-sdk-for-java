@@ -15,7 +15,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** A cognitive service resource provisioned with a key that is attached to a skillset. */
 @Fluent
@@ -51,11 +50,19 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of CognitiveServicesAccountKey from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CognitiveServicesAccountKey if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
+     */
     public static CognitiveServicesAccountKey fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
-                    boolean odataTypeFound = false;
                     String odataType = null;
                     String description = null;
                     boolean keyFound = false;
@@ -65,7 +72,6 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
                         reader.nextToken();
 
                         if ("@odata.type".equals(fieldName)) {
-                            odataTypeFound = true;
                             odataType = reader.getStringValue();
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
@@ -77,8 +83,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
                         }
                     }
 
-                    if (!odataTypeFound
-                            || !Objects.equals(odataType, "#Microsoft.Azure.Search.CognitiveServicesByKey")) {
+                    if (!"#Microsoft.Azure.Search.CognitiveServicesByKey".equals(odataType)) {
                         throw new IllegalStateException(
                                 "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CognitiveServicesByKey'. The found '@odata.type' was '"
                                         + odataType
@@ -95,6 +100,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
                     CognitiveServicesAccountKey deserializedValue = new CognitiveServicesAccountKey(key);
+                    deserializedValue.odataType = odataType;
                     deserializedValue.setDescription(description);
 
                     return deserializedValue;

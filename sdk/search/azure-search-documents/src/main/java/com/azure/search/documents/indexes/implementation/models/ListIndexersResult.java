@@ -20,7 +20,7 @@ import java.util.List;
 /** Response from a List Indexers request. If successful, it includes the full definitions of all indexers. */
 @Immutable
 public final class ListIndexersResult implements JsonSerializable<ListIndexersResult> {
-    private List<SearchIndexer> indexers;
+    private final List<SearchIndexer> indexers;
 
     /**
      * Creates an instance of ListIndexersResult class.
@@ -47,6 +47,14 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of ListIndexersResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListIndexersResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     */
     public static ListIndexersResult fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
@@ -58,12 +66,7 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            indexers =
-                                    JsonUtils.readArray(
-                                            reader,
-                                            r ->
-                                                    JsonUtils.getNullableProperty(
-                                                            r, r1 -> SearchIndexer.fromJson(reader)));
+                            indexers = JsonUtils.readArray(reader, reader1 -> SearchIndexer.fromJson(reader1));
                             indexersFound = true;
                         } else {
                             reader.skipChildren();

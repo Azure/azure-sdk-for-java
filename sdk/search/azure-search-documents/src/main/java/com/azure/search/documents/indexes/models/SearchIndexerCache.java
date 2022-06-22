@@ -71,6 +71,13 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
         return jsonWriter.writeEndObject().flush();
     }
 
+    /**
+     * Reads an instance of SearchIndexerCache from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchIndexerCache if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     */
     public static SearchIndexerCache fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
