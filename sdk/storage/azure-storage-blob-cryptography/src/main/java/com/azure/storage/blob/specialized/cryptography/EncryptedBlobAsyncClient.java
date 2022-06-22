@@ -621,199 +621,32 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            SecretKey aesKey = generateSecretKey();
+            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
-            keyWrappingMetadata.put(AGENT_METADATA_KEY,
-                AGENT_METADATA_VALUE);
+            keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);
 
-            byte[] keyToWrap;
-            switch (this.encryptionVersion) {
-                case V2:
-                    /*
-                     * Prevent a downgrade attack by prepending the protocol version to the key (padded to 8 bytes)
-                     * before wrapping. "2.0\0\0\0\0\0<key>"
-                     */
-                    ByteArrayOutputStream keyStream = new ByteArrayOutputStream((AES_KEY_SIZE_BITS / 8) + 8);
-                    // This will always be three bytes
-                    keyStream.write(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8));
-                    // Key wrapping requires 8-byte alignment. Pad will 0s
-                    for (int i = 0; i < 5; i++) {
-                        keyStream.write(0);
-                    }
-                    keyStream.write(aesKey.getEncoded());
-                    keyToWrap = keyStream.toByteArray();
-                    break;
-                case V1:
-                    keyToWrap = aesKey.getEncoded();
-                    break;
-                default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
-                        + this.encryptionVersion));
-            }
+            byte[] keyToWrap = encryptor.getKeyToWrap();
+
             return keyWrapper.getKeyId().flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, keyToWrap)
                 .map(encryptedKey -> {
                     WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
                     EncryptionData encryptionData;
                     Flux<ByteBuffer> encryptedTextFlux;
-                    switch (this.encryptionVersion) {
-                        case V1:
-                            Cipher cbcCipher;
-                            try {
-                                cbcCipher = generateCBCCipher(aesKey);
-                            } catch (GeneralSecurityException e) {
-                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                            }
-                            // Build EncryptionData
-                            encryptionData = new EncryptionData()
-                                .setEncryptionMode(ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V1,
-                                    EncryptionAlgorithm.AES_CBC_256))
-                                .setKeyWrappingMetadata(keyWrappingMetadata)
-                                .setContentEncryptionIV(cbcCipher.getIV())
-                                .setWrappedContentKey(wrappedKey);
-
-                            encryptedTextFlux = encryptV1(plainTextFlux, cbcCipher);
-                            break;
-                        case V2:
-                            // Build EncryptionData
-                            encryptionData = new EncryptionData()
-                                .setEncryptionMode(ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2,
-                                    EncryptionAlgorithm.AES_GCM_256))
-                                .setKeyWrappingMetadata(keyWrappingMetadata)
-                                .setEncryptedRegionInfo(new EncryptedRegionInfo(
-                                    GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH))
-                                .setWrappedContentKey(wrappedKey);
-
-                            encryptedTextFlux = encryptV2(plainTextFlux, aesKey);
-
-                            break;
-                        default:
-                            throw LOGGER.logExceptionAsError(new IllegalStateException("Encryption version not supported"));
+                    try {
+                        encryptionData = encryptor.buildEncryptionData(keyWrappingMetadata, wrappedKey);
+                        encryptedTextFlux = encryptor.encrypt(plainTextFlux);
+                    } catch (GeneralSecurityException e) {
+                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                     }
 
                     return new EncryptedBlob(encryptionData, encryptedTextFlux);
                 }));
-        } catch (GeneralSecurityException | IOException e) {
+        } catch (GeneralSecurityException e) {
             // These are hardcoded and guaranteed to work. There is no reason to propagate a checked exception.
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-    }
-
-    private Flux<ByteBuffer> encryptV2(Flux<ByteBuffer> plainTextFlux, SecretKey aesKey) {
-        Flux<ByteBuffer> encryptedTextFlux;
-        BufferStagingArea stagingArea =
-            new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH, GCM_ENCRYPTION_REGION_LENGTH);
-
-        encryptedTextFlux =
-            UploadUtils.chunkSource(plainTextFlux,
-                    new com.azure.storage.common.ParallelTransferOptions()
-                        .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH))
-                .flatMapSequential(stagingArea::write)
-                .concatWith(Flux.defer(stagingArea::flush))
-                .index()
-                .flatMapSequential(tuple -> {
-                    Cipher gcmCipher;
-                    try {
-                        // We use the index as the nonce as a counter guarantees each nonce is used
-                        // only once with a given key.
-                        gcmCipher = generateGCMCipher(aesKey, tuple.getT1());
-                    } catch (NoSuchPaddingException | NoSuchAlgorithmException
-                        | InvalidAlgorithmParameterException | InvalidKeyException e) {
-                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                    }
-
-                    // Expected size of each encryption region after calling doFinal. Last one may
-                    // be less, will never be more.
-                    ByteBuffer encryptedRegion = ByteBuffer.allocate(
-                        GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
-
-                    // Each flux is at most 1 BufferAggregator of 4mb
-                    Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()
-                        .asFlux()
-                        .map(buffer -> {
-                            // Write into the preallocated buffer and always return this buffer.
-                            try {
-                                gcmCipher.update(buffer, encryptedRegion);
-                            } catch (ShortBufferException e) {
-                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                            }
-                            return encryptedRegion;
-                        })
-                        .then(Mono.fromCallable(() -> {
-                            // We have already written all the data to the cipher. Passing in a final
-                            // empty buffer allows us to force completion and return the filled buffer.
-                            gcmCipher.doFinal(EMPTY_BUFFER, encryptedRegion);
-                            encryptedRegion.flip();
-                            return encryptedRegion;
-                        })).flux();
-
-                    return Flux.concat(Flux.just(ByteBuffer.wrap(gcmCipher.getIV())),
-                        cipherTextWithTag);
-                }, 1, 1);
-        return encryptedTextFlux;
-    }
-
-    private Flux<ByteBuffer> encryptV1(Flux<ByteBuffer> plainTextFlux, Cipher cbcCipher) {
-        Flux<ByteBuffer> encryptedTextFlux;
-        // Encrypt plain text with content encryption key
-        encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
-            int outputSize = cbcCipher.getOutputSize(plainTextBuffer.remaining());
-
-            /*
-             * This should be the only place we allocate memory in encryptBlob(). Although there is an
-             * overload that can encrypt in place that would save allocations, we do not want to overwrite
-             * customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
-             * we should implement pooling.
-             */
-            ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
-
-            int encryptedBytes;
-            try {
-                encryptedBytes = cbcCipher.update(plainTextBuffer, encryptedTextBuffer);
-            } catch (ShortBufferException e) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-            }
-            encryptedTextBuffer.position(0);
-            encryptedTextBuffer.limit(encryptedBytes);
-            return encryptedTextBuffer;
-        });
-
-        /*
-         * Defer() ensures the contained code is not executed until the Flux is subscribed to, in
-         * other words, cipher.doFinal() will not be called until the plainTextFlux has completed
-         * and therefore all other data has been encrypted.
-         */
-        encryptedTextFlux = Flux.concat(encryptedTextFlux,
-            Mono.fromCallable(() -> ByteBuffer.wrap(cbcCipher.doFinal())));
-        return encryptedTextFlux;
-    }
-
-    SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(AES_KEY_SIZE_BITS);
-
-        return keyGen.generateKey();
-    }
-
-    Cipher generateCBCCipher(SecretKey aesKey) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
-
-        // Generate content encryption key
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-
-        return cipher;
-    }
-
-    Cipher generateGCMCipher(SecretKey aesKey, long index) throws NoSuchPaddingException, NoSuchAlgorithmException,
-        InvalidAlgorithmParameterException, InvalidKeyException {
-        Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
-        byte[] iv = ByteBuffer.allocate(NONCE_LENGTH).putLong(index).array();
-
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
-        return cipher;
     }
 
     /**
