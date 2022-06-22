@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  */
 public final class InputStreamContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
-    private static final int BUFFER_CHUNK_SIZE = 64 * 1024 * 1024;
+    private static final int BUFFER_CHUNK_SIZE = 8 * 1024 * 1024;
     private final Supplier<InputStream> content;
     private final Long length;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
@@ -60,7 +60,7 @@ public final class InputStreamContent extends BinaryDataContent {
         if (bytes.get() != null) {
             return (long) bytes.get().length;
         }
-        return null;
+        return length;
     }
 
     @Override

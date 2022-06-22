@@ -18,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -29,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.SequenceInputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
@@ -50,8 +52,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -59,6 +63,8 @@ import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_S
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -774,6 +780,141 @@ public class BinaryDataTest {
                 Named.named("buffered flux",
                     (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()))
         );
+    }
+
+    @Test
+    public void testMakeSmallMarkableStreamReplayable() throws IOException {
+        byte[] bytes = new byte[1024];
+        RANDOM.nextBytes(bytes);
+
+        // Delegate to testReplayableContentTypes to assert accessors replayability
+        testReplayableContentTypes(
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length).toReplayableBinaryData());
+        testReplayableContentTypes(
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length).toReplayableBinaryDataAsync().block());
+
+        // When using markable stream
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        assertSame(
+            byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryData().toStream()
+        );
+        assertSame(
+            byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryDataAsync().block().toStream()
+        );
+    }
+
+    @Test
+    public void testMakeUnknownLengthMarkableStreamReplayable() throws IOException {
+        byte[] bytes = new byte[1024];
+        RANDOM.nextBytes(bytes);
+
+        // Delegate to testReplayableContentTypes to assert accessors replayability
+        testReplayableContentTypes(
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryData());
+        testReplayableContentTypes(
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryDataAsync().block());
+
+        // When using markable stream
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        assertNotSame(
+            byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream()
+        );
+        assertNotSame(
+            byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryDataAsync().block().toStream()
+        );
+
+        // Check that buffering happened. This is part assumes implementation.
+        assertInstanceOf(SequenceInputStream.class,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream());
+        assertInstanceOf(SequenceInputStream.class,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryDataAsync().block().toStream());
+    }
+
+    @Test
+    public void testCanBufferNotMarkableStreams() throws IOException {
+        byte[] bytes = new byte[32 * 1024 * 1024 + 113]; // go big, more than chunk size.
+        RANDOM.nextBytes(bytes);
+        Path tempFile = Files.createTempFile("nonMarkableStream", null);
+        tempFile.toFile().deleteOnExit();
+        Files.write(tempFile, bytes);
+
+        // Delegate to testReplayableContentTypes to assert accessors replayability
+        testReplayableContentTypes(
+            () -> {
+                try {
+                    return BinaryData.fromStream(new FileInputStream(tempFile.toFile())).toReplayableBinaryData();
+                } catch (FileNotFoundException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
+        testReplayableContentTypes(
+            () -> {
+                try {
+                    return BinaryData.fromStream(new FileInputStream(tempFile.toFile())).toReplayableBinaryDataAsync().block();
+                } catch (FileNotFoundException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
+
+        // When using markable stream
+        FileInputStream fileInputStream = new FileInputStream(tempFile.toFile());
+        assertFalse(fileInputStream.markSupported());
+        assertNotSame(
+            fileInputStream,
+            BinaryData.fromStream(fileInputStream).toReplayableBinaryData().toStream()
+        );
+        assertNotSame(
+            fileInputStream,
+            BinaryData.fromStream(fileInputStream).toReplayableBinaryDataAsync().block().toStream()
+        );
+
+        // Check that buffering happened. This is part assumes implementation.
+        assertInstanceOf(SequenceInputStream.class,
+            BinaryData.fromStream(fileInputStream).toReplayableBinaryData().toStream());
+        assertInstanceOf(SequenceInputStream.class,
+            BinaryData.fromStream(fileInputStream).toReplayableBinaryDataAsync().block().toStream());
+    }
+
+    @Test
+    public void testMakeColdFluxReplayable() throws IOException {
+        byte[] bytes = new byte[32 * 1024 * 1024 + 113]; // go big, more than chunk size.
+        RANDOM.nextBytes(bytes);
+
+        // Hack cold flux. Throws on second consumption.
+        Supplier<Flux<ByteBuffer>> coldFluxSupplier = () -> {
+            AtomicInteger offset = new AtomicInteger();
+            AtomicInteger remaining = new AtomicInteger(bytes.length);
+            AtomicBoolean used = new AtomicBoolean(false);
+            return Flux.generate((Consumer<SynchronousSink<ByteBuffer>>) synchronousSink -> {
+                if (used.get()) {
+                    synchronousSink.error(new RuntimeException("Kaboom"));
+                }
+                if (remaining.get() == 0) {
+                    synchronousSink.complete();
+                    used.set(true);
+                } else {
+                    int length = Math.min(1024, remaining.get());
+                    synchronousSink.next(ByteBuffer.wrap(bytes, offset.get(), length));
+                    offset.addAndGet(length);
+                    remaining.addAndGet(-1 * length);
+                }
+            });
+        };
+
+        // Assert that cold flux is really cold.
+        Flux<ByteBuffer> flux = coldFluxSupplier.get();
+        flux.blockLast();
+        assertThrows(RuntimeException.class, flux::blockLast);
+
+        testReplayableContentTypes(() ->
+            BinaryData.fromFlux(coldFluxSupplier.get(), null, false).map(BinaryData::toReplayableBinaryData).block());
+
+        testReplayableContentTypes(() ->
+            BinaryData.fromFlux(coldFluxSupplier.get(), null, false).flatMap(BinaryData::toReplayableBinaryDataAsync).block());
     }
 
     /**
