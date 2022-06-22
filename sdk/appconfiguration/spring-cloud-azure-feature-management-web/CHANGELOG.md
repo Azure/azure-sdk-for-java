@@ -1,5 +1,15 @@
 # Release History
 
+## 4.0.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.0.0-beta.1 (2022-06-21)
 - Adds Support for Dynamic Features.
 - Updated to use both the old and new Feature Management schema.
