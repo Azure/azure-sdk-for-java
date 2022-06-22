@@ -147,7 +147,7 @@ public final class InputStreamContent extends BinaryDataContent {
                 } catch (IOException e) {
                     throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                 }
-            }, length,true
+            }, length, true
         );
     }
 

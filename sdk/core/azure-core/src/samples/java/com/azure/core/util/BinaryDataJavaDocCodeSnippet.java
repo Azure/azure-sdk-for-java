@@ -45,6 +45,18 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromStream(InputStream, Long)}.
+     */
+    public void fromStreamWithLength() {
+        // BEGIN: com.azure.core.util.BinaryData.fromStream#InputStream-Long
+        byte[] bytes = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        BinaryData binaryData = BinaryData.fromStream(inputStream, (long) bytes.length);
+        System.out.println(binaryData.toString());
+        // END: com.azure.core.util.BinaryData.fromStream#InputStream-Long
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromStreamAsync(InputStream)}
      */
     public void fromStreamAsync() throws InterruptedException {
@@ -64,6 +76,29 @@ public class BinaryDataJavaDocCodeSnippet {
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.util.BinaryData.fromStreamAsync#InputStream
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromStreamAsync(InputStream, Long)}
+     */
+    public void fromStreamAsyncWithLength() throws InterruptedException {
+        // BEGIN: com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long
+        byte[] bytes = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+
+        Mono<BinaryData> binaryDataMono = BinaryData.fromStreamAsync(inputStream, (long) bytes.length);
+
+        Disposable subscriber = binaryDataMono
+            .map(binaryData -> {
+                System.out.println(binaryData.toString());
+                return true;
+            })
+            .subscribe();
+
+        // So that your program wait for above subscribe to complete.
+        TimeUnit.SECONDS.sleep(5);
+        subscriber.dispose();
+        // END: com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long
     }
 
     /**

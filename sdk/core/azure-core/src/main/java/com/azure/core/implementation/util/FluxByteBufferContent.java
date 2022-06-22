@@ -13,8 +13,10 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
@@ -116,7 +118,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
                     return buffer;
                 }
             })
-            .collectList()
+            // collectList() uses ArrayList.
+            .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
             .cache()
             .flatMapMany(
                 // Duplicate buffers on re-subscription.
