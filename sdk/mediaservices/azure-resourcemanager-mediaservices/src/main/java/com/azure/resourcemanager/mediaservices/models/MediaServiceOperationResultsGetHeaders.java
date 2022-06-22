@@ -7,9 +7,9 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TracksDeleteHeaders model. */
+/** The MediaServiceOperationResultsGetHeaders model. */
 @Fluent
-public final class TracksDeleteHeaders {
+public final class MediaServiceOperationResultsGetHeaders {
     /*
      * The Retry-After property.
      */
@@ -41,9 +41,9 @@ public final class TracksDeleteHeaders {
      * Set the retryAfter property: The Retry-After property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the TracksDeleteHeaders object itself.
+     * @return the MediaServiceOperationResultsGetHeaders object itself.
      */
-    public TracksDeleteHeaders withRetryAfter(Integer retryAfter) {
+    public MediaServiceOperationResultsGetHeaders withRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -61,9 +61,9 @@ public final class TracksDeleteHeaders {
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
      *
      * @param azureAsyncOperation the azureAsyncOperation value to set.
-     * @return the TracksDeleteHeaders object itself.
+     * @return the MediaServiceOperationResultsGetHeaders object itself.
      */
-    public TracksDeleteHeaders withAzureAsyncOperation(String azureAsyncOperation) {
+    public MediaServiceOperationResultsGetHeaders withAzureAsyncOperation(String azureAsyncOperation) {
         this.azureAsyncOperation = azureAsyncOperation;
         return this;
     }
@@ -81,9 +81,9 @@ public final class TracksDeleteHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the TracksDeleteHeaders object itself.
+     * @return the MediaServiceOperationResultsGetHeaders object itself.
      */
-    public TracksDeleteHeaders withLocation(String location) {
+    public MediaServiceOperationResultsGetHeaders withLocation(String location) {
         this.location = location;
         return this;
     }
