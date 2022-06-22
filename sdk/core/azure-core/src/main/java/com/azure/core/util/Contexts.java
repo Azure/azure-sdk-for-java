@@ -63,7 +63,7 @@ public final class Contexts {
     /**
      * Defines {@link Context} keys commonly used in Azure SDKs.
      */
-    public static final class Keys {
+    private static final class Keys {
         private Keys() {
         }
 
