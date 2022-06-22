@@ -12,6 +12,8 @@ import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -39,6 +41,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -50,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
 
-    private static final String REQUEST_HOST = "http://localhost";
+    private static final String REQUEST_HOST = "localhost";
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
@@ -80,6 +83,14 @@ public abstract class HttpClientTests {
      * @return The HTTP port WireMock is using.
      */
     protected abstract int getWireMockPort();
+
+    /**
+     * Get a flag indicating if communication should be secured or not (https or http).
+     * @return A flag indicating if communication should be secured or not (https or http).
+     */
+    protected boolean isSecure() {
+        return false;
+    }
 
     /**
      * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
@@ -276,6 +287,66 @@ public abstract class HttpClientTests {
         assertArrayEquals(expectedResponseBody, responseBytes);
     }
 
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        StepVerifier.create(createHttpClient()
+                .send(request, context)
+                .flatMap(HttpResponse::getBodyAsByteArray))
+            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .verifyComplete();
+
+        assertEquals(expectedResponseBody.length, progress.intValue());
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        HttpResponse httpResponse = createHttpClient()
+            .sendSync(request, context);
+
+        byte[] responseBytes = httpResponse
+            .getBodyAsByteArray()
+            .block();
+
+        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertEquals(expectedResponseBody.length, progress.intValue());
+    }
+
     private static Stream<Arguments> getBinaryDataBodyVariants() {
         return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
             .flatMap(size -> {
@@ -384,7 +455,8 @@ public abstract class HttpClientTests {
      */
     protected URL getRequestUrl(String requestPath) {
         try {
-            return new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
+            String prefix = isSecure() ? "https://" : "http://";
+            return new URL(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
