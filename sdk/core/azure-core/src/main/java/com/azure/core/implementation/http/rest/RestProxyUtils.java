@@ -7,8 +7,10 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +21,7 @@ import java.nio.ByteBuffer;
  * Utility methods that aid processing in RestProxy.
  */
 public final class RestProxyUtils {
-
+    private static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
     public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
@@ -35,23 +37,25 @@ public final class RestProxyUtils {
         }
 
         return Mono.fromCallable(() -> {
-            Long bodyLength = body.getLength();
+            BinaryDataContent content = BinaryDataHelper.getContent(body);
             long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-            if (bodyLength != null) {
-                if (bodyLength < expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                        bodyLength, expectedLength), bodyLength, expectedLength);
-                } else if (bodyLength > expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        bodyLength, expectedLength), bodyLength, expectedLength);
-                }
+            if (content instanceof InputStreamContent) {
+                InputStream validatingInputStream = new LengthValidatingInputStream(
+                    content.toStream(), expectedLength);
+                request.setBody(BinaryData.fromStream(validatingInputStream));
+            } else if (content instanceof FluxByteBufferContent) {
+                request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
             } else {
-                BinaryDataContent content = BinaryDataHelper.getContent(body);
-                if (content instanceof InputStreamContent) {
-                    InputStream validatingInputStream = new LengthValidatingInputStream(
-                        content.toStream(), expectedLength);
-                    request.setBody(BinaryData.fromStream(validatingInputStream));
-                } else {
+                Long bodyLength = body.getLength();
+                if (bodyLength != null) {
+                    if (bodyLength < expectedLength) {
+                        throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                            bodyLength, expectedLength), bodyLength, expectedLength);
+                    } else if (bodyLength > expectedLength) {
+                        throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                            bodyLength, expectedLength), bodyLength, expectedLength);
+                    }
+                } else  {
                     request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
                 }
             }
