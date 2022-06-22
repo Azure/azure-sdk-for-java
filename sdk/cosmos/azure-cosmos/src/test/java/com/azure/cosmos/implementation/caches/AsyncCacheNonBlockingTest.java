@@ -21,8 +21,10 @@ public class AsyncCacheNonBlockingTest {
     public void getAsync() {
         AtomicInteger numberOfCacheRefreshes = new AtomicInteger(0);
         final Function<Integer, Mono<Integer>> refreshFunc = key -> {
-            numberOfCacheRefreshes.incrementAndGet();
-            return Mono.just(key * 2);
+            return Mono.just(key * 2)
+                .doOnNext(t -> {
+                    numberOfCacheRefreshes.incrementAndGet();
+                }).cache();
         };
 
         AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
@@ -30,14 +32,14 @@ public class AsyncCacheNonBlockingTest {
         List<Mono<Integer>> tasks = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             int key = j;
-            tasks.add(cache.getAsync(key, value -> refreshFunc.apply(key), false));
+            tasks.add(cache.getAsync(key, value -> refreshFunc.apply(key), forceRefresh -> false));
         }
 
         Flux<Integer> o = Flux.merge(tasks.stream().map(Mono::flux).collect(Collectors.toList()));
         o.collectList().single().block();
 
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(10);
-        assertThat(cache.getAsync(2, value -> refreshFunc.apply(2), false).block()).isEqualTo(4);
+        assertThat(cache.getAsync(2, value -> refreshFunc.apply(2), forceRefresh -> false).block()).isEqualTo(4);
 
         // New function created to refresh the cache by sending forceRefresh true
         Function<Integer, Mono<Integer>> refreshFunc1 = key -> {
@@ -48,7 +50,7 @@ public class AsyncCacheNonBlockingTest {
         List<Mono<Integer>> tasks1 = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             int key = j;
-            tasks1.add(cache.getAsync(key, value -> refreshFunc1.apply(key), true));
+            tasks1.add(cache.getAsync(key, value -> refreshFunc1.apply(key), forceRefresh -> true));
         }
 
         Flux<Integer> o1 = Flux.merge(tasks1.stream().map(Mono::flux).collect(Collectors.toList()));
@@ -57,7 +59,7 @@ public class AsyncCacheNonBlockingTest {
         // verify that cache refresh happened
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
         // verify that we have the updated value in the cache now
-        assertThat(cache.getAsync(2, value -> refreshFunc1.apply(2), false).block()).isEqualTo(5);
+        assertThat(cache.getAsync(2, value -> refreshFunc1.apply(2), forceRefresh -> false).block()).isEqualTo(5);
 
 
         Function<Integer, Mono<Integer>> refreshFunc2 = key -> {
@@ -68,7 +70,7 @@ public class AsyncCacheNonBlockingTest {
         List<Mono<Integer>> tasks2 = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             int key = j;
-            tasks2.add(cache.getAsync(key, value -> refreshFunc2.apply(key), false));
+            tasks2.add(cache.getAsync(key, value -> refreshFunc2.apply(key), forceRefresh -> false));
         }
 
         Flux<Integer> o2 = Flux.merge(tasks2.stream().map(Mono::flux).collect(Collectors.toList()));
@@ -77,7 +79,7 @@ public class AsyncCacheNonBlockingTest {
         // verify that no cache refresh happened
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
         // verify that we still have the old value in the cache
-        assertThat(cache.getAsync(2, value -> refreshFunc2.apply(2), false).block()).isEqualTo(5);
+        assertThat(cache.getAsync(2, value -> refreshFunc2.apply(2), forceRefresh -> false).block()).isEqualTo(5);
 
     }
 }

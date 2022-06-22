@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -29,12 +30,12 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     private final ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values;
     private final IEqualityComparer<TKey> keyEqualityComparer;
 
-    public AsyncCacheNonBlocking(ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values, IEqualityComparer<TKey> keyEqualityComparer) {
+    private AsyncCacheNonBlocking(ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values, IEqualityComparer<TKey> keyEqualityComparer) {
         this.values = values;
         this.keyEqualityComparer = keyEqualityComparer;
     }
 
-    public AsyncCacheNonBlocking(IEqualityComparer<TKey> keyEqualityComparer) {
+    private AsyncCacheNonBlocking(IEqualityComparer<TKey> keyEqualityComparer) {
         this(new ConcurrentHashMap<>(), keyEqualityComparer);
     }
 
@@ -58,6 +59,12 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
      * <p>
      * If previous initialization function is successfully completed it will return the value. It is possible this
      * value is stale and will only be updated after the force refresh task is complete.
+     * Force refresh is true:
+     *  If the key does not exist: It will create and await the new task
+     *  If the key exists and the current task is still running: It will return the existing task
+     *  If the key exists and the current task is already done: It will start a new task to get the updated values.
+     *     Once the refresh task is complete it will be returned to caller.
+     *     If it is a success the value in the cache will be updated. If the refresh task throws an exception the key will be removed from the cache.
      * </p>
      *
      * <p>
@@ -72,56 +79,66 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     public Mono<TValue> getAsync(
         TKey key,
         Function<TValue, Mono<TValue>> singleValueInitFunc,
-        boolean forceRefresh) {
+        Function<TValue, Boolean> forceRefresh) {
 
         AsyncLazyWithRefresh<TValue> initialLazyValue = values.get(key);
         if (initialLazyValue != null) {
-            logger.debug("cache[{}] exists", key);
+            if (logger.isDebugEnabled()) {
+                logger.debug("cache[{}] exists", key);
+            }
+
             return initialLazyValue.getValueAsync().flatMap(value -> {
-                if(!forceRefresh) {
+                if(!forceRefresh.apply(value)) {
                     return Mono.just(value);
                 }
 
                 Mono<TValue> refreshMono = initialLazyValue.createAndWaitForBackgroundRefreshTaskAsync(singleValueInitFunc);
-                AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(refreshMono);
-                this.values.put(key, asyncLazyWithRefresh);
-                AsyncLazyWithRefresh<TValue> result = this.values.get(key);
 
-                return result.getValueAsync().onErrorResume(
-                    (error) -> {
-                        logger.debug("refresh cache [{}] resulted in error", key, error);
+                return refreshMono.onErrorResume(
+                    (exception) -> {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("refresh cache [{}] resulted in error", key, exception);
+                        }
                         if (initialLazyValue.shouldRemoveFromCache()) {
                             this.remove(key);
                         }
-                        return Mono.empty();
+                        return Mono.error(exception);
                     }
                 );
-            }).onErrorResume((error) -> {
-                logger.debug("cache[{}] resulted in error", key, error);
+            }).onErrorResume((exception) -> {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("cache[{}] resulted in error", key, exception);
+                }
                 if (initialLazyValue.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
-                return Mono.empty();
+                return Mono.error(exception);
             });
         }
 
-        logger.debug("cache[{}] doesn't exist, computing new value", key);
+        if (logger.isDebugEnabled()) {
+            logger.debug("cache[{}] doesn't exist, computing new value", key);
+        }
         AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(singleValueInitFunc);
         this.values.putIfAbsent(key, asyncLazyWithRefresh);
         AsyncLazyWithRefresh<TValue> result = this.values.get(key);
 
         return result.getValueAsync().onErrorResume(
-            (error) -> {
-                logger.debug("cache[{}] resulted in error", key, error);
+            (exception) -> {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("cache[{}] resulted in error", key, exception);
+                }
                 // Remove the failed task from the dictionary so future requests can send other calls..
                 this.remove(key);
-                return Mono.empty();
+                return Mono.error(exception);
             }
         );
     }
 
     public void set(TKey key, TValue value) {
-        logger.debug("set cache[{}]={}", key, value);
+        if (logger.isDebugEnabled()) {
+            logger.debug("set cache[{}]={}", key, value);
+        }
         AsyncLazyWithRefresh<TValue> updatedValue = new AsyncLazyWithRefresh<TValue>(value);
         this.values.put(key, updatedValue);
     }
@@ -137,89 +154,55 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
      */
     private class AsyncLazyWithRefresh<TValue> {
         private final Function<TValue, Mono<TValue>> createValueFunc;
-        private final ReentrantLock valueLock = new ReentrantLock();
-        private final ReentrantLock removeFromCacheLock = new ReentrantLock();
-
-        private boolean removeFromCache = false;
-        private Mono<TValue> value;
-        private Mono<TValue> refreshInProgress;
+        private final AtomicBoolean removeFromCache = new AtomicBoolean(false);
+        private AtomicReference<Mono<TValue>> value;
+        private final AtomicReference<Mono<TValue>> refreshInProgress;
 
         public AsyncLazyWithRefresh(TValue value) {
             this.createValueFunc = null;
-            this.value = Mono.just(value);
-            this.refreshInProgress = null;
-        }
-
-        public AsyncLazyWithRefresh(Mono<TValue> value) {
-            this.createValueFunc = null;
-            this.value = value;
-            this.refreshInProgress = null;
+            this.value.set(Mono.just(value));
+            this.refreshInProgress = new AtomicReference<>();
         }
 
         public AsyncLazyWithRefresh(Function<TValue, Mono<TValue>> taskFactory) {
             this.createValueFunc = taskFactory;
-            this.value = null;
-            this.refreshInProgress = null;
+            this.value = new AtomicReference<>();
+            this.refreshInProgress = new AtomicReference<>();
         }
 
         public Mono<TValue> getValueAsync() {
-            Mono<TValue> valueMono = this.value;
-            if (valueMono != null) {
-                return valueMono;
-            }
+            this.value.compareAndSet(null, this.createValueFunc.apply(null));
 
-            valueLock.lock();
-            try {
-                if (this.value != null) {
-                    return this.value;
-                }
-
-                this.value = this.createValueFunc.apply(null);
-                return this.value;
-            } finally {
-                valueLock.unlock();
-            }
+            return this.value.get().cache();
         }
 
         public Mono<TValue> value() {
-            return value;
+            return value.get();
         }
 
         public Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
-            Mono<TValue> valueMono = this.value;
+            Mono<TValue> valueMono = this.value.get();
             AtomicReference<TValue> originalValue = new AtomicReference<>();
 
-            valueMono.flatMap(value -> {
+            return valueMono.flatMap(value -> {
                 originalValue.set(value);
                 return valueMono;
-            });
+            }).flatMap(value -> {
+                if(this.refreshInProgress.compareAndSet(null, createRefreshFunction.apply(originalValue.get()))) {
+                    return this.refreshInProgress.get().cache()
+                        .flatMap(response -> {
+                            this.value.set(Mono.just(response));
 
-            AtomicReference<Mono<TValue>> refreshMono = new AtomicReference<>();
-            valueLock.lock();
-            try {
-                this.refreshInProgress = createRefreshFunction.apply(originalValue.get());
-                refreshMono.set(this.refreshInProgress);
-                return refreshMono.get();
-            } finally {
-                valueLock.unlock();
-            }
+                            this.refreshInProgress.set(null);
+                            return this.value.get();
+                        });
+                }
+                return this.refreshInProgress.get();
+            });
         }
 
         public boolean shouldRemoveFromCache() {
-            if (this.removeFromCache) {
-                return false;
-            }
-
-            removeFromCacheLock.lock();
-            try {
-                if (this.removeFromCache) {
-                    return false;
-                }
-                this.removeFromCache = true;
-                return true;
-            } finally {
-                removeFromCacheLock.unlock();
-            }
+            return this.removeFromCache.compareAndSet(false, true);
         }
     }
 }

@@ -280,7 +280,7 @@ public class GatewayAddressCache implements IAddressCache {
                 request,
                 partitionKeyRangeIdentity,
                 forceRefreshPartitionAddressesModified),
-            forceRefreshPartitionAddressesModified).map(Utils.ValueHolder::new);
+            forceRefresh -> forceRefreshPartitionAddressesModified).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
             addressesValueHolder -> {
