@@ -63,17 +63,6 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
     }
 
     /**
-     * Set the name property: The name of the synonym map.
-     *
-     * @param name the name value to set.
-     * @return the SynonymMap object itself.
-     */
-    private SynonymMap setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the synonyms property: A series of synonym rules in the specified synonym map format. The rules must be
      * separated by newlines.
      *

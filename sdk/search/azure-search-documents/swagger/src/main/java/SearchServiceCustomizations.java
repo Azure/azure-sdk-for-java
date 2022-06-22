@@ -199,7 +199,7 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeSynonymMap(ClassCustomization classCustomization) {
         classCustomization.removeMethod("getFormat");
         classCustomization.removeMethod("setFormat");
-        classCustomization.getMethod("setName").setModifier(Modifier.PRIVATE);
+        classCustomization.removeMethod("setName");
 
         classCustomization.addConstructor(joinWithNewline(
             "private SynonymMap() {",
@@ -246,7 +246,7 @@ public class SearchServiceCustomizations extends Customization {
         keyCustomization.removeMethod("getAccessCredentials");
 
         String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").getJavadoc().getReturn();
-        keyCustomization.getMethod("setAccessCredentials").setModifier(Modifier.PRIVATE);
+        keyCustomization.removeMethod("setAccessCredentials");
 
         keyCustomization.addMethod(joinWithNewline(
                 "public String getApplicationId() {",

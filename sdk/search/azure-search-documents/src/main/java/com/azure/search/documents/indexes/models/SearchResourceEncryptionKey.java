@@ -76,19 +76,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     }
 
     /**
-     * Set the accessCredentials property: Optional Azure Active Directory credentials used for accessing your Azure Key
-     * Vault. Not required if using managed identity instead.
-     *
-     * @param accessCredentials the accessCredentials value to set.
-     * @return the SearchResourceEncryptionKey object itself.
-     */
-    private SearchResourceEncryptionKey setAccessCredentials(
-            AzureActiveDirectoryApplicationCredentials accessCredentials) {
-        this.accessCredentials = accessCredentials;
-        return this;
-    }
-
-    /**
      * Get the identity property: An explicit managed identity to use for this encryption key. If not specified and the
      * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
      * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
