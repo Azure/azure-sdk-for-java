@@ -160,7 +160,9 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
 
         public AsyncLazyWithRefresh(TValue value) {
             this.createValueFunc = null;
-            this.value.set(Mono.just(value));
+            if (this.value != null) {
+                this.value.set(Mono.just(value));
+            }
             this.refreshInProgress = new AtomicReference<>();
         }
 
