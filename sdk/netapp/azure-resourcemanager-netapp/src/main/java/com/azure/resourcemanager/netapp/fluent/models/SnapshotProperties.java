@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Snapshot properties. */
 @Immutable
 public final class SnapshotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotProperties.class);
-
     /*
      * snapshotId UUID v4 used to identify the Snapshot
      */

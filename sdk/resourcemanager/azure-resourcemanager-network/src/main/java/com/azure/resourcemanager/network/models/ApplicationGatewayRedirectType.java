@@ -33,7 +33,11 @@ public final class ApplicationGatewayRedirectType extends ExpandableStringEnum<A
         return fromString(name, ApplicationGatewayRedirectType.class);
     }
 
-    /** @return known ApplicationGatewayRedirectType values. */
+    /**
+     * Gets known ApplicationGatewayRedirectType values.
+     *
+     * @return known ApplicationGatewayRedirectType values.
+     */
     public static Collection<ApplicationGatewayRedirectType> values() {
         return values(ApplicationGatewayRedirectType.class);
     }

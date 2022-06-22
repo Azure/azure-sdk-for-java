@@ -16,6 +16,12 @@ public final class ApplicationGatewayProtocol extends ExpandableStringEnum<Appli
     /** Static value Https for ApplicationGatewayProtocol. */
     public static final ApplicationGatewayProtocol HTTPS = fromString("Https");
 
+    /** Static value Tcp for ApplicationGatewayProtocol. */
+    public static final ApplicationGatewayProtocol TCP = fromString("Tcp");
+
+    /** Static value Tls for ApplicationGatewayProtocol. */
+    public static final ApplicationGatewayProtocol TLS = fromString("Tls");
+
     /**
      * Creates or finds a ApplicationGatewayProtocol from its string representation.
      *
@@ -27,7 +33,11 @@ public final class ApplicationGatewayProtocol extends ExpandableStringEnum<Appli
         return fromString(name, ApplicationGatewayProtocol.class);
     }
 
-    /** @return known ApplicationGatewayProtocol values. */
+    /**
+     * Gets known ApplicationGatewayProtocol values.
+     *
+     * @return known ApplicationGatewayProtocol values.
+     */
     public static Collection<ApplicationGatewayProtocol> values() {
         return values(ApplicationGatewayProtocol.class);
     }

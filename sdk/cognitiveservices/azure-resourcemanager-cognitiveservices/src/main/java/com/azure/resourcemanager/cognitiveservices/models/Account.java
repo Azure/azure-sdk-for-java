@@ -105,6 +105,13 @@ public interface Account {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner object.
      *
      * @return the inner object.

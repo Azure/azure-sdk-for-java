@@ -6,17 +6,13 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.VolumePatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Volume patch resource. */
 @Fluent
 public final class VolumePatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatch.class);
-
     /*
      * Patchable volume properties
      */

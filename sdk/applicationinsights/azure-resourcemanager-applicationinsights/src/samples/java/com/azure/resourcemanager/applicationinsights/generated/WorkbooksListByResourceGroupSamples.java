@@ -10,7 +10,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks ListByResourceGroup. */
 public final class WorkbooksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksManagedList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksManagedList.json
      */
     /**
      * Sample code: WorkbooksManagedList.
@@ -31,7 +31,7 @@ public final class WorkbooksListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList.json
      */
     /**
      * Sample code: WorkbooksList.

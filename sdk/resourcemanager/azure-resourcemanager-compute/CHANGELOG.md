@@ -2,6 +2,10 @@
 
 ## 2.16.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported swapping OS disk in `VirtualMachine`.
+
 ### Breaking Changes
 
 - Provisioning state in gallery changed to `GalleryProvisioningState`.

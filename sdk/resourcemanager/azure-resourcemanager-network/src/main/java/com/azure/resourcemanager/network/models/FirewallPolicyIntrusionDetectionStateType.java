@@ -31,7 +31,11 @@ public final class FirewallPolicyIntrusionDetectionStateType
         return fromString(name, FirewallPolicyIntrusionDetectionStateType.class);
     }
 
-    /** @return known FirewallPolicyIntrusionDetectionStateType values. */
+    /**
+     * Gets known FirewallPolicyIntrusionDetectionStateType values.
+     *
+     * @return known FirewallPolicyIntrusionDetectionStateType values.
+     */
     public static Collection<FirewallPolicyIntrusionDetectionStateType> values() {
         return values(FirewallPolicyIntrusionDetectionStateType.class);
     }

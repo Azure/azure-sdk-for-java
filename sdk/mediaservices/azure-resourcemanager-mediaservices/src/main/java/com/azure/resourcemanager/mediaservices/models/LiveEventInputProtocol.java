@@ -27,7 +27,11 @@ public final class LiveEventInputProtocol extends ExpandableStringEnum<LiveEvent
         return fromString(name, LiveEventInputProtocol.class);
     }
 
-    /** @return known LiveEventInputProtocol values. */
+    /**
+     * Gets known LiveEventInputProtocol values.
+     *
+     * @return known LiveEventInputProtocol values.
+     */
     public static Collection<LiveEventInputProtocol> values() {
         return values(LiveEventInputProtocol.class);
     }

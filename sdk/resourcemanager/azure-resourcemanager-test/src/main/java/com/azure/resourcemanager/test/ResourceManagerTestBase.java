@@ -44,7 +44,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivilegedAction;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
@@ -395,12 +394,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
-    @SuppressWarnings("removal")
     private void setAccessible(final AccessibleObject accessibleObject) {
-        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            accessibleObject.setAccessible(true);
-            return null;
-        });
+        // avoid bug in Java8
+        Runnable runnable = () -> accessibleObject.setAccessible(true);
+        runnable.run();
     }
 
     /**
@@ -413,7 +410,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return the manager instance
      * @throws RuntimeException when field cannot be found or set.
      */
-    @SuppressWarnings("removal")
     protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
             Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());

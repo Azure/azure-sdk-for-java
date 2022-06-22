@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PublicIpAddresses Delete. */
 public final class PublicIpAddressesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PublicIpAddressDelete.json
      */
     /**
      * Sample code: Delete public IP address.

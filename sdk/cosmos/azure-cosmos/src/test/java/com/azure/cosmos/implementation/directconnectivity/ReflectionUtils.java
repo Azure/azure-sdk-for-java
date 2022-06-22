@@ -167,6 +167,10 @@ public class ReflectionUtils {
         return get(GatewayServiceConfigurationReader.class, rxDocumentClient, "gatewayConfigurationReader");
     }
 
+    public static GlobalAddressResolver getGlobalAddressResolver(RxDocumentClientImpl rxDocumentClient) {
+        return get(GlobalAddressResolver.class, rxDocumentClient, "addressResolver");
+    }
+
     public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }

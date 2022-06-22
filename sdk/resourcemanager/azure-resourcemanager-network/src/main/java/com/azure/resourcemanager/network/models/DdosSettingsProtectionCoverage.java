@@ -27,7 +27,11 @@ public final class DdosSettingsProtectionCoverage extends ExpandableStringEnum<D
         return fromString(name, DdosSettingsProtectionCoverage.class);
     }
 
-    /** @return known DdosSettingsProtectionCoverage values. */
+    /**
+     * Gets known DdosSettingsProtectionCoverage values.
+     *
+     * @return known DdosSettingsProtectionCoverage values.
+     */
     public static Collection<DdosSettingsProtectionCoverage> values() {
         return values(DdosSettingsProtectionCoverage.class);
     }
