@@ -137,4 +137,5 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
     public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {
         this.managedIdentityEnabled = managedIdentityEnabled;
     }
+
 }
