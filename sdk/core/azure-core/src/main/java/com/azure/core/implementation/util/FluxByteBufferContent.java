@@ -7,6 +7,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -23,6 +24,7 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     private final Flux<ByteBuffer> content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
     private final Long length;
+    private final boolean isReplayable;
 
     /**
      * Creates an instance of {@link FluxByteBufferContent}.
@@ -40,8 +42,15 @@ public final class FluxByteBufferContent extends BinaryDataContent {
      * @throws NullPointerException if {@code content} is null.
      */
     public FluxByteBufferContent(Flux<ByteBuffer> content, Long length) {
+        // There's currently no way to tell if Flux is replayable or not.
+        // https://github.com/reactor/reactor-core/issues/1977
+        this(content, length, false);
+    }
+
+    private FluxByteBufferContent(Flux<ByteBuffer> content, Long length, boolean isReplayable) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
         this.length = length;
+        this.isReplayable = isReplayable;
     }
 
     @Override
@@ -89,7 +98,35 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public boolean isReplayable() {
-        return false;
+        return isReplayable;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        Flux<ByteBuffer> bufferedFlux = content
+            .map(buffer -> {
+                if (buffer.isDirect()) {
+                    // deep copy direct buffers, they might be pooled memory or mapped file.
+                    ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
+                    copy.put(buffer);
+                    copy.flip();
+                    return copy;
+                } else {
+                    // these are heap buffers, safe to retain.
+                    return buffer;
+                }
+            })
+            .collectList()
+            .cache()
+            .flatMapMany(
+                // Duplicate buffers on re-subscription.
+                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate));
+        return new FluxByteBufferContent(bufferedFlux, length, true);
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.fromCallable(this::toReplayableContent);
     }
 
     private byte[] getBytes() {

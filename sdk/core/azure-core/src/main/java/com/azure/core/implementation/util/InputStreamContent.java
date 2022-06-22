@@ -8,23 +8,32 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.SequenceInputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by an {@link InputStream}.
  */
 public final class InputStreamContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
-    private final InputStream content;
+    private static final int BUFFER_CHUNK_SIZE = 64 * 1024 * 1024;
+    private final Supplier<InputStream> content;
+    private final Long length;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+    private final boolean isReplayable;
 
 
     /**
@@ -33,8 +42,17 @@ public final class InputStreamContent extends BinaryDataContent {
      * @param inputStream The inputStream that is used as the content for this instance.
      * @throws NullPointerException if {@code content} is null.
      */
-    public InputStreamContent(InputStream inputStream) {
-        this.content = Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
+    public InputStreamContent(InputStream inputStream, Long length) {
+        Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
+        this.content = () -> inputStream;
+        this.length = length;
+        isReplayable = false;
+    }
+
+    private InputStreamContent(Supplier<InputStream> inputStreamSupplier, Long length, boolean isReplayable) {
+        this.content = Objects.requireNonNull(inputStreamSupplier, "'inputStreamSupplier' cannot be null.");
+        this.length = length;
+        this.isReplayable = isReplayable;
     }
 
     @Override
@@ -67,7 +85,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        return this.content;
+        return this.content.get();
     }
 
     @Override
@@ -77,12 +95,86 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return FluxUtil.toFluxByteBuffer(this.content, STREAM_READ_SIZE);
+        return FluxUtil.toFluxByteBuffer(this.content.get(), STREAM_READ_SIZE);
     }
 
     @Override
     public boolean isReplayable() {
-        return false;
+        return isReplayable;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        if (isReplayable) {
+            return this;
+        } else {
+            InputStream inputStream = this.content.get();
+            if (canMarkReset(inputStream, length)) {
+                return createMarkResetContent(inputStream, length);
+            } else {
+                return readAndBuffer(inputStream, length);
+            }
+        }
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        if (isReplayable) {
+            return Mono.just(this);
+        } else {
+            InputStream inputStream = this.content.get();
+            if (canMarkReset(inputStream, length)) {
+                return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
+            } else {
+                return Mono.just(inputStream)
+                    .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
+                    .map(ignore -> readAndBuffer(inputStream, length));
+            }
+        }
+    }
+
+    private static boolean canMarkReset(InputStream inputStream, Long length) {
+        return length != null && length < Integer.MAX_VALUE - 8 && inputStream.markSupported();
+    }
+
+    private static InputStreamContent createMarkResetContent(InputStream inputStream, Long length) {
+        inputStream.mark(length.intValue());
+        return new InputStreamContent(
+            () -> {
+                try {
+                    inputStream.reset();
+                    return inputStream;
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }, length,true
+        );
+    }
+
+    private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
+        try {
+            Vector<ByteArrayInputStream> chunkInputStreams = new Vector<>();
+
+            int read;
+            do {
+                byte[] chunk = new byte[BUFFER_CHUNK_SIZE];
+                read = inputStream.read(chunk);
+                if (read > 0) {
+                    chunkInputStreams.add(new ByteArrayInputStream(chunk, 0, read));
+                }
+            } while (read >= 0);
+
+            return new InputStreamContent(
+                () -> {
+                    for (ByteArrayInputStream chunkInputStream : chunkInputStreams) {
+                        chunkInputStream.reset();
+                    }
+                    return new SequenceInputStream(chunkInputStreams.elements());
+                }, length, true
+            );
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     private byte[] getBytes() {
@@ -90,7 +182,8 @@ public final class InputStreamContent extends BinaryDataContent {
             ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
-            while ((nRead = this.content.read(data, 0, data.length)) != -1) {
+            InputStream inputStream = this.content.get();
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 dataOutputBuffer.write(data, 0, nRead);
             }
             return dataOutputBuffer.toByteArray();

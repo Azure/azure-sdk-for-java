@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -81,4 +82,8 @@ public abstract class BinaryDataContent {
      * @return a flag indicating whether the content can be repeatedly consumed.
      */
     public abstract boolean isReplayable();
+
+    public abstract BinaryDataContent toReplayableContent();
+
+    public abstract Mono<BinaryDataContent> toReplayableContentAsync();
 }

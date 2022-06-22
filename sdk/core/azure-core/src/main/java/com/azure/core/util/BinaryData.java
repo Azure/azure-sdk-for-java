@@ -218,7 +218,11 @@ public final class BinaryData {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream) {
-        return new BinaryData(new InputStreamContent(inputStream));
+        return fromStream(inputStream, null);
+    }
+
+    public static BinaryData fromStream(InputStream inputStream, Long length) {
+        return new BinaryData(new InputStreamContent(inputStream, length));
     }
 
     /**
@@ -252,7 +256,11 @@ public final class BinaryData {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
-        return Mono.fromCallable(() -> fromStream(inputStream));
+        return fromStreamAsync(inputStream, null);
+    }
+
+    public static Mono<BinaryData> fromStreamAsync(InputStream inputStream, Long length) {
+        return Mono.fromCallable(() -> fromStream(inputStream, length));
     }
 
     /**
@@ -1467,5 +1475,21 @@ public final class BinaryData {
      */
     public boolean isReplayable() {
         return content.isReplayable();
+    }
+
+    public BinaryData toReplayableBinaryData() {
+        if (this.isReplayable()) {
+            return this;
+        } else {
+            return new BinaryData(content.toReplayableContent());
+        }
+    }
+
+    public Mono<BinaryData> toReplayableBinaryDataAsync() {
+        if (isReplayable()) {
+            return Mono.just(this);
+        } else {
+            return content.toReplayableContentAsync().map(BinaryData::new);
+        }
     }
 }
