@@ -677,7 +677,6 @@ public class AadAuthenticationProperties implements InitializingBean {
                 + AZURE_CLIENT_REGISTRATION_ID
                 + ".authorization-grant-type must be configured to 'authorization_code'.");
         }
-        //TODO: moary expose a way to let uses enable the ON_BEHALF_OF provider
         if (ON_BEHALF_OF.equals(grantType)) {
             properties.setAuthorizationGrantType(JWT_BEARER);
             LOGGER.warn("The 'on_behalf_of' grant type is deprecated, the grant type of '{}' will be "

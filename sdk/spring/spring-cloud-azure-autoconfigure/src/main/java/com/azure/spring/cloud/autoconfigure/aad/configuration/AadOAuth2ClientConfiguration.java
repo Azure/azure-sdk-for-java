@@ -107,8 +107,10 @@ public class AadOAuth2ClientConfiguration {
             OAuth2AuthorizedClientProviderBuilder
                 .builder()
                 .authorizationCode()
-                .clientCredentials(builder -> clientCredentialsBuilderConsumer(jwkFunction, builder))
-                .password(builder -> passwordBuilderConsumer(jwkFunction, builder))
+                .clientCredentials(builder ->
+                    builder.accessTokenResponseClient(clientCredentialsTokenResponseClient(jwkFunction)))
+                .password(builder ->
+                    builder.accessTokenResponseClient(passwordTokenResponseClient(jwkFunction)))
                 .provider(refreshTokenProvider)
                 .provider(jwtBearerProvider)
                 .provider(azureDelegatedProvider)
@@ -118,23 +120,21 @@ public class AadOAuth2ClientConfiguration {
         return manager;
     }
 
-    private void passwordBuilderConsumer(Function<ClientRegistration, JWK> jwkFunction,
-                           OAuth2AuthorizedClientProviderBuilder.PasswordGrantBuilder builder) {
-        DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
+    private DefaultPasswordTokenResponseClient passwordTokenResponseClient(Function<ClientRegistration, JWK> jwkFunction) {
         OAuth2PasswordGrantRequestEntityConverter converter = new OAuth2PasswordGrantRequestEntityConverter();
         converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkFunction));
+        DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
         client.setRequestEntityConverter(converter);
-        builder.accessTokenResponseClient(client);
+        return client;
     }
 
-    private void clientCredentialsBuilderConsumer(Function<ClientRegistration, JWK> jwkFunction,
-                                                  OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder) {
-        DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
+    private DefaultClientCredentialsTokenResponseClient clientCredentialsTokenResponseClient(Function<ClientRegistration, JWK> jwkFunction) {
         OAuth2ClientCredentialsGrantRequestEntityConverter converter =
             new OAuth2ClientCredentialsGrantRequestEntityConverter();
         converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkFunction));
+        DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
         client.setRequestEntityConverter(converter);
-        builder.accessTokenResponseClient(client);
+        return client;
     }
 
     private JwtBearerOAuth2AuthorizedClientProvider getJwtBearerProvider(Function<ClientRegistration, JWK> jwkFunction) {

@@ -55,7 +55,7 @@ public class AadOAuth2ClientAuthenticationJWKResolver implements OAuth2ClientAut
     @Override
     public Function<ClientRegistration, JWK> resolve() {
         return (clientRegistration) -> {
-            if (clientRegistration.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.PRIVATE_KEY_JWT)) {
+            if (ClientAuthenticationMethod.PRIVATE_KEY_JWT.equals(clientRegistration.getClientAuthenticationMethod())) {
                 Assert.notNull(clientCertificatePath, "clientCertificatePath cannot be null");
                 Assert.notNull(clientCertificatePassword, "clientCertificatePassword cannot be null");
                 String fileExtension = clientCertificatePath.substring(clientCertificatePath.lastIndexOf(".") + 1);
