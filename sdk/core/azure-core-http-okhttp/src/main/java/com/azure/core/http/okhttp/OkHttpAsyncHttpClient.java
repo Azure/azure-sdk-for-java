@@ -23,16 +23,19 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -40,6 +43,7 @@ import java.util.Objects;
  */
 class OkHttpAsyncHttpClient implements HttpClient {
 
+    private static final ClientLogger LOGGER = new ClientLogger(OkHttpAsyncHttpClient.class);
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(new byte[0]);
 
     final OkHttpClient httpClient;
@@ -70,16 +74,29 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            Mono.fromCallable(() -> toOkHttpRequest(request)).subscribe(okHttpRequest -> {
-                try {
-                    Call call = httpClient.newCall(okHttpRequest);
-                    call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
-                    sink.onCancel(call::cancel);
-                } catch (Exception ex) {
-                    sink.error(ex);
-                }
-            }, sink::error);
+            Mono.fromCallable(() -> toOkHttpRequest(request))
+                .subscribe(okHttpRequest -> {
+                    try {
+                        Call call = httpClient.newCall(okHttpRequest);
+                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
+                        sink.onCancel(call::cancel);
+                    } catch (Exception ex) {
+                        sink.error(ex);
+                    }
+                }, sink::error);
         }));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        Request okHttpRequest = toOkHttpRequest(request);
+        try {
+            Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+            return toHttpResponse(request, okHttpResponse, eagerlyReadResponse);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
@@ -163,6 +180,27 @@ class OkHttpAsyncHttpClient implements HttpClient {
         return contentLength;
     }
 
+    private static HttpResponse toHttpResponse(
+        HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse) throws IOException {
+        /*
+         * Use a buffered response when we are eagerly reading the response from the network and the body isn't
+         * empty.
+         */
+        if (eagerlyReadResponse) {
+            ResponseBody body = response.body();
+            if (Objects.nonNull(body)) {
+                byte[] bytes = body.bytes();
+                body.close();
+                return new OkHttpAsyncBufferedResponse(response, request, bytes);
+            } else {
+                // Body is null, use the non-buffering response.
+                return new OkHttpAsyncResponse(response, request);
+            }
+        } else {
+            return new OkHttpAsyncResponse(response, request);
+        }
+    }
+
     private static class OkHttpCallback implements okhttp3.Callback {
         private final MonoSink<HttpResponse> sink;
         private final HttpRequest request;
@@ -189,27 +227,12 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @SuppressWarnings("NullableProblems")
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
-            /*
-             * Use a buffered response when we are eagerly reading the response from the network and the body isn't
-             * empty.
-             */
-            if (eagerlyReadResponse) {
-                ResponseBody body = response.body();
-                if (Objects.nonNull(body)) {
-                    try {
-                        byte[] bytes = body.bytes();
-                        body.close();
-                        sink.success(new OkHttpAsyncBufferedResponse(response, request, bytes));
-                    } catch (IOException ex) {
-                        // Reading the body bytes may cause an IOException, if it happens propagate it.
-                        sink.error(ex);
-                    }
-                } else {
-                    // Body is null, use the non-buffering response.
-                    sink.success(new OkHttpAsyncResponse(response, request));
-                }
-            } else {
-                sink.success(new OkHttpAsyncResponse(response, request));
+            try {
+                HttpResponse httpResponse = toHttpResponse(request, response, eagerlyReadResponse);
+                sink.success(httpResponse);
+            } catch (IOException ex) {
+                // Reading the body bytes may cause an IOException, if it happens propagate it.
+                sink.error(ex);
             }
         }
     }
