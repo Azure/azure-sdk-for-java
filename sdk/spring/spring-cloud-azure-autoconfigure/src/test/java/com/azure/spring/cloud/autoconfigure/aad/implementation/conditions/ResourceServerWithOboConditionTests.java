@@ -61,6 +61,6 @@ class ResourceServerWithOboConditionTests extends AbstractCondition {
     }
 
     @Configuration
-    @Conditional(ResourceServerWithOBOCondition.class)
+    @Conditional(ResourceServerWithOboCondition.class)
     static class ResourceServerWithOBOConditionConfig extends Config { }
 }

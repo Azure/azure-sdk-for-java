@@ -26,7 +26,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * An {@link RSAKey} resolver function implementation parses the certificate locally.
@@ -48,39 +47,39 @@ public class AadOAuth2ClientAuthenticationJWKResolver implements OAuth2ClientAut
      */
     public AadOAuth2ClientAuthenticationJWKResolver(String clientCertificatePath,
                                                     String clientCertificatePassword) {
+        Assert.notNull(clientCertificatePath, "clientCertificatePath cannot be null");
+        Assert.notNull(clientCertificatePassword, "clientCertificatePassword cannot be null");
+
+        String fileExtension = clientCertificatePath.substring(clientCertificatePath.lastIndexOf(".") + 1);
+        Assert.isTrue("pfx".equals(fileExtension) || "p12".equals(fileExtension),
+            "Only files with the '.pfx' or '.p12' extension are supported.");
+
         this.clientCertificatePath = clientCertificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
     }
 
     @Override
-    public Function<ClientRegistration, JWK> resolve() {
-        return (clientRegistration) -> {
-            if (ClientAuthenticationMethod.PRIVATE_KEY_JWT.equals(clientRegistration.getClientAuthenticationMethod())) {
-                Assert.notNull(clientCertificatePath, "clientCertificatePath cannot be null");
-                Assert.notNull(clientCertificatePassword, "clientCertificatePassword cannot be null");
-                String fileExtension = clientCertificatePath.substring(clientCertificatePath.lastIndexOf(".") + 1);
-                Assert.isTrue("pfx".equals(fileExtension) || "p12".equals(fileExtension),
-                    "Only files with the '.pfx' or '.p12' extension are supported.");
-                try (FileInputStream inputStream = new FileInputStream(clientCertificatePath)) {
-                    KeyStore keyStore = KeyStore.getInstance("PKCS12");
-                    char[] password = clientCertificatePassword.toCharArray();
-                    keyStore.load(inputStream, password);
-                    String alias = keyStore.aliases().nextElement();
-                    PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);
-                    X509Certificate x509Certificate = (X509Certificate) keyStore.getCertificate(alias);
-                    PublicKey publicKey = x509Certificate.getPublicKey();
-                    return new RSAKey.Builder((RSAPublicKey) publicKey)
-                        .privateKey(privateKey)
-                        .x509CertThumbprint(Base64URL.encode(getX5t(x509Certificate)))
-                        .keyID(UUID.randomUUID().toString())
-                        .build();
-                } catch (KeyStoreException | IOException | NoSuchAlgorithmException
-                    | CertificateException | UnrecoverableKeyException e) {
-                    LOGGER.error("Resolve RSAKey exception.", e);
-                }
+    public JWK resolve(ClientRegistration clientRegistration) {
+        if (ClientAuthenticationMethod.PRIVATE_KEY_JWT.equals(clientRegistration.getClientAuthenticationMethod())) {
+            try (FileInputStream inputStream = new FileInputStream(clientCertificatePath)) {
+                KeyStore keyStore = KeyStore.getInstance("PKCS12");
+                char[] password = clientCertificatePassword.toCharArray();
+                keyStore.load(inputStream, password);
+                String alias = keyStore.aliases().nextElement();
+                PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);
+                X509Certificate x509Certificate = (X509Certificate) keyStore.getCertificate(alias);
+                PublicKey publicKey = x509Certificate.getPublicKey();
+                return new RSAKey.Builder((RSAPublicKey) publicKey)
+                    .privateKey(privateKey)
+                    .x509CertThumbprint(Base64URL.encode(getX5t(x509Certificate)))
+                    .keyID(UUID.randomUUID().toString())
+                    .build();
+            } catch (KeyStoreException | IOException | NoSuchAlgorithmException
+                     | CertificateException | UnrecoverableKeyException e) {
+                LOGGER.error("Resolve RSAKey exception.", e);
             }
-            return null;
-        };
+        }
+        return null;
     }
 
     private byte[] getX5t(X509Certificate cert)

@@ -11,7 +11,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplication
 /**
  * {@link Condition} that checks for resource server with OBO scenario.
  */
-public final class ResourceServerWithOBOCondition extends AbstractApplicationTypeCondition {
+public final class ResourceServerWithOboCondition extends AbstractApplicationTypeCondition {
 
     @Override
     boolean isTargetApplicationType(AadApplicationType applicationType) {

@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aad;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -54,7 +55,7 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      * JWK resolver implementation for client authentication.
      */
     @Autowired
-    protected OAuth2ClientAuthenticationJWKResolver jwkResolver;
+    protected ObjectProvider<OAuth2ClientAuthenticationJWKResolver> jwkResolvers;
 
     /**
      * configure
@@ -124,8 +125,10 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
             AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(
                     ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes());
-            converter.addParametersConverter(
-                new AadJwtClientAuthenticationParametersConverter<>(jwkResolver.resolve()));
+            OAuth2ClientAuthenticationJWKResolver jwkResolver = jwkResolvers.getIfUnique();
+            if (jwkResolver != null) {
+                converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkResolver::resolve));
+            }
             result.setRequestEntityConverter(converter);
         }
         return result;
