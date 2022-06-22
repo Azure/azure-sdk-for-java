@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for PhoneticEncoder. */
 public enum PhoneticEncoder {
     /** Enum value metaphone. */
@@ -58,7 +55,6 @@ public enum PhoneticEncoder {
      * @param value the serialized value to parse.
      * @return the parsed PhoneticEncoder object, or null if unable to parse.
      */
-    @JsonCreator
     public static PhoneticEncoder fromString(String value) {
         PhoneticEncoder[] items = PhoneticEncoder.values();
         for (PhoneticEncoder item : items) {
@@ -69,7 +65,6 @@ public enum PhoneticEncoder {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

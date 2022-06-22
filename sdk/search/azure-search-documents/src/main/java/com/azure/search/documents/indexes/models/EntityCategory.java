@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for EntityCategory. */
@@ -40,7 +39,6 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * @param name a name to look for.
      * @return the corresponding EntityCategory.
      */
-    @JsonCreator
     public static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
     }

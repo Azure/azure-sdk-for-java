@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ImageAnalysisSkillLanguage. */
@@ -34,7 +33,6 @@ public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<Image
      * @param name a name to look for.
      * @return the corresponding ImageAnalysisSkillLanguage.
      */
-    @JsonCreator
     public static ImageAnalysisSkillLanguage fromString(String name) {
         return fromString(name, ImageAnalysisSkillLanguage.class);
     }

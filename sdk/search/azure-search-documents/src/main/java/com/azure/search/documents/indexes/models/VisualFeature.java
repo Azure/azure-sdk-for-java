@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for VisualFeature. */
@@ -40,7 +39,6 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
      * @param name a name to look for.
      * @return the corresponding VisualFeature.
      */
-    @JsonCreator
     public static VisualFeature fromString(String name) {
         return fromString(name, VisualFeature.class);
     }

@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for SearchMode. */
 public enum SearchMode {
     /** Enum value any. */
@@ -31,7 +28,6 @@ public enum SearchMode {
      * @param value the serialized value to parse.
      * @return the parsed SearchMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static SearchMode fromString(String value) {
         SearchMode[] items = SearchMode.values();
         for (SearchMode item : items) {
@@ -42,7 +38,6 @@ public enum SearchMode {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

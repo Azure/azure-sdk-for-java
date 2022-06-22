@@ -4,36 +4,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Creates combinations of tokens as a single token. This token filter is
  * implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.ShingleTokenFilter")
 @Fluent
 public final class ShingleTokenFilter extends TokenFilter {
     /*
      * The maximum shingle size. Default and minimum value is 2.
      */
-    @JsonProperty(value = "maxShingleSize")
     private Integer maxShingleSize;
 
     /*
      * The minimum shingle size. Default and minimum value is 2. Must be less
      * than the value of maxShingleSize.
      */
-    @JsonProperty(value = "minShingleSize")
     private Integer minShingleSize;
 
     /*
      * A value indicating whether the output stream will contain the input
      * tokens (unigrams) as well as shingles. Default is true.
      */
-    @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
 
     /*
@@ -41,21 +33,18 @@ public final class ShingleTokenFilter extends TokenFilter {
      * shingles are available. This property takes precedence when
      * outputUnigrams is set to false. Default is false.
      */
-    @JsonProperty(value = "outputUnigramsIfNoShingles")
     private Boolean outputUnigramsIfNoShingles;
 
     /*
      * The string to use when joining adjacent tokens to form a shingle.
      * Default is a single space (" ").
      */
-    @JsonProperty(value = "tokenSeparator")
     private String tokenSeparator;
 
     /*
      * The string to insert for each position at which there is no token.
      * Default is an underscore ("_").
      */
-    @JsonProperty(value = "filterToken")
     private String filterToken;
 
     /**

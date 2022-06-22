@@ -4,16 +4,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Create tokens for phonetic matches. This token filter is implemented using
  * Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.PhoneticTokenFilter")
 @Fluent
 public final class PhoneticTokenFilter extends TokenFilter {
     /*
@@ -22,14 +17,12 @@ public final class PhoneticTokenFilter extends TokenFilter {
      * 'Caverphone1', 'Caverphone2', 'Cologne', 'Nysiis', 'KoelnerPhonetik',
      * 'HaasePhonetik', 'BeiderMorse'
      */
-    @JsonProperty(value = "encoder")
     private PhoneticEncoder encoder;
 
     /*
      * A value indicating whether encoded tokens should replace original
      * tokens. If false, encoded tokens are added as synonyms. Default is true.
      */
-    @JsonProperty(value = "replace")
     private Boolean originalTokensReplaced;
 
     /**

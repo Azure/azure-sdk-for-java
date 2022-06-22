@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for AutocompleteMode. */
 public enum AutocompleteMode {
     /** Enum value oneTerm. */
@@ -34,7 +31,6 @@ public enum AutocompleteMode {
      * @param value the serialized value to parse.
      * @return the parsed AutocompleteMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutocompleteMode fromString(String value) {
         AutocompleteMode[] items = AutocompleteMode.values();
         for (AutocompleteMode item : items) {
@@ -45,7 +41,6 @@ public enum AutocompleteMode {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

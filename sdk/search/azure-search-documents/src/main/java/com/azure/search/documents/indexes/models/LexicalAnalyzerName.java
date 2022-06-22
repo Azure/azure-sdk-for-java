@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for LexicalAnalyzerName. */
@@ -298,7 +297,6 @@ public final class LexicalAnalyzerName extends ExpandableStringEnum<LexicalAnaly
      * @param name a name to look for.
      * @return the corresponding LexicalAnalyzerName.
      */
-    @JsonCreator
     public static LexicalAnalyzerName fromString(String name) {
         return fromString(name, LexicalAnalyzerName.class);
     }

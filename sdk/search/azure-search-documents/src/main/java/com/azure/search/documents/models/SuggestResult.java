@@ -9,9 +9,6 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SuggestResultHelper;
 import com.azure.search.documents.implementation.util.Utility;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,25 +26,17 @@ public final class SuggestResult {
     /*
      * Unmatched properties from the message are deserialized this collection
      */
-    @JsonProperty(value = "")
     private SearchDocument additionalProperties;
 
     /*
      * The text of the suggestion result.
      */
-    @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String text;
+    private final String text;
 
-    @JsonIgnore
     private JsonSerializer jsonSerializer;
 
     static {
-        SuggestResultHelper.setAccessor(new SuggestResultHelper.SuggestResultAccessor() {
-            @Override
-            public void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties) {
-                suggestResult.setAdditionalProperties(additionalProperties);
-            }
-        });
+        SuggestResultHelper.setAccessor(SuggestResult::setAdditionalProperties);
     }
 
     /**
@@ -55,10 +44,7 @@ public final class SuggestResult {
      *
      * @param text The text of the suggestion result.
      */
-    @JsonCreator
-    public SuggestResult(
-        @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            String text) {
+    public SuggestResult(String text) {
         this.text = text;
     }
 

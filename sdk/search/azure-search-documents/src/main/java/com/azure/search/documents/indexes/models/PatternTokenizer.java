@@ -4,10 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,21 +12,17 @@ import java.util.List;
  * Tokenizer that uses regex pattern matching to construct distinct tokens.
  * This tokenizer is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
 @Fluent
 public final class PatternTokenizer extends LexicalTokenizer {
     /*
      * A regular expression pattern to match token separators. Default is an
      * expression that matches one or more non-word characters.
      */
-    @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
      * Regular expression flags.
      */
-    @JsonProperty(value = "flags")
     private List<RegexFlags> flags;
 
     /*
@@ -39,7 +31,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * pattern to split the input into tokens, irrespective of matching groups.
      * Default is -1.
      */
-    @JsonProperty(value = "group")
     private Integer group;
 
     /**
@@ -103,7 +94,6 @@ public final class PatternTokenizer extends LexicalTokenizer {
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
-    @JsonSetter
     public PatternTokenizer setFlags(List<RegexFlags> flags) {
         this.flags = flags;
         return this;

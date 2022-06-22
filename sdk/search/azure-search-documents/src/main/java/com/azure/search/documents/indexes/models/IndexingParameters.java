@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,14 +21,12 @@ public final class IndexingParameters {
      * single batch in order to improve performance. The default depends on the
      * data source type.
      */
-    @JsonProperty(value = "batchSize")
     private Integer batchSize;
 
     /*
      * The maximum number of items that can fail indexing for indexer execution
      * to still be considered successful. -1 means no limit. Default is 0.
      */
-    @JsonProperty(value = "maxFailedItems")
     private Integer maxFailedItems;
 
     /*
@@ -37,14 +34,12 @@ public final class IndexingParameters {
      * the batch to still be considered successful. -1 means no limit. Default
      * is 0.
      */
-    @JsonProperty(value = "maxFailedItemsPerBatch")
     private Integer maxFailedItemsPerBatch;
 
     /*
      * A dictionary of indexer-specific configuration properties. Each name is
      * the name of a specific property. Each value must be of a primitive type.
      */
-    @JsonProperty(value = "configuration")
     private Map<String, Object> configuration;
 
     /**

@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for PiiDetectionSkillMaskingMode. */
@@ -25,7 +24,6 @@ public final class PiiDetectionSkillMaskingMode extends ExpandableStringEnum<Pii
      * @param name a name to look for.
      * @return the corresponding PiiDetectionSkillMaskingMode.
      */
-    @JsonCreator
     public static PiiDetectionSkillMaskingMode fromString(String name) {
         return fromString(name, PiiDetectionSkillMaskingMode.class);
     }

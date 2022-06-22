@@ -5,8 +5,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.implementation.converters.KeywordTokenizerHelper;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Emits the entire input as a single token. This tokenizer is implemented
@@ -21,7 +19,6 @@ public final class KeywordTokenizer extends LexicalTokenizer {
      * length are split. The maximum token length that can be used is 300
      * characters.
      */
-    @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
     static {
@@ -45,8 +42,7 @@ public final class KeywordTokenizer extends LexicalTokenizer {
      * dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
-    @JsonCreator
-    public KeywordTokenizer(@JsonProperty(value = "name", required = true) String name) {
+    public KeywordTokenizer(String name) {
         super(name);
         odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
     }

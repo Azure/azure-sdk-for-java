@@ -8,7 +8,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for QueryCaptionType. */
@@ -25,7 +24,6 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * @param name a name to look for.
      * @return the corresponding QueryCaptionType.
      */
-    @JsonCreator
     public static QueryCaptionType fromString(String name) {
         return fromString(name, QueryCaptionType.class);
     }

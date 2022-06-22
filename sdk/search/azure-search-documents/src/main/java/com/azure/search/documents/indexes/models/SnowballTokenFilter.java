@@ -4,16 +4,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A filter that stems words using a Snowball-generated stemmer. This token
  * filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.SnowballTokenFilter")
 @Fluent
 public final class SnowballTokenFilter extends TokenFilter {
     /*
@@ -23,8 +18,7 @@ public final class SnowballTokenFilter extends TokenFilter {
      * 'Porter', 'Portuguese', 'Romanian', 'Russian', 'Spanish', 'Swedish',
      * 'Turkish'
      */
-    @JsonProperty(value = "language", required = true)
-    private SnowballTokenFilterLanguage language;
+    private final SnowballTokenFilterLanguage language;
 
     /**
      * Constructor of {@link TokenFilter}.

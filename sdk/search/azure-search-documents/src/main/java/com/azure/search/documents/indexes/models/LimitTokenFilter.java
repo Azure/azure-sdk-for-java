@@ -4,29 +4,22 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Limits the number of tokens while indexing. This token filter is implemented
  * using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.LimitTokenFilter")
 @Fluent
 public final class LimitTokenFilter extends TokenFilter {
     /*
      * The maximum number of tokens to produce. Default is 1.
      */
-    @JsonProperty(value = "maxTokenCount")
     private Integer maxTokenCount;
 
     /*
      * A value indicating whether all tokens from the input must be consumed
      * even if maxTokenCount is reached. Default is false.
      */
-    @JsonProperty(value = "consumeAllTokens")
     private Boolean allTokensConsumed;
 
     /**

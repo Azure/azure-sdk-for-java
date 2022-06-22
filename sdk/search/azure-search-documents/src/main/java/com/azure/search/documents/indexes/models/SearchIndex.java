@@ -4,9 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,19 +17,16 @@ public final class SearchIndex {
     /*
      * The name of the index.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The fields of the index.
      */
-    @JsonProperty(value = "fields", required = true)
     private List<SearchField> fields;
 
     /*
      * The scoring profiles for the index.
      */
-    @JsonProperty(value = "scoringProfiles")
     private List<ScoringProfile> scoringProfiles;
 
     /*
@@ -40,49 +34,41 @@ public final class SearchIndex {
      * query. If this property is not set and no scoring profile is specified
      * in the query, then default scoring (tf-idf) will be used.
      */
-    @JsonProperty(value = "defaultScoringProfile")
     private String defaultScoringProfile;
 
     /*
      * Options to control Cross-Origin Resource Sharing (CORS) for the index.
      */
-    @JsonProperty(value = "corsOptions")
     private CorsOptions corsOptions;
 
     /*
      * The suggesters for the index.
      */
-    @JsonProperty(value = "suggesters")
     private List<SearchSuggester> suggesters;
 
     /*
      * The analyzers for the index.
      */
-    @JsonProperty(value = "analyzers")
     private List<LexicalAnalyzer> analyzers;
 
     /*
      * The tokenizers for the index.
      */
-    @JsonProperty(value = "tokenizers")
     private List<LexicalTokenizer> tokenizers;
 
     /*
      * The token filters for the index.
      */
-    @JsonProperty(value = "tokenFilters")
     private List<TokenFilter> tokenFilters;
 
     /*
      * The character filters for the index.
      */
-    @JsonProperty(value = "charFilters")
     private List<CharFilter> charFilters;
 
     /*
      * The normalizers for the index.
      */
-    @JsonProperty(value = "normalizers")
     private List<LexicalNormalizer> normalizers;
 
     /*
@@ -97,7 +83,6 @@ public final class SearchIndex {
      * is not available for free search services, and is only available for
      * paid services created on or after January 1, 2019.
      */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
@@ -106,20 +91,17 @@ public final class SearchIndex {
      * defined at index creation time and cannot be modified on existing
      * indexes. If null, the ClassicSimilarity algorithm is used.
      */
-    @JsonProperty(value = "similarity")
     private SimilarityAlgorithm similarity;
 
     /*
      * Defines parameters for a search index that influence semantic
      * capabilities.
      */
-    @JsonProperty(value = "semantic")
     private SemanticSettings semanticSettings;
 
     /*
      * The ETag of the index.
      */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
 
@@ -136,10 +118,7 @@ public final class SearchIndex {
      * @param name The name of the index.
      * @param fields The fields of the index.
      */
-    @JsonCreator
-    public SearchIndex(
-        @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "fields") List<SearchField> fields) {
+    public SearchIndex(String name, List<SearchField> fields) {
         this.name = name;
         this.fields = fields;
     }
@@ -179,7 +158,6 @@ public final class SearchIndex {
      * @param fields the fields value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
@@ -211,7 +189,6 @@ public final class SearchIndex {
      * @param scoringProfiles the scoringProfiles value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setScoringProfiles(List<ScoringProfile> scoringProfiles) {
         this.scoringProfiles = scoringProfiles;
         return this;
@@ -291,7 +268,6 @@ public final class SearchIndex {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
@@ -323,7 +299,6 @@ public final class SearchIndex {
      * @param analyzers the analyzers value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setAnalyzers(List<LexicalAnalyzer> analyzers) {
         this.analyzers = analyzers;
         return this;
@@ -355,7 +330,6 @@ public final class SearchIndex {
      * @param tokenizers the tokenizers value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setTokenizers(List<LexicalTokenizer> tokenizers) {
         this.tokenizers = tokenizers;
         return this;
@@ -387,7 +361,6 @@ public final class SearchIndex {
      * @param tokenFilters the tokenFilters value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setTokenFilters(List<TokenFilter> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -419,7 +392,6 @@ public final class SearchIndex {
      * @param charFilters the charFilters value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
         return this;
@@ -451,7 +423,6 @@ public final class SearchIndex {
      * @param normalizers the normalizers value to set.
      * @return the SearchIndex object itself.
      */
-    @JsonSetter
     public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
         this.normalizers = normalizers;
         return this;

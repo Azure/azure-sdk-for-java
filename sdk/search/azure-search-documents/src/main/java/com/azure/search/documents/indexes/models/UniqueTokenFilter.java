@@ -4,23 +4,17 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Filters out tokens with same text as the previous token. This token filter
  * is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.UniqueTokenFilter")
 @Fluent
 public final class UniqueTokenFilter extends TokenFilter {
     /*
      * A value indicating whether to remove duplicates only at the same
      * position. Default is false.
      */
-    @JsonProperty(value = "onlyOnSamePosition")
     private Boolean onlyOnSamePosition;
 
     /**

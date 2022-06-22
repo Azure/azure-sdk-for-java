@@ -4,18 +4,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Grammar-based tokenizer that is suitable for processing most
  * European-language documents. This tokenizer is implemented using Apache
  * Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.ClassicTokenizer")
 @Fluent
 public final class ClassicTokenizer extends LexicalTokenizer {
     /*
@@ -23,7 +17,6 @@ public final class ClassicTokenizer extends LexicalTokenizer {
      * length are split. The maximum token length that can be used is 300
      * characters.
      */
-    @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
     /**
@@ -33,8 +26,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
      * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
-    @JsonCreator
-    public ClassicTokenizer(@JsonProperty(value = "name") String name) {
+    public ClassicTokenizer(String name) {
         super(name);
     }
 

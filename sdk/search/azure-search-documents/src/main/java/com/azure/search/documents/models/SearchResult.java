@@ -9,9 +9,6 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SearchResultHelper;
 import com.azure.search.documents.implementation.util.Utility;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,8 +27,7 @@ public final class SearchResult {
      * The relevance score of the document compared to other documents returned
      * by the query.
      */
-    @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private double score;
+    private final double score;
 
     /*
      * The relevance score computed by the semantic ranker for the top search
@@ -39,7 +35,6 @@ public final class SearchResult {
      * by the Score. RerankerScore is only returned for queries of type
      * 'semantic'.
      */
-    @JsonProperty(value = "@search.rerankerScore", access = JsonProperty.Access.WRITE_ONLY)
     private Double rerankerScore;
 
     /*
@@ -47,7 +42,6 @@ public final class SearchResult {
      * terms, organized by each applicable field; null if hit highlighting was
      * not enabled for the query.
      */
-    @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
 
     /*
@@ -55,16 +49,13 @@ public final class SearchResult {
      * relatively to the search query. They are often used as document summary.
      * Captions are only returned for queries of type 'semantic'.
      */
-    @JsonProperty(value = "@search.captions", access = JsonProperty.Access.WRITE_ONLY)
     private List<CaptionResult> captions;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
-    @JsonIgnore
     private JsonSerializer jsonSerializer;
 
     static {
@@ -101,10 +92,7 @@ public final class SearchResult {
      *
      * @param score The relevance score of the document compared to other documents returned by the query.
      */
-    @JsonCreator
-    public SearchResult(
-        @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            double score) {
+    public SearchResult(double score) {
         this.score = score;
     }
 

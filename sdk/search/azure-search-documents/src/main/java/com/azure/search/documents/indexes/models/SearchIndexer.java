@@ -4,9 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,69 +16,58 @@ public final class SearchIndexer {
     /*
      * The name of the indexer.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The description of the indexer.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The name of the datasource from which this indexer reads data.
      */
-    @JsonProperty(value = "dataSourceName", required = true)
     private String dataSourceName;
 
     /*
      * The name of the skillset executing with this indexer.
      */
-    @JsonProperty(value = "skillsetName")
     private String skillsetName;
 
     /*
      * The name of the index to which this indexer writes data.
      */
-    @JsonProperty(value = "targetIndexName", required = true)
     private String targetIndexName;
 
     /*
      * The schedule for this indexer.
      */
-    @JsonProperty(value = "schedule")
     private IndexingSchedule schedule;
 
     /*
      * Parameters for indexer execution.
      */
-    @JsonProperty(value = "parameters")
     private IndexingParameters parameters;
 
     /*
      * Defines mappings between fields in the data source and corresponding
      * target fields in the index.
      */
-    @JsonProperty(value = "fieldMappings")
     private List<FieldMapping> fieldMappings;
 
     /*
      * Output field mappings are applied after enrichment and immediately
      * before indexing.
      */
-    @JsonProperty(value = "outputFieldMappings")
     private List<FieldMapping> outputFieldMappings;
 
     /*
      * A value indicating whether the indexer is disabled. Default is false.
      */
-    @JsonProperty(value = "disabled")
     private Boolean isDisabled;
 
     /*
      * The ETag of the indexer.
      */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
     /*
@@ -98,14 +84,12 @@ public final class SearchIndexer {
      * services, and is only available for paid services created on or after
      * January 1, 2019.
      */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * Adds caching to an enrichment pipeline to allow for incremental
      * modification steps without having to rebuild the index every time.
      */
-    @JsonProperty(value = "cache")
     private SearchIndexerCache cache;
 
     /**
@@ -124,11 +108,7 @@ public final class SearchIndexer {
      * @param dataSourceName The name of the datasource from which this indexer reads data.
      * @param targetIndexName The name of the index to which this indexer writes data.
      */
-    @JsonCreator
-    public SearchIndexer(
-        @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "dataSourceName") String dataSourceName,
-        @JsonProperty(value = "targetIndexName") String targetIndexName) {
+    public SearchIndexer(String name, String dataSourceName, String targetIndexName) {
         this.name = name;
         this.dataSourceName = dataSourceName;
         this.targetIndexName = targetIndexName;
@@ -298,7 +278,6 @@ public final class SearchIndexer {
      * @param fieldMappings the fieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
-    @JsonSetter
     public SearchIndexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
         return this;
@@ -333,7 +312,6 @@ public final class SearchIndexer {
      * @param outputFieldMappings the outputFieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
-    @JsonSetter
     public SearchIndexer setOutputFieldMappings(List<FieldMapping> outputFieldMappings) {
         this.outputFieldMappings = outputFieldMappings;
         return this;

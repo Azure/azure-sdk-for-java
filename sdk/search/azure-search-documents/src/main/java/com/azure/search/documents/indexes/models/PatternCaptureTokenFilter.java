@@ -4,30 +4,24 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
  * Uses Java regexes to emit multiple tokens - one for each capture group in
  * one or more patterns. This token filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.PatternCaptureTokenFilter")
 @Fluent
 public final class PatternCaptureTokenFilter extends TokenFilter {
     /*
      * A list of patterns to match against each token.
      */
-    @JsonProperty(value = "patterns", required = true)
-    private List<String> patterns;
+    private final List<String> patterns;
 
     /*
      * A value indicating whether to return the original token even if one of
      * the patterns matches. Default is true.
      */
-    @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
     /**

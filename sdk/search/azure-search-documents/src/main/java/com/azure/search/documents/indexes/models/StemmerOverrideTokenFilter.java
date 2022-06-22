@@ -4,9 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
@@ -16,16 +14,13 @@ import java.util.List;
  * be placed before any stemming filters. This token filter is implemented
  * using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.StemmerOverrideTokenFilter")
 @Fluent
 public final class StemmerOverrideTokenFilter extends TokenFilter {
     /*
      * A list of stemming rules in the following format: "word => stem", for
      * example: "ran => run".
      */
-    @JsonProperty(value = "rules", required = true)
-    private List<String> rules;
+    private final List<String> rules;
 
     /**
      * Constructor of {@link StemmerOverrideTokenFilter}.

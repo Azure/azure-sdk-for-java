@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for ScoringFunctionAggregation. */
 public enum ScoringFunctionAggregation {
     /** Enum value sum. */
@@ -40,7 +37,6 @@ public enum ScoringFunctionAggregation {
      * @param value the serialized value to parse.
      * @return the parsed ScoringFunctionAggregation object, or null if unable to parse.
      */
-    @JsonCreator
     public static ScoringFunctionAggregation fromString(String value) {
         ScoringFunctionAggregation[] items = ScoringFunctionAggregation.values();
         for (ScoringFunctionAggregation item : items) {
@@ -51,7 +47,6 @@ public enum ScoringFunctionAggregation {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

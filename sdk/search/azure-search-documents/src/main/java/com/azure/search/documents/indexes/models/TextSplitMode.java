@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for TextSplitMode. */
@@ -25,7 +24,6 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
      * @param name a name to look for.
      * @return the corresponding TextSplitMode.
      */
-    @JsonCreator
     public static TextSplitMode fromString(String name) {
         return fromString(name, TextSplitMode.class);
     }

@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for KeyPhraseExtractionSkillLanguage. */
@@ -67,7 +66,6 @@ public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding KeyPhraseExtractionSkillLanguage.
      */
-    @JsonCreator
     public static KeyPhraseExtractionSkillLanguage fromString(String name) {
         return fromString(name, KeyPhraseExtractionSkillLanguage.class);
     }

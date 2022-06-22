@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for SnowballTokenFilterLanguage. */
 public enum SnowballTokenFilterLanguage {
     /** Enum value armenian. */
@@ -91,7 +88,6 @@ public enum SnowballTokenFilterLanguage {
      * @param value the serialized value to parse.
      * @return the parsed SnowballTokenFilterLanguage object, or null if unable to parse.
      */
-    @JsonCreator
     public static SnowballTokenFilterLanguage fromString(String value) {
         SnowballTokenFilterLanguage[] items = SnowballTokenFilterLanguage.values();
         for (SnowballTokenFilterLanguage item : items) {
@@ -102,7 +98,6 @@ public enum SnowballTokenFilterLanguage {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

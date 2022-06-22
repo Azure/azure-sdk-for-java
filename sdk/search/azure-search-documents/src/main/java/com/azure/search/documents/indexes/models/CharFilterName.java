@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for CharFilterName. */
@@ -22,7 +21,6 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
      * @param name a name to look for.
      * @return the corresponding CharFilterName.
      */
-    @JsonCreator
     public static CharFilterName fromString(String name) {
         return fromString(name, CharFilterName.class);
     }

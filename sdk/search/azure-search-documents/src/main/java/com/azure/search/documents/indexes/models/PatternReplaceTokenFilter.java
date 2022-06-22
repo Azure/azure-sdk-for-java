@@ -4,9 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A character filter that replaces characters in the input string. It uses a
@@ -16,21 +13,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * "$1#$2", the result would be "aa#bb aa#bb". This token filter is implemented
  * using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.PatternReplaceTokenFilter")
 @Fluent
 public final class PatternReplaceTokenFilter extends TokenFilter {
     /*
      * A regular expression pattern.
      */
-    @JsonProperty(value = "pattern", required = true)
-    private String pattern;
+    private final String pattern;
 
     /*
      * The replacement text.
      */
-    @JsonProperty(value = "replacement", required = true)
-    private String replacement;
+    private final String replacement;
 
     /**
      * Constructor of {@link PatternReplaceTokenFilter}.

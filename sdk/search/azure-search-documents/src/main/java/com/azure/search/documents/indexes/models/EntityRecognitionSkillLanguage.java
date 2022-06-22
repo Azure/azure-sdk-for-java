@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for EntityRecognitionSkillLanguage. */
@@ -88,7 +87,6 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
      * @param name a name to look for.
      * @return the corresponding EntityRecognitionSkillLanguage.
      */
-    @JsonCreator
     public static EntityRecognitionSkillLanguage fromString(String name) {
         return fromString(name, EntityRecognitionSkillLanguage.class);
     }

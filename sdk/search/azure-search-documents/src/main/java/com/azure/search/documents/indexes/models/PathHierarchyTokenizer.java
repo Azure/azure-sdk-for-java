@@ -4,47 +4,37 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Tokenizer for path-like hierarchies. This tokenizer is implemented using
  * Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.PathHierarchyTokenizerV2")
 @Fluent
 public final class PathHierarchyTokenizer extends LexicalTokenizer {
     /*
      * The delimiter character to use. Default is "/".
      */
-    @JsonProperty(value = "delimiter")
     private Character delimiter;
 
     /*
      * A value that, if set, replaces the delimiter character. Default is "/".
      */
-    @JsonProperty(value = "replacement")
     private Character replacement;
 
     /*
      * The maximum token length. Default and maximum is 300.
      */
-    @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
     /*
      * A value indicating whether to generate tokens in reverse order. Default
      * is false.
      */
-    @JsonProperty(value = "reverse")
     private Boolean tokenOrderReversed;
 
     /*
      * The number of initial tokens to skip. Default is 0.
      */
-    @JsonProperty(value = "skip")
     private Integer numberOfTokensToSkip;
 
     /**

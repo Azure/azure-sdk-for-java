@@ -5,8 +5,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.implementation.converters.LuceneStandardTokenizerHelper;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Breaks text following the Unicode Text Segmentation rules. This tokenizer is
@@ -20,7 +18,6 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split.
      */
-    @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
     static {
@@ -44,8 +41,7 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
      * dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
-    @JsonCreator
-    public LuceneStandardTokenizer(@JsonProperty(value = "name") String name) {
+    public LuceneStandardTokenizer(String name) {
         super(name);
         odataType = "#Microsoft.Azure.Search.LuceneStandardTokenizerV2";
     }

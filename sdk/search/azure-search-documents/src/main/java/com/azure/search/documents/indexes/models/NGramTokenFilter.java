@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.implementation.converters.NGramTokenFilterHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Generates n-grams of the given size(s). This token filter is implemented
@@ -19,13 +18,11 @@ public final class NGramTokenFilter extends TokenFilter {
      * The minimum n-gram length. Default is 1. Must be less than the value of
      * maxGram.
      */
-    @JsonProperty(value = "minGram")
     private Integer minGram;
 
     /*
      * The maximum n-gram length. Default is 2.
      */
-    @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
     static {

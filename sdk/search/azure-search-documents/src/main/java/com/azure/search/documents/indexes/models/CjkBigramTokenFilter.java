@@ -4,11 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,21 +12,17 @@ import java.util.List;
  * Forms bigrams of CJK terms that are generated from the standard tokenizer.
  * This token filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.CjkBigramTokenFilter")
 @Fluent
 public final class CjkBigramTokenFilter extends TokenFilter {
     /*
      * The scripts to ignore.
      */
-    @JsonProperty(value = "ignoreScripts")
     private List<CjkBigramTokenFilterScripts> ignoreScripts;
 
     /*
      * A value indicating whether to output both unigrams and bigrams (if
      * true), or just bigrams (if false). Default is false.
      */
-    @JsonProperty(value = "outputUnigrams")
     private Boolean outputUnigrams;
 
     /**
@@ -41,8 +32,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
-    @JsonCreator
-    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
+    public CjkBigramTokenFilter(String name) {
         super(name);
     }
 
@@ -72,7 +62,6 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @param ignoreScripts the ignoreScripts value to set.
      * @return the CjkBigramTokenFilter object itself.
      */
-    @JsonSetter
     public CjkBigramTokenFilter setIgnoreScripts(List<CjkBigramTokenFilterScripts> ignoreScripts) {
         this.ignoreScripts = ignoreScripts;
         return this;

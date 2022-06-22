@@ -8,7 +8,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for QueryAnswerType. */
@@ -25,7 +24,6 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
      * @param name a name to look for.
      * @return the corresponding QueryAnswerType.
      */
-    @JsonCreator
     public static QueryAnswerType fromString(String name) {
         return fromString(name, QueryAnswerType.class);
     }

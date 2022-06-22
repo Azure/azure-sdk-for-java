@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for LexicalTokenizerName. */
@@ -59,7 +58,6 @@ public final class LexicalTokenizerName extends ExpandableStringEnum<LexicalToke
      * @param name a name to look for.
      * @return the corresponding LexicalTokenizerName.
      */
-    @JsonCreator
     public static LexicalTokenizerName fromString(String name) {
         return fromString(name, LexicalTokenizerName.class);
     }

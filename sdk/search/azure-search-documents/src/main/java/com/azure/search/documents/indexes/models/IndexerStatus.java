@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for IndexerStatus. */
 public enum IndexerStatus {
     /** Enum value unknown. */
@@ -34,7 +31,6 @@ public enum IndexerStatus {
      * @param value the serialized value to parse.
      * @return the parsed IndexerStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static IndexerStatus fromString(String value) {
         IndexerStatus[] items = IndexerStatus.values();
         for (IndexerStatus item : items) {
@@ -45,7 +41,6 @@ public enum IndexerStatus {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

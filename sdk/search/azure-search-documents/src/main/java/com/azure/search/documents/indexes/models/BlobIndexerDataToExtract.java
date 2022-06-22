@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for BlobIndexerDataToExtract. */
@@ -28,7 +27,6 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
      * @param name a name to look for.
      * @return the corresponding BlobIndexerDataToExtract.
      */
-    @JsonCreator
     public static BlobIndexerDataToExtract fromString(String name) {
         return fromString(name, BlobIndexerDataToExtract.class);
     }

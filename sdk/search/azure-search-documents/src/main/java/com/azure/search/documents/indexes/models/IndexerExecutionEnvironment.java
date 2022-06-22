@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for IndexerExecutionEnvironment. */
@@ -25,7 +24,6 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
      * @param name a name to look for.
      * @return the corresponding IndexerExecutionEnvironment.
      */
-    @JsonCreator
     public static IndexerExecutionEnvironment fromString(String name) {
         return fromString(name, IndexerExecutionEnvironment.class);
     }

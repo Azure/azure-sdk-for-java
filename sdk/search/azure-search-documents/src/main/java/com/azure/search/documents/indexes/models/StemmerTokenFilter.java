@@ -4,16 +4,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Language specific stemming filter. This token filter is implemented using
  * Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.StemmerTokenFilter")
 @Fluent
 public final class StemmerTokenFilter extends TokenFilter {
     /*
@@ -30,8 +25,7 @@ public final class StemmerTokenFilter extends TokenFilter {
      * 'Russian', 'LightRussian', 'Spanish', 'LightSpanish', 'Swedish',
      * 'LightSwedish', 'Turkish'
      */
-    @JsonProperty(value = "language", required = true)
-    private StemmerTokenFilterLanguage language;
+    private final StemmerTokenFilterLanguage language;
 
     /**
      * Constructor of {@link TokenFilter}.

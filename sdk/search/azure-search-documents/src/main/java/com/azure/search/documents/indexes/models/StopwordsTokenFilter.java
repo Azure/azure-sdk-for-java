@@ -4,10 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,15 +12,12 @@ import java.util.List;
  * Removes stop words from a token stream. This token filter is implemented
  * using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.StopwordsTokenFilter")
 @Fluent
 public final class StopwordsTokenFilter extends TokenFilter {
     /*
      * The list of stopwords. This property and the stopwords list property
      * cannot both be set.
      */
-    @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
     /*
@@ -36,21 +29,18 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * 'Irish', 'Italian', 'Latvian', 'Norwegian', 'Persian', 'Portuguese',
      * 'Romanian', 'Russian', 'Sorani', 'Spanish', 'Swedish', 'Thai', 'Turkish'
      */
-    @JsonProperty(value = "stopwordsList")
     private StopwordsList stopwordsList;
 
     /*
      * A value indicating whether to ignore case. If true, all words are
      * converted to lower case first. Default is false.
      */
-    @JsonProperty(value = "ignoreCase")
     private Boolean caseIgnored;
 
     /*
      * A value indicating whether to ignore the last search term if it's a stop
      * word. Default is true.
      */
-    @JsonProperty(value = "removeTrailing")
     private Boolean trailingStopWordsRemoved;
 
     /**
@@ -93,7 +83,6 @@ public final class StopwordsTokenFilter extends TokenFilter {
      * @param stopwords the stopwords value to set.
      * @return the StopwordsTokenFilter object itself.
      */
-    @JsonSetter
     public StopwordsTokenFilter setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

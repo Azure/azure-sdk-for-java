@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for TokenFilterName. */
@@ -121,7 +120,6 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
      * @param name a name to look for.
      * @return the corresponding TokenFilterName.
      */
-    @JsonCreator
     public static TokenFilterName fromString(String name) {
         return fromString(name, TokenFilterName.class);
     }

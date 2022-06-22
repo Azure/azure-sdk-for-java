@@ -4,17 +4,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
  * Matches single or multi-word synonyms in a token stream. This token filter
  * is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.SynonymTokenFilter")
 @Fluent
 public final class SynonymTokenFilter extends TokenFilter {
     /*
@@ -24,14 +20,12 @@ public final class SynonymTokenFilter extends TokenFilter {
      * unbelievable, fabulous, amazing - comma separated list of equivalent
      * words. Set the expand option to change how this list is interpreted.
      */
-    @JsonProperty(value = "synonyms", required = true)
-    private List<String> synonyms;
+    private final List<String> synonyms;
 
     /*
      * A value indicating whether to case-fold input for matching. Default is
      * false.
      */
-    @JsonProperty(value = "ignoreCase")
     private Boolean caseIgnored;
 
     /*
@@ -45,7 +39,6 @@ public final class SynonymTokenFilter extends TokenFilter {
      * incredible, unbelievable, fabulous, amazing => incredible. Default is
      * true.
      */
-    @JsonProperty(value = "expand")
     private Boolean expand;
 
     /**

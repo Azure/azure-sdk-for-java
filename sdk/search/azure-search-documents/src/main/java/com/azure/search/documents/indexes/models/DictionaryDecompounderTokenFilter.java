@@ -4,51 +4,42 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
  * Decomposes compound words found in many Germanic languages. This token
  * filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter")
 @Fluent
 public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /*
      * The list of words to match against.
      */
-    @JsonProperty(value = "wordList", required = true)
-    private List<String> wordList;
+    private final List<String> wordList;
 
     /*
      * The minimum word size. Only words longer than this get processed.
      * Default is 5. Maximum is 300.
      */
-    @JsonProperty(value = "minWordSize")
     private Integer minWordSize;
 
     /*
      * The minimum subword size. Only subwords longer than this are outputted.
      * Default is 2. Maximum is 300.
      */
-    @JsonProperty(value = "minSubwordSize")
     private Integer minSubwordSize;
 
     /*
      * The maximum subword size. Only subwords shorter than this are outputted.
      * Default is 15. Maximum is 300.
      */
-    @JsonProperty(value = "maxSubwordSize")
     private Integer maxSubwordSize;
 
     /*
      * A value indicating whether to add only the longest matching subword to
      * the output. Default is false.
      */
-    @JsonProperty(value = "onlyLongestMatch")
     private Boolean onlyLongestMatched;
 
     /**

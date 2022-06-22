@@ -4,10 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,27 +12,22 @@ import java.util.List;
  * Tokenizes the input into n-grams of the given size(s). This tokenizer is
  * implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.NGramTokenizer")
 @Fluent
 public final class NGramTokenizer extends LexicalTokenizer {
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less
      * than the value of maxGram.
      */
-    @JsonProperty(value = "minGram")
     private Integer minGram;
 
     /*
      * The maximum n-gram length. Default is 2. Maximum is 300.
      */
-    @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
     /*
      * Character classes to keep in the tokens.
      */
-    @JsonProperty(value = "tokenChars")
     private List<TokenCharacterKind> tokenChars;
 
     /**
@@ -120,7 +111,6 @@ public final class NGramTokenizer extends LexicalTokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the NGramTokenizer object itself.
      */
-    @JsonSetter
     public NGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;

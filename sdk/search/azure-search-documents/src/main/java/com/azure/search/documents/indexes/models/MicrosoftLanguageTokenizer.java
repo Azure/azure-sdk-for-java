@@ -4,15 +4,10 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Divides text using language-specific rules.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.MicrosoftLanguageTokenizer")
 @Fluent
 public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /*
@@ -22,7 +17,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * then each of those tokens is split based on the max token length set.
      * Default is 255.
      */
-    @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
 
     /*
@@ -30,7 +24,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * search tokenizer, set to false if used as the indexing tokenizer.
      * Default is false.
      */
-    @JsonProperty(value = "isSearchTokenizer")
     private Boolean isSearchTokenizer;
 
     /*
@@ -44,7 +37,6 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      * 'SerbianCyrillic', 'SerbianLatin', 'Slovenian', 'Spanish', 'Swedish',
      * 'Tamil', 'Telugu', 'Thai', 'Ukrainian', 'Urdu', 'Vietnamese'
      */
-    @JsonProperty(value = "language")
     private MicrosoftTokenizerLanguage language;
 
     /**

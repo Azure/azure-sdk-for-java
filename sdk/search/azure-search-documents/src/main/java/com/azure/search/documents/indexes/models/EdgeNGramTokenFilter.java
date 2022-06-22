@@ -4,7 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.search.documents.implementation.converters.EdgeNGramTokenFilterHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Generates n-grams of the given size(s) starting from the front or the back
@@ -13,26 +12,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class EdgeNGramTokenFilter extends TokenFilter {
     private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.EdgeNGramTokenFilterV2";
 
-    @JsonProperty(value = "@odata.type")
     private String odataType;
     /*
      * The minimum n-gram length. Default is 1. Must be less than the value of
      * maxGram.
      */
-    @JsonProperty(value = "minGram")
     private Integer minGram;
 
     /*
      * The maximum n-gram length. Default is 2.
      */
-    @JsonProperty(value = "maxGram")
     private Integer maxGram;
 
     /*
      * Specifies which side of the input the n-gram should be generated from.
      * Default is "front". Possible values include: 'Front', 'Back'
      */
-    @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
 
     static {

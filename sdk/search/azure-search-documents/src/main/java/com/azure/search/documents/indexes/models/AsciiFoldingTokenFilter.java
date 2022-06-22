@@ -4,10 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Converts alphabetic, numeric, and symbolic Unicode characters which are not
@@ -15,15 +11,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * their ASCII equivalents, if such equivalents exist. This token filter is
  * implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.AsciiFoldingTokenFilter")
 @Fluent
 public final class AsciiFoldingTokenFilter extends TokenFilter {
     /*
      * A value indicating whether the original token will be kept. Default is
      * false.
      */
-    @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
     /**
@@ -33,8 +26,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
      * spaces, dashes or underscores, can only start and end with alphanumeric
      * characters, and is limited to 128 characters.
      */
-    @JsonCreator
-    public AsciiFoldingTokenFilter(@JsonProperty(value = "name") String name) {
+    public AsciiFoldingTokenFilter(String name) {
         super(name);
     }
 

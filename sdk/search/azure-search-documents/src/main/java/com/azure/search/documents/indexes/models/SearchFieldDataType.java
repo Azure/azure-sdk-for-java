@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for SearchFieldDataType. */
@@ -43,7 +42,6 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
      * @param name a name to look for.
      * @return the corresponding SearchFieldDataType.
      */
-    @JsonCreator
     public static SearchFieldDataType fromString(String name) {
         return fromString(name, SearchFieldDataType.class);
     }

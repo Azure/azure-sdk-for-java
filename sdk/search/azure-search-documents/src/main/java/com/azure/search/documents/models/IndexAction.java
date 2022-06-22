@@ -5,9 +5,6 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.implementation.converters.IndexActionHelper;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import java.util.Map;
 
@@ -19,16 +16,12 @@ public final class IndexAction<T> {
     /*
      * The document on which the action will be performed.
      */
-    @JsonUnwrapped
     private T document;
-
-    @JsonIgnore
     private Map<String, Object> properties;
 
     /*
      * The operation to perform on a document in an indexing batch.
      */
-    @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
 
     static {

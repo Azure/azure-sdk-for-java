@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for TokenCharacterKind. */
 public enum TokenCharacterKind {
     /** Enum value letter. */
@@ -40,7 +37,6 @@ public enum TokenCharacterKind {
      * @param value the serialized value to parse.
      * @return the parsed TokenCharacterKind object, or null if unable to parse.
      */
-    @JsonCreator
     public static TokenCharacterKind fromString(String value) {
         TokenCharacterKind[] items = TokenCharacterKind.values();
         for (TokenCharacterKind item : items) {
@@ -51,7 +47,6 @@ public enum TokenCharacterKind {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

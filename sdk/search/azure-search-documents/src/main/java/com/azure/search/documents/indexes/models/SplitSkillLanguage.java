@@ -8,7 +8,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for SplitSkillLanguage. */
@@ -46,7 +45,6 @@ public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLan
      * @param name a name to look for.
      * @return the corresponding SplitSkillLanguage.
      */
-    @JsonCreator
     public static SplitSkillLanguage fromString(String name) {
         return fromString(name, SplitSkillLanguage.class);
     }

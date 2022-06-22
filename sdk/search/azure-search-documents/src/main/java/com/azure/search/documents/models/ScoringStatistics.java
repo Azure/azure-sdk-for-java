@@ -7,9 +7,6 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for ScoringStatistics. */
 public enum ScoringStatistics {
     /** Enum value local. */
@@ -31,7 +28,6 @@ public enum ScoringStatistics {
      * @param value the serialized value to parse.
      * @return the parsed ScoringStatistics object, or null if unable to parse.
      */
-    @JsonCreator
     public static ScoringStatistics fromString(String value) {
         ScoringStatistics[] items = ScoringStatistics.values();
         for (ScoringStatistics item : items) {
@@ -42,7 +38,6 @@ public enum ScoringStatistics {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

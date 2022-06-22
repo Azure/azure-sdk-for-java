@@ -4,9 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
@@ -14,21 +12,17 @@ import java.util.List;
  * terms are still indexed too, with bigrams overlaid. This token filter is
  * implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.CommonGramTokenFilter")
 @Fluent
 public final class CommonGramTokenFilter extends TokenFilter {
     /*
      * The set of common words.
      */
-    @JsonProperty(value = "commonWords", required = true)
-    private List<String> commonWords;
+    private final List<String> commonWords;
 
     /*
      * A value indicating whether common words matching will be case
      * insensitive. Default is false.
      */
-    @JsonProperty(value = "ignoreCase")
     private Boolean caseIgnored;
 
     /*
@@ -37,7 +31,6 @@ public final class CommonGramTokenFilter extends TokenFilter {
      * common words and single terms followed by a common word. Default is
      * false.
      */
-    @JsonProperty(value = "queryMode")
     private Boolean queryModeUsed;
 
     /**

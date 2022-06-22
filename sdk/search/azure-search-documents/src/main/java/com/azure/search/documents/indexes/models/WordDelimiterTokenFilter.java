@@ -4,10 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +12,6 @@ import java.util.List;
  * Splits words into subwords and performs optional transformations on subword
  * groups. This token filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.WordDelimiterTokenFilter")
 @Fluent
 public final class WordDelimiterTokenFilter extends TokenFilter {
     /*
@@ -25,13 +19,11 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * of words to be generated; for example "AzureSearch" becomes "Azure"
      * "Search". Default is true.
      */
-    @JsonProperty(value = "generateWordParts")
     private Boolean generateWordParts;
 
     /*
      * A value indicating whether to generate number subwords. Default is true.
      */
-    @JsonProperty(value = "generateNumberParts")
     private Boolean generateNumberParts;
 
     /*
@@ -39,7 +31,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * For example, if this is set to true, "Azure-Search" becomes
      * "AzureSearch". Default is false.
      */
-    @JsonProperty(value = "catenateWords")
     private Boolean wordsCatenated;
 
     /*
@@ -47,7 +38,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * catenated. For example, if this is set to true, "1-2" becomes "12".
      * Default is false.
      */
-    @JsonProperty(value = "catenateNumbers")
     private Boolean numbersCatenated;
 
     /*
@@ -55,7 +45,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * example, if this is set to true, "Azure-Search-1" becomes
      * "AzureSearch1". Default is false.
      */
-    @JsonProperty(value = "catenateAll")
     private Boolean catenateAll;
 
     /*
@@ -63,14 +52,12 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * this is set to true, "AzureSearch" becomes "Azure" "Search". Default is
      * true.
      */
-    @JsonProperty(value = "splitOnCaseChange")
     private Boolean splitOnCaseChange;
 
     /*
      * A value indicating whether original words will be preserved and added to
      * the subword list. Default is false.
      */
-    @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
     /*
@@ -78,20 +65,17 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * set to true, "Azure1Search" becomes "Azure" "1" "Search". Default is
      * true.
      */
-    @JsonProperty(value = "splitOnNumerics")
     private Boolean splitOnNumerics;
 
     /*
      * A value indicating whether to remove trailing "'s" for each subword.
      * Default is true.
      */
-    @JsonProperty(value = "stemEnglishPossessive")
     private Boolean stemEnglishPossessive;
 
     /*
      * A list of tokens to protect from being delimited.
      */
-    @JsonProperty(value = "protectedWords")
     private List<String> protectedWords;
 
     /**
@@ -344,7 +328,6 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    @JsonSetter
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;

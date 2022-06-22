@@ -5,8 +5,6 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.implementation.converters.IndexingResultHelper;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -19,22 +17,19 @@ public final class IndexingResult implements Serializable {
     /**
      * The key of a document that was in the indexing request.
      */
-    @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String key;
+    private final String key;
 
     /**
      * The error message explaining why the indexing operation failed for the
      * document identified by the key; null if indexing succeeded.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /**
      * A value indicating whether the indexing operation succeeded for the
      * document identified by the key.
      */
-    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private boolean succeeded;
+    private final boolean succeeded;
 
     /**
      * The status code of the indexing operation. Possible values include: 200
@@ -43,16 +38,10 @@ public final class IndexingResult implements Serializable {
      * a version conflict, 422 when the index is temporarily unavailable, or
      * 503 for when the service is too busy.
      */
-    @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int statusCode;
+    private final int statusCode;
 
     static {
-        IndexingResultHelper.setAccessor(new IndexingResultHelper.IndexingResultAccessor() {
-            @Override
-            public void setErrorMessage(IndexingResult indexingResult, String errorMessage) {
-                indexingResult.setErrorMessage(errorMessage);
-            }
-        });
+        IndexingResultHelper.setAccessor(IndexingResult::setErrorMessage);
     }
 
     /**
@@ -67,12 +56,7 @@ public final class IndexingResult implements Serializable {
      * a version conflict, 422 when the index is temporarily unavailable, or
      * 503 for when the service is too busy.
      */
-    @JsonCreator
-    public IndexingResult(
-        @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
-        @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
-        @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            int statusCode) {
+    public IndexingResult(String key, boolean succeeded, int statusCode) {
         this.key = key;
         this.succeeded = succeeded;
         this.statusCode = statusCode;

@@ -4,8 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a datasource definition, which can be used to configure an
@@ -16,50 +14,42 @@ public final class SearchIndexerDataSourceConnection {
     /*
      * The name of the datasource.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * The description of the datasource.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The type of the datasource. Possible values include: 'AzureSql',
      * 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'
      */
-    @JsonProperty(value = "type", required = true)
     private SearchIndexerDataSourceType type;
 
     /*
      * The connection string for the datasource.
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * The data container for the datasource.
      */
-    @JsonProperty(value = "container", required = true)
     private SearchIndexerDataContainer container;
 
     /*
      * The data change detection policy for the datasource.
      */
-    @JsonProperty(value = "dataChangeDetectionPolicy")
     private DataChangeDetectionPolicy dataChangeDetectionPolicy;
 
     /*
      * The data deletion detection policy for the datasource.
      */
-    @JsonProperty(value = "dataDeletionDetectionPolicy")
     private DataDeletionDetectionPolicy dataDeletionDetectionPolicy;
 
     /*
      * The ETag of the data source.
      */
-    @JsonProperty(value = "@odata.etag")
     private String eTag;
 
     /*
@@ -75,7 +65,6 @@ public final class SearchIndexerDataSourceConnection {
      * not available for free search services, and is only available for paid
      * services created on or after January 1, 2019.
      */
-    @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
@@ -85,7 +74,6 @@ public final class SearchIndexerDataSourceConnection {
      * remains unchanged. If "none" is specified, the value of this property is
      * cleared.
      */
-    @JsonProperty(value = "identity")
     private SearchIndexerDataIdentity identity;
 
     /**
@@ -106,12 +94,8 @@ public final class SearchIndexerDataSourceConnection {
      * @param connectionString The connection string for the datasource.
      * @param container The data container for the datasource.
      */
-    @JsonCreator
-    public SearchIndexerDataSourceConnection(
-        @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "type") SearchIndexerDataSourceType type,
-        @JsonProperty(value = "credentials") String connectionString,
-        @JsonProperty(value = "container") SearchIndexerDataContainer container) {
+    public SearchIndexerDataSourceConnection(String name, SearchIndexerDataSourceType type, String connectionString,
+        SearchIndexerDataContainer container) {
         this.name = name;
         this.type = type;
         this.connectionString = connectionString;
