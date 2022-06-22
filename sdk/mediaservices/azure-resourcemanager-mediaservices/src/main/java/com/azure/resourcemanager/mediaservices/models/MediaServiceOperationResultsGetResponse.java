@@ -7,31 +7,36 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 
-/** Contains all response data for the createOrUpdate operation. */
-public final class TracksCreateOrUpdateResponse extends ResponseBase<TracksCreateOrUpdateHeaders, AssetTrackInner> {
+/** Contains all response data for the get operation. */
+public final class MediaServiceOperationResultsGetResponse
+    extends ResponseBase<MediaServiceOperationResultsGetHeaders, MediaServiceInner> {
     /**
-     * Creates an instance of TracksCreateOrUpdateResponse.
+     * Creates an instance of MediaServiceOperationResultsGetResponse.
      *
-     * @param request the request which resulted in this TracksCreateOrUpdateResponse.
+     * @param request the request which resulted in this MediaServiceOperationResultsGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TracksCreateOrUpdateResponse(
+    public MediaServiceOperationResultsGetResponse(
         HttpRequest request,
         int statusCode,
         HttpHeaders rawHeaders,
-        AssetTrackInner value,
-        TracksCreateOrUpdateHeaders headers) {
+        MediaServiceInner value,
+        MediaServiceOperationResultsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
-    public AssetTrackInner getValue() {
+    public MediaServiceInner getValue() {
         return super.getValue();
     }
 }

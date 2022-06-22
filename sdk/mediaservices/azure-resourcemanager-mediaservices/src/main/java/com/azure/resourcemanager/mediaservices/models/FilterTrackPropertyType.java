@@ -39,7 +39,11 @@ public final class FilterTrackPropertyType extends ExpandableStringEnum<FilterTr
         return fromString(name, FilterTrackPropertyType.class);
     }
 
-    /** @return known FilterTrackPropertyType values. */
+    /**
+     * Gets known FilterTrackPropertyType values.
+     *
+     * @return known FilterTrackPropertyType values.
+     */
     public static Collection<FilterTrackPropertyType> values() {
         return values(FilterTrackPropertyType.class);
     }

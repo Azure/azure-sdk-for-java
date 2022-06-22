@@ -33,7 +33,11 @@ public final class EncryptionScheme extends ExpandableStringEnum<EncryptionSchem
         return fromString(name, EncryptionScheme.class);
     }
 
-    /** @return known EncryptionScheme values. */
+    /**
+     * Gets known EncryptionScheme values.
+     *
+     * @return known EncryptionScheme values.
+     */
     public static Collection<EncryptionScheme> values() {
         return values(EncryptionScheme.class);
     }
