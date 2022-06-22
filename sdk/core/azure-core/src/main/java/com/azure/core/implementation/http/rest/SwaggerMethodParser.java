@@ -37,6 +37,9 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -603,5 +606,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return exceptionHashMap;
+    }
+
+    public boolean isReactive() {
+        Type returnType = getReturnType();
+        return (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Publisher.class));
     }
 }

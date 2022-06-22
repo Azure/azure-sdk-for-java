@@ -50,13 +50,13 @@ public class AsyncRestProxy extends RestProxyBase {
      * @param contextData the context
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
-    public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
+    Mono<HttpResponse> send(HttpRequest request, Context contextData) {
         return httpPipeline.send(request, contextData);
     }
 
 
     public HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        return createHttpRequestBase(methodParser, serializer, true, args);
+        return createHttpRequest(methodParser, serializer, true, args);
     }
 
     @Override
@@ -84,30 +84,6 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     /**
-     * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
-     * additional context information.
-     *
-     * @param method Service method being called.
-     * @param context Context information about the current service call.
-     * @return The updated context containing the span context.
-     */
-    private Context startTracingSpan(Method method, Context context) {
-        // First check if tracing is enabled. This is an optimized operation, so it is done first.
-        if (!TracerProxy.isTracingEnabled()) {
-            return context;
-        }
-
-        // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
-        if ((boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
-            return context;
-        }
-
-        String spanName = interfaceParser.getServiceName() + "." + method.getName();
-        context = TracerProxy.setSpanName(spanName, context);
-        return TracerProxy.start(spanName, context);
-    }
-
-    /**
      * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
      * code' OR (2) emits provided response if it's status code ia allowed.
      *
@@ -120,7 +96,7 @@ public class AsyncRestProxy extends RestProxyBase {
      * @param options Additional options passed as part of the request.
      * @return An async-version of the provided decodedResponse.
      */
-    private static Mono<HttpResponseDecoder.HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse,
+    private Mono<HttpResponseDecoder.HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse,
                                                                                       final SwaggerMethodParser methodParser, RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         return asyncDecodedResponse.flatMap(decodedResponse -> {
             int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
@@ -147,7 +123,7 @@ public class AsyncRestProxy extends RestProxyBase {
         });
     }
 
-    private static Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
+    private Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                                         final SwaggerMethodParser methodParser, final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             if (entityType.equals(StreamResponse.class)) {
@@ -169,7 +145,7 @@ public class AsyncRestProxy extends RestProxyBase {
         }
     }
 
-    private static Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
+    private Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                                 final SwaggerMethodParser methodParser, final Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
@@ -231,7 +207,7 @@ public class AsyncRestProxy extends RestProxyBase {
                                         final EnumSet<ErrorOptions> errorOptionsSet) {
         final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse =
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet)
-                .doOnEach(AsyncRestProxy::endTracingSpan)
+                .doOnEach(this::endTracingSpan)
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
         final Object result;
@@ -265,7 +241,7 @@ public class AsyncRestProxy extends RestProxyBase {
 
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
-    private static void endTracingSpan(Signal<HttpResponseDecoder.HttpDecodedResponse> signal) {
+    private void endTracingSpan(Signal<HttpResponseDecoder.HttpDecodedResponse> signal) {
         if (!TracerProxy.isTracingEnabled()) {
             return;
         }
@@ -277,34 +253,10 @@ public class AsyncRestProxy extends RestProxyBase {
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         ContextView context = signal.getContextView();
-        Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
-        boolean disableTracing = Boolean.TRUE.equals(context.getOrDefault(Tracer.DISABLE_TRACING_KEY, false));
+        HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse = signal.hasValue() ? signal.get() : null;
+        Throwable throwable = signal.hasError() ? signal.getThrowable() : null;
 
-        if (!tracingContext.isPresent() || disableTracing) {
-            return;
-        }
-
-        int statusCode = 0;
-        HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse;
-        Throwable throwable = null;
-
-        // On next contains the response information.
-        if (signal.hasValue()) {
-            httpDecodedResponse = signal.get();
-            //noinspection ConstantConditions
-            statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-        } else if (signal.hasError()) {
-            // The last status available is on error, this contains the error thrown by the REST response.
-            throwable = signal.getThrowable();
-
-            // Only HttpResponseException contain a status code, this is the base REST response.
-            if (throwable instanceof HttpResponseException) {
-                HttpResponseException exception = (HttpResponseException) throwable;
-                statusCode = exception.getResponse().getStatusCode();
-            }
-        }
-
-        TracerProxy.end(statusCode, throwable, tracingContext.get());
+        endTracingSpan(httpDecodedResponse, throwable, (Context) context.getOrEmpty("TRACING_CONTEXT").get());
     }
 
     @SuppressWarnings("unchecked")

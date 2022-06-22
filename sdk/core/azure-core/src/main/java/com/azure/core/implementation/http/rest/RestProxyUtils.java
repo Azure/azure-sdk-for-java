@@ -3,13 +3,6 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.DecodeException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.TooManyRedirectsException;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.*;
 import com.azure.core.http.policy.CookiePolicy;
@@ -17,10 +10,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ResponseExceptionConstructorCache;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
@@ -29,23 +20,16 @@ import com.azure.core.util.*;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Utility methods that aid processing in RestProxy.
@@ -213,13 +197,6 @@ public final class RestProxyUtils {
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
         }
-    }
-
-    public static boolean isReactive(Type type) {
-        if (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)) {
-            return true;
-        }
-        return false;
     }
 
     /**

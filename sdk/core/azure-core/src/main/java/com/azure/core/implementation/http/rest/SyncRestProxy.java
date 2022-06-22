@@ -48,18 +48,17 @@ public class SyncRestProxy extends RestProxyBase {
      * @param contextData the context
      * @return a {@link Mono} that emits HttpResponse asynchronously
      */
-    public HttpResponse send(HttpRequest request, Context contextData) {
+    HttpResponse send(HttpRequest request, Context contextData) {
         return httpPipeline.sendSync(request, contextData);
     }
 
     public HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        return createHttpRequestBase(methodParser, serializer, false, args);
+        return createHttpRequest(methodParser, serializer, false, args);
     }
 
 
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
-
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
         try {
@@ -86,31 +85,6 @@ public class SyncRestProxy extends RestProxyBase {
                 endTracingSpan(decodedResponse, throwable, context);
             }
         }
-    }
-
-
-    /**
-     * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
-     * additional context information.
-     *
-     * @param method Service method being called.
-     * @param context Context information about the current service call.
-     * @return The updated context containing the span context.
-     */
-    private Context startTracingSpan(Method method, Context context) {
-        // First check if tracing is enabled. This is an optimized operation, so it is done first.
-        if (!TracerProxy.isTracingEnabled()) {
-            return context;
-        }
-
-        // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
-        if ((boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
-            return context;
-        }
-
-        String spanName = interfaceParser.getServiceName() + "." + method.getName();
-        context = TracerProxy.setSpanName(spanName, context);
-        return TracerProxy.start(spanName, context);
     }
 
     /**
@@ -249,39 +223,6 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
-    // This handles each onX for the response mono.
-    // The signal indicates the status and contains the metadata we need to end the tracing span.
-    private static void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
-        if (tracingContext == null) {
-            return;
-        }
-
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
-            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
-        boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
-
-        if (disableTracing) {
-            return;
-        }
-
-        int statusCode = 0;
-
-        // On next contains the response information.
-        if (httpDecodedResponse != null) {
-            //noinspection ConstantConditions
-            statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-        } else if (throwable != null) {
-            // The last status available is on error, this contains the error thrown by the REST response.
-            // Only HttpResponseException contain a status code, this is the base REST response.
-            if (throwable instanceof HttpResponseException) {
-                HttpResponseException exception = (HttpResponseException) throwable;
-                statusCode = exception.getResponse().getStatusCode();
-            }
-        }
-        TracerProxy.end(statusCode, throwable, tracingContext);
-    }
-
     public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
@@ -292,7 +233,7 @@ public class SyncRestProxy extends RestProxyBase {
             serializerAdapter.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
             request.setHeader("Content-Length", String.valueOf(stream.size()));
-            request.setBody(BinaryData.fromStream(new ByteArrayInputStream(stream.toByteArray(), 0, stream.size())));
+            request.setBody(BinaryData.fromBytes(stream.toByteArray()));
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody((byte[]) bodyContentObject);
         } else if (bodyContentObject instanceof String) {
@@ -301,13 +242,18 @@ public class SyncRestProxy extends RestProxyBase {
                 request.setBody(bodyContentString);
             }
         } else if (bodyContentObject instanceof ByteBuffer) {
-            request.setBody(((ByteBuffer) bodyContentObject).array());
+            if (((ByteBuffer) bodyContentObject).hasArray()) {
+                request.setBody(((ByteBuffer) bodyContentObject).array());
+            } else {
+                byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
+                ((ByteBuffer) bodyContentObject).get(array);
+                request.setBody(array);
+            }
         } else {
-            ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-            serializerAdapter.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()), stream);
-
-            request.setHeader("Content-Length", String.valueOf(stream.size()));
-            request.setBody(stream.toByteArray());
+            byte[] serializedBytes = serializerAdapter
+                .serializeToBytes(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
+            request.setHeader("Content-Length", String.valueOf(serializedBytes.length));
+            request.setBody(serializedBytes);
         }
     }
 }

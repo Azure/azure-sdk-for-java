@@ -30,12 +30,13 @@ import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import reactor.core.publisher.Flux;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProxy;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -48,6 +49,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 public abstract class RestProxyBase {
     static final String MUST_IMPLEMENT_PAGE_ERROR =
@@ -91,16 +94,38 @@ public abstract class RestProxyBase {
         return interfaceParser.getMethodParser(method);
     }
 
-    public abstract Object invoke(Object proxy, final Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-                                  Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request,
-                                  Context context);
+    public Object invoke(Object proxy, final Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
+                                  Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, boolean isAsync, Object[] args) {
+        RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
-    public abstract HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException;
+        try {
+            HttpRequest request = createHttpRequest(methodParser, serializer, isAsync, args);
+
+            Context context = methodParser.setContext(args);
+            context = RestProxyUtils.mergeRequestOptionsContext(context, options);
+
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
+                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
+
+
+            return invoke(proxy, method, options, errorOptions != null ? errorOptions : null,
+                requestCallback != null ? requestCallback : null, methodParser, request, context);
+
+        } catch (IOException e) {
+            if (isAsync) {
+                return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
+            } else {
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            }
+        }
+    }
+
+    protected abstract Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser, HttpRequest request, Context context);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
                                           Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
@@ -146,6 +171,64 @@ public abstract class RestProxyBase {
     }
 
     /**
+     * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
+     * additional context information.
+     *
+     * @param method Service method being called.
+     * @param context Context information about the current service call.
+     * @return The updated context containing the span context.
+     */
+    Context startTracingSpan(Method method, Context context) {
+        // First check if tracing is enabled. This is an optimized operation, so it is done first.
+        if (!TracerProxy.isTracingEnabled()) {
+            return context;
+        }
+
+        // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
+        if ((boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
+            return context;
+        }
+
+        String spanName = interfaceParser.getServiceName() + "." + method.getName();
+        context = TracerProxy.setSpanName(spanName, context);
+        return TracerProxy.start(spanName, context);
+    }
+
+    // This handles each onX for the response mono.
+    // The signal indicates the status and contains the metadata we need to end the tracing span.
+    void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
+        if (tracingContext == null) {
+            return;
+        }
+
+        // Get the context that was added to the mono, this will contain the information needed to end the span.
+        Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
+            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
+        boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
+
+        if (disableTracing) {
+            return;
+        }
+
+        int statusCode = 0;
+
+        // On next contains the response information.
+        if (httpDecodedResponse != null) {
+            //noinspection ConstantConditions
+            statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
+        } else if (throwable != null) {
+            // The last status available is on error, this contains the error thrown by the REST response.
+            // Only HttpResponseException contain a status code, this is the base REST response.
+            if (throwable instanceof HttpResponseException) {
+                HttpResponseException exception = (HttpResponseException) throwable;
+                statusCode = exception.getResponse().getStatusCode();
+            }
+        }
+        TracerProxy.end(statusCode, throwable, tracingContext);
+    }
+
+
+    /**
      * Create a HttpRequest for the provided Swagger method using the provided arguments.
      *
      * @param methodParser the Swagger method parser to use
@@ -153,7 +236,7 @@ public abstract class RestProxyBase {
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized
      */
-    public HttpRequest createHttpRequestBase(SwaggerMethodParser methodParser, SerializerAdapter serializerAdapter, boolean isAsync, Object[] args) throws IOException {
+    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, SerializerAdapter serializerAdapter, boolean isAsync, Object[] args) throws IOException {
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
@@ -248,47 +331,6 @@ public abstract class RestProxyBase {
     }
 
     /**
-     * Merges the Context with the Context provided with Options.
-     *
-     * @param context the Context to merge
-     * @param options the options holding the context to merge with
-     * @return the merged context.
-     */
-    public static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
-        if (options == null) {
-            return context;
-        }
-
-        Context optionsContext = options.getContext();
-        if (optionsContext != null && optionsContext != Context.NONE) {
-            context = CoreUtils.mergeContexts(context, optionsContext);
-        }
-
-        return context;
-    }
-
-    /**
-     * Validates the input Method is not annotated with Resume Operation
-     * @param method the method input to validate
-     * @throws IllegalStateException if the input method is annotated with the Resume Operation.
-     */
-    @SuppressWarnings("deprecation")
-    public static void validateResumeOperationIsNotPresent(Method method) {
-        // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
-        // marked as deprecated.
-        if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
-        }
-    }
-
-    public static boolean isReactive(Type type) {
-        if (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Creates the Unexpected Exception using the details provided in http response and its content.
      *
      * @param exception the excepion holding UnexpectedException's details.
@@ -297,7 +339,7 @@ public abstract class RestProxyBase {
      * @param responseDecodedContent the decoded response content to use when constructing exception
      * @return the Unexpected Exception
      */
-    public static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
+    public Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
                                                            final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())

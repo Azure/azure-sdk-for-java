@@ -4,21 +4,15 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.rest.*;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-import reactor.core.Exceptions;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import static com.azure.core.implementation.http.rest.RestProxyUtils.isReactive;
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -63,37 +57,20 @@ public final class RestProxy implements InvocationHandler {
     public Object invoke(Object proxy, final Method method, Object[] args) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
-        try {
-            final SwaggerMethodParser methodParser = getMethodParser(method);
+        // Note: request options need to be evaluated here, as it is a public class with package private methods.
+        // Evaluating here allows the package private methods to be invoked here for downstream use.
+        final SwaggerMethodParser methodParser = getMethodParser(method);
+        RequestOptions options = methodParser.setRequestOptions(args);
+        boolean isReactive = methodParser.isReactive();
 
-            HttpRequest request;
-            boolean isReactive = isReactive(methodParser.getReturnType());
-            if (isReactive) {
-                request = asyncRestProxy.createHttpRequest(methodParser, args);
-            } else {
-                request = syncRestProxy.createHttpRequest(methodParser, args);
-            }
-
-            Context context = methodParser.setContext(args);
-
-            RequestOptions options = methodParser.setRequestOptions(args);
-            context = RestProxyUtils.mergeRequestOptionsContext(context, options);
-
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
-
-
-            if (isReactive) {
-                return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                    options != null ? options.getRequestCallback() : null, methodParser, request, context);
-            } else {
-                return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                    options != null ? options.getRequestCallback() : null, methodParser, request, context);
-            }
-
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+        if (isReactive) {
+            return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
+                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+        } else {
+            return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
+                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
         }
+
     }
 
     /**
