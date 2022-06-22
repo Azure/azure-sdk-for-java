@@ -100,7 +100,13 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
     log.info("Add dependency management for file: " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
         pom_file_content = pom_file.read()
+        if pom_file_content.find("<dependencyManagement>") != -1:
+            print("skip test module file:" + file_path)
+            return
         insert_position = pom_file_content.find('<dependencies>')
+        if insert_position == -1:
+            print("skip spring file:" + file_path)
+            return
         insert_content = get_dependency_management_content()
         dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
         insert_position = get_prop_position(pom_file_content)
