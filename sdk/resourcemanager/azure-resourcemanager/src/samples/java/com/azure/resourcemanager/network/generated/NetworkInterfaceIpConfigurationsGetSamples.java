@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkInterfaceIpConfigurations Get. */
 public final class NetworkInterfaceIpConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkInterfaceIPConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkInterfaceIPConfigurationGet.json
      */
     /**
      * Sample code: NetworkInterfaceIPConfigurationGet.

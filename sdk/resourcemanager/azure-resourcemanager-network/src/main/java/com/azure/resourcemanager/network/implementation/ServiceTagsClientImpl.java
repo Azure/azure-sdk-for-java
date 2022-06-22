@@ -93,7 +93,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -139,7 +139,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -159,15 +159,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceTagsListResultInner> listAsync(String location) {
-        return listWithResponseAsync(location)
-            .flatMap(
-                (Response<ServiceTagsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

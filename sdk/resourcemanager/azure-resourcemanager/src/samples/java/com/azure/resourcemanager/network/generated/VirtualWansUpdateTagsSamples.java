@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for VirtualWans UpdateTags. */
 public final class VirtualWansUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualWANUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualWANUpdateTags.json
      */
     /**
      * Sample code: VirtualWANUpdate.

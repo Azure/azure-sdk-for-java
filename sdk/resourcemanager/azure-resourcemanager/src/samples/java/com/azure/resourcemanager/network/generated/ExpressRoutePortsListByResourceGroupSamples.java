@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRoutePorts ListByResourceGroup. */
 public final class ExpressRoutePortsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRoutePortListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRoutePortListByResourceGroup.json
      */
     /**
      * Sample code: ExpressRoutePortListByResourceGroup.

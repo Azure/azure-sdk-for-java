@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for ConnectionMonitors UpdateTags. */
 public final class ConnectionMonitorsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherConnectionMonitorUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherConnectionMonitorUpdateTags.json
      */
     /**
      * Sample code: Update connection monitor tags.
