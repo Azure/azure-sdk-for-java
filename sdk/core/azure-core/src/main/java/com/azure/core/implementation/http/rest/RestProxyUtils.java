@@ -10,7 +10,6 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +20,6 @@ import java.nio.ByteBuffer;
  * Utility methods that aid processing in RestProxy.
  */
 public final class RestProxyUtils {
-    private static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
     public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
