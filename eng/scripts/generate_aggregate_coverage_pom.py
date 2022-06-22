@@ -63,7 +63,7 @@ jacoco_build = '''
 '''
 
 
-def create_aggregate_coverage_pom(project_list: str, groups: str, projects_to_exclude: str):
+def create_aggregate_coverage_pom(project_list: str, groups: str, exclude_project_list: str):
 
     if groups is None:
         include_groups.append('com.azure')
@@ -73,9 +73,9 @@ def create_aggregate_coverage_pom(project_list: str, groups: str, projects_to_ex
         for group in groups.split(','):
             include_groups.append(group)
 
-    if projects_to_exclude is not None:
-        for project_to_exclude in projects_to_exclude.split(','):
-            exclude_projects.append(project_to_exclude)
+    if exclude_project_list is not None:
+        for exclude_project in exclude_project_list.split(','):
+            exclude_projects.append(exclude_project)
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
@@ -201,10 +201,10 @@ def main():
     parser = argparse.ArgumentParser(description='Generated a POM for creating an aggregate code coverage report.')
     parser.add_argument('--project-list', '--pl', type=str)
     parser.add_argument('--groups', '--g', type=str)
-    parser.add_argument('--exclude-projects', '--ep', type=str)
+    parser.add_argument('--exclude-project-list', '--epl', type=str)
     args = parser.parse_args()
     start_time = time.time()
-    create_aggregate_coverage_pom(args.project_list, args.groups, args.exclude_projects)
+    create_aggregate_coverage_pom(args.project_list, args.groups, args.exclude_project_list)
     elapsed_time = time.time() - start_time
 
     print('Effective POM File for aggregate code coverage')

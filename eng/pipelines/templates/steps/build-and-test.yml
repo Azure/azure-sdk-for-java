@@ -35,7 +35,7 @@ parameters:
   - name: IsLiveTest
     type: boolean
     default: false
-  - name: ExcludeProjects
+  - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
@@ -74,7 +74,7 @@ steps:
     condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
       scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
-      arguments: '--project-list $(ProjectList) --exclude-projects ${{ parameters.ExcludeProjects }}'
+      arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }}'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   - task: Maven@3
