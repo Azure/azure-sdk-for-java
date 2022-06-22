@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 public interface OAuth2ClientAuthenticationJwkResolver {
 
     /**
+     * @param clientRegistration the client registration.
      * @return a a {@link JWK}.
      */
     JWK resolve(ClientRegistration clientRegistration);

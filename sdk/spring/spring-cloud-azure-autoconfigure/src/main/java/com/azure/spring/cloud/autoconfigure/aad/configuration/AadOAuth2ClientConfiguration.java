@@ -88,7 +88,6 @@ public class AadOAuth2ClientConfiguration {
      *
      * @param clientRegistrations the client registration repository
      * @param authorizedClients the OAuth2 authorized client repository
-     * @param azureDelegatedProvider the azure delegated provider
      * @param refreshTokenProvider the refresh token grant type provider
      * @param jwtBearerProvider the jwt bearer grant type provider
      * @param jwkResolvers the {@link JWK} resolver
@@ -98,7 +97,6 @@ public class AadOAuth2ClientConfiguration {
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrations,
                                                                  OAuth2AuthorizedClientRepository authorizedClients,
-                                                                 AadAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedProvider,
                                                                  RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
                                                                  JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
                                                                  ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers) {
@@ -111,11 +109,12 @@ public class AadOAuth2ClientConfiguration {
             OAuth2AuthorizedClientProviderBuilder
                 .builder()
                 .authorizationCode()
-                .clientCredentials(builder -> clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
+                .clientCredentials(builder ->
+                    clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
                 .password(builder -> passwordGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
                 .provider(refreshTokenProvider)
                 .provider(jwtBearerProvider)
-                .provider(azureDelegatedProvider)
+                .provider(azureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients))
                 .build();
         // @formatter:on
         manager.setAuthorizedClientProvider(providers);
@@ -181,9 +180,7 @@ public class AadOAuth2ClientConfiguration {
         return provider;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    AadAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedOAuth2AuthorizedClientProvider(
+    private AadAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedOAuth2AuthorizedClientProvider(
         RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
         OAuth2AuthorizedClientRepository authorizedClients) {
         return new AadAzureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients);

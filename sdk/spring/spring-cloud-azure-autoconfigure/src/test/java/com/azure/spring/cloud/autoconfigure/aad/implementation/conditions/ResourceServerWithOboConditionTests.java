@@ -16,7 +16,7 @@ class ResourceServerWithOboConditionTests extends AbstractCondition {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(ResourceServerWithOBOConditionConfig.class)
+            .withUserConfiguration(ResourceServerWithOboConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -26,7 +26,7 @@ class ResourceServerWithOboConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application")
-            .withUserConfiguration(ResourceServerWithOBOConditionConfig.class)
+            .withUserConfiguration(ResourceServerWithOboConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -36,7 +36,7 @@ class ResourceServerWithOboConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server")
-            .withUserConfiguration(ResourceServerWithOBOConditionConfig.class)
+            .withUserConfiguration(ResourceServerWithOboConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -46,7 +46,7 @@ class ResourceServerWithOboConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server_with_obo")
-            .withUserConfiguration(ResourceServerWithOBOConditionConfig.class)
+            .withUserConfiguration(ResourceServerWithOboConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
@@ -56,11 +56,11 @@ class ResourceServerWithOboConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(ResourceServerWithOBOConditionConfig.class)
+            .withUserConfiguration(ResourceServerWithOboConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
     @Configuration
     @Conditional(ResourceServerWithOboCondition.class)
-    static class ResourceServerWithOBOConditionConfig extends Config { }
+    static class ResourceServerWithOboConditionConfig extends Config { }
 }
