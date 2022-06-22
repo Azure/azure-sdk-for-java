@@ -187,14 +187,14 @@ class OkHttpAsyncHttpClient implements HttpClient {
          * empty.
          */
         if (eagerlyReadResponse) {
-            ResponseBody body = response.body();
-            if (Objects.nonNull(body)) {
-                byte[] bytes = body.bytes();
-                body.close();
-                return new OkHttpAsyncBufferedResponse(response, request, bytes);
-            } else {
-                // Body is null, use the non-buffering response.
-                return new OkHttpAsyncResponse(response, request);
+            try (ResponseBody body = response.body()) {
+                if (Objects.nonNull(body)) {
+                    byte[] bytes = body.bytes();
+                    return new OkHttpAsyncBufferedResponse(response, request, bytes);
+                } else {
+                    // Body is null, use the non-buffering response.
+                    return new OkHttpAsyncResponse(response, request);
+                }
             }
         } else {
             return new OkHttpAsyncResponse(response, request);
