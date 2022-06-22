@@ -3,6 +3,10 @@
 package com.azure.spring.cloud.config;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V1;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY_V2;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_V1_SCHEMA;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_V2_SCHEMA;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_BOOLEAN_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
@@ -32,10 +36,10 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.bouncycastle.util.Arrays.Iterator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +47,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
@@ -80,7 +85,7 @@ public class AppConfigurationPropertySourceTest {
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
-    
+
     private static final String KEY_FILTER = "/foo/";
 
     private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
@@ -92,7 +97,8 @@ public class AppConfigurationPropertySourceTest {
     private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
+    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+        null);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
         "Alpha",
@@ -114,8 +120,6 @@ public class AppConfigurationPropertySourceTest {
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM_TARGETING = createItemFeatureFlag(
         ".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
-
-    private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -171,6 +175,7 @@ public class AppConfigurationPropertySourceTest {
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
 
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
+        System.setProperty(AppConfigurationConstants.AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION, "1");
     }
 
     @BeforeEach
@@ -227,7 +232,7 @@ public class AppConfigurationPropertySourceTest {
             .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
         String[] allExpectedKeyNames = new String[expectedKeyNames.length + 1];
 
-        String[] featureManagementKey = { FEATURE_MANAGEMENT_KEY };
+        String[] featureManagementKey = { getFeatureSchema() };
 
         System.arraycopy(expectedKeyNames, 0, allExpectedKeyNames, 0, expectedKeyNames.length);
         System.arraycopy(featureManagementKey, 0, allExpectedKeyNames, expectedKeyNames.length, 1);
@@ -303,7 +308,7 @@ public class AppConfigurationPropertySourceTest {
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
 
-        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertEquals(convertedValue, propertySource.getProperty(getFeatureSchema()));
     }
 
     @Test
@@ -322,7 +327,7 @@ public class AppConfigurationPropertySourceTest {
         }
         propertySource.initFeatures(featureSet);
 
-        assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY_V2));
     }
 
     @Test
@@ -383,7 +388,7 @@ public class AppConfigurationPropertySourceTest {
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
 
-        assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+        assertEquals(convertedValue, propertySource.getProperty(getFeatureSchema()));
     }
 
     @Test
@@ -482,9 +487,32 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
-        System.out.println(convertedValue.toString());
-        System.out.println(propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
+
         assertEquals(convertedValue.toString().length(),
-            propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
+            propertySource.getProperty(getFeatureSchema()).toString().length());
+    }
+    
+    private int getFeatureSchemaVersion() {
+        String version = System
+            .getenv(AppConfigurationConstants.AZURE_APP_CONFIGURATION_FEATURE_MANAGEMENT_SCHEMA_VERSION);
+
+        switch (StringUtils.hasText(version) ? version : "") {
+            case "1":
+                return FEATURE_MANAGEMENT_V1_SCHEMA;
+            case "2":
+                return FEATURE_MANAGEMENT_V2_SCHEMA;
+            default:
+                return FEATURE_MANAGEMENT_V1_SCHEMA;
+        }
+    }
+
+    private String getFeatureSchema() {
+        Integer version = getFeatureSchemaVersion();
+        
+        if (version == FEATURE_MANAGEMENT_V1_SCHEMA) {
+            return FEATURE_MANAGEMENT_KEY_V1;
+        } else {
+            return FEATURE_MANAGEMENT_KEY_V2;
+        }
     }
 }

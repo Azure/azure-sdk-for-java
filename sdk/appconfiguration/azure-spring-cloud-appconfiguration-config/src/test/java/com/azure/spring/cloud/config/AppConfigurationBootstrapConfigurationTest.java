@@ -23,13 +23,13 @@ public class AppConfigurationBootstrapConfigurationTest {
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
 
     @Test
-    public void iniConnectionStringSystemAssigned() throws Exception {
+    public void iniConnectionStringSystemAssigned() {
         CONTEXT_RUNNER.withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
 
     @Test
-    public void iniConnectionStringUserAssigned() throws Exception {
+    public void iniConnectionStringUserAssigned() {
         CONTEXT_RUNNER
             .withPropertyValues(propPair(FAIL_FAST_PROP, "false"),
                 propPair("spring.cloud.azure.appconfiguration.managed-identity.client-id", "client-id"))
@@ -37,14 +37,14 @@ public class AppConfigurationBootstrapConfigurationTest {
     }
 
     @Test
-    public void propertySourceLocatorBeanCreated() throws Exception {
+    public void propertySourceLocatorBeanCreated() {
         CONTEXT_RUNNER
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
 
     @Test
-    public void clientsBeanCreated() throws Exception {
+    public void clientsBeanCreated() {
         CONTEXT_RUNNER
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
             .run(context -> {

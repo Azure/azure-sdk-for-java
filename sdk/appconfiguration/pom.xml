@@ -48,8 +48,8 @@
         <module>azure-spring-cloud-test-appconfiguration-config</module>
         <module>azure-spring-cloud-appconfiguration-config</module>
         <module>azure-spring-cloud-appconfiguration-config-web</module>
-        <module>azure-spring-cloud-feature-management</module>
-        <module>azure-spring-cloud-feature-management-web</module>
+        <module>spring-cloud-azure-feature-management</module>
+        <module>spring-cloud-azure-feature-management-web</module>
         <module>azure-spring-cloud-starter-appconfiguration-config</module>
       </modules>
     </profile>

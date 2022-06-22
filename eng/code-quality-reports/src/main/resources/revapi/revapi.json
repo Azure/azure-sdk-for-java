@@ -90,6 +90,8 @@
           "class com\\.azure\\.spring\\.cloud\\.config\\.State",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.pushrefresh\\.AppConfigurationRefreshEvent",
           "class com\\.azure\\.spring\\.cloud\\.config\\.web\\.AppConfigurationEndpoint",
+          "class com\\.azure\\.spring\\.cloud\\.config\\.AppConfigurationConstants",
+          "class com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.FeatureManager",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.(avro|commons|qpid)(\\..*)?/"
@@ -231,6 +233,12 @@
           "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
         },
         {
+          "regex": true,
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY",
+          "justification": "Not a part of the Public API."
+        },
+        {
           "code": "java.class.nonFinalClassInheritsFromNewClass",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
@@ -281,6 +289,66 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.DynamicFeatureManager",
+          "justification": "Public API from another library, not sure why it is flagged."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.FilterNotFoundException",
+          "justification": "Public API from another library, not sure why it is flagged."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.cloud\\.feature\\.manager\\.entities\\.FeatureFilterEvaluationContext",
+          "justification": "Public API from another library, not sure why it is flagged."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.field\\.removedWithConstant",
+          "old": "field com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY",
+          "justification": "This isn't a public library."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.DynamicFeatureManager",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManager",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FilterNotFoundException",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.IDynamicFeatureProperties",
+          "justification": "This is used by both Feature Management libraries and is Public."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.feature.manager.FeatureManagementException",
+          "justification": "This is used by both Feature Management libraries and is Public."
         }
       ]
     }

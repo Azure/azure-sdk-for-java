@@ -14,8 +14,8 @@ trigger:
       - sdk/appconfiguration/azure-resourcemanager-appconfiguration/
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/
-      - sdk/appconfiguration/azure-spring-cloud-feature-management/
-      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
     exclude:
@@ -25,8 +25,8 @@ trigger:
       - sdk/appconfiguration/azure-resourcemanager-appconfiguration/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/pom.xml
-      - sdk/appconfiguration/azure-spring-cloud-feature-management/pom.xml
-      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
 
@@ -45,8 +45,8 @@ pr:
       - sdk/appconfiguration/azure-resourcemanager-appconfiguration/
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/
-      - sdk/appconfiguration/azure-spring-cloud-feature-management/
-      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
     exclude:
@@ -56,8 +56,8 @@ pr:
       - sdk/appconfiguration/azure-resourcemanager-appconfiguration/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/pom.xml
-      - sdk/appconfiguration/azure-spring-cloud-feature-management/pom.xml
-      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
 
@@ -74,12 +74,12 @@ parameters:
   displayName: 'azure-spring-cloud-appconfiguration-config-web'
   type: boolean
   default: true
-- name: release_azurespringcloudfeaturemanagement
-  displayName: 'azure-spring-cloud-feature-management'
+- name: release_springcloudazurefeaturemanagement
+  displayName: 'spring-cloud-azure-feature-management'
   type: boolean
   default: true
-- name: release_azurespringcloudfeaturemanagementweb
-  displayName: 'azure-spring-cloud-feature-management-web'
+- name: release_springcloudazurefeaturemanagementweb
+  displayName: 'spring-cloud-azure-feature-management-web'
   type: boolean
   default: true
 - name: release_azurespringcloudstarterappconfigurationconfig
@@ -109,14 +109,14 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudappconfigurationconfigweb
         releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfigweb }}
-      - name: azure-spring-cloud-feature-management
+      - name: spring-cloud-azure-feature-management
         groupId: com.azure.spring
         safeName: azurespringcloudfeaturemanagement
-        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
-      - name: azure-spring-cloud-feature-management-web
+        releaseInBatch: ${{ parameters.release_springcloudazurefeaturemanagement }}
+      - name: spring-cloud-azure-feature-management-web
         groupId: com.azure.spring
-        safeName: azurespringcloudfeaturemanagementweb
-        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagementweb }}
+        safeName: springcloudazurefeaturemanagementweb
+        releaseInBatch: ${{ parameters.release_springcloudazurefeaturemanagementweb }}
       - name: azure-spring-cloud-starter-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudstarterappconfigurationconfig

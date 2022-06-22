@@ -148,7 +148,8 @@ known_content_issues:
   - ['sdk/tools/azure-sdk-build-tool/README.md', '#3113']
   - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/README.md', '#3113']
   - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/README.md', '#3113']
-  - ['sdk/appconfiguration/azure-spring-cloud-feature-management-web/README.md', '#3113']
+  - ['sdk/appconfiguration/spring-cloud-azure-feature-management/README.md', '#3113']
+  - ['sdk/appconfiguration/spring-cloud-azure-feature-management-web/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
