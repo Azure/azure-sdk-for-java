@@ -63,8 +63,10 @@ public abstract class AbstractQueryGenerator {
         final String sqlKeyword = criteria.getType().getSqlKeyword();
         parameters.add(Pair.of(parameter, subjectValue));
 
-        if (CriteriaType.isFunction(criteria.getType())) {
-            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter);
+        if (CriteriaType.isFunction(criteria.getType()) && ! CriteriaType.isUnary(criteria.getType())) {
+            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter, false);
+        } else if (CriteriaType.isFunction(criteria.getType())) {
+            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter, true);
         } else {
             return getCondition(ignoreCase, sqlKeyword, subject, parameter);
         }
@@ -95,14 +97,19 @@ public abstract class AbstractQueryGenerator {
      * @param sqlKeyword sql key word, operation name
      * @param subject sql column name
      * @param parameter sql filter value
+     * @param takesCaseSensitiveParam if the function type can take the third boolean param
      * @return condition string
      */
     private String getFunctionCondition(final Part.IgnoreCaseType ignoreCase, final String sqlKeyword,
-                                        final String subject, final String parameter) {
+                                        final String subject, final String parameter, final boolean takesCaseSensitiveParam) {
         if (Part.IgnoreCaseType.NEVER == ignoreCase) {
             return String.format("%s(r.%s, @%s)", sqlKeyword, subject, parameter);
         } else {
-            return String.format("%s(UPPER(r.%s), UPPER(@%s))", sqlKeyword, subject, parameter);
+            if (takesCaseSensitiveParam) {
+                return String.format("%s(r.%s, @%s, true)", sqlKeyword, subject, parameter);
+            } else {
+                return String.format("%s(UPPER(r.%s), UPPER(@%s), true)", sqlKeyword, subject, parameter);
+            }
         }
     }
 
