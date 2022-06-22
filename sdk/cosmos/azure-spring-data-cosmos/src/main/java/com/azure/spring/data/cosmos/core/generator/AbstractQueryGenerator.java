@@ -108,7 +108,7 @@ public abstract class AbstractQueryGenerator {
             if (takesCaseSensitiveParam) {
                 return String.format("%s(r.%s, @%s, true)", sqlKeyword, subject, parameter);
             } else {
-                return String.format("%s(UPPER(r.%s), UPPER(@%s), true)", sqlKeyword, subject, parameter);
+                return String.format("%s(UPPER(r.%s), UPPER(@%s))", sqlKeyword, subject, parameter);
             }
         }
     }
