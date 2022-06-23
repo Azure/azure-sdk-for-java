@@ -23,8 +23,8 @@ abstract class Encryptor {
 
     protected final SecretKey aesKey;
 
-    protected Encryptor() throws NoSuchAlgorithmException {
-        this.aesKey = generateSecretKey();
+    protected Encryptor(SecretKey aesKey) {
+        this.aesKey = aesKey;
     }
 
     abstract byte[] getKeyToWrap();
@@ -39,19 +39,12 @@ abstract class Encryptor {
             .setWrappedContentKey(wrappedKey);
     }
 
-    static SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(AES_KEY_SIZE_BITS);
-
-        return keyGen.generateKey();
-    }
-
-    static Encryptor getEncryptor(EncryptionVersion version) throws GeneralSecurityException {
+    static Encryptor getEncryptor(EncryptionVersion version, SecretKey aesKey) throws GeneralSecurityException {
         switch (version) {
             case V1:
-                return new EncryptorV1();
+                return new EncryptorV1(aesKey);
             case V2:
-                return new EncryptorV2();
+                return new EncryptorV2(aesKey);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
                     + version));

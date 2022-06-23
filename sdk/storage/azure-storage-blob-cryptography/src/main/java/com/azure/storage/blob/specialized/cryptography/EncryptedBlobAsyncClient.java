@@ -621,7 +621,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion);
+            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey());
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);
@@ -647,6 +647,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             // These are hardcoded and guaranteed to work. There is no reason to propagate a checked exception.
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    SecretKey generateSecretKey() throws NoSuchAlgorithmException {
+        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
+        keyGen.init(AES_KEY_SIZE_BITS);
+
+        return keyGen.generateKey();
     }
 
     /**

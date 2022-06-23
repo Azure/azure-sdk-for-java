@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 
 import java.nio.ByteBuffer;
@@ -23,8 +24,8 @@ class EncryptorV1 extends Encryptor {
 
     private final Cipher cipher;
 
-    protected EncryptorV1() throws GeneralSecurityException {
-        super();
+    protected EncryptorV1(SecretKey aesKey) throws GeneralSecurityException {
+        super(aesKey);
         cipher = this.getCipher();
     }
 

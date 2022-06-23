@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 import javax.crypto.spec.GCMParameterSpec;
 import java.io.ByteArrayOutputStream;
@@ -32,7 +33,8 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 class EncryptorV2 extends Encryptor {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptorV2.class);
 
-    protected EncryptorV2() throws NoSuchAlgorithmException {
+    protected EncryptorV2(SecretKey aesKey) {
+        super(aesKey);
     }
 
     @Override
