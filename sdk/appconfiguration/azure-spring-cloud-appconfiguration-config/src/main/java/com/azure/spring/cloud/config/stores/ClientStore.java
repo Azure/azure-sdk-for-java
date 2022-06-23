@@ -2,12 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.stores;
 
+import java.time.Instant;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.config.BackoffTimeCalculator;
 import com.azure.spring.cloud.config.ClientManager;
 import com.azure.spring.cloud.config.NormalizeNull;
+import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
@@ -17,12 +21,16 @@ public final class ClientStore {
 
     private final ClientManager clientManager;
 
+    private final AppConfigurationProviderProperties properties;
+
     /**
      * Creates Client store for connecting to App Configuration
      * @param clientManager Manages connections to each config store
+     * @param properties client configurations
      */
-    public ClientStore(ClientManager clientManager) {
+    public ClientStore(ClientManager clientManager, AppConfigurationProviderProperties properties) {
         this.clientManager = clientManager;
+        this.properties = properties;
 
     }
 
@@ -60,7 +68,7 @@ public final class ClientStore {
         } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
             if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-
+                return dealWithError(storeName, settingSelector, client, e);
             }
             return null;
         }
@@ -78,6 +86,10 @@ public final class ClientStore {
         try {
             return client.getClient().listConfigurationSettings(settingSelector);
         } catch (HttpResponseException e) {
+            int statusCode = e.getResponse().getStatusCode();
+            if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+                return dealWithError(storeName, settingSelector, client, e);
+            }
             return null;
         }
     }
@@ -91,6 +103,25 @@ public final class ClientStore {
         if (syncToken != null) {
             ConfigurationClientWrapper client = clientManager.getClient(storeName);
             client.getClient().updateSyncToken(syncToken);
+        }
+    }
+
+    private PagedIterable<ConfigurationSetting> dealWithError(String storeName, SettingSelector settingSelector,
+        ConfigurationClientWrapper client, HttpResponseException e) {
+        Long backoffTime = BackoffTimeCalculator.calculateBackoff(client.getFailedAttempts(),
+            properties.getDefaultMaxBackoff(), properties.getDefaultMinBackoff());
+
+        client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+
+        ConfigurationClientWrapper newClient = clientManager.getClient(storeName);
+        try {
+            return client.getClient().listConfigurationSettings(settingSelector);
+        } catch (HttpResponseException e2) {
+            int statusCode = e.getResponse().getStatusCode();
+            if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+                return dealWithError(storeName, settingSelector, newClient, e2);
+            }
+            return null;
         }
     }
 }

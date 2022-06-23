@@ -182,7 +182,7 @@ final class StateHolder {
         }
 
         return now.plusNanos(
-            BackoffTimeCalculator.calculateBackoff(attempt, interval, properties.getDefaultMaxBackoff(), properties.getDefaultMinBackoff()));
+            BackoffTimeCalculator.calculateBackoff(attempt, properties.getDefaultMaxBackoff(), properties.getDefaultMinBackoff()));
     }
 
     static void clearAttempts() {

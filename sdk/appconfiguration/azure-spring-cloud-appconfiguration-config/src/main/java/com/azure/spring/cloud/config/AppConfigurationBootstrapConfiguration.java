@@ -131,6 +131,6 @@ public class AppConfigurationBootstrapConfiguration {
         ClientManager clientManager = new ClientManager(properties, appProperties, tokenCredentialProvider,
             clientProvider, isDev, isKeyVaultConfigured);
 
-        return new ClientStore(clientManager);
+        return new ClientStore(clientManager, appProperties);
     }
 }

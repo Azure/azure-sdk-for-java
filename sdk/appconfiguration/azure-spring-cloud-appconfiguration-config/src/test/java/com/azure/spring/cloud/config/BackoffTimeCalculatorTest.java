@@ -16,32 +16,27 @@ public class BackoffTimeCalculatorTest {
      */
     @Test
     public void testCalculate() {
-        int minInterval = 5;
         int testTime = 10;
 
-        Long interval = (long) minInterval;
         AppConfigurationProviderProperties properties = new AppConfigurationProviderProperties();
         properties.setDefaultMaxBackoff((long) 600);
         properties.setDefaultMinBackoff((long) 30);
 
-        Long testDate = BackoffTimeCalculator.calculateBackoff(1, (long) 1, (long) 600, (long) 30);
+        Long testDate = BackoffTimeCalculator.calculateBackoff(1, (long) 600, (long) 30);
 
         assertNotNull(testDate);
 
         assertTrue(testDate > 1);
 
-        minInterval = 60;
-        interval = (long) minInterval;
-
-        Long calcuatedTime = BackoffTimeCalculator.calculateBackoff(1, interval, (long) 600, (long) 30);
+        Long calcuatedTime = BackoffTimeCalculator.calculateBackoff(1, (long) 600, (long) 30);
 
         assertTrue(calcuatedTime > testTime);
 
-        calcuatedTime = BackoffTimeCalculator.calculateBackoff(2, interval, (long) 600, (long) 30);
+        calcuatedTime = BackoffTimeCalculator.calculateBackoff(2, (long) 600, (long) 30);
 
         assertTrue(calcuatedTime > testTime);
 
-        calcuatedTime = BackoffTimeCalculator.calculateBackoff(3, interval, (long) 600, (long) 30);
+        calcuatedTime = BackoffTimeCalculator.calculateBackoff(3, (long) 600, (long) 30);
 
         assertTrue(calcuatedTime > testTime);
     }

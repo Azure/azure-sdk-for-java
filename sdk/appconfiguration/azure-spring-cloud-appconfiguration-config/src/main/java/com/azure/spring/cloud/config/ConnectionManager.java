@@ -3,9 +3,9 @@
 package com.azure.spring.cloud.config;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,11 +128,15 @@ public class ConnectionManager {
             return client;
         }
         
-        int clientNumber = ThreadLocalRandom.current().nextInt(0, clients.size());
-
-        LOGGER.info("Using Client: " + clientNumber);
-
-        return clients.get(clientNumber);
+        for (ConfigurationClientWrapper wrapper: clients) {
+            if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
+                LOGGER.info("Using Client: " + wrapper.getEndpoint());
+                return wrapper;
+            }
+        }
+        
+        //TODO (mametcal) need to figure out what the correct action is when no endpoint is ready.
+        return null;
     }
 
     /**

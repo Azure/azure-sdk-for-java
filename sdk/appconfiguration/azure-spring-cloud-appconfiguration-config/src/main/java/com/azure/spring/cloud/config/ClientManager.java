@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config;
 
 import java.util.HashMap;
 
-import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;

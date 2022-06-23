@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Calculates the amount of time to the next refresh, if a refresh fails.
  */
-final class BackoffTimeCalculator {
+public final class BackoffTimeCalculator {
 
     private static final Long MAX_ATTEMPTS = (long) 63;
 
@@ -18,13 +18,13 @@ final class BackoffTimeCalculator {
     /**
      * Calculates the new Backoff time for requests.
      * 
-     * @param attempt Number of attempts so far
-     * @param interval Base Interval of requests
+     * @param attempts Number of attempts so far
      * @param maxBackoff maximum amount of time between requests
      * @param minBackoff minimum amount of time between requests
      * @return Nano Seconds to the next request
+     * @throws IllegalArgumentException when backofftime or attempt number is invalid
      */
-    static Long calculateBackoff(Integer attempts, Long interval, Long maxBackoff, Long minBackoff) {
+    public static Long calculateBackoff(Integer attempts, Long maxBackoff, Long minBackoff) {
 
         if (minBackoff < 0) {
             throw new IllegalArgumentException("Minimum Backoff time needs to be greater than or equal to 0.");
