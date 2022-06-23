@@ -38,6 +38,10 @@ public final class TimeSeriesDatabaseConnectionImpl
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TimeSeriesDatabaseConnectionInner innerModel() {
         return this.innerObject;
     }

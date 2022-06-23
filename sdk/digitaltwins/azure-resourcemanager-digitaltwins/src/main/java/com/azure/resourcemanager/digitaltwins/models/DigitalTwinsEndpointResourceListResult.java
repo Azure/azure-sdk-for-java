@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.fluent.models.DigitalTwinsEndpointResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of DigitalTwinsInstance Endpoints with a next link. */
 @Fluent
 public final class DigitalTwinsEndpointResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigitalTwinsEndpointResourceListResult.class);
-
     /*
      * The link used to get the next page of DigitalTwinsInstance Endpoints.
      */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwins List. */
 public final class DigitalTwinsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsList_example.json
      */
     /**
      * Sample code: Get DigitalTwinsInstance resources by subscription.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DigitalTwinsEndpoint Get. */
 public final class DigitalTwinsEndpointGetSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointGet_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointGet_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoint.
@@ -22,7 +22,7 @@ public final class DigitalTwinsEndpointGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointGet_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointGet_WithIdentity_example.json
      */
     /**
      * Sample code: Get a DigitalTwinsInstance endpoint with identity.
