@@ -61,7 +61,8 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-    @Test
+    // Temporary disabled because the service doesn't properly handle this method yet
+    // @Test
     public void testGetGroups() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listGroups(null);
