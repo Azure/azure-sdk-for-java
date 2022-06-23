@@ -200,7 +200,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
     }
 
-    private boolean isDownloadRequest(HttpResponse httpResponse) {
+    private boolean isDownloadResponse(HttpResponse httpResponse) {
         // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
         // response
         return httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null;
