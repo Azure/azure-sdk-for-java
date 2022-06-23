@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Remove `requires io.netty.transport.epoll` from `module-info`.
 
 ### 4.31.0 (2022-06-08)
 
