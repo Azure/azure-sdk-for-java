@@ -331,7 +331,7 @@ com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-logz;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-storagepool;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dataprotection;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-loadtestservice;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-beta.2
