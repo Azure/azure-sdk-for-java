@@ -275,6 +275,23 @@ public enum CriteriaType {
     }
 
     /**
+     * Check if CriteriaType operation is a function.
+     *
+     * @param type CriteriaType
+     * @return True if match, or false.
+     */
+    public static boolean isFunctionWithCaseSensitiveSupport(CriteriaType type) {
+        switch (type) {
+            case CONTAINING:
+            case ENDS_WITH:
+            case STARTS_WITH:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Check if CriteriaType operation is unary, with format of (ops A -&gt; B).
      *
      * @param type CriteriaType

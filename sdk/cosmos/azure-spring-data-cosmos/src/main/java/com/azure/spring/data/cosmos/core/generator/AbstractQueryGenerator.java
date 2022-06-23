@@ -63,10 +63,9 @@ public abstract class AbstractQueryGenerator {
         final String sqlKeyword = criteria.getType().getSqlKeyword();
         parameters.add(Pair.of(parameter, subjectValue));
 
-        if (CriteriaType.isFunction(criteria.getType()) && ! CriteriaType.isUnary(criteria.getType())) {
-            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter, false);
-        } else if (CriteriaType.isFunction(criteria.getType())) {
-            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter, true);
+        if (CriteriaType.isFunction(criteria.getType())) {
+            return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter,
+                CriteriaType.isFunctionWithCaseSensitiveSupport(criteria.getType()));
         } else {
             return getCondition(ignoreCase, sqlKeyword, subject, parameter);
         }

@@ -574,6 +574,28 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testIsNotNullCriteriaNotCaseSensitive() {
+        Criteria hasLastName = Criteria.getInstance(CriteriaType.IS_NOT_NULL, "lastName",
+            Collections.emptyList(),
+            Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(hasLastName), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testStartsWithCriteriaNotCaseSensitive() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STARTS_WITH, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
+            Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
     public void testBetweenCriteria() {
         Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
             Part.IgnoreCaseType.NEVER);
