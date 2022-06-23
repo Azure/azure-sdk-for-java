@@ -27,7 +27,11 @@ public final class RemoteApplicationType extends ExpandableStringEnum<RemoteAppl
         return fromString(name, RemoteApplicationType.class);
     }
 
-    /** @return known RemoteApplicationType values. */
+    /**
+     * Gets known RemoteApplicationType values.
+     *
+     * @return known RemoteApplicationType values.
+     */
     public static Collection<RemoteApplicationType> values() {
         return values(RemoteApplicationType.class);
     }

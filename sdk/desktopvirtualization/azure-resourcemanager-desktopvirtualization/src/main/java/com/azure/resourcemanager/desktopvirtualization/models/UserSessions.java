@@ -18,7 +18,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return userSessionList.
+     * @return userSessionList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserSession> listByHostPool(String resourceGroupName, String hostPoolName);
 
@@ -32,7 +32,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return userSessionList.
+     * @return userSessionList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserSession> listByHostPool(
         String resourceGroupName, String hostPoolName, String filter, Context context);
@@ -62,7 +62,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a userSession.
+     * @return a userSession along with {@link Response}.
      */
     Response<UserSession> getWithResponse(
         String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context);
@@ -92,7 +92,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -111,7 +111,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return userSessionList.
+     * @return userSessionList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserSession> list(String resourceGroupName, String hostPoolName, String sessionHostname);
 
@@ -125,7 +125,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return userSessionList.
+     * @return userSessionList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserSession> list(
         String resourceGroupName, String hostPoolName, String sessionHostname, Context context);
@@ -154,7 +154,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> disconnectWithResponse(
         String resourceGroupName, String hostPoolName, String sessionHostname, String userSessionId, Context context);
@@ -184,7 +184,7 @@ public interface UserSessions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> sendMessageWithResponse(
         String resourceGroupName,

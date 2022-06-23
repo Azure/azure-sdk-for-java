@@ -6,14 +6,45 @@ package com.azure.resourcemanager.desktopvirtualization.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInner;
 import com.azure.resourcemanager.desktopvirtualization.models.DesktopPatch;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DesktopsClient. */
 public interface DesktopsClient {
+    /**
+     * Get a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a desktop along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DesktopInner>> getWithResponseAsync(
+        String resourceGroupName, String applicationGroupName, String desktopName);
+
+    /**
+     * Get a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a desktop on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DesktopInner> getAsync(String resourceGroupName, String applicationGroupName, String desktopName);
+
     /**
      * Get a desktop.
      *
@@ -38,11 +69,57 @@ public interface DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return a desktop along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DesktopInner> getWithResponse(
         String resourceGroupName, String applicationGroupName, String desktopName, Context context);
+
+    /**
+     * Update a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @param desktop Object containing Desktop definitions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema for Desktop properties along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DesktopInner>> updateWithResponseAsync(
+        String resourceGroupName, String applicationGroupName, String desktopName, DesktopPatch desktop);
+
+    /**
+     * Update a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @param desktop Object containing Desktop definitions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema for Desktop properties on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DesktopInner> updateAsync(
+        String resourceGroupName, String applicationGroupName, String desktopName, DesktopPatch desktop);
+
+    /**
+     * Update a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema for Desktop properties on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DesktopInner> updateAsync(String resourceGroupName, String applicationGroupName, String desktopName);
 
     /**
      * Update a desktop.
@@ -69,7 +146,7 @@ public interface DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DesktopInner> updateWithResponse(
@@ -87,7 +164,20 @@ public interface DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DesktopInner> listAsync(String resourceGroupName, String applicationGroupName);
+
+    /**
+     * List desktops.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DesktopInner> list(String resourceGroupName, String applicationGroupName);
@@ -101,7 +191,7 @@ public interface DesktopsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DesktopInner> list(String resourceGroupName, String applicationGroupName, Context context);

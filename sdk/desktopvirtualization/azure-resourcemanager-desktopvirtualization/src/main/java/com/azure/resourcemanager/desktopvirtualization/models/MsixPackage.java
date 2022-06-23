@@ -119,6 +119,13 @@ public interface MsixPackage {
     List<MsixPackageApplications> packageApplications();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.MsixPackageInner object.
      *
      * @return the inner object.
