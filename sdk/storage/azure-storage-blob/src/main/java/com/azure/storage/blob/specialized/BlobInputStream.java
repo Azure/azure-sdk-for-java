@@ -31,6 +31,10 @@ public final class BlobInputStream extends StorageInputStream {
      * Holds the {@link BlobProperties} object that represents the blob's properties.
      */
     private final BlobProperties properties;
+
+    /**
+     * The context.
+     */
     private final Context context;
 
     /**
