@@ -440,7 +440,6 @@ public class AddressSelectorWrapper {
                                      .map(
                                         s -> toAddressInformation(s.getRight(), false, protocol))
                                      .collect(Collectors.toList()));
-                        return Mono.just(b.build());
                     } else {
                         // old
                         b.add(toAddressInformation(primary.getLeft(), true, protocol));
@@ -448,8 +447,9 @@ public class AddressSelectorWrapper {
                                           .map(
                                               s -> toAddressInformation(s.getLeft(), false, protocol))
                                           .collect(Collectors.toList()));
-                        return Mono.just(b.build());
                     }
+
+                    return Mono.just(new PerProtocolPartitionAddressInformation(b.build(), protocol));
                 })).when(addressSelector).resolveAddressesAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
 
                 return new AddressSelectorWrapper(addressSelector, invocationOnMockList);
@@ -499,12 +499,14 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    return Mono.just(ImmutableList.builder()
-                                               .addAll(secondaryAddresses.stream()
-                                                               .map(uri -> toAddressInformation(uri, false, protocol))
-                                                               .collect(Collectors.toList()))
-                                               .add(toAddressInformation(primaryAddress, true, protocol))
-                                               .build());
+                    ImmutableList.Builder<AddressInformation> b = ImmutableList.builder();
+                    b.addAll(
+                            secondaryAddresses.stream()
+                                    .map(uri -> toAddressInformation(uri, false, protocol))
+                                    .collect(Collectors.toList()));
+                    b.add(toAddressInformation(primaryAddress, true, protocol));
+
+                    return Mono.just(new PerProtocolPartitionAddressInformation(b.build(), protocol));
                 })).when(addressSelector).resolveAddressesAsync(Mockito.any(), Mockito.anyBoolean());
 
 

@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,10 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
+        Mockito
+                .doReturn(Mono.just(new PartitionAddressInformation(replicaAddresses)))
+                .when(addressResolver)
+                .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         Uri res = selector.resolvePrimaryUriAsync(request, false).block();
 
@@ -61,7 +65,7 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0])))
+        Mockito.doReturn(Mono.just(new PartitionAddressInformation(replicaAddresses)))
                .when(addressResolver)
                .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
@@ -86,16 +90,17 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0])))
+        Mockito.doReturn(Mono.just(new PartitionAddressInformation(replicaAddresses)))
                .when(addressResolver)
                .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         PerProtocolPartitionAddressInformation res = selector.resolveAddressesAsync(request, false).block();
 
-        assertThat(res).isEqualTo(
+        assertThat(res.getTransportAddressUris()).isEqualTo(
                 replicaAddresses
                     .stream()
                     .filter(a -> a.getProtocolName().equalsIgnoreCase(Protocol.HTTPS.toString()))
+                    .map(addressInformation -> addressInformation.getPhysicalUri())
                     .collect(Collectors.toList()));
     }
 
@@ -115,7 +120,7 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0])))
+        Mockito.doReturn(Mono.just(new PartitionAddressInformation(replicaAddresses)))
                .when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), ArgumentMatchers.eq(false));
 
         List<Uri> res = selector.resolveAllUriAsync(request, true, false).block();

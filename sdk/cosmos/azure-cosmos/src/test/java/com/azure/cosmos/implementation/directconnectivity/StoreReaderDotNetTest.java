@@ -39,6 +39,8 @@ import reactor.core.publisher.Mono;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -56,24 +58,21 @@ public class StoreReaderDotNetTest {
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
         // setup mocks for address information
-        AddressInformation[] addressInformation = new AddressInformation[3];
+        AddressInformation[] addressInformations = new AddressInformation[3];
         for (int i = 0; i < 3; i++) {
-            addressInformation[i] = new AddressInformation(true, true, "http://replica-" + i, Protocol.HTTPS);
+            addressInformations[i] = new AddressInformation(true, true, "http://replica-" + i, Protocol.HTTPS);
         }
+        PartitionAddressInformation addresses = new PartitionAddressInformation(Arrays.asList(addressInformations));
 
         IAddressResolver mockAddressCache = Mockito.mock(IAddressResolver.class);
 
-        Mockito.doReturn(Mono.just(addressInformation))
+        Mockito.doReturn(Mono.just(addresses))
                 .when(mockAddressCache)
                 .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
 
         // validate that the mock works
         PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
-        assertThat(
-                partitionAddressInformation
-                        .getAddressesByProtocol(Protocol.HTTPS)
-                        .getTransportAddressUris()
-                        .get(0)).isEqualTo(addressInformation[0].getPhysicalUri());
+        assertThat(partitionAddressInformation.getAllAddresses().get(0)).isEqualTo(addresses.getAllAddresses().get(0));
     }
 
     /**
@@ -427,10 +426,11 @@ public class StoreReaderDotNetTest {
         // AddressCache can be mocked.
         IAddressResolver mockAddressCache = Mockito.mock(IAddressResolver.class);
 
-        Mockito.doReturn(Mono.just(addressInformation)).when(mockAddressCache)
+        PartitionAddressInformation partitionAddressInformation = new PartitionAddressInformation(Arrays.asList(addressInformation));
+        Mockito.doReturn(Mono.just(partitionAddressInformation)).when(mockAddressCache)
                 .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false) /*forceRefresh*/);
 
-        Mockito.doReturn(Mono.just(new AddressInformation[0])).when(mockAddressCache)
+        Mockito.doReturn(Mono.just(new PartitionAddressInformation(Collections.emptyList()))).when(mockAddressCache)
                 .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(true) /*forceRefresh*/);
 
         return mockAddressCache;
@@ -785,12 +785,7 @@ public class StoreReaderDotNetTest {
 
         // validate that the mock works
         PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
-        assertThat(
-                partitionAddressInformation
-                        .getAddressesByProtocol(Protocol.TCP)
-                        .getTransportAddressUris()
-                        .get(0))
-                .isEqualTo(addressInformations[0]);
+        assertThat(partitionAddressInformation.getAllAddresses().get(0)).isEqualTo(addressInformations[0]);
 
         AddressSelector addressSelector = new AddressSelector(mockAddressCache, Protocol.TCP);
         Uri primaryAddress = addressSelector.resolvePrimaryUriAsync(entity, false).block();

@@ -352,8 +352,7 @@ public class AddressResolverTest {
         }).when(this.collectionCache).resolveCollectionAsync( Mockito.any(), Mockito.any(RxDocumentServiceRequest.class));
 
         // Routing map cache
-        Map<String, CollectionRoutingMap> currentRoutingMap =
-            new HashMap<>(routingMapBeforeRefresh);
+        Map<String, CollectionRoutingMap> currentRoutingMap = new HashMap<>(routingMapBeforeRefresh);
         this.routingMapRefreshCount = new HashMap<>();
 
         Mockito.doAnswer(invocationOnMock -> {
