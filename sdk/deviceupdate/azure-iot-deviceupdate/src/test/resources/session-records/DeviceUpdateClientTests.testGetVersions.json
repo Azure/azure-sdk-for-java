@@ -4,16 +4,16 @@
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/updates/providers/fabrikam/names/vacuum/versions?api-version=2022-07-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (1.8.0_332; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8e119d30-280d-4b7b-b9e5-c7dae9f5a995"
+      "x-ms-client-request-id" : "4a367b58-b9b5-4856-ab9d-675349e4e3b6"
     },
     "Response" : {
-      "content-length" : "45",
-      "traceparent" : "00-e42fa786aa635b498ae87b55c94e31be-eade922a0a45164b-00",
-      "mise-correlation-id" : "97a6b43f-0c02-4420-a512-43fd932f7c0c",
+      "content-length" : "63",
+      "traceparent" : "00-76c563e17924524b903f9608548cfa96-39555b6e1a27dd46-00",
+      "mise-correlation-id" : "e33a4f38-5161-4118-9001-614880a1bd1c",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"2022.608.554.1\",\"2022.401.504.6\"]}",
-      "Date" : "Thu, 09 Jun 2022 22:39:09 GMT",
+      "Body" : "{\"value\":[\"2022.609.510.21\",\"2022.608.554.1\",\"2022.401.504.6\"]}",
+      "Date" : "Thu, 23 Jun 2022 22:51:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -4,16 +4,16 @@
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/updates/providers/fabrikam/names?api-version=2022-07-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (1.8.0_332; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5538c8c4-d865-4de0-a190-52919615b40a"
+      "x-ms-client-request-id" : "79228669-d1c9-4c98-b3cb-f01a6ecdb7bd"
     },
     "Response" : {
       "content-length" : "20",
-      "traceparent" : "00-8c9dd26958ce5b45a97ee9ee6751c8f1-a9769d3b10e4844b-00",
-      "mise-correlation-id" : "24bf03fb-067a-46f5-8c99-861d44e98997",
+      "traceparent" : "00-42d1bf3a364f7a42a4a63bfbf4ce14e4-28c97e13e2a64243-00",
+      "mise-correlation-id" : "eea259a3-ec8a-468f-899a-19c2e9822064",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[\"vacuum\"]}",
-      "Date" : "Thu, 09 Jun 2022 22:39:08 GMT",
+      "Date" : "Thu, 23 Jun 2022 22:51:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
