@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,21 +43,17 @@ public class SearchServiceCustomizations extends Customization {
             "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector", "SimilarityAlgorithm",
             "SearchIndexerKnowledgeStoreBlobProjectionSelector", "SearchIndexerDataIdentity");
 
-        // Change class modifiers to 'public final'.
-        bulkSetClassModifier(publicCustomization, Modifier.PUBLIC | Modifier.FINAL,
-            "BM25SimilarityAlgorithm", "ClassicSimilarityAlgorithm", "HighWaterMarkChangeDetectionPolicy",
-            "SqlIntegratedChangeTrackingPolicy", "SoftDeleteColumnDeletionDetectionPolicy", "MappingCharFilter",
-            "PatternReplaceCharFilter", "DefaultCognitiveServicesAccount", "ConditionalSkill",
-            "KeyPhraseExtractionSkill", "LanguageDetectionSkill", "ShaperSkill", "MergeSkill",
-            "SplitSkill", "TextTranslationSkill", "DocumentExtractionSkill", "WebApiSkill");
-
         // Add vararg overloads to list setters.
         addVarArgsOverload(publicCustomization.getClass("InputFieldMappingEntry"), "inputs", "InputFieldMappingEntry");
         addVarArgsOverload(publicCustomization.getClass("ScoringProfile"), "functions", "ScoringFunction");
 
         // More complex customizations.
+        customizeSearchIndex(publicCustomization.getClass("SearchIndex"));
+        customizeSearchIndexer(publicCustomization.getClass("SearchIndexer"));
         customizeSearchIndexerSkill(publicCustomization.getClass("SearchIndexerSkill"),
             libraryCustomization.getRawEditor());
+        customizeTokenFilter(publicCustomization.getClass("TokenFilter"), libraryCustomization.getRawEditor());
+        customizeLexicalTokenizer(publicCustomization.getClass("LexicalTokenizer"), libraryCustomization.getRawEditor());
         customizeMagnitudeScoringParameters(publicCustomization.getClass("MagnitudeScoringParameters"));
         customizeSearchFieldDataType(publicCustomization.getClass("SearchFieldDataType"));
         customizeCognitiveServicesAccountKey(publicCustomization.getClass("CognitiveServicesAccountKey"));
@@ -74,6 +71,22 @@ public class SearchServiceCustomizations extends Customization {
         customizeLuceneStandardAnalyzer(publicCustomization.getClass("LuceneStandardAnalyzer"));
         customizeStopAnalyzer(publicCustomization.getClass("StopAnalyzer"));
         customizeSearchIndexerSkillset(publicCustomization.getClass("SearchIndexerSkillset"));
+        customizeCjkBigramTokenFilter(publicCustomization.getClass("CjkBigramTokenFilter"));
+        customizeKeepTokenFilter(publicCustomization.getClass("KeepTokenFilter"));
+        customizeSynonymTokenFilter(publicCustomization.getClass("SynonymTokenFilter"));
+        customizeShingleTokenFilter(publicCustomization.getClass("ShingleTokenFilter"));
+        customizeLimitTokenFilter(publicCustomization.getClass("LimitTokenFilter"));
+        customizePhoneticTokenFilter(publicCustomization.getClass("PhoneticTokenFilter"));
+        customizeStopwordsTokenFilter(publicCustomization.getClass("StopwordsTokenFilter"));
+        customizeWordDelimiterTokenFilter(publicCustomization.getClass("WordDelimiterTokenFilter"));
+        customizeElisionTokenFilter(publicCustomization.getClass("ElisionTokenFilter"));
+        customizeNGramTokenizer(publicCustomization.getClass("NGramTokenizer"));
+        customizeEdgeNGramTokenizer(publicCustomization.getClass("EdgeNGramTokenizer"));
+        customizeMicrosoftLanguageStemmingTokenizer(publicCustomization.getClass("MicrosoftLanguageStemmingTokenizer"));
+        customizePatternTokenizer(publicCustomization.getClass("PatternTokenizer"));
+        customizeIndexingParameters(publicCustomization.getClass("IndexingParameters"),
+            libraryCustomization.getRawEditor());
+        customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
 
         addKnowledgeStoreProjectionFluentSetterOverrides(
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"),
@@ -83,6 +96,49 @@ public class SearchServiceCustomizations extends Customization {
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
+    }
+
+    private void customizeSearchIndex(ClassCustomization classCustomization) {
+        classCustomization.addConstructor(joinWithNewline(
+            "/**",
+            " * Constructor of {@link SearchIndex}.",
+            " * @param name The name of the index.",
+            " * @param fields The fields of the index.",
+            " */",
+            "public SearchIndex(String name, List<SearchField> fields) {",
+            "    this.name = name;",
+            "    this.fields = fields;",
+            "}"
+        ));
+
+        addVarArgsOverload(classCustomization, "fields", "SearchField");
+        addVarArgsOverload(classCustomization, "scoringProfiles", "ScoringProfile");
+        addVarArgsOverload(classCustomization, "suggesters", "SearchSuggester");
+        addVarArgsOverload(classCustomization, "analyzers", "LexicalAnalyzer");
+        addVarArgsOverload(classCustomization, "tokenizers", "LexicalTokenizer");
+        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilter");
+        addVarArgsOverload(classCustomization, "charFilters", "CharFilter");
+        addVarArgsOverload(classCustomization, "normalizers", "LexicalNormalizer");
+    }
+
+    private void customizeSearchIndexer(ClassCustomization classCustomization) {
+        classCustomization.addConstructor(joinWithNewline(
+            "/**",
+            " * Constructor of {@link SearchIndexer}.",
+            " *",
+            " * @param name The name of the indexer.",
+            " * @param dataSourceName The name of the datasource from which this indexer reads data.",
+            " * @param targetIndexName The name of the index to which this indexer writes data.",
+            " */",
+            "public SearchIndexer(String name, String dataSourceName, String targetIndexName) {",
+            "    this.name = name;",
+            "    this.dataSourceName = dataSourceName;",
+            "    this.targetIndexName = targetIndexName;",
+            "}"
+        ));
+
+        addVarArgsOverload(classCustomization, "fieldMappings", "FieldMapping");
+        addVarArgsOverload(classCustomization, "outputFieldMappings", "FieldMapping");
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -104,26 +160,46 @@ public class SearchServiceCustomizations extends Customization {
 
         String fileContents = editor.getFileContent(classCustomization.getFileName());
 
-        fileContents = updateSkillDeserialization(fileContents, "EntityRecognitionSkillV1", "EntityRecognitionSkill");
-        fileContents = updateSkillDeserialization(fileContents, "EntityRecognitionSkillV3", "EntityRecognitionSkill");
-        fileContents = updateSkillDeserialization(fileContents, "SentimentSkillV1", "SentimentSkill");
-        fileContents = updateSkillDeserialization(fileContents, "SentimentSkillV3", "SentimentSkill");
-
-        fileContents = fileContents.replace("return SentimentSkillV1.fromJson(readerToUse);",
-            joinWithNewline(
-                "SentimentSkillV1 v1Skill = SentimentSkillV1.fromJson(readerToUse);",
-                "return (v1Skill == null) ? null : new SentimentSkill(v1Skill);"
-            ));
+        fileContents = updateVersionedDeserialization(fileContents, "EntityRecognitionSkillV1", "EntityRecognitionSkill");
+        fileContents = updateVersionedDeserialization(fileContents, "EntityRecognitionSkillV3", "EntityRecognitionSkill");
+        fileContents = updateVersionedDeserialization(fileContents, "SentimentSkillV1", "SentimentSkill");
+        fileContents = updateVersionedDeserialization(fileContents, "SentimentSkillV3", "SentimentSkill");
 
         editor.replaceFile(classCustomization.getFileName(), fileContents);
     }
 
-    private String updateSkillDeserialization(String fileContents, String codegenSkillName, String skillName) {
-        String target = String.format("return %1$s.fromJson(readerToUse);", codegenSkillName);
+    private void customizeTokenFilter(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+
+        String fileContents = editor.getFileContent(classCustomization.getFileName());
+
+        fileContents = updateVersionedDeserialization(fileContents, "EdgeNGramTokenFilterV1", "EdgeNGramTokenFilter");
+        fileContents = updateVersionedDeserialization(fileContents, "EdgeNGramTokenFilterV2", "EdgeNGramTokenFilter");
+        fileContents = updateVersionedDeserialization(fileContents, "NGramTokenFilterV1", "NGramTokenFilter");
+        fileContents = updateVersionedDeserialization(fileContents, "NGramTokenFilterV2", "NGramTokenFilter");
+
+        editor.replaceFile(classCustomization.getFileName(), fileContents);
+    }
+
+    private void customizeLexicalTokenizer(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+
+        String fileContents = editor.getFileContent(classCustomization.getFileName());
+
+        fileContents = updateVersionedDeserialization(fileContents, "KeywordTokenizerV1", "KeywordTokenizer");
+        fileContents = updateVersionedDeserialization(fileContents, "KeywordTokenizerV2", "KeywordTokenizer");
+        fileContents = updateVersionedDeserialization(fileContents, "LuceneStandardTokenizerV1", "LuceneStandardTokenizer");
+        fileContents = updateVersionedDeserialization(fileContents, "LuceneStandardTokenizerV2", "LuceneStandardTokenizer");
+
+        editor.replaceFile(classCustomization.getFileName(), fileContents);
+    }
+
+    private String updateVersionedDeserialization(String fileContents, String codegenName, String Name) {
+        String target = String.format("return %1$s.fromJson(readerToUse);", codegenName);
         String replacement = String.format(joinWithNewline(
-            "%1$s codegenSkill = %1$s.fromJson(readerToUse);",
-            "return (codegenSkill == null) ? null : new %2$s(codegenSkill);"
-        ), codegenSkillName, skillName);
+            "%1$s codegen = %1$s.fromJson(readerToUse);",
+            "return (codegen == null) ? null : new %2$s(codegen);"
+        ), codegenName, Name);
 
         return fileContents.replace(target, replacement);
     }
@@ -134,7 +210,6 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeCognitiveServicesAccountKey(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         classCustomization.getProperty("key").setModifier(Modifier.PRIVATE);
         classCustomization.addMethod(joinWithNewline(
             "/**",
@@ -151,7 +226,6 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeOcrSkill(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
 
         JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
             .getJavadoc();
@@ -167,18 +241,15 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeImageAnalysisSkill(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         addVarArgsOverload(classCustomization, "visualFeatures", "VisualFeature");
         addVarArgsOverload(classCustomization, "details", "ImageDetail");
     }
 
     private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         addVarArgsOverload(classCustomization, "inlineEntitiesDefinition", "CustomEntity");
     }
 
     private void customizeCustomNormalizer(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
         addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
     }
@@ -299,13 +370,11 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeCustomAnalyzer(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
         addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
     }
 
     private void customizePatternAnalyzer(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         classCustomization.getMethod("isLowerCaseTerms").rename("areLowerCaseTerms");
         addVarArgsOverload(classCustomization, "stopwords", "String");
 
@@ -340,12 +409,10 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeLuceneStandardAnalyzer(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 
     private void customizeStopAnalyzer(ClassCustomization classCustomization) {
-        setClassModifier(classCustomization, Modifier.PUBLIC | Modifier.FINAL);
         addVarArgsOverload(classCustomization, "stopwords", "String");
     }
 
@@ -414,6 +481,184 @@ public class SearchServiceCustomizations extends Customization {
                     "}"), Collections.singletonList("java.util.List"))
                 .addAnnotation("@Override");
         }
+    }
+
+    private void customizeCjkBigramTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isOutputUnigrams").rename("areOutputUnigrams");
+        addVarArgsOverload(classCustomization, "ignoreScripts", "CjkBigramTokenFilterScripts");
+    }
+
+    private void customizeKeepTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isLowerCaseKeepWords").rename("areLowerCaseKeepWords");
+    }
+
+    private void customizeSynonymTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isExpand").rename("getExpand");
+    }
+
+    private void customizeShingleTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isOutputUnigrams").rename("areOutputUnigrams");
+        classCustomization.getMethod("isOutputUnigramsIfNoShingles").rename("areOutputUnigramsIfNoShingles");
+    }
+
+    private void customizeLimitTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isAllTokensConsumed").rename("areAllTokensConsumed");
+    }
+
+    private void customizePhoneticTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isOriginalTokensReplaced").rename("areOriginalTokensReplaced");
+    }
+
+    private void customizeStopwordsTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isTrailingStopWordsRemoved").rename("areTrailingStopWordsRemoved");
+
+        addVarArgsOverload(classCustomization, "stopwords", "String");
+    }
+
+    private void customizeNGramTokenizer(ClassCustomization classCustomization) {
+        addVarArgsOverload(classCustomization, "tokenChars", "TokenCharacterKind");
+    }
+
+    private void customizeEdgeNGramTokenizer(ClassCustomization classCustomization) {
+        addVarArgsOverload(classCustomization, "tokenChars", "TokenCharacterKind");
+    }
+
+    private void customizeWordDelimiterTokenFilter(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isGenerateWordParts").rename("generateWordParts");
+        classCustomization.getMethod("isGenerateNumberParts").rename("generateNumberParts");
+        classCustomization.getMethod("isWordsCatenated").rename("areWordsCatenated");
+        classCustomization.getMethod("isNumbersCatenated").rename("areNumbersCatenated");
+        classCustomization.getMethod("isCatenateAll").rename("catenateAll");
+        classCustomization.getMethod("isSplitOnCaseChange").rename("splitOnCaseChange");
+        classCustomization.getMethod("isSplitOnNumerics").rename("splitOnNumerics");
+
+        addVarArgsOverload(classCustomization, "protectedWords", "String");
+    }
+
+    private void customizeElisionTokenFilter(ClassCustomization classCustomization) {
+        addVarArgsOverload(classCustomization, "articles", "String");
+    }
+
+    private void customizeMicrosoftLanguageStemmingTokenizer(ClassCustomization classCustomization) {
+        classCustomization.getMethod("isSearchTokenizerUsed").rename("isSearchTokenizer");
+    }
+
+    private void customizePatternTokenizer(ClassCustomization classCustomization) {
+        classCustomization.getMethod("getFlags").setReturnType("List<RegexFlags>", "%s")
+            .replaceBody(joinWithNewline(
+                "if (this.flags == null) {",
+                "    return null;",
+                "} else {",
+                "    String[] flagStrings = this.flags.toString().split(\"\\\\|\");",
+                "    return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());",
+                "}"), Collections.singletonList(Collectors.class.getName()));
+
+        classCustomization.getMethod("setFlags").replaceParameters("List<RegexFlags> flags")
+            .replaceBody(joinWithNewline(
+                "if (flags == null) {",
+                "    this.flags = null;",
+                "} else {",
+                "    String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining(\"|\"));",
+                "    this.flags = RegexFlags.fromString(flagString);",
+                "}",
+                "",
+                "return this;"));
+        addVarArgsOverload(classCustomization, "flags", "RegexFlags");
+        classCustomization.getMethod("setFlags(RegexFlags... flags)")
+            .replaceBody(joinWithNewline(
+                "if (flags == null) {",
+                "    this.flags = null;",
+                "    return this;",
+                "} else {",
+                "    return setFlags(java.util.Arrays.asList(flags));",
+                "}"));
+    }
+
+    private void customizeIndexingParameters(ClassCustomization classCustomization, Editor editor) {
+        classCustomization.customizeAst(ast -> ast.getClassByName("IndexingParameters").get()
+            .addPrivateField("Map<String, Object>", "configurationMap"));
+
+        classCustomization.getMethod("getConfiguration").rename("getIndexingParametersConfiguration");
+        classCustomization.getMethod("setConfiguration").rename("setIndexingParametersConfiguration")
+            .replaceBody(joinWithNewline(
+                "this.configuration = configuration;",
+                "this.configurationMap = MappingUtils.indexingParametersConfigurationToMap(configuration);",
+                "return this;"
+            ), Collections.singletonList("com.azure.search.documents.implementation.util.MappingUtils"));
+
+        classCustomization.addMethod(joinWithNewline(
+                "public Map<String, Object> getConfiguration() {",
+                "    return this.configurationMap;",
+                "}"
+            ), Collections.singletonList(Map.class.getName()))
+            .getJavadoc()
+            .setDescription("Get the configuration property: A dictionary of indexer-specific configuration "
+                + "properties. Each name is the name of a specific property. Each value must be of a primitive type.")
+            .setReturn("the configuration value.");
+
+        classCustomization.addMethod(joinWithNewline(
+                "public IndexingParameters setConfiguration(Map<String, Object> configuration) {",
+                "    this.configurationMap = configuration;",
+                "    this.configuration = MappingUtils.mapToIndexingParametersConfiguration(configuration);",
+                "    return this;",
+                "}"
+            ))
+            .getJavadoc()
+            .setReturn("Set the configuration property: A dictionary of indexer-specific configuration properties. "
+                + "Each name is the name of a specific property. Each value must be of a primitive type.")
+            .setParam("configuration", "the configuration value to set.")
+            .setReturn("the IndexingParameters object itself.");
+
+        String replacement = editor.getFileContent(classCustomization.getFileName())
+            .replace("deserializedValue.configuration = configuration;",
+                "deserializedValue.setIndexingParametersConfiguration(configuration);");
+        editor.replaceFile(classCustomization.getFileName(), replacement);
+    }
+
+    private void customizeSearchIndexerDataSourceConnection(ClassCustomization classCustomization) {
+        classCustomization.addConstructor(joinWithNewline(
+            "public SearchIndexerDataSourceConnection(String name, SearchIndexerDataSourceType type, String connectionString, SearchIndexerDataContainer container) {",
+            "    this.name = name;",
+            "    this.type = type;",
+            "    this.credentials = (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);",
+            "    this.container = container;",
+            "}"
+        ))
+            .getJavadoc()
+            .setDescription("Constructor of {@link SearchIndexerDataSourceConnection}.")
+            .setParam("name", "The name of the datasource.")
+            .setParam("type", "The type of the datasource. Possible values include: 'AzureSql', 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'")
+            .setParam("connectionString", "The connection string for the datasource.")
+            .setParam("container", "The data container for the datasource.");
+
+        classCustomization.removeMethod("getCredentials");
+        classCustomization.removeMethod("setCredentials");
+
+        classCustomization.addMethod(joinWithNewline(
+                "public String getConnectionString() {",
+                "    return (credentials == null) ? null : credentials.getConnectionString();",
+                "}"
+            ))
+            .getJavadoc()
+            .setDescription("Get the connectionString property: The connection string for the datasource.")
+            .setReturn("the connectionString value.");
+
+        classCustomization.addMethod(joinWithNewline(
+                "public SearchIndexerDataSourceConnection setConnectionString(String connectionString) {",
+                "    if (connectionString == null) {",
+                "        this.credentials = null;",
+                "    } else if (credentials == null) {",
+                "        this.credentials = new DataSourceCredentials().setConnectionString(connectionString);",
+                "    } else {",
+                "        credentials.setConnectionString(connectionString);",
+                "    }",
+                "    return this;",
+                "}"
+            ))
+            .getJavadoc()
+            .setDescription("Set the connectionString property: The connection string for the datasource.")
+            .setParam("connectionString", "the connectionString value to set.")
+            .setReturn("the SearchIndexerDataSourceConnection object itself.");
     }
 
     private static void bulkRemoveFromJsonMethods(ClassCustomization... classCustomizations) {

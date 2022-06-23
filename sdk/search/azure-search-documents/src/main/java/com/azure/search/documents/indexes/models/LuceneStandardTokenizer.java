@@ -4,7 +4,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.implementation.converters.LuceneStandardTokenizerHelper;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV1;
+import com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2;
 
 /**
  * Breaks text following the Unicode Text Segmentation rules. This tokenizer is
@@ -12,26 +14,21 @@ import com.azure.search.documents.implementation.converters.LuceneStandardTokeni
  */
 @Fluent
 public final class LuceneStandardTokenizer extends LexicalTokenizer {
-    private String odataType;
+    private final LuceneStandardTokenizerV1 v1Tokenizer;
+    private final LuceneStandardTokenizerV2 v2tokenizer;
 
-    /*
-     * The maximum token length. Default is 255. Tokens longer than the maximum
-     * length are split.
-     */
-    private Integer maxTokenLength;
+    LuceneStandardTokenizer(LuceneStandardTokenizerV1 v1Tokenizer) {
+        super(v1Tokenizer.getName());
 
-    static {
-        LuceneStandardTokenizerHelper.setAccessor(new LuceneStandardTokenizerHelper.LuceneStandardTokenizerAccessor() {
-            @Override
-            public void setODataType(LuceneStandardTokenizer tokenizer, String odataType) {
-                tokenizer.setODataType(odataType);
-            }
+        this.v1Tokenizer = v1Tokenizer;
+        this.v2tokenizer = null;
+    }
 
-            @Override
-            public String getODataType(LuceneStandardTokenizer standardTokenizer) {
-                return standardTokenizer.getODataType();
-            }
-        });
+    LuceneStandardTokenizer(LuceneStandardTokenizerV2 v2tokenizer) {
+        super(v2tokenizer.getName());
+
+        this.v1Tokenizer = null;
+        this.v2tokenizer = v2tokenizer;
     }
 
     /**
@@ -43,7 +40,9 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
      */
     public LuceneStandardTokenizer(String name) {
         super(name);
-        odataType = "#Microsoft.Azure.Search.LuceneStandardTokenizerV2";
+
+        this.v1Tokenizer = null;
+        this.v2tokenizer = new LuceneStandardTokenizerV2(name);
     }
 
     /**
@@ -53,7 +52,7 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
      * @return the maxTokenLength value.
      */
     public Integer getMaxTokenLength() {
-        return this.maxTokenLength;
+        return (v1Tokenizer != null) ? v1Tokenizer.getMaxTokenLength() : v2tokenizer.getMaxTokenLength();
     }
 
     /**
@@ -64,27 +63,16 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
      * @return the LuceneStandardTokenizer object itself.
      */
     public LuceneStandardTokenizer setMaxTokenLength(Integer maxTokenLength) {
-        this.maxTokenLength = maxTokenLength;
+        if (v1Tokenizer != null) {
+            v1Tokenizer.setMaxTokenLength(maxTokenLength);
+        } else {
+            v2tokenizer.setMaxTokenLength(maxTokenLength);
+        }
         return this;
     }
 
-    /**
-     * The private setter to set the odataType property
-     * via {@link LuceneStandardTokenizerHelper.LuceneStandardTokenizerAccessor}.
-     *
-     * @param odataType The OData type.
-     */
-    private void setODataType(String odataType) {
-        this.odataType = odataType;
-    }
-
-    /**
-     * The private getter to get the odataType property
-     * via {@link LuceneStandardTokenizerHelper.LuceneStandardTokenizerAccessor}.
-     *
-     * @return The OData type.
-     */
-    private String getODataType() {
-        return this.odataType;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return (v1Tokenizer != null) ? v1Tokenizer.toJson(jsonWriter) : v2tokenizer.toJson(jsonWriter);
     }
 }

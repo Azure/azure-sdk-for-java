@@ -11,6 +11,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.DefaultJsonReader;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -91,7 +92,7 @@ public abstract class SearchTestBase extends TestBase {
         try {
             ObjectNode jsonData = (ObjectNode) MAPPER.readTree(TestHelpers.loadResource(jsonFile));
             jsonData.set("name", new TextNode(testResourceNamer.randomName(jsonData.get("name").asText(), 64)));
-            return setupIndex(MAPPER.treeToValue(jsonData, SearchIndex.class));
+            return setupIndex(SearchIndex.fromJson(DefaultJsonReader.fromString(jsonData.toString())));
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }

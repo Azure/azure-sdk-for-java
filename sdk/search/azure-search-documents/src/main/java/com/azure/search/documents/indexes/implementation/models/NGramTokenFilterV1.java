@@ -13,42 +13,65 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.TokenFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Truncates the terms to a specific length. This token filter is implemented using Apache Lucene. */
+/** Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene. */
 @Fluent
-public final class TruncateTokenFilter extends TokenFilter {
+public final class NGramTokenFilterV1 extends TokenFilter {
     private String odataType;
 
-    private Integer length;
+    private Integer minGram;
+
+    private Integer maxGram;
 
     /**
-     * Creates an instance of TruncateTokenFilter class.
+     * Creates an instance of NGramTokenFilterV1 class.
      *
      * @param name the name value to set.
      */
-    public TruncateTokenFilter(String name) {
+    public NGramTokenFilterV1(String name) {
         super(name);
     }
 
     /**
-     * Get the length property: The length at which terms will be truncated. Default and maximum is 300.
+     * Get the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
-     * @return the length value.
+     * @return the minGram value.
      */
-    public Integer getLength() {
-        return this.length;
+    public Integer getMinGram() {
+        return this.minGram;
     }
 
     /**
-     * Set the length property: The length at which terms will be truncated. Default and maximum is 300.
+     * Set the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
-     * @param length the length value to set.
-     * @return the TruncateTokenFilter object itself.
+     * @param minGram the minGram value to set.
+     * @return the NGramTokenFilterV1 object itself.
      */
-    public TruncateTokenFilter setLength(Integer length) {
-        this.length = length;
+    public NGramTokenFilterV1 setMinGram(Integer minGram) {
+        this.minGram = minGram;
+        return this;
+    }
+
+    /**
+     * Get the maxGram property: The maximum n-gram length. Default is 2.
+     *
+     * @return the maxGram value.
+     */
+    public Integer getMaxGram() {
+        return this.maxGram;
+    }
+
+    /**
+     * Set the maxGram property: The maximum n-gram length. Default is 2.
+     *
+     * @param maxGram the maxGram value to set.
+     * @return the NGramTokenFilterV1 object itself.
+     */
+    public NGramTokenFilterV1 setMaxGram(Integer maxGram) {
+        this.maxGram = maxGram;
         return this;
     }
 
@@ -57,27 +80,29 @@ public final class TruncateTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeIntegerField("length", this.length, false);
+        jsonWriter.writeIntegerField("minGram", this.minGram, false);
+        jsonWriter.writeIntegerField("maxGram", this.maxGram, false);
         return jsonWriter.writeEndObject().flush();
     }
 
     /**
-     * Reads an instance of TruncateTokenFilter from the JsonReader.
+     * Reads an instance of NGramTokenFilterV1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of TruncateTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of NGramTokenFilterV1 if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
      */
-    public static TruncateTokenFilter fromJson(JsonReader jsonReader) {
+    public static NGramTokenFilterV1 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
-                    Integer length = null;
+                    Integer minGram = null;
+                    Integer maxGram = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -87,16 +112,18 @@ public final class TruncateTokenFilter extends TokenFilter {
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
-                        } else if ("length".equals(fieldName)) {
-                            length = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("minGram".equals(fieldName)) {
+                            minGram = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                        } else if ("maxGram".equals(fieldName)) {
+                            maxGram = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!"#Microsoft.Azure.Search.TruncateTokenFilter".equals(odataType)) {
+                    if (!"#Microsoft.Azure.Search.NGramTokenFilter".equals(odataType)) {
                         throw new IllegalStateException(
-                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.TruncateTokenFilter'. The found '@odata.type' was '"
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.NGramTokenFilter'. The found '@odata.type' was '"
                                         + odataType
                                         + "'.");
                     }
@@ -110,9 +137,10 @@ public final class TruncateTokenFilter extends TokenFilter {
                         throw new IllegalStateException(
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
-                    TruncateTokenFilter deserializedValue = new TruncateTokenFilter(name);
+                    NGramTokenFilterV1 deserializedValue = new NGramTokenFilterV1(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.length = length;
+                    deserializedValue.minGram = minGram;
+                    deserializedValue.maxGram = maxGram;
 
                     return deserializedValue;
                 });

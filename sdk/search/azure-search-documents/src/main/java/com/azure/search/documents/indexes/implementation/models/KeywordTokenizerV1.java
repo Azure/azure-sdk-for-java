@@ -13,35 +13,44 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
+import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Language specific stemming filter. This token filter is implemented using Apache Lucene. */
+/** Emits the entire input as a single token. This tokenizer is implemented using Apache Lucene. */
 @Fluent
-public final class StemmerTokenFilter extends TokenFilter {
+public final class KeywordTokenizerV1 extends LexicalTokenizer {
     private String odataType;
 
-    private final StemmerTokenFilterLanguage language;
+    private Integer bufferSize;
 
     /**
-     * Creates an instance of StemmerTokenFilter class.
+     * Creates an instance of KeywordTokenizerV1 class.
      *
      * @param name the name value to set.
-     * @param language the language value to set.
      */
-    public StemmerTokenFilter(String name, StemmerTokenFilterLanguage language) {
+    public KeywordTokenizerV1(String name) {
         super(name);
-        this.language = language;
     }
 
     /**
-     * Get the language property: The language to use.
+     * Get the bufferSize property: The read buffer size in bytes. Default is 256.
      *
-     * @return the language value.
+     * @return the bufferSize value.
      */
-    public StemmerTokenFilterLanguage getLanguage() {
-        return this.language;
+    public Integer getBufferSize() {
+        return this.bufferSize;
+    }
+
+    /**
+     * Set the bufferSize property: The read buffer size in bytes. Default is 256.
+     *
+     * @param bufferSize the bufferSize value to set.
+     * @return the KeywordTokenizerV1 object itself.
+     */
+    public KeywordTokenizerV1 setBufferSize(Integer bufferSize) {
+        this.bufferSize = bufferSize;
+        return this;
     }
 
     @Override
@@ -49,28 +58,27 @@ public final class StemmerTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString(), false);
+        jsonWriter.writeIntegerField("bufferSize", this.bufferSize, false);
         return jsonWriter.writeEndObject().flush();
     }
 
     /**
-     * Reads an instance of StemmerTokenFilter from the JsonReader.
+     * Reads an instance of KeywordTokenizerV1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StemmerTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of KeywordTokenizerV1 if the JsonReader was pointing to an instance of it, or null if it was
      *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
      */
-    public static StemmerTokenFilter fromJson(JsonReader jsonReader) {
+    public static KeywordTokenizerV1 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
-                    boolean languageFound = false;
-                    StemmerTokenFilterLanguage language = null;
+                    Integer bufferSize = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -80,17 +88,16 @@ public final class StemmerTokenFilter extends TokenFilter {
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
-                        } else if ("language".equals(fieldName)) {
-                            language = StemmerTokenFilterLanguage.fromString(reader.getStringValue());
-                            languageFound = true;
+                        } else if ("bufferSize".equals(fieldName)) {
+                            bufferSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!"#Microsoft.Azure.Search.StemmerTokenFilter".equals(odataType)) {
+                    if (!"#Microsoft.Azure.Search.KeywordTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
-                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StemmerTokenFilter'. The found '@odata.type' was '"
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.KeywordTokenizer'. The found '@odata.type' was '"
                                         + odataType
                                         + "'.");
                     }
@@ -99,16 +106,14 @@ public final class StemmerTokenFilter extends TokenFilter {
                     if (!nameFound) {
                         missingProperties.add("name");
                     }
-                    if (!languageFound) {
-                        missingProperties.add("language");
-                    }
 
                     if (!CoreUtils.isNullOrEmpty(missingProperties)) {
                         throw new IllegalStateException(
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
-                    StemmerTokenFilter deserializedValue = new StemmerTokenFilter(name, language);
+                    KeywordTokenizerV1 deserializedValue = new KeywordTokenizerV1(name);
                     deserializedValue.odataType = odataType;
+                    deserializedValue.bufferSize = bufferSize;
 
                     return deserializedValue;
                 });

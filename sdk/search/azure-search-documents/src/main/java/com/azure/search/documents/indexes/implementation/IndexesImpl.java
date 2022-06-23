@@ -32,7 +32,7 @@ import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;

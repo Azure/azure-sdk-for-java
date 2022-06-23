@@ -4,7 +4,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.implementation.converters.NGramTokenFilterHelper;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV1;
+import com.azure.search.documents.indexes.implementation.models.NGramTokenFilterV2;
 
 /**
  * Generates n-grams of the given size(s). This token filter is implemented
@@ -12,31 +14,21 @@ import com.azure.search.documents.implementation.converters.NGramTokenFilterHelp
  */
 @Fluent
 public final class NGramTokenFilter extends TokenFilter {
-    private String odataType;
+    private final NGramTokenFilterV1 v1Filter;
+    private final NGramTokenFilterV2 v2Filter;
 
-    /*
-     * The minimum n-gram length. Default is 1. Must be less than the value of
-     * maxGram.
-     */
-    private Integer minGram;
+    NGramTokenFilter(NGramTokenFilterV1 v1Filter) {
+        super(v1Filter.getName());
 
-    /*
-     * The maximum n-gram length. Default is 2.
-     */
-    private Integer maxGram;
+        this.v1Filter = v1Filter;
+        this.v2Filter = null;
+    }
 
-    static {
-        NGramTokenFilterHelper.setAccessor(new NGramTokenFilterHelper.NGramTokenFilterAccessor() {
-            @Override
-            public void setODataType(NGramTokenFilter tokenFilter, String odataType) {
-                tokenFilter.setODataType(odataType);
-            }
+    NGramTokenFilter(NGramTokenFilterV2 v2Filter) {
+        super(v2Filter.getName());
 
-            @Override
-            public String getODataType(NGramTokenFilter tokenFilter) {
-                return tokenFilter.getODataType();
-            }
-        });
+        this.v1Filter = null;
+        this.v2Filter = v2Filter;
     }
 
     /**
@@ -48,7 +40,9 @@ public final class NGramTokenFilter extends TokenFilter {
      */
     public NGramTokenFilter(String name) {
         super(name);
-        odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
+
+        this.v1Filter = null;
+        this.v2Filter = new NGramTokenFilterV2(name);
     }
 
     /**
@@ -58,7 +52,7 @@ public final class NGramTokenFilter extends TokenFilter {
      * @return the minGram value.
      */
     public Integer getMinGram() {
-        return this.minGram;
+        return (v1Filter != null) ? v1Filter.getMinGram() : v2Filter.getMinGram();
     }
 
     /**
@@ -69,7 +63,11 @@ public final class NGramTokenFilter extends TokenFilter {
      * @return the NGramTokenFilter object itself.
      */
     public NGramTokenFilter setMinGram(Integer minGram) {
-        this.minGram = minGram;
+        if (v1Filter != null) {
+            v1Filter.setMinGram(minGram);
+        } else {
+            v2Filter.setMinGram(minGram);
+        }
         return this;
     }
 
@@ -79,7 +77,7 @@ public final class NGramTokenFilter extends TokenFilter {
      * @return the maxGram value.
      */
     public Integer getMaxGram() {
-        return this.maxGram;
+        return (v1Filter != null) ? v1Filter.getMaxGram() : v2Filter.getMaxGram();
     }
 
     /**
@@ -89,27 +87,16 @@ public final class NGramTokenFilter extends TokenFilter {
      * @return the NGramTokenFilter object itself.
      */
     public NGramTokenFilter setMaxGram(Integer maxGram) {
-        this.maxGram = maxGram;
+        if (v1Filter != null) {
+            v1Filter.setMaxGram(maxGram);
+        } else {
+            v2Filter.setMaxGram(maxGram);
+        }
         return this;
     }
 
-    /**
-     * The private setter to set the odataType property
-     * via {@link NGramTokenFilterHelper.NGramTokenFilterAccessor}.
-     *
-     * @param odataType The OData type.
-     */
-    private void setODataType(String odataType) {
-        this.odataType = odataType;
-    }
-
-    /**
-     * The private getter to get the odataType property
-     * via {@link NGramTokenFilterHelper.NGramTokenFilterAccessor}.
-     *
-     * @return The OData type.
-     */
-    private String getODataType() {
-        return this.odataType;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return (v1Filter != null) ? v1Filter.toJson(jsonWriter) : v2Filter.toJson(jsonWriter);
     }
 }

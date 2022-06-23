@@ -13,6 +13,7 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.TokenFilter;
 import java.util.ArrayList;
 import java.util.List;
 

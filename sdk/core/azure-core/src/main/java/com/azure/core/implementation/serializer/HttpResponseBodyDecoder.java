@@ -227,7 +227,7 @@ public final class HttpResponseBodyDecoder {
         Callable<Object> serializerAdapterDeserialization) throws Exception {
         if (FromJsonCache.isJsonCapable(deserializationType)) {
             JsonReader jsonReader = DefaultJsonReader.fromBytes(data);
-            return FromJsonCache.fromJson(deserializationType.getClass(), jsonReader);
+            return FromJsonCache.fromJson(TypeUtil.getRawClass(deserializationType), jsonReader);
         } else {
             return serializerAdapterDeserialization.call();
         }

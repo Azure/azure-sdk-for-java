@@ -14,6 +14,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
+import com.azure.search.documents.indexes.models.TokenFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
  * implemented using Apache Lucene.
  */
 @Fluent
-public final class EdgeNGramTokenFilter extends TokenFilter {
+public final class EdgeNGramTokenFilterV1 extends TokenFilter {
     private String odataType;
 
     private Integer minGram;
@@ -32,11 +33,11 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     private EdgeNGramTokenFilterSide side;
 
     /**
-     * Creates an instance of EdgeNGramTokenFilter class.
+     * Creates an instance of EdgeNGramTokenFilterV1 class.
      *
      * @param name the name value to set.
      */
-    public EdgeNGramTokenFilter(String name) {
+    public EdgeNGramTokenFilterV1(String name) {
         super(name);
     }
 
@@ -53,9 +54,9 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * Set the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
      *
      * @param minGram the minGram value to set.
-     * @return the EdgeNGramTokenFilter object itself.
+     * @return the EdgeNGramTokenFilterV1 object itself.
      */
-    public EdgeNGramTokenFilter setMinGram(Integer minGram) {
+    public EdgeNGramTokenFilterV1 setMinGram(Integer minGram) {
         this.minGram = minGram;
         return this;
     }
@@ -73,9 +74,9 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * Set the maxGram property: The maximum n-gram length. Default is 2.
      *
      * @param maxGram the maxGram value to set.
-     * @return the EdgeNGramTokenFilter object itself.
+     * @return the EdgeNGramTokenFilterV1 object itself.
      */
-    public EdgeNGramTokenFilter setMaxGram(Integer maxGram) {
+    public EdgeNGramTokenFilterV1 setMaxGram(Integer maxGram) {
         this.maxGram = maxGram;
         return this;
     }
@@ -93,9 +94,9 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
      * Set the side property: Specifies which side of the input the n-gram should be generated from. Default is "front".
      *
      * @param side the side value to set.
-     * @return the EdgeNGramTokenFilter object itself.
+     * @return the EdgeNGramTokenFilterV1 object itself.
      */
-    public EdgeNGramTokenFilter setSide(EdgeNGramTokenFilterSide side) {
+    public EdgeNGramTokenFilterV1 setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
     }
@@ -112,15 +113,15 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
     }
 
     /**
-     * Reads an instance of EdgeNGramTokenFilter from the JsonReader.
+     * Reads an instance of EdgeNGramTokenFilterV1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EdgeNGramTokenFilter if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of EdgeNGramTokenFilterV1 if the JsonReader was pointing to an instance of it, or null if it
      *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
      */
-    public static EdgeNGramTokenFilter fromJson(JsonReader jsonReader) {
+    public static EdgeNGramTokenFilterV1 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
@@ -166,7 +167,7 @@ public final class EdgeNGramTokenFilter extends TokenFilter {
                         throw new IllegalStateException(
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
-                    EdgeNGramTokenFilter deserializedValue = new EdgeNGramTokenFilter(name);
+                    EdgeNGramTokenFilterV1 deserializedValue = new EdgeNGramTokenFilterV1(name);
                     deserializedValue.odataType = odataType;
                     deserializedValue.minGram = minGram;
                     deserializedValue.maxGram = maxGram;

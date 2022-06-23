@@ -13,44 +13,45 @@ import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.LexicalTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Filters out tokens with same text as the previous token. This token filter is implemented using Apache Lucene. */
+/** Breaks text following the Unicode Text Segmentation rules. This tokenizer is implemented using Apache Lucene. */
 @Fluent
-public final class UniqueTokenFilter extends TokenFilter {
+public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
     private String odataType;
 
-    private Boolean onlyOnSamePosition;
+    private Integer maxTokenLength;
 
     /**
-     * Creates an instance of UniqueTokenFilter class.
+     * Creates an instance of LuceneStandardTokenizerV1 class.
      *
      * @param name the name value to set.
      */
-    public UniqueTokenFilter(String name) {
+    public LuceneStandardTokenizerV1(String name) {
         super(name);
     }
 
     /**
-     * Get the onlyOnSamePosition property: A value indicating whether to remove duplicates only at the same position.
-     * Default is false.
+     * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split.
      *
-     * @return the onlyOnSamePosition value.
+     * @return the maxTokenLength value.
      */
-    public Boolean isOnlyOnSamePosition() {
-        return this.onlyOnSamePosition;
+    public Integer getMaxTokenLength() {
+        return this.maxTokenLength;
     }
 
     /**
-     * Set the onlyOnSamePosition property: A value indicating whether to remove duplicates only at the same position.
-     * Default is false.
+     * Set the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split.
      *
-     * @param onlyOnSamePosition the onlyOnSamePosition value to set.
-     * @return the UniqueTokenFilter object itself.
+     * @param maxTokenLength the maxTokenLength value to set.
+     * @return the LuceneStandardTokenizerV1 object itself.
      */
-    public UniqueTokenFilter setOnlyOnSamePosition(Boolean onlyOnSamePosition) {
-        this.onlyOnSamePosition = onlyOnSamePosition;
+    public LuceneStandardTokenizerV1 setMaxTokenLength(Integer maxTokenLength) {
+        this.maxTokenLength = maxTokenLength;
         return this;
     }
 
@@ -59,27 +60,27 @@ public final class UniqueTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeBooleanField("onlyOnSamePosition", this.onlyOnSamePosition, false);
+        jsonWriter.writeIntegerField("maxTokenLength", this.maxTokenLength, false);
         return jsonWriter.writeEndObject().flush();
     }
 
     /**
-     * Reads an instance of UniqueTokenFilter from the JsonReader.
+     * Reads an instance of LuceneStandardTokenizerV1 from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UniqueTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * @return An instance of LuceneStandardTokenizerV1 if the JsonReader was pointing to an instance of it, or null if
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      *     polymorphic discriminator.
      */
-    public static UniqueTokenFilter fromJson(JsonReader jsonReader) {
+    public static LuceneStandardTokenizerV1 fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(
                 jsonReader,
                 reader -> {
                     String odataType = null;
                     boolean nameFound = false;
                     String name = null;
-                    Boolean onlyOnSamePosition = null;
+                    Integer maxTokenLength = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
@@ -89,16 +90,16 @@ public final class UniqueTokenFilter extends TokenFilter {
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
                             nameFound = true;
-                        } else if ("onlyOnSamePosition".equals(fieldName)) {
-                            onlyOnSamePosition = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                        } else if ("maxTokenLength".equals(fieldName)) {
+                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
                         } else {
                             reader.skipChildren();
                         }
                     }
 
-                    if (!"#Microsoft.Azure.Search.UniqueTokenFilter".equals(odataType)) {
+                    if (!"#Microsoft.Azure.Search.StandardTokenizer".equals(odataType)) {
                         throw new IllegalStateException(
-                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.UniqueTokenFilter'. The found '@odata.type' was '"
+                                "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StandardTokenizer'. The found '@odata.type' was '"
                                         + odataType
                                         + "'.");
                     }
@@ -112,9 +113,9 @@ public final class UniqueTokenFilter extends TokenFilter {
                         throw new IllegalStateException(
                                 "Missing required property/properties: " + String.join(", ", missingProperties));
                     }
-                    UniqueTokenFilter deserializedValue = new UniqueTokenFilter(name);
+                    LuceneStandardTokenizerV1 deserializedValue = new LuceneStandardTokenizerV1(name);
                     deserializedValue.odataType = odataType;
-                    deserializedValue.onlyOnSamePosition = onlyOnSamePosition;
+                    deserializedValue.maxTokenLength = maxTokenLength;
 
                     return deserializedValue;
                 });

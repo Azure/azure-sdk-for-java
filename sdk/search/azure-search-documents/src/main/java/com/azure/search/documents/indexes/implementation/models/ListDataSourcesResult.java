@@ -14,20 +14,21 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Response from a List Datasources request. If successful, it includes the full definitions of all datasources. */
 @Immutable
 public final class ListDataSourcesResult implements JsonSerializable<ListDataSourcesResult> {
-    private final List<SearchIndexerDataSource> dataSources;
+    private final List<SearchIndexerDataSourceConnection> dataSources;
 
     /**
      * Creates an instance of ListDataSourcesResult class.
      *
      * @param dataSources the dataSources value to set.
      */
-    public ListDataSourcesResult(List<SearchIndexerDataSource> dataSources) {
+    public ListDataSourcesResult(List<SearchIndexerDataSourceConnection> dataSources) {
         this.dataSources = dataSources;
     }
 
@@ -36,7 +37,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
      *
      * @return the dataSources value.
      */
-    public List<SearchIndexerDataSource> getDataSources() {
+    public List<SearchIndexerDataSourceConnection> getDataSources() {
         return this.dataSources;
     }
 
@@ -61,14 +62,15 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
                 jsonReader,
                 reader -> {
                     boolean dataSourcesFound = false;
-                    List<SearchIndexerDataSource> dataSources = null;
+                    List<SearchIndexerDataSourceConnection> dataSources = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
                             dataSources =
-                                    JsonUtils.readArray(reader, reader1 -> SearchIndexerDataSource.fromJson(reader1));
+                                    JsonUtils.readArray(
+                                            reader, reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
                             dataSourcesFound = true;
                         } else {
                             reader.skipChildren();

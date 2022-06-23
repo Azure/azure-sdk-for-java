@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -61,7 +61,7 @@ public final class DataSourcesImpl {
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchIndexerDataSource>> createOrUpdate(
+        Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdate(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -71,7 +71,7 @@ public final class DataSourcesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
                 @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchIndexerDataSource dataSource,
+                @BodyParam("application/json") SearchIndexerDataSourceConnection dataSource,
                 Context context);
 
         @Delete("/datasources('{dataSourceName}')")
@@ -90,7 +90,7 @@ public final class DataSourcesImpl {
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchIndexerDataSource>> get(
+        Mono<Response<SearchIndexerDataSourceConnection>> get(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -112,12 +112,12 @@ public final class DataSourcesImpl {
         @Post("/datasources")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchIndexerDataSource>> create(
+        Mono<Response<SearchIndexerDataSourceConnection>> create(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchIndexerDataSource dataSource,
+                @BodyParam("application/json") SearchIndexerDataSourceConnection dataSource,
                 Context context);
     }
 
@@ -140,9 +140,9 @@ public final class DataSourcesImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerDataSource>> createOrUpdateWithResponseAsync(
+    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateWithResponseAsync(
             String dataSourceName,
-            SearchIndexerDataSource dataSource,
+            SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
             Boolean skipIndexerResetRequirementForCache,
@@ -217,7 +217,7 @@ public final class DataSourcesImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerDataSource>> getWithResponseAsync(
+    public Mono<Response<SearchIndexerDataSourceConnection>> getWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -273,8 +273,8 @@ public final class DataSourcesImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerDataSource>> createWithResponseAsync(
-            SearchIndexerDataSource dataSource, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SearchIndexerDataSourceConnection>> createWithResponseAsync(
+            SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

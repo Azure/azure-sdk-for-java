@@ -29,7 +29,7 @@ import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrId
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
-import com.azure.search.documents.indexes.implementation.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
