@@ -30,7 +30,11 @@ public final class MsaAppType extends ExpandableStringEnum<MsaAppType> {
         return fromString(name, MsaAppType.class);
     }
 
-    /** @return known MsaAppType values. */
+    /**
+     * Gets known MsaAppType values.
+     *
+     * @return known MsaAppType values.
+     */
     public static Collection<MsaAppType> values() {
         return values(MsaAppType.class);
     }

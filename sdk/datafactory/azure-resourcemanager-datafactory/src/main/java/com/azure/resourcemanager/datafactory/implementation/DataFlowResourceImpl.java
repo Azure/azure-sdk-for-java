@@ -35,6 +35,10 @@ public final class DataFlowResourceImpl
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DataFlowResourceInner innerModel() {
         return this.innerObject;
     }

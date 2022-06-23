@@ -42,7 +42,11 @@ public final class IkeEncryption extends ExpandableStringEnum<IkeEncryption> {
         return fromString(name, IkeEncryption.class);
     }
 
-    /** @return known IkeEncryption values. */
+    /**
+     * Gets known IkeEncryption values.
+     *
+     * @return known IkeEncryption values.
+     */
     public static Collection<IkeEncryption> values() {
         return values(IkeEncryption.class);
     }

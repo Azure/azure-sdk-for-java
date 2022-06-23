@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults List. */
 public final class VaultsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Vaults_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Vaults_List.json
      */
     /**
      * Sample code: Vaults_List.

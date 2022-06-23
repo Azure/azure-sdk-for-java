@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CustomIpPrefixes List. */
 public final class CustomIpPrefixesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CustomIpPrefixListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/CustomIpPrefixListAll.json
      */
     /**
      * Sample code: List all custom IP prefixes.

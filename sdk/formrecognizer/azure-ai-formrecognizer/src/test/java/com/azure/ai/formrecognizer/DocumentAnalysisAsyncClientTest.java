@@ -82,7 +82,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptData(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -116,7 +115,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
                                                                  DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -171,7 +169,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29171")
     public void analyzeReceiptFromDataMultiPage(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -211,7 +208,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeReceiptSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -268,14 +264,12 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("Until file available on main")
     public void analyzeReceiptSourceUrlWithPngFile(HttpClient httpClient,
                                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-receipt", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -285,7 +279,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29171")
+    @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(documentUrl -> {
@@ -307,7 +301,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContent(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
@@ -341,7 +334,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentResultWithContentTypeAutoDetection(HttpClient httpClient,
                                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -411,7 +403,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentWithSelectionMarks(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -481,7 +472,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentFromUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
@@ -562,7 +552,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/29170")
     public void analyzeContentWithSelectionMarksFromUrl(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -639,8 +628,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 syncPoller =
                 client.beginAnalyzeDocument("prebuilt-businessCard",
                         Utility.toFluxByteBuffer(getContentDetectionFileData(filePath)),
-                        dataLength,
-                        new AnalyzeDocumentOptions())
+                        dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -740,8 +728,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
 
@@ -798,8 +785,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -819,8 +805,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         urlRunner(sourceUrl -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult>
                 syncPoller
-                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl,
-                    new AnalyzeDocumentOptions())
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", sourceUrl)
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1170,7 +1155,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("Enable once file uploaded on github main")
     public void analyzeLicenseSourceUrl(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {

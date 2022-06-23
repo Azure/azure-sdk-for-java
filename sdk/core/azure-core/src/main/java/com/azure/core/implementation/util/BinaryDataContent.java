@@ -18,7 +18,7 @@ import java.nio.ReadOnlyBufferException;
  */
 public abstract class BinaryDataContent {
 
-    public static final int STREAM_READ_SIZE = 8092;
+    public static final int STREAM_READ_SIZE = 8192;
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it is able to be calculated.

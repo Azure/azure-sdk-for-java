@@ -42,21 +42,6 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
         verify(builder, times(1)).executorService(any(ExecutorService.class));
     }
 
-    @Test
-    void authorityHostAndExecutorServiceConfigured() {
-        AzureProperties properties = createMinimalServiceProperties();
-
-        DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(properties);
-        ThreadPoolExecutor executor = getThreadPoolExecutor();
-        factory.setExecutorService(executor);
-
-        DefaultAzureCredentialBuilder builder = factory.build();
-        verify(builder, times(1)).executorService(executor);
-
-        String aadEndpoint = properties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
-        verify(builder, times(1)).authorityHost(aadEndpoint);
-    }
-
     @Override
     protected AzureIdentityTestProperties createMinimalServiceProperties() {
         return new AzureIdentityTestProperties();
@@ -70,6 +55,22 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
     @Override
     protected void buildClient(DefaultAzureCredentialBuilder builder) {
         builder.build();
+    }
+
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureIdentityTestProperties properties = new AzureIdentityTestProperties();
+        properties.getProfile().setTenantId("test-tenant-id");
+        properties.getProfile().getEnvironment().setActiveDirectoryEndpoint("test-authority-host");
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setManagedIdentityEnabled(true);
+
+        DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(properties);
+        DefaultAzureCredentialBuilder builder = factory.build();
+
+        verify(builder, times(1)).tenantId("test-tenant-id");
+        verify(builder, times(1)).authorityHost("test-authority-host");
+        verify(builder, times(1)).managedIdentityClientId("test-client-id");
     }
 
     @Override
@@ -101,7 +102,6 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
             ? retry.getExponential().getMaxRetries() : retry.getFixed().getMaxRetries();
         verify(builder, mode).maxRetry(maxRetries);
     }
-
 
     private ThreadPoolExecutor getThreadPoolExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();

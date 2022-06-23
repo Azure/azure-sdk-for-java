@@ -27,7 +27,11 @@ public final class NetworkInterfaceNicType extends ExpandableStringEnum<NetworkI
         return fromString(name, NetworkInterfaceNicType.class);
     }
 
-    /** @return known NetworkInterfaceNicType values. */
+    /**
+     * Gets known NetworkInterfaceNicType values.
+     *
+     * @return known NetworkInterfaceNicType values.
+     */
     public static Collection<NetworkInterfaceNicType> values() {
         return values(NetworkInterfaceNicType.class);
     }

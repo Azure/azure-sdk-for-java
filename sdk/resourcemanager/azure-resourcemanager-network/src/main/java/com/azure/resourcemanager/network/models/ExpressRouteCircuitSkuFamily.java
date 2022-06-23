@@ -27,7 +27,11 @@ public final class ExpressRouteCircuitSkuFamily extends ExpandableStringEnum<Exp
         return fromString(name, ExpressRouteCircuitSkuFamily.class);
     }
 
-    /** @return known ExpressRouteCircuitSkuFamily values. */
+    /**
+     * Gets known ExpressRouteCircuitSkuFamily values.
+     *
+     * @return known ExpressRouteCircuitSkuFamily values.
+     */
     public static Collection<ExpressRouteCircuitSkuFamily> values() {
         return values(ExpressRouteCircuitSkuFamily.class);
     }

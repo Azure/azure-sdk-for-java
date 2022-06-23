@@ -27,7 +27,11 @@ public final class VirtualWanSecurityProviderType extends ExpandableStringEnum<V
         return fromString(name, VirtualWanSecurityProviderType.class);
     }
 
-    /** @return known VirtualWanSecurityProviderType values. */
+    /**
+     * Gets known VirtualWanSecurityProviderType values.
+     *
+     * @return known VirtualWanSecurityProviderType values.
+     */
     public static Collection<VirtualWanSecurityProviderType> values() {
         return values(VirtualWanSecurityProviderType.class);
     }

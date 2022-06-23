@@ -183,4 +183,11 @@ public interface DataFactoryManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the GlobalParametersClient object to access its operations.
+     *
+     * @return the GlobalParametersClient object.
+     */
+    GlobalParametersClient getGlobalParameters();
 }
