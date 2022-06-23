@@ -49,20 +49,38 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
 
+parameters:
+- name: release_azuremessagingeventhubs
+  displayName: 'azure-messaging-eventhubs'
+  type: boolean
+  default: true
+- name: release_azuremessagingeventhubscheckpointstoreblob
+  displayName: 'azure-messaging-eventhubs-checkpointstore-blob'
+  type: boolean
+  default: true
+- name: release_azuremessagingeventhubscheckpointstoreredis
+  displayName: 'azure-messaging-eventhubs-checkpointstore-redis'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventhubs
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventhubs
         groupId: com.azure
         safeName: azuremessagingeventhubs
+        releaseInBatch: ${{ parameters.release_azuremessagingeventhubs }}
       - name: azure-messaging-eventhubs-checkpointstore-blob
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
+        releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstoreblob }}
       - name: azure-messaging-eventhubs-checkpointstore-redis
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreredis
+        releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstoreredis }}
     AdditionalModules:
       - name: azure-messaging-eventhubs-track1-perf
         groupId: com.azure

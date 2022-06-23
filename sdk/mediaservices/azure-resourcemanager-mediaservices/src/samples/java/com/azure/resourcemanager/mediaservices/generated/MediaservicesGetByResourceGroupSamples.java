@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Mediaservices GetByResourceGroup. */
 public final class MediaservicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-06-01/examples/accounts-get-by-name.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accounts-get-by-name.json
      */
     /**
      * Sample code: Get a Media Services account by name.

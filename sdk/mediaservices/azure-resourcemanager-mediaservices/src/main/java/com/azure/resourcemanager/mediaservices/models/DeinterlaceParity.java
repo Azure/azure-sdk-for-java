@@ -30,7 +30,11 @@ public final class DeinterlaceParity extends ExpandableStringEnum<DeinterlacePar
         return fromString(name, DeinterlaceParity.class);
     }
 
-    /** @return known DeinterlaceParity values. */
+    /**
+     * Gets known DeinterlaceParity values.
+     *
+     * @return known DeinterlaceParity values.
+     */
     public static Collection<DeinterlaceParity> values() {
         return values(DeinterlaceParity.class);
     }

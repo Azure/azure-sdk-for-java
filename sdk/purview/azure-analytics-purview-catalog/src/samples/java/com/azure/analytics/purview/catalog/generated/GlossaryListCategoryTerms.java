@@ -13,18 +13,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryListCategoryTerms {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarylistcategoryterms.glossarylistcategoryterms
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("limit", "-1");
-        requestOptions.addQueryParam("offset", "0");
-        requestOptions.addQueryParam("sort", "ASC");
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarylistcategoryterms.glossarylistcategoryterms
+        RequestOptions requestOptions =
+                new RequestOptions()
+                        .addQueryParam("limit", "-1")
+                        .addQueryParam("offset", "0")
+                        .addQueryParam("sort", "ASC");
         Response<BinaryData> response =
                 glossaryClient.listCategoryTermsWithResponse("ed7458f0-9463-48a5-b5c6-4f785fb34e12", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.glossarylistcategoryterms.glossarylistcategoryterms
+        // END:com.azure.analytics.purview.catalog.generated.glossarylistcategoryterms.glossarylistcategoryterms
     }
 }

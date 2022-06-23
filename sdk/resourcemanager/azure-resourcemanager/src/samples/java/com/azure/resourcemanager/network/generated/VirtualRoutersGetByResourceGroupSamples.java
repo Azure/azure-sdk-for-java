@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualRouters GetByResourceGroup. */
 public final class VirtualRoutersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterGet.json
      */
     /**
      * Sample code: Get VirtualRouter.

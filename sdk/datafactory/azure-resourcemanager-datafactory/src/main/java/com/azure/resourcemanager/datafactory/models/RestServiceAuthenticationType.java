@@ -22,6 +22,9 @@ public final class RestServiceAuthenticationType extends ExpandableStringEnum<Re
     /** Static value ManagedServiceIdentity for RestServiceAuthenticationType. */
     public static final RestServiceAuthenticationType MANAGED_SERVICE_IDENTITY = fromString("ManagedServiceIdentity");
 
+    /** Static value OAuth2ClientCredential for RestServiceAuthenticationType. */
+    public static final RestServiceAuthenticationType OAUTH2CLIENT_CREDENTIAL = fromString("OAuth2ClientCredential");
+
     /**
      * Creates or finds a RestServiceAuthenticationType from its string representation.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Result of the post subvolume and action is to get metadata of the subvolume. */
 @Fluent
 public final class SubvolumeModelInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumeModelInner.class);
-
     /*
      * Resource Id
      */

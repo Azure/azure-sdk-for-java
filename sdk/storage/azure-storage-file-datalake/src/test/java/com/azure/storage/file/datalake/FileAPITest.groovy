@@ -438,7 +438,7 @@ class FileAPITest extends APISpec {
         def fileProps = fc.getProperties()
         def expireTime = fileProps.getExpiresOn()
         def expectedExpire = fileProps.getCreationTime().plusDays(6)
-        expireTime == expectedExpire
+        compareDatesWithPrecision(expireTime, expectedExpire)
     }
 
     def "Create if not exists min"() {
@@ -735,7 +735,7 @@ class FileAPITest extends APISpec {
         def fileProps = fc.getProperties()
         def expireTime = fileProps.getExpiresOn()
         def expectedExpire = fileProps.getCreationTime().plusDays(6)
-        expireTime == expectedExpire
+        compareDatesWithPrecision(expireTime, expectedExpire)
     }
 
     def "Delete min"() {

@@ -13,15 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityGetHeader {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitygetheader.entitygetheader
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitygetheader.entitygetheader
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 entityClient.getHeaderWithResponse("9fb74c11-ac48-4650-95bc-760665c5bd92", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitygetheader.entitygetheader
+        // END:com.azure.analytics.purview.catalog.generated.entitygetheader.entitygetheader
     }
 }

@@ -12,7 +12,6 @@ import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeGroupDetails.Definition {
     private VolumeGroupDetailsInner innerObject;
@@ -39,15 +38,6 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public String provisioningState() {
@@ -146,11 +136,6 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
 
     public VolumeGroupDetailsImpl withRegion(String location) {
         this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public VolumeGroupDetailsImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
         return this;
     }
 

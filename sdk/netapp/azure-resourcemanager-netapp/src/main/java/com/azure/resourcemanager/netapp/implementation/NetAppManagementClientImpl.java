@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
 import com.azure.resourcemanager.netapp.fluent.VaultsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
+import com.azure.resourcemanager.netapp.fluent.VolumeQuotaRulesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -42,15 +44,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the NetAppManagementClientImpl type. */
 @ServiceClient(builder = NetAppManagementClientBuilder.class)
 public final class NetAppManagementClientImpl implements NetAppManagementClient {
-    private final ClientLogger logger = new ClientLogger(NetAppManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -259,6 +258,18 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.backupPolicies;
     }
 
+    /** The VolumeQuotaRulesClient object to access its operations. */
+    private final VolumeQuotaRulesClient volumeQuotaRules;
+
+    /**
+     * Gets the VolumeQuotaRulesClient object to access its operations.
+     *
+     * @return the VolumeQuotaRulesClient object.
+     */
+    public VolumeQuotaRulesClient getVolumeQuotaRules() {
+        return this.volumeQuotaRules;
+    }
+
     /** The VaultsClient object to access its operations. */
     private final VaultsClient vaults;
 
@@ -318,7 +329,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-01";
+        this.apiVersion = "2022-01-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
@@ -330,6 +341,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.backups = new BackupsClientImpl(this);
         this.accountBackups = new AccountBackupsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
+        this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
         this.subvolumes = new SubvolumesClientImpl(this);
@@ -351,10 +363,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -418,7 +427,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -477,4 +486,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppManagementClientImpl.class);
 }
