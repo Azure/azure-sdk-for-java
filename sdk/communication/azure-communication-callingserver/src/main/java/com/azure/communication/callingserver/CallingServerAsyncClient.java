@@ -26,6 +26,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -132,10 +133,9 @@ public final class CallingServerAsyncClient {
                                                                        Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            List<CommunicationIdentifierModel> targetsModel = null;
-            for (CommunicationIdentifier target : targets) {
-                targetsModel.add(CommunicationIdentifierConverter.convert(target));
-            }
+            List<CommunicationIdentifierModel> targetsModel = targets
+                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+
             CallSourceDto callSourceDto = new CallSourceDto().setIdentifier(CommunicationIdentifierConverter.convert(source));
             if (sourceCallerId != null) {
                 callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(sourceCallerId));

@@ -36,6 +36,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Asynchronous client that supports call connection operations.
@@ -415,10 +416,8 @@ public final class CallConnectionAsync {
                                                                                 Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            List<CommunicationIdentifierModel> participantModels = null;
-            for (CommunicationIdentifier participant : participants) {
-                participantModels.add(CommunicationIdentifierConverter.convert(participant));
-            }
+            List<CommunicationIdentifierModel> participantModels = participants
+                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
             AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
                 .setParticipantsToAdd(participantModels)
@@ -467,10 +466,8 @@ public final class CallConnectionAsync {
         List<CommunicationIdentifier> participantsToRemove, String operationContext, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            List<CommunicationIdentifierModel> participantModels = null;
-            for (CommunicationIdentifier participant : participantsToRemove) {
-                participantModels.add(CommunicationIdentifierConverter.convert(participant));
-            }
+            List<CommunicationIdentifierModel> participantModels = participantsToRemove
+                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
             RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
                 .setParticipantsToRemove(participantModels)
