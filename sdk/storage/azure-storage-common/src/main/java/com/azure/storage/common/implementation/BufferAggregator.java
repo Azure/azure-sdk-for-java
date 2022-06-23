@@ -89,7 +89,8 @@ public final class BufferAggregator {
                  * exception. Then advance the original source by the amount read to reflect the change.
                  */
                 int readAmount = data.remaining();
-                ByteBuffer smallSource = source.duplicate().limit(source.position() + readAmount);
+                ByteBuffer smallSource = source.duplicate();
+                smallSource.limit(source.position() + readAmount);
                 data.put(smallSource);
                 source.position(source.position() + readAmount);
             } else {
