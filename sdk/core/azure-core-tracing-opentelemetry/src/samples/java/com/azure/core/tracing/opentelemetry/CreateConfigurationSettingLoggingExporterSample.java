@@ -40,7 +40,7 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static void configureLoggingExporter() {
-        // WithSpan annotation creates a parent span and make it current, which propagates into synchronous calls
+        // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
         // automatically.
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
@@ -58,7 +58,7 @@ public class CreateConfigurationSettingLoggingExporterSample {
      */
     @WithSpan
     private static void doClientWork(ConfigurationClient client) {
-        // WithSpan annotation will create a parent span and make it current. Current context propagates into synchronous
+        // WithSpan annotation creates a parent span and makes it current. Current context propagates into synchronous
         // calls automatically.
         client.setConfigurationSetting("hello", "text", "World");
     }

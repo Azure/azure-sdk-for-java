@@ -140,13 +140,13 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.14.0-alpha</version>
+      <version>1.11.0-alpha</version> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-extension-annotations</artifactId>
-      <version>1.14.0</version>
+      <version>1.11.0</version> <!-- {x-include-update;io.opentelemetry:opentelemetry-extension-annotations;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

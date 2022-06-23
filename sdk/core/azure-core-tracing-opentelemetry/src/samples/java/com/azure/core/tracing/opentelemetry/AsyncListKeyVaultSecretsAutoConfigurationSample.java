@@ -54,7 +54,7 @@ public class AsyncListKeyVaultSecretsAutoConfigurationSample {
      */
     @WithSpan("my-span")
     private static void doClientWork(SecretAsyncClient secretAsyncClient) {
-        // WithSpan annotation creates a parent span and make it current, which propagates into synchronous calls
+        // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
         // automatically. ApplicationInsights agent or OpenTelemetry agent also propagate context through async reactor calls.
         // When manually instrumenting without agent help, please follow doClientWorkExplicitContext example for
         // async context propagation.

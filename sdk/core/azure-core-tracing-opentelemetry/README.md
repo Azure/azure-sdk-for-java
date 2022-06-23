@@ -38,7 +38,7 @@ If you use [OpenTelemetry Java agent](https://github.com/open-telemetry/opentele
 
 For more details on how to configure exporters, add manual instrumentation, or enrich telemetry, see [OpenTelemetry Instrumentation for Java](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
 
-Note: OpenTelemetry agent artifact is stable, but does not provide over-the-wire telemetry stability guarantees, which may cause span names and attribute names produced by Azure SDK might change over time if you update the agent. Check out [agent stability and versioning](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/VERSIONING.md#compatibility-requirements) for more details.
+Note: OpenTelemetry agent artifact is stable, but does not provide over-the-wire telemetry stability guarantees - attribute or span names produced by Azure SDK might change over time when you update the agent. Check out [agent stability and versioning](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/VERSIONING.md#compatibility-requirements) for more details.
 
 ## Manually instrument the application with OpenTelemetry SDK
 
@@ -84,18 +84,18 @@ public static void main(String[] args) {
 
 @WithSpan("my-span")
 public static void doClientWork(SecretClient client) {
-    // WithSpan annotation creates a parent span and make it current, which propagates into synchronous calls
+    // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
     // automatically. ApplicationInsights agent or OpenTelemetry agent also propagate context through async reactor calls.
     // When manually instrumenting without agent help, please follow the next example for async context propagation.
     secretClient.setSecret(new Secret("secret_name", "secret_value"));
 }
 ```
 
-And if you're using async clients and not using Application Insights Java agent or OpenTelemetry agent, please propagate context manually:
+When using async clients without Application Insights Java agent or OpenTelemetry agent, please do context propagation manually:
 
 ```java
+private static Tracer tracer = configureTracing();
 public static void main(String[] args) {
-    configureTracing();
     SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .vaultUrl(VAULT_URL)
         .credential(new DefaultAzureCredentialBuilder().build())
@@ -104,7 +104,7 @@ public static void main(String[] args) {
 }
 
 private static void doClientWorkExplicitContext(SecretAsyncClient secretAsyncClient) {
-    Span userParentSpan = TRACER.spanBuilder("my-span").startSpan();
+    Span userParentSpan = tracer.spanBuilder("my-span").startSpan();
     Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan));
 
     secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))

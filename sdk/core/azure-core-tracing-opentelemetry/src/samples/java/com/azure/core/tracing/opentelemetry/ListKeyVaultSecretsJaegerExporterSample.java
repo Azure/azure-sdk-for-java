@@ -53,7 +53,7 @@ public class ListKeyVaultSecretsJaegerExporterSample {
                 .build();
 
         // Set to process the spans by the Jaeger Exporter
-        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder()
+        OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(jaegerExporter)).build())
             .buildAndRegisterGlobal();
@@ -65,7 +65,7 @@ public class ListKeyVaultSecretsJaegerExporterSample {
      */
     @WithSpan
     private static void doClientWork(SecretClient secretClient) {
-        // WithSpan annotation creates a parent span and make it current, which propagates into synchronous calls
+        // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
         // automatically.
         secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
         secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
