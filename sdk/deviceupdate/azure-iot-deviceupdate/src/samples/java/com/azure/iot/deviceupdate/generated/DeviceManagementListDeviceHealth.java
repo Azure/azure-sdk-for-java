@@ -4,8 +4,8 @@
 
 package com.azure.iot.deviceupdate.generated;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
@@ -21,8 +21,8 @@ public class DeviceManagementListDeviceHealth {
                         .buildClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                deviceManagementClient.listDeviceHealthWithResponse("state eq 'unhealthy'", requestOptions);
+        requestOptions.addQueryParam("filter", "state eq 'unhealthy'");
+        PagedIterable<BinaryData> response = deviceManagementClient.listDeviceHealth(requestOptions);
         // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
     }
 }

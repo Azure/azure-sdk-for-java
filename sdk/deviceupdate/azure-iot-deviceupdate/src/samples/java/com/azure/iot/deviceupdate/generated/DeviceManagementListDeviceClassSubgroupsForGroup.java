@@ -4,8 +4,8 @@
 
 package com.azure.iot.deviceupdate.generated;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
@@ -21,8 +21,8 @@ public class DeviceManagementListDeviceClassSubgroupsForGroup {
                         .buildClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdeviceclasssubgroupsforgroup.devicemanagementlistdeviceclasssubgroupsforgroup
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                deviceManagementClient.listDeviceClassSubgroupsForGroupWithResponse("group1", requestOptions);
+        PagedIterable<BinaryData> response =
+                deviceManagementClient.listDeviceClassSubgroupsForGroup("group1", requestOptions);
         // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdeviceclasssubgroupsforgroup.devicemanagementlistdeviceclasssubgroupsforgroup
     }
 }

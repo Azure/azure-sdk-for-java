@@ -37,6 +37,14 @@ public final class DeviceManagementClient {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -86,6 +94,14 @@ public final class DeviceManagementClient {
     /**
      * Gets the properties of a device class.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -129,6 +145,14 @@ public final class DeviceManagementClient {
 
     /**
      * Update device class details.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -182,7 +206,19 @@ public final class DeviceManagementClient {
     }
 
     /**
-     * Deletes a device class.
+     * Deletes a device class. Device classes are created automatically when Device Update-enabled devices are connected
+     * to the hub but are not automatically cleaned up since they are referenced by DeviceClassSubgroups. If the user
+     * has deleted all DeviceClassSubgroups for a device class they can also delete the device class to remove the
+     * records from the system and to stop checking the compatibility of this device class with new updates. If a device
+     * is ever reconnected for this device class it will be re-created.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -200,6 +236,14 @@ public final class DeviceManagementClient {
 
     /**
      * Gets a list of installable updates for a device class.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -244,6 +288,7 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -307,6 +352,14 @@ public final class DeviceManagementClient {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -329,6 +382,14 @@ public final class DeviceManagementClient {
 
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -386,6 +447,14 @@ public final class DeviceManagementClient {
     /**
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -446,6 +515,14 @@ public final class DeviceManagementClient {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -480,6 +557,7 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -520,6 +598,14 @@ public final class DeviceManagementClient {
     /**
      * Gets the device group properties.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -552,7 +638,19 @@ public final class DeviceManagementClient {
     }
 
     /**
-     * Deletes a device group.
+     * Deletes a device group. This group is automatically created when a Device Update-enabled device is connected to
+     * the hub and reports its properties. Groups, subgroups, and deployments are not automatically cleaned up but are
+     * retained for history purposes. Users can call this method to delete a group if they do not need to retain any of
+     * the history of the group and no longer need it. If a device is ever connected again for this group after the
+     * group was deleted it will be automatically re-created but there will be no history.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -571,6 +669,14 @@ public final class DeviceManagementClient {
     /**
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -594,8 +700,8 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getGroupUpdateComplianceWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.client.getGroupUpdateComplianceWithResponse(groupId, requestOptions).block();
+    public Response<BinaryData> getUpdateComplianceForGroupWithResponse(String groupId, RequestOptions requestOptions) {
+        return this.client.getUpdateComplianceForGroupWithResponse(groupId, requestOptions).block();
     }
 
     /**
@@ -606,7 +712,8 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -656,6 +763,7 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -666,7 +774,7 @@ public final class DeviceManagementClient {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: OffsetDateTime
+     *             startDateTime: String
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -713,12 +821,20 @@ public final class DeviceManagementClient {
     /**
      * Gets the deployment properties.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: OffsetDateTime
+     *     startDateTime: String
      *     update: {
      *         updateId: {
      *             provider: String
@@ -764,12 +880,20 @@ public final class DeviceManagementClient {
     /**
      * Creates or updates a deployment.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: OffsetDateTime
+     *     startDateTime: String
      *     update: {
      *         updateId: {
      *             provider: String
@@ -801,7 +925,7 @@ public final class DeviceManagementClient {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: OffsetDateTime
+     *     startDateTime: String
      *     update: {
      *         updateId: {
      *             provider: String
@@ -850,6 +974,14 @@ public final class DeviceManagementClient {
     /**
      * Deletes a deployment.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -870,6 +1002,14 @@ public final class DeviceManagementClient {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -889,7 +1029,7 @@ public final class DeviceManagementClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     subgroupStatus: [
      *         {
@@ -933,6 +1073,7 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -958,17 +1099,24 @@ public final class DeviceManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the device class subgroups for the group along with {@link Response}.
+     * @return the device class subgroups for the group as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listDeviceClassSubgroupsForGroupWithResponse(
-            String groupId, RequestOptions requestOptions) {
-        return this.client.listDeviceClassSubgroupsForGroupWithResponse(groupId, requestOptions).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listDeviceClassSubgroupsForGroup(String groupId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listDeviceClassSubgroupsForGroup(groupId, requestOptions));
     }
 
     /**
      * Gets device class subgroup details.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -993,13 +1141,21 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeviceClassSubgroupDetailsWithResponse(
+    public Response<BinaryData> getDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        return this.client.getDeviceClassSubgroupDetailsWithResponse(groupId, deviceClassId, requestOptions).block();
+        return this.client.getDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions).block();
     }
 
     /**
      * Deletes a device class subgroup.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -1020,6 +1176,14 @@ public final class DeviceManagementClient {
     /**
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1055,6 +1219,14 @@ public final class DeviceManagementClient {
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1086,10 +1258,10 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listBestUpdatesForDeviceClassSubgroupWithResponse(
+    public Response<BinaryData> getBestUpdatesForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
         return this.client
-                .listBestUpdatesForDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions)
+                .getBestUpdatesForDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions)
                 .block();
     }
 
@@ -1101,6 +1273,7 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -1111,7 +1284,7 @@ public final class DeviceManagementClient {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: OffsetDateTime
+     *             startDateTime: String
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -1161,12 +1334,20 @@ public final class DeviceManagementClient {
     /**
      * Gets the deployment properties.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: OffsetDateTime
+     *     startDateTime: String
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1215,6 +1396,14 @@ public final class DeviceManagementClient {
     /**
      * Deletes a device class subgroup deployment.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
@@ -1227,22 +1416,31 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDeviceClassSubgroupDeploymentWithResponse(
+    public Response<Void> deleteDeploymentForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         return this.client
-                .deleteDeviceClassSubgroupDeploymentWithResponse(groupId, deviceClassId, deploymentId, requestOptions)
+                .deleteDeploymentForDeviceClassSubgroupWithResponse(
+                        groupId, deviceClassId, deploymentId, requestOptions)
                 .block();
     }
 
     /**
      * Stops a deployment.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: OffsetDateTime
+     *     startDateTime: String
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1289,12 +1487,20 @@ public final class DeviceManagementClient {
     /**
      * Retries a deployment with failed devices.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: OffsetDateTime
+     *     startDateTime: String
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1342,6 +1548,14 @@ public final class DeviceManagementClient {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1362,7 +1576,7 @@ public final class DeviceManagementClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     totalDevices: Integer
      *     devicesInProgressCount: Integer
@@ -1402,6 +1616,7 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1434,15 +1649,23 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDevicesForDeviceClassSubgroupDeployment(
+    public PagedIterable<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                this.client.listDevicesForDeviceClassSubgroupDeployment(
+                this.client.listDeviceStatesForDeviceClassSubgroupDeployment(
                         groupId, deviceClassId, deploymentId, requestOptions));
     }
 
     /**
      * Retrieve operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1471,11 +1694,11 @@ public final class DeviceManagementClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     traceId: String
-     *     lastActionDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -1503,7 +1726,8 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1527,11 +1751,11 @@ public final class DeviceManagementClient {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -1553,13 +1777,21 @@ public final class DeviceManagementClient {
     }
 
     /**
-     * Start the device diagnostics log collection operation on specified devices.
+     * Start the device diagnostics log collection on specified devices.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
+     *     logCollectionId: String
      *     deviceList: [
      *         {
      *             deviceId: String
@@ -1577,7 +1809,7 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     operationId: String
+     *     logCollectionId: String
      *     deviceList: [
      *         {
      *             deviceId: String
@@ -1591,8 +1823,8 @@ public final class DeviceManagementClient {
      * }
      * }</pre>
      *
-     * @param operationId Operation identifier.
-     * @param logCollectionRequest The deployment properties.
+     * @param logCollectionId Log collection identifier.
+     * @param logCollection The log collection properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1602,19 +1834,27 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> collectLogsWithResponse(
-            String operationId, BinaryData logCollectionRequest, RequestOptions requestOptions) {
-        return this.client.collectLogsWithResponse(operationId, logCollectionRequest, requestOptions).block();
+    public Response<BinaryData> startLogCollectionWithResponse(
+            String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
+        return this.client.startLogCollectionWithResponse(logCollectionId, logCollection, requestOptions).block();
     }
 
     /**
-     * Get the device diagnostics log collection operation.
+     * Get the device diagnostics log collection.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
+     *     logCollectionId: String
      *     deviceList: [
      *         {
      *             deviceId: String
@@ -1628,23 +1868,30 @@ public final class DeviceManagementClient {
      * }
      * }</pre>
      *
-     * @param operationId Operation identifier.
+     * @param logCollectionId Log collection identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the device diagnostics log collection operation along with {@link Response}.
+     * @return the device diagnostics log collection along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLogCollectionOperationWithResponse(
-            String operationId, RequestOptions requestOptions) {
-        return this.client.getLogCollectionOperationWithResponse(operationId, requestOptions).block();
+    public Response<BinaryData> getLogCollectionWithResponse(String logCollectionId, RequestOptions requestOptions) {
+        return this.client.getLogCollectionWithResponse(logCollectionId, requestOptions).block();
     }
 
     /**
-     * Get all device diagnostics log collection operations.
+     * Get all device diagnostics log collections.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1652,7 +1899,7 @@ public final class DeviceManagementClient {
      * {
      *     value: [
      *         {
-     *             operationId: String
+     *             logCollectionId: String
      *             deviceList: [
      *                 {
      *                     deviceId: String
@@ -1674,22 +1921,30 @@ public final class DeviceManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return all device diagnostics log collection operations as paginated response with {@link PagedIterable}.
+     * @return all device diagnostics log collections as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLogCollectionOperations(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listLogCollectionOperations(requestOptions));
+    public PagedIterable<BinaryData> listLogCollections(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listLogCollections(requestOptions));
     }
 
     /**
-     * Get device diagnostics log collection operation with detailed status.
+     * Get log collection with detailed status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
+     *     logCollectionId: String
      *     createdDateTime: String
      *     lastActionDateTime: String
      *     status: String(NotStarted/Running/Succeeded/Failed)
@@ -1713,17 +1968,26 @@ public final class DeviceManagementClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return device diagnostics log collection operation with detailed status along with {@link Response}.
+     * @return log collection with detailed status along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLogCollectionOperationDetailedStatusWithResponse(
+    public Response<BinaryData> getLogCollectionDetailedStatusWithResponse(
             String operationId, RequestOptions requestOptions) {
-        return this.client.getLogCollectionOperationDetailedStatusWithResponse(operationId, requestOptions).block();
+        return this.client.getLogCollectionDetailedStatusWithResponse(operationId, requestOptions).block();
     }
 
     /**
      * Get list of device health.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1747,17 +2011,16 @@ public final class DeviceManagementClient {
      * }
      * }</pre>
      *
-     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of device health along with {@link Response}.
+     * @return list of device health as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listDeviceHealthWithResponse(String filter, RequestOptions requestOptions) {
-        return this.client.listDeviceHealthWithResponse(filter, requestOptions).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listDeviceHealth(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listDeviceHealth(requestOptions));
     }
 }

@@ -41,6 +41,7 @@ public final class DeviceUpdateClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
@@ -85,8 +86,8 @@ public final class DeviceUpdateClient {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -111,6 +112,14 @@ public final class DeviceUpdateClient {
     /**
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -152,6 +161,14 @@ public final class DeviceUpdateClient {
 
     /**
      * Get a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -199,8 +216,8 @@ public final class DeviceUpdateClient {
      *     ]
      *     scanResult: String
      *     manifestVersion: String
-     *     importedDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     importedDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -226,6 +243,14 @@ public final class DeviceUpdateClient {
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
@@ -245,6 +270,14 @@ public final class DeviceUpdateClient {
 
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -273,6 +306,14 @@ public final class DeviceUpdateClient {
 
     /**
      * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -308,6 +349,7 @@ public final class DeviceUpdateClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
      *
@@ -341,6 +383,14 @@ public final class DeviceUpdateClient {
     /**
      * Get a list of all update file identifiers for the specified version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -372,6 +422,14 @@ public final class DeviceUpdateClient {
 
     /**
      * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -447,7 +505,8 @@ public final class DeviceUpdateClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -481,11 +540,11 @@ public final class DeviceUpdateClient {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -508,6 +567,14 @@ public final class DeviceUpdateClient {
 
     /**
      * Retrieve operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -546,11 +613,11 @@ public final class DeviceUpdateClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     traceId: String
-     *     lastActionDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>

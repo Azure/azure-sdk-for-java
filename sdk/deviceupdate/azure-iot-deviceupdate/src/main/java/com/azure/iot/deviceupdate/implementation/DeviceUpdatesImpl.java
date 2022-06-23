@@ -8,7 +8,6 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -84,7 +83,6 @@ public final class DeviceUpdatesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -105,7 +103,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData updateToImport,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -128,7 +125,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam("name") String name,
                 @PathParam("version") String version,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -151,7 +147,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam("name") String name,
                 @PathParam("version") String version,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -171,7 +166,6 @@ public final class DeviceUpdatesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -192,7 +186,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -214,7 +207,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam("provider") String provider,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -237,7 +229,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam("name") String name,
                 @PathParam("version") String version,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -261,7 +252,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam("version") String version,
                 @PathParam("fileId") String fileId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -281,7 +271,6 @@ public final class DeviceUpdatesImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -302,7 +291,6 @@ public final class DeviceUpdatesImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -321,7 +309,6 @@ public final class DeviceUpdatesImpl {
         Mono<Response<BinaryData>> listUpdatesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -340,7 +327,6 @@ public final class DeviceUpdatesImpl {
         Mono<Response<BinaryData>> listProvidersNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -359,7 +345,6 @@ public final class DeviceUpdatesImpl {
         Mono<Response<BinaryData>> listNamesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -378,7 +363,6 @@ public final class DeviceUpdatesImpl {
         Mono<Response<BinaryData>> listVersionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -397,7 +381,6 @@ public final class DeviceUpdatesImpl {
         Mono<Response<BinaryData>> listFilesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -416,7 +399,6 @@ public final class DeviceUpdatesImpl {
         Mono<Response<BinaryData>> listOperationsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -429,6 +411,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
@@ -473,8 +456,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -492,14 +475,12 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listUpdates(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -521,6 +502,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
@@ -565,8 +547,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -585,12 +567,10 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listUpdates(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -612,6 +592,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
@@ -656,8 +637,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -693,6 +674,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
@@ -737,8 +719,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -775,6 +757,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
@@ -819,8 +802,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -844,6 +827,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -879,7 +870,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importUpdateWithResponseAsync(
             BinaryData updateToImport, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importUpdate(
@@ -887,7 +877,6 @@ public final class DeviceUpdatesImpl {
                                 this.client.getInstanceId(),
                                 this.client.getServiceVersion().getVersion(),
                                 updateToImport,
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -895,6 +884,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -931,13 +928,11 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importUpdateWithResponseAsync(
             BinaryData updateToImport, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.importUpdate(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 this.client.getServiceVersion().getVersion(),
                 updateToImport,
-                accept,
                 requestOptions,
                 context);
     }
@@ -945,6 +940,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -996,6 +999,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1049,6 +1060,14 @@ public final class DeviceUpdatesImpl {
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1089,6 +1108,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Get a specific update version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -1135,8 +1162,8 @@ public final class DeviceUpdatesImpl {
      *     ]
      *     scanResult: String
      *     manifestVersion: String
-     *     importedDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     importedDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -1154,7 +1181,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateWithResponseAsync(
             String provider, String name, String version, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getUpdate(
@@ -1164,13 +1190,20 @@ public final class DeviceUpdatesImpl {
                                 name,
                                 version,
                                 this.client.getServiceVersion().getVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1218,8 +1251,8 @@ public final class DeviceUpdatesImpl {
      *     ]
      *     scanResult: String
      *     manifestVersion: String
-     *     importedDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     importedDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -1238,7 +1271,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateWithResponseAsync(
             String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getUpdate(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -1246,13 +1278,20 @@ public final class DeviceUpdatesImpl {
                 name,
                 version,
                 this.client.getServiceVersion().getVersion(),
-                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -1300,8 +1339,8 @@ public final class DeviceUpdatesImpl {
      *     ]
      *     scanResult: String
      *     manifestVersion: String
-     *     importedDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     importedDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -1326,6 +1365,14 @@ public final class DeviceUpdatesImpl {
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
@@ -1339,7 +1386,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUpdateWithResponseAsync(
             String provider, String name, String version, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteUpdate(
@@ -1349,7 +1395,6 @@ public final class DeviceUpdatesImpl {
                                 name,
                                 version,
                                 this.client.getServiceVersion().getVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1357,6 +1402,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
@@ -1372,7 +1425,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUpdateWithResponseAsync(
             String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.deleteUpdate(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -1380,7 +1432,6 @@ public final class DeviceUpdatesImpl {
                 name,
                 version,
                 this.client.getServiceVersion().getVersion(),
-                accept,
                 requestOptions,
                 context);
     }
@@ -1388,6 +1439,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
@@ -1418,6 +1477,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
@@ -1450,6 +1517,14 @@ public final class DeviceUpdatesImpl {
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
@@ -1468,6 +1543,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1490,14 +1573,12 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listProviders(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1513,6 +1594,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1537,12 +1626,10 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(
             RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listProviders(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1558,6 +1645,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1592,6 +1687,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1628,6 +1731,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1655,6 +1766,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Get a list of all update names that match the specified provider.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1677,7 +1796,6 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(String provider, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listNames(
@@ -1685,7 +1803,6 @@ public final class DeviceUpdatesImpl {
                                         this.client.getInstanceId(),
                                         provider,
                                         this.client.getServiceVersion().getVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1701,6 +1818,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1726,13 +1851,11 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(
             String provider, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listNames(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         provider,
                         this.client.getServiceVersion().getVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1748,6 +1871,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1783,6 +1914,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1820,6 +1959,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Get a list of all update names that match the specified provider.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1853,6 +2000,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
      *
@@ -1880,7 +2028,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(
             String provider, String name, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listVersions(
@@ -1889,7 +2036,6 @@ public final class DeviceUpdatesImpl {
                                         provider,
                                         name,
                                         this.client.getServiceVersion().getVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1911,6 +2057,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
      *
@@ -1939,14 +2086,12 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(
             String provider, String name, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listVersions(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         provider,
                         name,
                         this.client.getServiceVersion().getVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1968,6 +2113,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
      *
@@ -2012,6 +2158,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
      *
@@ -2058,6 +2205,7 @@ public final class DeviceUpdatesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
      *
@@ -2090,6 +2238,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Get a list of all update file identifiers for the specified version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2115,7 +2271,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(
             String provider, String name, String version, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listFiles(
@@ -2125,7 +2280,6 @@ public final class DeviceUpdatesImpl {
                                         name,
                                         version,
                                         this.client.getServiceVersion().getVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -2141,6 +2295,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2168,7 +2330,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(
             String provider, String name, String version, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listFiles(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
@@ -2176,7 +2337,6 @@ public final class DeviceUpdatesImpl {
                         name,
                         version,
                         this.client.getServiceVersion().getVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -2192,6 +2352,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2230,6 +2398,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2270,6 +2446,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Get a list of all update file identifiers for the specified version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2300,6 +2484,14 @@ public final class DeviceUpdatesImpl {
 
     /**
      * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -2362,7 +2554,6 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(
             String provider, String name, String version, String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getFile(
@@ -2373,13 +2564,20 @@ public final class DeviceUpdatesImpl {
                                 version,
                                 fileId,
                                 this.client.getServiceVersion().getVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -2448,7 +2646,6 @@ public final class DeviceUpdatesImpl {
             String fileId,
             RequestOptions requestOptions,
             Context context) {
-        final String accept = "application/json";
         return service.getFile(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -2457,13 +2654,20 @@ public final class DeviceUpdatesImpl {
                 version,
                 fileId,
                 this.client.getServiceVersion().getVersion(),
-                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -2538,7 +2742,8 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2572,11 +2777,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -2594,14 +2799,12 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listOperations(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
-                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -2625,7 +2828,8 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2659,11 +2863,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -2683,12 +2887,10 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(
             RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.listOperations(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
-                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -2712,7 +2914,8 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2746,11 +2949,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -2787,7 +2990,8 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2821,11 +3025,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -2863,7 +3067,8 @@ public final class DeviceUpdatesImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2897,11 +3102,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -2924,6 +3129,14 @@ public final class DeviceUpdatesImpl {
     /**
      * Retrieve operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -2961,11 +3174,11 @@ public final class DeviceUpdatesImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     traceId: String
-     *     lastActionDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -2980,7 +3193,6 @@ public final class DeviceUpdatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(String operationId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getOperation(
@@ -2988,13 +3200,20 @@ public final class DeviceUpdatesImpl {
                                 this.client.getInstanceId(),
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
-                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Retrieve operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -3033,11 +3252,11 @@ public final class DeviceUpdatesImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     traceId: String
-     *     lastActionDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -3054,19 +3273,25 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(
             String operationId, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getOperation(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
-                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Retrieve operation status.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -3105,11 +3330,11 @@ public final class DeviceUpdatesImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: OffsetDateTime
+     *         occurredDateTime: String
      *     }
      *     traceId: String
-     *     lastActionDateTime: OffsetDateTime
-     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: String
+     *     createdDateTime: String
      *     etag: String
      * }
      * }</pre>
@@ -3170,8 +3395,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -3190,11 +3415,9 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listUpdatesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                service.listUpdatesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3249,8 +3472,8 @@ public final class DeviceUpdatesImpl {
      *             ]
      *             scanResult: String
      *             manifestVersion: String
-     *             importedDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             importedDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -3270,8 +3493,7 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listUpdatesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listUpdatesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3309,11 +3531,9 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listProvidersNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                service.listProvidersNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3352,8 +3572,7 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listProvidersNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listProvidersNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3391,11 +3610,8 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listNamesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                        context -> service.listNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3434,8 +3650,7 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listNamesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3473,11 +3688,9 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listVersionsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                service.listVersionsNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3516,8 +3729,7 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listVersionsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listVersionsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3555,11 +3767,8 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listFilesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                        context -> service.listFilesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3598,8 +3807,7 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listFilesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listFilesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3645,11 +3853,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -3669,11 +3877,10 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listOperationsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -3719,11 +3926,11 @@ public final class DeviceUpdatesImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: OffsetDateTime
+     *                 occurredDateTime: String
      *             }
      *             traceId: String
-     *             lastActionDateTime: OffsetDateTime
-     *             createdDateTime: OffsetDateTime
+     *             lastActionDateTime: String
+     *             createdDateTime: String
      *             etag: String
      *         }
      *     ]
@@ -3744,8 +3951,7 @@ public final class DeviceUpdatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
+        return service.listOperationsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
