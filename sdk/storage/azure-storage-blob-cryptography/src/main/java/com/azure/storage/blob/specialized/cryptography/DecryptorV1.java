@@ -15,6 +15,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
@@ -29,20 +30,18 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 
 class DecryptorV1 extends Decryptor {
     private static final ClientLogger LOGGER = new ClientLogger(DecryptorV1.class);
-    private LogLevel v1UsageLogLevel;
 
     protected DecryptorV1(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper,
         EncryptionData encryptionData) {
         super(keyResolver, keyWrapper, encryptionData);
-        this.v1UsageLogLevel = LogLevel.WARNING;
     }
 
     @Override
     Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
         boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
-        LOGGER.log(this.v1UsageLogLevel, () -> "Downloaded data found to be encrypted with v1 encryption, "
-            + "which is no longer secure. Uri: " + requestUri);
-        this.v1UsageLogLevel = LogLevel.INFORMATIONAL; // Log subsequently at a lower level to not pollute logs
+        LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
+            + "which is no longer secure. Path: " + requestUri);
+
         /*
          * Calculate the IV.
          *
