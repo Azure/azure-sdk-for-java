@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Generic test suite for {@link HttpClient HttpClients}.
@@ -240,6 +241,64 @@ public abstract class HttpClientTests {
         );
 
         assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests that client returns buffered response if requested via azure-eagerly-read-response Context flag.
+     */
+    @SyncAsyncTest
+    public void shouldBufferResponse() {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            BinaryData.fromString("test body"));
+
+        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Buffering buffered response is identity transformation.
+        HttpResponse bufferedResponse = response.buffer();
+        assertSame(response, bufferedResponse);
+    }
+
+    /**
+     * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
+     */
+    @SyncAsyncTest
+    public void bufferedResponseCanBeReadMultipleTimes() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Read response twice using all accessors.
+        assertEquals(requestBody.toString(), response.getBodyAsString().block());
+        assertEquals(requestBody.toString(), response.getBodyAsString().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
     }
 
     /**
