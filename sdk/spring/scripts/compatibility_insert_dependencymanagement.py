@@ -45,6 +45,56 @@ def add_dependency_management_for_all_poms_files_in_directory(directory, spring_
                 add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
 
+def contains_repositories(pom_file_content):
+    return pom_file_content.find("<repositories>") != -1
+
+
+def get_repo_position(pom_file_content):
+    if contains_repositories(pom_file_content):
+        return pom_file_content.find("</repositories>")
+    else:
+        return pom_file_content.find("<build>")
+
+
+def get_repo_content_without_tag():
+    return """
+    <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/snapshot/</url>
+    </repository>
+  """
+
+
+def get_repo_content(pom_file_content):
+    if contains_repositories(pom_file_content):
+        return get_repo_content_without_tag()
+    else:
+        return """  
+  <repositories>
+    {}
+  </repositories>
+  """.format(get_repo_content_without_tag())
+
+
+def contains_properties(pom_file_content):
+    return pom_file_content.find("<properties>") != -1
+
+
+def get_prop_position(pom_file_content):
+    if contains_properties(pom_file_content):
+        return pom_file_content.find("</properties>")
+    else:
+        return pom_file_content.find("<name>")
+
+
+def get_prop_content(pom_file_content, spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    if contains_properties(pom_file_content):
+        return get_properties_content(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+    else:
+        return get_properties_content_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+
+
 def add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version):
     spring_cloud_version = spring_cloud_dependencies_version
     if file_path.replace("/", "").replace("\\", "") == ".sdkspringpom.xml":
@@ -112,56 +162,6 @@ def get_dependency_management_content_without_tag():
         <scope>import</scope>
       </dependency>
     """
-
-
-def contains_repositories(pom_file_content):
-    return pom_file_content.find("<repositories>") != -1
-
-
-def get_repo_position(pom_file_content):
-    if contains_repositories(pom_file_content):
-        return pom_file_content.find("</repositories>")
-    else:
-        return pom_file_content.find("<build>")
-
-
-def get_repo_content_without_tag():
-    return """
-    <repository>
-      <id>repository.springframework.maven.milestone</id>
-      <name>Spring Framework Maven Milestone Repository</name>
-      <url>https://repo.spring.io/snapshot/</url>
-    </repository>
-  """
-
-
-def get_repo_content(pom_file_content):
-    if contains_repositories(pom_file_content):
-        return get_repo_content_without_tag()
-    else:
-        return """  
-  <repositories>
-    {}
-  </repositories>
-  """.format(get_repo_content_without_tag())
-
-
-def contains_properties(pom_file_content):
-    return pom_file_content.find("<properties>") != -1
-
-
-def get_prop_position(pom_file_content):
-    if contains_properties(pom_file_content):
-        return pom_file_content.find("</properties>")
-    else:
-        return pom_file_content.find("<name>")
-
-
-def get_prop_content(pom_file_content, spring_boot_dependencies_version, spring_cloud_dependencies_version):
-    if contains_properties(pom_file_content):
-        return get_properties_content(spring_boot_dependencies_version, spring_cloud_dependencies_version)
-    else:
-        return get_properties_content_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version)
 
 
 def get_properties_content_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version):
