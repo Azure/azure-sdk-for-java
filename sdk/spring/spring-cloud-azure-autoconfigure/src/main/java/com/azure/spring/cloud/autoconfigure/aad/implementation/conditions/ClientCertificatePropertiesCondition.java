@@ -21,7 +21,7 @@ public class ClientCertificatePropertiesCondition extends SpringBootCondition {
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         ConditionMessage.Builder message = ConditionMessage
-            .forCondition("AAD OAuth2 client JWK resolver Condition");
+            .forCondition("Azure AD OAuth2 client JWK resolver Condition");
         AzureGlobalProperties globalProperties =
             Binder.get(context.getEnvironment())
                   .bind("spring.cloud.azure", AzureGlobalProperties.class)
@@ -31,7 +31,7 @@ public class ClientCertificatePropertiesCondition extends SpringBootCondition {
                   .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
                   .orElse(null);
         if (globalProperties == null && properties == null) {
-            return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
+            return ConditionOutcome.noMatch(message.notAvailable("Azure AD authentication properties"));
         }
 
         if (globalProperties != null

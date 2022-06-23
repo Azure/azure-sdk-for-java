@@ -106,7 +106,7 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
     public Iterator<ClientRegistration> iterator() {
         return allClients.values()
                          .stream()
-                         .filter(client -> client.getAuthorizationGrantType().equals(AUTHORIZATION_CODE))
+                         .filter(client -> AUTHORIZATION_CODE.equals(client.getAuthorizationGrantType()))
                          .iterator();
     }
 
