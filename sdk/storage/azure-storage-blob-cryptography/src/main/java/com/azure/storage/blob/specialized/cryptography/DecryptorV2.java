@@ -52,10 +52,7 @@ class DecryptorV2 extends Decryptor {
             new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
                 gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
 
-        return UploadUtils.chunkSource(encryptedFlux,
-                new com.azure.storage.common.ParallelTransferOptions()
-                    .setBlockSizeLong((long) gcmEncryptionRegionLength
-                        + TAG_LENGTH + nonceLength))
+        return encryptedFlux
             .flatMapSequential(stagingArea::write)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(aggregator -> {
