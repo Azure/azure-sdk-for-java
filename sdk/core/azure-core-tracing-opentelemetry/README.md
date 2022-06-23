@@ -11,11 +11,40 @@ documentation][OpenTelemetry] | [Samples][samples]
 
 ## Getting started
 
+You can enable tracing in Azure client libraries by using and configuring the OpenTelemetry SDK or using an OpenTelemetry-compatible agent.
+
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
-### Include the package
+## Key concepts
+
+### Trace
+
+A trace is a tree of spans showing the path of work through a system. A trace on its own is distinguishable by a unique 16 byte sequence called a TraceID.
+
+### Span
+
+A span represents a single operation in a trace. A span could be representative of an HTTP request, a remote procedure call (RPC), a database query, or even the path that a code takes.
+Azure SDK produces span for public client calls such as `SecretClient.getSecret` and HTTP spans for each underlying call to Azure service.
+
+## Azure SDK tracing with Azure Monitor Java agent
+
+By using an Azure Monitor Java in-process agent, you can enable monitoring of your applications without any code changes. For more information, see [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](/azure/azure-monitor/app/java-in-process-agent). Azure SDK support is enabled by default starting with agent version 3.2.
+
+## Tracing Azure SDK calls with OpenTelemetry agent
+
+If you use [OpenTelemetry Java agent](https://github.com/open-telemetry/opentelemetry-java-instrumentation/), Azure SDK instrumentation is enabled out-of-the-box starting from version 1.12.0.
+
+For more details on how to configure exporters, add manual instrumentation, or enrich telemetry, see [OpenTelemetry Instrumentation for Java](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
+
+Note: OpenTelemetry agent artifact is stable, but does not provide over-the-wire telemetry stability guarantees, which may cause span names and attribute names produced by Azure SDK might change over time if you update the agent. Check out [agent stability and versioning](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/VERSIONING.md#compatibility-requirements) for more details.
+
+## Manually instrument the application with OpenTelemetry SDK
+
+If you use OpenTelemetry SDK directly, make sure to configure SDK and exporter for the backend of your choice. For more information, see [OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/manual_instrumentation/).
+
+To enable Azure SDK tracing, add the latest `com.azure:azure-core-tracing-opentelemetry` packages to your application. For example, in Maven, add the following entry to your *pom.xml* file:
 
 [//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
 ```xml
@@ -27,58 +56,68 @@ documentation][OpenTelemetry] | [Samples][samples]
 ```
 [//]: # ({x-version-update-end})
 
-## Key concepts
+You don't need this package if you use ApplicationInsights Java agent or OpenTelemetry agent.
 
-### Trace
+### Examples
 
-A trace is a tree of spans showing the path of work through a system. A trace on its own is distinguishable by a unique 16 byte sequence called a TraceID.
-
-### Span
-
-A span represents a single operation in a trace. A span could be representative of an HTTP request, a remote procedure call (RPC), a database query, or even the path that a code takes.
-
-## Examples
-
-The following sections provides examples of using the azure-core-tracing-opentelemetry plugin with a few Azure Java SDK libraries:
+The following sections provides examples of using the `azure-core-tracing-opentelemetry` plugin with a few Azure Java SDK libraries:
 
 ### Using the plugin package with HTTP client libraries
 
-- Synchronously create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
+Synchronously create a secret using [azure-security-keyvault-secrets][azure-security-keyvault-secrets] with tracing enabled.
 
-    The plugin package creates a logical span representing public API call to encapsulate all the underlying HTTP calls. By default OpenTelemetry 
-    `Context.current()` will be used as a parent context - check out [OpenTelemetry documentation](https://opentelemetry.io/docs/java/manual_instrumentation/#tracing) for more info.
-    Users can *optionally* pass the instance of `io.opentelemetry.context.Context` to the SDKs using key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] parameter of the calling method
-    to provide explicit parent context.
-    This [sample][sample_key_vault] provides an example when no user parent span is passed.
+The plugin package creates a logical span representing public API call to encapsulate all the underlying HTTP calls. By default OpenTelemetry
+`Context.current()` will be used as a parent context - check out [OpenTelemetry documentation](https://opentelemetry.io/docs/java/manual_instrumentation/#tracing) for more info.
+Users can *optionally* pass the instance of `io.opentelemetry.context.Context` to the SDKs using key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] parameter of the calling method
+to provide explicit parent context.
+This [sample][sample_key_vault] provides an example when parent span is picked up automatically.
 
 ```java
-// Get the Tracer Provider
-static TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
-private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
-
 public static void main(String[] args) {
-   doClientWork();
-}
-
-public static void doClientWork() {
+    configureTracing();
     SecretClient client = new SecretClientBuilder()
       .endpoint("<your-vault-url>")
       .credential(new DefaultAzureCredentialBuilder().build())
       .buildClient();
+   doClientWork(client);
+}
 
-    Span span = TRACER.spanBuilder("user-span").startSpan();
-    try (Scope scope = TRACER.withSpan(span)) {
-        // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
-        secretClient.setSecret(new Secret("secret_name", "secret_value"));
-    } finally {
-        span.end();
-    }
+@WithSpan("my-span")
+public static void doClientWork(SecretClient client) {
+    // WithSpan annotation creates a parent span and make it current, which propagates into synchronous calls
+    // automatically. ApplicationInsights agent or OpenTelemetry agent also propagate context through async reactor calls.
+    // When manually instrumenting without agent help, please follow the next example for async context propagation.
+    secretClient.setSecret(new Secret("secret_name", "secret_value"));
+}
+```
 
-    // alternatively, you can pass context explicitly
-    // Span span = TRACER.spanBuilder("user-span").startSpan();
-    // Context traceContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(span));
-    // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value"), traceContext);
-    // span.end();
+And if you're using async clients and not using Application Insights Java agent or OpenTelemetry agent, please propagate context manually:
+
+```java
+public static void main(String[] args) {
+    configureTracing();
+    SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
+        .vaultUrl(VAULT_URL)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildAsyncClient();
+   doClientWork(secretAsyncClient);
+}
+
+private static void doClientWorkExplicitContext(SecretAsyncClient secretAsyncClient) {
+    Span userParentSpan = TRACER.spanBuilder("my-span").startSpan();
+    Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan));
+
+    secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
+        .contextWrite(traceContext)
+        .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
+    secretAsyncClient.listPropertiesOfSecrets()
+        .contextWrite(traceContext)
+        .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
+            .contextWrite(traceContext)
+            .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
+        .blockLast();
+
+    userParentSpan.end();
 }
 ```
 

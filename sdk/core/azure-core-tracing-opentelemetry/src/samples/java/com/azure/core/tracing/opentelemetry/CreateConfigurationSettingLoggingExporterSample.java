@@ -5,10 +5,9 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.extension.annotations.WithSpan;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
@@ -18,8 +17,6 @@ import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
  * in App Configuration through the {@link ConfigurationClient}.
  */
 public class CreateConfigurationSettingLoggingExporterSample {
-
-    private static final Tracer TRACER = configureLoggingExporter();
     private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
 
     /**
@@ -28,7 +25,13 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * @param args Ignored args.
      */
     public static void main(String[] args) {
-        doClientWork();
+        configureLoggingExporter();
+
+        ConfigurationClient client = new ConfigurationClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .buildClient();
+
+        doClientWork(client);
     }
 
     /**
@@ -36,37 +39,27 @@ public class CreateConfigurationSettingLoggingExporterSample {
      *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
-    private static Tracer configureLoggingExporter() {
-        // Tracer provider configured to export spans with SimpleSpanProcessor using
-        // the logging exporter.
+    private static void configureLoggingExporter() {
+        // WithSpan annotation creates a parent span and make it current, which propagates into synchronous calls
+        // automatically.
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())
                 .build();
 
-        return OpenTelemetrySdk.builder()
+        OpenTelemetrySdk.builder()
             .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal()
-            .getTracer("AppConfig-Sample");
+            .buildAndRegisterGlobal();
     }
 
     /**
      * Creates the {@link ConfigurationClient} and creates a configuration in Azure App Configuration with distributed
      * tracing enabled and using the Logging exporter to export telemetry events.
      */
-    private static void doClientWork() {
-        ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .buildClient();
-
-        Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = userParentSpan.makeCurrent();
-        try {
-            // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
-            client.setConfigurationSetting("hello", "text", "World");
-        } finally {
-            userParentSpan.end();
-            scope.close();
-        }
+    @WithSpan
+    private static void doClientWork(ConfigurationClient client) {
+        // WithSpan annotation will create a parent span and make it current. Current context propagates into synchronous
+        // calls automatically.
+        client.setConfigurationSetting("hello", "text", "World");
     }
 }

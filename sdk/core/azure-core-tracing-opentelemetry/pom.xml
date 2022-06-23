@@ -137,6 +137,18 @@
       <version>5.12.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+      <version>1.14.0-alpha</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-extension-annotations</artifactId>
+      <version>1.14.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -154,6 +166,8 @@
                 <include>io.opentelemetry:opentelemetry-exporter-logging:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-testing:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.11.0-alpha]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-extension-annotations:[1.11.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-extension-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
