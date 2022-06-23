@@ -117,11 +117,13 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         final Map<String, String> headers = new HashMap<>();
 
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
+        headers.put("X_FORWARDED_HOST", "acstestappjuntu.communication.azure.com");
         headers.put(CONTENT_HASH_HEADER, contentHash);
         String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
             .format(HMAC_DATETIMEFORMATTER_PATTERN);
         headers.put(X_MS_DATE_HEADER, utcNow);
-        headers.put(HOST_HEADER, url.getHost());
+        //headers.put(HOST_HEADER, url.getHost());
+        headers.put(HOST_HEADER, "acstestappjuntu.communication.azure.com");
         addSignatureHeader(url, httpMethod, headers);
         return headers;
     }

@@ -4,6 +4,7 @@
 
 package com.azure.communication.callingserver.implementation;
 
+import com.azure.communication.callingserver.CallingServerServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -190,7 +191,7 @@ public final class AzureCommunicationCallingServerServiceImplBuilder {
      */
     public AzureCommunicationCallingServerServiceImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2022-04-07-preview";
+            this.apiVersion = CallingServerServiceVersion.getLatest().getVersion();
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
