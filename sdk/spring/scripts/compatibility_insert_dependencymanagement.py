@@ -47,9 +47,9 @@ def add_dependency_management_for_all_poms_files_in_directory(directory, spring_
 
 def add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version):
     spring_cloud_version = spring_cloud_dependencies_version
-    log.info("Add dependency management for file: " + file_path)
-    if file_path == "./sdk/spring\pom.xml":
+    if file_path.replace("/", "").replace("\\", "") == ".sdkspringpom.xml":
         return
+    log.info("Add dependency management for file: " + file_path)
     if spring_cloud_version.endswith("-SNAPSHOT"):
         with open(file_path, 'r', encoding = 'utf-8') as pom_file:
             pom_file_content = pom_file.read()
