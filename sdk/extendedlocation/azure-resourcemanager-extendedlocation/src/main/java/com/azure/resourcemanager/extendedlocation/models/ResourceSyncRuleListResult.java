@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationInner;
+import com.azure.resourcemanager.extendedlocation.fluent.models.ResourceSyncRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Custom Locations operation response. */
+/** The List Resource Sync Rules operation response. */
 @Immutable
-public final class CustomLocationListResult {
+public final class ResourceSyncRuleListResult {
     /*
      * The URL to use for getting the next set of results.
      */
@@ -19,10 +19,10 @@ public final class CustomLocationListResult {
     private String nextLink;
 
     /*
-     * The list of Custom Locations.
+     * The list of Resource Sync Rules.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CustomLocationInner> value;
+    private List<ResourceSyncRuleInner> value;
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
@@ -34,11 +34,11 @@ public final class CustomLocationListResult {
     }
 
     /**
-     * Get the value property: The list of Custom Locations.
+     * Get the value property: The list of Resource Sync Rules.
      *
      * @return the value value.
      */
-    public List<CustomLocationInner> value() {
+    public List<ResourceSyncRuleInner> value() {
         return this.value;
     }
 
