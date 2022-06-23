@@ -26,11 +26,6 @@ public enum CriteriaType {
     IS_EQUAL("="),
 
     /**
-     * String equals
-     */
-    STRING_EQUAL("STRINGEQUALS"),
-
-    /**
      * Or
      */
     OR("OR"),
@@ -128,7 +123,12 @@ public enum CriteriaType {
     /**
      * Array contains
      */
-    ARRAY_CONTAINS("ARRAY_CONTAINS");
+    ARRAY_CONTAINS("ARRAY_CONTAINS"),
+    
+    /**
+     * String equals
+     */
+    STRING_EQUAL("STRINGEQUALS");
 
     private String sqlKeyword;
 
