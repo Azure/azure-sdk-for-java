@@ -19,7 +19,7 @@ public class AadCredentialProperties {
     private String clientSecret;
 
     /**
-     * Path of a PFX certificate file to use when performing service principal authentication with Azure.
+     * Path of a PFX or P12 certificate file to use when performing service principal authentication with Azure.
      */
     private String clientCertificatePath;
 
