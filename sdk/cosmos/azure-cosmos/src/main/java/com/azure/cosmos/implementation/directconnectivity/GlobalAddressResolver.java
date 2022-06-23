@@ -186,7 +186,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Mono<AddressInformation[]> resolveAsync(RxDocumentServiceRequest request, boolean forceRefresh) {
+    public Mono<PartitionAddressInformation> resolveAsync(RxDocumentServiceRequest request, boolean forceRefresh) {
         IAddressResolver resolver = this.getAddressResolver(request);
         return resolver.resolveAsync(request, forceRefresh);
     }

@@ -13,7 +13,7 @@ import java.net.URI;
 
 public interface IAddressResolver {
 
-    Mono<AddressInformation[]> resolveAsync(
+    Mono<PartitionAddressInformation> resolveAsync(
             RxDocumentServiceRequest request,
             boolean forceRefreshPartitionAddresses);
 

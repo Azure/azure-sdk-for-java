@@ -67,7 +67,7 @@ public class AddressResolver implements IAddressResolver {
         this.collectionRoutingMapCache = collectionRoutingMapCache;
     }
 
-    public Mono<AddressInformation[]> resolveAsync(
+    public Mono<PartitionAddressInformation> resolveAsync(
         RxDocumentServiceRequest request,
         boolean forceRefreshPartitionAddresses) {
 
@@ -76,14 +76,14 @@ public class AddressResolver implements IAddressResolver {
         return resultObs.flatMap(result -> {
 
             try {
-                this.throwIfTargetChanged(request, result.TargetPartitionKeyRange);
+                this.throwIfTargetChanged(request, result.targetPartitionKeyRange);
             } catch (Exception e) {
                 return Mono.error(e);
             }
 
-            request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
+            request.requestContext.resolvedPartitionKeyRange = result.targetPartitionKeyRange;
 
-            return Mono.just(result.Addresses);
+            return Mono.just(result.addresses);
         });
     }
 
@@ -261,10 +261,11 @@ public class AddressResolver implements IAddressResolver {
                 return Mono.just(new Utils.ValueHolder<>(null));
             }
 
-            Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.addressCache.tryGetAddresses(
-                request,
-                new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId()),
-                forceRefreshPartitionAddresses);
+            Mono<Utils.ValueHolder<PartitionAddressInformation>> addressesObs =
+                    this.addressCache.tryGetAddresses(
+                        request,
+                        new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId()),
+                        forceRefreshPartitionAddresses);
 
             return addressesObs.flatMap(addressesValueHolder -> {
 
@@ -318,8 +319,8 @@ public class AddressResolver implements IAddressResolver {
             && request.getPartitionKeyRangeIdentity() == null;
 
         //  ServiceIdentity serviceIdentity = this.masterServiceIdentity;
-        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.addressCache.tryGetAddresses(request,
-                masterPartitionKeyRangeIdentity,forceRefreshPartitionAddresses);
+        Mono<Utils.ValueHolder<PartitionAddressInformation>> addressesObs =
+                this.addressCache.tryGetAddresses(request, masterPartitionKeyRangeIdentity,forceRefreshPartitionAddresses);
 
         return addressesObs.flatMap(addressesValueHolder -> {
             if (addressesValueHolder.v == null) {
@@ -611,10 +612,11 @@ public class AddressResolver implements IAddressResolver {
             return returnOrError(() -> new Utils.ValueHolder<>(this.handleRangeAddressResolutionFailure(request, collectionCacheIsUpToDate, routingMapCacheIsUpToDate, routingMap)));
         }
 
-        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.addressCache.tryGetAddresses(
-            request,
-            new PartitionKeyRangeIdentity(collection.getResourceId(), request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId()),
-            forceRefreshPartitionAddresses);
+        Mono<Utils.ValueHolder<PartitionAddressInformation>> addressesObs =
+                this.addressCache.tryGetAddresses(
+                    request,
+                    new PartitionKeyRangeIdentity(collection.getResourceId(), request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId()),
+                    forceRefreshPartitionAddresses);
 
         return addressesObs.flatMap(addressesValueHolder -> {
             if (addressesValueHolder.v == null) {
@@ -713,12 +715,12 @@ public class AddressResolver implements IAddressResolver {
     }
 
     private static class ResolutionResult {
-        final PartitionKeyRange TargetPartitionKeyRange;
-        final AddressInformation[] Addresses;
+        final PartitionKeyRange targetPartitionKeyRange;
+        final PartitionAddressInformation addresses;
 
         ResolutionResult(
                 PartitionKeyRange targetPartitionKeyRange,
-                AddressInformation[] addresses) {
+                PartitionAddressInformation addresses) {
             if (targetPartitionKeyRange == null) {
                 throw new NullPointerException("targetPartitionKeyRange");
             }
@@ -727,8 +729,8 @@ public class AddressResolver implements IAddressResolver {
                 throw new NullPointerException("addresses");
             }
 
-            this.TargetPartitionKeyRange = targetPartitionKeyRange;
-            this.Addresses = addresses;
+            this.targetPartitionKeyRange = targetPartitionKeyRange;
+            this.addresses = addresses;
         }
     }
 }

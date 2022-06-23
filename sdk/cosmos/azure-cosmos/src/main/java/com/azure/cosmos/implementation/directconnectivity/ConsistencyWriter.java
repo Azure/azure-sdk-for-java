@@ -156,15 +156,18 @@ public class ConsistencyWriter {
 
         if (request.requestContext.globalStrongWriteResponse == null) {
 
-            Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
+            Mono<PerProtocolPartitionAddressInformation> partitionPerProtocolAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
 
-            return replicaAddressesObs.flatMap(replicaAddresses -> {
+            return partitionPerProtocolAddressesObs.flatMap(partitionPerProtocolAddresses -> {
                 try {
-                    List<URI> contactedReplicas = new ArrayList<>();
-                    replicaAddresses.forEach(replicaAddress -> contactedReplicas.add(replicaAddress.getPhysicalUri().getURI()));
+                    List<URI> contactedReplicas = partitionPerProtocolAddresses.getTransportAddressUris()
+                                    .stream().map(uri -> uri.getURI())
+                                    .collect(Collectors.toList());
+
                     BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
-                    return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
+
+                    return Mono.just(partitionPerProtocolAddresses.getPrimaryAddressUri(request));
                 } catch (GoneException e) {
                     // RxJava1 doesn't allow throwing checked exception from Observable operators
                     return Mono.error(e);

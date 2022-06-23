@@ -12,10 +12,12 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.directconnectivity.AddressInformation;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.PerProtocolPartitionAddressInformation;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -170,9 +172,11 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                     dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRange.getId()));
                     return globalAddressResolver.resolveAsync(dummyRequest, false);
                 })
-                .doOnNext(addressInformations -> {
-                    for (AddressInformation address : addressInformations) {
-                        endpoints.add(address.getPhysicalUri().getURI().getAuthority());
+                .doOnNext(partitionAddressInformation -> {
+                    PerProtocolPartitionAddressInformation partitionAddressesByProtocol =
+                            partitionAddressInformation.getAddressesByProtocol(Protocol.TCP);
+                    for (Uri address : partitionAddressesByProtocol.getTransportAddressUris()) {
+                        endpoints.add(address.getURI().getAuthority());
                     }
                 })
                 .blockLast();

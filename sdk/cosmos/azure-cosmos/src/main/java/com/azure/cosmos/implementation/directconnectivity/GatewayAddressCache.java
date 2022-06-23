@@ -57,7 +57,6 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +82,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI addressEndpoint;
 
-    private final AsyncCache<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
+    private final AsyncCache<PartitionKeyRangeIdentity, PartitionAddressInformation> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
     private final long suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -93,7 +92,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final HashMap<String, String> defaultRequestHeaders;
     private final HttpClient httpClient;
 
-    private volatile Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterPartitionAddressCache;
+    private volatile Pair<PartitionKeyRangeIdentity, PartitionAddressInformation> masterPartitionAddressCache;
     private volatile Instant suboptimalMasterPartitionTimestamp;
 
     private final ConcurrentHashMap<URI, Set<PartitionKeyRangeIdentity>> serverPartitionAddressToPkRangeIdMap;
@@ -218,7 +217,7 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     @Override
-    public Mono<Utils.ValueHolder<AddressInformation[]>> tryGetAddresses(RxDocumentServiceRequest request,
+    public Mono<Utils.ValueHolder<PartitionAddressInformation>> tryGetAddresses(RxDocumentServiceRequest request,
                                                                          PartitionKeyRangeIdentity partitionKeyRangeIdentity,
                                                                          boolean forceRefreshPartitionAddresses) {
 
@@ -281,19 +280,22 @@ public class GatewayAddressCache implements IAddressCache {
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
         }
 
-        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = this.serverPartitionAddressCache.getAsync(
-            partitionKeyRangeIdentity,
-            null,
-            () -> this.getAddressesForRangeId(
-                request,
-                partitionKeyRangeIdentity,
-                false)).map(Utils.ValueHolder::new);
+        Mono<Utils.ValueHolder<PartitionAddressInformation>> addressesObs =
+                this.serverPartitionAddressCache
+                        .getAsync(
+                            partitionKeyRangeIdentity,
+                            null,
+                            () -> this.getAddressesForRangeId(
+                                request,
+                                partitionKeyRangeIdentity,
+                                false))
+                        .map(Utils.ValueHolder::new);
 
         return addressesObs.map(
             addressesValueHolder -> {
                 if (notAllReplicasAvailable(addressesValueHolder.v)) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
+                        logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v.getAllAddresses()));
                     }
                     this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
                 }
@@ -480,9 +482,12 @@ public class GatewayAddressCache implements IAddressCache {
         //https://msdata.visualstudio.com/CosmosDB/_workitems/edit/340842
     }
 
-    private Mono<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> resolveMasterAsync(RxDocumentServiceRequest request, boolean forceRefresh, Map<String, Object> properties) {
+    private Mono<Pair<PartitionKeyRangeIdentity, PartitionAddressInformation>> resolveMasterAsync(
+            RxDocumentServiceRequest request,
+            boolean forceRefresh,
+            Map<String, Object> properties) {
         logger.debug("resolveMasterAsync forceRefresh: {}", forceRefresh);
-        Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterAddressAndRangeInitial = this.masterPartitionAddressCache;
+        Pair<PartitionKeyRangeIdentity, PartitionAddressInformation> masterAddressAndRangeInitial = this.masterPartitionAddressCache;
 
         forceRefresh = forceRefresh ||
             (masterAddressAndRangeInitial != null &&
@@ -501,7 +506,7 @@ public class GatewayAddressCache implements IAddressCache {
 
             return masterReplicaAddressesObs.map(
                 masterAddresses -> {
-                    Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterAddressAndRangeRes =
+                    Pair<PartitionKeyRangeIdentity, PartitionAddressInformation> masterAddressAndRangeRes =
                         this.toPartitionAddressAndRange("", masterAddresses);
                     this.masterPartitionAddressCache = masterAddressAndRangeRes;
 
@@ -604,7 +609,7 @@ public class GatewayAddressCache implements IAddressCache {
             "");
     }
 
-    private Mono<AddressInformation[]> getAddressesForRangeId(
+    private Mono<PartitionAddressInformation> getAddressesForRangeId(
         RxDocumentServiceRequest request,
         PartitionKeyRangeIdentity pkRangeIdentity,
         boolean forceRefresh) {
@@ -615,53 +620,66 @@ public class GatewayAddressCache implements IAddressCache {
         String collectionRid = pkRangeIdentity.getCollectionRid();
         String partitionKeyRangeId = pkRangeIdentity.getPartitionKeyRangeId();
 
-        logger.debug("getAddressesForRangeId collectionRid {}, partitionKeyRangeId {}, forceRefresh {}",
-            collectionRid, partitionKeyRangeId, forceRefresh);
-        Mono<List<Address>> addressResponse = this.getServerAddressesViaGatewayAsync(request, collectionRid, Collections.singletonList(partitionKeyRangeId), forceRefresh);
+        logger.debug(
+                "getAddressesForRangeId collectionRid {}, partitionKeyRangeId {}, forceRefresh {}",
+                collectionRid,
+                partitionKeyRangeId,
+                forceRefresh);
 
-        Mono<List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>>> addressInfos =
+        Mono<List<Address>> addressResponse =
+                this.getServerAddressesViaGatewayAsync(
+                        request,
+                        collectionRid,
+                        Collections.singletonList(partitionKeyRangeId),
+                        forceRefresh);
+
+        Mono<List<Pair<PartitionKeyRangeIdentity, PartitionAddressInformation>>> addressInfos =
             addressResponse.map(
                 addresses -> {
                     if (logger.isDebugEnabled()) {
                         logger.debug("addresses from getServerAddressesViaGatewayAsync in getAddressesForRangeId {}",
                             JavaStreamUtils.info(addresses));
                     }
-                    return addresses.stream().filter(addressInfo ->
-                        this.protocolScheme.equals(addressInfo.getProtocolScheme()))
-                                    .collect(Collectors.groupingBy(
-                                        Address::getParitionKeyRangeId))
-                                    .values().stream()
-                                    .map(groupedAddresses -> toPartitionAddressAndRange(collectionRid, addresses))
-                                    .collect(Collectors.toList());
+                    return addresses
+                            .stream()
+                            .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
+                            .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
+                            .values()
+                            .stream()
+                            .map(groupedAddresses -> toPartitionAddressAndRange(collectionRid, addresses))
+                            .collect(Collectors.toList());
                 });
 
-        Mono<List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>>> result = addressInfos.map(addressInfo -> addressInfo.stream()
-                                                                                                                              .filter(a ->
-                                                                                                                                  StringUtils.equals(a.getLeft().getPartitionKeyRangeId(), partitionKeyRangeId))
-                                                                                                                              .collect(Collectors.toList()));
+        Mono<List<Pair<PartitionKeyRangeIdentity, PartitionAddressInformation>>> result =
+                addressInfos
+                        .map(addressInfo ->
+                                addressInfo
+                                    .stream()
+                                    .filter(a -> StringUtils.equals(a.getLeft().getPartitionKeyRangeId(), partitionKeyRangeId))
+                                    .collect(Collectors.toList()));
 
-        return result.flatMap(
-            list -> {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("getAddressesForRangeId flatMap got result {}", JavaStreamUtils.info(list));
-                }
-                if (list.isEmpty()) {
+        return result
+                .flatMap(
+                    list -> {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("getAddressesForRangeId flatMap got result {}", JavaStreamUtils.info(list));
+                        }
+                        if (list.isEmpty()) {
 
-                    String errorMessage = String.format(
-                        RMResources.PartitionKeyRangeNotFound,
-                        partitionKeyRangeId,
-                        collectionRid);
+                            String errorMessage = String.format(
+                                RMResources.PartitionKeyRangeNotFound,
+                                partitionKeyRangeId,
+                                collectionRid);
 
-                    PartitionKeyRangeGoneException e = new PartitionKeyRangeGoneException(errorMessage);
-                    BridgeInternal.setResourceAddress(e, collectionRid);
+                            PartitionKeyRangeGoneException e = new PartitionKeyRangeGoneException(errorMessage);
+                            BridgeInternal.setResourceAddress(e, collectionRid);
 
-                    return Mono.error(e);
-                } else {
-                    return Mono.just(list.get(0).getRight());
-                }
-            }).doOnError(e -> {
-            logger.debug("getAddressesForRangeId", e);
-        });
+                            return Mono.error(e);
+                        } else {
+                            return Mono.just(list.get(0).getRight());
+                        }
+                    })
+                .doOnError(e -> logger.debug("getAddressesForRangeId", e));
     }
 
     public Mono<List<Address>> getMasterAddressesViaGatewayAsync(
@@ -797,7 +815,7 @@ public class GatewayAddressCache implements IAddressCache {
         });
     }
 
-    private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {
+    private Pair<PartitionKeyRangeIdentity, PartitionAddressInformation> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {
         if (logger.isDebugEnabled()) {
             logger.debug("toPartitionAddressAndRange");
         }
@@ -805,10 +823,11 @@ public class GatewayAddressCache implements IAddressCache {
         Address address = addresses.get(0);
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, address.getParitionKeyRangeId());
 
-        AddressInformation[] addressInfos =
-                addresses.stream().map(addr ->
-                                GatewayAddressCache.toAddressInformation(addr)
-                                      ).collect(Collectors.toList()).toArray(new AddressInformation[addresses.size()]);
+        List<AddressInformation> addressInfos =
+                addresses
+                        .stream()
+                        .map(addr -> GatewayAddressCache.toAddressInformation(addr))
+                        .collect(Collectors.toList());
 
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
             for (AddressInformation addressInfo : addressInfos) {
@@ -830,7 +849,7 @@ public class GatewayAddressCache implements IAddressCache {
             }
         }
 
-        return Pair.of(partitionKeyRangeIdentity, addressInfos);
+        return Pair.of(partitionKeyRangeIdentity, new PartitionAddressInformation(addressInfos));
     }
 
     private static AddressInformation toAddressInformation(Address address) {
@@ -880,11 +899,15 @@ public class GatewayAddressCache implements IAddressCache {
 
         return Flux.concat(tasks)
                 .flatMap(list -> {
-                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos = list.stream()
-                            .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
-                            .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
-                            .values().stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
-                            .collect(Collectors.toList());
+                    List<Pair<PartitionKeyRangeIdentity, PartitionAddressInformation>> addressInfos =
+                            list
+                                .stream()
+                                .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
+                                .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
+                                .values()
+                                .stream()
+                                .map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
+                                .collect(Collectors.toList());
 
                     return Flux.fromIterable(addressInfos)
                             .flatMap(addressInfo -> {
@@ -896,10 +919,10 @@ public class GatewayAddressCache implements IAddressCache {
 
                                 if (this.openConnectionsHandler != null) {
                                     return this.openConnectionsHandler.openConnections(
-                                            Arrays
-                                                .stream(addressInfo.getRight())
-                                                .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                .collect(Collectors.toList()));
+                                            addressInfo
+                                                    .getRight()
+                                                    .getAddressesByProtocol(Protocol.TCP)
+                                                    .getTransportAddressUris());
                                 }
 
                                 logger.info("OpenConnectionHandler is null, can not open connections");
@@ -923,8 +946,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     }
 
-    private boolean notAllReplicasAvailable(AddressInformation[] addressInformations) {
-        return addressInformations.length < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
+    private boolean notAllReplicasAvailable(PartitionAddressInformation partitionAddressInformation) {
+        return partitionAddressInformation.getAllAddresses().size() < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
     }
 
     private static String logAddressResolutionStart(

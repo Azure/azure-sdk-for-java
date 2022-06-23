@@ -187,7 +187,10 @@ public class AddressResolverTest {
         boolean nameBased) throws Exception {
 
         if (targetServiceIdentity != null && targetPartitionKeyRange != null) {
-            targetServiceIdentity.partitionKeyRangeIds.add(new PartitionKeyRangeIdentity(collectionAfterRefresh != null ? collectionAfterRefresh.getResourceId() : collectionBeforeRefresh.getResourceId(), targetPartitionKeyRange.getId()));
+            targetServiceIdentity.partitionKeyRangeIds.add(
+                    new PartitionKeyRangeIdentity(
+                            collectionAfterRefresh != null ? collectionAfterRefresh.getResourceId() : collectionBeforeRefresh.getResourceId(),
+                            targetPartitionKeyRange.getId()));
         }
 
         this.initializeMocks(
@@ -220,11 +223,11 @@ public class AddressResolverTest {
         PartitionKey pk = new PartitionKey("foo");
         request.setPartitionKeyInternal(BridgeInternal.getPartitionKeyInternal(pk));
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, pk.toString());
-        AddressInformation[] resolvedAddresses;
+        PartitionAddressInformation resolvedAddresses;
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } finally {
-            assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismath");
+            assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismatch");
 
             assertThat(routingMapCacheRefreshed).isEqualTo(routingMapRefreshCount.values().stream().mapToInt(v -> v).sum()).describedAs("routing map cache refresh count mismath");
             assertThat(addressCacheRefreshed).isEqualTo(addressesRefreshCount.values().stream().mapToInt(v -> v).sum()).describedAs("address cache refresh count mismatch");
@@ -232,7 +235,7 @@ public class AddressResolverTest {
             assertThat(addressesRefreshCount.entrySet().stream().filter(pair -> pair.getValue() > 1).count()).isEqualTo(0);
         }
 
-        assertThat(targetAddresses[0].getPhysicalUri()).isEqualTo(resolvedAddresses[0].getPhysicalUri());
+        assertThat(targetAddresses[0].getPhysicalUri()).isEqualTo(resolvedAddresses.getAllAddresses().get(0).getPhysicalUri());
         //       Assert.AreEqual(targetServiceIdentity, request.requestContext.TargetIdentity);
         assertThat(targetPartitionKeyRange.getId()).isEqualTo(request.requestContext.resolvedPartitionKeyRange.getId());
     }
@@ -287,7 +290,7 @@ public class AddressResolverTest {
         request.forceNameCacheRefresh = forceNameCacheRefresh;
         request.forcePartitionKeyRangeRefresh = forceRoutingMapRefresh;
         request.routeTo(rangeIdentity);
-        AddressInformation[] resolvedAddresses;
+        PartitionAddressInformation resolvedAddresses;
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } finally {
@@ -301,7 +304,7 @@ public class AddressResolverTest {
             assertThat(addressesRefreshCount.entrySet().stream().filter(pair -> pair.getValue() > 1).count()).isEqualTo(0);
         }
 
-        assertThat(targetAddresses[0].getPhysicalUri()).isEqualTo(resolvedAddresses[0].getPhysicalUri());
+        assertThat(targetAddresses[0].getPhysicalUri()).isEqualTo(resolvedAddresses.getAllAddresses().get(0).getPhysicalUri());
         //       Assert.AreEqual(targetServiceIdentity, request.requestContext.TargetIdentity);
         assertThat(targetPartitionKeyRange.getId()).isEqualTo(request.requestContext.resolvedPartitionKeyRange.getId());
     }
@@ -407,8 +410,7 @@ public class AddressResolverTest {
 
 
         // Fabric Address Cache
-        Map<ServiceIdentity, AddressInformation[]> currentAddresses =
-            new HashMap<>(addressesBeforeRefresh);
+        Map<ServiceIdentity, AddressInformation[]> currentAddresses = new HashMap<>(addressesBeforeRefresh);
         this.addressesRefreshCount = new HashMap<>();
 
         // No refresh case
@@ -419,7 +421,9 @@ public class AddressResolverTest {
             Boolean forceRefresh = invocationOnMock.getArgument(2, Boolean.class);
 
             if (!forceRefresh) {
-                return Mono.just(new Utils.ValueHolder<>(currentAddresses.get(findMatchingServiceIdentity(currentAddresses, pkri))));
+                return Mono.just(
+                        new Utils.ValueHolder<>(
+                                new PartitionAddressInformation(Arrays.asList(currentAddresses.get(findMatchingServiceIdentity(currentAddresses, pkri))))));
             } else {
 
                 ServiceIdentity si;
@@ -442,7 +446,7 @@ public class AddressResolverTest {
                     addressesRefreshCount.put(si, addressesRefreshCount.get(si) + 1);
                 }
 
-                return Mono.just(new Utils.ValueHolder<>(currentAddresses.get(si)));
+                return Mono.just(new Utils.ValueHolder<>(new PartitionAddressInformation(Arrays.asList(currentAddresses.get(si)))));
             }
         }).when(fabricAddressCache).tryGetAddresses(Mockito.any(RxDocumentServiceRequest.class), Mockito.any(PartitionKeyRangeIdentity.class), Mockito.anyBoolean());
     }

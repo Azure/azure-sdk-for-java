@@ -30,7 +30,7 @@ public interface IAddressCache {
      * @param forceRefreshPartitionAddresses Whether addresses need to be refreshed as previously resolved addresses were determined to be outdated.
      * @return Physical addresses.
      */
-    Mono<Utils.ValueHolder<AddressInformation[]>> tryGetAddresses(
+    Mono<Utils.ValueHolder<PartitionAddressInformation>> tryGetAddresses(
             RxDocumentServiceRequest request,
             PartitionKeyRangeIdentity partitionKeyRangeIdentity,
             boolean forceRefreshPartitionAddresses);

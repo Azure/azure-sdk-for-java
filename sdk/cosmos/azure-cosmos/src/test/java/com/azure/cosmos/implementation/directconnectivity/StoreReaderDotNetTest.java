@@ -49,6 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreReaderDotNetTest {
     private static final Logger logger = LoggerFactory.getLogger(StoreReaderDotNetTest.class);
+
     @Test(groups = "unit")
     public void addressCache() {
         // create a real document service request
@@ -67,8 +68,12 @@ public class StoreReaderDotNetTest {
                 .resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(false));
 
         // validate that the mock works
-        AddressInformation[] addressInfo = mockAddressCache.resolveAsync(entity, false).block();
-        assertThat(addressInfo[0]).isEqualTo(addressInformation[0]);
+        PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
+        assertThat(
+                partitionAddressInformation
+                        .getAddressesByProtocol(Protocol.HTTPS)
+                        .getTransportAddressUris()
+                        .get(0)).isEqualTo(addressInformation[0].getPhysicalUri());
     }
 
     /**
@@ -458,9 +463,14 @@ public class StoreReaderDotNetTest {
         IAddressResolver mockAddressCache = getMockAddressCache(addressInformation);
 
         // validate that the mock works
-        AddressInformation[] addressInfo = mockAddressCache.resolveAsync(entity, false).block();
+        PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
 
-        assertThat(addressInfo[0]).isEqualTo(addressInformation[0]);
+        assertThat(
+                partitionAddressInformation
+                        .getAddressesByProtocol(Protocol.TCP)
+                        .getTransportAddressUris()
+                        .get(0))
+                .isEqualTo(addressInformation[0].getPhysicalUri());
 
         AddressSelector addressSelector = new AddressSelector(mockAddressCache, Protocol.TCP);
         Uri primaryAddress = addressSelector.resolvePrimaryUriAsync(entity, false /*forceAddressRefresh*/).block();
@@ -588,8 +598,13 @@ public class StoreReaderDotNetTest {
         IAddressResolver mockAddressCache = getMockAddressCache(addressInformations);
 
         // validate that the mock works
-        AddressInformation[] addressInfo = mockAddressCache.resolveAsync(entity, false).block();
-        assertThat(addressInfo[0]).isEqualTo(addressInformations[0]);
+        PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
+        assertThat(
+                partitionAddressInformation
+                        .getAddressesByProtocol(Protocol.TCP)
+                        .getTransportAddressUris()
+                        .get(0))
+                .isEqualTo(addressInformations[0].getPhysicalUri());
 
         AddressSelector addressSelector = new AddressSelector(mockAddressCache, Protocol.TCP);
         Uri primaryAddress = addressSelector.resolvePrimaryUriAsync(entity, false).block();
@@ -677,8 +692,13 @@ public class StoreReaderDotNetTest {
         IAddressResolver mockAddressCache = getMockAddressCache(addressInformations);
 
         // validate that the mock works
-        AddressInformation[] addressInfo = mockAddressCache.resolveAsync(entity, false).block();
-        assertThat(addressInformations[0]).isEqualTo(addressInfo[0]);
+        PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
+        assertThat(addressInformations[0].getPhysicalUri())
+                .isEqualTo(
+                        partitionAddressInformation
+                                .getAddressesByProtocol(Protocol.TCP)
+                                .getTransportAddressUris()
+                                .get(0));
 
         AddressSelector addressSelector = new AddressSelector(mockAddressCache, Protocol.TCP);
         Uri primaryAddress = addressSelector.resolvePrimaryUriAsync(entity, false).block();
@@ -764,8 +784,13 @@ public class StoreReaderDotNetTest {
         IAddressResolver mockAddressCache = getMockAddressCache(addressInformations);
 
         // validate that the mock works
-        AddressInformation[] addressInfo = mockAddressCache.resolveAsync(entity, false).block();
-        assertThat(addressInfo[0]).isEqualTo(addressInformations[0]);
+        PartitionAddressInformation partitionAddressInformation = mockAddressCache.resolveAsync(entity, false).block();
+        assertThat(
+                partitionAddressInformation
+                        .getAddressesByProtocol(Protocol.TCP)
+                        .getTransportAddressUris()
+                        .get(0))
+                .isEqualTo(addressInformations[0]);
 
         AddressSelector addressSelector = new AddressSelector(mockAddressCache, Protocol.TCP);
         Uri primaryAddress = addressSelector.resolvePrimaryUriAsync(entity, false).block();
