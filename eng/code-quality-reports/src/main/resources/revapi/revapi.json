@@ -274,12 +274,14 @@
         {
           "regex": true,
           "code": "java.method.returnTypeChanged",
+          "old": "method * com\\.azure\\.cloud\\.autoconfigure\\.(aad|aadb2c).properties\\..*",
           "new": "method * com\\.azure\\.cloud\\.autoconfigure\\.(aad|aadb2c).properties\\..*",
           "justification": "To support JWT Client Authentication."
         },
         {
           "regex": true,
           "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com\\.azure\\.cloud\\.autoconfigure\\.(aad|aadb2c).properties\\..*",
           "new": "parameter void com\\.azure\\.cloud\\.autoconfigure\\.(aad|aadb2c).properties\\..*",
           "justification": "To support JWT Client Authentication."
         },
