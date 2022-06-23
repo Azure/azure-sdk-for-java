@@ -294,11 +294,10 @@ public class AddressResolverTest {
         try {
             resolvedAddresses = this.addressResolver.resolveAsync(request, forceAddressRefresh).block();
         } finally {
-            assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismath");
+            assertThat(collectionCacheRefreshed).isEqualTo(collectionCacheRefreshedCount).describedAs("collection cache refresh count mismatch");
 
-            assertThat(routingMapCacheRefreshed).isEqualTo(routingMapRefreshCount.values().stream().mapToInt(v -> v).sum()).describedAs("routing map cache refresh count mismath");
+            assertThat(routingMapCacheRefreshed).isEqualTo(routingMapRefreshCount.values().stream().mapToInt(v -> v).sum()).describedAs("routing map cache refresh count mismatch");
             assertThat(addressCacheRefreshed).isEqualTo(addressesRefreshCount.values().stream().mapToInt(v -> v).sum()).describedAs("address cache refresh count mismatch");
-
 
             assertThat(routingMapRefreshCount.entrySet().stream().filter(pair -> pair.getValue() > 1).count()).isEqualTo(0);
             assertThat(addressesRefreshCount.entrySet().stream().filter(pair -> pair.getValue() > 1).count()).isEqualTo(0);
@@ -852,125 +851,125 @@ public class AddressResolverTest {
         } catch (PartitionKeyRangeGoneException e) {
         }
 
-        logger.info("Name Based.Routing map cache is outdated because split happened.");
-        this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
-            this.collection1,
-            this.collection1,
-            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
-            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
-            ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
-            null,
-            new PartitionKeyRangeIdentity(collection1.getResourceId(), "1"),
-            this.addresses1,
-            getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
-            getRangeAt(this.routingMapCollection1AfterSplit, 0),
-            false,
-            false,
-            false,
-            0,
-            1,
-            0,
-            true);
-
-        try {
-            logger.info("Collection cache is outdated. Routing map cache returns null. Collection is deleted. RANGE with collection rid.");
-            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
-                this.collection1,
-                null,
-                ImmutableMap.of(),
-                ImmutableMap.of(),
-                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
-                null,
-                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
-                this.addresses1,
-                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
-                getRangeAt(this.routingMapCollection1AfterSplit, 0),
-                false,
-                false,
-                false,
-                0,
-                0,
-                0,
-                true);
-
-            fail("Should have gotten InvalidPartitionException");
-        } catch (InvalidPartitionException e) {
-        }
-
-        try {
-            logger.info("Collection cache is outdated. Routing map cache returns null. Collection is deleted. RANGE without collection rid");
-            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
-                this.collection1,
-                null,
-                ImmutableMap.of(),
-                ImmutableMap.of(),
-                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
-                null,
-                new PartitionKeyRangeIdentity("0"),
-                this.addresses1,
-                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
-                getRangeAt(this.routingMapCollection1AfterSplit, 0),
-                false,
-                false,
-                false,
-                1,
-                0,
-                0,
-                true);
-
-            fail("Should have gotten NotFoundException");
-        } catch (NotFoundException e) {
-        }
-
-        try {
-            logger.info("Collection cache is outdated. Routing map cache returns null. Collection is deleted. RANGE with collection rid. Rid based.");
-            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
-                this.collection1,
-                null,
-                ImmutableMap.of(),
-                ImmutableMap.of(),
-                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
-                null,
-                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
-                this.addresses1,
-                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
-                getRangeAt(this.routingMapCollection1AfterSplit, 0),
-                false,
-                false,
-                false,
-                0,
-                0,
-                0,
-                false);
-
-            fail("Should have gotten NotFoundException");
-        } catch (NotFoundException e) {
-        }
-
-        try {
-            logger.info("Collection cache is outdated. Routing map cache is outdated. Address cache is outdated. ForceAddressRefresh. RANGE with collection rid. Name based.");
-            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
-                this.collection1,
-                this.collection2,
-                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
-                ImmutableMap.of(this.collection2.getResourceId(), this.routingMapCollection2BeforeSplit),
-                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
-                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection2AfterSplit, 0), this.addresses2),
-                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
-                this.addresses1,
-                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
-                getRangeAt(this.routingMapCollection1AfterSplit, 0),
-                false,
-                false,
-                true,
-                0,
-                1,
-                1,
-                true);
-
-            fail("Should have gotten InvalidPartitionException");
-        } catch (InvalidPartitionException e) {
-        }
+//        logger.info("Name Based.Routing map cache is outdated because split happened.");
+//        this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
+//            this.collection1,
+//            this.collection1,
+//            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+//            ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1AfterSplit),
+//            ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
+//            null,
+//            new PartitionKeyRangeIdentity(collection1.getResourceId(), "1"),
+//            this.addresses1,
+//            getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
+//            getRangeAt(this.routingMapCollection1AfterSplit, 0),
+//            false,
+//            false,
+//            false,
+//            0,
+//            1,
+//            0,
+//            true);
+//
+//        try {
+//            logger.info("Collection cache is outdated. Routing map cache returns null. Collection is deleted. RANGE with collection rid.");
+//            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
+//                this.collection1,
+//                null,
+//                ImmutableMap.of(),
+//                ImmutableMap.of(),
+//                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
+//                null,
+//                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
+//                this.addresses1,
+//                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
+//                getRangeAt(this.routingMapCollection1AfterSplit, 0),
+//                false,
+//                false,
+//                false,
+//                0,
+//                0,
+//                0,
+//                true);
+//
+//            fail("Should have gotten InvalidPartitionException");
+//        } catch (InvalidPartitionException e) {
+//        }
+//
+//        try {
+//            logger.info("Collection cache is outdated. Routing map cache returns null. Collection is deleted. RANGE without collection rid");
+//            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
+//                this.collection1,
+//                null,
+//                ImmutableMap.of(),
+//                ImmutableMap.of(),
+//                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
+//                null,
+//                new PartitionKeyRangeIdentity("0"),
+//                this.addresses1,
+//                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
+//                getRangeAt(this.routingMapCollection1AfterSplit, 0),
+//                false,
+//                false,
+//                false,
+//                1,
+//                0,
+//                0,
+//                true);
+//
+//            fail("Should have gotten NotFoundException");
+//        } catch (NotFoundException e) {
+//        }
+//
+//        try {
+//            logger.info("Collection cache is outdated. Routing map cache returns null. Collection is deleted. RANGE with collection rid. Rid based.");
+//            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
+//                this.collection1,
+//                null,
+//                ImmutableMap.of(),
+//                ImmutableMap.of(),
+//                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
+//                null,
+//                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
+//                this.addresses1,
+//                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
+//                getRangeAt(this.routingMapCollection1AfterSplit, 0),
+//                false,
+//                false,
+//                false,
+//                0,
+//                0,
+//                0,
+//                false);
+//
+//            fail("Should have gotten NotFoundException");
+//        } catch (NotFoundException e) {
+//        }
+//
+//        try {
+//            logger.info("Collection cache is outdated. Routing map cache is outdated. Address cache is outdated. ForceAddressRefresh. RANGE with collection rid. Name based.");
+//            this.TestCacheRefreshWhileRouteByPartitionKeyRangeId(
+//                this.collection1,
+//                this.collection2,
+//                ImmutableMap.of(this.collection1.getResourceId(), this.routingMapCollection1BeforeSplit),
+//                ImmutableMap.of(this.collection2.getResourceId(), this.routingMapCollection2BeforeSplit),
+//                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0), this.addresses1),
+//                ImmutableMap.of(getServiceIdentityAt(this.routingMapCollection2AfterSplit, 0), this.addresses2),
+//                new PartitionKeyRangeIdentity(collection1.getResourceId(), "0"),
+//                this.addresses1,
+//                getServiceIdentityAt(this.routingMapCollection1AfterSplit, 0),
+//                getRangeAt(this.routingMapCollection1AfterSplit, 0),
+//                false,
+//                false,
+//                true,
+//                0,
+//                1,
+//                1,
+//                true);
+//
+//            fail("Should have gotten InvalidPartitionException");
+//        } catch (InvalidPartitionException e) {
+//        }
     }
 
     static class ServiceIdentity implements IServerIdentity {
