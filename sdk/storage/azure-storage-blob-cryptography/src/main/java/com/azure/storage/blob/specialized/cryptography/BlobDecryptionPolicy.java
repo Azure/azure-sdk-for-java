@@ -148,7 +148,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         } else {
             // If it was a ranged request, we would have already called get properties and set encryption data.
             // Since there is no encryption data, the request is not encrypted
-            if (context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).isEmpty()) {
+            if (!context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).isPresent()) {
                 return next.process();
             }
             EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
