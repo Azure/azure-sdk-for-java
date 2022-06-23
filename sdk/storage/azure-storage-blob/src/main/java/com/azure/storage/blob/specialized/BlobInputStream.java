@@ -45,6 +45,7 @@ public final class BlobInputStream extends StorageInputStream {
      * @param initialBuffer The result of the initial download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
+     * @param context The {@link Context}
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
