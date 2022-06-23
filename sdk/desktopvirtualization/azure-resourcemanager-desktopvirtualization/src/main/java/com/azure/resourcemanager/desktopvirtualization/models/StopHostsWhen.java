@@ -27,7 +27,11 @@ public final class StopHostsWhen extends ExpandableStringEnum<StopHostsWhen> {
         return fromString(name, StopHostsWhen.class);
     }
 
-    /** @return known StopHostsWhen values. */
+    /**
+     * Gets known StopHostsWhen values.
+     *
+     * @return known StopHostsWhen values.
+     */
     public static Collection<StopHostsWhen> values() {
         return values(StopHostsWhen.class);
     }
