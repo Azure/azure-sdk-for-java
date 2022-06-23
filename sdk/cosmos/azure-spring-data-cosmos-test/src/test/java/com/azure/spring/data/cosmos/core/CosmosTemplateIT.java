@@ -574,7 +574,7 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testIsNotNullCriteriaNotCaseSensitive() {
+    public void testIsNotNullCriteriaCaseSensitive() {
         Criteria hasLastName = Criteria.getInstance(CriteriaType.IS_NOT_NULL, "lastName",
             Collections.emptyList(),
             Part.IgnoreCaseType.ALWAYS);
@@ -585,8 +585,19 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testStartsWithCriteriaNotCaseSensitive() {
+    public void testStartsWithCriteriaCaseSensitive() {
         Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STARTS_WITH, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
+            Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,
+            containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testIsEqualCriteriaCaseSensitive() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
             Part.IgnoreCaseType.ALWAYS);
         List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,

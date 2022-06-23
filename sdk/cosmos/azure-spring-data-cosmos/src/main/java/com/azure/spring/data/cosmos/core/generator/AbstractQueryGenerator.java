@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.*;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -66,6 +67,11 @@ public abstract class AbstractQueryGenerator {
         if (CriteriaType.isFunction(criteria.getType())) {
             return getFunctionCondition(ignoreCase, sqlKeyword, subject, parameter,
                 CriteriaType.isFunctionWithCaseSensitiveSupport(criteria.getType()));
+        } else if(criteria.getType() == CriteriaType.IS_EQUAL &&
+                ignoreCase != Part.IgnoreCaseType.NEVER &&
+                !Pattern.compile("-?\\d+(\\.\\d+)?").matcher(parameter).matches()) {
+            return getFunctionCondition(ignoreCase, CriteriaType.STRING_EQUAL.getSqlKeyword(),
+                subject, parameter, true);
         } else {
             return getCondition(ignoreCase, sqlKeyword, subject, parameter);
         }

@@ -26,6 +26,11 @@ public enum CriteriaType {
     IS_EQUAL("="),
 
     /**
+     * String equals
+     */
+    STRING_EQUAL("STRINGEQUALS"),
+
+    /**
      * Or
      */
     OR("OR"),
@@ -285,6 +290,7 @@ public enum CriteriaType {
             case CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
+            case STRING_EQUAL:
                 return true;
             default:
                 return false;
