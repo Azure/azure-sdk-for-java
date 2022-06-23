@@ -179,11 +179,13 @@ public final class AppConfigurationProperties {
 
         this.stores.forEach(store -> {
             Assert.isTrue(
-                StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString()),
+                StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
+                    || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
                 "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
         });
 
+        //TODO (mametcal): need to update for multiple endpoints
         int uniqueStoreSize = (int) this.stores.stream().map(ConfigStore::getEndpoint).distinct().count();
         Assert.isTrue(this.stores.size() == uniqueStoreSize, "Duplicate store name exists.");
         if (refreshInterval != null) {

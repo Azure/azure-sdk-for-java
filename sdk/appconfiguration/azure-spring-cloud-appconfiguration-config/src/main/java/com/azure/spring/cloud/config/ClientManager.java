@@ -8,6 +8,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
+import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
  * Manages all client connections for all configuration stores.
@@ -38,7 +39,7 @@ public class ClientManager {
      * @param endpoint StoreIdentifier the endpoint for the first store listed in the config.
      * @return ConfigurationClient for accessing App Configuration
      */
-    public ConfigurationClient getClient(String endpoint) {
+    public ConfigurationClientWrapper getClient(String endpoint) {
         return connections.get(endpoint).getClient();
     }
 

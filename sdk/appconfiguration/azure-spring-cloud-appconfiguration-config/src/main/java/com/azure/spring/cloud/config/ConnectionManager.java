@@ -3,7 +3,9 @@
 package com.azure.spring.cloud.config;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,12 +17,12 @@ import org.springframework.util.StringUtils;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
+import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
  * Holds a set of connections to an app configuration store with zero to many geo-replications.
@@ -64,10 +66,10 @@ public class ConnectionManager {
     private final String storeIdentifier;
 
     // Used if only one connection method is given.
-    private ConfigurationClient client;
+    private ConfigurationClientWrapper client;
 
     // Used if multiple connection method is given.
-    private List<ConfigurationClient> clients;
+    private List<ConfigurationClientWrapper> clients;
 
     /**
      * Creates a set of connections to a app configuration store.
@@ -118,12 +120,19 @@ public class ConnectionManager {
      * Returns a client.
      * @return ConfiguraitonClient
      */
-    public ConfigurationClient getClient() {
+    public ConfigurationClientWrapper getClient() {
+        if (client == null && clients == null) {
+            buildClients();
+        }
         if (client != null) {
             return client;
         }
+        
+        int clientNumber = ThreadLocalRandom.current().nextInt(0, clients.size());
 
-        return clients.get(0);
+        LOGGER.info("Using Client: " + clientNumber);
+
+        return clients.get(clientNumber);
     }
 
     /**
@@ -133,12 +142,11 @@ public class ConnectionManager {
     public void buildClients() {
         // Single client or Multiple?
         // If single call buildClient
-        boolean hasSingleEndpoint = StringUtils.hasText(configStore.getEndpoint());
-        boolean hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString());
-        boolean hasMultiEndpoints = configStore.getEndpoints().size() > 0;
-        boolean hasMultiConnectionString = configStore.getConnectionStrings().size() > 0;
+        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
+        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
+        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
 
-        if (!hasSingleEndpoint && !hasSingleConnectionString && !hasMultiEndpoints && !hasMultiConnectionString) {
+        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
             throw new IllegalArgumentException(
                 "More than 1 Conncetion method was set for connecting to App Configuration.");
         }
@@ -163,11 +171,10 @@ public class ConnectionManager {
         }
 
         ConfigurationClientBuilder builder = getBuilder();
+        clients = new ArrayList<>();
 
         if (configStore.getConnectionString() != null) {
             client = buildClientConnectionString(configStore.getConnectionString(), builder);
-        } else if (configStore.getEndpoint() != null) {
-            client = buildClientEndpoint(configStore.getEndpoint(), builder, clientIdIsPresent);
         } else if (configStore.getConnectionStrings().size() > 0) {
             for (String connectionString : configStore.getConnectionStrings()) {
                 clients.add(buildClientConnectionString(connectionString, builder));
@@ -176,10 +183,12 @@ public class ConnectionManager {
             for (String endpoint : configStore.getEndpoints()) {
                 clients.add(buildClientEndpoint(endpoint, builder, clientIdIsPresent));
             }
+        } else if (configStore.getEndpoint() != null) {
+            client = buildClientEndpoint(configStore.getEndpoint(), builder, clientIdIsPresent);
         }
     }
 
-    private ConfigurationClient buildClientEndpoint(String endpoint, ConfigurationClientBuilder builder,
+    private ConfigurationClientWrapper buildClientEndpoint(String endpoint, ConfigurationClientBuilder builder,
         boolean clientIdIsPresent)
         throws IllegalArgumentException {
 
@@ -212,7 +221,7 @@ public class ConnectionManager {
         return modifyAndBuildClient(builder, endpoint);
     }
 
-    private ConfigurationClient buildClientConnectionString(String connectionString, ConfigurationClientBuilder builder)
+    private ConfigurationClientWrapper buildClientConnectionString(String connectionString, ConfigurationClientBuilder builder)
         throws IllegalArgumentException {
         String endpoint = getEndpointFromConnectionString(connectionString);
         LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
@@ -222,7 +231,7 @@ public class ConnectionManager {
         return modifyAndBuildClient(builder, endpoint);
     }
 
-    private ConfigurationClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint) {
+    private ConfigurationClientWrapper modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint) {
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
 
@@ -233,7 +242,7 @@ public class ConnectionManager {
             clientProvider.setup(builder, endpoint);
         }
 
-        return builder.buildClient();
+        return new ConfigurationClientWrapper(endpoint, builder.buildClient());
     }
 
     /**

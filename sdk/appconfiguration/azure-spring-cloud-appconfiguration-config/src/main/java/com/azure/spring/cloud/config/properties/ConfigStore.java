@@ -187,6 +187,17 @@ public final class ConfigStore {
             } catch (URISyntaxException e) {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
+        } else if (connectionStrings.size() > 0) {
+            String endpoint = (ConnectionManager.getEndpointFromConnectionString(connectionStrings.get(0)));
+            try {
+                // new URI is used to validate the endpoint as a valid URI
+                new URI(endpoint);
+                this.endpoint = endpoint;
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
+            }
+        } else if (endpoints.size() > 0) {
+            endpoint = endpoints.get(0);
         }
 
         monitoring.validateAndInit();

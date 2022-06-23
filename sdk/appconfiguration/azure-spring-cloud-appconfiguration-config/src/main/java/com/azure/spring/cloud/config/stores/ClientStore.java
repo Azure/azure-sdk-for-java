@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.stores;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.ClientManager;
 import com.azure.spring.cloud.config.NormalizeNull;
+import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
  * Client for connecting to and getting keys from an Azure App Configuration Instance
@@ -34,7 +36,13 @@ public final class ClientStore {
      * @return The first returned configuration.
      */
     public ConfigurationSetting getWatchKey(String key, String label, String endpoint) {
-        return NormalizeNull.normalizeNullLabel(clientManager.getClient(endpoint).getConfigurationSetting(key, label));
+        ConfigurationClientWrapper client = clientManager.getClient(endpoint);
+        try {
+            return NormalizeNull
+                .normalizeNullLabel(client.getClient().getConfigurationSetting(key, label));
+        } catch (HttpResponseException e) {
+            return null;
+        }
     }
 
     /**
@@ -46,7 +54,16 @@ public final class ClientStore {
      */
     public PagedIterable<ConfigurationSetting> getFeatureFlagWatchKey(SettingSelector settingSelector,
         String storeName) {
-        return clientManager.getClient(storeName).listConfigurationSettings(settingSelector);
+        ConfigurationClientWrapper client = clientManager.getClient(storeName);
+        try {
+            return client.getClient().listConfigurationSettings(settingSelector);
+        } catch (HttpResponseException e) {
+            int statusCode = e.getResponse().getStatusCode();
+            if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+
+            }
+            return null;
+        }
     }
 
     /**
@@ -57,7 +74,12 @@ public final class ClientStore {
      * @return List of Configuration Settings.
      */
     public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
-        return clientManager.getClient(storeName).listConfigurationSettings(settingSelector);
+        ConfigurationClientWrapper client = clientManager.getClient(storeName);
+        try {
+            return client.getClient().listConfigurationSettings(settingSelector);
+        } catch (HttpResponseException e) {
+            return null;
+        }
     }
 
     /**
@@ -67,7 +89,8 @@ public final class ClientStore {
      */
     public void updateSyncToken(String storeName, String syncToken) {
         if (syncToken != null) {
-            clientManager.getClient(storeName).updateSyncToken(syncToken);
+            ConfigurationClientWrapper client = clientManager.getClient(storeName);
+            client.getClient().updateSyncToken(syncToken);
         }
     }
 }
