@@ -28,7 +28,11 @@ public final class VirtualNetworkEncryptionEnforcement
         return fromString(name, VirtualNetworkEncryptionEnforcement.class);
     }
 
-    /** @return known VirtualNetworkEncryptionEnforcement values. */
+    /**
+     * Gets known VirtualNetworkEncryptionEnforcement values.
+     *
+     * @return known VirtualNetworkEncryptionEnforcement values.
+     */
     public static Collection<VirtualNetworkEncryptionEnforcement> values() {
         return values(VirtualNetworkEncryptionEnforcement.class);
     }

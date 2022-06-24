@@ -33,7 +33,11 @@ public final class RoutingState extends ExpandableStringEnum<RoutingState> {
         return fromString(name, RoutingState.class);
     }
 
-    /** @return known RoutingState values. */
+    /**
+     * Gets known RoutingState values.
+     *
+     * @return known RoutingState values.
+     */
     public static Collection<RoutingState> values() {
         return values(RoutingState.class);
     }

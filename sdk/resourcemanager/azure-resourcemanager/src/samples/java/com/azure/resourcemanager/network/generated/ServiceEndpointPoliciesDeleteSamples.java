@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServiceEndpointPolicies Delete. */
 public final class ServiceEndpointPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyDelete.json
      */
     /**
      * Sample code: Delete service endpoint policy.

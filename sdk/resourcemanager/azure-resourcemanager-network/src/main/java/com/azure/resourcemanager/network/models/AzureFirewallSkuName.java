@@ -27,7 +27,11 @@ public final class AzureFirewallSkuName extends ExpandableStringEnum<AzureFirewa
         return fromString(name, AzureFirewallSkuName.class);
     }
 
-    /** @return known AzureFirewallSkuName values. */
+    /**
+     * Gets known AzureFirewallSkuName values.
+     *
+     * @return known AzureFirewallSkuName values.
+     */
     public static Collection<AzureFirewallSkuName> values() {
         return values(AzureFirewallSkuName.class);
     }

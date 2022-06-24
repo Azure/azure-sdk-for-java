@@ -109,6 +109,12 @@ public final class VpnServerConfigurationProperties {
     private List<P2SVpnGatewayInner> p2SVpnGateways;
 
     /*
+     * List of all VpnServerConfigurationPolicyGroups.
+     */
+    @JsonProperty(value = "configurationPolicyGroups")
+    private List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups;
+
+    /*
      * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
@@ -384,6 +390,27 @@ public final class VpnServerConfigurationProperties {
     }
 
     /**
+     * Get the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
+     *
+     * @return the configurationPolicyGroups value.
+     */
+    public List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups() {
+        return this.configurationPolicyGroups;
+    }
+
+    /**
+     * Set the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
+     *
+     * @param configurationPolicyGroups the configurationPolicyGroups value to set.
+     * @return the VpnServerConfigurationProperties object itself.
+     */
+    public VpnServerConfigurationProperties withConfigurationPolicyGroups(
+        List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups) {
+        this.configurationPolicyGroups = configurationPolicyGroups;
+        return this;
+    }
+
+    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
@@ -421,6 +448,9 @@ public final class VpnServerConfigurationProperties {
         }
         if (p2SVpnGateways() != null) {
             p2SVpnGateways().forEach(e -> e.validate());
+        }
+        if (configurationPolicyGroups() != null) {
+            configurationPolicyGroups().forEach(e -> e.validate());
         }
     }
 }
