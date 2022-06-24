@@ -29,7 +29,8 @@ import java.util.function.Supplier;
  */
 public final class InputStreamContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
-    private static final int BUFFER_CHUNK_SIZE = 8 * 1024 * 1024;
+    private static final int INITIAL_BUFFER_CHUNK_SIZE = 8 * 1024;
+    private static final int MAX_BUFFER_CHUNK_SIZE = 8 * 1024 * 1024;
     private static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
     private final Supplier<InputStream> content;
     private final Long length;
@@ -156,12 +157,30 @@ public final class InputStreamContent extends BinaryDataContent {
         try {
             Vector<ByteArrayInputStream> chunkInputStreams = new Vector<>();
 
+            // Start small.
+            int chunkSize = INITIAL_BUFFER_CHUNK_SIZE;
+            // If length is known use it to allocate larger buffer eagerly.
+            if (length != null) {
+                chunkSize = (int) Math.min(MAX_BUFFER_CHUNK_SIZE, length);
+            }
+
             int read;
+            long totalRead = 0;
+            long actualLength = length != null ? length : Long.MAX_VALUE; // assume infinity for unknown length.
             do {
-                byte[] chunk = new byte[BUFFER_CHUNK_SIZE];
+                byte[] chunk = new byte[chunkSize];
                 read = inputStream.read(chunk);
                 if (read > 0) {
                     chunkInputStreams.add(new ByteArrayInputStream(chunk, 0, read));
+                    totalRead += read;
+
+                    // Keep doubling the chunk until we hit max or known length.
+                    // This is to not over allocate for small streams eagerly.
+                    int nextChunkSizeCandidate = 2 * chunkSize;
+                    if (nextChunkSizeCandidate <= actualLength - totalRead
+                        && nextChunkSizeCandidate <= MAX_BUFFER_CHUNK_SIZE) {
+                        chunkSize = nextChunkSizeCandidate;
+                    }
                 }
             } while (read >= 0);
 
