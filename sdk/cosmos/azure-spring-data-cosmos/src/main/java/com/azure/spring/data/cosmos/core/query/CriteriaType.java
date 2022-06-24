@@ -128,7 +128,7 @@ public enum CriteriaType {
     /**
      * String equals
      */
-    STRING_EQUAL("STRINGEQUALS");
+    STRING_EQUALS("STRINGEQUALS");
 
     private String sqlKeyword;
 
@@ -290,7 +290,7 @@ public enum CriteriaType {
             case CONTAINING:
             case ENDS_WITH:
             case STARTS_WITH:
-            case STRING_EQUAL:
+            case STRING_EQUALS:
                 return true;
             default:
                 return false;
