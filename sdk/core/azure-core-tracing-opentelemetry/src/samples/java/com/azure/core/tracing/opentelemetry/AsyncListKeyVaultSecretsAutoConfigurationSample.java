@@ -9,8 +9,8 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-import io.opentelemetry.extension.annotations.WithSpan;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import reactor.util.context.Context;
@@ -18,7 +18,8 @@ import reactor.util.context.Context;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 /**
- * Sample to demonstrate using {@link LoggingSpanExporter} to export telemetry events when asynchronously creating
+ * Sample to demonstrate configuration using environment variables or system properties with  {@link AutoConfiguredOpenTelemetrySdk}
+ * https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure
  * and listing secrets from a Key Vault using the {@link SecretAsyncClient}.
  */
 public class AsyncListKeyVaultSecretsAutoConfigurationSample {
@@ -44,7 +45,8 @@ public class AsyncListKeyVaultSecretsAutoConfigurationSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureTracing() {
-        OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
+            .getOpenTelemetrySdk();
         return sdk.getTracer("Async-List-KV-Secrets-Sample");
     }
 
@@ -52,18 +54,22 @@ public class AsyncListKeyVaultSecretsAutoConfigurationSample {
      * Adds a secret and list all the secrets for a Key Vault using the {@link SecretAsyncClient} with distributed tracing enabled
      * and context propagated magically.
      */
-    @WithSpan("my-span")
+    @SuppressWarnings("try")
     private static void doClientWork(SecretAsyncClient secretAsyncClient) {
-        // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
-        // automatically. ApplicationInsights agent or OpenTelemetry agent also propagate context through async reactor calls.
-        // When manually instrumenting without agent help, please follow doClientWorkExplicitContext example for
-        // async context propagation.
-        secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
-            .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
-        secretAsyncClient.listPropertiesOfSecrets()
-            .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
-                .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
-            .blockLast();
+        Span span = tracer.spanBuilder("my-span").startSpan();
+        try (Scope s = span.makeCurrent()) {
+            // current span propagates into synchronous calls automatically. ApplicationInsights or OpenTelemetry agent
+            // also propagate context through async reactor calls.
+            // if you use async client and instrument manually without agent help, please follow doClientWorkExplicitContext example
+            secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
+                .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
+            secretAsyncClient.listPropertiesOfSecrets()
+                .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
+                    .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
+                .blockLast();
+        } finally {
+            span.end();
+        }
     }
 
     /**
