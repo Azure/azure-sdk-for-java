@@ -23,7 +23,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
  * https://github.com/open-telemetry/opentelemetry-java/tree/main/sdk-extensions/autoconfigure
  * and listing secrets from a Key Vault using the {@link SecretAsyncClient}.
  */
-public class AsyncListKeyVaultSecretsAutoConfigurationSample {
+public class ListKeyVaultSecretsAutoConfigurationSample {
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
     @SuppressWarnings("try")
     public void syncClient() {
