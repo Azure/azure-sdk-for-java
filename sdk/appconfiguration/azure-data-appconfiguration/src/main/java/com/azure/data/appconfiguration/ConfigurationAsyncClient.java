@@ -874,6 +874,7 @@ public final class ConfigurationAsyncClient {
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all of the current settings in the service.
+     * @throws HttpResponseException if there is a client or service error occurs, as in 400 or 500 error types.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
@@ -959,6 +960,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
+     * @throws HttpResponseException if there is a client or service error occurs, as in 400 or 500 error types.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector) {
