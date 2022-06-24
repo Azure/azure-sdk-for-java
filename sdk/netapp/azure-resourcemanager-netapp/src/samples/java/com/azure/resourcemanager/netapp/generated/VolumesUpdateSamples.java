@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.Volume;
 /** Samples for Volumes Update. */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Volumes_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.

@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupsClient. */
 public final class BackupsClientImpl implements BackupsClient {
-    private final ClientLogger logger = new ClientLogger(BackupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupsService service;
 
@@ -327,14 +324,7 @@ public final class BackupsClientImpl implements BackupsClient {
     private Mono<BackupStatusInner> getStatusAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName) {
         return getStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
-            .flatMap(
-                (Response<BackupStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -506,14 +496,7 @@ public final class BackupsClientImpl implements BackupsClient {
     private Mono<RestoreStatusInner> getVolumeRestoreStatusAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName) {
         return getVolumeRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
-            .flatMap(
-                (Response<RestoreStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -897,14 +880,7 @@ public final class BackupsClientImpl implements BackupsClient {
     private Mono<BackupInner> getAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, backupName)
-            .flatMap(
-                (Response<BackupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

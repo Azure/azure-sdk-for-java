@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadBalancers Delete. */
 public final class LoadBalancersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerDelete.json
      */
     /**
      * Sample code: Delete load balancer.

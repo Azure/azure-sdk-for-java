@@ -30,7 +30,11 @@ public final class EffectiveSecurityRuleProtocol extends ExpandableStringEnum<Ef
         return fromString(name, EffectiveSecurityRuleProtocol.class);
     }
 
-    /** @return known EffectiveSecurityRuleProtocol values. */
+    /**
+     * Gets known EffectiveSecurityRuleProtocol values.
+     *
+     * @return known EffectiveSecurityRuleProtocol values.
+     */
     public static Collection<EffectiveSecurityRuleProtocol> values() {
         return values(EffectiveSecurityRuleProtocol.class);
     }

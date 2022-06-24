@@ -24,7 +24,11 @@ public final class RouteFilterRuleType extends ExpandableStringEnum<RouteFilterR
         return fromString(name, RouteFilterRuleType.class);
     }
 
-    /** @return known RouteFilterRuleType values. */
+    /**
+     * Gets known RouteFilterRuleType values.
+     *
+     * @return known RouteFilterRuleType values.
+     */
     public static Collection<RouteFilterRuleType> values() {
         return values(RouteFilterRuleType.class);
     }

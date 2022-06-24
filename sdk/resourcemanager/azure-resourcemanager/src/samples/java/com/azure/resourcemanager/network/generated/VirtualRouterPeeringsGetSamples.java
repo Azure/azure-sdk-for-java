@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualRouterPeerings Get. */
 public final class VirtualRouterPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualRouterPeeringGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualRouterPeeringGet.json
      */
     /**
      * Sample code: Get Virtual Router Peering.

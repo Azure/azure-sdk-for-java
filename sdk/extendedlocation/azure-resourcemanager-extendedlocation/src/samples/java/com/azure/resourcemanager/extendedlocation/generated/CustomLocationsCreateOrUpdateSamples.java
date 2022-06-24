@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for CustomLocations CreateOrUpdate. */
 public final class CustomLocationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsCreate_Update.json
+     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsCreate_Update.json
      */
     /**
      * Sample code: Create/Update Custom Location.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties which represents actual subvolume model which is stored as a file in the system. */
 @Fluent
 public final class SubvolumeModelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubvolumeModelProperties.class);
-
     /*
      * path Path to the subvolume
      */
