@@ -45,6 +45,8 @@ def delete_dependency_version(file_path):
         for line in lines:
             if ';external_dependency} -->' not in line:
                 new_pom_file.write(line)
+            elif '<!-- {x-version-update;com.github.tomakehurst:wiremock-jre8;external_dependency} -->' in line:
+                new_pom_file.write(line)
             elif external_dependencies_managed(line):
                 # listed in external-dependencies.txt but not managed by spring
                 new_pom_file.write(line)
