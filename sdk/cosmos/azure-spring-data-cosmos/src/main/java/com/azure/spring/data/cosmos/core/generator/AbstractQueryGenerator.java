@@ -194,6 +194,7 @@ public abstract class AbstractQueryGenerator {
             case ENDS_WITH:
             case STARTS_WITH:
             case ARRAY_CONTAINS:
+            case STRING_EQUALS:
                 return generateBinaryQuery(criteria, parameters, counter.getAndIncrement());
             case AND:
             case OR:
