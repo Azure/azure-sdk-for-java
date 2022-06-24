@@ -45,6 +45,31 @@ def delete_dependency_version(file_path):
         for line in lines:
             if ';external_dependency} -->' not in line:
                 new_pom_file.write(line)
+            elif external_dependencies_managed(line):
+                # listed in external-dependencies.txt but not managed by spring
+                new_pom_file.write(line)
+
+
+def external_dependencies_managed(line):
+    dependency_name = line.split(";")[1]
+    flag = False
+    with open(get_managed_file_name(), 'r', encoding = 'utf-8') as managed_file:
+        lines = managed_file.readlines()
+        for dependency in lines:
+            if dependency_name not in dependency:
+                flag = True
+            else:
+                flag = False
+                break
+    return flag
+
+
+def get_managed_file_name():
+    with open("./eng/versioning/external_dependencies.txt", "r", encoding = 'utf-8') as external_file:
+        lines = external_file.readlines()
+        for line in lines:
+            if "org.springframework.boot:spring-boot-dependencies;" in line:
+                return "sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt".format(line.split(";")[1].replace("\n", ""))
 
 
 if __name__ == '__main__':
