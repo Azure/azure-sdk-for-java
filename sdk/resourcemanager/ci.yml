@@ -156,10 +156,6 @@ parameters:
   displayName: 'azure-resourcemanager-resources'
   type: boolean
   default: true
-- name: release_azureresourcemanagersamples
-  displayName: 'azure-resourcemanager-samples'
-  type: boolean
-  default: true
 - name: release_azureresourcemanagersearch
   displayName: 'azure-resourcemanager-search'
   type: boolean
@@ -264,10 +260,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresources }}
-      - name: azure-resourcemanager-samples
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagersamples
-        releaseInBatch: ${{ parameters.release_azureresourcemanagersamples }}
       - name: azure-resourcemanager-search
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersearch
@@ -289,6 +281,9 @@ extends:
         safeName: azureresourcemanagertrafficmanager
         releaseInBatch: ${{ parameters.release_azureresourcemanagertrafficmanager }}
     AdditionalModules:
+      - name: azure-resourcemanager-samples
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersamples
       - name: azure-resourcemanager-perf
         groupId: com.azure.resourcemanager
         # required by the above perf library
