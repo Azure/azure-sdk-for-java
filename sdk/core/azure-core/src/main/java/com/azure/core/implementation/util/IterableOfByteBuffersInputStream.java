@@ -29,7 +29,7 @@ public class IterableOfByteBuffersInputStream extends InputStream {
             return -1;
         }
 
-        return buffer.get();
+        return buffer.get() & 0xff; // Make positive int. See ByteArrayInputStream.read() for reference.
     }
 
     @Override
@@ -44,11 +44,22 @@ public class IterableOfByteBuffersInputStream extends InputStream {
             int toTransfer = Math.min(buffer.remaining(), length);
             buffer.get(b, offset, toTransfer);
             read += toTransfer;
+            offset += toTransfer;
             length -= toTransfer;
             buffer = getCurrentBuffer();
         }
 
         return read;
+    }
+
+    @Override
+    public synchronized int available() throws IOException {
+        ByteBuffer buffer = getCurrentBuffer();
+        if (buffer == null) {
+            return 0;
+        } else {
+            return buffer.remaining();
+        }
     }
 
     private ByteBuffer getCurrentBuffer() {

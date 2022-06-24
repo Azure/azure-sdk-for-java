@@ -157,8 +157,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = Collections.unmodifiableList(
-                readStreamToListOfByteBuffers(inputStream, length));
+            List<ByteBuffer> byteBuffers = readStreamToListOfByteBuffers(inputStream, length);
 
             return new InputStreamContent(
                 () -> new IterableOfByteBuffersInputStream(byteBuffers),
@@ -209,7 +208,7 @@ public final class InputStreamContent extends BinaryDataContent {
             }
         } while (read >= 0);
 
-        return buffers;
+        return Collections.unmodifiableList(buffers);
     }
 
     private byte[] getBytes() {
