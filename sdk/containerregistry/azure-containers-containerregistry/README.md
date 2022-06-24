@@ -256,23 +256,7 @@ try {
 
 ## Troubleshooting
 
-All container registry service operations will throw a
-[HttpResponseException][HttpResponseException] on failure.
-
-```java readme-sample-getProperties
-DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
-    .endpoint(endpoint)
-    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
-    .credential(credential)
-    .buildClient()
-    .getRepository(repositoryName);
-try {
-    containerRepository.getProperties();
-} catch (HttpResponseException exception) {
-    // Do something with the exception.
-}
-```
+See our [troubleshooting guide](./TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 

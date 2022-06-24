@@ -4,9 +4,26 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ## General Troubleshooting
 
-To troubleshoot issues with Azure Container Registry library, it is important to first enable logging to monitor the
-behavior of the application. The errors and warnings in the logs or traces generally provide
+Container registry service methods throw a [HttpResponseException][HttpResponseException] on failure.
+
+```java readme-sample-getProperties
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildClient()
+    .getRepository(repositoryName);
+try {
+    containerRepository.getProperties();
+} catch (HttpResponseException exception) {
+    // Do something with the exception.
+}
+```
+
+Azure Container Registry client library log errors by default. The errors and warnings in the logs or traces generally provide
 useful insights into what went wrong and sometimes include corrective actions to fix issues.
+
+Make sure logging or tracing are enabled to monitor the behavior of the application and to troubleshoot issues with Azure Container Registry library. 
 
 ### Enable client logging
 
