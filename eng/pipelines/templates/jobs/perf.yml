@@ -25,12 +25,7 @@ parameters:
     default: ''
 
 variables:
-  - name: NugetSecurityAnalysisWarningLevel
-    value: 'none'
-  - name: skipComponentGovernanceDetection
-    value: 'true'
-  - name: DisableDockerDetector
-    value: 'true'
+  - template: /eng/pipelines/templates/variables/globals.yml
   - name: Pool
     value: 'azsdk-pool-mms-ubuntu-2004-perf'
   - name: OSVmImage
@@ -72,7 +67,7 @@ jobs:
         mvn --version
       displayName: Print Java Versions
 
-    - template: ../../../common/TestResources/deploy-test-resources.yml
+    - template: /eng/common/TestResources/deploy-test-resources.yml
       parameters:
         ServiceDirectory: ${{ parameters.serviceDirectory }}
         Location: westus
