@@ -11,16 +11,18 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.SequenceInputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -155,25 +157,40 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            Vector<ByteArrayInputStream> chunkInputStreams = new Vector<>();
+            List<ByteBuffer> byteBuffers = Collections.unmodifiableList(
+                readStreamToListOfByteBuffers(inputStream, length));
 
-            // Start small.
-            int chunkSize = INITIAL_BUFFER_CHUNK_SIZE;
-            // If length is known use it to allocate larger buffer eagerly.
-            if (length != null) {
-                chunkSize = (int) Math.min(MAX_BUFFER_CHUNK_SIZE, length);
-            }
+            return new InputStreamContent(
+                () -> new IterableOfByteBuffersInputStream(byteBuffers),
+                length, true);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
 
-            int read;
-            long totalRead = 0;
-            long actualLength = length != null ? length : Long.MAX_VALUE; // assume infinity for unknown length.
-            do {
-                byte[] chunk = new byte[chunkSize];
-                read = inputStream.read(chunk);
-                if (read > 0) {
-                    chunkInputStreams.add(new ByteArrayInputStream(chunk, 0, read));
-                    totalRead += read;
+    private static List<ByteBuffer> readStreamToListOfByteBuffers(
+        InputStream inputStream, Long length) throws IOException {
+        // Start small.
+        int chunkSize = INITIAL_BUFFER_CHUNK_SIZE;
+        // If length is known use it to allocate larger buffer eagerly.
+        if (length != null) {
+            chunkSize = (int) Math.min(MAX_BUFFER_CHUNK_SIZE, length);
+        }
 
+        int read;
+        long totalRead = 0;
+        long actualLength = length != null ? length : Long.MAX_VALUE; // assume infinity for unknown length.
+
+
+        ReadableByteChannel channel = Channels.newChannel(inputStream);
+        List<ByteBuffer> buffers = new LinkedList<>();
+        ByteBuffer chunk = ByteBuffer.allocate(chunkSize);
+        do {
+            read = channel.read(chunk);
+            if (read >= 0) {
+                totalRead += read;
+
+                if (!chunk.hasRemaining()) {
                     // Keep doubling the chunk until we hit max or known length.
                     // This is to not over allocate for small streams eagerly.
                     int nextChunkSizeCandidate = 2 * chunkSize;
@@ -181,19 +198,18 @@ public final class InputStreamContent extends BinaryDataContent {
                         && nextChunkSizeCandidate <= MAX_BUFFER_CHUNK_SIZE) {
                         chunkSize = nextChunkSizeCandidate;
                     }
-                }
-            } while (read >= 0);
 
-            return new InputStreamContent(
-                () -> {
-                    for (ByteArrayInputStream chunkInputStream : chunkInputStreams) {
-                        chunkInputStream.reset();
-                    }
-                    return new SequenceInputStream(chunkInputStreams.elements());
-                }, length, true);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-        }
+                    chunk.flip();
+                    buffers.add(chunk);
+                    chunk = ByteBuffer.allocate(chunkSize);
+                }
+            } else {
+                chunk.flip();
+                buffers.add(chunk);
+            }
+        } while (read >= 0);
+
+        return buffers;
     }
 
     private byte[] getBytes() {

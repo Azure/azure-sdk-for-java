@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -30,7 +31,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.SequenceInputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
@@ -846,9 +846,9 @@ public class BinaryDataTest {
         );
 
         // Check that buffering happened. This is part assumes implementation.
-        assertInstanceOf(SequenceInputStream.class,
+        assertInstanceOf(IterableOfByteBuffersInputStream.class,
             BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream());
-        assertInstanceOf(SequenceInputStream.class,
+        assertInstanceOf(IterableOfByteBuffersInputStream.class,
             BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryDataAsync().block().toStream());
     }
 
@@ -916,9 +916,9 @@ public class BinaryDataTest {
         );
 
         // Check that buffering happened. This is part assumes implementation.
-        assertInstanceOf(SequenceInputStream.class,
+        assertInstanceOf(IterableOfByteBuffersInputStream.class,
             BinaryData.fromStream(fileInputStream).toReplayableBinaryData().toStream());
-        assertInstanceOf(SequenceInputStream.class,
+        assertInstanceOf(IterableOfByteBuffersInputStream.class,
             BinaryData.fromStream(fileInputStream).toReplayableBinaryDataAsync().block().toStream());
     }
 
