@@ -25,7 +25,7 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+            <version>3.4.18</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
-            <version>3.1.6</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
+            <version>3.1.7</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
         </dependency>
     </dependencies>
 </project>
