@@ -318,7 +318,7 @@ class AadClientRegistrationRepositoryTests {
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = fakeValue:/.default",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = on_behalf_of"
             )
-            .run(context ->{
+            .run(context -> {
                 AadClientRegistrationRepository repository = context.getBean(AadClientRegistrationRepository.class);
                 assertNotNull(repository);
                 ClientRegistration graph = repository.findByRegistrationId("graph");

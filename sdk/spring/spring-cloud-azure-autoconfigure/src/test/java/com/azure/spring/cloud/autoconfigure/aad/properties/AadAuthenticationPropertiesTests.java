@@ -131,11 +131,12 @@ class AadAuthenticationPropertiesTests {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.authorization-clients.azure.client-authentication-method = private_key_jwt")
-            .run(context ->{
+            .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertThat(properties).isNotNull();
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
-                assertThat(PRIVATE_KEY_JWT.equals(authorizationClients.get(AZURE_CLIENT_REGISTRATION_ID).getClientAuthenticationMethod())).isTrue();
+                assertEquals(PRIVATE_KEY_JWT,
+                    authorizationClients.get(AZURE_CLIENT_REGISTRATION_ID).getClientAuthenticationMethod());
             });
     }
 
