@@ -42,8 +42,6 @@ public class CreateConfigurationSettingLoggingExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureLoggingExporter() {
-        // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
-        // automatically.
         SdkTracerProvider tracerProvider =
             SdkTracerProvider.builder()
                 .addSpanProcessor(BatchSpanProcessor.builder(LoggingSpanExporter.create()).build())

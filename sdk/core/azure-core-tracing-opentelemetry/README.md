@@ -72,41 +72,37 @@ Users can *optionally* pass the instance of `io.opentelemetry.context.Context` t
 to provide explicit parent context.
 This [sample][sample_key_vault] provides an example when parent span is picked up automatically.
 
-```java
-public static void main(String[] args) {
-    configureTracing();
-    SecretClient client = new SecretClientBuilder()
-      .endpoint("<your-vault-url>")
-      .credential(new DefaultAzureCredentialBuilder().build())
-      .buildClient();
-   doClientWork(client);
+```java readme-sample-context-auto-propagation
+SecretClient secretClient = new SecretClientBuilder()
+    .vaultUrl(VAULT_URL)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+Span span = tracer.spanBuilder("my-span").startSpan();
+try (Scope s = span.makeCurrent()) {
+    // ApplicationInsights or OpenTelemetry agent propagate context through async reactor calls.
+    // So SecretClient here creates spans that are children of my-span
+    System.out.printf("Secret with name: %s%n", secretClient.setSecret(new KeyVaultSecret("Secret1", "password1")).getName());
+    secretClient.listPropertiesOfSecrets().forEach(secretBase ->
+        System.out.printf("Secret with name: %s%n", secretClient.getSecret(secretBase.getName())));
+} finally {
+    span.end();
 }
 
-@WithSpan("my-span")
-public static void doClientWork(SecretClient client) {
-    // WithSpan annotation creates a parent span and makes it current, which propagates into synchronous calls
-    // automatically. ApplicationInsights agent or OpenTelemetry agent also propagate context through async reactor calls.
-    // When manually instrumenting without agent help, please follow the next example for async context propagation.
-    secretClient.setSecret(new Secret("secret_name", "secret_value"));
-}
 ```
 
 When using async clients without Application Insights Java agent or OpenTelemetry agent, please do context propagation manually:
 
-```java
-private static Tracer tracer = configureTracing();
-public static void main(String[] args) {
-    SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-        .vaultUrl(VAULT_URL)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildAsyncClient();
-   doClientWork(secretAsyncClient);
-}
+```java  readme-sample-context-manual-propagation
+SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
+    .vaultUrl(VAULT_URL)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 
-private static void doClientWorkExplicitContext(SecretAsyncClient secretAsyncClient) {
-    Span userParentSpan = tracer.spanBuilder("my-span").startSpan();
-    Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan));
-
+Span span = tracer.spanBuilder("my-span").startSpan();
+// when using async clients and instrumenting without ApplicationInsights or OpenTelemetry agent, context needs to be propagated manually
+Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(span));
+try {
     secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
         .contextWrite(traceContext)
         .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
@@ -116,9 +112,10 @@ private static void doClientWorkExplicitContext(SecretAsyncClient secretAsyncCli
             .contextWrite(traceContext)
             .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
         .blockLast();
-
-    userParentSpan.end();
+} finally {
+    span.end();
 }
+
 ```
 
 ### Using the plugin package with AMQP client libraries
@@ -127,34 +124,33 @@ Send a single event/message using [azure-messaging-eventhubs][azure-messaging-ev
 
 Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object:
 
-```java
-// Get the Tracer Provider
-private static TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
-private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
+```java readme-sample-context-manual-propagation-amqp
+Flux<EventData> events = Flux.just(
+    new EventData("EventData Sample 1"),
+    new EventData("EventData Sample 2"));
 
-private static void doClientWork() {
-    EventHubProducerClient producer = new EventHubClientBuilder()
-        .connectionString(CONNECTION_STRING)
-        .buildProducerClient();
+// Create a batch to send the events.
+final AtomicReference<EventDataBatch> batchRef = new AtomicReference<>(
+    producer.createBatch().block());
 
-    Span span = TRACER.spanBuilder("user-span").startSpan();
-    try (Scope scope = TRACER.withSpan(span)) {
-        EventData event1 = new EventData("1".getBytes(UTF_8));
+final AtomicReference<io.opentelemetry.context.Context> traceContextRef = new AtomicReference<>(io.opentelemetry.context.Context.current());
 
-        // you may pass context explicitly, if you don't pass any, implicit 
-        // Context.current() will be used
-        // event1.addContext(PARENT_TRACE_CONTEXT_KEY, Context.current());
+// when using async clients and instrumenting without ApplicationInsights or OpenTelemetry agent, context needs to be propagated manually
+// you would also want to propagate it manually when not making spans current.
+// we'll propagate context to events (to propagate it over to consumer)
+events.collect(batchRef::get, (b, e) ->
+        b.tryAdd(e.addContext(PARENT_TRACE_CONTEXT_KEY, traceContextRef.get())))
+    .flatMap(b -> producer.send(b))
+    .doFinally(i -> Span.fromContext(traceContextRef.get()).end())
+    .contextWrite(ctx -> {
+        // this block is executed first, we'll create an outer span, which usually represents incoming request
+        // or some logical operation
+        Span span = TRACER.spanBuilder("my-span").startSpan();
 
-        EventDataBatch eventDataBatch = producer.createBatch();
-
-        if (!eventDataBatch.tryAdd(eventData)) {
-            producer.send(eventDataBatch);
-            eventDataBatch = producer.createBatch();
-        }
-    } finally {
-        span.end();
-    }
-}
+        // and pass the new context with span to reactor for EventHubs producer client to pick it up.
+        return ctx.put(PARENT_TRACE_CONTEXT_KEY, traceContextRef.updateAndGet(traceContext -> traceContext.with(span)));
+    })
+    .block();
 ```
 
 ## Troubleshooting

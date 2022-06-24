@@ -5,6 +5,7 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
+import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.api.trace.Span;
@@ -23,20 +24,58 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
  * and listing secrets from a Key Vault using the {@link SecretAsyncClient}.
  */
 public class AsyncListKeyVaultSecretsAutoConfigurationSample {
-    private static Tracer tracer = configureTracing();
     private static final String VAULT_URL = "<YOUR_VAULT_URL>";
+    @SuppressWarnings("try")
+    public void syncClient() {
+        Tracer tracer = configureTracing();
 
-    /**
-     * The main method to run the application.
-     *
-     * @param args Ignored args.
-     */
-    public static void main(String[] args) {
+        // BEGIN: readme-sample-context-auto-propagation
+        SecretClient secretClient = new SecretClientBuilder()
+            .vaultUrl(VAULT_URL)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        Span span = tracer.spanBuilder("my-span").startSpan();
+        try (Scope s = span.makeCurrent()) {
+            // ApplicationInsights or OpenTelemetry agent propagate context through async reactor calls.
+            // So SecretClient here creates spans that are children of my-span
+            System.out.printf("Secret with name: %s%n", secretClient.setSecret(new KeyVaultSecret("Secret1", "password1")).getName());
+            secretClient.listPropertiesOfSecrets().forEach(secretBase ->
+                System.out.printf("Secret with name: %s%n", secretClient.getSecret(secretBase.getName())));
+        } finally {
+            span.end();
+        }
+
+        // END: readme-sample-context-auto-propagation
+    }
+
+    public void asyncClient() {
+        Tracer tracer = configureTracing();
+
+        // BEGIN: readme-sample-context-manual-propagation
         SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
             .vaultUrl(VAULT_URL)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
-        doClientWork(secretAsyncClient);
+
+        Span span = tracer.spanBuilder("my-span").startSpan();
+        // when using async clients and instrumenting without ApplicationInsights or OpenTelemetry agent, context needs to be propagated manually
+        Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(span));
+        try {
+            secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
+                .contextWrite(traceContext)
+                .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
+            secretAsyncClient.listPropertiesOfSecrets()
+                .contextWrite(traceContext)
+                .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
+                    .contextWrite(traceContext)
+                    .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
+                .blockLast();
+        } finally {
+            span.end();
+        }
+
+        // END: readme-sample-context-manual-propagation
     }
 
     /**
@@ -48,49 +87,5 @@ public class AsyncListKeyVaultSecretsAutoConfigurationSample {
         OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
             .getOpenTelemetrySdk();
         return sdk.getTracer("Async-List-KV-Secrets-Sample");
-    }
-
-    /**
-     * Adds a secret and list all the secrets for a Key Vault using the {@link SecretAsyncClient} with distributed tracing enabled
-     * and context propagated magically.
-     */
-    @SuppressWarnings("try")
-    private static void doClientWork(SecretAsyncClient secretAsyncClient) {
-        Span span = tracer.spanBuilder("my-span").startSpan();
-        try (Scope s = span.makeCurrent()) {
-            // current span propagates into synchronous calls automatically. ApplicationInsights or OpenTelemetry agent
-            // also propagate context through async reactor calls.
-            // if you use async client and instrument manually without agent help, please follow doClientWorkExplicitContext example
-            secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
-                .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
-            secretAsyncClient.listPropertiesOfSecrets()
-                .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
-                    .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
-                .blockLast();
-        } finally {
-            span.end();
-        }
-    }
-
-    /**
-     * Adds a secret and list all the secrets for a Key Vault using the {@link SecretAsyncClient} with distributed tracing enabled
-     * and context propagated explicitly.
-     */
-    private static void doClientWorkExplicitContext(SecretAsyncClient secretAsyncClient) {
-        Span userParentSpan = tracer.spanBuilder("my-span").startSpan();
-
-        Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan));
-
-        secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
-            .contextWrite(traceContext)
-            .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
-        secretAsyncClient.listPropertiesOfSecrets()
-            .contextWrite(traceContext)
-            .doOnNext(secretBase -> secretAsyncClient.getSecret(secretBase.getName())
-                .contextWrite(traceContext)
-                .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
-            .blockLast();
-
-        userParentSpan.end();
     }
 }
