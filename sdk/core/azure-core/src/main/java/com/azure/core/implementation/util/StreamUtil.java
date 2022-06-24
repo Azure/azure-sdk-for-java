@@ -65,7 +65,7 @@ public final class StreamUtil {
         int chunkSize = initialBufferSize;
         // If length is known use it to allocate larger buffer eagerly.
         if (lengthHint != null) {
-            chunkSize = (int) Math.min(maxBufferSize, lengthHint);
+            chunkSize = (int) Math.max(1, Math.min(maxBufferSize, lengthHint));
         }
 
         int read;
@@ -111,7 +111,9 @@ public final class StreamUtil {
                 }
             } else {
                 chunk.flip();
-                buffers.add(chunk);
+                if (chunk.hasRemaining()) {
+                    buffers.add(chunk);
+                }
             }
         } while (read >= 0);
 

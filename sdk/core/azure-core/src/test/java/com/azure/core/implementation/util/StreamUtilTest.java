@@ -4,13 +4,18 @@
 package com.azure.core.implementation.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,6 +63,26 @@ public class StreamUtilTest {
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
         assertArrayEquals(bytes, readBytes);
+    }
+
+    @Test
+    public void testEmptyStream() throws IOException {
+        byte[] bytes = new byte[0];
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), null, 8, 128);
+
+        assertEquals(0, byteBuffers.size());
+    }
+
+    @Test
+    public void testEmptyStreamWithLength() throws IOException {
+        byte[] bytes = new byte[0];
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), 0L, 8, 128);
+
+        assertEquals(0, byteBuffers.size());
     }
 
     @Test
@@ -134,7 +159,7 @@ public class StreamUtilTest {
         List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
             new ByteArrayInputStream(bytes), null, 128, 128);
 
-        assertEquals(9, byteBuffers.size());
+        assertEquals(8, byteBuffers.size());
         for (ByteBuffer byteBuffer : byteBuffers) {
             assertEquals(128, byteBuffer.capacity());
         }
@@ -177,7 +202,7 @@ public class StreamUtilTest {
         List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
             inputStream, null, 128, 128);
 
-        assertEquals(9, byteBuffers.size());
+        assertEquals(8, byteBuffers.size());
         for (ByteBuffer byteBuffer : byteBuffers) {
             assertEquals(128, byteBuffer.capacity());
         }
@@ -190,6 +215,34 @@ public class StreamUtilTest {
         byte[] readBytes = new byte[bytes.length];
         new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
         assertArrayEquals(bytes, readBytes);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestDataRoundTripParameters")
+    public void testDataRoundTrip(int dataSize, Long length, int initialBufferSize, int maxBufferSize) throws IOException {
+        byte[] bytes = new byte[dataSize];
+        RANDOM.nextBytes(bytes);
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), length, initialBufferSize, maxBufferSize);
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+    public static Stream<Arguments> provideTestDataRoundTripParameters() {
+        List<Arguments> args = new ArrayList<>();
+        for (int dataSize = 0; dataSize <= 16; dataSize++) {
+            for (int minBufferSize = 1 ; minBufferSize <= dataSize; minBufferSize ++) {
+                for (int maxBufferSize = minBufferSize; maxBufferSize <= dataSize; maxBufferSize++) {
+                    args.add(Arguments.of(dataSize, null, minBufferSize, maxBufferSize));
+                    args.add(Arguments.of(dataSize, (long) dataSize, minBufferSize, maxBufferSize));
+                }
+            }
+        }
+        return args.stream();
     }
 
 }
