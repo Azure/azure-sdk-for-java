@@ -235,7 +235,7 @@ public class StreamUtilTest {
     public static Stream<Arguments> provideTestDataRoundTripParameters() {
         List<Arguments> args = new ArrayList<>();
         for (int dataSize = 0; dataSize <= 16; dataSize++) {
-            for (int minBufferSize = 1 ; minBufferSize <= dataSize; minBufferSize ++) {
+            for (int minBufferSize = 1 ; minBufferSize <= dataSize; minBufferSize++) {
                 for (int maxBufferSize = minBufferSize; maxBufferSize <= dataSize; maxBufferSize++) {
                     args.add(Arguments.of(dataSize, null, minBufferSize, maxBufferSize));
                     args.add(Arguments.of(dataSize, (long) dataSize, minBufferSize, maxBufferSize));
