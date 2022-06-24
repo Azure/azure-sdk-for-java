@@ -207,7 +207,7 @@ com.azure.spring:spring-cloud-azure-trace-sleuth;4.2.0;4.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.15.0;2.16.0
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.15.0;2.16.0
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.15.0;2.16.0
-com.azure.resourcemanager:azure-resourcemanager-authorization;2.15.0;2.16.0
+com.azure.resourcemanager:azure-resourcemanager-authorization;2.16.0;2.17.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.15.0;2.16.0
 com.azure.resourcemanager:azure-resourcemanager-compute;2.15.0;2.16.0
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.15.0;2.16.0
