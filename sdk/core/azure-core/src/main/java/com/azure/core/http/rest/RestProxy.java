@@ -4,9 +4,11 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.implementation.http.rest.*;
+import com.azure.core.implementation.http.rest.AsyncRestProxy;
+import com.azure.core.implementation.http.rest.RestProxyUtils;
+import com.azure.core.implementation.http.rest.SwaggerInterfaceParser;
+import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.lang.reflect.InvocationHandler;
@@ -21,12 +23,10 @@ import java.lang.reflect.Proxy;
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
-    // RestProxy is a commonly used class, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(RestProxy.class);
-
     private final SwaggerInterfaceParser interfaceParser;
     private AsyncRestProxy asyncRestProxy;
     private SyncRestProxy syncRestProxy;
+    private boolean useSyncProxy;
 
     /**
      * Create a RestProxy.
@@ -70,7 +70,6 @@ public final class RestProxy implements InvocationHandler {
             return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                 options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
         }
-
     }
 
     /**

@@ -88,6 +88,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private final int contextPosition;
     private final int requestOptionsPosition;
+    private final boolean isReactive;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -236,6 +237,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
 
+        boolean isReactiveMethod = isReactiveType(returnType);
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
         int contextPosition = -1;
         int requestOptionsPosition = -1;
@@ -248,8 +250,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             } else if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
                 requestOptionsPosition = i;
             }
+            isReactiveMethod = isReactiveMethod || isReactiveType(parameterType);
         }
 
+        this.isReactive = isReactiveMethod;
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
     }
@@ -608,9 +612,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return exceptionHashMap;
     }
 
+    /**
+     * Indicates whether the swagger method is of Reactive type or not.
+     * To be classified as reactive method, either the return type or one of the input parameters must
+     * be one of {@link Mono}, {@link Flux} or {@link Publisher}.
+     *
+     * @return the boolean flag indicating whether the swagger method is reactive or not.
+     */
     public boolean isReactive() {
-        Type returnType = getReturnType();
-        return (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Publisher.class));
+        return isReactive;
+    }
+
+    boolean isReactiveType(Type type) {
+        return (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)
+            || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class));
     }
 }

@@ -1,6 +1,5 @@
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -16,11 +15,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -177,7 +173,7 @@ public class SyncRestProxy extends RestProxyBase {
                 // Base64Url
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
             }
-            result = responseBodyBytes;
+            result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : responseBodyBytes;
         }  else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             // The raw response is directly used to create an instance of BinaryData which then provides
@@ -229,11 +225,15 @@ public class SyncRestProxy extends RestProxyBase {
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
 
         if (isJson) {
+            byte[] serializedBytes = serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON);
+
             ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
             serializerAdapter.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
-            request.setHeader("Content-Length", String.valueOf(stream.size()));
-            request.setBody(BinaryData.fromBytes(stream.toByteArray()));
+            request.setHeader("Content-Length", String.valueOf(serializedBytes.length));
+            request.setBody(BinaryData.fromBytes(serializedBytes));
+
+
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody((byte[]) bodyContentObject);
         } else if (bodyContentObject instanceof String) {
