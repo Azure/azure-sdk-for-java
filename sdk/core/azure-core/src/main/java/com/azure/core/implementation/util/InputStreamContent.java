@@ -16,11 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -157,7 +153,8 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = readStreamToListOfByteBuffers(inputStream, length);
+            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
             return new InputStreamContent(
                 () -> new IterableOfByteBuffersInputStream(byteBuffers),
@@ -165,50 +162,6 @@ public final class InputStreamContent extends BinaryDataContent {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
-    }
-
-    private static List<ByteBuffer> readStreamToListOfByteBuffers(
-        InputStream inputStream, Long length) throws IOException {
-        // Start small.
-        int chunkSize = INITIAL_BUFFER_CHUNK_SIZE;
-        // If length is known use it to allocate larger buffer eagerly.
-        if (length != null) {
-            chunkSize = (int) Math.min(MAX_BUFFER_CHUNK_SIZE, length);
-        }
-
-        int read;
-        long totalRead = 0;
-        long actualLength = length != null ? length : Long.MAX_VALUE; // assume infinity for unknown length.
-
-
-        ReadableByteChannel channel = Channels.newChannel(inputStream);
-        List<ByteBuffer> buffers = new LinkedList<>();
-        ByteBuffer chunk = ByteBuffer.allocate(chunkSize);
-        do {
-            read = channel.read(chunk);
-            if (read >= 0) {
-                totalRead += read;
-
-                if (!chunk.hasRemaining()) {
-                    // Keep doubling the chunk until we hit max or known length.
-                    // This is to not over allocate for small streams eagerly.
-                    int nextChunkSizeCandidate = 2 * chunkSize;
-                    if (nextChunkSizeCandidate <= actualLength - totalRead
-                        && nextChunkSizeCandidate <= MAX_BUFFER_CHUNK_SIZE) {
-                        chunkSize = nextChunkSizeCandidate;
-                    }
-
-                    chunk.flip();
-                    buffers.add(chunk);
-                    chunk = ByteBuffer.allocate(chunkSize);
-                }
-            } else {
-                chunk.flip();
-                buffers.add(chunk);
-            }
-        } while (read >= 0);
-
-        return Collections.unmodifiableList(buffers);
     }
 
     private byte[] getBytes() {

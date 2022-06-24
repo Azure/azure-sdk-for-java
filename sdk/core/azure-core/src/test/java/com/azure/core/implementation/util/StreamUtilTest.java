@@ -1,0 +1,195 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.implementation.util;
+
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+public class StreamUtilTest {
+
+    private static final Random RANDOM = new Random();
+
+    @Test
+    public void testReadStreamToListOfByteBuffersValidations() {
+        assertThrows(NullPointerException.class,
+            () -> StreamUtil.readStreamToListOfByteBuffers(null, null, 1, 2));
+        assertThrows(IllegalArgumentException.class,
+            () -> StreamUtil.readStreamToListOfByteBuffers(new ByteArrayInputStream(new byte[0]), -1L, 1, 2));
+        assertThrows(IllegalArgumentException.class,
+            () -> StreamUtil.readStreamToListOfByteBuffers(new ByteArrayInputStream(new byte[0]), 1L, 0, 2));
+        assertThrows(IllegalArgumentException.class,
+            () -> StreamUtil.readStreamToListOfByteBuffers(new ByteArrayInputStream(new byte[0]), 1L, 2, 1));
+    }
+
+    @Test
+    public void testReadsInputStreamWithIncreasingChunkSize() throws IOException {
+        byte[] bytes = new byte[1024];
+        RANDOM.nextBytes(bytes);
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), null, 8, 128);
+
+        assertEquals(12, byteBuffers.size());
+        assertEquals(8, byteBuffers.get(0).capacity());
+        assertEquals(16, byteBuffers.get(1).capacity());
+        assertEquals(32, byteBuffers.get(2).capacity());
+        assertEquals(64, byteBuffers.get(3).capacity());
+        assertEquals(128, byteBuffers.get(4).capacity());
+        for (int i = 5; i < byteBuffers.size(); i++) {
+            assertEquals(128, byteBuffers.get(i).capacity());
+        }
+        for (int i = 0; i < byteBuffers.size() - 1; i++) {
+            // assert that buffers before last are full.
+            assertEquals(byteBuffers.get(i).capacity(), byteBuffers.get(i).remaining());
+        }
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+    @Test
+    public void testStreamLengthProvidedSmallStream() throws IOException {
+        byte[] bytes = new byte[64];
+        RANDOM.nextBytes(bytes);
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), (long) bytes.length, 8, 128);
+
+        assertEquals(1, byteBuffers.size());
+        assertEquals(bytes.length, byteBuffers.get(0).capacity());
+        assertEquals(bytes.length, byteBuffers.get(0).remaining());
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+    @Test
+    public void testStreamLengthProvidedLargeStream() throws IOException {
+        byte[] bytes = new byte[1024];
+        RANDOM.nextBytes(bytes);
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), (long) bytes.length, 8, 128);
+
+        assertEquals(8, byteBuffers.size());
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            // all max since stream is longer than max.
+            assertEquals(128, byteBuffer.capacity());
+        }
+        for (int i = 0; i < byteBuffers.size() - 1; i++) {
+            // assert that buffers before last are full.
+            assertEquals(byteBuffers.get(i).capacity(), byteBuffers.get(i).remaining());
+        }
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+    @Test
+    public void testStreamLengthProvidedIsSmallerThanRealStreamSize() throws IOException {
+        byte[] bytes = new byte[1025];
+        RANDOM.nextBytes(bytes);
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), (long) bytes.length - 1, 8, 128);
+
+        assertEquals(9, byteBuffers.size());
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            // all max since stream is longer than max.
+            assertEquals(128, byteBuffer.capacity());
+        }
+        for (int i = 0; i < byteBuffers.size() - 1; i++) {
+            // assert that buffers before last are full.
+            assertEquals(byteBuffers.get(i).capacity(), byteBuffers.get(i).remaining());
+        }
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+    @Test
+    public void testReadsInputStreamWithSameChunkSizeNoLengthProvided() throws IOException {
+        byte[] bytes = new byte[1024];
+        RANDOM.nextBytes(bytes);
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            new ByteArrayInputStream(bytes), null, 128, 128);
+
+        assertEquals(9, byteBuffers.size());
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            assertEquals(128, byteBuffer.capacity());
+        }
+        for (int i = 0; i < byteBuffers.size() - 1; i++) {
+            // assert that buffers before last are full.
+            assertEquals(byteBuffers.get(i).capacity(), byteBuffers.get(i).remaining());
+        }
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+    @Test
+    public void testBuffersGetFilledAggressively() throws IOException {
+        byte[] bytes = new byte[1024];
+        RANDOM.nextBytes(bytes);
+
+        ByteArrayInputStream delegate = new ByteArrayInputStream(bytes);
+        InputStream inputStream = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return delegate.read();
+            }
+
+            @Override
+            public int read(byte[] b, int off, int len) {
+                if (len > 2) {
+                    // read less, to trigger aggressive read in the util.
+                    return delegate.read(b, off, len - 1);
+                } else {
+                    return delegate.read(b, off, len);
+                }
+            }
+        };
+
+
+
+        List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
+            inputStream, null, 128, 128);
+
+        assertEquals(9, byteBuffers.size());
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            assertEquals(128, byteBuffer.capacity());
+        }
+        for (int i = 0; i < byteBuffers.size() - 1; i++) {
+            // assert that buffers before last are full.
+            assertEquals(byteBuffers.get(i).capacity(), byteBuffers.get(i).remaining());
+        }
+
+        // assert that collection carries original bytes.
+        byte[] readBytes = new byte[bytes.length];
+        new IterableOfByteBuffersInputStream(byteBuffers).read(readBytes);
+        assertArrayEquals(bytes, readBytes);
+    }
+
+}
