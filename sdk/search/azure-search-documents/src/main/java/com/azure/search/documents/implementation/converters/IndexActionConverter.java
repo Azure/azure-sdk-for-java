@@ -4,8 +4,10 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.DefaultJsonReader;
 import com.azure.search.documents.models.IndexAction;
 
 import java.io.IOException;
@@ -43,6 +45,7 @@ public final class IndexActionConverter {
     /**
      * Maps from {@link IndexAction} to {@link com.azure.search.documents.implementation.models.IndexAction}.
      */
+    @SuppressWarnings("unchecked")
     public static <T> com.azure.search.documents.implementation.models.IndexAction map(IndexAction<T> obj,
         ObjectSerializer serializer) {
         if (obj == null) {
@@ -59,32 +62,22 @@ public final class IndexActionConverter {
         }
 
         // Convert the document to the JSON string representation.
-        String documentJson;
+        byte[] documentJson;
         if (serializer == null) {
             // A custom ObjectSerializer isn't being used, fallback to default JacksonAdapter.
             try {
-                documentJson = getDefaultSerializerAdapter().serialize(document, SerializerEncoding.JSON);
+                documentJson = getDefaultSerializerAdapter().serializeToBytes(document, SerializerEncoding.JSON);
             } catch (IOException ex) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         } else {
             // A custom ObjectSerializer is being used, use it.
-            documentJson = new String(serializer.serializeToBytes(document), StandardCharsets.UTF_8);
+            documentJson = serializer.serializeToBytes(document);
         }
 
         if (documentJson != null) {
-            boolean startsWithCurlyBrace = documentJson.startsWith("{");
-            boolean endsWithCurlyBrace = documentJson.endsWith("}");
-
-            if (startsWithCurlyBrace && endsWithCurlyBrace) {
-                indexAction.setRawDocument(documentJson.substring(1, documentJson.length() - 1));
-            } else if (startsWithCurlyBrace) {
-                indexAction.setRawDocument(documentJson.substring(1));
-            } else if (endsWithCurlyBrace) {
-                indexAction.setRawDocument(documentJson.substring(0, documentJson.length() - 1));
-            } else {
-                indexAction.setRawDocument(documentJson);
-            }
+            indexAction.setAdditionalProperties(
+                (Map<String, Object>) JsonUtils.readUntypedField(DefaultJsonReader.fromBytes(documentJson)));
         }
 
         return indexAction;

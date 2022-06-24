@@ -52,9 +52,12 @@ public final class SearchContinuationToken {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream);
-        jsonWriter.writeStringField(API_VERSION, apiVersion)
+        jsonWriter.writeStartObject()
+            .writeStringField(API_VERSION, apiVersion)
             .writeStringField(NEXT_LINK, nextLink)
-            .writeJsonField(NEXT_PAGE_PARAMETERS, nextPageParameters);
+            .writeJsonField(NEXT_PAGE_PARAMETERS, nextPageParameters)
+            .writeEndObject()
+            .flush();
 
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }

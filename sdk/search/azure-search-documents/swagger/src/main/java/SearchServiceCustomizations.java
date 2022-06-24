@@ -417,32 +417,17 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeSearchIndexerSkillset(ClassCustomization classCustomization) {
-        classCustomization.getProperty("skills").setModifier(Modifier.PRIVATE);
-        JavadocCustomization originalConstructorJavadocs = classCustomization.getConstructor("SearchIndexerSkillset")
-            .replaceParameters("String name, List<SearchIndexerSkill> skills")
-            .getJavadoc();
+        classCustomization.addConstructor(joinWithNewline(
+                "public SearchIndexerSkillset(String name, List<SearchIndexerSkill> skills) {",
+                "    this(name);",
+                "    this.skills = skills;",
+                "}"
+            ))
+            .getJavadoc()
+            .setDescription("Creates an instance of SearchIndexerSkillset class.")
+            .setParam("name", "the name value to set.")
+            .setParam("skills", "the skills value to set.");
 
-        JavadocCustomization additionalConstructorJavadocs = classCustomization.addConstructor(joinWithNewline(
-                "public SearchIndexerSkillset(String name) {",
-                "    this(name, null);",
-                "}"))
-            .getJavadoc();
-
-        additionalConstructorJavadocs.setDescription(originalConstructorJavadocs.getDescription());
-        additionalConstructorJavadocs.setParam("name", originalConstructorJavadocs.getParams().get("name"));
-
-        classCustomization.addMethod(joinWithNewline(
-            "/**",
-            " * Sets the skills property: A list of skills in the skillset.",
-            " *",
-            " * @param skills the skills value to set.",
-            " * @return the SearchIndexerSkillset object itself.",
-            " */",
-            "public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {",
-            "    this.skills = skills;",
-            "    return this;",
-            "}"
-        ));
         addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
     }
 
@@ -617,13 +602,13 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeSearchIndexerDataSourceConnection(ClassCustomization classCustomization) {
         classCustomization.addConstructor(joinWithNewline(
-            "public SearchIndexerDataSourceConnection(String name, SearchIndexerDataSourceType type, String connectionString, SearchIndexerDataContainer container) {",
-            "    this.name = name;",
-            "    this.type = type;",
-            "    this.credentials = (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);",
-            "    this.container = container;",
-            "}"
-        ))
+                "public SearchIndexerDataSourceConnection(String name, SearchIndexerDataSourceType type, String connectionString, SearchIndexerDataContainer container) {",
+                "    this.name = name;",
+                "    this.type = type;",
+                "    this.credentials = (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);",
+                "    this.container = container;",
+                "}"
+            ))
             .getJavadoc()
             .setDescription("Constructor of {@link SearchIndexerDataSourceConnection}.")
             .setParam("name", "The name of the datasource.")

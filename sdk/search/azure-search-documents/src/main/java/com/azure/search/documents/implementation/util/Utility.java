@@ -34,7 +34,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
@@ -172,8 +171,8 @@ public final class Utility {
             return restClient.getDocuments().indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
-                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
-                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
+                    ? Mono.error(new IndexBatchException(response.getValue()))
+                    : Mono.just(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -264,13 +264,13 @@ public class IndexingSyncTests extends SearchTestBase {
         assertSuccessfulIndexResult(results.get(4), "2", 201);
 
         SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel1, actualHotel1, false);
+        assertMapEquals(hotel1, actualHotel1, true);
 
         SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel2, actualHotel2, false);
+        assertMapEquals(hotel2, actualHotel2, true);
 
         SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel3, actualHotel3, false);
+        assertMapEquals(hotel3, actualHotel3, true);
     }
 
     @Test
@@ -307,13 +307,13 @@ public class IndexingSyncTests extends SearchTestBase {
         }
 
         SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel1, actualHotel1, false);
+        assertMapEquals(hotel1, actualHotel1, true);
 
         SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel2, actualHotel2, false);
+        assertMapEquals(hotel2, actualHotel2, true);
 
         SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString(), SearchDocument.class);
-        assertMapEquals(hotel3, actualHotel3, false);
+        assertMapEquals(hotel3, actualHotel3, true);
     }
 
     @Test

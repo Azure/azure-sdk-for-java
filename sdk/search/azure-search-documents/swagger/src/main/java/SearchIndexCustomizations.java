@@ -5,8 +5,13 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.expr.LongLiteralExpr;
 import org.slf4j.Logger;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 /**
@@ -32,6 +37,7 @@ public class SearchIndexCustomizations extends Customization {
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
+        customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
@@ -94,6 +100,27 @@ public class SearchIndexCustomizations extends Customization {
             .setDescription("Sets the raw JSON document.")
             .setParam("rawDocument", "The raw JSON document.")
             .setReturn("the IndexAction object itself.");
+    }
+
+    private void customizeIndexingResult(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("IndexingResult").get();
+            clazz.addImplementedType(Serializable.class);
+            clazz.addFieldWithInitializer("long", "serialVersionUID", new LongLiteralExpr("-8604424005271188140L"),
+                Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+
+            FieldDeclaration field = clazz.getFieldByName("key").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            field = clazz.getFieldByName("errorMessage").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            field = clazz.getFieldByName("succeeded").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            field = clazz.getFieldByName("statusCode").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+        });
     }
 
     /*

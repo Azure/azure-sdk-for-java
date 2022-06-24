@@ -8,10 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
-import com.azure.search.documents.implementation.models.IndexDocumentsResult;
 import com.azure.search.documents.indexes.implementation.models.AnalyzeResult;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
@@ -126,12 +123,6 @@ public class MappingUtils {
             null,
             null
         );
-    }
-
-    public static Response<com.azure.search.documents.models.IndexDocumentsResult> mappingIndexDocumentResultResponse(
-        Response<IndexDocumentsResult> indexDocumentResponse) {
-        return new SimpleResponse<>(indexDocumentResponse,
-            IndexDocumentsResultConverter.map(indexDocumentResponse.getValue()));
     }
 
     public static Throwable exceptionMapper(Throwable throwable) {

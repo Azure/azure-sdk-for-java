@@ -150,7 +150,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         dataSourcesToDelete.add(updatedActual.getName());
 
         updatedExpected.setConnectionString(null); // Create doesn't return connection strings.
-        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
+        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag", "@odata.type");
     }
 
     @Test
