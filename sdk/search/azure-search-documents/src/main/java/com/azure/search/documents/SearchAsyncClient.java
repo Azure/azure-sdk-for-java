@@ -50,9 +50,6 @@ import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -671,21 +668,8 @@ public final class SearchAsyncClient {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
-                .map(res -> {
-                    if (serializer == null) {
-                        try {
-                            return new SimpleResponse<>(res, Utility.convertValue(res.getValue(), modelClass));
-                        } catch (IOException ex) {
-                            throw LOGGER.logExceptionAsError(
-                                new RuntimeException("Failed to deserialize document.", ex));
-                        }
-                    }
-                    ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-                    serializer.serialize(sourceStream, res.getValue());
-                    T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                        createInstance(modelClass));
-                    return new SimpleResponse<>(res, doc);
-                }).map(Function.identity());
+                .map(res -> new SimpleResponse<>(res, serializer.deserializeFromBytes(
+                    serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -960,14 +944,14 @@ public final class SearchAsyncClient {
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
 
-                return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result)),
+                return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result, serializer)),
                     result.getCoverage());
             });
     }
 
-    private static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result) {
+    private static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result, JsonSerializer serializer) {
         return result.getResults().stream()
-            .map(SuggestResultConverter::map)
+            .map(suggestResult -> SuggestResultConverter.map(suggestResult, serializer))
             .collect(Collectors.toList());
     }
 

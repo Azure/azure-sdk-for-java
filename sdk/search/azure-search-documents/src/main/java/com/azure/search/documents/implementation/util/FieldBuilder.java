@@ -5,6 +5,7 @@ package com.azure.search.documents.implementation.util;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -89,10 +90,13 @@ public final class FieldBuilder {
         MemberNameConverter converter;
         if (options == null || options.getJsonSerializer() == null) {
             converter = MemberNameConverterProviders.createInstance();
-        } else if (!(options.getJsonSerializer() instanceof MemberNameConverter)) {
-            converter = MemberNameConverterProviders.createInstance();
         } else {
-            converter = (MemberNameConverter) options.getJsonSerializer();
+            JsonSerializer serializer = options.getJsonSerializer();
+            if (serializer instanceof MemberNameConverter) {
+                converter = (MemberNameConverter) serializer;
+            } else {
+                converter = MemberNameConverterProviders.createInstance();
+            }
         }
 
         return build(modelClass, new Stack<>(), converter);

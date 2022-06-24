@@ -58,23 +58,31 @@ public class IndexActionTests {
 
     @Test
     public void nullIsExcludedInMapSerialization() {
+        ObjectSerializer nullExcludingSerializer = new JacksonJsonSerializerBuilder()
+            .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
+            .build();
+
         com.azure.search.documents.models.IndexAction<Map<String, Object>> action =
             new com.azure.search.documents.models.IndexAction<Map<String, Object>>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(Collections.singletonMap("null", null));
 
-        String json = convertToJson(IndexActionConverter.map(action, null));
+        String json = convertToJson(IndexActionConverter.map(action, nullExcludingSerializer));
         assertEquals("{\"@search.action\":\"merge\"}", json);
     }
 
     @Test
     public void nullIsExcludedInTypedSerialization() {
+        ObjectSerializer nullExcludingSerializer = new JacksonJsonSerializerBuilder()
+            .serializer(new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL))
+            .build();
+
         com.azure.search.documents.models.IndexAction<ClassWithNullableField> action =
             new com.azure.search.documents.models.IndexAction<ClassWithNullableField>()
                 .setActionType(IndexActionType.MERGE)
                 .setDocument(new ClassWithNullableField());
 
-        String json = convertToJson(IndexActionConverter.map(action, null));
+        String json = convertToJson(IndexActionConverter.map(action, nullExcludingSerializer));
         assertEquals("{\"@search.action\":\"merge\"}", json);
     }
 

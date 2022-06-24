@@ -8,11 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SuggestResultHelper;
-import com.azure.search.documents.implementation.util.Utility;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 
@@ -22,7 +17,6 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  */
 @Fluent
 public final class SuggestResult {
-    private static final ClientLogger LOGGER = new ClientLogger(SuggestResult.class);
     /*
      * Unmatched properties from the message are deserialized this collection
      */
@@ -36,7 +30,17 @@ public final class SuggestResult {
     private JsonSerializer jsonSerializer;
 
     static {
-        SuggestResultHelper.setAccessor(SuggestResult::setAdditionalProperties);
+        SuggestResultHelper.setAccessor(new SuggestResultHelper.SuggestResultAccessor() {
+            @Override
+            public void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties) {
+                suggestResult.setAdditionalProperties(additionalProperties);
+            }
+
+            @Override
+            public void setJsonSerializer(SuggestResult suggestResult, JsonSerializer jsonSerializer) {
+                suggestResult.jsonSerializer = jsonSerializer;
+            }
+        });
     }
 
     /**
@@ -57,16 +61,7 @@ public final class SuggestResult {
      * @return the additionalProperties value.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        if (jsonSerializer == null) {
-            try {
-                return Utility.convertValue(additionalProperties, modelClass);
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize suggestion result.", ex));
-            }
-        }
-        ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-        jsonSerializer.serialize(sourceStream, additionalProperties);
-        return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+        return jsonSerializer.deserializeFromBytes(jsonSerializer.serializeToBytes(additionalProperties),
             createInstance(modelClass));
     }
 

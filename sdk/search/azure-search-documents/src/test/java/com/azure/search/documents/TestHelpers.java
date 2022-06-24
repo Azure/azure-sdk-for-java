@@ -12,22 +12,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
-import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import org.reactivestreams.Publisher;
-import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -41,7 +37,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -50,8 +45,7 @@ import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
-import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
-import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,9 +65,6 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
-        new TypeReference<List<Map<String, Object>>>() {
-        };
 
     private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
@@ -84,12 +75,7 @@ public final class TestHelpers {
      * @param actual The actual object.
      */
     public static void assertObjectEquals(Object expected, Object actual) {
-        try {
-            assertEquals(getDefaultSerializerAdapter().serialize(expected, SerializerEncoding.JSON),
-                getDefaultSerializerAdapter().serialize(actual, SerializerEncoding.JSON));
-        } catch (IOException ex) {
-            fail("There is something wrong happen in serializer.");
-        }
+        assertArrayEquals(SERIALIZER.serializeToBytes(expected), SERIALIZER.serializeToBytes(actual));
     }
 
     /**
@@ -112,8 +98,14 @@ public final class TestHelpers {
     @SuppressWarnings({"unchecked", "rawtypes", "UseOfObsoleteDateTimeApi"})
     private static void assertObjectEqualsInternal(Object expected, Object actual, boolean ignoredDefaults,
         Set<String> ignoredFields) {
-        if (isComparableType(expected.getClass())) {
-            assertEquals(expected, actual);
+        if (expected == null) {
+            assertNull(actual);
+        } else if (isComparableType(expected.getClass())) {
+            if (expected instanceof Number) {
+                assertEquals(((Number) expected).doubleValue(), ((Number) actual).doubleValue());
+            } else {
+                assertEquals(expected, actual);
+            }
         } else if (expected instanceof OffsetDateTime) {
             assertEquals(0, ((OffsetDateTime) expected).compareTo(OffsetDateTime.parse(actual.toString())));
         } else if (expected instanceof Date) {
@@ -334,31 +326,28 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
+    @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename));
+        JsonReader reader = DefaultJsonReader.fromBytes(loadResource(filename));
 
-        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
+        return JsonUtils.readArray(reader, reader1 -> (Map<String, Object>) JsonUtils.readUntypedField(reader1));
     }
 
-    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
-        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> convertStreamToMap(byte[] source) {
+        return (Map<String, Object>) JsonUtils.readUntypedField(DefaultJsonReader.fromBytes(source));
     }
 
-    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
-        try {
-            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw Exceptions.propagate(e);
-        }
-    }
+//    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
+//        try {
+//            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
+//        } catch (IOException e) {
+//            throw Exceptions.propagate(e);
+//        }
+//    }
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
-        try {
-            return Utility.convertValue(value, clazz);
-        } catch (IOException ex) {
-            throw Exceptions.propagate(ex);
-        }
+        return SERIALIZER.deserializeFromBytes(SERIALIZER.serializeToBytes(value), TypeReference.createInstance(clazz));
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName) {

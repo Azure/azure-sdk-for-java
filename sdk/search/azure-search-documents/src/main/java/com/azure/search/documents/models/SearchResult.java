@@ -4,13 +4,10 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SearchResultHelper;
-import com.azure.search.documents.implementation.util.Utility;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +18,6 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  */
 @Fluent
 public final class SearchResult {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchResult.class);
-
     /*
      * The relevance score of the document compared to other documents returned
      * by the query.
@@ -146,16 +141,8 @@ public final class SearchResult {
      * @throws RuntimeException if there is IO error occurs.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        if (jsonSerializer == null) {
-            try {
-                return Utility.convertValue(additionalProperties, modelClass);
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize search result.", ex));
-            }
-        }
-
-        byte[] rawJsonDocument = jsonSerializer.serializeToBytes(additionalProperties);
-        return jsonSerializer.deserializeFromBytes(rawJsonDocument, createInstance(modelClass));
+        return jsonSerializer.deserializeFromBytes(jsonSerializer.serializeToBytes(additionalProperties),
+            createInstance(modelClass));
     }
 
     /**
