@@ -1,6 +1,7 @@
 # Release History
 
 ## 4.3.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.1 and Spring Cloud dependencies version to 2021.0.3
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
