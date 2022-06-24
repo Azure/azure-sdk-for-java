@@ -6,6 +6,8 @@ package com.azure.spring.cloud.autoconfigure.aad;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -22,7 +24,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.ON_BEHALF_OF;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.JWT_BEARER;
 
 
 /**
@@ -33,6 +37,8 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.AU
  * 2. Save azureClientAccessTokenScopes, this scope is used to request "azure" client's access_token.
  */
 public class AadClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AadClientRegistrationRepository.class);
 
     /**
      * Azure client registration ID
@@ -150,6 +156,12 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
         AadAuthorizationServerEndpoints endpoints =
             new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
                 properties.getProfile().getTenantId());
+
+        if (ON_BEHALF_OF.equals(authorizationGrantType)) {
+            authorizationGrantType = JWT_BEARER;
+            LOGGER.warn("The grant type 'on_behalf_of' of the client '{}' is not recommended, it will be "
+                + "replaced with 'urn:ietf:params:oauth:grant-type:jwt-bearer'.", registrationId);
+        }
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)
                                  .authorizationGrantType(authorizationGrantType)

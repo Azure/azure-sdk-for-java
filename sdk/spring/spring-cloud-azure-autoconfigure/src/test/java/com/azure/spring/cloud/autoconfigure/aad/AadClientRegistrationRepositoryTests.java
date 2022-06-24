@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProp
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -24,6 +25,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepo
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.resourceServerCount;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationAndResourceServerContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.AZURE_DELEGATED;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -301,6 +303,27 @@ class AadClientRegistrationRepositoryTests {
                 int resourceServerCountInAccessToken =
                     resourceServerCount(repository.getAzureClientAccessTokenScopes());
                 assertTrue(resourceServerCountInAccessToken != 0);
+            });
+    }
+
+    @Test
+    void rewriteAuthorizationGrantTypeWhenIsOnBehalfOf() {
+        rewriteAuthorizationGrantTypeWhenIsOnBehalfOfByRunner(resourceServerWithOboContextRunner());
+        rewriteAuthorizationGrantTypeWhenIsOnBehalfOfByRunner(webApplicationAndResourceServerContextRunner());
+    }
+
+    private void rewriteAuthorizationGrantTypeWhenIsOnBehalfOfByRunner(WebApplicationContextRunner runner) {
+        runner
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = fakeValue:/.default",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = on_behalf_of"
+            )
+            .run(context ->{
+                AadClientRegistrationRepository repository = context.getBean(AadClientRegistrationRepository.class);
+                assertNotNull(repository);
+                ClientRegistration graph = repository.findByRegistrationId("graph");
+                assertNotNull(graph);
+                assertTrue(JWT_BEARER.equals(graph.getAuthorizationGrantType()));
             });
     }
 

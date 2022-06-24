@@ -593,12 +593,14 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     private void validateAuthorizationClientProperties(String registrationId,
                                                        AuthorizationClientProperties properties) {
-        validateClientAuthenticationMethod(registrationId, properties);
-        AuthorizationGrantType grantType = Optional.of(properties)
-                                   .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                                   .orElse(null);
+        if (CLIENT_SECRET_JWT.equals(properties.getClientAuthenticationMethod())) {
+            throw new IllegalStateException("The client authentication method of '"
+                + registrationId + "' is not supported.");
+        }
+
+        AuthorizationGrantType grantType = properties.getAuthorizationGrantType();
         if (grantType != null) {
-            validateAuthorizationGrantType(registrationId, properties);
+            validateAuthorizationGrantType(registrationId, grantType);
         } else {
             grantType = decideDefaultGrantTypeFromApplicationType(registrationId, applicationType);
             properties.setAuthorizationGrantType(grantType);
@@ -652,16 +654,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         return scopes;
     }
 
-    private void validateClientAuthenticationMethod(String registrationId,
-                                                    AuthorizationClientProperties properties) {
-        if (CLIENT_SECRET_JWT.equals(properties.getClientAuthenticationMethod())) {
-            throw new IllegalStateException("The client authentication method of '"
-                + registrationId + "' is not supported.");
-        }
-    }
-
-    private void validateAuthorizationGrantType(String registrationId, AuthorizationClientProperties properties) {
-        AuthorizationGrantType grantType = properties.getAuthorizationGrantType();
+    private void validateAuthorizationGrantType(String registrationId, AuthorizationGrantType grantType) {
         if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.containsKey(applicationType)) {
             if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.get(applicationType).contains(grantType)) {
                 throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
@@ -677,11 +670,6 @@ public class AadAuthenticationProperties implements InitializingBean {
                 + AZURE_CLIENT_REGISTRATION_ID
                 + ".authorization-grant-type must be configured to 'authorization_code'.");
         }
-        if (ON_BEHALF_OF.equals(grantType)) {
-            properties.setAuthorizationGrantType(JWT_BEARER);
-            LOGGER.warn("The 'on_behalf_of' grant type is deprecated, the grant type of '{}' will be "
-                + "replaced with 'urn:ietf:params:oauth:grant-type:jwt-bearer'.", registrationId);
-        }
     }
 
     /**
@@ -691,7 +679,7 @@ public class AadAuthenticationProperties implements InitializingBean {
      * @return default grant type
      */
     private AuthorizationGrantType decideDefaultGrantTypeFromApplicationType(String registrationId,
-                                                                                AadApplicationType appType) {
+                                                                             AadApplicationType appType) {
         AuthorizationGrantType grantType;
         switch (appType) {
             case WEB_APPLICATION:

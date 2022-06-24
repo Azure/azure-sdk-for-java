@@ -27,7 +27,7 @@ class AadResourceServerConfigurationTests {
     void testNotExistBearerTokenAuthenticationToken() {
         resourceServerContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThrows(NoSuchBeanDefinitionException.class,
+            .run(context -> assertThrows(IllegalStateException.class,
                 () -> context.getBean(JWTClaimsSetAwareJWSKeySelector.class)));
     }
 
