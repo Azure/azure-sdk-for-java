@@ -3,8 +3,6 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.implementation.http.rest.Substitution;
-
 /**
  * A Query Substitution is a value that can be used to replace placeholder values in a URL in the query. Placeholders
  * look like: "http://host.com/filename.html?{queryParameter1}&amp;{queryParameter2}", where "{queryParameter1}" and

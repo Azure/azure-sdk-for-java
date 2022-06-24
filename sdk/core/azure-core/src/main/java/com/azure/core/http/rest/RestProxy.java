@@ -24,9 +24,8 @@ import java.lang.reflect.Proxy;
  */
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
-    private AsyncRestProxy asyncRestProxy;
-    private SyncRestProxy syncRestProxy;
-    private boolean useSyncProxy;
+    private final AsyncRestProxy asyncRestProxy;
+    private final SyncRestProxy syncRestProxy;
 
     /**
      * Create a RestProxy.

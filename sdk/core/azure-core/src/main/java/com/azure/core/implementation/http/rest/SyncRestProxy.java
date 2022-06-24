@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.http.HttpMethod;
@@ -168,7 +171,8 @@ public class SyncRestProxy extends RestProxyBase {
             result = isSuccess;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
-            byte[] responseBodyBytes = response.getSourceResponse().getBodyAsBinaryData().toBytes();
+            BinaryData binaryData = response.getSourceResponse().getBodyAsBinaryData();
+            byte[] responseBodyBytes = binaryData != null ? binaryData.toBytes() : null;
             if (returnValueWireType == Base64Url.class) {
                 // Base64Url
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
