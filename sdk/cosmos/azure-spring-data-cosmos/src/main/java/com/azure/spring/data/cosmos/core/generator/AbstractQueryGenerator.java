@@ -68,7 +68,6 @@ public abstract class AbstractQueryGenerator {
                 CriteriaType.isFunctionWithCaseSensitiveSupport(criteria.getType()));
         } else if (criteria.getType() == CriteriaType.IS_EQUAL
                 && ignoreCase != Part.IgnoreCaseType.NEVER
-                && subjectValue != null 
                 && subjectValue instanceof String) {
             return getFunctionCondition(ignoreCase, CriteriaType.STRING_EQUALS.getSqlKeyword(),
                 subject, parameter, true);
