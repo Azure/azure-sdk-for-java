@@ -74,15 +74,21 @@ public class AbstractQueryGeneratorTest {
     }
 
     @Test
-    public void generateBinaryQueryWithStringEqualsDoesNotUseUpper() {
-        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STRING_EQUALS, "firstName",
-                Collections.singletonList("TREVOR"),
-                Part.IgnoreCaseType.ALWAYS);
-        CosmosQuery query = new CosmosQuery(nameStartsWith);
+    public void generateBinaryQueryWithStringEquals() {
+        for (Part.IgnoreCaseType ignoreCaseType : Part.IgnoreCaseType.values()) {
+            Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STRING_EQUALS, "firstName",
+                    Collections.singletonList("TREVOR"),
+                    ignoreCaseType);
+            CosmosQuery query = new CosmosQuery(nameStartsWith);
 
-        SqlQuerySpec result = queryGenerator.generateCosmos(query);
+            SqlQuerySpec result = queryGenerator.generateCosmos(query);
 
-        Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+            if (ignoreCaseType == Part.IgnoreCaseType.NEVER) {
+                Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0) ");
+            } else {
+                Assert.assertEquals(result.getQueryText(), " WHERE STRINGEQUALS(r.firstName, @firstName0, true) ");
+            }
+        }
     }
 
     @Test
