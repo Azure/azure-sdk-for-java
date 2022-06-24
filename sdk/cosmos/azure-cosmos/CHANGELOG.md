@@ -12,8 +12,6 @@
 * Remove requires io.netty.transport.epoll from module-info.
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
->>>>>>> a1011dabac7 (Updated changelog from present tense to past tense (convert ->)
-
 ### 4.31.0 (2022-06-08)
 
 #### Bugs Fixed
