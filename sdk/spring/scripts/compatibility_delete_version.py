@@ -43,7 +43,7 @@ def delete_dependency_version(file_path):
         lines = pom_file.readlines()
     with open(file_path, 'w', encoding = 'utf-8') as new_pom_file:
         for line in lines:
-            if '<!-- {x-version-update;org.springframework' not in line:
+            if ';external_dependency} -->' not in line:
                 new_pom_file.write(line)
 
 
