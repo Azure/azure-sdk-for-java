@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.http.Fault;
 import okhttp3.Dispatcher;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -23,17 +24,13 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -41,7 +38,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OkHttpAsyncHttpClientTests {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
@@ -65,6 +61,7 @@ public class OkHttpAsyncHttpClientTests {
         server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(OkHttpAsyncHttpClientResponseTransformer.NAME)));
+        server.stubFor(get("/connectionClose").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
 
         server.start();
     }
@@ -169,44 +166,12 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-        Assertions.assertTimeout(Duration.ofMillis(5000), () -> {
-            CountDownLatch latch = new CountDownLatch(1);
-            try (ServerSocket ss = new ServerSocket(0)) {
-                Mono.fromCallable(() -> {
-                    latch.countDown();
-                    Socket socket = ss.accept();
-                    // give the client time to get request across
-                    Thread.sleep(500);
-                    // respond but don't send the complete response
-                    byte[] bytes = new byte[1024];
-                    int n = socket.getInputStream().read(bytes);
-                    String response = "HTTP/1.1 200 OK\r\n" //
-                        + "Content-Type: text/plain\r\n" //
-                        + "Content-Length: 10\r\n" //
-                        + "\r\n" //
-                        + "zi";
-                    OutputStream out = socket.getOutputStream();
-                    out.write(response.getBytes());
-                    out.flush();
-                    // kill the socket with HTTP response body incomplete
-                    socket.close();
-                    return 1;
-                }).subscribeOn(Schedulers.boundedElastic()).subscribe();
-                //
-                latch.await();
-                HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
-                HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/ioException"));
+        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
-                HttpResponse response = client.send(request).block();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-                assertNotNull(response);
-                assertEquals(200, response.getStatusCode());
-
-                StepVerifier.create(response.getBodyAsByteArray())
-                    .verifyError(IOException.class);
-            }
-        });
+        StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
+            .verifyError(IOException.class);
     }
 
     @Test

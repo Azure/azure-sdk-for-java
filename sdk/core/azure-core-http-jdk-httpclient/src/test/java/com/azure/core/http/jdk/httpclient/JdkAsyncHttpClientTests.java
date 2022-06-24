@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.http.Fault;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,19 +24,16 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkAsyncHttpClientTests {
@@ -52,13 +50,11 @@ public class JdkAsyncHttpClientTests {
             .disableRequestJournal()
             .gzipDisabled(true));
 
-        server.stubFor(
-            WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
-        server.stubFor(WireMock.get("/long").willReturn(WireMock.aResponse().withBody(LONG_BODY)));
-        server.stubFor(WireMock.get("/error")
-            .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
-        server.stubFor(
-            WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get("/short").willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get("/long").willReturn(aResponse().withBody(LONG_BODY)));
+        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
+        server.stubFor(WireMock.post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get("/connectionClose").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
         server.start();
     }
 
@@ -81,10 +77,10 @@ public class JdkAsyncHttpClientTests {
 
     @Test
     public void testMultipleSubscriptionsEmitsError() {
-        HttpResponse response = getResponse("/short").block();
+        Mono<byte[]> response = getResponse("/short").cache().flatMap(HttpResponse::getBodyAsByteArray);
 
         // Subscription:1
-        StepVerifier.create(response.getBodyAsByteArray())
+        StepVerifier.create(response)
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -92,7 +88,7 @@ public class JdkAsyncHttpClientTests {
         // Subscription:2
         // Getting the bytes of an JDK HttpClient response closes the stream on first read.
         // Subsequent reads will return an IllegalStateException due to the stream being closed.
-        StepVerifier.create(response.getBodyAsByteArray())
+        StepVerifier.create(response)
             .expectNextCount(0)
             .expectError(IllegalStateException.class)
             .verify(Duration.ofSeconds(20));
@@ -162,44 +158,12 @@ public class JdkAsyncHttpClientTests {
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-        Assertions.assertTimeout(Duration.ofMillis(5000), () -> {
-            CountDownLatch latch = new CountDownLatch(1);
-            try (ServerSocket ss = new ServerSocket(0)) {
-                Mono.fromCallable(() -> {
-                    latch.countDown();
-                    Socket socket = ss.accept();
-                    // give the client time to get request across
-                    Thread.sleep(500);
-                    // respond but don't send the complete response
-                    byte[] bytes = new byte[1024];
-                    int n = socket.getInputStream().read(bytes);
-                    String response = "HTTP/1.1 200 OK\r\n" //
-                        + "Content-Type: text/plain\r\n" //
-                        + "Content-Length: 10\r\n" //
-                        + "\r\n" //
-                        + "zi";
-                    OutputStream out = socket.getOutputStream();
-                    out.write(response.getBytes());
-                    out.flush();
-                    // kill the socket with HTTP response body incomplete
-                    socket.close();
-                    return 1;
-                }).subscribeOn(Schedulers.boundedElastic()).subscribe();
-                //
-                latch.await();
-                HttpClient client = new JdkAsyncHttpClientBuilder().build();
-                HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/ioException"));
+        HttpClient client = new JdkAsyncHttpClientBuilder().build();
 
-                HttpResponse response = client.send(request).block();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-                assertNotNull(response);
-                assertEquals(200, response.getStatusCode());
-
-                StepVerifier.create(response.getBodyAsByteArray())
-                    .verifyError(IOException.class);
-            }
-        });
+        StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
+            .verifyError(IOException.class);
     }
 
     @Test

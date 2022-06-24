@@ -100,7 +100,7 @@ public class NettyAsyncHttpClientTests {
         server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
         server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
-            .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
+            .withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
         server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
             .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
 
