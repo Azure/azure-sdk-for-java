@@ -13,6 +13,8 @@ import time
 
 from log import log
 
+IGNORED_ARTIFACTS = {'com.github.tomakehurst:wiremock-jre8'}
+
 
 def main():
     start_time = time.time()
@@ -45,25 +47,20 @@ def delete_dependency_version(file_path):
         for line in lines:
             if ';external_dependency} -->' not in line:
                 new_pom_file.write(line)
-            elif '<!-- {x-version-update;com.github.tomakehurst:wiremock-jre8;external_dependency} -->' in line:
+            elif line.split(";")[1] in IGNORED_ARTIFACTS:
                 new_pom_file.write(line)
-            elif external_dependencies_managed(line):
+            elif line.split(";")[1] not in external_dependencies_managed_list():
                 # listed in external-dependencies.txt but not managed by spring
                 new_pom_file.write(line)
 
 
-def external_dependencies_managed(line):
-    dependency_name = line.split(";")[1]
-    flag = False
+def external_dependencies_managed_list():
+    dependencies = set()
     with open(get_managed_file_name(), 'r', encoding = 'utf-8') as managed_file:
         lines = managed_file.readlines()
         for dependency in lines:
-            if dependency_name not in dependency:
-                flag = True
-            else:
-                flag = False
-                break
-    return flag
+            dependencies.add(dependency.split(";")[0])
+    return dependencies
 
 
 def get_managed_file_name():
