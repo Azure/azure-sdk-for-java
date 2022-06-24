@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Remove requires io.netty.transport.epoll from module-info.
 * Converted from microseconds to milliseconds in CosmosDiagnostics (i.e. replaced "durationInMicroSec" with to "durationInMilliSecs"; and changed type from long to double) - See See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 
