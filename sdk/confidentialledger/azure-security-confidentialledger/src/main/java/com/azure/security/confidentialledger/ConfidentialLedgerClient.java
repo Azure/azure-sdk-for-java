@@ -167,9 +167,7 @@ public final class ConfidentialLedgerClient {
      *     entries: [
      *         {
      *             contents: String
-     *             collectionId: {
-     *                 collectionId: String
-     *             }
+     *             collectionId: String
      *             transactionId: String
      *         }
      *     ]
@@ -206,9 +204,7 @@ public final class ConfidentialLedgerClient {
      * <pre>{@code
      * {
      *     contents: String
-     *     collectionId: {
-     *         collectionId: String
-     *     }
+     *     collectionId: String
      *     transactionId: String
      * }
      * }</pre>
@@ -217,9 +213,7 @@ public final class ConfidentialLedgerClient {
      *
      * <pre>{@code
      * {
-     *     collectionId: {
-     *         collectionId: String
-     *     }
+     *     collectionId: String
      * }
      * }</pre>
      *
@@ -258,9 +252,7 @@ public final class ConfidentialLedgerClient {
      *     state: String(Loading/Ready)
      *     entry: {
      *         contents: String
-     *         collectionId: {
-     *             collectionId: String
-     *         }
+     *         collectionId: String
      *         transactionId: String
      *     }
      * }
@@ -369,9 +361,7 @@ public final class ConfidentialLedgerClient {
      * <pre>{@code
      * {
      *     contents: String
-     *     collectionId: {
-     *         collectionId: String
-     *     }
+     *     collectionId: String
      *     transactionId: String
      * }
      * }</pre>

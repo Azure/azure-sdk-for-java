@@ -57,6 +57,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Example
 ```java readme-sample-createClient
+ConfidentialLedgerClient confidentialLedgerClient = new ConfidentialLedgerClientBuilder().buildClient();
 ```
 
 ## Key concepts

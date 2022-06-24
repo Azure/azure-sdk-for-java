@@ -172,9 +172,7 @@ public final class ConfidentialLedgerAsyncClient {
      *     entries: [
      *         {
      *             contents: String
-     *             collectionId: {
-     *                 collectionId: String
-     *             }
+     *             collectionId: String
      *             transactionId: String
      *         }
      *     ]
@@ -210,9 +208,7 @@ public final class ConfidentialLedgerAsyncClient {
      * <pre>{@code
      * {
      *     contents: String
-     *     collectionId: {
-     *         collectionId: String
-     *     }
+     *     collectionId: String
      *     transactionId: String
      * }
      * }</pre>
@@ -221,9 +217,7 @@ public final class ConfidentialLedgerAsyncClient {
      *
      * <pre>{@code
      * {
-     *     collectionId: {
-     *         collectionId: String
-     *     }
+     *     collectionId: String
      * }
      * }</pre>
      *
@@ -262,9 +256,7 @@ public final class ConfidentialLedgerAsyncClient {
      *     state: String(Loading/Ready)
      *     entry: {
      *         contents: String
-     *         collectionId: {
-     *             collectionId: String
-     *         }
+     *         collectionId: String
      *         transactionId: String
      *     }
      * }
@@ -377,9 +369,7 @@ public final class ConfidentialLedgerAsyncClient {
      * <pre>{@code
      * {
      *     contents: String
-     *     collectionId: {
-     *         collectionId: String
-     *     }
+     *     collectionId: String
      *     transactionId: String
      * }
      * }</pre>
