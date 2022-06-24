@@ -30,7 +30,11 @@ public final class AzureFirewallThreatIntelMode extends ExpandableStringEnum<Azu
         return fromString(name, AzureFirewallThreatIntelMode.class);
     }
 
-    /** @return known AzureFirewallThreatIntelMode values. */
+    /**
+     * Gets known AzureFirewallThreatIntelMode values.
+     *
+     * @return known AzureFirewallThreatIntelMode values.
+     */
     public static Collection<AzureFirewallThreatIntelMode> values() {
         return values(AzureFirewallThreatIntelMode.class);
     }

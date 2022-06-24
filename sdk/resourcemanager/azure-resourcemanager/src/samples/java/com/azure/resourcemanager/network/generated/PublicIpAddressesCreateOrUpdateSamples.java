@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
 /** Samples for PublicIpAddresses CreateOrUpdate. */
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressCreateDns.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
@@ -39,7 +39,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressCreateCustomizedValues.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PublicIpAddressCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP address allocation method.
@@ -68,7 +68,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressCreateDefaults.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PublicIpAddressCreateDefaults.json
      */
     /**
      * Sample code: Create public IP address defaults.

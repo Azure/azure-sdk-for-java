@@ -27,7 +27,11 @@ public final class DestinationPortBehavior extends ExpandableStringEnum<Destinat
         return fromString(name, DestinationPortBehavior.class);
     }
 
-    /** @return known DestinationPortBehavior values. */
+    /**
+     * Gets known DestinationPortBehavior values.
+     *
+     * @return known DestinationPortBehavior values.
+     */
     public static Collection<DestinationPortBehavior> values() {
         return values(DestinationPortBehavior.class);
     }

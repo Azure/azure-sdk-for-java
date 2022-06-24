@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.QosType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Patchable pool properties. */
 @Fluent
 public final class PoolPatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolPatchProperties.class);
-
     /*
      * size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
      * chunks (value must be multiply of 4398046511104).

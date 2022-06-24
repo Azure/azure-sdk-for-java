@@ -27,7 +27,11 @@ public final class VpnNatRuleMode extends ExpandableStringEnum<VpnNatRuleMode> {
         return fromString(name, VpnNatRuleMode.class);
     }
 
-    /** @return known VpnNatRuleMode values. */
+    /**
+     * Gets known VpnNatRuleMode values.
+     *
+     * @return known VpnNatRuleMode values.
+     */
     public static Collection<VpnNatRuleMode> values() {
         return values(VpnNatRuleMode.class);
     }

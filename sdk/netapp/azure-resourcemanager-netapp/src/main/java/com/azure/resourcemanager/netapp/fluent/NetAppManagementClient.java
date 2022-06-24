@@ -123,6 +123,13 @@ public interface NetAppManagementClient {
     BackupPoliciesClient getBackupPolicies();
 
     /**
+     * Gets the VolumeQuotaRulesClient object to access its operations.
+     *
+     * @return the VolumeQuotaRulesClient object.
+     */
+    VolumeQuotaRulesClient getVolumeQuotaRules();
+
+    /**
      * Gets the VaultsClient object to access its operations.
      *
      * @return the VaultsClient object.

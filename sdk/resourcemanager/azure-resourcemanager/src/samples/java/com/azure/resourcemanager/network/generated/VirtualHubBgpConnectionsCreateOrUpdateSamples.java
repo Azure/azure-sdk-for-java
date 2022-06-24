@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 /** Samples for VirtualHubBgpConnections CreateOrUpdate. */
 public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubBgpConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubBgpConnectionPut.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.

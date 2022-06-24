@@ -31,7 +31,11 @@ public final class VirtualNetworkGatewayConnectionMode
         return fromString(name, VirtualNetworkGatewayConnectionMode.class);
     }
 
-    /** @return known VirtualNetworkGatewayConnectionMode values. */
+    /**
+     * Gets known VirtualNetworkGatewayConnectionMode values.
+     *
+     * @return known VirtualNetworkGatewayConnectionMode values.
+     */
     public static Collection<VirtualNetworkGatewayConnectionMode> values() {
         return values(VirtualNetworkGatewayConnectionMode.class);
     }

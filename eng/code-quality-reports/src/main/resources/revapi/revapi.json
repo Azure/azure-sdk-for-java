@@ -250,6 +250,11 @@
           "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
+          "code": "java.method.removed",
+          "old": "method org.springframework.boot.autoconfigure.kafka.KafkaProperties com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration::azureKafkaProperties(com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.EventHubs>)",
+          "justification": "To move kafka properties customization to bean post processor."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
           "justification": "Shouldn't have been a public API and was recently released."

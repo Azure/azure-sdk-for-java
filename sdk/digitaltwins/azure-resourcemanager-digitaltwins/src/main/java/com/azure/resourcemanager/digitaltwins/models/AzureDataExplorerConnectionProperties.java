@@ -6,7 +6,6 @@ package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDataExplorer")
 @Fluent
 public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatabaseConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerConnectionProperties.class);
-
     /*
      * The resource ID of the Azure Data Explorer cluster.
      */
@@ -244,42 +241,44 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     public void validate() {
         super.validate();
         if (adxResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adxResourceId in model AzureDataExplorerConnectionProperties"));
         }
         if (adxEndpointUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adxEndpointUri in model AzureDataExplorerConnectionProperties"));
         }
         if (adxDatabaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adxDatabaseName in model AzureDataExplorerConnectionProperties"));
         }
         if (eventHubEndpointUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubEndpointUri in model"
                             + " AzureDataExplorerConnectionProperties"));
         }
         if (eventHubEntityPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubEntityPath in model AzureDataExplorerConnectionProperties"));
         }
         if (eventHubNamespaceResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubNamespaceResourceId in model"
                             + " AzureDataExplorerConnectionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerConnectionProperties.class);
 }

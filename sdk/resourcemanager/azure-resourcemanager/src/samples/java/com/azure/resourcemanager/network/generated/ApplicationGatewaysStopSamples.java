@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationGateways Stop. */
 public final class ApplicationGatewaysStopSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayStop.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayStop.json
      */
     /**
      * Sample code: Stop Application Gateway.

@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for HubVirtualNetworkConnections CreateOrUpdate. */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.

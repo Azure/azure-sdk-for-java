@@ -50,6 +50,7 @@
       --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
@@ -86,7 +87,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

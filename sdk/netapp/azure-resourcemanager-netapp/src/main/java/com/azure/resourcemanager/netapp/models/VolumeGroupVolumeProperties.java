@@ -9,7 +9,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** Volume resource. */
 @Fluent
 public final class VolumeGroupVolumeProperties extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupVolumeProperties.class);
-
     /*
      * Resource name
      */
@@ -581,21 +578,23 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Get the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'.
      *
      * @return the encryptionKeySource value.
      */
-    public String encryptionKeySource() {
+    public EncryptionKeySource encryptionKeySource() {
         return this.innerProperties() == null ? null : this.innerProperties().encryptionKeySource();
     }
 
     /**
-     * Set the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'.
      *
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeGroupVolumeProperties object itself.
      */
-    public VolumeGroupVolumeProperties withEncryptionKeySource(String encryptionKeySource) {
+    public VolumeGroupVolumeProperties withEncryptionKeySource(EncryptionKeySource encryptionKeySource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeProperties();
         }
@@ -914,6 +913,16 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
+     * Get the encrypted property: Specifies if the volume is encrypted or not. Only available on volumes created or
+     * updated after 2022-01-01.
+     *
+     * @return the encrypted value.
+     */
+    public Boolean encrypted() {
+        return this.innerProperties() == null ? null : this.innerProperties().encrypted();
+    }
+
+    /**
      * Get the placementRules property: Volume placement rules Application specific placement rules for the particular
      * volume.
      *
@@ -968,7 +977,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model VolumeGroupVolumeProperties"));
@@ -976,4 +985,6 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeGroupVolumeProperties.class);
 }
