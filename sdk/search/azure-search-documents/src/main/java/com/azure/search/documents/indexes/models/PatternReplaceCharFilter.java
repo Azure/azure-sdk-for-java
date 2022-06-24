@@ -26,7 +26,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
     /*
      * Identifies the concrete type of the char filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
 
     /*
      * A regular expression pattern.

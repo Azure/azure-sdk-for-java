@@ -18,7 +18,7 @@ public final class DefaultCognitiveServicesAccount extends CognitiveServicesAcco
     /*
      * Identifies the concrete type of the cognitive service resource attached to a skillset.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.DefaultCognitiveServices";
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

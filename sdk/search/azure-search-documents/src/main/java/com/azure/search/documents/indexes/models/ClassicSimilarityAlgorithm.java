@@ -22,7 +22,7 @@ public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.ClassicSimilarity";
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

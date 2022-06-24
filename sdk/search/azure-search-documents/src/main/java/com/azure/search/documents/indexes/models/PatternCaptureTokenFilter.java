@@ -24,7 +24,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.PatternCaptureTokenFilter";
 
     /*
      * A list of patterns to match against each token.

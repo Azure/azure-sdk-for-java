@@ -25,7 +25,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
     /*
      * Identifies the concrete type of the analyzer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
 
     /*
      * The name of the tokenizer to use to divide continuous text into a sequence of tokens, such as breaking a

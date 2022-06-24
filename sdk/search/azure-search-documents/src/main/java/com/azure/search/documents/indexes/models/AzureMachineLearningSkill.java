@@ -25,7 +25,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Custom.AmlSkill";
 
     /*
      * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON

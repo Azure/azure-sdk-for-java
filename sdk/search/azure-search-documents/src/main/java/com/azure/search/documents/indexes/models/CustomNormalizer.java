@@ -25,7 +25,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
     /*
      * Identifies the concrete type of the normalizer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.CustomNormalizer";
 
     /*
      * A list of token filters used to filter out or modify the input token. For example, you can specify a lowercase

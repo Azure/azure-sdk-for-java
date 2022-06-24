@@ -21,7 +21,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Text.TranslationSkill";
 
     /*
      * The language code to translate documents into for documents that don't specify the to language explicitly.

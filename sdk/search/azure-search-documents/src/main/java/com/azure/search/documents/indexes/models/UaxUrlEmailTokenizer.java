@@ -21,7 +21,7 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer";
 
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token

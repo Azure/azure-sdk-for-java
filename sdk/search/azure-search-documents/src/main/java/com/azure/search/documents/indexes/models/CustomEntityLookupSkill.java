@@ -21,7 +21,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
 
     /*
      * A value indicating which language code to use. Default is en.

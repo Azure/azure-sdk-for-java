@@ -18,7 +18,7 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
     /*
      * Identifies the concrete type of the identity.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity";
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

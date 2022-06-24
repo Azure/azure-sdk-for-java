@@ -25,7 +25,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
 
     /*
      * A regular expression pattern to match token separators. Default is an expression that matches one or more

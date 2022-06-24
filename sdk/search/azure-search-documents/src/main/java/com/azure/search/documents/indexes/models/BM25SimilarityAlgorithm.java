@@ -22,7 +22,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.BM25Similarity";
 
     /*
      * This property controls the scaling function between the term frequency of each matching terms and the final

@@ -24,7 +24,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
     /*
      * Identifies the concrete type of the analyzer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.StopAnalyzer";
 
     /*
      * A list of stopwords.

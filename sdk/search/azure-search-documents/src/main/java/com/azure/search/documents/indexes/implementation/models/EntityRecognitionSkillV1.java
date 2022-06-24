@@ -26,7 +26,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Text.EntityRecognitionSkill";
 
     /*
      * A list of entity categories that should be extracted.

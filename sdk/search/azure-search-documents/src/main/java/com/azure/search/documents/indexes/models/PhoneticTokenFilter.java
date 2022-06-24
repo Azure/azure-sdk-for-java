@@ -21,7 +21,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.PhoneticTokenFilter";
 
     /*
      * The phonetic encoder to use. Default is "metaphone".

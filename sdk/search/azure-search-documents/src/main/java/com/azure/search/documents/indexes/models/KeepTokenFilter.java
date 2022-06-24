@@ -24,7 +24,7 @@ public final class KeepTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.KeepTokenFilter";
 
     /*
      * The list of words to keep.

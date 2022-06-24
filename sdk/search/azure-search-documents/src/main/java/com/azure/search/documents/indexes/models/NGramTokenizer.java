@@ -21,7 +21,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.NGramTokenizer";
 
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.

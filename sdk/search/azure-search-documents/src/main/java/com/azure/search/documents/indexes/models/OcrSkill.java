@@ -21,7 +21,7 @@ public final class OcrSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Vision.OcrSkill";
 
     /*
      * A value indicating which language code to use. Default is en.

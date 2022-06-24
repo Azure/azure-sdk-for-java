@@ -22,7 +22,7 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.KeywordTokenizer";
 
     /*
      * The read buffer size in bytes. Default is 256.

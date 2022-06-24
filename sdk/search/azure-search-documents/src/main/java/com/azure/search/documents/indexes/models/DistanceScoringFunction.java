@@ -22,7 +22,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
      * Indicates the type of function to use. Valid values include magnitude, freshness, distance, and tag. The
      * function type must be lower case.
      */
-    private String type;
+    private String type = "distance";
 
     /*
      * Parameter values for the distance scoring function.

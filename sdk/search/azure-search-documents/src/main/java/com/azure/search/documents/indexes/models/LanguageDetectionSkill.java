@@ -24,7 +24,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Text.LanguageDetectionSkill";
 
     /*
      * A country code to use as a hint to the language detection model if it cannot disambiguate the language.

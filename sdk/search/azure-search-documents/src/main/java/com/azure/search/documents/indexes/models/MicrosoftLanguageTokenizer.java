@@ -21,7 +21,7 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer";
 
     /*
      * The maximum token length. Tokens longer than the maximum length are split. Maximum token length that can be used

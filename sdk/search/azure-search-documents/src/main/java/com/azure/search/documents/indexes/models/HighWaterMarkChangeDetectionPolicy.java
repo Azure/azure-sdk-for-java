@@ -21,7 +21,7 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     /*
      * Identifies the concrete type of the data change detection policy.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy";
 
     /*
      * The name of the high water mark column.

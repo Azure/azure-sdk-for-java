@@ -23,7 +23,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
 
     /*
      * The url for the Web API.

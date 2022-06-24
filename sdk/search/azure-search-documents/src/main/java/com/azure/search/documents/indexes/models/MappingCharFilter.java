@@ -25,7 +25,7 @@ public final class MappingCharFilter extends CharFilter {
     /*
      * Identifies the concrete type of the char filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.MappingCharFilter";
 
     /*
      * A list of mappings of the following format: "a=>b" (all occurrences of the character "a" will be replaced with

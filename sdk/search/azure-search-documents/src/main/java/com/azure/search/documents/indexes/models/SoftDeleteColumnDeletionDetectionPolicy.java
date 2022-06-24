@@ -21,7 +21,7 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     /*
      * Identifies the concrete type of the data deletion detection policy.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
 
     /*
      * The name of the column to use for soft-deletion detection.

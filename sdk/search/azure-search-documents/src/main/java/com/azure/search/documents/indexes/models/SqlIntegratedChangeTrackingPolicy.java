@@ -21,7 +21,7 @@ public final class SqlIntegratedChangeTrackingPolicy extends DataChangeDetection
     /*
      * Identifies the concrete type of the data change detection policy.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy";
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {

@@ -25,7 +25,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.StemmerOverrideTokenFilter";
 
     /*
      * A list of stemming rules in the following format: "word => stem", for example: "ran => run".

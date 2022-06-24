@@ -24,7 +24,7 @@ public final class MergeSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Text.MergeSkill";
 
     /*
      * The tag indicates the start of the merged text. By default, the tag is an empty space.

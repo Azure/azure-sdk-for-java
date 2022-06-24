@@ -25,7 +25,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Text.SentimentSkill";
 
     /*
      * A value indicating which language code to use. Default is en.

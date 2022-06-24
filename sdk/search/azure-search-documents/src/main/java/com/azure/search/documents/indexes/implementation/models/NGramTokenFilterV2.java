@@ -22,7 +22,7 @@ public final class NGramTokenFilterV2 extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.NGramTokenFilterV2";
 
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of maxGram.

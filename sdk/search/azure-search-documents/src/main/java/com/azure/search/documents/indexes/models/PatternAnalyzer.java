@@ -25,7 +25,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
     /*
      * Identifies the concrete type of the analyzer.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
 
     /*
      * A value indicating whether terms should be lower-cased. Default is true.

@@ -22,7 +22,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Util.DocumentExtractionSkill";
 
     /*
      * The parsingMode for the skill. Will be set to 'default' if not defined.
