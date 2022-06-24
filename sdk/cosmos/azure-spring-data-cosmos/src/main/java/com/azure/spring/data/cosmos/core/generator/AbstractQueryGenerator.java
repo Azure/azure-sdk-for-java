@@ -70,7 +70,7 @@ public abstract class AbstractQueryGenerator {
                 && ignoreCase != Part.IgnoreCaseType.NEVER
                 && subjectValue != null 
                 && subjectValue instanceof String) {
-            return getFunctionCondition(ignoreCase, CriteriaType.STRING_EQUAL.getSqlKeyword(),
+            return getFunctionCondition(ignoreCase, CriteriaType.STRING_EQUALS.getSqlKeyword(),
                 subject, parameter, true);
         } else {
             return getCondition(ignoreCase, sqlKeyword, subject, parameter);
