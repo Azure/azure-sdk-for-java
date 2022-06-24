@@ -105,20 +105,20 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public BinaryDataContent toReplayableContent() {
+        if (isReplayable) {
+            return this;
+        }
+
         Flux<ByteBuffer> bufferedFlux = content
             .map(buffer -> {
-                if (buffer.isDirect()) {
-                    // deep copy direct buffers, they might be pooled memory or mapped file.
-                    ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
-                    copy.put(buffer);
-                    copy.flip();
-                    return copy;
-                } else {
-                    // these are heap buffers, safe to retain.
-                    return buffer;
-                }
+                // deep copy direct buffers
+                ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
+                copy.put(buffer);
+                copy.flip();
+                return copy;
             })
-            // collectList() uses ArrayList.
+            // collectList() uses ArrayList. We don't want to be bound by array capacity
+            // and we don't need random access.
             .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
             .cache()
             .flatMapMany(

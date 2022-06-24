@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 public final class InputStreamContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
     private static final int BUFFER_CHUNK_SIZE = 8 * 1024 * 1024;
+    private static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
     private final Supplier<InputStream> content;
     private final Long length;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
@@ -107,13 +108,13 @@ public final class InputStreamContent extends BinaryDataContent {
     public BinaryDataContent toReplayableContent() {
         if (isReplayable) {
             return this;
+        }
+
+        InputStream inputStream = this.content.get();
+        if (canMarkReset(inputStream, length)) {
+            return createMarkResetContent(inputStream, length);
         } else {
-            InputStream inputStream = this.content.get();
-            if (canMarkReset(inputStream, length)) {
-                return createMarkResetContent(inputStream, length);
-            } else {
-                return readAndBuffer(inputStream, length);
-            }
+            return readAndBuffer(inputStream, length);
         }
     }
 
@@ -121,20 +122,20 @@ public final class InputStreamContent extends BinaryDataContent {
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         if (isReplayable) {
             return Mono.just(this);
+        }
+
+        InputStream inputStream = this.content.get();
+        if (canMarkReset(inputStream, length)) {
+            return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
         } else {
-            InputStream inputStream = this.content.get();
-            if (canMarkReset(inputStream, length)) {
-                return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
-            } else {
-                return Mono.just(inputStream)
-                    .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
-                    .map(ignore -> readAndBuffer(inputStream, length));
-            }
+            return Mono.just(inputStream)
+                .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
+                .map(ignore -> readAndBuffer(inputStream, length));
         }
     }
 
     private static boolean canMarkReset(InputStream inputStream, Long length) {
-        return length != null && length < Integer.MAX_VALUE - 8 && inputStream.markSupported();
+        return length != null && length < MAX_ARRAY_LENGTH && inputStream.markSupported();
     }
 
     private static InputStreamContent createMarkResetContent(InputStream inputStream, Long length) {
@@ -170,8 +171,7 @@ public final class InputStreamContent extends BinaryDataContent {
                         chunkInputStream.reset();
                     }
                     return new SequenceInputStream(chunkInputStreams.elements());
-                }, length, true
-            );
+                }, length, true);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
