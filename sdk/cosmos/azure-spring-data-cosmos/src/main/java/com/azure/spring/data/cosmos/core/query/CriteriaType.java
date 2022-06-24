@@ -253,6 +253,7 @@ public enum CriteriaType {
             case ENDS_WITH:
             case STARTS_WITH:
             case ARRAY_CONTAINS:
+            case STRING_EQUALS:
                 return true;
             default:
                 return false;
@@ -273,6 +274,7 @@ public enum CriteriaType {
             case IS_NULL:
             case IS_NOT_NULL:
             case ARRAY_CONTAINS:
+            case STRING_EQUALS:
                 return true;
             default:
                 return false;

@@ -607,6 +607,17 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testStringEqualsCriteriaCaseSensitive() {
+        Criteria nameStartsWith = Criteria.getInstance(CriteriaType.STRING_EQUALS, "firstName",
+                Collections.singletonList(TEST_PERSON.getFirstName().toUpperCase()),
+                Part.IgnoreCaseType.ALWAYS);
+        List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(nameStartsWith), Person.class,
+                containerName));
+
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
     public void testBetweenCriteria() {
         Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
             Part.IgnoreCaseType.NEVER);
