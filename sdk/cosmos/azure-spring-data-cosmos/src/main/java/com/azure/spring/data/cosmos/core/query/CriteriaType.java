@@ -123,7 +123,12 @@ public enum CriteriaType {
     /**
      * Array contains
      */
-    ARRAY_CONTAINS("ARRAY_CONTAINS");
+    ARRAY_CONTAINS("ARRAY_CONTAINS"),
+    
+    /**
+     * String equals
+     */
+    STRING_EQUALS("STRINGEQUALS");
 
     private String sqlKeyword;
 
@@ -268,6 +273,24 @@ public enum CriteriaType {
             case IS_NULL:
             case IS_NOT_NULL:
             case ARRAY_CONTAINS:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Check if CriteriaType operation is a function.
+     *
+     * @param type CriteriaType
+     * @return True if match, or false.
+     */
+    public static boolean isFunctionWithCaseSensitiveSupport(CriteriaType type) {
+        switch (type) {
+            case CONTAINING:
+            case ENDS_WITH:
+            case STARTS_WITH:
+            case STRING_EQUALS:
                 return true;
             default:
                 return false;
