@@ -86,13 +86,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -104,7 +104,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -185,8 +185,8 @@
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.5.4]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.2.2]</include>  <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.3]</include>  <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
