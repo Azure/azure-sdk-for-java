@@ -4,12 +4,16 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.rest.AsyncRestProxy;
 import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
+import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,6 +29,7 @@ import java.lang.reflect.Proxy;
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
     private final AsyncRestProxy asyncRestProxy;
+    private final HttpPipeline httpPipeline;
     private final SyncRestProxy syncRestProxy;
 
     /**
@@ -39,6 +44,7 @@ public final class RestProxy implements InvocationHandler {
         this.interfaceParser = interfaceParser;
         this.asyncRestProxy = new AsyncRestProxy(httpPipeline, serializer, interfaceParser);
         this.syncRestProxy = new SyncRestProxy(httpPipeline, serializer, interfaceParser);
+        this.httpPipeline = httpPipeline;
     }
 
     /**
@@ -50,6 +56,17 @@ public final class RestProxy implements InvocationHandler {
      */
     private SwaggerMethodParser getMethodParser(Method method) {
         return interfaceParser.getMethodParser(method);
+    }
+
+    /**
+     * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
+     *
+     * @param request the HTTP request to send
+     * @param contextData the context
+     * @return a {@link Mono} that emits HttpResponse asynchronously
+     */
+    public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
+        return httpPipeline.send(request, contextData);
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.http.rest.SyncRestProxy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -92,7 +92,7 @@ public final class SecretClient {
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.client = client;
         this.vaultUrl = vaultUrl.toString();
-        this.service = SyncRestProxy.create(SecretServiceSync.class, pipeline);
+        this.service = RestProxy.create(SecretServiceSync.class, pipeline);
         this.pipeline = pipeline;
         apiVersion = version.getVersion();
     }
