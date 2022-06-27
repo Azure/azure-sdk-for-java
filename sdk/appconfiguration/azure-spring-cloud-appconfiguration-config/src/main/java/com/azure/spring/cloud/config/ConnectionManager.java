@@ -96,16 +96,7 @@ public class ConnectionManager {
     }
 
     private String makeStoreIdentifier() {
-        if (configStore.getEndpoint() != null) {
-            return configStore.getEndpoint();
-        } else if (configStore.getConnectionString() != null) {
-            return getEndpointFromConnectionString(configStore.getConnectionString());
-        } else if (configStore.getConnectionStrings().size() > 0) {
-            return getEndpointFromConnectionString(configStore.getConnectionStrings().get(0));
-        } else if (configStore.getEndpoints().size() > 0) {
-            return configStore.getEndpoints().get(0);
-        }
-        return storeIdentifier;
+        return configStore.getEndpoint();
     }
 
     /**
@@ -135,7 +126,7 @@ public class ConnectionManager {
             }
         }
         
-        //TODO (mametcal) need to figure out what the correct action is when no endpoint is ready.
+        LOGGER.error("No client avaiable for use currently.");
         return null;
     }
 
@@ -143,7 +134,7 @@ public class ConnectionManager {
      * Builds all the clients for a connection.
      * @throws IllegalArgumentException when more than 1 connection method is given.
      */
-    public void buildClients() {
+    private void buildClients() {
         // Single client or Multiple?
         // If single call buildClient
         int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;

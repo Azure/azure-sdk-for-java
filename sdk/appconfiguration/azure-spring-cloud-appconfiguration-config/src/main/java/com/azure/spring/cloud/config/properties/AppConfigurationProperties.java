@@ -4,7 +4,9 @@ package com.azure.spring.cloud.config.properties;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
@@ -17,6 +19,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
+import com.azure.spring.cloud.config.ConnectionManager;
 import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 
 /**
@@ -185,10 +188,25 @@ public final class AppConfigurationProperties {
             store.validateAndInit();
         });
 
-        //TODO (mametcal): need to update for multiple endpoints
-        int uniqueStoreSize = (int) this.stores.stream().map(ConfigStore::getEndpoint).distinct().count();
-        Assert.isTrue(this.stores.size() == uniqueStoreSize, "Duplicate store name exists.");
-        if (refreshInterval != null) {
+        Map<String, Boolean> existingEndpoints = new HashMap<>();
+
+        for (ConfigStore store : this.stores) {
+            if (StringUtils.hasText(store.getEndpoint())) {
+                if (existingEndpoints.containsKey(store.getEndpoint())) {
+                    throw new IllegalArgumentException("Duplicate store name exists.");
+                }
+                existingEndpoints.put(store.getEndpoint(), true);
+            }
+            if (store.getEndpoints().size() > 0) {
+                for (String endpoint : store.getEndpoints()) {
+                    if (existingEndpoints.containsKey(endpoint)) {
+                        throw new IllegalArgumentException("Duplicate store name exists.");
+                    }
+                    existingEndpoints.put(endpoint, true);
+                }
+            }
+        }
+        if (refreshInterval != null){
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
         }
     }

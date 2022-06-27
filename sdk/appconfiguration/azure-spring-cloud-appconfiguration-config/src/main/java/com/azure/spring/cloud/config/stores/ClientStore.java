@@ -4,6 +4,9 @@ package com.azure.spring.cloud.config.stores;
 
 import java.time.Instant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -18,6 +21,8 @@ import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
  * Client for connecting to and getting keys from an Azure App Configuration Instance
  */
 public final class ClientStore {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
 
     private final ClientManager clientManager;
 
@@ -114,6 +119,12 @@ public final class ClientStore {
         client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
 
         ConfigurationClientWrapper newClient = clientManager.getClient(storeName);
+        
+        if (newClient == null) {
+            LOGGER.debug("No valid client found.");
+            return null;
+        }
+        
         try {
             return client.getClient().listConfigurationSettings(settingSelector);
         } catch (HttpResponseException e2) {

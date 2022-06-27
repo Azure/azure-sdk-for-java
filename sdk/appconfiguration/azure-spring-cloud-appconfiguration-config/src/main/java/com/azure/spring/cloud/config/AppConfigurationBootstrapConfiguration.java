@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,7 @@ public class AppConfigurationBootstrapConfiguration {
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
-    public AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
+    AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
@@ -92,12 +93,15 @@ public class AppConfigurationBootstrapConfiguration {
      * @return ClientStore
      */
     @Bean
-    public ClientStore buildClientStores(AppConfigurationProperties properties,
+    @ConditionalOnMissingBean
+    ClientStore buildClientStores(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
+        
+        LOGGER.info("Building Clients");
 
         AppConfigurationCredentialProvider tokenCredentialProvider = null;
         ConfigurationClientBuilderSetup clientProvider = null;

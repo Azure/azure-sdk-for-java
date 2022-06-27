@@ -26,7 +26,7 @@ public class AppConfigurationAutoConfiguration {
     static class AppConfigurationWatchAutoConfiguration {
 
         @Bean
-        public AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
+        AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
                 AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
             return new AppConfigurationRefresh(properties, appProperties, clientStore);
         }

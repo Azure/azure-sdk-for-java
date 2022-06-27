@@ -14,25 +14,26 @@ import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
  */
 public class ClientManager {
 
-    private final HashMap<String, ConnectionManager> connections;
+    private final static HashMap<String, ConnectionManager> connections = new HashMap<>();;
 
     ClientManager(AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured) {
-        this.connections = new HashMap<>();
-        for (ConfigStore store : properties.getStores()) {
-            String clientId = "";
-            
-            if (properties.getManagedIdentity() != null) {
-                clientId = properties.getManagedIdentity().getClientId();
+        if (connections.size() == 0) {
+            for (ConfigStore store : properties.getStores()) {
+                String clientId = "";
+
+                if (properties.getManagedIdentity() != null) {
+                    clientId = properties.getManagedIdentity().getClientId();
+                }
+
+                ConnectionManager manager = new ConnectionManager(store, appProperties, tokenCredentialProvider,
+                    clientProvider, isDev, isKeyVaultConfigured, clientId);
+                connections.put(manager.getStoreIdentifier(), manager);
             }
-            
-            ConnectionManager manager = new ConnectionManager(store, appProperties, tokenCredentialProvider,
-                clientProvider, isDev, isKeyVaultConfigured, clientId);
-            connections.put(manager.getStoreIdentifier(), manager);
         }
     }
-    
+
     /**
      * Returns the current used endpoint for a given config store.
      * @param endpoint StoreIdentifier the endpoint for the first store listed in the config.
