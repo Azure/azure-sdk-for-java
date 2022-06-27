@@ -8,21 +8,21 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationResultsClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServicesOperationResultsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationResults;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationResultsGetResponse;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResults;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResultsGetResponse;
 
-public final class MediaServiceOperationResultsImpl implements MediaServiceOperationResults {
-    private static final ClientLogger LOGGER = new ClientLogger(MediaServiceOperationResultsImpl.class);
+public final class MediaServicesOperationResultsImpl implements MediaServicesOperationResults {
+    private static final ClientLogger LOGGER = new ClientLogger(MediaServicesOperationResultsImpl.class);
 
-    private final MediaServiceOperationResultsClient innerClient;
+    private final MediaServicesOperationResultsClient innerClient;
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public MediaServiceOperationResultsImpl(
-        MediaServiceOperationResultsClient innerClient,
+    public MediaServicesOperationResultsImpl(
+        MediaServicesOperationResultsClient innerClient,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -38,7 +38,7 @@ public final class MediaServiceOperationResultsImpl implements MediaServiceOpera
     }
 
     public Response<MediaService> getWithResponse(String locationName, String operationId, Context context) {
-        MediaServiceOperationResultsGetResponse inner =
+        MediaServicesOperationResultsGetResponse inner =
             this.serviceClient().getWithResponse(locationName, operationId, context);
         if (inner != null) {
             return new SimpleResponse<>(
@@ -51,7 +51,7 @@ public final class MediaServiceOperationResultsImpl implements MediaServiceOpera
         }
     }
 
-    private MediaServiceOperationResultsClient serviceClient() {
+    private MediaServicesOperationResultsClient serviceClient() {
         return this.innerClient;
     }
 
