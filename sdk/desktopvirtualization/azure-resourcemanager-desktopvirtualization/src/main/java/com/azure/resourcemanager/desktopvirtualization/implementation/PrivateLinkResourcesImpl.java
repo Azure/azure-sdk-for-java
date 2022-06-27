@@ -11,10 +11,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.PrivateLinkResourc
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkResource;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 

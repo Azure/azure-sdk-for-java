@@ -34,7 +34,11 @@ public final class ConnectionPropertiesProvisioningState
         return fromString(name, ConnectionPropertiesProvisioningState.class);
     }
 
-    /** @return known ConnectionPropertiesProvisioningState values. */
+    /**
+     * Gets known ConnectionPropertiesProvisioningState values.
+     *
+     * @return known ConnectionPropertiesProvisioningState values.
+     */
     public static Collection<ConnectionPropertiesProvisioningState> values() {
         return values(ConnectionPropertiesProvisioningState.class);
     }

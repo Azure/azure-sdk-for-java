@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for P2SVpnGateways GetP2SVpnConnectionHealthDetailed. */
 public final class P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/P2SVpnGatewayGetConnectionHealthDetailed.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/P2SVpnGatewayGetConnectionHealthDetailed.json
      */
     /**
      * Sample code: P2SVpnGatewayGetConnectionHealthDetailed.

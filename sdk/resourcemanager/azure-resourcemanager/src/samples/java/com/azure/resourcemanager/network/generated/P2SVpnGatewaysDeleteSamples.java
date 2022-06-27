@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for P2SVpnGateways Delete. */
 public final class P2SVpnGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/P2SVpnGatewayDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/P2SVpnGatewayDelete.json
      */
     /**
      * Sample code: P2SVpnGatewayDelete.

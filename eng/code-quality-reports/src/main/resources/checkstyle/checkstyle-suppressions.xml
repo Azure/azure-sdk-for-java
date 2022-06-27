@@ -485,9 +485,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
-  <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
+  <!-- Suppress VisibilityModifier in MemberConverterImplTests and FieldBuilderTests.-->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
 
   <!-- Code generation doesn't add a space between '{' and '}' when the class is empty. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>

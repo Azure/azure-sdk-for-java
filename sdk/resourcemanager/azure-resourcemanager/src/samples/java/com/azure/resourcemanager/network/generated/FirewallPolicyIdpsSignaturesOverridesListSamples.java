@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallPolicyIdpsSignaturesOverrides List. */
 public final class FirewallPolicyIdpsSignaturesOverridesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicySignatureOverridesList.json
      */
     /**
      * Sample code: get signature overrides.

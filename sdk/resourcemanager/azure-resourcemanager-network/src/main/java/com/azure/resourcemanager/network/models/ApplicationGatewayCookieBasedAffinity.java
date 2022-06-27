@@ -28,7 +28,11 @@ public final class ApplicationGatewayCookieBasedAffinity
         return fromString(name, ApplicationGatewayCookieBasedAffinity.class);
     }
 
-    /** @return known ApplicationGatewayCookieBasedAffinity values. */
+    /**
+     * Gets known ApplicationGatewayCookieBasedAffinity values.
+     *
+     * @return known ApplicationGatewayCookieBasedAffinity values.
+     */
     public static Collection<ApplicationGatewayCookieBasedAffinity> values() {
         return values(ApplicationGatewayCookieBasedAffinity.class);
     }
