@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -44,6 +45,9 @@ public class OkHttpAsyncHttpClientTests {
 
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
+
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
+        .initialRequest(0);
 
     private static WireMockServer server;
 
@@ -117,10 +121,7 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testFlowableBackpressure() {
-        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
-        stepVerifierOptions.initialRequest(0);
-
-        StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody), stepVerifierOptions)
+        StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
@@ -133,7 +134,10 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+            .build();
+
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", "123")
             .setBody(Flux.error(new RuntimeException("boo")));
@@ -145,7 +149,10 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncClientProvider().createInstance();
+        HttpClient client = new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+            .build();
+
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
@@ -261,14 +268,14 @@ public class OkHttpAsyncHttpClientTests {
         return longBody;
     }
 
-    private void checkBodyReceived(byte[] expectedBody, String path) {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }
 
-    private Mono<HttpResponse> doRequest(HttpClient client, String path) {
+    private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.send(request);
     }

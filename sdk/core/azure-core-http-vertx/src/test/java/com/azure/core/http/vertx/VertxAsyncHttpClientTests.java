@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.http.Fault;
+import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -43,6 +44,9 @@ public class VertxAsyncHttpClientTests {
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
     private static WireMockServer server;
+
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
+        .initialRequest(0);
 
     @BeforeAll
     public static void beforeAll() {
@@ -100,8 +104,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testFlowableBackpressure() {
-        StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody))
-            .thenRequest(0)
+        StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
@@ -152,7 +155,7 @@ public class VertxAsyncHttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
         StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
-            .verifyError(IOException.class);
+            .verifyError(HttpClosedException.class);
     }
 
     @Test
@@ -192,7 +195,7 @@ public class VertxAsyncHttpClientTests {
             .set(multiValueHeaderName, multiValueHeaderValue);
 
         StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
-            headers, Flux.empty())))
+                headers, Flux.empty())))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
 
@@ -221,8 +224,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testEmptyBufferResponse() {
-        StepVerifier.create(getResponse("/empty").flatMapMany(HttpResponse::getBody))
-            .thenRequest(0)
+        StepVerifier.create(getResponse("/empty").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .verifyComplete();
@@ -233,8 +235,8 @@ public class VertxAsyncHttpClientTests {
         Context context = new Context("azure-eagerly-read-response", true);
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
 
-        StepVerifier.create(getResponse(client, "/empty", context).flatMapMany(HttpResponse::getBody))
-            .thenRequest(0)
+        StepVerifier.create(getResponse(client, "/empty", context).flatMapMany(HttpResponse::getBody),
+                EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .verifyComplete();
@@ -269,14 +271,14 @@ public class VertxAsyncHttpClientTests {
         return longBody;
     }
 
-    private void checkBodyReceived(byte[] expectedBody, String path) {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new VertxAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).getBodyAsByteArray())
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }
 
-    private HttpResponse doRequest(HttpClient client, String path) {
+    private static HttpResponse doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.send(request).block();
     }
