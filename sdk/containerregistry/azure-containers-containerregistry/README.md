@@ -256,7 +256,7 @@ try {
 
 ## Troubleshooting
 
-See our [troubleshooting guide](./TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/0eb74418dc7a5ca2e40f954b3d7ce865321b6d86/sdk/containerregistry/azure-containers-containerregistry/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 
 ## Next steps
 
