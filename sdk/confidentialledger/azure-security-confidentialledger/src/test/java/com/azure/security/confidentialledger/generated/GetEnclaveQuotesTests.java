@@ -8,12 +8,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBase {
     @Test
-    @Disabled
     public void testGetEnclaveQuotesTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getEnclaveQuotesWithResponse(requestOptions);

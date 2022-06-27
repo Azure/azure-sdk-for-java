@@ -34,6 +34,7 @@
             </configuration>
           </plugin>
         </plugins>
+        <testSourceDirectory>src/test/java/com/azure/security/confidentialledger/generated</testSourceDirectory>
       </build>
     </profile>
     <profile>
