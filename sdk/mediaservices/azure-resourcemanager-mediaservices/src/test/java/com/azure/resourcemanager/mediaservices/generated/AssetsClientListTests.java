@@ -9,27 +9,31 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.fluent.models.AssetInner;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientDeleteTests {
+public final class AssetsClientListTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"created\":\"2021-06-23T04:09:23Z\",\"lastModified\":\"2021-02-22T05:27:57Z\",\"alternateId\":\"hv\",\"description\":\"lkvn\",\"container\":\"lrigjkskyri\",\"storageAccountName\":\"vzidsxwaab\",\"storageEncryptionFormat\":\"None\"},\"id\":\"rygznmmaxriz\",\"name\":\"zob\",\"type\":\"opxlhslnelxieixy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +61,15 @@ public final class LiveEventsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().delete("nszonwpngaj", "n", "ixjawrtm", Context.NONE);
+        PagedIterable<AssetInner> response =
+            manager
+                .serviceClient()
+                .getAssets()
+                .list("jqg", "cfhmlrqryxyn", "nzrdpsovwxz", 848041898, "tgoe", Context.NONE);
+
+        Assertions.assertEquals("hv", response.iterator().next().alternateId());
+        Assertions.assertEquals("lkvn", response.iterator().next().description());
+        Assertions.assertEquals("lrigjkskyri", response.iterator().next().container());
+        Assertions.assertEquals("vzidsxwaab", response.iterator().next().storageAccountName());
     }
 }

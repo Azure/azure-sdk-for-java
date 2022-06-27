@@ -57,6 +57,6 @@ public final class LiveEventsClientStartTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().start("lzok", "coxpelnjeta", "ltsxoatf", Context.NONE);
+        manager.serviceClient().getLiveEvents().start("tjxtxr", "cq", "jvidttge", Context.NONE);
     }
 }

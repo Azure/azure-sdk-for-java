@@ -9,27 +9,31 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientDeleteTests {
+public final class AccountFiltersClientListTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":2220841351589915126,\"endTimestamp\":7162692697812879561,\"presentationWindowDuration\":7771885144500029839,\"liveBackoffDuration\":7322499256241128041,\"timescale\":3765841685495474303,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":497715430},\"tracks\":[]},\"id\":\"ypoq\",\"name\":\"yhlqhykprlpyznu\",\"type\":\"iq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +61,21 @@ public final class LiveEventsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().delete("nszonwpngaj", "n", "ixjawrtm", Context.NONE);
+        PagedIterable<AccountFilterInner> response =
+            manager.serviceClient().getAccountFilters().list("lajrnwxacevehj", "uyxoaf", Context.NONE);
+
+        Assertions
+            .assertEquals(2220841351589915126L, response.iterator().next().presentationTimeRange().startTimestamp());
+        Assertions
+            .assertEquals(7162692697812879561L, response.iterator().next().presentationTimeRange().endTimestamp());
+        Assertions
+            .assertEquals(
+                7771885144500029839L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
+        Assertions
+            .assertEquals(
+                7322499256241128041L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(3765841685495474303L, response.iterator().next().presentationTimeRange().timescale());
+        Assertions.assertEquals(false, response.iterator().next().presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(497715430, response.iterator().next().firstQuality().bitrate());
     }
 }

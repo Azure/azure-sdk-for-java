@@ -9,27 +9,32 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientDeleteTests {
+public final class LiveOutputsClientListTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"description\":\"bxncnwfepbnw\",\"assetName\":\"fmxjg\",\"archiveWindowLength\":\"PT83H56M12S\",\"manifestName\":\"jbgdlfgtdysnaquf\",\"hls\":{\"fragmentsPerTsSegment\":821039939},\"outputSnapTime\":989283416847724320,\"created\":\"2021-06-27T00:38Z\",\"lastModified\":\"2021-06-19T04:47:09Z\",\"provisioningState\":\"wdkqzeqy\",\"resourceState\":\"Deleting\"},\"id\":\"iunjxdf\",\"name\":\"antkwcegyamlbns\",\"type\":\"qa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +62,14 @@ public final class LiveEventsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().delete("nszonwpngaj", "n", "ixjawrtm", Context.NONE);
+        PagedIterable<LiveOutputInner> response =
+            manager.serviceClient().getLiveOutputs().list("dohzjq", "tu", "o", Context.NONE);
+
+        Assertions.assertEquals("bxncnwfepbnw", response.iterator().next().description());
+        Assertions.assertEquals("fmxjg", response.iterator().next().assetName());
+        Assertions.assertEquals(Duration.parse("PT83H56M12S"), response.iterator().next().archiveWindowLength());
+        Assertions.assertEquals("jbgdlfgtdysnaquf", response.iterator().next().manifestName());
+        Assertions.assertEquals(821039939, response.iterator().next().hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(989283416847724320L, response.iterator().next().outputSnapTime());
     }
 }

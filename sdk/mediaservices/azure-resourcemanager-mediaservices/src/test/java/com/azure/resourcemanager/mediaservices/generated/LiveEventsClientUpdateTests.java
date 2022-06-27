@@ -44,7 +44,7 @@ public final class LiveEventsClientUpdateTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"crpfbcunez\",\"input\":{\"streamingProtocol\":\"FragmentedMP4\",\"keyFrameIntervalDuration\":\"elfwy\",\"accessToken\":\"lwxjwetn\",\"endpoints\":[]},\"preview\":{\"endpoints\":[],\"previewLocator\":\"afzvaylptrs\",\"streamingPolicyName\":\"wztcmwqkchc\",\"alternativeMediaId\":\"axfe\"},\"encoding\":{\"encodingType\":\"PassthroughStandard\",\"presetName\":\"exfdeqvhpsylk\",\"stretchMode\":\"AutoFit\",\"keyFrameInterval\":\"PT39H6M42S\"},\"transcriptions\":[],\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"tf\",\"crossDomainPolicy\":\"gicgaaoepttaq\"},\"useStaticHostname\":true,\"hostnamePrefix\":\"wemxswvruunzz\",\"streamOptions\":[\"LowLatencyV2\",\"LowLatency\",\"LowLatencyV2\",\"LowLatency\"],\"created\":\"2021-10-15T06:14:28Z\",\"lastModified\":\"2021-11-26T10:24:33Z\"},\"location\":\"xokffqyin\",\"tags\":{\"ixmonstshiyxg\":\"epqw\",\"irdsvuwcob\":\"elfclducc\",\"nghgshej\":\"egstmninwjizci\"},\"id\":\"tbxqmuluxlxq\",\"name\":\"vnersbycucrw\",\"type\":\"amikzebrqbsm\"}";
+            "{\"properties\":{\"description\":\"efchn\",\"input\":{\"streamingProtocol\":\"FragmentedMP4\",\"keyFrameIntervalDuration\":\"mnxhkxjqirwrweo\",\"accessToken\":\"ffifhx\",\"endpoints\":[]},\"preview\":{\"endpoints\":[],\"previewLocator\":\"mozqv\",\"streamingPolicyName\":\"bqmamhsycxhxzgaz\",\"alternativeMediaId\":\"abo\"},\"encoding\":{\"encodingType\":\"PassthroughBasic\",\"presetName\":\"qhppubowsepdfgk\",\"stretchMode\":\"AutoSize\",\"keyFrameInterval\":\"PT191H2M7S\"},\"transcriptions\":[],\"provisioningState\":\"Succeeded\",\"resourceState\":\"Stopping\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"bkau\",\"crossDomainPolicy\":\"fshfph\"},\"useStaticHostname\":true,\"hostnamePrefix\":\"lai\",\"streamOptions\":[\"LowLatency\",\"LowLatencyV2\",\"LowLatencyV2\"],\"created\":\"2021-06-04T19:00:06Z\",\"lastModified\":\"2021-06-24T13:04:54Z\"},\"location\":\"koj\",\"tags\":{\"nnfhyetefypo\":\"ndnpdwrpqafgfug\"},\"id\":\"octfjgtixrjvzuyt\",\"name\":\"rmlmuowo\",\"type\":\"bauiropi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -77,64 +77,64 @@ public final class LiveEventsClientUpdateTests {
                 .serviceClient()
                 .getLiveEvents()
                 .update(
-                    "fgtayxonsup",
-                    "ujlzqnhcvsqltn",
-                    "oibgsxg",
+                    "ohqfzizv",
+                    "xmmkjs",
+                    "thnwpzte",
                     new LiveEventInner()
-                        .withLocation("zjedmstkvnlv")
-                        .withTags(mapOf("bmikost", "uiiznktwfansnvpd"))
-                        .withDescription("yqo")
+                        .withLocation("nwjfu")
+                        .withTags(mapOf("hpzpo", "afcba", "yjwpfilkmkkh", "o"))
+                        .withDescription("mribiat")
                         .withInput(
                             new LiveEventInput()
-                                .withStreamingProtocol(LiveEventInputProtocol.FRAGMENTED_MP4)
-                                .withKeyFrameIntervalDuration("ox")
-                                .withAccessToken("o")
+                                .withStreamingProtocol(LiveEventInputProtocol.RTMP)
+                                .withKeyFrameIntervalDuration("ucfotangcf")
+                                .withAccessToken("ykzcugswvxwl")
                                 .withEndpoints(Arrays.asList()))
                         .withPreview(
                             new LiveEventPreview()
                                 .withEndpoints(Arrays.asList())
-                                .withPreviewLocator("xeiiq")
-                                .withStreamingPolicyName("mhtmwwinhehfqpo")
-                                .withAlternativeMediaId("wbcb"))
+                                .withPreviewLocator("tx")
+                                .withStreamingPolicyName("mxmcuqudtcvclxy")
+                                .withAlternativeMediaId("dkvgfabuiyjibuzp"))
                         .withEncoding(
                             new LiveEventEncoding()
-                                .withEncodingType(LiveEventEncodingType.PASSTHROUGH_BASIC)
-                                .withPresetName("kbwvqvxkdiv")
+                                .withEncodingType(LiveEventEncodingType.PASSTHROUGH_STANDARD)
+                                .withPresetName("eiknpgo")
                                 .withStretchMode(StretchMode.AUTO_FIT)
-                                .withKeyFrameInterval(Duration.parse("PT11H18M6S")))
+                                .withKeyFrameInterval(Duration.parse("PT72H4M16S")))
                         .withTranscriptions(Arrays.asList())
                         .withCrossSiteAccessPolicies(
                             new CrossSiteAccessPolicies()
-                                .withClientAccessPolicy("jfelisdjubggbqig")
-                                .withCrossDomainPolicy("kbsazgak"))
-                        .withUseStaticHostname(true)
-                        .withHostnamePrefix("rcmjdmspofapvuh")
+                                .withClientAccessPolicy("xxgewpk")
+                                .withCrossDomainPolicy("qylkmqpzoyhlf"))
+                        .withUseStaticHostname(false)
+                        .withHostnamePrefix("gcl")
                         .withStreamOptions(
                             Arrays
                                 .asList(
-                                    StreamOptionsFlag.LOW_LATENCY,
-                                    StreamOptionsFlag.LOW_LATENCY_V2,
+                                    StreamOptionsFlag.DEFAULT,
+                                    StreamOptionsFlag.DEFAULT,
                                     StreamOptionsFlag.LOW_LATENCY_V2)),
                     Context.NONE);
 
-        Assertions.assertEquals("xokffqyin", response.location());
-        Assertions.assertEquals("epqw", response.tags().get("ixmonstshiyxg"));
-        Assertions.assertEquals("crpfbcunez", response.description());
+        Assertions.assertEquals("koj", response.location());
+        Assertions.assertEquals("ndnpdwrpqafgfug", response.tags().get("nnfhyetefypo"));
+        Assertions.assertEquals("efchn", response.description());
         Assertions.assertEquals(LiveEventInputProtocol.FRAGMENTED_MP4, response.input().streamingProtocol());
-        Assertions.assertEquals("elfwy", response.input().keyFrameIntervalDuration());
-        Assertions.assertEquals("lwxjwetn", response.input().accessToken());
-        Assertions.assertEquals("afzvaylptrs", response.preview().previewLocator());
-        Assertions.assertEquals("wztcmwqkchc", response.preview().streamingPolicyName());
-        Assertions.assertEquals("axfe", response.preview().alternativeMediaId());
-        Assertions.assertEquals(LiveEventEncodingType.PASSTHROUGH_STANDARD, response.encoding().encodingType());
-        Assertions.assertEquals("exfdeqvhpsylk", response.encoding().presetName());
-        Assertions.assertEquals(StretchMode.AUTO_FIT, response.encoding().stretchMode());
-        Assertions.assertEquals(Duration.parse("PT39H6M42S"), response.encoding().keyFrameInterval());
-        Assertions.assertEquals("tf", response.crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("gicgaaoepttaq", response.crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("mnxhkxjqirwrweo", response.input().keyFrameIntervalDuration());
+        Assertions.assertEquals("ffifhx", response.input().accessToken());
+        Assertions.assertEquals("mozqv", response.preview().previewLocator());
+        Assertions.assertEquals("bqmamhsycxhxzgaz", response.preview().streamingPolicyName());
+        Assertions.assertEquals("abo", response.preview().alternativeMediaId());
+        Assertions.assertEquals(LiveEventEncodingType.PASSTHROUGH_BASIC, response.encoding().encodingType());
+        Assertions.assertEquals("qhppubowsepdfgk", response.encoding().presetName());
+        Assertions.assertEquals(StretchMode.AUTO_SIZE, response.encoding().stretchMode());
+        Assertions.assertEquals(Duration.parse("PT191H2M7S"), response.encoding().keyFrameInterval());
+        Assertions.assertEquals("bkau", response.crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions.assertEquals("fshfph", response.crossSiteAccessPolicies().crossDomainPolicy());
         Assertions.assertEquals(true, response.useStaticHostname());
-        Assertions.assertEquals("wemxswvruunzz", response.hostnamePrefix());
-        Assertions.assertEquals(StreamOptionsFlag.LOW_LATENCY_V2, response.streamOptions().get(0));
+        Assertions.assertEquals("lai", response.hostnamePrefix());
+        Assertions.assertEquals(StreamOptionsFlag.LOW_LATENCY, response.streamOptions().get(0));
     }
 
     @SuppressWarnings("unchecked")

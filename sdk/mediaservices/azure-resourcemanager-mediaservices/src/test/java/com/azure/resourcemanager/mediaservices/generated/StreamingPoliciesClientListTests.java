@@ -9,27 +9,31 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientDeleteTests {
+public final class StreamingPoliciesClientListTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"created\":\"2021-11-30T03:41Z\",\"defaultContentKeyPolicyName\":\"lfcldu\",\"envelopeEncryption\":{\"clearTracks\":[],\"customKeyAcquisitionUrlTemplate\":\"svu\"},\"commonEncryptionCenc\":{\"clearTracks\":[]},\"commonEncryptionCbcs\":{\"clearTracks\":[]},\"noEncryption\":{}},\"id\":\"jizcilnghgs\",\"name\":\"ejjtbxqmul\",\"type\":\"xlxqzvn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +61,14 @@ public final class LiveEventsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().delete("nszonwpngaj", "n", "ixjawrtm", Context.NONE);
+        PagedIterable<StreamingPolicyInner> response =
+            manager
+                .serviceClient()
+                .getStreamingPolicies()
+                .list("rtixokff", "yinljqe", "qwhix", 1164057360, "nstshi", Context.NONE);
+
+        Assertions.assertEquals("lfcldu", response.iterator().next().defaultContentKeyPolicyName());
+        Assertions
+            .assertEquals("svu", response.iterator().next().envelopeEncryption().customKeyAcquisitionUrlTemplate());
     }
 }

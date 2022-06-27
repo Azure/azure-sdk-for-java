@@ -62,9 +62,9 @@ public final class LiveEventsClientStopTests {
             .serviceClient()
             .getLiveEvents()
             .stop(
-                "g",
-                "pnpbswveflocc",
-                "rmozihmipgawt",
+                "uslvyjtcvuwkasi",
+                "iesfuug",
+                "tuqfecjxeygtu",
                 new LiveEventActionInput().withRemoveOutputsOnStop(true),
                 Context.NONE);
     }

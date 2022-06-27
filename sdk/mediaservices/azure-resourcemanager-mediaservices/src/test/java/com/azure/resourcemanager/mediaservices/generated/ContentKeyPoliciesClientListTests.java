@@ -9,27 +9,31 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyInner;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientDeleteTests {
+public final class ContentKeyPoliciesClientListTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"created\":\"2021-09-24T12:53:03Z\",\"lastModified\":\"2021-01-18T05:52:32Z\",\"description\":\"m\",\"options\":[]},\"id\":\"agegiz\",\"name\":\"cjfelisdjubgg\",\"type\":\"qigkx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +61,12 @@ public final class LiveEventsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().delete("nszonwpngaj", "n", "ixjawrtm", Context.NONE);
+        PagedIterable<ContentKeyPolicyInner> response =
+            manager
+                .serviceClient()
+                .getContentKeyPolicies()
+                .list("wwinhehf", "pofvwb", "blembnkbwvqvxkd", 1833172684, "qihebw", Context.NONE);
+
+        Assertions.assertEquals("m", response.iterator().next().description());
     }
 }

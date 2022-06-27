@@ -57,6 +57,6 @@ public final class StreamingEndpointsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getStreamingEndpoints().delete("cbuewmrswnjlxuz", "hwpusxj", "aqehg", Context.NONE);
+        manager.serviceClient().getStreamingEndpoints().delete("gjekglklby", "lidwcwvmzegjon", "hj", Context.NONE);
     }
 }

@@ -57,6 +57,6 @@ public final class LiveEventsClientAllocateTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().allocate("xzv", "mwmxqhndvnoamld", "ehaohdjhh", Context.NONE);
+        manager.serviceClient().getLiveEvents().allocate("fjmyccxlzhco", "ovne", "henlusfnr", Context.NONE);
     }
 }

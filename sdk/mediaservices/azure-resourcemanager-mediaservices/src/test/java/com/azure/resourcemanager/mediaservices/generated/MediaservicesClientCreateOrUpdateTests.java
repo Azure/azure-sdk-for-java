@@ -41,7 +41,7 @@ public final class MediaservicesClientCreateOrUpdateTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"System\",\"encryption\":{\"type\":\"SystemKey\",\"status\":\"hu\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"bmftpmdt\",\"userAssignedIdentities\":{}},\"location\":\"fvnz\",\"tags\":{\"tpvopvpbdb\":\"t\",\"ibcysihsgqc\":\"qgqqihedsvqwthmk\",\"ohdxbzlmcmu\":\"dhohsdtmcdzsuf\"},\"id\":\"pcvhdbevwqqxeys\",\"name\":\"onqzinkfkbgbzbow\",\"type\":\"eqocljmygvk\"}";
+            "{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"encryption\":{\"type\":\"SystemKey\",\"status\":\"atutmzlbiojlvfhr\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"yurmochpprprs\",\"userAssignedIdentities\":{}},\"location\":\"yzejnhlbk\",\"tags\":{\"hahzvechndbnwi\":\"pcpil\"},\"id\":\"hol\",\"name\":\"wjwiuub\",\"type\":\"efqsfapaqtferrqw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -74,12 +74,13 @@ public final class MediaservicesClientCreateOrUpdateTests {
                 .serviceClient()
                 .getMediaservices()
                 .createOrUpdate(
-                    "lajrnwxacevehj",
-                    "uyxoaf",
+                    "qcwdhoh",
+                    "dtmcd",
                     new MediaServiceInner()
-                        .withLocation("h")
-                        .withTags(mapOf("tdfuxt", "rlpyznuciqdsmexi", "nlj", "asiibmiybnnust"))
-                        .withIdentity(new MediaServiceIdentity().withType("ypoq").withUserAssignedIdentities(mapOf()))
+                        .withLocation("z")
+                        .withTags(mapOf("jmygvk", "xeqoc", "fezrx", "qkjjeokbz", "q", "czurtlei", "zvd", "bkwvzg"))
+                        .withIdentity(
+                            new MediaServiceIdentity().withType("yskonqzink").withUserAssignedIdentities(mapOf()))
                         .withStorageAccounts(Arrays.asList())
                         .withStorageAuthentication(StorageAuthentication.SYSTEM)
                         .withEncryption(new AccountEncryption().withType(AccountEncryptionKeyType.SYSTEM_KEY))
@@ -87,12 +88,12 @@ public final class MediaservicesClientCreateOrUpdateTests {
                         .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
                     Context.NONE);
 
-        Assertions.assertEquals("fvnz", response.location());
-        Assertions.assertEquals("t", response.tags().get("tpvopvpbdb"));
-        Assertions.assertEquals("bmftpmdt", response.identity().type());
-        Assertions.assertEquals(StorageAuthentication.SYSTEM, response.storageAuthentication());
+        Assertions.assertEquals("yzejnhlbk", response.location());
+        Assertions.assertEquals("pcpil", response.tags().get("hahzvechndbnwi"));
+        Assertions.assertEquals("yurmochpprprs", response.identity().type());
+        Assertions.assertEquals(StorageAuthentication.MANAGED_IDENTITY, response.storageAuthentication());
         Assertions.assertEquals(AccountEncryptionKeyType.SYSTEM_KEY, response.encryption().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
     }
 
     @SuppressWarnings("unchecked")

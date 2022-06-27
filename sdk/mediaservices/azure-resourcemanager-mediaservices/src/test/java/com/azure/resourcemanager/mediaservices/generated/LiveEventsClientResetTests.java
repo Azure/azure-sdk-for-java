@@ -57,6 +57,6 @@ public final class LiveEventsClientResetTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().reset("ky", "cxcjxgry", "fmpcycilrmca", Context.NONE);
+        manager.serviceClient().getLiveEvents().reset("ic", "uewmrswnjlxuzrhw", "usxjbaqehg", Context.NONE);
     }
 }

@@ -62,10 +62,6 @@ public final class StreamingEndpointsClientScaleTests {
             .serviceClient()
             .getStreamingEndpoints()
             .scale(
-                "jbgdlfgtdysnaquf",
-                "qbctqha",
-                "zjrwdkqze",
-                new StreamingEntityScaleUnit().withScaleUnit(196051517),
-                Context.NONE);
+                "rlpshhkv", "edwqslsrh", "pq", new StreamingEntityScaleUnit().withScaleUnit(1899940193), Context.NONE);
     }
 }

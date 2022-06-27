@@ -32,7 +32,7 @@ public final class TracksClientCreateOrUpdateTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"t\",\"name\":\"eln\",\"type\":\"la\"}";
+            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"gnxf\",\"name\":\"qonmpqoxwdof\",\"type\":\"bxiqxeiiqbimht\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,10 +65,10 @@ public final class TracksClientCreateOrUpdateTests {
                 .serviceClient()
                 .getTracks()
                 .createOrUpdate(
-                    "qkjjeokbz",
-                    "fezrx",
-                    "czurtlei",
-                    "q",
+                    "hknsmjbl",
+                    "ljhlnymzotq",
+                    "ryuzcbmqqv",
+                    "mv",
                     new AssetTrackInner().withTrack(new TrackBase()),
                     Context.NONE);
     }

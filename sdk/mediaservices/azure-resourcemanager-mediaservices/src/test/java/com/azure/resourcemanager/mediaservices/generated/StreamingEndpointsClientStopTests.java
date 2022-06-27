@@ -57,6 +57,9 @@ public final class StreamingEndpointsClientStopTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getStreamingEndpoints().stop("gebx", "cnwfepbnwgfmxjg", "g", Context.NONE);
+        manager
+            .serviceClient()
+            .getStreamingEndpoints()
+            .stop("plkeuachtomflryt", "wfpfmdgycx", "mskwhqjjysl", Context.NONE);
     }
 }

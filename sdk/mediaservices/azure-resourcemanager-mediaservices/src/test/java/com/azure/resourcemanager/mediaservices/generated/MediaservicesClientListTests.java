@@ -9,27 +9,34 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
+import com.azure.resourcemanager.mediaservices.models.AccountEncryptionKeyType;
+import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientDeleteTests {
+public final class MediaservicesClientListTests {
     @Test
-    public void testDelete() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"System\",\"encryption\":{\"type\":\"CustomerKey\",\"status\":\"gqqnobpudcda\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Failed\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"asqbucljgkyex\",\"userAssignedIdentities\":{}},\"location\":\"aipidsdaultxi\",\"tags\":{\"lnqnmcjn\":\"mfqwa\"},\"id\":\"zqdqxt\",\"name\":\"jw\",\"type\":\"nyfusfzsvtuikzh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +64,13 @@ public final class LiveEventsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().delete("nszonwpngaj", "n", "ixjawrtm", Context.NONE);
+        PagedIterable<MediaServiceInner> response = manager.serviceClient().getMediaservices().list(Context.NONE);
+
+        Assertions.assertEquals("aipidsdaultxi", response.iterator().next().location());
+        Assertions.assertEquals("mfqwa", response.iterator().next().tags().get("lnqnmcjn"));
+        Assertions.assertEquals("asqbucljgkyex", response.iterator().next().identity().type());
+        Assertions.assertEquals(StorageAuthentication.SYSTEM, response.iterator().next().storageAuthentication());
+        Assertions.assertEquals(AccountEncryptionKeyType.CUSTOMER_KEY, response.iterator().next().encryption().type());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
     }
 }

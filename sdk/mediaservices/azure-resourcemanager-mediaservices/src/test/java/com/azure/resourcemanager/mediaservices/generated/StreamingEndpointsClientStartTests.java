@@ -57,6 +57,6 @@ public final class StreamingEndpointsClientStartTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getStreamingEndpoints().start("dohzjq", "tu", "o", Context.NONE);
+        manager.serviceClient().getStreamingEndpoints().start("rwgdnqzbrfks", "zhzmtksjci", "digsxcdgl", Context.NONE);
     }
 }
