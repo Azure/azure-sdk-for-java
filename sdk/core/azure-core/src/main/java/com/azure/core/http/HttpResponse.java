@@ -4,19 +4,30 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.StreamUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 /**
  * The response of an {@link HttpRequest}.
  */
 public abstract class HttpResponse implements Closeable {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpResponse.class);
     private final HttpRequest request;
 
     /**
@@ -60,6 +71,17 @@ public abstract class HttpResponse implements Closeable {
      * @return The response's content as a stream of {@link ByteBuffer}.
      */
     public abstract Flux<ByteBuffer> getBody();
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * Subclasses should override this method.
+     *
+     * @return The {@link BinaryData} response body.
+     */
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
+    }
 
     /**
      * Gets the response content as a {@code byte[]}.
@@ -113,6 +135,40 @@ public abstract class HttpResponse implements Closeable {
     public HttpResponse buffer() {
         return new BufferedHttpResponse(this);
     }
+
+    /**
+     * Writes body content to {@link OutputStream}.
+     * @param outputStream {@link OutputStream}.
+     * @throws IOException if an I/O error occurs when reading or writing.
+     */
+    public void writeBodyTo(OutputStream outputStream) throws IOException {
+        BinaryData bodyAsBinaryData = getBodyAsBinaryData();
+        if (bodyAsBinaryData != null) {
+            StreamUtils.INSTANCE.transfer(bodyAsBinaryData.toStream(), outputStream);
+        }
+    }
+
+    /**
+     * Writes body content to {@link AsynchronousFileChannel}.
+     * @param asynchronousFileChannel {@link AsynchronousFileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @return A {@link Mono} which emits a completion status once the body content has been written to the {@link
+     * AsynchronousFileChannel}.
+     */
+    public Mono<Void> writeBodyTo(AsynchronousFileChannel asynchronousFileChannel, long position) {
+        return FluxUtil.writeFile(getBody(), asynchronousFileChannel, position);
+    }
+
+    /**
+     * Writes body content to {@link FileChannel}.
+     * @param fileChannel {@link FileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @throws IOException if an I/O error occurs when reading or writing.
+     */
+    public void writeBodyTo(FileChannel fileChannel, long position) throws IOException {
+        FluxUtil.writeFile(getBody(), fileChannel, position).block();
+    }
+
 
     /**
      * Closes the response content stream, if any.

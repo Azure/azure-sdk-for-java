@@ -4,6 +4,7 @@ package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Flux;
 
 import java.io.Closeable;
@@ -14,6 +15,7 @@ import java.nio.ByteBuffer;
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
     private volatile boolean consumed;
+    private final HttpResponse response;
 
     /**
      * Creates a {@link StreamResponse}.
@@ -25,8 +27,20 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      */
     public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value) {
         super(request, statusCode, headers, value);
+        this.response = null;
     }
 
+
+    /**
+     * Creates a {@link StreamResponse}.
+     *
+     * @param request The request which resulted in this response.
+     * @param response The source http response.
+     */
+    public StreamResponse(HttpRequest request, HttpResponse response) {
+        super(request, response.getStatusCode(), response.getHeaders(), null);
+        this.response = response;
+    }
     /**
      * The content of the HTTP response as a stream of {@link ByteBuffer byte buffers}.
      *

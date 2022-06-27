@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * An escaper that escapes URL data through percent encoding.
  */
-final class PercentEscaper {
+public final class PercentEscaper {
     private static final char[] HEX_CHARACTERS = "0123456789ABCDEF".toCharArray();
 
     /*
@@ -31,7 +31,7 @@ final class PercentEscaper {
      * @param safeCharacters Collection of characters that won't be escaped.
      * @param usePlusForSpace If true {@code ' '} will be escaped as {@code '+'} instead of {@code "%20"}.
      */
-    PercentEscaper(String safeCharacters, boolean usePlusForSpace) {
+    public PercentEscaper(String safeCharacters, boolean usePlusForSpace) {
         this.usePlusForSpace = usePlusForSpace;
 
         if (usePlusForSpace && safeCharacters != null && safeCharacters.contains(" ")) {

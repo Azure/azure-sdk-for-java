@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
@@ -25,6 +25,9 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -36,6 +39,9 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -54,7 +60,7 @@ import java.util.stream.Collectors;
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in
  * {@link RestProxy}.
  */
-class SwaggerMethodParser implements HttpResponseDecodeData {
+public class SwaggerMethodParser implements HttpResponseDecodeData {
     private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
     private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
         Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
@@ -84,6 +90,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private final int contextPosition;
     private final int requestOptionsPosition;
+    private final boolean isReactive;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -95,11 +102,11 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param rawHost the raw host value from the @Host annotation. Before this can be used as the host value in an HTTP
      * request, it must be processed through the possible host substitutions.
      */
-    SwaggerMethodParser(Method swaggerMethod, String rawHost) {
+    public SwaggerMethodParser(Method swaggerMethod, String rawHost) {
         this(swaggerMethod, rawHost, JacksonAdapter.createDefaultSerializerAdapter());
     }
 
-    SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
+    public SwaggerMethodParser(Method swaggerMethod, String rawHost, SerializerAdapter serializer) {
         this.serializer = serializer;
         this.rawHost = rawHost;
 
@@ -232,6 +239,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
 
+        boolean isReactiveMethod = isReactiveType(returnType);
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
         int contextPosition = -1;
         int requestOptionsPosition = -1;
@@ -244,8 +252,10 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             } else if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
                 requestOptionsPosition = i;
             }
+            isReactiveMethod = isReactiveMethod || isReactiveType(parameterType);
         }
 
+        this.isReactive = isReactiveMethod;
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
     }
@@ -503,7 +513,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static void addSerializedQueryParameter(SerializerAdapter adapter, Object value, boolean shouldEncode,
-        UrlBuilder urlBuilder, String parameterName) {
+                                                    UrlBuilder urlBuilder, String parameterName) {
 
         String parameterValue = serialize(adapter, value);
 
@@ -526,7 +536,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String serializeFormData(SerializerAdapter serializer, String key, Object value,
-        boolean shouldEncode) {
+                                            boolean shouldEncode) {
         if (value == null) {
             return null;
         }
@@ -544,7 +554,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
-        boolean shouldEncode) {
+                                                      boolean shouldEncode) {
         if (value == null) {
             return null;
         }
@@ -555,7 +565,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
-        Object[] methodArguments) {
+                                      Object[] methodArguments) {
         String result = originalValue;
 
         if (methodArguments == null) {
@@ -602,5 +612,21 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return exceptionHashMap;
+    }
+
+    /**
+     * Indicates whether the swagger method is of Reactive type or not.
+     * To be classified as reactive method, either the return type or one of the input parameters must
+     * be one of {@link Mono}, {@link Flux} or {@link Publisher}.
+     *
+     * @return the boolean flag indicating whether the swagger method is reactive or not.
+     */
+    public boolean isReactive() {
+        return isReactive;
+    }
+
+    boolean isReactiveType(Type type) {
+        return (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)
+            || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class));
     }
 }

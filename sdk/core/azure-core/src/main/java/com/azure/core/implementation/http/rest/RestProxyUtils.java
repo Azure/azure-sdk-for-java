@@ -4,25 +4,45 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility methods that aid processing in RestProxy.
  */
 public final class RestProxyUtils {
+
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
+    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
+        new ResponseExceptionConstructorCache();
     public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
+    public static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
+
 
     private RestProxyUtils() {
     }
@@ -35,25 +55,23 @@ public final class RestProxyUtils {
         }
 
         return Mono.fromCallable(() -> {
-            BinaryDataContent content = BinaryDataHelper.getContent(body);
+            Long bodyLength = body.getLength();
             long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-            if (content instanceof InputStreamContent) {
-                InputStream validatingInputStream = new LengthValidatingInputStream(
-                    content.toStream(), expectedLength);
-                request.setBody(BinaryData.fromStream(validatingInputStream));
-            } else if (content instanceof FluxByteBufferContent) {
-                request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
+            if (bodyLength != null) {
+                if (bodyLength < expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                        bodyLength, expectedLength), bodyLength, expectedLength);
+                } else if (bodyLength > expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        bodyLength, expectedLength), bodyLength, expectedLength);
+                }
             } else {
-                Long bodyLength = body.getLength();
-                if (bodyLength != null) {
-                    if (bodyLength < expectedLength) {
-                        throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            bodyLength, expectedLength), bodyLength, expectedLength);
-                    } else if (bodyLength > expectedLength) {
-                        throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                            bodyLength, expectedLength), bodyLength, expectedLength);
-                    }
-                } else  {
+                BinaryDataContent content = BinaryDataHelper.getContent(body);
+                if (content instanceof InputStreamContent) {
+                    InputStream validatingInputStream = new LengthValidatingInputStream(
+                        content.toStream(), expectedLength);
+                    request.setBody(BinaryData.fromStream(validatingInputStream));
+                } else {
                     request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
                 }
             }
@@ -95,4 +113,115 @@ public final class RestProxyUtils {
             });
         });
     }
+
+    /**
+     * Validates the Length of the input request matches its configured Content Length.
+     * @param request the input request to validate.
+     * @return the requests body as BinaryData on successful validation.
+     */
+    public static BinaryData validateLengthSync(final HttpRequest request) {
+        final BinaryData binaryData = request.getBodyAsBinaryData();
+        if (binaryData == null) {
+            return binaryData;
+        }
+
+        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
+        Long length = binaryData.getLength();
+        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
+        if (length == null) {
+            if (bdc instanceof FluxByteBufferContent) {
+                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
+            } else if (bdc instanceof InputStreamContent) {
+                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
+                InputStream inputStream = inputStreamContent.toStream();
+                LengthValidatingInputStream lengthValidatingInputStream =
+                    new LengthValidatingInputStream(inputStream, expectedLength);
+                return BinaryData.fromStream(lengthValidatingInputStream);
+            } else {
+                byte[] b = (bdc).toBytes();
+                long len = b.length;
+                if (len > expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                        len, expectedLength), len, expectedLength);
+                }
+
+                if (len < expectedLength) {
+                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                        len, expectedLength), len, expectedLength);
+                }
+                return BinaryData.fromBytes(b);
+            }
+        } else {
+            if (length > expectedLength) {
+                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                    length, expectedLength), length, expectedLength);
+            }
+
+            if (length < expectedLength) {
+                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                    length, expectedLength), length, expectedLength);
+            }
+            return binaryData;
+        }
+    }
+
+    /**
+     * Merges the Context with the Context provided with Options.
+     *
+     * @param context the Context to merge
+     * @param options the options holding the context to merge with
+     * @return the merged context.
+     */
+    public static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
+        if (options == null) {
+            return context;
+        }
+
+        Context optionsContext = options.getContext();
+        if (optionsContext != null && optionsContext != Context.NONE) {
+            context = CoreUtils.mergeContexts(context, optionsContext);
+        }
+
+        return context;
+    }
+
+    /**
+     * Validates the input Method is not annotated with Resume Operation
+     * @param method the method input to validate
+     * @throws IllegalStateException if the input method is annotated with the Resume Operation.
+     */
+    @SuppressWarnings("deprecation")
+    public static void validateResumeOperationIsNotPresent(Method method) {
+        // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
+        // marked as deprecated.
+        if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
+        }
+    }
+
+    /**
+     * Create an instance of the default serializer.
+     *
+     * @return the default serializer
+     */
+    public static SerializerAdapter createDefaultSerializer() {
+        return JacksonAdapter.createDefaultSerializerAdapter();
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     *
+     * @return the default HttpPipeline
+     */
+    public static HttpPipeline createDefaultPipeline() {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy());
+        policies.add(new RetryPolicy());
+        policies.add(new CookiePolicy());
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
+    }
+
 }

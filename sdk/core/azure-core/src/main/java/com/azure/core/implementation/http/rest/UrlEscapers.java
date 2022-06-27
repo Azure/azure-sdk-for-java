@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 /**
  * Collection of useful URL escapers.
  */
-final class UrlEscapers {
+public final class UrlEscapers {
 
     private static final String UNRESERVED_SYMBOLS = "-._~";
     private static final String SUB_DELIMS = "!$&'()*+,;=";

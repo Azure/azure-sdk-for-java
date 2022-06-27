@@ -39,7 +39,7 @@ public class RestProxyUtilsTests {
     public void expectedBodyLength(HttpRequest httpRequest) {
         StepVerifier.create(
                 RestProxyUtils.validateLengthAsync(httpRequest)
-                        .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
+                    .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
             .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
             .verifyComplete();
     }
@@ -88,40 +88,6 @@ public class RestProxyUtilsTests {
 
     public static Stream<Arguments> unexpectedBodyLengthTooLargeDataProvider() throws Exception {
         return dataProvider(EXPECTED.length - 1);
-    }
-
-    @Test
-    public void userProvidedLengthShouldNotBeTrustedTooSmall() {
-
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(BinaryData.fromFlux(
-                Flux.just(ByteBuffer.wrap(EXPECTED)), EXPECTED.length + 1L, false).block())
-            .setHeader("Content-Length", String.valueOf(EXPECTED.length + 1L));
-
-        StepVerifier.create(validateAndCollectRequest(httpRequest))
-            .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof UnexpectedLengthException);
-                assertEquals(
-                    "Request body emitted " + EXPECTED.length + " bytes, less than the expected " + (EXPECTED.length + 1) + " bytes.",
-                    throwable.getMessage());
-            });
-    }
-
-    @Test
-    public void userProvidedLengthShouldNotBeTrustedTooLarge() {
-
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(BinaryData.fromFlux(
-                Flux.just(ByteBuffer.wrap(EXPECTED)), EXPECTED.length - 1L, false).block())
-            .setHeader("Content-Length", String.valueOf(EXPECTED.length - 1L));
-
-        StepVerifier.create(validateAndCollectRequest(httpRequest))
-            .verifyErrorSatisfies(throwable -> {
-                assertTrue(throwable instanceof UnexpectedLengthException);
-                assertEquals(
-                    "Request body emitted " + EXPECTED.length + " bytes, more than the expected " + (EXPECTED.length - 1) + " bytes.",
-                    throwable.getMessage());
-            });
     }
 
     @Test
