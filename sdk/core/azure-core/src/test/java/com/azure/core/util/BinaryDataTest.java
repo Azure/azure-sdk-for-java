@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -927,26 +929,7 @@ public class BinaryDataTest {
         byte[] bytes = new byte[32 * 1024 * 1024 + 113]; // go big, more than chunk size.
         RANDOM.nextBytes(bytes);
 
-        // Hack cold flux. Throws on second consumption.
-        Supplier<Flux<ByteBuffer>> coldFluxSupplier = () -> {
-            AtomicInteger offset = new AtomicInteger();
-            AtomicInteger remaining = new AtomicInteger(bytes.length);
-            AtomicBoolean used = new AtomicBoolean(false);
-            return Flux.generate((Consumer<SynchronousSink<ByteBuffer>>) synchronousSink -> {
-                if (used.get()) {
-                    synchronousSink.error(new RuntimeException("Kaboom"));
-                }
-                if (remaining.get() == 0) {
-                    synchronousSink.complete();
-                    used.set(true);
-                } else {
-                    int length = Math.min(1024, remaining.get());
-                    synchronousSink.next(ByteBuffer.wrap(bytes, offset.get(), length));
-                    offset.addAndGet(length);
-                    remaining.addAndGet(-1 * length);
-                }
-            });
-        };
+        Supplier<Flux<ByteBuffer>> coldFluxSupplier = createColdFluxSupplier(bytes, 1024);
 
         // Assert that cold flux is really cold.
         Flux<ByteBuffer> flux = coldFluxSupplier.get();
@@ -960,6 +943,37 @@ public class BinaryDataTest {
         testReplayableContentTypes(() ->
                 BinaryData.fromFlux(coldFluxSupplier.get(), null, false).flatMap(BinaryData::toReplayableBinaryDataAsync).block(),
             bytes);
+    }
+
+    @Test
+    public void testCachesBufferedFluxContent() {
+
+        Flux<ByteBuffer> flux = Flux.empty();
+        FluxByteBufferContent content = new FluxByteBufferContent(flux);
+
+        BinaryDataContent replayableContent1 = content.toReplayableContent();
+        BinaryDataContent replayableContent2 = content.toReplayableContent();
+
+        assertSame(replayableContent1, replayableContent2);
+    }
+
+    @Test
+    public void testMultipleSubscriptionsToReplayableFlux() {
+        byte[] bytes = new byte[32 * 1024 * 1024 + 113]; // go big, more than chunk size.
+        RANDOM.nextBytes(bytes);
+
+        Supplier<Flux<ByteBuffer>> coldFluxSupplier = createColdFluxSupplier(bytes, 1024);
+        FluxByteBufferContent content = new FluxByteBufferContent(coldFluxSupplier.get());
+
+        StepVerifier.create(Flux.range(0, 100)
+                .parallel()
+                .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(content.toReplayableContent().toFluxByteBuffer()))
+                .map(actualBytes -> {
+                    assertArrayEquals(bytes, actualBytes);
+                    return bytes;
+                })
+                .then())
+            .verifyComplete();
     }
 
     /**
@@ -1002,6 +1016,29 @@ public class BinaryDataTest {
 
         // immediate delete should succeed.
         assertTrue(tempFile.toFile().delete());
+    }
+
+    private static Supplier<Flux<ByteBuffer>> createColdFluxSupplier(byte[] bytes, int chunkSize) {
+        // Hack cold flux. Throws on second consumption.
+        return () -> {
+            AtomicInteger offset = new AtomicInteger();
+            AtomicInteger remaining = new AtomicInteger(bytes.length);
+            AtomicBoolean used = new AtomicBoolean(false);
+            return Flux.generate((Consumer<SynchronousSink<ByteBuffer>>) synchronousSink -> {
+                if (used.get()) {
+                    synchronousSink.error(new RuntimeException("Kaboom"));
+                }
+                if (remaining.get() == 0) {
+                    synchronousSink.complete();
+                    used.set(true);
+                } else {
+                    int length = Math.min(chunkSize, remaining.get());
+                    synchronousSink.next(ByteBuffer.wrap(bytes, offset.get(), length));
+                    offset.addAndGet(length);
+                    remaining.addAndGet(-1 * length);
+                }
+            });
+        };
     }
 
     private static byte[] readInputStream(InputStream inputStream) throws IOException {

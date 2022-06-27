@@ -25,6 +25,7 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     private final Flux<ByteBuffer> content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+    private final AtomicReference<FluxByteBufferContent> cachedReplayableContent = new AtomicReference<>();
     private final Long length;
     private final boolean isReplayable;
 
@@ -109,6 +110,11 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             return this;
         }
 
+        FluxByteBufferContent replayableContent = cachedReplayableContent.get();
+        if (replayableContent != null) {
+            return replayableContent;
+        }
+
         Flux<ByteBuffer> bufferedFlux = content
             .map(buffer -> {
                 // deep copy direct buffers
@@ -124,7 +130,9 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             .flatMapMany(
                 // Duplicate buffers on re-subscription.
                 listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate));
-        return new FluxByteBufferContent(bufferedFlux, length, true);
+        replayableContent = new FluxByteBufferContent(bufferedFlux, length, true);
+        cachedReplayableContent.set(replayableContent);
+        return replayableContent;
     }
 
     @Override
