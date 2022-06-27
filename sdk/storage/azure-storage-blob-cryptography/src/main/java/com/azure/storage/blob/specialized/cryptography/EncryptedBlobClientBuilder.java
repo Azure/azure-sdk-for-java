@@ -239,7 +239,7 @@ public final class EncryptedBlobClientBuilder implements
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
     }
 
 

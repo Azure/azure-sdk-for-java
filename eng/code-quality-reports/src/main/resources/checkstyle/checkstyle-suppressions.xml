@@ -517,5 +517,5 @@ the main ServiceBusClientBuilder. -->
 
   <!-- EncryptedBlobAsyncClient and EncryptedBlobClient overriding methods for download behavior; cannot change signature -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
-            files="com.azure.storage.blob.specialized.cryptography(EncryptedBlobAsyncClient|EncryptedBlobClient)"/>
+            files="com.azure.storage.blob.specialized.cryptography.(EncryptedBlobAsyncClient|EncryptedBlobClient)"/>
 </suppressions>

@@ -108,6 +108,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private final EncryptionVersion encryptionVersion;
 
+    private final boolean requiresEncryption;
+
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      *
@@ -128,13 +130,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
+        this.requiresEncryption = requiresEncryption;
     }
 
     /**
@@ -151,7 +154,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion);
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
     }
 
     /**
@@ -172,7 +175,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId(), encryptionVersion);
+            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+    }
+
+    boolean isEncryptionRequired() {
+        return this.requiresEncryption;
     }
 
     /**
@@ -704,8 +711,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 requestConditionsFinal.setIfMatch(response.getValue().getETag());
                 Mono<T> result = downloadCall.get();
                 if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                        response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY)));
+                    result = result.contextWrite(context ->
+                        context.put(ENCRYPTION_DATA_KEY,
+                            EncryptionData.getAndValidateEncryptionData(
+                                response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY), requiresEncryption))
+                    );
                 }
                 return result;
             });

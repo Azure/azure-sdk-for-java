@@ -32,6 +32,13 @@ abstract class Decryptor {
         this.encryptionData = encryptionData;
     }
 
+    /**
+     * Gets the CEK from the encryption data.
+     *
+     * @return The raw bytes of the encryption key.
+     * @throws NullPointerException If the key resolver cannot resolve the key id from the encryption data.
+     * @throws IllegalArgumentException If the configured key id does not match the key id from the encryption data.
+     */
     protected Mono<byte[]> getKeyEncryptionKey() {
         /*
          * 1. Invoke the key resolver if specified to get the key. If the resolver is specified but does not have a

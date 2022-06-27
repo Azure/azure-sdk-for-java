@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
@@ -36,6 +37,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * purposes and then decrypt the body when the response comes in.
  */
 public class BlobDecryptionPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(BlobDecryptionPolicy.class);
 
     /**
      * The {@link AsyncKeyEncryptionKeyResolver} used to select the correct key for decrypting existing blobs.
@@ -78,10 +80,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
-        // If there is no range, there is nothing to expand, so we can continue with the request
         String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
-        if (initialRangeHeader == null) {
+
+        if (!isRangeRequest(initialRangeHeader)) {
+            // If there is no range, there is nothing to expand, so we can continue with the request
             return next.process().flatMap(httpResponse -> {
+                // If it is a download response, check if we need to decrypt
                 if (isDownloadResponse(httpResponse)) {
                     HttpHeaders responseHeaders = httpResponse.getHeaders();
 
@@ -93,8 +97,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
                         httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
                             + ENCRYPTION_DATA_KEY), requiresEncryption);
-                    // If there was no encryption data, it was either an error response, or the blob is not decrypted.
-                    if (encryptionData == null) {
+                    // If there was no encryption data, it was either an error response or the blob is not encrypted.
+                    if (!isEncryptedBlob(encryptionData)) {
                         return Mono.just(httpResponse);
                     }
 
@@ -121,17 +125,19 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         } else {
             // If it was a ranged request, we would have already called get properties and set encryption data.
             // Since there is no encryption data, the request is not encrypted
-            if (!context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).isPresent()) {
-                return next.process();
+            if (!isEncryptedBlob(context)) {
+                return validateEncryptionDataConsistency(next.process());
             }
-            EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(), requiresEncryption);
+            EncryptionData encryptionData =
+                (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get();
 
             EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
                 initialRangeHeader, encryptionData);
             if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
                 requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
             }
+
+            // Process the request after expanding the range/
             return next.process().map(httpResponse -> {
                 if (isDownloadResponse(httpResponse)) {
                     HttpHeaders responseHeaders = httpResponse.getHeaders();
@@ -159,6 +165,28 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 }
             });
         }
+    }
+
+    private boolean isRangeRequest(String rangeHeader) {
+        return rangeHeader != null;
+    }
+
+    private boolean isEncryptedBlob(HttpPipelineCallContext context) {
+        return context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).isPresent();
+    }
+
+    private boolean isEncryptedBlob(EncryptionData encryptionData) {
+        return encryptionData != null;
+    }
+
+    private Mono<HttpResponse> validateEncryptionDataConsistency(Mono<HttpResponse> responseMono) {
+        return responseMono.map(response -> {
+            if (response.getHeaderValue(ENCRYPTION_METADATA_HEADER) != null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("GetProperties did not find"
+                    + " encryption data, but download request returned encryption data."));
+            }
+            return response;
+        });
     }
 
     private boolean hasPadding(HttpHeaders responseHeaders, EncryptionData encryptionData,

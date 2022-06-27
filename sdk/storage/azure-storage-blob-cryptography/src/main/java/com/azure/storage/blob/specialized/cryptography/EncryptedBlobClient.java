@@ -486,7 +486,9 @@ public class EncryptedBlobClient extends BlobClient {
 
         requestConditions.setIfMatch(initialProperties.getETag());
         if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY));
+            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
+                initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY),
+                encryptedBlobAsyncClient.isEncryptionRequired()));
         }
 
         return context;
