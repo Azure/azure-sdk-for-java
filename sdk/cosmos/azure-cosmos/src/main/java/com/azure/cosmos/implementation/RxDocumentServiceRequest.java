@@ -220,7 +220,6 @@ public class RxDocumentServiceRequest implements Cloneable {
             this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity
                     .fromHeader(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID));
         }
-
     }
 
     private RxDocumentServiceRequest(DiagnosticsClientContext clientContext,
