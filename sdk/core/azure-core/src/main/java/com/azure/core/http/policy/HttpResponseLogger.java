@@ -35,4 +35,18 @@ public interface HttpResponseLogger {
      * @return A reactive response that returns the HTTP response that was logged.
      */
     Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
+
+    /**
+     * Logs the HTTP response.
+     * <p>
+     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponseLoggingContext)} .
+     *
+     * @param logger The {@link ClientLogger} used to log the response.
+     * @param loggingOptions The information available during response logging.
+     * @return A response that returns the HTTP response that was logged.
+     * @throws UnsupportedOperationException If the method is not overridden.
+     */
+    default HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+        throw new UnsupportedOperationException("Must be overridden");
+    }
 }

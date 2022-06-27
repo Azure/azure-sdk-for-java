@@ -3,12 +3,15 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.SyncAsyncExtension;
+import com.azure.core.SyncAsyncTest;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
-import org.junit.jupiter.api.Test;
+import com.azure.core.util.Context;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,17 +20,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProtocolPolicyTests {
 
-    @Test
-    public void withOverwrite() throws MalformedURLException {
+    @SyncAsyncTest
+    public void withOverwrite() throws Exception {
         final HttpPipeline pipeline = createPipeline("ftp", "ftp://www.bing.com");
-        pipeline.send(createHttpRequest("http://www.bing.com"));
+        SyncAsyncExtension.execute(
+            () -> sendRequest(pipeline),
+            () -> sendRequestSync(pipeline)
+        );
     }
 
-    @Test
-    public void withNoOverwrite() throws MalformedURLException {
+    @SyncAsyncTest
+    public void withNoOverwrite() throws Exception {
         final HttpPipeline pipeline = createPipeline("ftp", false, "https://www.bing.com");
-        pipeline.send(createHttpRequest("https://www.bing.com"));
+        SyncAsyncExtension.execute(
+            () -> sendRequest(pipeline),
+            () -> sendRequestSync(pipeline)
+        );
     }
+
     private static HttpPipeline createPipeline(String protocol, String expectedUrl) {
         return new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
@@ -52,5 +62,13 @@ public class ProtocolPolicyTests {
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.GET, new URL(url));
+    }
+
+    private HttpResponse sendRequest(HttpPipeline pipeline) throws MalformedURLException {
+        return pipeline.send(createHttpRequest("https://www.bing.com")).block();
+    }
+
+    private HttpResponse sendRequestSync(HttpPipeline pipeline) throws MalformedURLException {
+        return pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE);
     }
 }

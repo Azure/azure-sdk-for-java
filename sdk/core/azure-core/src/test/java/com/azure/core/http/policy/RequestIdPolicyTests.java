@@ -3,18 +3,21 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.SyncAsyncExtension;
+import com.azure.core.SyncAsyncTest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -61,7 +64,7 @@ public class RequestIdPolicyTests {
 
     private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
 
-    @Test
+    @SyncAsyncTest
     public void newRequestIdForEachCall() throws Exception {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
@@ -84,11 +87,13 @@ public class RequestIdPolicyTests {
             .policies(new RequestIdPolicy())
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
-        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        SyncAsyncExtension.execute(
+            () -> sendRequest(pipeline, HttpMethod.GET),
+            () -> sendRequestSync(pipeline, HttpMethod.GET)
+        );
     }
 
-    @Test
+    @SyncAsyncTest
     public void sameRequestIdForRetry() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
@@ -111,6 +116,18 @@ public class RequestIdPolicyTests {
             .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
+        SyncAsyncExtension.execute(
+            () -> sendRequest(pipeline, HttpMethod.GET),
+            () -> sendRequestSync(pipeline, HttpMethod.GET)
+        );
+    }
+
+    private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
+        return pipeline.send(new HttpRequest(httpMethod, new URL("http://localhost/"))).block();
+    }
+
+    private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
+        return pipeline.sendSync(new HttpRequest(httpMethod,
+            new URL("http://localhost/")), Context.NONE);
     }
 }

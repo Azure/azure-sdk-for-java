@@ -3,12 +3,15 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.SyncAsyncExtension;
+import com.azure.core.SyncAsyncTest;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
-import org.junit.jupiter.api.Test;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.Context;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,16 +19,22 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HostPolicyTests {
-    @Test
-    public void withNoPort() throws MalformedURLException {
+    @SyncAsyncTest
+    public void withNoPort() throws Exception {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost");
-        pipeline.send(createHttpRequest("ftp://www.example.com")).block();
+        SyncAsyncExtension.execute(
+            () -> sendRequest(pipeline, createHttpRequest("ftp://www.example.com")),
+            () -> sendRequestSync(pipeline, createHttpRequest("ftp://www.example.com"))
+        );
     }
 
-    @Test
-    public void withPort() throws MalformedURLException {
+    @SyncAsyncTest
+    public void withPort() throws Exception {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost:1234");
-        pipeline.send(createHttpRequest("ftp://www.example.com:1234"));
+        SyncAsyncExtension.execute(
+            () -> sendRequest(pipeline, createHttpRequest("ftp://www.example.com:1234")),
+            () -> sendRequestSync(pipeline, createHttpRequest("ftp://www.example.com:1234"))
+        );
     }
 
     private static HttpPipeline createPipeline(String host, String expectedUrl) {
@@ -41,5 +50,13 @@ public class HostPolicyTests {
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.GET, new URL(url));
+    }
+
+    private HttpResponse sendRequest(HttpPipeline pipeline, HttpRequest httpRequest) throws MalformedURLException {
+        return pipeline.send(httpRequest).block();
+    }
+
+    private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpRequest httpRequest) throws MalformedURLException {
+        return pipeline.sendSync(httpRequest, Context.NONE);
     }
 }
