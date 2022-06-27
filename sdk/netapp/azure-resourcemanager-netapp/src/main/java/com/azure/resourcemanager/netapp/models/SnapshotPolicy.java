@@ -55,7 +55,7 @@ public interface SnapshotPolicy {
     String etag();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -116,6 +116,13 @@ public interface SnapshotPolicy {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner object.

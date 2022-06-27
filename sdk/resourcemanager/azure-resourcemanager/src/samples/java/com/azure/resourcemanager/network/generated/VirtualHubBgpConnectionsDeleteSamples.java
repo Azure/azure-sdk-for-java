@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualHubBgpConnections Delete. */
 public final class VirtualHubBgpConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubBgpConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubBgpConnectionDelete.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Delete.

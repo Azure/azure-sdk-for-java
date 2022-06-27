@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CustomLocations Delete. */
 public final class CustomLocationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsDelete.json
+     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsDelete.json
      */
     /**
      * Sample code: Delete Custom Location.

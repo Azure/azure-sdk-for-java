@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupDetailsInner;
 import java.util.List;
-import java.util.Map;
 
 /** An immutable client-side representation of VolumeGroupDetails. */
 public interface VolumeGroupDetails {
@@ -39,13 +38,6 @@ public interface VolumeGroupDetails {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.
@@ -114,10 +106,7 @@ public interface VolumeGroupDetails {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithGroupMetadata,
-                DefinitionStages.WithVolumes {
+            extends DefinitionStages.WithLocation, DefinitionStages.WithGroupMetadata, DefinitionStages.WithVolumes {
             /**
              * Executes the create request.
              *
@@ -150,16 +139,6 @@ public interface VolumeGroupDetails {
              * @return the next definition stage.
              */
             WithCreate withRegion(String location);
-        }
-        /** The stage of the VolumeGroupDetails definition allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags.
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
         /** The stage of the VolumeGroupDetails definition allowing to specify groupMetadata. */
         interface WithGroupMetadata {

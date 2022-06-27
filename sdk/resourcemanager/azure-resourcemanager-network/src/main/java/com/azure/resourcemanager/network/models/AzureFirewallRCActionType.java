@@ -27,7 +27,11 @@ public final class AzureFirewallRCActionType extends ExpandableStringEnum<AzureF
         return fromString(name, AzureFirewallRCActionType.class);
     }
 
-    /** @return known AzureFirewallRCActionType values. */
+    /**
+     * Gets known AzureFirewallRCActionType values.
+     *
+     * @return known AzureFirewallRCActionType values.
+     */
     public static Collection<AzureFirewallRCActionType> values() {
         return values(AzureFirewallRCActionType.class);
     }

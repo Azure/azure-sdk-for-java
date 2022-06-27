@@ -183,6 +183,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- try-with-resources bug https://github.com/spotbugs/spotbugs/issues/1694 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
+      <Method name="getBytes"/>
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
   <Match>
     <Or>

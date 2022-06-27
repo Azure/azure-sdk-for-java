@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,5 +67,26 @@ public final class BufferAggregator {
      */
     public Flux<ByteBuffer> asFlux() {
         return Flux.fromIterable(this.buffers);
+    }
+
+    /**
+     * Returns the first n bytes of this aggregator. When asFlux is called later, they will not be returned again. This
+     * is generally intended to buffer negligible amounts of data such as the nonce in GMC encryption, which is 12 bytes
+     * @return
+     */
+    public byte[] getFirstNBytes(int numBytes) {
+        if (numBytes < 0 || numBytes > this.length) {
+            throw new IllegalArgumentException("numBytes is outside the range of this aggregator");
+        }
+        ByteBuffer data = ByteBuffer.allocate(numBytes);
+        Iterator<ByteBuffer> bufferIterator = buffers.iterator();
+        while (data.hasRemaining()) {
+            // No need to check hasNext as we already guaranteed the aggregator was big enough to fill the request.
+            ByteBuffer source = bufferIterator.next();
+            while (source.hasRemaining() && data.hasRemaining()) {
+                data.put(source.get());
+            }
+        }
+        return data.array(); // No need to flip as we're just going straight to the underlying array
     }
 }

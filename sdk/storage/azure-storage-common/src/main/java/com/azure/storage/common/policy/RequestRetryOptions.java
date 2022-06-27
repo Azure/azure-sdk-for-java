@@ -78,10 +78,10 @@ public final class RequestRetryOptions {
      * <p>This value should be based on the bandwidth available to the host machine and proximity to the Storage
      * service, a good starting point may be 60 seconds per MB of anticipated payload size.</p>
      * @param retryDelay Optional. Specifies the amount of delay to use before retrying an operation, default value
-     * is {@code 4ms} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code 30ms}
+     * is {@code 4s} when {@code retryPolicyType} is {@link RetryPolicyType#EXPONENTIAL EXPONENTIAL} and {@code 30s}
      * when {@code retryPolicyType} is {@link RetryPolicyType#FIXED FIXED}.
      * @param maxRetryDelay Optional. Specifies the maximum delay allowed before retrying an operation, default
-     * value is {@code 120ms}.
+     * value is {@code 120s}.
      * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
      *
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
