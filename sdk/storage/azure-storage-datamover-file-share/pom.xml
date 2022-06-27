@@ -45,5 +45,10 @@
       <artifactId>azure-storage-datamover</artifactId>
       <version>1.0.0-beta.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.14.0-beta.2</version>
+    </dependency>
   </dependencies>
 </project>

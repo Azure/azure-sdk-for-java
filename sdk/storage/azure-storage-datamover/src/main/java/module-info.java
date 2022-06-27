@@ -3,4 +3,5 @@
 
 module com.azure.storage.datamover {
     exports com.azure.storage.datamover;
+    exports com.azure.storage.datamover.models;
 }
