@@ -51,10 +51,20 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         try (Jedis jedis = jedisPool.getResource()) {
             Set<String> members = jedis.smembers(prefix);
+            if (members.isEmpty()) {
+                return Flux.error(new IllegalArgumentException()); // no checkpoints to list
+            }
             ArrayList<Checkpoint> list = new ArrayList<>();
             for (String member : members) {
                 //get the associated JSON representation for each for the members
-                String checkpointJSON = jedis.hmget(member, "checkpoint").get(0);
+                List<String> checkpointJSONList = jedis.hmget(member, "checkpoint");
+                String checkpointJSON;
+                if (checkpointJSONList.size() == 0) {
+                    return Flux.error(new IllegalAccessException());
+                }
+                else {
+                    checkpointJSON = checkpointJSONList.get(0);
+                }
                 //convert JSON representation into Checkpoint
                 try {
                     Checkpoint checkpoint = jacksonAdapter.deserialize(checkpointJSON, Checkpoint.class, SerializerEncoding.JSON);
@@ -114,7 +124,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(prefix, checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
-
             //Case 1: new checkpoint
             if (!jedis.exists(prefix) || !jedis.exists(key)) {
                 jedis.sadd(prefix, key);
@@ -130,7 +139,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
         return null;
     }
-
     private String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
     }
