@@ -8,54 +8,40 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.models.SentimentSkillV1;
+import com.azure.search.documents.indexes.implementation.models.SentimentSkillV3;
+
 import java.util.List;
+import java.util.Objects;
 
 /** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Skills.Text.SentimentSkill")
 @Fluent
 public final class SentimentSkill extends SearchIndexerSkill {
 
-    @JsonIgnore private static final ClientLogger LOGGER = new ClientLogger(SentimentSkill.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SentimentSkill.class);
 
     /*
      * Identifies the concrete type of the skill.
      */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
-    private SentimentSkillVersion version;
+    private final SentimentSkillVersion version;
 
-    /*
-     * A value indicating which language code to use. Default is en.
-     */
-    @JsonProperty(value = "defaultLanguageCode")
-    private SentimentSkillLanguage defaultLanguageCode;
+    private final SentimentSkillV1 v1Skill;
+    private final SentimentSkillV3 v3Skill;
 
-    /*
-     * If set to true, the skill output will include information from Text
-     * Analytics for opinion mining, namely targets (nouns or verbs) and their
-     * associated assessment (adjective) in the text. Default is false.
-     */
-    @JsonProperty(value = "includeOpinionMining")
-    private Boolean includeOpinionMining;
+    SentimentSkill(SentimentSkillV1 v1Skill) {
+        super(v1Skill.getInputs(), v1Skill.getOutputs());
+        this.version = SentimentSkillVersion.V1;
+        this.v1Skill = v1Skill;
+        this.v3Skill = null;
+    }
 
-    /*
-     * The version of the model to use when calling the Text Analytics service.
-     * It will default to the latest available when not specified. We recommend
-     * you do not specify this value unless absolutely necessary.
-     */
-    @JsonProperty(value = "modelVersion")
-    private String modelVersion;
+    SentimentSkill(SentimentSkillV3 v3Skill) {
+        super(v3Skill.getInputs(), v3Skill.getOutputs());
+        this.version = SentimentSkillVersion.V3;
+        this.v1Skill = null;
+        this.v3Skill = v3Skill;
+    }
 
     /**
      * Creates an instance of SentimentSkill class.
@@ -63,10 +49,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    @JsonCreator
-    public SentimentSkill(
-            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+    public SentimentSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         this(inputs, outputs, SentimentSkillVersion.V1);
     }
 
@@ -76,11 +59,19 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      * @param version the SentimentSkillVersion value to set.
+     * @throws NullPointerException If {@code version} is null.
      */
-    public SentimentSkill(
-            List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, SentimentSkillVersion version) {
+    public SentimentSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
+        SentimentSkillVersion version) {
         super(inputs, outputs);
-        this.version = version;
+        this.version = Objects.requireNonNull(version, "'version' cannot be null.");
+        if (version == SentimentSkillVersion.V1) {
+            this.v1Skill = new SentimentSkillV1(inputs, outputs);
+            this.v3Skill = null;
+        } else {
+            this.v1Skill = null;
+            this.v3Skill = new SentimentSkillV3(inputs, outputs);
+        }
     }
 
     /**
@@ -98,7 +89,9 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @return the defaultLanguageCode value.
      */
     public SentimentSkillLanguage getDefaultLanguageCode() {
-        return this.defaultLanguageCode;
+        return (v1Skill != null)
+            ? v1Skill.getDefaultLanguageCode()
+            : SentimentSkillLanguage.fromString(v3Skill.getDefaultLanguageCode());
     }
 
     /**
@@ -108,7 +101,12 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @return the SentimentSkill object itself.
      */
     public SentimentSkill setDefaultLanguageCode(SentimentSkillLanguage defaultLanguageCode) {
-        this.defaultLanguageCode = defaultLanguageCode;
+        if (v1Skill != null) {
+            v1Skill.setDefaultLanguageCode(defaultLanguageCode);
+        } else {
+            v3Skill.setDefaultLanguageCode((defaultLanguageCode == null) ? null : defaultLanguageCode.toString());
+        }
+
         return this;
     }
 
@@ -120,7 +118,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @return the includeOpinionMining value.
      */
     public Boolean isIncludeOpinionMining() {
-        return this.includeOpinionMining;
+        return (v1Skill != null) ? null : v3Skill.isIncludeOpinionMining();
     }
 
     /**
@@ -136,9 +134,13 @@ public final class SentimentSkill extends SearchIndexerSkill {
     public SentimentSkill setIncludeOpinionMining(Boolean includeOpinionMining) {
         if (includeOpinionMining != null && version == SentimentSkillVersion.V1) {
             throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("SentimentSkill using V1 doesn't support 'includeOpinionMining'."));
+                new IllegalArgumentException("SentimentSkill using V1 doesn't support 'includeOpinionMining'."));
         }
-        this.includeOpinionMining = includeOpinionMining;
+
+        if (v3Skill != null) {
+            v3Skill.setIncludeOpinionMining(includeOpinionMining);
+        }
+
         return this;
     }
 
@@ -150,7 +152,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
      * @return the modelVersion value.
      */
     public String getModelVersion() {
-        return this.modelVersion;
+        return (v1Skill != null) ? null : v3Skill.getModelVersion();
     }
 
     /**
@@ -166,9 +168,18 @@ public final class SentimentSkill extends SearchIndexerSkill {
     public SentimentSkill setModelVersion(String modelVersion) {
         if (modelVersion != null && version == SentimentSkillVersion.V1) {
             throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("SentimentSkill using V1 doesn't support 'modelVersion'."));
+                new IllegalArgumentException("SentimentSkill using V1 doesn't support 'modelVersion'."));
         }
-        this.modelVersion = modelVersion;
+
+        if (v3Skill != null) {
+            v3Skill.setModelVersion(modelVersion);
+        }
+
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) {
+        return (v1Skill != null) ? v1Skill.toJson(jsonWriter) : v3Skill.toJson(jsonWriter);
     }
 }

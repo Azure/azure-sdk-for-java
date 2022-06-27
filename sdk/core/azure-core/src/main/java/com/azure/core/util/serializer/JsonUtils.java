@@ -198,7 +198,8 @@ public final class JsonUtils {
      * {@link JsonToken#FIELD_NAME} and throw an {@link IllegalStateException}. {@link JsonToken#FIELD_NAME} is a valid
      * starting location to support partial object reads.
      * <p>
-     * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
+     * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized and
+     * {@link #readMap(JsonReader, Function)} if a JSON map is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic, passing the reader and current
@@ -213,7 +214,9 @@ public final class JsonUtils {
             currentToken = jsonReader.nextToken();
         }
 
-        if (currentToken == JsonToken.NULL) {
+        // If the current token is JSON NULL or current token is still null return null.
+        // The current token may be null if there was no JSON content to read.
+        if (currentToken == JsonToken.NULL || currentToken == null) {
             return null;
         } else if (currentToken == JsonToken.END_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             // Otherwise, this is an invalid state, throw an exception.
@@ -230,7 +233,8 @@ public final class JsonUtils {
      * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an
      * {@link IllegalStateException}.
      * <p>
-     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized.
+     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized and
+     * {@link #readMap(JsonReader, Function)} if a JSON map is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic.
@@ -239,15 +243,16 @@ public final class JsonUtils {
      * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_ARRAY}.
      */
     public static <T> List<T> readArray(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
-        if (jsonReader.currentToken() == null) {
-            jsonReader.nextToken();
+        JsonToken currentToken = jsonReader.currentToken();
+        if (currentToken == null) {
+            currentToken = jsonReader.nextToken();
         }
 
-        if (jsonReader.currentToken() == JsonToken.NULL) {
+        if (currentToken == JsonToken.NULL || currentToken == null) {
             return null;
-        } else if (jsonReader.currentToken() != JsonToken.START_ARRAY) {
+        } else if (currentToken != JsonToken.START_ARRAY) {
             // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + jsonReader.currentToken());
+            throw new IllegalStateException("Unexpected token to begin array deserialization: " + currentToken);
         }
 
         List<T> array = new ArrayList<>();
@@ -257,6 +262,47 @@ public final class JsonUtils {
         }
 
         return array;
+    }
+
+    /**
+     * Handles basic logic for deserializing a map before passing it into the deserialization function.
+     * <p>
+     * This will initialize the {@link JsonReader} for map reading and then check if the current token is
+     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw
+     * an {@link IllegalStateException}.
+     * <p>
+     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized and
+     * {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @param deserializationFunc The function that handles deserialization logic.
+     * @param <T> The type of array element that is being deserialized.
+     * @return The deserialized array, or null if the {@link JsonToken#NULL} represents the object.
+     * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_ARRAY}.
+     */
+    public static <T> Map<String, T> readMap(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
+        JsonToken currentToken = jsonReader.currentToken();
+        if (currentToken == null) {
+            currentToken = jsonReader.nextToken();
+        }
+
+        if (currentToken == JsonToken.NULL || currentToken == null) {
+            return null;
+        } else if (currentToken != JsonToken.START_OBJECT) {
+            // Otherwise, this is an invalid state, throw an exception.
+            throw new IllegalStateException("Unexpected token to begin map deserialization: " + currentToken);
+        }
+
+        Map<String, T> map = new LinkedHashMap<>();
+
+        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = jsonReader.getFieldName();
+            jsonReader.nextToken();
+
+            map.put(fieldName, deserializationFunc.apply(jsonReader));
+        }
+
+        return map;
     }
 
     /**
@@ -293,13 +339,16 @@ public final class JsonUtils {
         }
 
         JsonToken token = jsonReader.currentToken();
+        if (token == null) {
+            token = jsonReader.nextToken();
+        }
 
         // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
         if (token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT || token == JsonToken.FIELD_NAME) {
             throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
         }
 
-        if (token == JsonToken.NULL) {
+        if (token == JsonToken.NULL || token == null) {
             return null;
         } else if (token == JsonToken.BOOLEAN) {
             return jsonReader.getBooleanValue();
@@ -376,6 +425,19 @@ public final class JsonUtils {
             return jsonWriter.writeString(value.toString()).flush();
         } else if (value instanceof JsonSerializable<?>) {
             return ((JsonSerializable<?>) value).toJson(jsonWriter).flush();
+        } else if (value instanceof Iterable<?>) {
+            jsonWriter.writeStartArray();
+            for (Object obj : (Iterable<?>) value) {
+                writeUntypedField(jsonWriter, obj);
+            }
+            return jsonWriter.writeEndArray().flush();
+        } else if (value instanceof Map<?, ?>) {
+            jsonWriter.writeStartObject();
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) value).entrySet()) {
+                jsonWriter.writeFieldName(String.valueOf(entry.getKey()));
+                writeUntypedField(jsonWriter, entry.getValue());
+            }
+            return jsonWriter.writeEndObject().flush();
         } else if (value.getClass() == Object.class) {
             return jsonWriter.writeStartObject().writeEndObject().flush();
         } else {
@@ -458,7 +520,7 @@ public final class JsonUtils {
                 token = jsonReader.nextToken();
             }
 
-            return json.toString();
+            return json.append("}").toString();
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-array, non-object, non-field name "
                 + "starting location. Starting location: " + jsonReader.currentToken());

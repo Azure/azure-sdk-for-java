@@ -4,6 +4,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.CorsOptions;
@@ -26,9 +28,10 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,12 +61,12 @@ public class IndexAndServiceStatisticsExample {
         SearchServiceStatistics searchServiceStatistics = client.getServiceStatistics();
 
         System.out.println(":" + searchServiceStatistics);
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String jsonStr = objectMapper.writeValueAsString(searchServiceStatistics);
-            System.out.println(jsonStr);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
+            searchServiceStatistics.toJson(jsonWriter);
+            System.out.println(new String(outputStream.toByteArray(), StandardCharsets.UTF_8));
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
         /* Output:

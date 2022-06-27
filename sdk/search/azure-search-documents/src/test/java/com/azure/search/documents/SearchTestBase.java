@@ -11,6 +11,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.DefaultJsonReader;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
@@ -36,8 +37,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import reactor.core.Exceptions;
 
 import java.time.Duration;
@@ -49,7 +48,6 @@ import java.util.Map;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
-import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceSyncTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 
@@ -88,13 +86,10 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
-        try {
-            ObjectNode jsonData = (ObjectNode) MAPPER.readTree(TestHelpers.loadResource(jsonFile));
-            jsonData.set("name", new TextNode(testResourceNamer.randomName(jsonData.get("name").asText(), 64)));
-            return setupIndex(MAPPER.treeToValue(jsonData, SearchIndex.class));
-        } catch (Exception e) {
-            throw Exceptions.propagate(e);
-        }
+        SearchIndex baseIndex = SearchIndex.fromJson(DefaultJsonReader.fromBytes(TestHelpers.loadResource(jsonFile)));
+        String testIndexName = testResourceNamer.randomName(baseIndex.getName(), 64);
+
+        return setupIndex(TestHelpers.createTestIndex(testIndexName, baseIndex));
     }
 
     protected String setupIndex(SearchIndex index) {

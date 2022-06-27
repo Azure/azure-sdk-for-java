@@ -287,6 +287,12 @@
           "code": "java\\.annotation\\.removed",
           "new": ".* com\\.azure\\.core.*",
           "justification": "Removal of jackson-databind functionality."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": ".* com\\.azure\\.search\\.documents.*",
+          "justification": "Removal of jackson-databind functionality."
         }
       ]
     }

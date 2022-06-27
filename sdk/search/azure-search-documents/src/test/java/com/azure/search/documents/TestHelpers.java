@@ -8,22 +8,23 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.search.documents.implementation.util.Utility;
+import com.azure.json.DefaultJsonReader;
+import com.azure.json.DefaultJsonWriter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import org.reactivestreams.Publisher;
-import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.file.Files;
@@ -34,10 +35,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,9 +45,9 @@ import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
-import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
-import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -58,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public final class TestHelpers {
     private static final TestMode TEST_MODE = setupTestMode();
 
-    public static final ObjectMapper MAPPER = getDefaultSerializerAdapter().serializer();
+    private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     public static final String HOTEL_INDEX_NAME = "hotels";
 
@@ -66,9 +65,6 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
-        new TypeReference<List<Map<String, Object>>>() {
-        };
 
     private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
@@ -79,12 +75,7 @@ public final class TestHelpers {
      * @param actual The actual object.
      */
     public static void assertObjectEquals(Object expected, Object actual) {
-        try {
-            assertEquals(getDefaultSerializerAdapter().serialize(expected, SerializerEncoding.JSON),
-                getDefaultSerializerAdapter().serialize(actual, SerializerEncoding.JSON));
-        } catch (IOException ex) {
-            fail("There is something wrong happen in serializer.");
-        }
+        assertArrayEquals(SERIALIZER.serializeToBytes(expected), SERIALIZER.serializeToBytes(actual));
     }
 
     /**
@@ -92,25 +83,64 @@ public final class TestHelpers {
      *
      * @param expected The expected object.
      * @param actual The actual object.
-     * @param ignoredDefaults Set to true if it needs to ignore default value of expected object.
-     * @param ignoredFields Varargs of ignored fields.
+     * @param ignoreDefaults Set to true if it needs to ignore default value of expected object.
+     * @param ignoredFields Ignored fields.
      */
-    @SuppressWarnings({"unchecked", "rawtypes", "UseOfObsoleteDateTimeApi"})
-    public static void assertObjectEquals(Object expected, Object actual, boolean ignoredDefaults,
+    public static void assertObjectEquals(Object expected, Object actual, boolean ignoreDefaults,
         String... ignoredFields) {
-        if (isComparableType(expected)) {
-            assertEquals(expected, actual);
+        Set<String> ignored = (ignoredFields == null)
+            ? Collections.emptySet()
+            : new HashSet<>(Arrays.asList(ignoredFields));
+
+        assertObjectEqualsInternal(expected, actual, ignoreDefaults, ignored);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes", "UseOfObsoleteDateTimeApi"})
+    private static void assertObjectEqualsInternal(Object expected, Object actual, boolean ignoredDefaults,
+        Set<String> ignoredFields) {
+        if (expected == null) {
+            assertNull(actual);
+        } else if (isComparableType(expected.getClass())) {
+            if (expected instanceof Number) {
+                assertEquals(((Number) expected).doubleValue(), ((Number) actual).doubleValue());
+            } else {
+                assertEquals(expected, actual);
+            }
         } else if (expected instanceof OffsetDateTime) {
             assertEquals(0, ((OffsetDateTime) expected).compareTo(OffsetDateTime.parse(actual.toString())));
         } else if (expected instanceof Date) {
             assertDateEquals((Date) expected, (Date) actual);
         } else if (expected instanceof Map) {
-            assertMapEquals((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
+            assertMapEqualsInternal((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
         } else {
-            ObjectNode expectedNode = MAPPER.valueToTree(expected);
-            ObjectNode actualNode = MAPPER.valueToTree(actual);
-            assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
+            byte[] expectedJson;
+            byte[] actualJson;
+            if (expected instanceof JsonSerializable<?>) {
+                expectedJson = serializeJsonSerializable((JsonSerializable<?>) expected);
+                actualJson = serializeJsonSerializable((JsonSerializable<?>) actual);
+            } else {
+                expectedJson = SERIALIZER.serializeToBytes(expected);
+                actualJson = SERIALIZER.serializeToBytes(actual);
+            }
+
+            Map<String, Object> expectedMap = (Map<String, Object>) JsonUtils.readUntypedField(
+                DefaultJsonReader.fromBytes(expectedJson));
+            Map<String, Object> actualMap = (Map<String, Object>) JsonUtils.readUntypedField(
+                DefaultJsonReader.fromBytes(actualJson));
+
+            assertMapEqualsInternal(expectedMap, actualMap, ignoredDefaults, ignoredFields);
         }
+    }
+
+    private static byte[] serializeJsonSerializable(JsonSerializable<?> jsonSerializable) {
+        if (jsonSerializable == null) {
+            return null;
+        }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        jsonSerializable.toJson(DefaultJsonWriter.fromStream(outputStream));
+
+        return outputStream.toByteArray();
     }
 
     /**
@@ -118,90 +148,94 @@ public final class TestHelpers {
      *
      * @param expectedMap The expected map.
      * @param actualMap The actual map.
+     * @param ignoreDefaults Set to true if it needs to ignore default value of expected object.
+     * @param ignoredFields Ignored fields.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void assertMapEquals(Map<String, Object> expectedMap, Map<String, Object> actualMap,
         boolean ignoreDefaults, String... ignoredFields) {
-        expectedMap.forEach((key, value) -> {
-            if (value != null && actualMap.get(key) != null) {
-                if (isComparableType(value)) {
-                    assertEquals(value, actualMap.get(key));
-                } else if (value instanceof List) {
-                    assertListEquals((List) value, (List) actualMap.get(key), ignoreDefaults, ignoredFields);
+        Set<String> ignored = (ignoredFields == null)
+            ? Collections.emptySet()
+            : new HashSet<>(Arrays.asList(ignoredFields));
+
+        assertMapEqualsInternal(expectedMap, actualMap, ignoreDefaults, ignored);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void assertMapEqualsInternal(Map<String, Object> expectedMap, Map<String, Object> actualMap,
+        boolean ignoreDefaults, Set<String> ignoredFields) {
+        for (Map.Entry<String, Object> entry : expectedMap.entrySet()) {
+            String expectedKey = entry.getKey();
+            Object expectedValue = entry.getValue();
+
+            if (shouldSkipField(expectedKey, expectedValue, ignoreDefaults, ignoredFields)) {
+                continue;
+            }
+
+            assertTrue(actualMap.containsKey(expectedKey));
+            Object actualValue = actualMap.get(expectedKey);
+            if (expectedValue == null) {
+                assertNull(actualValue);
+            } else {
+                if (isComparableType(expectedValue.getClass())) {
+                    if (expectedValue instanceof Number) {
+                        assertEquals(((Number) entry.getValue()).doubleValue(), ((Number) actualValue).doubleValue());
+                    } else {
+                        assertEquals(entry.getValue(), actualValue);
+                    }
+                } else if (expectedValue instanceof List) {
+                    assertListEquals((List) expectedValue, (List) actualValue, ignoreDefaults, ignoredFields);
                 } else {
-                    assertObjectEquals(value, actualMap.get(key), ignoreDefaults, ignoredFields);
+                    assertObjectEqualsInternal(expectedValue, actualValue, ignoreDefaults, ignoredFields);
                 }
             }
-        });
+        }
     }
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
-    public static void assertDateEquals(Date expect, Date actual) {
+    private static void assertDateEquals(Date expect, Date actual) {
         assertEquals(0, expect.toInstant().atOffset(ZoneOffset.UTC)
             .compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
     }
 
-    public static void assertListEquals(List<Object> expected, List<Object> actual, boolean ignoredDefaults,
-        String... ignoredFields) {
+    private static void assertListEquals(List<Object> expected, List<Object> actual, boolean ignoredDefaults,
+        Set<String> ignoredFields) {
+        assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
-            assertObjectEquals(expected.get(i), actual.get(i), ignoredDefaults, ignoredFields);
+            assertObjectEqualsInternal(expected.get(i), actual.get(i), ignoredDefaults, ignoredFields);
         }
     }
 
-    private static boolean isComparableType(Object obj) {
-        return obj.getClass().isPrimitive() || obj.getClass().isArray() || obj instanceof Integer
-            || obj instanceof Long || obj instanceof String || obj instanceof Boolean || obj instanceof Double;
+    private static boolean isComparableType(Class<?> clazz) {
+        return clazz.isPrimitive() // Primitive types are always comparable.
+            || clazz.isEnum() // Enums are comparable
+            || ExpandableStringEnum.class.isAssignableFrom(clazz) // And so are ExpandableStringEnums
+            || Byte.class.isAssignableFrom(clazz) // Boxed primitives are also comparable
+            || Boolean.class.isAssignableFrom(clazz)
+            || Character.class.isAssignableFrom(clazz)
+            || Short.class.isAssignableFrom(clazz)
+            || Integer.class.isAssignableFrom(clazz)
+            || Long.class.isAssignableFrom(clazz)
+            || Float.class.isAssignableFrom(clazz)
+            || Double.class.isAssignableFrom(clazz)
+            || String.class.isAssignableFrom(clazz) // And so are Strings
+            || (clazz.isArray() && isComparableType(Array.newInstance(clazz, 0).getClass())); // Array of comparable
     }
 
-    private static void assertOnMapIterator(Iterator<Map.Entry<String, JsonNode>> expectedNode,
-        ObjectNode actualNode, boolean ignoreDefaults, String[] ignoredFields) {
-        Set<String> ignoredFieldSet = new HashSet<>(Arrays.asList(ignoredFields));
-        while (expectedNode.hasNext()) {
-            assertTrue(actualNode.fields().hasNext());
-            Map.Entry<String, JsonNode> expectedField = expectedNode.next();
-            String fieldName = expectedField.getKey();
-            if (shouldSkipField(fieldName, expectedField.getValue(), ignoreDefaults, ignoredFieldSet)) {
-                continue;
-            }
-            if (expectedField.getValue().isValueNode()) {
-                assertEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()),
-                    String.format("The key %s of the map has different values", expectedField.getKey()));
-            } else if (expectedField.getValue().isArray()) {
-                Iterator<JsonNode> expectedArray = expectedField.getValue().elements();
-                Iterator<JsonNode> actualArray = actualNode.get(expectedField.getKey()).elements();
-                while (expectedArray.hasNext()) {
-                    assertTrue(actualArray.hasNext());
-                    JsonNode a = expectedArray.next();
-                    JsonNode b = actualArray.next();
-                    if (ignoredFieldSet.contains(fieldName)) {
-                        continue;
-                    }
-                    if (shouldSkipField(null, a, true, null)) {
-                        continue;
-                    }
-                    assertEquals(a.asText(), b.asText());
-                }
-            } else {
-                assertObjectEquals(expectedField.getValue(), actualNode.get(fieldName), ignoreDefaults,
-                    ignoredFields);
-            }
-        }
-    }
-
-    private static boolean shouldSkipField(String fieldName, JsonNode fieldValue,
-        boolean ignoreDefaults, Set<String> ignoredFields) {
+    private static boolean shouldSkipField(String fieldName, Object value, boolean ignoreDefaults,
+        Set<String> ignoredFields) {
         if (ignoredFields != null && ignoredFields.contains(fieldName)) {
             return true;
         }
 
         if (ignoreDefaults) {
-            if (fieldValue.isNull()) {
+            if (value == null) {
                 return true;
             }
-            if (fieldValue.isBoolean() && !fieldValue.asBoolean()) {
+            if (value instanceof Boolean && !((boolean) value)) {
                 return true;
             }
-            return fieldValue.isNumber() && fieldValue.asDouble() == 0.0D;
+
+            return value instanceof Number && ((Number) value).doubleValue() == 0.0D;
         }
         return false;
     }
@@ -233,7 +267,7 @@ public final class TestHelpers {
     }
 
     public static void waitForIndexing() {
-        // Wait 2 seconds to allow index request to finish.
+        // Wait 3 seconds to allow index request to finish.
         sleepIfRunningAgainstService(3000);
     }
 
@@ -292,54 +326,62 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
+    @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
-            .getResourceAsStream(filename));
+        JsonReader reader = DefaultJsonReader.fromBytes(loadResource(filename));
 
-        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
+        return JsonUtils.readArray(reader, reader1 -> (Map<String, Object>) JsonUtils.readUntypedField(reader1));
     }
 
-    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
-        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> convertStreamToMap(byte[] source) {
+        return (Map<String, Object>) JsonUtils.readUntypedField(DefaultJsonReader.fromBytes(source));
     }
 
-    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
-        try {
-            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw Exceptions.propagate(e);
-        }
-    }
+//    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
+//        try {
+//            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
+//        } catch (IOException e) {
+//            throw Exceptions.propagate(e);
+//        }
+//    }
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
-        try {
-            return Utility.convertValue(value, clazz);
-        } catch (IOException ex) {
-            throw Exceptions.propagate(ex);
-        }
+        return SERIALIZER.deserializeFromBytes(SERIALIZER.serializeToBytes(value), TypeReference.createInstance(clazz));
     }
 
     public static SearchIndexClient setupSharedIndex(String indexName) {
-        try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(HOTELS_TESTS_INDEX_DATA_JSON);
-            JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
-            ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
+        SearchIndex baseIndex = SearchIndex.fromJson(
+            DefaultJsonReader.fromBytes(loadResource(HOTELS_TESTS_INDEX_DATA_JSON)));
 
-            SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
+        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(new AzureKeyCredential(API_KEY))
+            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
+            .buildClient();
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
-                .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
-                .buildClient();
+        searchIndexClient.createOrUpdateIndex(createTestIndex(indexName, baseIndex));
+        uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
 
-            searchIndexClient.createOrUpdateIndex(index);
-            uploadDocumentsJson(searchIndexClient.getSearchClient(indexName), HOTELS_DATA_JSON);
+        return searchIndexClient;
+    }
 
-            return searchIndexClient;
-        } catch (Throwable ex) {
-            throw new RuntimeException(ex);
-        }
+    static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
+        return new SearchIndex(testIndexName)
+            .setFields(baseIndex.getFields())
+            .setScoringProfiles(baseIndex.getScoringProfiles())
+            .setDefaultScoringProfile(baseIndex.getDefaultScoringProfile())
+            .setCorsOptions(baseIndex.getCorsOptions())
+            .setSuggesters(baseIndex.getSuggesters())
+            .setAnalyzers(baseIndex.getAnalyzers())
+            .setTokenizers(baseIndex.getTokenizers())
+            .setTokenFilters(baseIndex.getTokenFilters())
+            .setCharFilters(baseIndex.getCharFilters())
+            .setNormalizers(baseIndex.getNormalizers())
+            .setEncryptionKey(baseIndex.getEncryptionKey())
+            .setSimilarity(baseIndex.getSimilarity())
+            .setSemanticSettings(baseIndex.getSemanticSettings())
+            .setETag(baseIndex.getETag());
     }
 
     public static String createGeographyPolygon(String... coordinates) {

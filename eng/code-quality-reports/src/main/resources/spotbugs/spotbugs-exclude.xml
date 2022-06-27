@@ -2762,6 +2762,12 @@
   </Match>
 
   <Match>
+    <Class name="com.azure.search.documents.indexes.models.EntityRecognitionSkill"/>
+    <Method name="areTypelessEntitiesIncluded"/>
+    <Bug pattern="NP_BOOLEAN_RETURN_NULL"/>
+  </Match>
+
+  <Match>
     <Package name="~com\.azure\.core\.implementation\.jackson\.core.*"/>
   </Match>
   <Match>

@@ -24,6 +24,9 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
 
     private boolean hasImmutableAnnotation;
 
+    // Classes that implement JsonSerializable need to allow non-final fields.
+    private boolean isJsonSerializable;
+
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
@@ -52,9 +55,10 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 hasImmutableAnnotation = hasImmutableAnnotation(token);
+                isJsonSerializable = isJsonSerializable(token);
                 break;
             case TokenTypes.OBJBLOCK:
-                if (hasImmutableAnnotation) {
+                if (hasImmutableAnnotation && !isJsonSerializable) {
                     checkForOnlyFinalFields(token);
                 }
                 break;
@@ -73,6 +77,37 @@ public class OnlyFinalFieldsForImmutableClassCheck extends AbstractCheck {
     private boolean hasImmutableAnnotation(DetailAST classDefToken) {
         DetailAST immutableAnnotation = AnnotationUtil.getAnnotation(classDefToken, IMMUTABLE_NOTATION);
         return immutableAnnotation != null;
+    }
+
+    private boolean isJsonSerializable(DetailAST classDefToken) {
+        DetailAST implementsClause = classDefToken.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
+        if (implementsClause != null) {
+            DetailAST child = implementsClause.getFirstChild();
+            while (child != null) {
+                if (child.getType() == TokenTypes.IDENT && child.getText().equals("JsonSerializable")) {
+                    // Class implements JsonSerializable, return true.
+                    return true;
+                }
+                child = child.getNextSibling();
+            }
+        }
+
+        DetailAST methodDef = classDefToken.findFirstToken(TokenTypes.OBJBLOCK).findFirstToken(TokenTypes.METHOD_DEF);
+        if (methodDef != null) {
+            do {
+                if (methodDef.getType() != TokenTypes.METHOD_DEF) {
+                    continue;
+                }
+
+                if (methodDef.branchContains(TokenTypes.LITERAL_STATIC) &&
+                    methodDef.findFirstToken(TokenTypes.IDENT).getText().startsWith("fromJson")) {
+                    // Class implements JsonSerializable through a parent class.
+                    return true;
+                }
+            } while ((methodDef = methodDef.getNextSibling()) != null);
+        }
+
+        return false;
     }
 
     /*

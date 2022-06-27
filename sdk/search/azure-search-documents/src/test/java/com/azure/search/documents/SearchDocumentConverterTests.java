@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.models.GeoPoint;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -36,8 +35,7 @@ public class SearchDocumentConverterTests {
         // the result object is a map of key:value, get deserialized directly into the Document object
         // Document is simply a Hash Map.
         // in this case we simulate creation of the object created by azure-core
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(json.getBytes());
-        SearchDocument doc = new SearchDocument(convertStreamToMap(inputStream));
+        SearchDocument doc = new SearchDocument(convertStreamToMap(json.getBytes()));
         cleanupODataAnnotation(doc);
         return doc;
     }
@@ -57,7 +55,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field3", 2.78);
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -70,7 +68,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field4", Arrays.asList(null, new SearchDocument(Collections.singletonMap("name", "Bob"))));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -90,7 +88,7 @@ public class SearchDocumentConverterTests {
             SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", expectedObject));
 
             SearchDocument actualDoc = deserialize(json);
-            assertEquals(expectedDoc, actualDoc);
+            assertMapEquals(expectedDoc, actualDoc, false);
         }
     }
 
@@ -110,7 +108,7 @@ public class SearchDocumentConverterTests {
             SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", expectedArray));
 
             SearchDocument actualDoc = deserialize(json);
-            assertEquals(expectedDoc, actualDoc);
+            assertMapEquals(expectedDoc, actualDoc, false);
         }
     }
 
@@ -151,7 +149,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("details", innerDoc);
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test
@@ -187,7 +185,7 @@ public class SearchDocumentConverterTests {
         SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("stores", Arrays.asList(store1, store2)));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc, false);
     }
 
     @Test

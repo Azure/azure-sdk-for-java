@@ -85,7 +85,6 @@ public final class IndexBatchException extends AzureException {
             .collect(Collectors.toList());
     }
 
-    @SuppressWarnings("unchecked")
     private <T> boolean isActionIncluded(IndexAction<T> action, Set<String> uniqueRetriableKeys,
         Function<T, String> keySelector) {
         if (action.getDocument() != null) {
