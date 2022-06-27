@@ -3,221 +3,222 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.TransferCallResponse;
+import com.azure.communication.callingserver.models.AcsCallParticipant;
+import com.azure.communication.callingserver.models.AddParticipantsResponse;
+import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
+
+import java.util.List;
 
 /**
  * Synchronous Client that supports call connection operations.
  */
 public final class CallConnection {
     private final CallConnectionAsync callConnectionAsync;
-    private final ClientLogger logger = new ClientLogger(CallConnection.class);
 
     CallConnection(CallConnectionAsync callConnectionAsync) {
         this.callConnectionAsync = callConnectionAsync;
     }
 
     /**
-     * Get the call connection id property.
+     * Get the callConnectionId property, which is the call connection id.
      *
-     * @return Call connection id value.
+     * @return callConnectionId value.
      */
     public String getCallConnectionId() {
         return callConnectionAsync.getCallConnectionId();
     }
 
     /**
-     * Play audio in the call.
+     * Hangup a call.
      *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        return callConnectionAsync
-            .playAudioInternal(audioFileUri, loop, audioFileId, callbackUri, operationContext).block();
-    }
-
-    /**
-     * Play audio in the call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param playAudioOptions Options for play audio.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
-        return callConnectionAsync.playAudioInternal(audioFileUri, playAudioOptions).block();
-    }
-
-    /**
-     * Play audio in the call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param playAudioOptions Options for play audio.
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(
-        String audioFileUri,
-        PlayAudioOptions playAudioOptions,
-        final Context context) {
-        return callConnectionAsync
-            .playAudioWithResponseInternal(audioFileUri, playAudioOptions, context)
-            .block();
-    }
-
-    /**
-     * Disconnect from a call.
-     *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void hangup() {
-        callConnectionAsync.hangup().block();
-    }
-
-    /**
-     * Disconnect from a call.
-     *
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangupWithResponse(final Context context) {
-        return callConnectionAsync.hangupWithResponse(context).block();
+    public Void hangup() {
+        return callConnectionAsync.hangup().block();
     }
 
     /**
-     * Cancel all media operations in the call.
+     * Hangup a call.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful cancel all media operations request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAllMediaOperationsResult cancelAllMediaOperations(String operationContext) {
-        return callConnectionAsync.cancelAllMediaOperations(operationContext).block();
-    }
-
-    /**
-     * Cancel all media operations in the call.
-     *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful cancel all media operations request.
+     * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
-        String operationContext,
-        final Context context) {
-        return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
+    public Response<Void> hangupWithResponse(Context context) {
+        return callConnectionAsync.hangupWithResponseInternal(context).block();
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void terminateCall() {
+        return callConnectionAsync.terminateCall().block();
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> terminateCallWithResponse(Context context) {
+        return callConnectionAsync.terminateCallWithResponseInternal(context).block();
+    }
+
+    /**
+     * Transfer the call to a participant.
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number. Optional
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransferCallResponse transferToParticipantCall(CommunicationIdentifier targetParticipant,
+                                                          PhoneNumberIdentifier transfereeCallerId,
+                                                          String userToUserInformation, String operationContext) {
+        return callConnectionAsync.transferToParticipantCall(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext).block();
+    }
+
+    /**
+     * Transfer the call to a participant.
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number.
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TransferCallResponse> transferToParticipantCallWithResponse(
+        CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId,
+        String userToUserInformation, String operationContext, Context context) {
+        return callConnectionAsync.transferToParticipantCallWithResponseInternal(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext, context).block();
+    }
+
+    /**
+     * Get a specific participant.
+     *
+     * @param participant The participant.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AcsCallParticipant getParticipant(CommunicationIdentifier participant) {
+        return callConnectionAsync.getParticipant(participant).block();
+    }
+
+    /**
+     * Get a specific participant.
+     *
+     * @param participant The participant.
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AcsCallParticipant> getParticipantWithResponse(CommunicationIdentifier participant,
+                                                                         Context context) {
+        return callConnectionAsync.getParticipantWithResponseInternal(participant, context).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param participant Added participant.
-     * @param alternateCallerId Phone number to use when adding a phone number participant.
-     * @param operationContext Value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param participants The participants to invite.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantResult addParticipant(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
-        String operationContext) {
-        return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext).block();
+    public AddParticipantsResponse addParticipants(List<CommunicationIdentifier> participants,
+                                                   PhoneNumberIdentifier sourceCallerId, Integer invitationTimeoutInSeconds,
+                                                   String operationContext) {
+        return callConnectionAsync.addParticipants(participants, sourceCallerId,
+            invitationTimeoutInSeconds, operationContext).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param participant Added participant.
-     * @param alternateCallerId Phone number to use when adding a phone number participant.
-     * @param operationContext Value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @param context {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     *
+     * @param participants The participants to invite.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
+     * @param context A {@link Context} representing the request context.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddParticipantResult> addParticipantWithResponse(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
+    public Response<AddParticipantsResponse> addParticipantsWithResponse(List<CommunicationIdentifier> participants,
+                                                                         PhoneNumberIdentifier sourceCallerId,
+                                                                         Integer invitationTimeoutInSeconds,
+                                                                         String operationContext,
+                                                                         Context context) {
+        return callConnectionAsync.addParticipantsWithResponseInternal(participants, sourceCallerId,
+            invitationTimeoutInSeconds, operationContext, context).block();
+    }
+
+    /**
+     * Remove a list of participants from the call.
+     *
+     * @param participantsToRemove The identifier list of the participant to be removed.
+     * @param operationContext The operation context. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemoveParticipantsResponse removeParticipants(List<CommunicationIdentifier> participantsToRemove,
+                                                         String operationContext) {
+        return callConnectionAsync.removeParticipants(participantsToRemove, operationContext).block();
+    }
+
+    /**
+     * Remove a list of participant from the call.
+     *
+     * @param participantsToRemove The identifier list of the participant to be removed.
+     * @param operationContext The operation context. Optional
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemoveParticipantsResponse> removeParticipantsWithResponse(
+        List<CommunicationIdentifier> participantsToRemove,
         String operationContext,
-        final Context context) {
-        return callConnectionAsync
-            .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
-    }
-
-    /**
-     * Remove a participant from the call.
-     *
-     * @param participantId Participant id.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeParticipant(String participantId) {
-        callConnectionAsync.removeParticipant(participantId).block();
-    }
-
-    /**
-     * Remove a participant from the call.
-     *
-     * @param participantId Participant id.
-     * @param context {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful remove participant request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String participantId, final Context context) {
-        return callConnectionAsync.removeParticipantWithResponse(participantId, context).block();
+        Context context) {
+        return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove, operationContext,
+            context).block();
     }
 }

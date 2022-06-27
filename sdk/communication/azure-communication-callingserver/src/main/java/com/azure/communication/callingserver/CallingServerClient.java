@@ -3,41 +3,20 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 
-import java.io.OutputStream;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
-
 
 /**
  * Synchronous client that supports calling server operations.
  *
  * <p><strong>Instantiating a synchronous Calling Server Client</strong></p>
- *
- * <!-- src_embed com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;&#47;* add policies *&#47;&#41;
- *     .build&#40;&#41;;
- *
- * CallingServerClient callingServerClient = new CallingServerClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation -->
  *
  * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -52,191 +31,153 @@ public final class CallingServerClient {
     }
 
     /**
-     * Create a call connection request from source identity to targets identity.
+     * Get call connection properties.
      *
-     * @param source The source of the call.
+     * @param callConnectionId the call connection Id
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallConnection getCall(String callConnectionId) {
+        return new CallConnection(callingServerAsyncClient.getCall(callConnectionId).block());
+    }
+
+    /**
+     * Get call connection properties.
+     *
+     * @param callConnectionId the call connection Id
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallConnection> getCallWithResponse(String callConnectionId, Context context) {
+        return callingServerAsyncClient.getCallWithResponseInternal(callConnectionId, context)
+            .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
+    }
+
+    /**
+     * Create a call connection request from a source identity to a target identity.
+     *
+     * @param source The source property.
      * @param targets The targets of the call.
-     * @param createCallOptions The call Options.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param callbackUri The call back URI.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param subject The subject. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A CallConnection object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallConnection createCall(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
+                           String callbackUri, String sourceCallerId, String subject) {
+        return new CallConnection(callingServerAsyncClient.createCall(source, targets, callbackUri, sourceCallerId,
+            subject).block());
+    }
+
+    /**
+     * Create a call connection request from a source identity to a target identity.
+     *
+     * @param source The source property.
+     * @param targets The targets of the call.
+     * @param callbackUri The call back URI.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param subject The subject. Optional
+     * @param context The context to associate with this operation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
-     *
-     * <!-- src_embed com.azure.communication.callingserver.CallingServerClient.create.call.connection -->
-     * <pre>
-     * List&lt;CommunicationIdentifier&gt; targets = Arrays.asList&#40;firstCallee, secondCallee&#41;;
-     * List&lt;MediaType&gt; requestedMediaTypes = Arrays.asList&#40;MediaType.AUDIO, MediaType.VIDEO&#41;;
-     * List&lt;EventSubscriptionType&gt; requestedCallEvents = Arrays.asList&#40;
-     *     EventSubscriptionType.DTMF_RECEIVED,
-     *     EventSubscriptionType.PARTICIPANTS_UPDATED&#41;;
-     * CreateCallOptions createCallOptions = new CreateCallOptions&#40;
-     *     callbackUri,
-     *     requestedMediaTypes,
-     *     requestedCallEvents&#41;;
-     * CallConnection callConnection = callingServerClient.createCallConnection&#40;source, targets, createCallOptions&#41;;
-     * </pre>
-     * <!-- end com.azure.communication.callingserver.CallingServerClient.create.call.connection -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection createCallConnection(
-        CommunicationIdentifier source,
-        List<CommunicationIdentifier> targets,
-        CreateCallOptions createCallOptions) {
-        return callingServerAsyncClient.createCallConnectionInternal(source, targets, createCallOptions).block();
+    public Response<CallConnection> createCallWithResponse(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
+                                                 String callbackUri, String sourceCallerId, String subject,
+                                                 Context context) {
+        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, sourceCallerId,
+                subject, context)
+            .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
     /**
-     * Create a Call Connection Request from source identity to targets identity.
+     * Answer an incoming call
      *
-     * @param source The source of the call.
-     * @param targets The targets of the call.
-     * @param createCallOptions The call Options.
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param incomingCallContext The incoming call context.
+     * @param callbackUri The call back uri. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> createCallConnectionWithResponse(
-        CommunicationIdentifier source,
-        List<CommunicationIdentifier> targets,
-        CreateCallOptions createCallOptions,
-        final Context context) {
-        return callingServerAsyncClient
-            .createCallConnectionWithResponseInternal(source, targets, createCallOptions, context).block();
+    public CallConnection answerCall(String incomingCallContext, String callbackUri) {
+        return new CallConnection(callingServerAsyncClient.answerCall(incomingCallContext, callbackUri).block());
     }
 
     /**
-     * Join a call
+     * Create a call connection request from a source identity to a target identity.
      *
-     * @param serverCallId The server call id.
-     * @param source of Join Call request.
-     * @param joinCallOptions to Join Call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param incomingCallContext The incoming call context.
+     * @param callbackUri The call back uri. Optional
+     * @param context The context to associate with this operation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return CallConnection for a successful join request.
+     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection joinCall(
-        String serverCallId,
-        CommunicationIdentifier source,
-        JoinCallOptions joinCallOptions) {
-        return callingServerAsyncClient.joinInternal(serverCallId, source, joinCallOptions).block();
+    public Response<CallConnection> answerCallWithResponse(String incomingCallContext, String callbackUri,
+                                                           Context context) {
+        return callingServerAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, context)
+            .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
     /**
-     * Join a call
+     * Redirect a call
      *
-     * @param serverCallId The server call id.
-     * @param source of Join Call request.
-     * @param joinCallOptions to Join Call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param incomingCallContext The incoming call context.
+     * @param target The target identity.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @param context A {@link Context} representing the request context.
-     * @return Response for a successful join request.
+     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> joinCallWithResponse(
-        String serverCallId,
-        CommunicationIdentifier source,
-        JoinCallOptions joinCallOptions,
-        final Context context) {
-        return callingServerAsyncClient.joinWithResponseInternal(serverCallId, source, joinCallOptions, context).block();
+    public Void redirectCall(String incomingCallContext, CommunicationIdentifier target) {
+        return callingServerAsyncClient.redirectCall(incomingCallContext, target).block();
     }
 
     /**
-     * Get CallConnection object
+     * Redirect a call
      *
-     * @param callConnectionId The call connection id.
-     * @return CallConnection.
+     * @param incomingCallContext The incoming call context.
+     * @param target The target identity.
+     * @param context The context to associate with this operation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
      */
-    public CallConnection getCallConnection(String callConnectionId) {
-        return callingServerAsyncClient.getCallConnectionInternal(callConnectionId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, Context context) {
+        return callingServerAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
     }
 
     /**
-     * Get ServerCall object
+     * Reject a call
      *
-     * @param serverCallId Server call id.
-     * @return ServerCall
+     * @param incomingCallContext The incoming call context.
+     * @param callRejectReason The reason why call is rejected. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
      */
-    public ServerCall initializeServerCall(String serverCallId) {
-        return callingServerAsyncClient.initializeServerCallInternal(serverCallId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void rejectCall(String incomingCallContext, String callRejectReason) {
+        return callingServerAsyncClient.rejectCall(incomingCallContext, callRejectReason).block();
     }
 
     /**
-     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
-     * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
-     * @param sourceEndpoint - ACS URL where the content is located.
-     * @param destinationStream - A stream where to write the downloaded content.
-     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
-     *                  the whole content will be downloaded.
+     * Reject a call
+     *
+     * @param incomingCallContext The incoming call context.
+     * @param callRejectReason The reason why call is rejected. Optional
+     * @param context The context to associate with this operation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
-        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
-    }
-
-    /**
-     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
-     * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
-     * @param sourceEndpoint - ACS URL where the content is located.
-     * @param destinationStream - A stream where to write the downloaded content.
-     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
-     *                  the whole content will be downloaded.
-     * @param context A {@link Context} representing the request context.
-     * @return Response containing the http response information from the download.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceEndpoint,
-                                                 OutputStream destinationStream,
-                                                 HttpRange httpRange,
-                                                 final Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callingServerAsyncClient
-            .downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
-            .block();
-    }
-
-    /**
-     * Download the content located in {@code endpoint} into a file marked by {@code path}.
-     * This download will be done using parallel workers.
-     * @param sourceEndpoint - ACS URL where the content is located.
-     * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint,
-                           Path destinationPath,
-                           ParallelDownloadOptions parallelDownloadOptions,
-                           boolean overwrite) {
-        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
-    }
-
-    /**
-     * Download the content located in {@code endpoint} into a file marked by {@code path}.
-     * This download will be done using parallel workers.
-     * @param sourceEndpoint - ACS URL where the content is located.
-     * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
-     * @param context A {@link Context} representing the request context.
-     * @return Response containing the http response information from the download.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceEndpoint,
-                                                 Path destinationPath,
-                                                 ParallelDownloadOptions parallelDownloadOptions,
-                                                 boolean overwrite,
-                                                 final Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
-            parallelDownloadOptions, overwrite, context).block();
+    public Response<Void> rejectCallWithResponse(String incomingCallContext, String callRejectReason,
+                                                 Context context) {
+        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
     }
 }
-
-

@@ -3,294 +3,366 @@
 
 package com.azure.communication.callingserver;
 
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
+
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.AcsCallParticipantConverter;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callingserver.implementation.models.GetParticipantRequestInternal;
+import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
+import com.azure.communication.callingserver.implementation.models.CreateCallResponseInternal;
+import com.azure.communication.callingserver.implementation.models.AnswerCallResponseInternal;
+import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
+import com.azure.communication.callingserver.implementation.models.GetCallResponseInternal;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
-import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
-import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
-import com.azure.communication.callingserver.implementation.converters.AddParticipantRequestConverter;
-import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
-import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.AcsCallParticipant;
+import com.azure.communication.callingserver.models.AddParticipantsResponse;
+import com.azure.communication.callingserver.models.TransferCallResponse;
+import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
+import com.azure.communication.callingserver.models.CallConnectionState;
+
+
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
-
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Asynchronous client that supports call connection operations.
  */
 public final class CallConnectionAsync {
-
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
-    private final ClientLogger logger = new ClientLogger(CallConnectionAsync.class);
+    private CommunicationIdentifier source;
+    private PhoneNumberIdentifier alternateCallerId;
+    private List<CommunicationIdentifier> targets;
+    private CallConnectionState callConnectionState;
+    private String subject;
+    private String callbackUri;
+    private final ClientLogger logger;
 
-    CallConnectionAsync(String callConnectionId, CallConnectionsImpl callConnectionInternal) {
-        this.callConnectionId = callConnectionId;
+    CallConnectionAsync(GetCallResponseInternal getCallResponseInternal, CallConnectionsImpl callConnectionInternal) {
+        this.callConnectionId = getCallResponseInternal.getCallConnectionId();
+        this.source = CommunicationIdentifierConverter.convert(getCallResponseInternal.getSource());
+        this.alternateCallerId = PhoneNumberIdentifierConverter.convert(getCallResponseInternal.getAlternateCallerId());
+        this.targets = null;
+        getCallResponseInternal.getTargets().forEach(target -> this.targets.add(CommunicationIdentifierConverter.convert(target)));
+        this.callConnectionState = CallConnectionState.fromString(getCallResponseInternal.getCallConnectionState().toString());
+        this.subject = getCallResponseInternal.getSubject();
+        this.callbackUri = getCallResponseInternal.getCallbackUri();
         this.callConnectionInternal = callConnectionInternal;
+        this.logger = new ClientLogger(CallConnectionAsync.class);
+    }
+
+    CallConnectionAsync(CreateCallResponseInternal callResponseInternal, CallConnectionsImpl callConnectionInternal) {
+        this.callConnectionId = callResponseInternal.getCallConnectionId();
+        this.callConnectionInternal = callConnectionInternal;
+        this.logger = new ClientLogger(CallConnectionAsync.class);
+    }
+
+    CallConnectionAsync(AnswerCallResponseInternal answerCallResponse, CallConnectionsImpl callConnectionInternal) {
+        this.callConnectionId = answerCallResponse.getCallConnectionId();
+        this.callConnectionInternal = callConnectionInternal;
+        this.logger = new ClientLogger(CallConnectionAsync.class);
     }
 
     /**
-     * Get the call connection id property.
+     * Get the source property.
      *
-     * @return Call connection id value.
+     * @return source value.
+     */
+    public CommunicationIdentifier getSource() {
+        return source;
+    }
+
+    /**
+     * Set the source property.
+     *
+     * @param source The source.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setSource(CommunicationIdentifier source) {
+        this.source = source;
+        return this;
+    }
+
+    /**
+     * Get the targets property.
+     *
+     * @return list of targets
+     */
+    public List<CommunicationIdentifier> getTargets() {
+        return targets;
+    }
+
+    /**
+     * Set the targets property.
+     *
+     * @param targets The targets.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setTargets(List<CommunicationIdentifier> targets) {
+        this.targets = targets;
+        return this;
+    }
+
+    /**
+     * Get the alternateCallerId property.
+     *
+     * @return alternateCallerId value.
+     */
+    public PhoneNumberIdentifier getAlternateCallerId() {
+        return alternateCallerId;
+    }
+
+    /**
+     * Set the alternateCallerId property.
+     *
+     * @param alternateCallerId The alternateCallerId.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setAlternateCallerId(PhoneNumberIdentifier alternateCallerId) {
+        this.alternateCallerId = alternateCallerId;
+        return this;
+    }
+
+    /**
+     * Get the callConnectionState property.
+     *
+     * @return callConnectionState value.
+     */
+    public CallConnectionState getCallConnectionState() {
+        return callConnectionState;
+    }
+
+    /**
+     * Set the callConnectionState property.
+     *
+     * @param callConnectionState The callConnectionState.
+     * @return CallConnectionAsync itself.
+     */
+    public CallConnectionAsync setCallConnectionState(CallConnectionState callConnectionState) {
+        this.callConnectionState = callConnectionState;
+        return this;
+    }
+
+    /**
+     * Get the subject property.
+     *
+     * @return subject value.
+     */
+    public String getSubject() {
+        return subject;
+    }
+
+    /**
+     * Set the subject property.
+     *
+     * @param subject The subject.
+     * @return subject value.
+     */
+    public CallConnectionAsync setSubject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property.
+     *
+     * @return callbackUri value.
+     */
+    public String getCallbackUri() {
+        return callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property.
+     *
+     * @param callbackUri The callbackUri.
+     * @return callbackUri value.
+     */
+    public CallConnectionAsync setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the callConnectionId property, which is the call connection id.
+     *
+     * @return callConnectionId value.
      */
     public String getCallConnectionId() {
         return callConnectionId;
     }
 
     /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudio(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        return playAudioInternal(audioFileUri, loop, audioFileId, callbackUri, operationContext);
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param playAudioOptions Options for play audio.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
-        return playAudioInternal(audioFileUri, playAudioOptions);
-
-    }
-
-    Mono<PlayAudioResult> playAudioInternal(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setLoop(loop)
-                    .setAudioFileId(audioFileId)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
-            return playAudioInternal(playAudioRequest);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<PlayAudioResult> playAudioInternal(String audioFileUri, PlayAudioOptions playAudioOptions) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri);
-            if (playAudioOptions != null) {
-                request
-                    .setLoop(playAudioOptions.isLoop())
-                    .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri());
-            }
-            return playAudioInternal(request);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<PlayAudioResult> playAudioInternal(PlayAudioRequest playAudioRequest) {
-        try {
-            return callConnectionInternal.playAudioAsync(callConnectionId, playAudioRequest)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param playAudioOptions Options for play audio.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResult>> playAudioWithResponse(
-        String audioFileUri,
-        PlayAudioOptions playAudioOptions) {
-        return playAudioWithResponseInternal(audioFileUri, playAudioOptions, null);
-    }
-
-    Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        String audioFileUri,
-        PlayAudioOptions playAudioOptions,
-        Context context) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri);
-            if (playAudioOptions != null) {
-                request
-                    .setLoop(playAudioOptions.isLoop())
-                    .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri());
-            }
-            return playAudioWithResponseInternal(request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        PlayAudioRequest playAudioRequest,
-        Context context) {
-        try {
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return callConnectionInternal
-                    .playAudioWithResponseAsync(callConnectionId, playAudioRequest, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                    .map(response ->
-                        new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
-            });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Hangup a call.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangup() {
-        try {
-            return callConnectionInternal.hangupCallAsync(callConnectionId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return hangupWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
      * Hangup a call.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupWithResponse() {
-        return hangupWithResponse(null);
+        return withContext(this::hangupWithResponseInternal);
     }
 
-    Mono<Response<Void>> hangupWithResponse(Context context) {
+    Mono<Response<Void>> hangupWithResponseInternal(Context context) {
         try {
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
-            });
+            context = context == null ? Context.NONE : context;
+
+            return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Cancel all media operations in the call.
+     * Terminates the conversation for all participants in the call.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload of the cancel all media operations.
+     * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperations(String operationContext) {
+    public Mono<Void> terminateCall() {
+        return terminateCallWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> terminateCallWithResponse() {
+        return withContext(this::terminateCallWithResponseInternal);
+    }
+
+    Mono<Response<Void>> terminateCallWithResponseInternal(Context context) {
         try {
-            CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
-            request.setOperationContext(operationContext);
-            return callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId, request)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(CancelAllMediaOperationsResultConverter.convert(result)));
+            context = context == null ? Context.NONE : context;
+
+            return callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Cancel all media operations in the call.
+     * Transfer the call to a participant.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number. Optional
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload of the cancel all media operations.
+     * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext) {
-        return cancelAllMediaOperationsWithResponse(operationContext, null);
+    public Mono<TransferCallResponse> transferToParticipantCall(CommunicationIdentifier targetParticipant,
+                                                                PhoneNumberIdentifier transfereeCallerId,
+                                                                String userToUserInformation, String operationContext) {
+        return transferToParticipantCallWithResponse(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(
-        String operationContext,
-        Context context) {
+    /**
+     * Transfer the call to a participant.
+     *
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number. Optional
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TransferCallResponse>> transferToParticipantCallWithResponse(
+        CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId, String userToUserInformation,
+        String operationContext) {
+        return withContext(context -> transferToParticipantCallWithResponseInternal(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext, context));
+    }
+
+    Mono<Response<TransferCallResponse>> transferToParticipantCallWithResponseInternal(
+        CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId, String userToUserInformation,
+        String operationContext, Context context) {
         try {
-            CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
-            request.setOperationContext(operationContext);
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return callConnectionInternal
-                    .cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                    .map(response ->
-                        new SimpleResponse<>(response, CancelAllMediaOperationsResultConverter.convert(response.getValue())));
-            });
+            context = context == null ? Context.NONE : context;
+
+            TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transfereeCallerId))
+                .setUserToUserInformation(userToUserInformation)
+                .setOperationContext(operationContext);
+
+            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
+                .map(response ->
+                    new SimpleResponse<>(response, new TransferCallResponse(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get a specific participant.
+     *
+     * @param participant The participant.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AcsCallParticipant> getParticipant(CommunicationIdentifier participant) {
+        return getParticipantWithResponse(participant).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get a specific participant.
+     *
+     * @param participant The participant.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AcsCallParticipant>> getParticipantWithResponse(CommunicationIdentifier participant) {
+        return withContext(context -> getParticipantWithResponseInternal(participant, context));
+    }
+
+    Mono<Response<AcsCallParticipant>> getParticipantWithResponseInternal(CommunicationIdentifier participant,
+                                                                          Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            GetParticipantRequestInternal getParticipantRequestInternal = new GetParticipantRequestInternal()
+                .setParticipant(CommunicationIdentifierConverter.convert(participant));
+
+            return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId,
+                    getParticipantRequestInternal, context).map(response ->
+                    new SimpleResponse<>(response, AcsCallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -299,115 +371,110 @@ public final class CallConnectionAsync {
     /**
      * Add a participant to the call.
      *
-     * @param participant Added participant.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param participants The participants to invite.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddParticipantResult> addParticipant(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
-        String operationContext) {
-        try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            AddParticipantRequest request = AddParticipantRequestConverter.convert(participant,
-                alternateCallerId,
-                operationContext,
-                null);
-            return callConnectionInternal.addParticipantAsync(callConnectionId, request)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(new AddParticipantResult(result.getParticipantId())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<AddParticipantsResponse> addParticipants(List<CommunicationIdentifier> participants,
+                                                         PhoneNumberIdentifier sourceCallerId,
+                                                         Integer invitationTimeoutInSeconds,
+                                                         String operationContext) {
+        return addParticipantsWithResponse(participants, sourceCallerId, invitationTimeoutInSeconds,
+            operationContext).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param participant Added participant.
-     * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param participants The participants to invite.
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
+    public Mono<Response<AddParticipantsResponse>> addParticipantsWithResponse(
+        List<CommunicationIdentifier> participants, PhoneNumberIdentifier sourceCallerId,
+        Integer invitationTimeoutInSeconds, String operationContext) {
+        return withContext(context -> addParticipantsWithResponseInternal(participants, sourceCallerId,
+            invitationTimeoutInSeconds, operationContext, context));
+    }
+
+    Mono<Response<AddParticipantsResponse>> addParticipantsWithResponseInternal(List<CommunicationIdentifier> participants,
+                                                                                PhoneNumberIdentifier sourceCallerId,
+                                                                                Integer invitationTimeoutInSeconds,
+                                                                                String operationContext,
+                                                                                Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            List<CommunicationIdentifierModel> participantModels = participants
+                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+
+            AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
+                .setParticipantsToAdd(participantModels)
+                .setSourceCallerId(PhoneNumberIdentifierConverter.convert(sourceCallerId))
+                .setInvitationTimeoutInSeconds(invitationTimeoutInSeconds)
+                .setOperationContext(operationContext);
+
+            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context).map(
+                response -> new SimpleResponse<>(response, new AddParticipantsResponse(response.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove a list of participants from the call.
+     *
+     * @param participantsToRemove The identifier list of the participant to be removed.
+     * @param operationContext The operation context. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RemoveParticipantsResponse> removeParticipants(List<CommunicationIdentifier> participantsToRemove,
+                                                               String operationContext) {
+        return removeParticipantsWithResponse(participantsToRemove, operationContext).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Remove a list of participants from the call.
+     *
+     * @param participantsToRemove The identifier list of the participant to be removed.
+     * @param operationContext The operation context. Optional
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponse(
+        List<CommunicationIdentifier> participantsToRemove,
         String operationContext) {
-        return addParticipantWithResponse(participant, alternateCallerId, operationContext, null);
+        return withContext(context -> removeParticipantsWithResponseInternal(participantsToRemove, operationContext,
+            context));
     }
 
-    Mono<Response<AddParticipantResult>> addParticipantWithResponse(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
-        String operationContext,
-        Context context) {
+    Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponseInternal(
+        List<CommunicationIdentifier> participantsToRemove, String operationContext, Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            AddParticipantRequest request =
-                AddParticipantRequestConverter
-                    .convert(participant, alternateCallerId, operationContext, null);
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return callConnectionInternal
-                    .addParticipantWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                    .map(response ->
-                        new SimpleResponse<>(response, new AddParticipantResult(response.getValue().getParticipantId())));
-            });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
+            context = context == null ? Context.NONE : context;
+            List<CommunicationIdentifierModel> participantModels = participantsToRemove
+                .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-    /**
-     * Remove a participant from the call.
-     *
-     * @param participantId Participant id.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful remove participant request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeParticipant(String participantId) {
-        try {
-            return callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
+            RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
+                .setParticipantsToRemove(participantModels)
+                .setOperationContext(operationContext);
 
-    /**
-     * Remove a participant from the call.
-     *
-     * @param participantId Participant id.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful remove participant request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeParticipantWithResponse(String participantId) {
-        return removeParticipantWithResponse(participantId, null);
-    }
-
-    Mono<Response<Void>> removeParticipantWithResponse(String participantId, Context context) {
-        try {
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return callConnectionInternal
-                    .removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
-            });
+            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context).map(
+                response -> new SimpleResponse<>(response, new RemoveParticipantsResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

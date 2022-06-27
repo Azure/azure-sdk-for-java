@@ -31,9 +31,9 @@ To update generated files for calling service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-08-30-preview
+tag: package-2022-04-07-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3893616381e816729ef9cdd768e87fb2845e189d/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/juntuchen-msft/azure-rest-api-specs/juntuchen/ServerCalling-v3/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -49,53 +49,50 @@ context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:
-    from: CallRecordingStateChangeEvent
-    to: CallRecordingStateChangeEventInternal    
+    from: CreateCallResponse
+    to: CreateCallResponseInternal
 - rename-model:
-    from: AddParticipantResultEvent
-    to: AddParticipantResultEventInternal    
+    from: AddParticipantsRequest
+    to: AddParticipantsRequestInternal    
 - rename-model:
-    from: PlayAudioResultEvent
-    to: PlayAudioResultEventInternal   
+    from: AddParticipantsResponse
+    to: AddParticipantsResponseInternal
 - rename-model:
-    from: ToneReceivedEvent
-    to: ToneReceivedEventInternal      
+    from: AnswerCallResult
+    to: AnswerCallResultInternal
 - rename-model:
-    from: CallConnectionStateChangedEvent
-    to: CallConnectionStateChangedEventInternal
+    from: AnswerCallResponse
+    to: AnswerCallResponseInternal   
 - rename-model:
-    from: ParticipantsUpdatedEvent
-    to: ParticipantsUpdatedEventInternal
+    from: GetCallResponse
+    to: GetCallResponseInternal      
 - rename-model:
-    from: CallParticipant
-    to: CallParticipantInternal
+    from: GetParticipantRequest
+    to: GetParticipantRequestInternal
 - rename-model:
-    from: JoinCallResult
-    to: JoinCallResultInternal
+    from: RemoveParticipantsRequest
+    to: RemoveParticipantsRequestInternal
 - rename-model:
-    from: PlayAudioResult
-    to: PlayAudioResultInternal
+    from: RemoveParticipantsResponse
+    to: RemoveParticipantsResponseInternal
 - rename-model:
-    from: CallRecordingProperties
-    to: CallRecordingPropertiesInternal
+    from: TransferCallResponse
+    to: TransferCallResponseInternal
 - rename-model:
-    from: StartCallRecordingResult
-    to: StartCallRecordingResultInternal
+    from: TransferToParticipantRequest
+    to: TransferToParticipantRequestInternal
 - rename-model:
-    from: CreateCallResult
-    to: CreateCallResultInternal
+    from: CreateCallRequest
+    to: CreateCallRequestInternal
 - rename-model:
-    from: AddParticipantResult
-    to: AddParticipantResultInternal    
+    from: AnswerCallRequest
+    to: AnswerCallRequestInternal
 - rename-model:
-    from: CancelAllMediaOperationsResult
-    to: CancelAllMediaOperationsResultInternal
+    from: RedirectCallRequest
+    to: RedirectCallRequestInternal
 - rename-model:
-    from: ResultInfo
-    to: ResultInfoInternal
-- rename-model:
-    from: ToneInfo
-    to: ToneInfoInternal                                            
+    from: RejectCallRequest
+    to: RejectCallRequestInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannel

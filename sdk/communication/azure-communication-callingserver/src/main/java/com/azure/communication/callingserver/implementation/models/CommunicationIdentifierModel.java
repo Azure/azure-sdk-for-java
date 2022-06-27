@@ -7,15 +7,11 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
- * communication user. This model must be interpreted as a union: Apart from rawId, at most one further property may be
- * set.
- */
+/** The CommunicationIdentifierModel model. */
 @Fluent
 public final class CommunicationIdentifierModel {
     /*
-     * Raw Id of the identifier. Optional in requests, required in responses.
+     * Full ID of the identifier.
      */
     @JsonProperty(value = "rawId")
     private String rawId;
@@ -39,7 +35,7 @@ public final class CommunicationIdentifierModel {
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
     /**
-     * Get the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
+     * Get the rawId property: Full ID of the identifier.
      *
      * @return the rawId value.
      */
@@ -48,7 +44,7 @@ public final class CommunicationIdentifierModel {
     }
 
     /**
-     * Set the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
+     * Set the rawId property: Full ID of the identifier.
      *
      * @param rawId the rawId value to set.
      * @return the CommunicationIdentifierModel object itself.

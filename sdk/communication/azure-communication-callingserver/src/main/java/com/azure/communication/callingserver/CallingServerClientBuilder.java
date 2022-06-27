@@ -50,25 +50,8 @@ import java.util.Objects;
  * Client builder that creates CallingServerAsyncClient and CallingServerClient.
  *
  * <p><strong>Instantiating synchronous and asynchronous Calling Server Clients</strong></p>
- *
- * <!-- src_embed com.azure.communication.callingserver.CallingServerClientBuilder.pipeline.instantiation -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;&#47;* add policies *&#47;&#41;
- *     .build&#40;&#41;;
- *
- * CallingServerClient callingServerClient = new CallingServerClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .buildClient&#40;&#41;;
- *
- * CallingServerAsyncClient callingServerAsyncClient = new CallingServerClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .connectionString&#40;connectionString&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.communication.callingserver.CallingServerClientBuilder.pipeline.instantiation -->
  */
+
 @ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
 public final class CallingServerClientBuilder implements
     AzureKeyCredentialTrait<CallingServerClientBuilder>,
@@ -362,10 +345,6 @@ public final class CallingServerClientBuilder implements
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
-        }
-
-        if (pipeline == null) {
-            Objects.requireNonNull(httpClient);
         }
 
         HttpPipeline builderPipeline = pipeline;
