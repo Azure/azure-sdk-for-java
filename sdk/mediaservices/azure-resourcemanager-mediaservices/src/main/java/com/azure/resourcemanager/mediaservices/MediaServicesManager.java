@@ -33,8 +33,8 @@ import com.azure.resourcemanager.mediaservices.implementation.JobsImpl;
 import com.azure.resourcemanager.mediaservices.implementation.LiveEventsImpl;
 import com.azure.resourcemanager.mediaservices.implementation.LiveOutputsImpl;
 import com.azure.resourcemanager.mediaservices.implementation.LocationsImpl;
-import com.azure.resourcemanager.mediaservices.implementation.MediaServiceOperationResultsImpl;
-import com.azure.resourcemanager.mediaservices.implementation.MediaServiceOperationStatusesImpl;
+import com.azure.resourcemanager.mediaservices.implementation.MediaServicesOperationResultsImpl;
+import com.azure.resourcemanager.mediaservices.implementation.MediaServicesOperationStatusesImpl;
 import com.azure.resourcemanager.mediaservices.implementation.MediaservicesImpl;
 import com.azure.resourcemanager.mediaservices.implementation.OperationResultsImpl;
 import com.azure.resourcemanager.mediaservices.implementation.OperationStatusesImpl;
@@ -54,8 +54,8 @@ import com.azure.resourcemanager.mediaservices.models.Jobs;
 import com.azure.resourcemanager.mediaservices.models.LiveEvents;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputs;
 import com.azure.resourcemanager.mediaservices.models.Locations;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationResults;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationStatuses;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResults;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationStatuses;
 import com.azure.resourcemanager.mediaservices.models.Mediaservices;
 import com.azure.resourcemanager.mediaservices.models.OperationResults;
 import com.azure.resourcemanager.mediaservices.models.OperationStatuses;
@@ -88,9 +88,9 @@ public final class MediaServicesManager {
 
     private Locations locations;
 
-    private MediaServiceOperationStatuses mediaServiceOperationStatuses;
+    private MediaServicesOperationStatuses mediaServicesOperationStatuses;
 
-    private MediaServiceOperationResults mediaServiceOperationResults;
+    private MediaServicesOperationResults mediaServicesOperationResults;
 
     private Assets assets;
 
@@ -283,7 +283,7 @@ public final class MediaServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mediaservices")
                 .append("/")
-                .append("2.1.0-beta.1");
+                .append("2.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -414,29 +414,29 @@ public final class MediaServicesManager {
     }
 
     /**
-     * Gets the resource collection API of MediaServiceOperationStatuses.
+     * Gets the resource collection API of MediaServicesOperationStatuses.
      *
-     * @return Resource collection API of MediaServiceOperationStatuses.
+     * @return Resource collection API of MediaServicesOperationStatuses.
      */
-    public MediaServiceOperationStatuses mediaServiceOperationStatuses() {
-        if (this.mediaServiceOperationStatuses == null) {
-            this.mediaServiceOperationStatuses =
-                new MediaServiceOperationStatusesImpl(clientObject.getMediaServiceOperationStatuses(), this);
+    public MediaServicesOperationStatuses mediaServicesOperationStatuses() {
+        if (this.mediaServicesOperationStatuses == null) {
+            this.mediaServicesOperationStatuses =
+                new MediaServicesOperationStatusesImpl(clientObject.getMediaServicesOperationStatuses(), this);
         }
-        return mediaServiceOperationStatuses;
+        return mediaServicesOperationStatuses;
     }
 
     /**
-     * Gets the resource collection API of MediaServiceOperationResults.
+     * Gets the resource collection API of MediaServicesOperationResults.
      *
-     * @return Resource collection API of MediaServiceOperationResults.
+     * @return Resource collection API of MediaServicesOperationResults.
      */
-    public MediaServiceOperationResults mediaServiceOperationResults() {
-        if (this.mediaServiceOperationResults == null) {
-            this.mediaServiceOperationResults =
-                new MediaServiceOperationResultsImpl(clientObject.getMediaServiceOperationResults(), this);
+    public MediaServicesOperationResults mediaServicesOperationResults() {
+        if (this.mediaServicesOperationResults == null) {
+            this.mediaServicesOperationResults =
+                new MediaServicesOperationResultsImpl(clientObject.getMediaServicesOperationResults(), this);
         }
-        return mediaServiceOperationResults;
+        return mediaServicesOperationResults;
     }
 
     /**

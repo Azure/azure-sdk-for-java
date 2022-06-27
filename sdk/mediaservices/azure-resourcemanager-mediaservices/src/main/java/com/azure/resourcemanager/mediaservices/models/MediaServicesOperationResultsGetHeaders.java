@@ -7,9 +7,9 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaServiceOperationResultsGetHeaders model. */
+/** The MediaServicesOperationResultsGetHeaders model. */
 @Fluent
-public final class MediaServiceOperationResultsGetHeaders {
+public final class MediaServicesOperationResultsGetHeaders {
     /*
      * The Retry-After property.
      */
@@ -41,9 +41,9 @@ public final class MediaServiceOperationResultsGetHeaders {
      * Set the retryAfter property: The Retry-After property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the MediaServiceOperationResultsGetHeaders object itself.
+     * @return the MediaServicesOperationResultsGetHeaders object itself.
      */
-    public MediaServiceOperationResultsGetHeaders withRetryAfter(Integer retryAfter) {
+    public MediaServicesOperationResultsGetHeaders withRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -61,9 +61,9 @@ public final class MediaServiceOperationResultsGetHeaders {
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
      *
      * @param azureAsyncOperation the azureAsyncOperation value to set.
-     * @return the MediaServiceOperationResultsGetHeaders object itself.
+     * @return the MediaServicesOperationResultsGetHeaders object itself.
      */
-    public MediaServiceOperationResultsGetHeaders withAzureAsyncOperation(String azureAsyncOperation) {
+    public MediaServicesOperationResultsGetHeaders withAzureAsyncOperation(String azureAsyncOperation) {
         this.azureAsyncOperation = azureAsyncOperation;
         return this;
     }
@@ -81,9 +81,9 @@ public final class MediaServiceOperationResultsGetHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the MediaServiceOperationResultsGetHeaders object itself.
+     * @return the MediaServicesOperationResultsGetHeaders object itself.
      */
-    public MediaServiceOperationResultsGetHeaders withLocation(String location) {
+    public MediaServicesOperationResultsGetHeaders withLocation(String location) {
         this.location = location;
         return this;
     }

@@ -8,20 +8,20 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationStatusesClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServicesOperationStatusesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceOperationStatusInner;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationStatus;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationStatuses;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationStatuses;
 
-public final class MediaServiceOperationStatusesImpl implements MediaServiceOperationStatuses {
-    private static final ClientLogger LOGGER = new ClientLogger(MediaServiceOperationStatusesImpl.class);
+public final class MediaServicesOperationStatusesImpl implements MediaServicesOperationStatuses {
+    private static final ClientLogger LOGGER = new ClientLogger(MediaServicesOperationStatusesImpl.class);
 
-    private final MediaServiceOperationStatusesClient innerClient;
+    private final MediaServicesOperationStatusesClient innerClient;
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public MediaServiceOperationStatusesImpl(
-        MediaServiceOperationStatusesClient innerClient,
+    public MediaServicesOperationStatusesImpl(
+        MediaServicesOperationStatusesClient innerClient,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -51,7 +51,7 @@ public final class MediaServiceOperationStatusesImpl implements MediaServiceOper
         }
     }
 
-    private MediaServiceOperationStatusesClient serviceClient() {
+    private MediaServicesOperationStatusesClient serviceClient() {
         return this.innerClient;
     }
 
