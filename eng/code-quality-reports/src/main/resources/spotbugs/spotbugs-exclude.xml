@@ -1049,7 +1049,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
-    <Field name="durationInMicroSec"/>
+    <Field name="durationInMilliSecs"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
