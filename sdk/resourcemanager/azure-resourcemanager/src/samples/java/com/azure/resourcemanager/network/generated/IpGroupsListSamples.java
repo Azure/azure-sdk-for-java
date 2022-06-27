@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IpGroups List. */
 public final class IpGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/IpGroupsListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/IpGroupsListBySubscription.json
      */
     /**
      * Sample code: List_IpGroups.

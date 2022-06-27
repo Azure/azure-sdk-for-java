@@ -11,7 +11,6 @@ import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.spring.cloud.service.implementation.AzureHttpClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.core.http.TestHttpClient;
-import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import java.util.List;
@@ -32,27 +31,6 @@ class CertificateClientBuilderFactoryTests extends
 
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
-    @Test
-    void testServiceVersionConfigured() {
-        AzureKeyVaultCertificateTestProperties properties = new AzureKeyVaultCertificateTestProperties();
-        properties.setServiceVersion(CertificateServiceVersion.V7_0);
-
-        final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
-        final CertificateClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).serviceVersion(CertificateServiceVersion.V7_0);
-    }
-
-    @Test
-    void testEndpointConfigured() {
-        AzureKeyVaultCertificateTestProperties properties = new AzureKeyVaultCertificateTestProperties();
-        properties.setEndpoint(ENDPOINT);
-
-        final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
-        final CertificateClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).vaultUrl(ENDPOINT);
-    }
-
-
     @Override
     protected AzureKeyVaultCertificateTestProperties createMinimalServiceProperties() {
         return new AzureKeyVaultCertificateTestProperties();
@@ -70,6 +48,18 @@ class CertificateClientBuilderFactoryTests extends
     }
 
     @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureKeyVaultCertificateTestProperties properties = new AzureKeyVaultCertificateTestProperties();
+        properties.setServiceVersion(CertificateServiceVersion.V7_0);
+        properties.setEndpoint(ENDPOINT);
+
+        final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
+        final CertificateClientBuilder builder = factoryExt.build();
+        verify(builder, times(1)).serviceVersion(CertificateServiceVersion.V7_0);
+        verify(builder, times(1)).vaultUrl(ENDPOINT);
+    }
+
+    @Override
     protected void verifyCredentialCalled(CertificateClientBuilder builder,
                                           Class<? extends TokenCredential> tokenCredentialClass,
                                           VerificationMode mode) {
@@ -78,8 +68,8 @@ class CertificateClientBuilderFactoryTests extends
 
     @Override
     protected void verifyRetryOptionsCalled(CertificateClientBuilder builder,
-                                                      AzureKeyVaultCertificateTestProperties properties,
-                                                      VerificationMode mode) {
+                                            AzureKeyVaultCertificateTestProperties properties,
+                                            VerificationMode mode) {
         // TODO (xiada) change this when the CertificateClientBuilder support RetryOptions
         verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }

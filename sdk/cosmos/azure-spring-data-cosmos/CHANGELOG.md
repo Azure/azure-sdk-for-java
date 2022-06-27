@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Performance improvement for case insensitive queries - See [PR 29597](https://github.com/Azure/azure-sdk-for-java/pull/29597) and [PR 29644](https://github.com/Azure/azure-sdk-for-java/pull/29644)
 
 ### 3.22.0 (2022-06-08)
 #### Features Added

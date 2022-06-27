@@ -399,7 +399,6 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val result = new ArrayBuffer[PartitionMetadata]
     orderedRanges
       .foreach(range => {
-        logInfo(s"merging range $range")
         val initialStartTokensIndex = startTokensIndex
         val initialLatestTokensIndex = latestTokensIndex
         while (startTokensIndex < startTokens.length &&

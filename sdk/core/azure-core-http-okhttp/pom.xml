@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
-      <version>4.9.2</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+      <version>4.10.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using OkHttp -->
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -129,7 +129,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -144,7 +144,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.squareup.okhttp3:okhttp:[4.9.2]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okhttp3:okhttp:[4.10.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

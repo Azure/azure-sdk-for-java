@@ -3,7 +3,7 @@ trigger: none
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      Clouds: 'Public'
+      SupportedClouds: 'Public,UsGov,China'
       TestResourceDirectories:
         - spring/spring-cloud-azure-test-eventhubs-binder
         - spring/spring-cloud-azure-test-servicebus-binder

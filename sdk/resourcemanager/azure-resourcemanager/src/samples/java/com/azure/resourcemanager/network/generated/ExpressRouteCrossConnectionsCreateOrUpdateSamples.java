@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
 /** Samples for ExpressRouteCrossConnections CreateOrUpdate. */
 public final class ExpressRouteCrossConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCrossConnectionUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCrossConnectionUpdate.json
      */
     /**
      * Sample code: UpdateExpressRouteCrossConnection.
