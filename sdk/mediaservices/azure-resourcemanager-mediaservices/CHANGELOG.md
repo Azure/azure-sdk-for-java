@@ -6,21 +6,7 @@
 
 ### Breaking Changes
 
-* `models.TracksUpdateHeaders` was removed
-
-* `models.TracksUpdateResponse` was removed
-
-* `models.TracksCreateOrUpdateResponse` was removed
-
-* `models.TracksDeleteHeaders` was removed
-
-* `models.TracksUpdateTrackDataHeaders` was removed
-
-* `models.TracksCreateOrUpdateHeaders` was removed
-
-* `models.TracksDeleteResponse` was removed
-
-* `models.TracksUpdateTrackDataResponse` was removed
+* Removed unused classes
 
 ### Features Added
 
