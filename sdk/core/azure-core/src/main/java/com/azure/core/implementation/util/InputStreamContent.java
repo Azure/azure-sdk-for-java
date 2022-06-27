@@ -126,11 +126,11 @@ public final class InputStreamContent extends BinaryDataContent {
         InputStream inputStream = this.content.get();
         if (canMarkReset(inputStream, length)) {
             return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
-        } else {
-            return Mono.just(inputStream)
-                .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
-                .map(ignore -> readAndBuffer(inputStream, length));
         }
+
+        return Mono.just(inputStream)
+            .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
+            .map(is -> readAndBuffer(is, length));
     }
 
     private static boolean canMarkReset(InputStream inputStream, Long length) {
