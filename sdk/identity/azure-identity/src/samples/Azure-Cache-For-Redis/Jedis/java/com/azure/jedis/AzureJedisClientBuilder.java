@@ -25,6 +25,7 @@ public class AzureJedisClientBuilder {
     private String password;
     private TokenCredential tokenCredential;
     private RetryOptions retryOptions;
+    private boolean useSSL;
 
     private final ClientLogger clientLogger = new ClientLogger(AzureJedisClientBuilder.class);
 
@@ -103,6 +104,17 @@ public class AzureJedisClientBuilder {
     }
 
     /**
+     * Configure whether SSL connection should be established or not.
+     *
+     * @param useSSL the flag indicating whether SSL connection should be used or not.
+     * @return An updated instance of this builder.
+     */
+    public AzureJedisClientBuilder useSSL(boolean useSSL) {
+        this.useSSL = useSSL;
+        return this;
+    }
+
+    /**
      * Build an instance of the {@link AzureJedisClient}
      *
      * @return An instance of {@link AzureJedisClient}
@@ -119,8 +131,8 @@ public class AzureJedisClientBuilder {
             throw this.clientLogger.logExceptionAsError(new IllegalArgumentException("Both Token Credential and Password are provided in AzureJedisClientBuilder. Only one of them should be provided."));
         } else {
             return tokenCredential != null ?
-                    new AzureJedisClient(cacheHostName, port, username, tokenCredential, retryOptions) :
-                    new AzureJedisClient(cacheHostName, port, username, password, retryOptions);
+                    new AzureJedisClient(cacheHostName, port, username, tokenCredential, useSSL, retryOptions) :
+                    new AzureJedisClient(cacheHostName, port, username, password, useSSL, retryOptions);
         }
     }
 
