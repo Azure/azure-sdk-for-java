@@ -29,10 +29,12 @@ public class Hotel {
 
     @SimpleField
     @JsonProperty(value = "Description")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     @FieldBuilderIgnore
     @JsonProperty(value = "Description_fr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descriptionFr;
 
     @SimpleField
@@ -62,6 +64,7 @@ public class Hotel {
     private Integer rating;
 
     @JsonProperty(value = "Location")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private GeoPoint location;
 
     @JsonProperty(value = "Address")

@@ -26,6 +26,7 @@ public class LoudHotel {
     private String DESCRIPTION;
 
     @JsonProperty(value = "Description_fr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String DESCRIPTIONFRENCH;
 
     @JsonProperty(value = "Category")
