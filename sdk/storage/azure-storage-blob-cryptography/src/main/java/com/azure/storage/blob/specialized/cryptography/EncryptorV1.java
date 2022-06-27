@@ -20,10 +20,16 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 
 class EncryptorV1 extends Encryptor {
-    private static final ClientLogger LOGGER = new ClientLogger(EncryptorV2.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptorV1.class);
 
     private final Cipher cipher;
 
+    /**
+     * Constructs a new encryptor.
+     *
+     * @param aesKey The aes key that serves as the CEK.
+     * @throws GeneralSecurityException If cipher initialization fails.
+     */
     protected EncryptorV1(SecretKey aesKey) throws GeneralSecurityException {
         super(aesKey);
         cipher = this.getCipher();

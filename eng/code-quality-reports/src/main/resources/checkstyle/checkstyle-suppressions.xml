@@ -514,4 +514,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
+
+  <!-- EncryptedBlobAsyncClient and EncryptedBlobClient overriding methods for download behavior; cannot change signature -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.storage.blob.specialized.cryptography(EncryptedBlobAsyncClient|EncryptedBlobClient)"/>
 </suppressions>

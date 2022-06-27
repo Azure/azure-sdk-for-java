@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -63,12 +66,20 @@ abstract class Decryptor {
         ));
     }
 
-    protected abstract Cipher getCipher(byte[] contentEncryptionKey,
-        byte[] iv, boolean padding) throws InvalidKeyException;
+    /**
+     * Gets a cipher able to perform decryption for the specified version.
+     *
+     * @param contentEncryptionKey The CEK.
+     * @param iv The iv.
+     * @param padding Whether the ciphertext is padded
+     * @return {@link Cipher}
+     * @throws InvalidKeyException If the key is invalid.
+     */
+    protected abstract Cipher getCipher(byte[] contentEncryptionKey, byte[] iv, boolean padding)
+        throws InvalidKeyException;
 
     abstract Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
-    boolean padding, String requestUri,
-    AtomicLong totalInputBytes, byte[] contentEncryptionKey);
+        boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey);
 
     static Decryptor getDecryptor(AsyncKeyEncryptionKeyResolver keyResolver,
         AsyncKeyEncryptionKey keyWrapper, EncryptionData encryptionData) {

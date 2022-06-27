@@ -127,37 +127,37 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
                 (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(), requiresEncryption);
 
-                EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                    initialRangeHeader, encryptionData);
-                if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
-                    requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
-                }
-                return next.process().map(httpResponse -> {
-                    if (isDownloadResponse(httpResponse)) {
-                        HttpHeaders responseHeaders = httpResponse.getHeaders();
-                        // Checking that encryption data at least exists on the download call even if we didn't use
-                        // it for deserialization ensures that the download response was not an error response.
-                        if (httpResponse.getHeaderValue(ENCRYPTION_METADATA_HEADER) == null) {
-                            return httpResponse;
-                        }
-                        encryptedRange.setAdjustedDownloadCount(
-                            Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
-
-                        /*
-                         * We expect padding only if we are at the end of a blob and it is not a multiple of the
-                         * encryption block size. Padding is only ever present in track 1.
-                         */
-                        boolean padding = hasPadding(httpResponse.getHeaders(), encryptionData, encryptedRange);
-
-                        Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(),
-                            encryptedRange, padding, encryptionData,
-                            httpResponse.getRequest().getUrl());
-
-                        return new DecryptedResponse(httpResponse, plainTextData);
-                    } else {
+            EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
+                initialRangeHeader, encryptionData);
+            if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
+                requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
+            }
+            return next.process().map(httpResponse -> {
+                if (isDownloadResponse(httpResponse)) {
+                    HttpHeaders responseHeaders = httpResponse.getHeaders();
+                    // Checking that encryption data at least exists on the download call even if we didn't use
+                    // it for deserialization ensures that the download response was not an error response.
+                    if (httpResponse.getHeaderValue(ENCRYPTION_METADATA_HEADER) == null) {
                         return httpResponse;
                     }
-                });
+                    encryptedRange.setAdjustedDownloadCount(
+                        Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+
+                    /*
+                     * We expect padding only if we are at the end of a blob and it is not a multiple of the
+                     * encryption block size. Padding is only ever present in track 1.
+                     */
+                    boolean padding = hasPadding(httpResponse.getHeaders(), encryptionData, encryptedRange);
+
+                    Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(),
+                        encryptedRange, padding, encryptionData,
+                        httpResponse.getRequest().getUrl());
+
+                    return new DecryptedResponse(httpResponse, plainTextData);
+                } else {
+                    return httpResponse;
+                }
+            });
         }
     }
 

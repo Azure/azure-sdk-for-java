@@ -7,7 +7,6 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.BufferStagingArea;
-import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

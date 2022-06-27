@@ -6,16 +6,12 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_MODE;
 
 abstract class Encryptor {
