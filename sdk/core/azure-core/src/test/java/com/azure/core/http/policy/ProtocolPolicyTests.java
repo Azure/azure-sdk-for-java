@@ -18,7 +18,7 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProtocolPolicyTests {
-    static HttpRequest HTTP_REQUEST;
+    static final HttpRequest HTTP_REQUEST;
 
     static {
         try {

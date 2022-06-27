@@ -25,7 +25,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class RequestIdPolicyTests {
-    static HttpRequest HTTP_REQUEST;
+    static final HttpRequest HTTP_REQUEST;
 
     static {
         try {
@@ -98,7 +98,7 @@ public class RequestIdPolicyTests {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(HTTP_REQUEST,Context.NONE),
+            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
             () -> pipeline.send(HTTP_REQUEST)
         );
     }
@@ -127,7 +127,7 @@ public class RequestIdPolicyTests {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(HTTP_REQUEST,Context.NONE),
+            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
             () -> pipeline.send(HTTP_REQUEST)
         );
     }
