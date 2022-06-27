@@ -16,6 +16,8 @@ import java.util.concurrent.Callable;
  * Indicates that test should be branched out into sync and async branch resulting in two separate test cases.
  * The {@link com.azure.core.SyncAsyncExtension#execute(Callable, Callable)} should be used in the test
  * to branch out.
+ * Using azure-core copy of the com.azure.core.test.annotation.SyncAsyncTest class
+ * since azure-core cannot take dependency on azure-core-test package.
  */
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -17,6 +17,9 @@ import java.util.stream.Stream;
 
 /**
  * An extension that helps to branch out a single test into sync and async invocation.
+ *
+ * Using azure-core copy of the com.azure.core.test.SyncAsyncExtension class
+ * since azure-core cannot take dependency on azure-core-test package.
  */
 public class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
 
@@ -107,7 +110,7 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         }
 
         @Override
-        public void beforeTestExecution(ExtensionContext extensionContext) throws Exception {
+        public void beforeTestExecution(ExtensionContext extensionContext) {
             if (IS_SYNC_THREAD_LOCAL.get() != null) {
                 throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL shouldn't be set at this point");
             }
@@ -119,7 +122,7 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         }
 
         @Override
-        public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
+        public void afterTestExecution(ExtensionContext extensionContext) {
             IS_SYNC_THREAD_LOCAL.remove();
             if (!WAS_EXTENSION_USED_THREAD_LOCAL.get()) {
                 throw new IllegalStateException(

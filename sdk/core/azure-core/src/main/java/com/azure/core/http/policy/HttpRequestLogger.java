@@ -41,9 +41,8 @@ public interface HttpRequestLogger {
      *
      * @param logger The {@link ClientLogger} used to log the HTTP request.
      * @param loggingOptions The information available during request logging.
-     * @throws UnsupportedOperationException If the method is not overridden.
      */
     default void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
-        throw new UnsupportedOperationException("Must be overridden");
+        logRequest(logger, loggingOptions).block();
     }
 }
