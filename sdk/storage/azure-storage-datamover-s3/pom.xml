@@ -62,4 +62,23 @@
       <artifactId>s3</artifactId>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>software.amazon.awssdk:s3:[2.16.60]</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
