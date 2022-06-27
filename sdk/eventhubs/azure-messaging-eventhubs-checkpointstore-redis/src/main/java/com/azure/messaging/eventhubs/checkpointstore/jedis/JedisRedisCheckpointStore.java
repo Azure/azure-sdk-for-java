@@ -60,16 +60,13 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 List<String> checkpointJSONList = jedis.hmget(member, "checkpoint");
                 String checkpointJSON;
                 if (checkpointJSONList.size() == 0) {
-                    return Flux.error(new IllegalAccessException());
-                }
+                    return Flux.error(new IllegalAccessException()); }
                 else {
-                    checkpointJSON = checkpointJSONList.get(0);
-                }
+                    checkpointJSON = checkpointJSONList.get(0); }
                 //convert JSON representation into Checkpoint
                 try {
                     Checkpoint checkpoint = jacksonAdapter.deserialize(checkpointJSON, Checkpoint.class, SerializerEncoding.JSON);
-                    list.add(checkpoint);
-                }
+                    list.add(checkpoint); }
                 catch (IOException e) {
                     throw LOGGER.logExceptionAsError(Exceptions
                         .propagate(e)); }
@@ -119,8 +116,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         if (!isCheckpointValid(checkpoint)) {
             throw LOGGER.logExceptionAsWarning(Exceptions
                 .propagate(new IllegalStateException(
-                    "Checkpoint is either null, or both the offset and the sequence number are null.")));
-        }
+                    "Checkpoint is either null, or both the offset and the sequence number are null."))); }
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(prefix, checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
@@ -132,8 +128,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 } catch (IOException e) {
                     throw LOGGER.logExceptionAsError(Exceptions
                         .propagate(e));
-                }
-            }
+                } }
             //TO DO: Case 2: checkpoint already exists in Redis cache
             jedisPool.returnResource(jedis);
         }

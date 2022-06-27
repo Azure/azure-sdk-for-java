@@ -54,7 +54,7 @@ public class JedisRedisCheckpointStoreTests {
             list.add(jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
         }
         catch (IOException e) {
-            System.out.println("Hello");
+            System.out.println("JacksonAdapter could not serialize checkpoint for testing.");
         }
 
         //act
@@ -81,6 +81,21 @@ public class JedisRedisCheckpointStoreTests {
         //assert
         try {
             store.listCheckpoints("fullyQualifiedNamespace", "eventHubName", "consumerGroup");
+        } catch (IllegalArgumentException e) {
+            assert (true);
+            return;
+        }
+        assert (false);
+    }
+    @Test
+    public void testListOwnershipEmptyList() {
+        //arrange
+        //act
+        when(jedisPool.getResource()).thenReturn(jedis);
+        when(jedis.smembers(anyString())).thenThrow(new IllegalArgumentException());
+        //assert
+        try {
+            store.listOwnership("fullyQualifiedNamespace", "eventHubName", "consumerGroup");
         } catch (IllegalArgumentException e) {
             assert (true);
             return;
