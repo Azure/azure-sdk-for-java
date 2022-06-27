@@ -5,19 +5,16 @@ package com.azure.core.credential;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,9 +70,15 @@ public class CredentialsTests {
             Assertions.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };
+        final HttpClient httpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(new com.azure.core.http.MockHttpResponse(request, 200));
+            }
+        };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+            .httpClient(httpClient)
             .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
             .build();
 
