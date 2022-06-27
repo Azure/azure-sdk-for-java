@@ -17,15 +17,14 @@ import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
-import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -187,9 +186,8 @@ public final class SearchIndexAsyncClient {
         try {
             Objects.requireNonNull(index, "'Index' cannot be null");
             return restClient.getIndexes()
-                .createWithResponseAsync(SearchIndexConverter.map(index), null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .createWithResponseAsync(index, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -247,8 +245,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.getIndexes()
                 .getWithResponseAsync(indexName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -387,8 +384,7 @@ public final class SearchIndexAsyncClient {
     private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, Context context) {
         return restClient.getIndexes()
             .listSinglePageAsync(select, null, context)
-            .onErrorMap(MappingUtils::exceptionMapper)
-            .map(MappingUtils::mappingListingSearchIndex);
+            .onErrorMap(MappingUtils::exceptionMapper);
     }
 
     /**
@@ -460,10 +456,9 @@ public final class SearchIndexAsyncClient {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
             return restClient.getIndexes()
-                .createOrUpdateWithResponseAsync(index.getName(), SearchIndexConverter.map(index),
-                    allowIndexDowntime, ifMatch, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalSearchIndex);
+                .createOrUpdateWithResponseAsync(index.getName(), index, allowIndexDowntime, ifMatch, null, null,
+                    context)
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

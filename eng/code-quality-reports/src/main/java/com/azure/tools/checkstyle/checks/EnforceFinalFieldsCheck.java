@@ -5,12 +5,14 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -159,6 +161,9 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             } else if (TokenUtil.findFirstTokenByPredicate(assignationWithDot,
                 token -> token.getText().equals(this.currentClassName)).isPresent()) {
                 // Case when referencing same class for private static fields
+                return assignationWithDot.getLastChild();
+            } else if (scopeParent.branchContains(TokenTypes.LITERAL_STATIC)
+                && scopeParent.findFirstToken(TokenTypes.IDENT).getText().startsWith("fromJson")) {
                 return assignationWithDot.getLastChild();
             }
         } else {

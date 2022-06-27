@@ -518,7 +518,7 @@ public class SearchSyncTests extends SearchTestBase {
         assertNotNull(results);
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         assertEquals(1, searchResultsList.size());
-        assertEquals(expectedResult, searchResultsList.get(0));
+        assertMapEquals(expectedResult, searchResultsList.get(0), false);
     }
 
     @Test
@@ -604,7 +604,7 @@ public class SearchSyncTests extends SearchTestBase {
         expectedHotel.put("Rating", 1);
 
         assertEquals(1, resultsList.size());
-        assertEquals(resultsList.get(0), expectedHotel);
+        assertMapEquals(expectedHotel, resultsList.get(0), false);
     }
 
     @Test
@@ -765,7 +765,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> response = getSearchResults(results);
         assertEquals(1, response.size());
         assertEquals("Fancy Stay", response.get(0).get("HotelName"));
-        assertEquals(5, response.get(0).get("Rating"));
+        assertEquals(5, ((Number) response.get(0).get("Rating")).intValue());
     }
 
     private List<Map<String, Object>> getSearchResults(SearchPagedIterable results) {
@@ -941,7 +941,7 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
             assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());
-            assertEquals(expectedFacets.get(i).getValue(), actualFacets.get(i).getValue());
+            assertObjectEquals(expectedFacets.get(i).getValue(), actualFacets.get(i).getValue());
         }
     }
 

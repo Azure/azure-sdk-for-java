@@ -5,17 +5,24 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.PropertyCustomization;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.expr.LongLiteralExpr;
 import org.slf4j.Logger;
+
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * Contains customizations for Azure Search's index swagger code generation.
  */
 public class SearchIndexCustomizations extends Customization {
-    private static final String VARARG_METHOD_TEMPLATE =
-        "this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);\n"
-            + "return this;\n";
+    private static final String VARARG_METHOD_TEMPLATE = joinWithNewline(
+        "public %s %s(%s... %s) {",
+        "    this.%s = (%s == null) ? null : java.util.Arrays.asList(%s);",
+        "    return this;",
+        "}");
 
     // Packages
     private static final String IMPLEMENTATION_MODELS = "com.azure.search.documents.implementation.models";
@@ -30,22 +37,20 @@ public class SearchIndexCustomizations extends Customization {
     private void customizeModelsPackage(PackageCustomization packageCustomization) {
         customizeAutocompleteOptions(packageCustomization.getClass("AutocompleteOptions"));
         customizeSuggestOptions(packageCustomization.getClass("SuggestOptions"));
+        customizeIndexingResult(packageCustomization.getClass("IndexingResult"));
     }
 
     private void customizeAutocompleteOptions(ClassCustomization classCustomization) {
         classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
-        classCustomization.getMethod("setSearchFields").replaceParameters("String... searchFields")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "searchFields", "searchFields", "searchFields"));
+        addVarArgsOverload(classCustomization, "searchFields", "String");
     }
 
     private void customizeSuggestOptions(ClassCustomization classCustomization) {
         classCustomization.getMethod("isUseFuzzyMatching").rename("useFuzzyMatching");
-        classCustomization.getMethod("setOrderBy").replaceParameters("String... orderBy")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "orderBy", "orderBy", "orderBy"));
-        classCustomization.getMethod("setSearchFields").replaceParameters("String... searchFields")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "searchFields", "searchFields", "searchFields"));
-        classCustomization.getMethod("setSelect").replaceParameters("String... select")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "select", "select", "select"));
+
+        addVarArgsOverload(classCustomization, "orderBy", "String");
+        addVarArgsOverload(classCustomization, "searchFields", "String");
+        addVarArgsOverload(classCustomization, "select", "String");
     }
 
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
@@ -56,20 +61,11 @@ public class SearchIndexCustomizations extends Customization {
     private void customizeSearchOptions(ClassCustomization classCustomization) {
         classCustomization.getMethod("isIncludeTotalCount").rename("isTotalCountIncluded");
 
-        classCustomization.getMethod("setFacets").replaceParameters("String... facets")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "facets", "facets", "facets"));
-
-        classCustomization.getMethod("setOrderBy").replaceParameters("String... orderBy")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "orderBy", "orderBy", "orderBy"));
-
-        classCustomization.getMethod("setSearchFields").replaceParameters("String... searchFields")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "searchFields", "searchFields", "searchFields"));
-
-        classCustomization.getMethod("setSelect").replaceParameters("String... select")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "select", "select", "select"));
-
-        classCustomization.getMethod("setHighlightFields").replaceParameters("String... highlightFields")
-            .replaceBody(String.format(VARARG_METHOD_TEMPLATE, "highlightFields", "highlightFields", "highlightFields"));
+        addVarArgsOverload(classCustomization, "facets", "String");
+        addVarArgsOverload(classCustomization, "orderBy", "String");
+        addVarArgsOverload(classCustomization, "searchFields", "String");
+        addVarArgsOverload(classCustomization, "select", "String");
+        addVarArgsOverload(classCustomization, "highlightFields", "String");
 
         // Can't be done right now as setScoringParameters uses String.
 //        // Scoring parameters are slightly different as code generates them as String.
@@ -88,12 +84,10 @@ public class SearchIndexCustomizations extends Customization {
     }
 
     private void customizeIndexAction(ClassCustomization classCustomization) {
-        classCustomization.addImports(JsonSerialize.class.getName())
-            .addAnnotation("JsonSerialize(using = IndexActionSerializer.class)")
+        classCustomization
             .customizeAst(ast -> ast.getClassByName("IndexAction").get()
                 .addPrivateField(String.class, "rawDocument"))
             .getProperty("rawDocument")
-            .addAnnotation("JsonIgnore")
             .generateGetterAndSetter();
 
         classCustomization.getMethod("getRawDocument")
@@ -106,5 +100,44 @@ public class SearchIndexCustomizations extends Customization {
             .setDescription("Sets the raw JSON document.")
             .setParam("rawDocument", "The raw JSON document.")
             .setReturn("the IndexAction object itself.");
+    }
+
+    private void customizeIndexingResult(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("IndexingResult").get();
+            clazz.addImplementedType(Serializable.class);
+            clazz.addFieldWithInitializer("long", "serialVersionUID", new LongLiteralExpr("-8604424005271188140L"),
+                Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+
+            FieldDeclaration field = clazz.getFieldByName("key").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            field = clazz.getFieldByName("errorMessage").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            field = clazz.getFieldByName("succeeded").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+
+            field = clazz.getFieldByName("statusCode").get();
+            field.setJavadocComment(field.getComment().get().asBlockComment().getContent());
+        });
+    }
+
+    /*
+     * This helper function adds a varargs overload in addition to a List setter.
+     */
+    private static void addVarArgsOverload(ClassCustomization classCustomization, String parameterName,
+        String parameterType) {
+        String methodName = "set" + parameterName.substring(0, 1).toUpperCase(Locale.ROOT) + parameterName.substring(1);
+
+        String varargMethod = String.format(VARARG_METHOD_TEMPLATE, classCustomization.getClassName(), methodName,
+            parameterType, parameterName, parameterName, parameterName, parameterName);
+
+        classCustomization.addMethod(varargMethod).getJavadoc()
+            .replace(classCustomization.getMethod(methodName).getJavadoc());
+    }
+
+    private static String joinWithNewline(String... lines) {
+        return String.join("\n", lines);
     }
 }
