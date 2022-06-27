@@ -3,25 +3,16 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.DecodeException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.TooManyRedirectsException;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.implementation.ResponseExceptionConstructorCache;
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
@@ -35,12 +26,9 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,65 +201,6 @@ public final class RestProxyUtils {
     }
 
     /**
-     * Creates the Unexpected Exception using the details provided in http response and its content.
-     *
-     * @param exception the excepion holding UnexpectedException's details.
-     * @param httpResponse the http response to parse when constructing exception
-     * @param responseContent the response body to use when constructing exception
-     * @param responseDecodedContent the decoded response content to use when constructing exception
-     * @return the Unexpected Exception
-     */
-    public static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-                                                           final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(httpResponse.getStatusCode())
-            .append(", ");
-
-        final String contentType = httpResponse.getHeaderValue("Content-Type");
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            exceptionMessage.append("(").append(httpResponse.getHeaderValue("Content-Length")).append("-byte body)");
-        } else if (responseContent == null || responseContent.length == 0) {
-            exceptionMessage.append("(empty body)");
-        } else {
-            exceptionMessage.append("\"").append(new String(responseContent, StandardCharsets.UTF_8)).append("\"");
-        }
-
-        // For HttpResponseException types that exist in azure-core, call the constructor directly.
-        Class<? extends HttpResponseException> exceptionType = exception.getExceptionType();
-        if (exceptionType == HttpResponseException.class) {
-            return new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ClientAuthenticationException.class) {
-            return new ClientAuthenticationException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == DecodeException.class) {
-            return new DecodeException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ResourceExistsException.class) {
-            return new ResourceExistsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ResourceModifiedException.class) {
-            return new ResourceModifiedException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ResourceNotFoundException.class) {
-            return new ResourceNotFoundException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == TooManyRedirectsException.class) {
-            return new TooManyRedirectsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else {
-            // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
-            // new instance of it.
-            try {
-                MethodHandle handle = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
-                    exception.getExceptionBodyType());
-                return ResponseExceptionConstructorCache.invoke(handle, exceptionMessage.toString(), httpResponse,
-                    responseDecodedContent);
-            } catch (RuntimeException e) {
-                // And if reflection fails, return an IOException.
-                // TODO (alzimmer): Determine if this should be an IOException or HttpResponseException.
-                exceptionMessage.append(". An instance of ")
-                    .append(exceptionType.getCanonicalName())
-                    .append(" couldn't be created.");
-                return new IOException(exceptionMessage.toString(), e);
-            }
-        }
-    }
-
-    /**
      * Create an instance of the default serializer.
      *
      * @return the default serializer
@@ -295,4 +224,5 @@ public final class RestProxyUtils {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
+
 }

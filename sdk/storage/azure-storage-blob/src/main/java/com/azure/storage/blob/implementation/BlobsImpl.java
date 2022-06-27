@@ -22,7 +22,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.http.rest.SyncRestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -82,7 +81,7 @@ public final class BlobsImpl {
      */
     BlobsImpl(AzureBlobStorageImpl client) {
         this.service = RestProxy.create(BlobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.syncService = SyncRestProxy.create(BlobsSyncService.class,
+        this.syncService = RestProxy.create(BlobsSyncService.class,
             client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

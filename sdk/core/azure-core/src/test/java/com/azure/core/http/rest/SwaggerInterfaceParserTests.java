@@ -7,6 +7,9 @@ import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.implementation.http.rest.MissingRequiredAnnotationException;
+import com.azure.core.implementation.http.rest.SwaggerInterfaceParser;
+import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

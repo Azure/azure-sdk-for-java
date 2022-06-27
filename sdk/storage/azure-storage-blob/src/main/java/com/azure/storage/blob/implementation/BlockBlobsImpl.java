@@ -18,7 +18,6 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SyncRestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -66,7 +65,7 @@ public final class BlockBlobsImpl {
         this.client = client;
 
         this.syncService =
-            SyncRestProxy.create(BlockBlobsSyncService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy.create(BlockBlobsSyncService.class, client.getHttpPipeline(), client.getSerializerAdapter());
     }
 
     /**
