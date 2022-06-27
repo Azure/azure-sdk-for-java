@@ -25,6 +25,16 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class RequestIdPolicyTests {
+    static HttpRequest HTTP_REQUEST;
+
+    static {
+        try {
+            HTTP_REQUEST = createHttpRequest("https://www.bing.com");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private final HttpResponse mockResponse = new HttpResponse(null) {
         @Override
         public int getStatusCode() {
@@ -88,8 +98,8 @@ public class RequestIdPolicyTests {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> pipeline.sendSync(HTTP_REQUEST,Context.NONE),
+            () -> pipeline.send(HTTP_REQUEST)
         );
     }
 
@@ -117,17 +127,12 @@ public class RequestIdPolicyTests {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> pipeline.sendSync(HTTP_REQUEST,Context.NONE),
+            () -> pipeline.send(HTTP_REQUEST)
         );
     }
 
-    private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(httpMethod, new URL("http://localhost/"))).block();
-    }
-
-    private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.sendSync(new HttpRequest(httpMethod,
-            new URL("http://localhost/")), Context.NONE);
+    private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
+        return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 }

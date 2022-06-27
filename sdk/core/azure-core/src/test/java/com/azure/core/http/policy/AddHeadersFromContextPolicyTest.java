@@ -17,7 +17,6 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class AddHeadersFromContextPolicyTest {
@@ -48,17 +47,8 @@ public class AddHeadersFromContextPolicyTest {
             .build();
 
         SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)),
-            () -> sendRequestSync(pipeline, new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers))
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)),
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers))
         );
-
-    }
-
-    private HttpResponse sendRequest(HttpPipeline pipeline, Context context) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), context).block();
-    }
-
-    private HttpResponse sendRequestSync(HttpPipeline pipeline, Context context) throws MalformedURLException {
-        return pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), context);
     }
 }

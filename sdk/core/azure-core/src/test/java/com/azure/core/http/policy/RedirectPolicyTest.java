@@ -52,8 +52,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(308, response.getStatusCode());
@@ -128,8 +128,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(5, httpClient.getCount());
@@ -155,8 +155,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.POST),
-            () -> sendRequestSync(pipeline, HttpMethod.POST)
+            () -> sendRequestSync(pipeline, HttpMethod.POST),
+            () -> sendRequest(pipeline, HttpMethod.POST)
         );
 
         // not redirected to 200
@@ -183,8 +183,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(2, httpClient.getCount());
@@ -215,8 +215,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(2, httpClient.getCount());
@@ -240,8 +240,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(5, httpClient.getCount());
@@ -284,8 +284,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(2, httpClient.getCount());
@@ -310,8 +310,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(1, httpClient.getCount());
@@ -337,13 +337,13 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response1 = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         HttpResponse response2 = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(4, httpClient.getCount());
@@ -372,8 +372,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(401, response.getStatusCode());
@@ -399,8 +399,8 @@ public class RedirectPolicyTest {
             .build();
 
         HttpResponse response = SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, HttpMethod.GET),
-            () -> sendRequestSync(pipeline, HttpMethod.GET)
+            () -> sendRequestSync(pipeline, HttpMethod.GET),
+            () -> sendRequest(pipeline, HttpMethod.GET)
         );
 
         assertEquals(200, response.getStatusCode());
@@ -412,8 +412,7 @@ public class RedirectPolicyTest {
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.sendSync(new HttpRequest(httpMethod,
-            new URL("http://localhost/")), Context.NONE);
+        return pipeline.sendSync(new HttpRequest(httpMethod, new URL("http://localhost/")), Context.NONE);
     }
 
     static class RecordingHttpClient implements HttpClient {

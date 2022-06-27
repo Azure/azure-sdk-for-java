@@ -22,18 +22,20 @@ public class HostPolicyTests {
     @SyncAsyncTest
     public void withNoPort() throws Exception {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost");
+        final HttpRequest request = createHttpRequest("ftp://www.example.com");
         SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, createHttpRequest("ftp://www.example.com")),
-            () -> sendRequestSync(pipeline, createHttpRequest("ftp://www.example.com"))
+            () -> sendRequestSync(pipeline, request),
+            () -> sendRequest(pipeline, request)
         );
     }
 
     @SyncAsyncTest
     public void withPort() throws Exception {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost:1234");
+        final HttpRequest request = createHttpRequest("ftp://www.example.com:1234");
         SyncAsyncExtension.execute(
-            () -> sendRequest(pipeline, createHttpRequest("ftp://www.example.com:1234")),
-            () -> sendRequestSync(pipeline, createHttpRequest("ftp://www.example.com:1234"))
+            () -> sendRequestSync(pipeline, request),
+            () -> sendRequest(pipeline, request)
         );
     }
 
@@ -52,11 +54,11 @@ public class HostPolicyTests {
         return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 
-    private HttpResponse sendRequest(HttpPipeline pipeline, HttpRequest httpRequest) throws MalformedURLException {
+    private HttpResponse sendRequest(HttpPipeline pipeline, HttpRequest httpRequest) {
         return pipeline.send(httpRequest).block();
     }
 
-    private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpRequest httpRequest) throws MalformedURLException {
+    private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpRequest httpRequest) {
         return pipeline.sendSync(httpRequest, Context.NONE);
     }
 }
