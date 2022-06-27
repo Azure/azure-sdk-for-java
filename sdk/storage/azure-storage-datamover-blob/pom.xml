@@ -40,5 +40,10 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-datamover</artifactId>
+      <version>1.0.0-beta.1</version>
+    </dependency>
   </dependencies>
 </project>
