@@ -9,6 +9,8 @@ import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -45,5 +47,15 @@ class FileShareResourceContainer extends StorageResourceContainer {
         }
 
         return transferCapabilitiesBuilder.build();
+    }
+
+    @Override
+    protected List<String> getPath() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected StorageResource getStorageResource(List<String> path) {
+        return new FileShareResource(shareClient.getFileClient(String.join("/", path)));
     }
 }

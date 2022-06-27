@@ -9,6 +9,8 @@ import com.azure.storage.datamover.models.TransferCapabilities;
 import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 class BlobResourceContainer extends StorageResourceContainer {
@@ -42,5 +44,15 @@ class BlobResourceContainer extends StorageResourceContainer {
         }
 
         return transferCapabilitiesBuilder.build();
+    }
+
+    @Override
+    protected List<String> getPath() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected StorageResource getStorageResource(List<String> path) {
+        return new BlobResource(blobContainerClient.getBlobClient(String.join("/", path)));
     }
 }

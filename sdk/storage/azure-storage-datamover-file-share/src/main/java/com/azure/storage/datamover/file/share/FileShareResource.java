@@ -1,5 +1,6 @@
 package com.azure.storage.datamover.file.share;
 
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.datamover.StorageResource;
 import com.azure.storage.datamover.models.TransferCapabilities;
 import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
@@ -7,7 +8,10 @@ import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
+import java.io.InputStream;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 class FileShareResource extends StorageResource {
@@ -50,5 +54,29 @@ class FileShareResource extends StorageResource {
         }
 
         return transferCapabilitiesBuilder.build();
+    }
+
+    @Override
+    protected InputStream openInputStream() {
+        return shareFileClient.openInputStream();
+    }
+
+    @Override
+    protected long getLength() {
+        return shareFileClient.getProperties().getContentLength();
+    }
+
+    @Override
+    protected void consumeInputStream(InputStream inputStream, long length) {
+        if (!shareFileClient.exists()) {
+            shareFileClient.create(length);
+        }
+        shareFileClient.upload(inputStream, length, new ParallelTransferOptions());
+    }
+
+    @Override
+    protected List<String> getPath() {
+        String[] split = shareFileClient.getFilePath().split("/");
+        return Arrays.asList(split);
     }
 }

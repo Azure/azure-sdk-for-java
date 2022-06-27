@@ -7,6 +7,8 @@ import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,5 +40,16 @@ class S3BucketResourceContainer extends StorageResourceContainer {
         return new TransferCapabilitiesBuilder()
             .canStream(true)
             .build();
+    }
+
+    @Override
+    protected List<String> getPath() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected StorageResource getStorageResource(List<String> path) {
+        String objectKey = String.join("/", path);
+        return new S3ObjectResource(s3Client, bucketName, objectKey);
     }
 }

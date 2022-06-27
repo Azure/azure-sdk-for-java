@@ -7,7 +7,10 @@ import com.azure.storage.datamover.StorageResource;
 import com.azure.storage.datamover.models.TransferCapabilities;
 import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 
+import java.io.InputStream;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 class BlobResource extends StorageResource {
@@ -50,5 +53,26 @@ class BlobResource extends StorageResource {
         }
 
         return transferCapabilitiesBuilder.build();
+    }
+
+    @Override
+    protected InputStream openInputStream() {
+        return blobClient.openInputStream();
+    }
+
+    @Override
+    protected long getLength() {
+        return blobClient.getProperties().getBlobSize();
+    }
+
+    @Override
+    protected void consumeInputStream(InputStream inputStream, long length) {
+        blobClient.upload(inputStream, length);
+    }
+
+    @Override
+    protected List<String> getPath() {
+        String[] split = blobClient.getBlobName().split("/");
+        return Arrays.asList(split);
     }
 }

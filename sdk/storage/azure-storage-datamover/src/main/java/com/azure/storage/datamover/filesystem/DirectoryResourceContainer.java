@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 class DirectoryResourceContainer extends StorageResourceContainer {
@@ -26,7 +30,11 @@ class DirectoryResourceContainer extends StorageResourceContainer {
         try {
             return Files.walk(path)
                 .filter(Files::isRegularFile)
-                .map(FileResource::new)
+                .map(file -> {
+                    Path relativePath = path.relativize(file);
+                    String[] split = relativePath.toString().split("/");
+                    return new FileResource(file, Arrays.asList(split));
+                })
                 .collect(Collectors.toList());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -38,6 +46,20 @@ class DirectoryResourceContainer extends StorageResourceContainer {
         return new TransferCapabilitiesBuilder()
             .canStream(true)
             .build();
+    }
+
+    @Override
+    protected List<String> getPath() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected StorageResource getStorageResource(List<String> path) {
+        Path resourcePath = this.path;
+        for (String subPath : path) {
+            resourcePath = resourcePath.resolve(subPath);
+        }
+        return new FileResource(resourcePath, path);
     }
 
 }

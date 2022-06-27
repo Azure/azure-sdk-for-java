@@ -4,13 +4,14 @@ import com.azure.storage.datamover.StorageResource;
 import com.azure.storage.datamover.StorageResourceContainer;
 
 import java.nio.file.Path;
+import java.util.Collections;
 
 public final class FileSystemResources {
     private FileSystemResources() {
     }
 
     public static StorageResource file(Path path) {
-        return new FileResource(path);
+        return new FileResource(path, Collections.singletonList(path.toFile().getName()));
     }
 
     public static StorageResourceContainer directory(Path path) {
