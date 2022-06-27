@@ -10,23 +10,23 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 
 /** Contains all response data for the get operation. */
-public final class MediaServiceOperationResultsGetResponse
-    extends ResponseBase<MediaServiceOperationResultsGetHeaders, MediaServiceInner> {
+public final class MediaServicesOperationResultsGetResponse
+    extends ResponseBase<MediaServicesOperationResultsGetHeaders, MediaServiceInner> {
     /**
-     * Creates an instance of MediaServiceOperationResultsGetResponse.
+     * Creates an instance of MediaServicesOperationResultsGetResponse.
      *
-     * @param request the request which resulted in this MediaServiceOperationResultsGetResponse.
+     * @param request the request which resulted in this MediaServicesOperationResultsGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MediaServiceOperationResultsGetResponse(
+    public MediaServicesOperationResultsGetResponse(
         HttpRequest request,
         int statusCode,
         HttpHeaders rawHeaders,
         MediaServiceInner value,
-        MediaServiceOperationResultsGetHeaders headers) {
+        MediaServicesOperationResultsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for MediaServiceOperationResults Get. */
-public final class MediaServiceOperationResultsGetSamples {
+/** Samples for MediaServicesOperationResults Get. */
+public final class MediaServicesOperationResultsGetSamples {
     /*
      * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/media-service-operation-result-by-id.json
      */
@@ -19,7 +19,7 @@ public final class MediaServiceOperationResultsGetSamples {
     public static void getStatusOfAsynchronousOperation(
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
         manager
-            .mediaServiceOperationResults()
+            .mediaServicesOperationResults()
             .getWithResponse("westus", "6FBA62C4-99B5-4FF8-9826-FC4744A8864F", Context.NONE);
     }
 }

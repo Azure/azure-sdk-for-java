@@ -20,46 +20,48 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.mediaservices.fluent.MediaServiceOperationResultsClient;
+import com.azure.resourcemanager.mediaservices.fluent.MediaServicesOperationResultsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationResultsGetResponse;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResultsGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MediaServiceOperationResultsClient. */
-public final class MediaServiceOperationResultsClientImpl implements MediaServiceOperationResultsClient {
+/** An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient. */
+public final class MediaServicesOperationResultsClientImpl implements MediaServicesOperationResultsClient {
     /** The proxy service used to perform REST calls. */
-    private final MediaServiceOperationResultsService service;
+    private final MediaServicesOperationResultsService service;
 
     /** The service client containing this operation class. */
     private final AzureMediaServicesImpl client;
 
     /**
-     * Initializes an instance of MediaServiceOperationResultsClientImpl.
+     * Initializes an instance of MediaServicesOperationResultsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MediaServiceOperationResultsClientImpl(AzureMediaServicesImpl client) {
+    MediaServicesOperationResultsClientImpl(AzureMediaServicesImpl client) {
         this.service =
             RestProxy
                 .create(
-                    MediaServiceOperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                    MediaServicesOperationResultsService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMediaServicesMediaServiceOperationResults to be used by the
+     * The interface defining all the services for AzureMediaServicesMediaServicesOperationResults to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesMe")
-    private interface MediaServiceOperationResultsService {
+    private interface MediaServicesOperationResultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}"
-                + "/mediaServiceOperationResults/{operationId}")
+                + "/mediaServicesOperationResults/{operationId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<MediaServiceOperationResultsGetResponse> get(
+        Mono<MediaServicesOperationResultsGetResponse> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName,
@@ -80,7 +82,7 @@ public final class MediaServiceOperationResultsClientImpl implements MediaServic
      * @return media service operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MediaServiceOperationResultsGetResponse> getWithResponseAsync(
+    private Mono<MediaServicesOperationResultsGetResponse> getWithResponseAsync(
         String locationName, String operationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -128,7 +130,7 @@ public final class MediaServiceOperationResultsClientImpl implements MediaServic
      * @return media service operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MediaServiceOperationResultsGetResponse> getWithResponseAsync(
+    private Mono<MediaServicesOperationResultsGetResponse> getWithResponseAsync(
         String locationName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -203,7 +205,7 @@ public final class MediaServiceOperationResultsClientImpl implements MediaServic
      * @return media service operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MediaServiceOperationResultsGetResponse getWithResponse(
+    public MediaServicesOperationResultsGetResponse getWithResponse(
         String locationName, String operationId, Context context) {
         return getWithResponseAsync(locationName, operationId, context).block();
     }
