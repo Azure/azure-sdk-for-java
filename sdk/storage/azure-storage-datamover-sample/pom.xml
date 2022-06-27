@@ -60,5 +60,12 @@
       <artifactId>azure-storage-datamover-s3</artifactId>
       <version>1.0.0-beta.1</version>
     </dependency>
+
+    <!-- Pull this up to avoid conflict with AWS SDK -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.12.2</version>
+    </dependency>
   </dependencies>
 </project>
