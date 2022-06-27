@@ -44,7 +44,7 @@ public final class StreamUtil {
      * @return List of byte buffers.
      * @throws IOException If IO operation fails.
      */
-    public  static List<ByteBuffer> readStreamToListOfByteBuffers(
+    public static List<ByteBuffer> readStreamToListOfByteBuffers(
         InputStream inputStream, Long lengthHint,
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
