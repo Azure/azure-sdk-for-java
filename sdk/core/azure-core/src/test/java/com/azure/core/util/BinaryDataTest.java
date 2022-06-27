@@ -931,11 +931,6 @@ public class BinaryDataTest {
 
         Supplier<Flux<ByteBuffer>> coldFluxSupplier = createColdFluxSupplier(bytes, 1024);
 
-        // Assert that cold flux is really cold.
-        Flux<ByteBuffer> flux = coldFluxSupplier.get();
-        flux.blockLast();
-        assertThrows(RuntimeException.class, flux::blockLast);
-
         testReplayableContentTypes(() ->
                 BinaryData.fromFlux(coldFluxSupplier.get(), null, false).map(BinaryData::toReplayableBinaryData).block(),
             bytes);
@@ -1016,6 +1011,18 @@ public class BinaryDataTest {
 
         // immediate delete should succeed.
         assertTrue(tempFile.toFile().delete());
+    }
+
+    @Test
+    public void coldFluxSupplierIsReallyCold() {
+        byte[] bytes = new byte[1024];
+
+        Supplier<Flux<ByteBuffer>> coldFluxSupplier = createColdFluxSupplier(bytes, 128);
+
+        // Assert that cold flux is really cold.
+        Flux<ByteBuffer> flux = coldFluxSupplier.get();
+        flux.blockLast();
+        assertThrows(RuntimeException.class, flux::blockLast);
     }
 
     private static Supplier<Flux<ByteBuffer>> createColdFluxSupplier(byte[] bytes, int chunkSize) {
