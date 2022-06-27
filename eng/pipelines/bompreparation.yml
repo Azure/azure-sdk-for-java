@@ -1,12 +1,6 @@
 trigger: none
 
-pr:
-  branches:
-    include:
-      - main
-  paths:
-    include:
-      - eng/pipelines/bompreparation.yml
+pr: none
 
 stages:
   - stage: AnalyzeAndGeneratePatches
