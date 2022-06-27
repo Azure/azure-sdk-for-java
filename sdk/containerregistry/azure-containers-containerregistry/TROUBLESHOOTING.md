@@ -87,6 +87,7 @@ You may see error similar to the one below, it indicates an attempt to perform o
 AcrErrorsException: Status code 401, "{"errors":[{"code":"UNAUTHORIZED","message":"authentication required, visit https://aka.ms/acr/authorization for more information."}]}"
 ```
 
+Unauthorized access can only be enabled for read (pull) operations such as listing repositories, getting properties or tags.
 Refer to [Anonymous pull access](https://docs.microsoft.com/azure/container-registry/anonymous-pull-access) to learn about anonymous access limitation. 
 
 ### HTTP 403 Errors
