@@ -2,14 +2,13 @@ package com.azure.storage.datamover.filesystem;
 
 import com.azure.storage.datamover.StorageResource;
 import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferMethod;
+import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 class DirectoryResourceContainer extends StorageResourceContainer {
@@ -35,7 +34,10 @@ class DirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Set<TransferMethod> getIncomingTransferMethods() {
-        return Collections.singleton(TransferMethod.STREAMING);
+    protected TransferCapabilities getIncomingTransferCapabilities() {
+        return new TransferCapabilitiesBuilder()
+            .canStream(true)
+            .build();
     }
+
 }

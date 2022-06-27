@@ -4,12 +4,11 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferMethod;
+import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 class BlobResource extends StorageResource {
 
@@ -20,36 +19,36 @@ class BlobResource extends StorageResource {
     }
 
     @Override
-    protected Set<TransferMethod> getIncomingTransferMethods() {
-        Set<TransferMethod> methods = new HashSet<>();
-        methods.add(TransferMethod.STREAMING);
+    protected TransferCapabilities getIncomingTransferCapabilities() {
+        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
+            .canStream(true);
 
         try {
             // probe sas.
             blobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
                 new BlobContainerSasPermission().setWritePermission(true)));
-            methods.add(TransferMethod.URL_WITH_SAS);
+            transferCapabilitiesBuilder.canUseSasUri(true);
         } catch (Exception e) {
             // ignore
         }
 
-        return methods;
+        return transferCapabilitiesBuilder.build();
     }
 
     @Override
-    protected Set<TransferMethod> getOutgoingTransferMethods() {
-        Set<TransferMethod> methods = new HashSet<>();
-        methods.add(TransferMethod.STREAMING);
+    protected TransferCapabilities getOutgoingTransferCapabilities() {
+        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
+            .canStream(true);
 
         try {
             // probe sas.
             blobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
                 new BlobContainerSasPermission().setReadPermission(true)));
-            methods.add(TransferMethod.URL_WITH_SAS);
+            transferCapabilitiesBuilder.canUseSasUri(true);
         } catch (Exception e) {
             // ignore
         }
 
-        return methods;
+        return transferCapabilitiesBuilder.build();
     }
 }

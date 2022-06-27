@@ -1,15 +1,14 @@
 package com.azure.storage.datamover.file.share;
 
 import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferMethod;
+import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 class FileShareResource extends StorageResource {
 
@@ -20,36 +19,36 @@ class FileShareResource extends StorageResource {
     }
 
     @Override
-    protected Set<TransferMethod> getIncomingTransferMethods() {
-        Set<TransferMethod> methods = new HashSet<>();
-        methods.add(TransferMethod.STREAMING);
+    protected TransferCapabilities getIncomingTransferCapabilities() {
+        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
+            .canStream(true);
 
         try {
             // probe sas.
             shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
                 new ShareSasPermission().setWritePermission(true)));
-            methods.add(TransferMethod.URL_WITH_SAS);
+            transferCapabilitiesBuilder.canUseSasUri(true);
         } catch (Exception e) {
             // ignore
         }
 
-        return methods;
+        return transferCapabilitiesBuilder.build();
     }
 
     @Override
-    protected Set<TransferMethod> getOutgoingTransferMethods() {
-        Set<TransferMethod> methods = new HashSet<>();
-        methods.add(TransferMethod.STREAMING);
+    protected TransferCapabilities getOutgoingTransferCapabilities() {
+        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
+            .canStream(true);
 
         try {
             // probe sas.
             shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
                 new ShareSasPermission().setReadPermission(true)));
-            methods.add(TransferMethod.URL_WITH_SAS);
+            transferCapabilitiesBuilder.canUseSasUri(true);
         } catch (Exception e) {
             // ignore
         }
 
-        return methods;
+        return transferCapabilitiesBuilder.build();
     }
 }

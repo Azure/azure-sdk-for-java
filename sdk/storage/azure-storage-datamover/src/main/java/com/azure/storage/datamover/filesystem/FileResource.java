@@ -1,11 +1,10 @@
 package com.azure.storage.datamover.filesystem;
 
 import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferMethod;
+import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Set;
 
 class FileResource extends StorageResource {
 
@@ -19,12 +18,16 @@ class FileResource extends StorageResource {
     }
 
     @Override
-    protected Set<TransferMethod> getIncomingTransferMethods() {
-        return Collections.singleton(TransferMethod.STREAMING);
+    protected TransferCapabilities getIncomingTransferCapabilities() {
+        return new TransferCapabilitiesBuilder()
+            .canStream(true)
+            .build();
     }
 
     @Override
-    protected Set<TransferMethod> getOutgoingTransferMethods() {
-        return Collections.singleton(TransferMethod.STREAMING);
+    protected TransferCapabilities getOutgoingTransferCapabilities() {
+        return new TransferCapabilitiesBuilder()
+            .canStream(true)
+            .build();
     }
 }

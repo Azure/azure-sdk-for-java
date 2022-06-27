@@ -1,12 +1,11 @@
 package com.azure.storage.datamover.s3;
 
 import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferMethod;
+import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 
-import java.util.Collections;
 import java.util.Objects;
-import java.util.Set;
 
 class S3ObjectResource extends StorageResource {
 
@@ -21,12 +20,16 @@ class S3ObjectResource extends StorageResource {
     }
 
     @Override
-    protected Set<TransferMethod> getIncomingTransferMethods() {
-        return Collections.singleton(TransferMethod.STREAMING);
+    protected TransferCapabilities getIncomingTransferCapabilities() {
+        return new TransferCapabilitiesBuilder()
+            .canStream(true)
+            .build();
     }
 
     @Override
-    protected Set<TransferMethod> getOutgoingTransferMethods() {
-        return Collections.singleton(TransferMethod.STREAMING);
+    protected TransferCapabilities getOutgoingTransferCapabilities() {
+        return new TransferCapabilitiesBuilder()
+            .canStream(true)
+            .build();
     }
 }

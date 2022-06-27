@@ -2,15 +2,14 @@ package com.azure.storage.datamover.file.share;
 
 import com.azure.storage.datamover.StorageResource;
 import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferMethod;
+import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 class FileShareDirectoryResourceContainer extends StorageResourceContainer {
@@ -31,19 +30,19 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Set<TransferMethod> getIncomingTransferMethods() {
-        Set<TransferMethod> methods = new HashSet<>();
-        methods.add(TransferMethod.STREAMING);
+    protected TransferCapabilities getIncomingTransferCapabilities() {
+        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
+            .canStream(true);
 
         try {
             // probe sas.
             shareDirectoryClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
                 new ShareSasPermission().setWritePermission(true)));
-            methods.add(TransferMethod.URL_WITH_SAS);
+            transferCapabilitiesBuilder.canUseSasUri(true);
         } catch (Exception e) {
             // ignore
         }
 
-        return methods;
+        return transferCapabilitiesBuilder.build();
     }
 }
