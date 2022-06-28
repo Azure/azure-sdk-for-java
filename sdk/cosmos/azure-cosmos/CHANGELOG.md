@@ -2,7 +2,7 @@
 
 ### 4.32.0 (2022-06-27)
 #### Other Changes
-* Remove requires `io.netty.transport.epoll` from `module-info`.
+* Remove requires `io.netty.transport.epoll` from `module-info` - See [PR 29509](https://github.com/Azure/azure-sdk-for-java/pull/29509)
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 ### 4.31.0 (2022-06-08)
