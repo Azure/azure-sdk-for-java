@@ -24,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Objects;
