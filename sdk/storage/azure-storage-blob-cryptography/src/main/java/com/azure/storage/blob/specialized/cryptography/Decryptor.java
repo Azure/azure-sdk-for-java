@@ -91,7 +91,7 @@ abstract class Decryptor {
     static Decryptor getDecryptor(AsyncKeyEncryptionKeyResolver keyResolver,
         AsyncKeyEncryptionKey keyWrapper, EncryptionData encryptionData) {
         if (encryptionData == null) {
-            return new NoOpDecryptor(keyResolver, keyWrapper, encryptionData);
+            return new NoOpDecryptor(keyResolver, keyWrapper, null);
         }
         switch (encryptionData.getEncryptionAgent().getProtocol()) {
             case ENCRYPTION_PROTOCOL_V1:
