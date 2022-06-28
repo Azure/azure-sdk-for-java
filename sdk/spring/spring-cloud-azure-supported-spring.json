@@ -19,7 +19,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : null,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "2.7.2-SNAPSHOT",
     "spring-cloud-version" : "2021.0.3"
   },
@@ -27,7 +27,7 @@
     "current" : true,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : null,
+    "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.7.1",
     "spring-cloud-version" : "2021.0.3"
   },
@@ -51,7 +51,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : null,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "2.6.10-SNAPSHOT",
     "spring-cloud-version" : "2021.0.3"
   },
@@ -59,7 +59,7 @@
     "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : null,
+    "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.6.9",
     "spring-cloud-version" : "2021.0.3"
   },
