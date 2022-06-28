@@ -293,6 +293,10 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
             this.maxPendingEventCount = maxPendingEventCount;
         }
 
+        Duration getMaxWaitTime() {
+            return this.maxWaitTime;
+        }
+
         void setMaxWaitTime(Duration maxWaitTime) {
             this.maxWaitTime = maxWaitTime;
         }
