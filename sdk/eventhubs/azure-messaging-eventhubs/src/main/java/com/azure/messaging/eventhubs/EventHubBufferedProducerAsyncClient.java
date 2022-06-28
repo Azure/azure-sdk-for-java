@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {
-    private final ClientLogger logger  = new ClientLogger(EventHubBufferedProducerAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(EventHubBufferedProducerAsyncClient.class);
     private final EventHubAsyncClient client;
     private final EventHubClientBuilder builder;
     private final BufferedProducerClientOptions clientOptions;
@@ -144,11 +144,11 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         private boolean enableIdempotentRetries = false;
         private int maxConcurrentSendsPerPartition = 1;
 
-        //TODO (conniey): Figure out what the other defaults are.
-        private int maxPendingEventCount = 10;
+        private int maxPendingEventCount = 1500;
         private Duration maxWaitTime;
         private Consumer<SendBatchFailedContext> sendFailedContext;
         private Consumer<SendBatchSucceededContext> sendSucceededContext;
+        private int maxConcurrentSends;
 
         boolean isEnableIdempotentRetries() {
             return enableIdempotentRetries;
@@ -156,6 +156,14 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
 
         void setEnableIdempotentRetries(boolean enableIdempotentRetries) {
             this.enableIdempotentRetries = enableIdempotentRetries;
+        }
+
+        int getMaxConcurrentSends() {
+            return maxConcurrentSends;
+        }
+
+        void setMaxConcurrentSends(int maxConcurrentSends) {
+            this.maxConcurrentSends = maxConcurrentSends;
         }
 
         int getMaxConcurrentSendsPerPartition() {
