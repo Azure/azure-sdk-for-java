@@ -14,6 +14,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class FileResource extends StorageResource {
 
@@ -59,10 +60,26 @@ class FileResource extends StorageResource {
     @Override
     protected void consumeInputStream(InputStream inputStream, long length) {
         try (OutputStream fos = new FileOutputStream(path.toFile())) {
-            inputStream.transferTo(fos);
+            transfer(inputStream, fos);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    private static final int DEFAULT_BUFFER_SIZE = 8192;
+
+    // No Java 9+ on agent building apiview :-(
+    private long transfer(InputStream in, OutputStream out) throws IOException {
+        Objects.requireNonNull(in, "in");
+        Objects.requireNonNull(out, "out");
+        long transferred = 0;
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        int read;
+        while ((read = in.read(buffer, 0, DEFAULT_BUFFER_SIZE)) >= 0) {
+            out.write(buffer, 0, read);
+            transferred += read;
+        }
+        return transferred;
     }
 
     @Override
