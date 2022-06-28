@@ -19,7 +19,38 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.function.Consumer;
 
-@ServiceClient(builder = EventHubBufferedProducerClientBuilder.class)
+/**
+ * A client responsible for publishing instances of {@link EventData} to a specific Event Hub.  Depending on the options
+ * specified when events are enqueued, they may be automatically assigned to a partition, grouped according to the
+ * specified partition key, or assigned a specifically requested partition.
+ *
+ * <p>
+ * The {@link EventHubBufferedProducerAsyncClient} does not publish immediately, instead using a deferred model where
+ * events are collected into a buffer so that they may be efficiently batched and published when the batch is full or
+ * the {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration) maxWaitTime} has elapsed with no new events
+ * enqueued.
+ * </p>
+ * <p>
+ * This model is intended to shift the burden of batch management from callers, at the cost of non-deterministic timing,
+ * for when events will be published. There are additional trade-offs to consider, as well:
+ * </p>
+ * <ul>
+ * <li>If the application crashes, events in the buffer will not have been published.  To
+ * prevent data loss, callers are encouraged to track publishing progress using
+ * {@link EventHubBufferedProducerClientBuilder#onSendBatchFailed(Consumer) onSendBatchFailed} and
+ * {@link EventHubBufferedProducerClientBuilder#onSendBatchSucceeded(Consumer) onSendBatchSucceeded}.</li>
+ * <li>Events specifying a partition key may be assigned a different partition than those
+ * using the same key with other producers.</li>
+ * <li>In the unlikely event that a partition becomes temporarily unavailable,
+ * the {@link EventHubBufferedProducerAsyncClient} may take longer to recover than other producers.</li>
+ * </ul>
+ * <p>
+ * In scenarios where it is important to have events published immediately with a deterministic outcome, ensure that
+ * partition keys are assigned to a partition consistent with other publishers, or where maximizing availability is a
+ * requirement, using {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient} is recommended.
+ * </p>
+ */
+@ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubBufferedProducerAsyncClient.class);
     private final EventHubAsyncClient client;
@@ -103,34 +134,114 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         return client.getPartitionProperties(partitionId);
     }
 
+    /**
+     * Gets the total number of events that are currently buffered and waiting to be published, across all partitions.
+     *
+     * @return The total number of events that are currently buffered and waiting to be published, across all
+     *     partitions.
+     */
     public int getBufferedEventCount() {
         return 0;
     }
 
+    /**
+     * Gets the number of events that are buffered and waiting to be published for a given partition.
+     *
+     * @param partitionId The partition identifier.
+     *
+     * @return The number of events that are buffered and waiting to be published for a given partition.
+     */
     public int getBufferedEventCount(String partitionId) {
         return 0;
     }
 
-    public Mono<Void> enqueueEvent(EventData eventData) {
+    /**
+     * Enqueues an {@link EventData} into the buffer to be published to the Event Hub.  If there is no capacity in the
+     * buffer when this method is invoked, it will wait for space to become available and ensure that the {@code
+     * eventData} has been enqueued.
+     *
+     * When this call returns, the {@code eventData} has been accepted into the buffer, but it may not have been
+     * published yet. Publishing will take place at a nondeterministic point in the future as the buffer is processed.
+     *
+     * @param eventData The event to be enqueued into the buffer and, later, published.
+     *
+     * @return The total number of events that are currently buffered and waiting to be published, across all
+     *     partitions.
+     */
+    public Mono<Integer> enqueueEvent(EventData eventData) {
         return null;
     }
 
-    public Mono<Void> enqueueEvent(EventData eventData, SendOptions options) {
+    /**
+     * Enqueues an {@link EventData} into the buffer to be published to the Event Hub.  If there is no capacity in the
+     * buffer when this method is invoked, it will wait for space to become available and ensure that the {@code
+     * eventData} has been enqueued.
+     *
+     * When this call returns, the {@code eventData} has been accepted into the buffer, but it may not have been
+     * published yet. Publishing will take place at a nondeterministic point in the future as the buffer is processed.
+     *
+     * @param eventData The event to be enqueued into the buffer and, later, published.
+     * @param options The set of options to apply when publishing this event.
+     *
+     * @return The total number of events that are currently buffered and waiting to be published, across all
+     *     partitions.
+     */
+    public Mono<Integer> enqueueEvent(EventData eventData, SendOptions options) {
         return null;
     }
 
-    public Mono<Void> enqueueEvents(Iterable<EventData> events) {
+    /**
+     * Enqueues a set of {@link EventData} into the buffer to be published to the Event Hub.  If there is insufficient
+     * capacity in the buffer when this method is invoked, it will wait for space to become available and ensure that
+     * all EventData in the {@code events} set have been enqueued.
+     *
+     * When this call returns, the {@code events} have been accepted into the buffer, but it may not have been published
+     * yet. Publishing will take place at a nondeterministic point in the future as the buffer is processed.
+     *
+     * @param events The set of events to be enqueued into the buffer and, later, published.
+     *
+     * @return The total number of events that are currently buffered and waiting to be published, across all
+     *     partitions.
+     */
+    public Mono<Integer> enqueueEvents(Iterable<EventData> events) {
         return null;
     }
 
-    public Mono<Void> enqueueEvents(Iterable<EventData> events, SendOptions options) {
+    /**
+     * Enqueues a set of {@link EventData} into the buffer to be published to the Event Hub.  If there is insufficient
+     * capacity in the buffer when this method is invoked, it will wait for space to become available and ensure that
+     * all EventData in the {@code events} set have been enqueued.
+     *
+     * When this call returns, the {@code events} have been accepted into the buffer, but it may not have been published
+     * yet. Publishing will take place at a nondeterministic point in the future as the buffer is processed.
+     *
+     * @param events The set of events to be enqueued into the buffer and, later, published.
+     * @param options The set of options to apply when publishing this event.
+     *
+     * @return The total number of events that are currently buffered and waiting to be published, across all
+     *     partitions.
+     */
+    public Mono<Integer> enqueueEvents(Iterable<EventData> events, SendOptions options) {
         return null;
     }
 
+    /**
+     * Attempts to publish all events in the buffer immediately.  This may result in multiple batches being published,
+     * the outcome of each of which will be individually reported by the
+     * {@link EventHubBufferedProducerClientBuilder#onSendBatchFailed(Consumer)}
+     * and {@link EventHubBufferedProducerClientBuilder#onSendBatchSucceeded(Consumer)} handlers.
+     *
+     * Upon completion of this method, the buffer will be empty.
+     *
+     * @return A mono that completes when the buffers are empty.
+     */
     public Mono<Void> flush() {
         return null;
     }
 
+    /**
+     * Disposes of the producer and all its resources.
+     */
     @Override
     public void close() {
         client.close();

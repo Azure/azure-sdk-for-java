@@ -23,6 +23,12 @@ import java.util.function.Consumer;
 
 import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 
+/**
+ * Builder used to instantiate {@link EventHubBufferedProducerClient} and {@link EventHubBufferedProducerAsyncClient}.
+ *
+ * @see EventHubBufferedProducerClient
+ * @see EventHubBufferedProducerAsyncClient
+ */
 @ServiceClientBuilder(
     serviceClients = {EventHubBufferedProducerAsyncClient.class, EventHubBufferedProducerClient.class},
     protocol = ServiceClientProtocol.AMQP)
@@ -142,6 +148,9 @@ public final class EventHubBufferedProducerClientBuilder {
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details
      * on proper usage of the {@link TokenCredential} type.
      *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
      *
@@ -161,6 +170,9 @@ public final class EventHubBufferedProducerClientBuilder {
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details
      * on proper usage of the {@link TokenCredential} type.
      *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
      *
