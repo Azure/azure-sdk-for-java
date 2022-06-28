@@ -10,8 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceOperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in MediaServiceOperationStatusesClient. */
-public interface MediaServiceOperationStatusesClient {
+/** An instance of this class provides access to all the operations defined in MediaServicesOperationStatusesClient. */
+public interface MediaServicesOperationStatusesClient {
     /**
      * Get media service operation status.
      *

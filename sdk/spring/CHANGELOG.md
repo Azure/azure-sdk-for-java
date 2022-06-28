@@ -1,6 +1,7 @@
 # Release History
 
 ## 4.3.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.1 and Spring Cloud dependencies version to 2021.0.3
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
@@ -54,6 +55,11 @@ This section includes changes in `spring-cloud-azure-starter-active-directory-b2
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
+### Spring Integration Azure Storage Queue
+This section includes changes in `spring-integration-azure-storage-queue` module.
+
+#### Features Added
+- Add configurable visibility timeout to `StorageQueueMessageSource` to allow configuring visibility timeout of message source at startup [#29567](https://github.com/Azure/azure-sdk-for-java/pull/29567).
 
 ## 4.2.0 (2022-05-26)
 

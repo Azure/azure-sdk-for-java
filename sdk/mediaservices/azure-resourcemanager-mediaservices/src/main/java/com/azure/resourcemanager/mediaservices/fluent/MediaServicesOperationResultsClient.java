@@ -8,10 +8,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
-import com.azure.resourcemanager.mediaservices.models.MediaServiceOperationResultsGetResponse;
+import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResultsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in MediaServiceOperationResultsClient. */
-public interface MediaServiceOperationResultsClient {
+/** An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient. */
+public interface MediaServicesOperationResultsClient {
     /**
      * Get media service operation result.
      *
@@ -37,5 +37,5 @@ public interface MediaServiceOperationResultsClient {
      * @return media service operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceOperationResultsGetResponse getWithResponse(String locationName, String operationId, Context context);
+    MediaServicesOperationResultsGetResponse getWithResponse(String locationName, String operationId, Context context);
 }

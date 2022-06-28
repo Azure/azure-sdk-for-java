@@ -5,6 +5,8 @@
 ### Features Added
 
 - Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+- Added `BinaryData.toReplayableBinaryData` and `BinaryData.toReplayableBinaryDataAsync` to allow
+  transforming `BinaryData` instances into replayable `BinaryData` for all content types.
 - Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
   - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
   - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.

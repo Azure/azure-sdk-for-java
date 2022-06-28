@@ -1,20 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.service.implementation.keyvault.secret;
+package com.azure.spring.cloud.service.implementation.keyvault.secrets;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.identity.ClientCertificateCredential;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.service.implementation.AzureHttpClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.core.http.TestHttpClient;
-import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
-import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import java.util.List;
@@ -35,60 +31,9 @@ class SecretClientBuilderFactoryTests extends
 
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
-
     @Override
     protected AzureKeyVaultSecretTestProperties createMinimalServiceProperties() {
         return new AzureKeyVaultSecretTestProperties();
-    }
-
-    @Test
-    void testServiceVersionConfigured() {
-        AzureKeyVaultSecretTestProperties properties = new AzureKeyVaultSecretTestProperties();
-        properties.setServiceVersion(SecretServiceVersion.V7_0);
-
-        final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).serviceVersion(SecretServiceVersion.V7_0);
-    }
-
-    @Test
-    void testEndpointConfigured() {
-        AzureKeyVaultSecretTestProperties properties = new AzureKeyVaultSecretTestProperties();
-        properties.setEndpoint(ENDPOINT);
-
-        final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).vaultUrl(ENDPOINT);
-    }
-
-
-    @Test
-    void testClientSecretTokenCredentialConfigured() {
-        AzureKeyVaultSecretTestProperties properties = createMinimalServiceProperties();
-
-        properties.getCredential().setClientId("test-client");
-        properties.getCredential().setClientSecret("test-secret");
-        properties.getProfile().setTenantId("test-tenant");
-
-        final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
-
-        verify(builder, times(1)).credential(any(ClientSecretCredential.class));
-    }
-
-    @Test
-    void testClientCertificateTokenCredentialConfigured() {
-        AzureKeyVaultSecretTestProperties properties = createMinimalServiceProperties();
-
-        properties.getCredential().setClientId("test-client");
-        properties.getCredential().setClientCertificatePath("test-cert-path");
-        properties.getCredential().setClientCertificatePassword("test-cert-password");
-        properties.getProfile().setTenantId("test-tenant");
-
-        final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
-
-        verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
     }
 
     @Override
@@ -126,6 +71,19 @@ class SecretClientBuilderFactoryTests extends
     @Override
     protected List<HttpPipelinePolicy> getHttpPipelinePolicies(SecretClientBuilderFactoryExt builderFactory) {
         return builderFactory.getHttpPipelinePolicies();
+    }
+
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureKeyVaultSecretTestProperties properties = new AzureKeyVaultSecretTestProperties();
+        properties.setServiceVersion(SecretServiceVersion.V7_0);
+        properties.setEndpoint(ENDPOINT);
+
+        final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
+        final SecretClientBuilder builder = factoryExt.build();
+
+        verify(builder, times(1)).vaultUrl(ENDPOINT);
+        verify(builder, times(1)).serviceVersion(SecretServiceVersion.V7_0);
     }
 
     static class SecretClientBuilderFactoryExt extends SecretClientBuilderFactory {

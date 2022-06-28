@@ -1,16 +1,18 @@
 ## Release History
 
-### 3.23.0-beta.1 (Unreleased)
-
+### 3.23.0 (2022-06-27)
+> [!IMPORTANT]
+> This release supports Spring Boot version 2.7.x and above.
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
+* Updated `azure-cosmos` to version `4.32.0`.
+* Updated `Spring Boot` to version `2.7.1`.
+* Updated `Spring Data Commons` to version `2.7.1`.
 #### Other Changes
+* Performance improvement for case-insensitive queries - See [PR 29597](https://github.com/Azure/azure-sdk-for-java/pull/29597) and [PR 29644](https://github.com/Azure/azure-sdk-for-java/pull/29644)
 
 ### 3.22.0 (2022-06-08)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 3.22.0 and above.
 #### Features Added
 * Exposed `maxDegreeOfParallelism` feature from CosmosQueryRequestOptions through application.properties flag - See [PR 28756](https://github.com/Azure/azure-sdk-for-java/pull/28756)
 
@@ -105,8 +107,6 @@
 * Fixed spring data cosmos `query plan` caching.
 
 ### 3.10.0 (2021-08-16)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 3.10.0 and above.
 #### New Features
 * Updated `Spring Boot` to version 2.5.3.
 * Updated `azure-cosmos` to version 4.18.0.

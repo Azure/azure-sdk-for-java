@@ -6,18 +6,15 @@ package com.azure.spring.cloud.service.implementation.servicebus.factory;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.cloud.service.implementation.AzureAmqpClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusClientCommonTestProperties;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusNamespaceTestProperties;
 import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,23 +24,31 @@ class ServiceBusClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryB
     ServiceBusClientCommonTestProperties,
     ServiceBusClientBuilderFactoryTests.ServiceBusClientBuilderFactoryExt> {
 
+    static final String CONNECTION_STRING_FORMAT = "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+
     @Test
-    void azureSasCredentialConfigured() {
-        ServiceBusClientCommonTestProperties properties = createMinimalServiceProperties();
-        properties.setSasToken("test-token");
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build();
-        verify(builder, times(1)).credential(anyString(), any(AzureSasCredential.class));
+    void namespaceClientPropertiesConfigured() {
+        ServiceBusNamespaceTestProperties properties = new ServiceBusNamespaceTestProperties();
+        properties.setNamespace("test-namespace");
+        properties.setCrossEntityTransactions(true);
+
+        final ServiceBusClientBuilderFactoryExt factoryExt = new ServiceBusClientBuilderFactoryExt(properties);
+        final ServiceBusClientBuilder builder = factoryExt.build();
+
+        verify(builder, times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(builder, times(1)).enableCrossEntityTransactions();
     }
 
     @Test
-    void azureNamedKeyCredentialConfigured() {
-        ServiceBusClientCommonTestProperties properties = createMinimalServiceProperties();
-        NamedKeyProperties namedKey = new NamedKeyProperties();
-        namedKey.setKey("test-key");
-        namedKey.setName("test-name");
-        properties.setNamedKey(namedKey);
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build();
-        verify(builder, times(1)).credential(anyString(), any(AzureNamedKeyCredential.class));
+    void connectionStringConfigured() {
+        ServiceBusNamespaceTestProperties properties = new ServiceBusNamespaceTestProperties();
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+        properties.setConnectionString(connectionString);
+
+        final ServiceBusClientBuilderFactoryExt factoryExt = new ServiceBusClientBuilderFactoryExt(properties);
+        final ServiceBusClientBuilder builder = factoryExt.build();
+
+        verify(builder, times(1)).connectionString(connectionString);
     }
 
     @Override
@@ -65,6 +70,17 @@ class ServiceBusClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryB
     }
 
     @Override
+    protected void verifyServicePropertiesConfigured() {
+        ServiceBusClientCommonTestProperties properties = new ServiceBusClientCommonTestProperties();
+        properties.setNamespace("test-namespace");
+
+        final ServiceBusClientBuilderFactoryExt factoryExt = new ServiceBusClientBuilderFactoryExt(properties);
+        final ServiceBusClientBuilder builder = factoryExt.build();
+
+        verify(builder, times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+    }
+
+    @Override
     protected void verifyRetryOptionsCalled(ServiceBusClientBuilder builder, VerificationMode mode) {
         verify(builder, mode).retryOptions(any(AmqpRetryOptions.class));
     }
@@ -83,7 +99,7 @@ class ServiceBusClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryB
     protected void verifyCredentialCalled(ServiceBusClientBuilder builder,
                                           Class<? extends TokenCredential> tokenCredentialClass,
                                           VerificationMode mode) {
-        verify(builder, mode).credential(any(String.class), any(tokenCredentialClass));
+        verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
     static class ServiceBusClientBuilderFactoryExt extends ServiceBusClientBuilderFactory {
