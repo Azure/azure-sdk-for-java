@@ -25,9 +25,11 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     private final JedisPool jedisPool;
     private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
+
     JedisRedisCheckpointStore(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
+
     /**
      * This method returns the list of partitions that were owned successfully.
      *
@@ -38,6 +40,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
         return null;
     }
+
     /**
      * This method returns the list of checkpoints from the underlying data store, and if no checkpoints are available, then it returns empty results.
      *
@@ -57,17 +60,17 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             ArrayList<Checkpoint> list = new ArrayList<>();
             for (String member : members) {
                 //get the associated JSON representation for each for the members
-                List<String> checkpointJSONList = jedis.hmget(member, "checkpoint");
-                String checkpointJSON;
-                if (checkpointJSONList.size() == 0) {
+                List<String> checkpointJsonList = jedis.hmget(member, "checkpoint");
+                String checkpointJson;
+                if (checkpointJsonList.size() == 0) {
                     return Flux.error(new IllegalAccessException());
                 }
                 else {
-                    checkpointJSON = checkpointJSONList.get(0);
+                    checkpointJson = checkpointJsonList.get(0);
                 }
                 //convert JSON representation into Checkpoint
                 try {
-                    Checkpoint checkpoint = jacksonAdapter.deserialize(checkpointJSON, Checkpoint.class, SerializerEncoding.JSON);
+                    Checkpoint checkpoint = jacksonAdapter.deserialize(checkpointJson, Checkpoint.class, SerializerEncoding.JSON);
                     list.add(checkpoint);
                 }
                 catch (IOException e) {
@@ -79,6 +82,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
 
     }
+
     /**
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
@@ -91,12 +95,23 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         try (Jedis jedis = jedisPool.getResource()) {
             Set<String> members = jedis.smembers(prefix);
             ArrayList<PartitionOwnership> list = new ArrayList<>();
+            if (members.isEmpty()) {
+                return Flux.error(new IllegalArgumentException()); // no ownership records to list
+            }
             for (String member : members) {
+
                 //get the associated JSON representation for each for the members
-                String partitionOwnershipJSON = jedis.hmget(member, "partitionOwnership").get(0);
+                List<String> partitionOwnershipJsonList = jedis.hmget(member, "partitionOwnership");
+                String partitionOwnershipJson;
+                if (partitionOwnershipJsonList.size() == 0) {
+                    return Flux.error(new IllegalAccessException());
+                }
+                else {
+                    partitionOwnershipJson = partitionOwnershipJsonList.get(0);
+                }
                 //convert JSON representation into PartitionOwnership
                 try {
-                    PartitionOwnership partitionOwnership = jacksonAdapter.deserialize(partitionOwnershipJSON, PartitionOwnership.class, SerializerEncoding.JSON);
+                    PartitionOwnership partitionOwnership = jacksonAdapter.deserialize(partitionOwnershipJson, PartitionOwnership.class, SerializerEncoding.JSON);
                     list.add(partitionOwnership);
                 }
                 catch (IOException e) {
@@ -139,13 +154,17 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
         return null;
     }
+
     private String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
     }
+
     private String keyBuilder(String prefix, String partitionId) {
         return prefix + "/" + partitionId;
     }
+
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
     }
+
 }
