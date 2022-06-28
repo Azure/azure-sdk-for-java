@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.24.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.23.0 (2022-06-27)
 > [!IMPORTANT]
 > This release supports Spring Boot version 2.7.x and above.
