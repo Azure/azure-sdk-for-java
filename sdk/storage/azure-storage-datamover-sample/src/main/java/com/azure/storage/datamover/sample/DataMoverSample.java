@@ -6,10 +6,13 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.datamover.DataMover;
 import com.azure.storage.datamover.DataMoverBuilder;
 import com.azure.storage.datamover.DataTransfer;
+import com.azure.storage.datamover.StorageResource;
+import com.azure.storage.datamover.StorageResourceContainer;
 import com.azure.storage.datamover.blob.BlobResources;
 import com.azure.storage.datamover.file.share.FileShareResources;
 import com.azure.storage.datamover.filesystem.FileSystemResources;
 import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -39,6 +42,7 @@ public class DataMoverSample {
 
         transferFileToShareFile(dataMover, shareServiceClient);
         transferDirectoryToShare(dataMover, shareServiceClient);
+        transferDirectoryToShareDirectory(dataMover, shareServiceClient);
     }
 
 
@@ -48,10 +52,10 @@ public class DataMoverSample {
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
 
-        DataTransfer dataTransfer = dataMover.startTransfer(
-            FileSystemResources.file(sampleFile),
-            BlobResources.blob(containerClient.getBlobClient("samplefile.txt"))
-        );
+        StorageResource localFile = FileSystemResources.file(sampleFile);
+        StorageResource blob = BlobResources.blob(containerClient.getBlobClient("samplefile.txt"));
+
+        DataTransfer dataTransfer = dataMover.startTransfer(localFile, blob);
 
         dataTransfer.awaitCompletion();
     }
@@ -61,10 +65,10 @@ public class DataMoverSample {
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
-        DataTransfer dataTransfer = dataMover.startTransfer(
-            FileSystemResources.directory(sampleDirectory),
-            BlobResources.blobContainer(containerClient)
-        );
+        StorageResourceContainer localDirectory = FileSystemResources.directory(sampleDirectory);
+        StorageResourceContainer blobContainer = BlobResources.blobContainer(containerClient);
+
+        DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, blobContainer);
 
         dataTransfer.awaitCompletion();
     }
@@ -75,10 +79,10 @@ public class DataMoverSample {
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
 
-        DataTransfer dataTransfer = dataMover.startTransfer(
-            FileSystemResources.file(sampleFile),
-            FileShareResources.file(fileClient)
-        );
+        StorageResource localFile = FileSystemResources.file(sampleFile);
+        StorageResource shareFile = FileShareResources.file(fileClient);
+
+        DataTransfer dataTransfer = dataMover.startTransfer(localFile, shareFile);
 
         dataTransfer.awaitCompletion();
     }
@@ -88,10 +92,24 @@ public class DataMoverSample {
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
-        DataTransfer dataTransfer = dataMover.startTransfer(
-            FileSystemResources.directory(sampleDirectory),
-            FileShareResources.share(shareClient)
-        );
+        StorageResourceContainer localDirectory = FileSystemResources.directory(sampleDirectory);
+        StorageResourceContainer share = FileShareResources.share(shareClient);
+
+        DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, share);
+
+        dataTransfer.awaitCompletion();
+    }
+
+    private static void transferDirectoryToShareDirectory(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-04-directorytosharedirectory");
+        ShareDirectoryClient shareDirectoryClient = shareClient.createDirectory("foo");
+
+        Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
+
+        StorageResourceContainer localDirectory = FileSystemResources.directory(sampleDirectory);
+        StorageResourceContainer shareDirectory = FileShareResources.directory(shareDirectoryClient);
+
+        DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, shareDirectory);
 
         dataTransfer.awaitCompletion();
     }

@@ -32,7 +32,7 @@ class DirectoryResourceContainer extends StorageResourceContainer {
                 .filter(Files::isRegularFile)
                 .map(file -> {
                     Path relativePath = path.relativize(file);
-                    String[] split = relativePath.toString().split("/");
+                    String[] split = relativePath.toString().split("(\\\\)|(/)");
                     return new FileResource(file, Arrays.asList(split));
                 })
                 .collect(Collectors.toList());

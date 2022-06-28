@@ -27,7 +27,7 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
         return shareDirectoryClient.listFilesAndDirectories()
             .stream().filter(
                 item -> !item.isDirectory()
-            ).map(item -> new FileShareResource(shareDirectoryClient.getFileClient(item.getName())))
+            ).map(item -> new FileShareResource(shareDirectoryClient.getFileClient(item.getName()), shareDirectoryClient))
             .collect(Collectors.toList());
     }
 
@@ -56,6 +56,8 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
 
     @Override
     protected StorageResource getStorageResource(List<String> path) {
-        return new FileShareResource(shareDirectoryClient.getFileClient(String.join("/", path)));
+        return new FileShareResource(
+            shareDirectoryClient.getFileClient(String.join("/", path)),
+            shareDirectoryClient);
     }
 }
