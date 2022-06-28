@@ -15,21 +15,21 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgerIdentityServicesImpl;
+import com.azure.security.confidentialledger.implementation.ConfidentialLedgerIdentityClientImpl;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ConfidentialLedgerClient type. */
-@ServiceClient(builder = ConfidentialLedgerIdentityServiceClientBuilder.class, isAsync = true)
-public final class ConfidentialLedgerIdentityServiceAsyncClient {
-    @Generated private final ConfidentialLedgerIdentityServicesImpl serviceClient;
+/** Initializes a new instance of the asynchronous ConfidentialLedgerIdentityClient type. */
+@ServiceClient(builder = ConfidentialLedgerIdentityClientBuilder.class, isAsync = true)
+public final class ConfidentialLedgerIdentityAsyncClient {
+    @Generated private final ConfidentialLedgerIdentityClientImpl serviceClient;
 
     /**
-     * Initializes an instance of ConfidentialLedgerIdentityServiceAsyncClient class.
+     * Initializes an instance of ConfidentialLedgerIdentityAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
-    ConfidentialLedgerIdentityServiceAsyncClient(ConfidentialLedgerIdentityServicesImpl serviceClient) {
+    ConfidentialLedgerIdentityAsyncClient(ConfidentialLedgerIdentityClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 

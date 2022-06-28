@@ -201,24 +201,6 @@ public final class ConfidentialLedgerClientBuilder
     }
 
     /*
-     * The Identity Service URL, for example
-     * https://identity.accledger.azure.com
-     */
-    @Generated private String identityServiceUri;
-
-    /**
-     * Sets The Identity Service URL, for example https://identity.accledger.azure.com.
-     *
-     * @param identityServiceUri the identityServiceUri value.
-     * @return the ConfidentialLedgerClientBuilder.
-     */
-    @Generated
-    public ConfidentialLedgerClientBuilder identityServiceUri(String identityServiceUri) {
-        this.identityServiceUri = identityServiceUri;
-        return this;
-    }
-
-    /*
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
@@ -251,11 +233,7 @@ public final class ConfidentialLedgerClientBuilder
         }
         ConfidentialLedgerClientImpl client =
                 new ConfidentialLedgerClientImpl(
-                        pipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        ledgerUri,
-                        serviceVersion,
-                        identityServiceUri);
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerUri, serviceVersion);
         return client;
     }
 
@@ -314,7 +292,7 @@ public final class ConfidentialLedgerClientBuilder
      */
     @Generated
     public ConfidentialLedgerAsyncClient buildAsyncClient() {
-        return new ConfidentialLedgerAsyncClient(buildInnerClient().getConfidentialLedgers());
+        return new ConfidentialLedgerAsyncClient(buildInnerClient());
     }
 
     /**
@@ -324,7 +302,6 @@ public final class ConfidentialLedgerClientBuilder
      */
     @Generated
     public ConfidentialLedgerClient buildClient() {
-        return new ConfidentialLedgerClient(
-                new ConfidentialLedgerAsyncClient(buildInnerClient().getConfidentialLedgers()));
+        return new ConfidentialLedgerClient(new ConfidentialLedgerAsyncClient(buildInnerClient()));
     }
 }

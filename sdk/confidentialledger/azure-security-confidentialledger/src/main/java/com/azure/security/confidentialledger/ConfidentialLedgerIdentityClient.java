@@ -16,18 +16,18 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous ConfidentialLedgerClient type. */
-@ServiceClient(builder = ConfidentialLedgerIdentityServiceClientBuilder.class)
-public final class ConfidentialLedgerIdentityServiceClient {
-    @Generated private final ConfidentialLedgerIdentityServiceAsyncClient client;
+/** Initializes a new instance of the synchronous ConfidentialLedgerIdentityClient type. */
+@ServiceClient(builder = ConfidentialLedgerIdentityClientBuilder.class)
+public final class ConfidentialLedgerIdentityClient {
+    @Generated private final ConfidentialLedgerIdentityAsyncClient client;
 
     /**
-     * Initializes an instance of ConfidentialLedgerIdentityServiceClient class.
+     * Initializes an instance of ConfidentialLedgerIdentityClient class.
      *
      * @param client the async client.
      */
     @Generated
-    ConfidentialLedgerIdentityServiceClient(ConfidentialLedgerIdentityServiceAsyncClient client) {
+    ConfidentialLedgerIdentityClient(ConfidentialLedgerIdentityAsyncClient client) {
         this.client = client;
     }
 

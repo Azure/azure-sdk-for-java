@@ -7,7 +7,6 @@ package com.azure.security.confidentialledger.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerClient;
 import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
@@ -18,11 +17,10 @@ public class GetConstitution {
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("myledger.eastus.cloudapp.azure.com")
-                        .identityServiceUri(Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI"))
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.confidentialledgergetconstitution.getconstitution
+        // BEGIN:com.azure.security.confidentialledger.generated.getconstitution.getconstitution
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getConstitutionWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.confidentialledgergetconstitution.getconstitution
+        // END:com.azure.security.confidentialledger.generated.getconstitution.getconstitution
     }
 }

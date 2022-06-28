@@ -12,32 +12,33 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.confidentialledger.ConfidentialLedgerClient;
-import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
+import com.azure.security.confidentialledger.ConfidentialLedgerIdentityClient;
+import com.azure.security.confidentialledger.ConfidentialLedgerIdentityClientBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-class ConfidentialLedgerClientTestBase extends TestBase {
-    protected ConfidentialLedgerClient confidentialLedgerClient;
+class ConfidentialLedgerIdentityClientTestBase extends TestBase {
+    protected ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient;
 
     @Override
     protected void beforeTest() {
-        ConfidentialLedgerClientBuilder confidentialLedgerClientbuilder =
-                new ConfidentialLedgerClientBuilder()
-                        .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "ledgeruri"))
+        ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder =
+                new ConfidentialLedgerIdentityClientBuilder()
+                        .identityServiceUri(
+                                Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI", "identityserviceuri"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            confidentialLedgerClientbuilder
+            confidentialLedgerIdentityClientbuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            confidentialLedgerClientbuilder
+            confidentialLedgerIdentityClientbuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            confidentialLedgerClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            confidentialLedgerIdentityClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        confidentialLedgerClient = confidentialLedgerClientbuilder.buildClient();
+        confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
     }
 }

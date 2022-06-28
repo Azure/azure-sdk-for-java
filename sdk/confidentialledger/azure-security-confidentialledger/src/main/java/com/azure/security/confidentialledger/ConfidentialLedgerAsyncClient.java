@@ -16,13 +16,13 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgersImpl;
+import com.azure.security.confidentialledger.implementation.ConfidentialLedgerClientImpl;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ConfidentialLedgerClient type. */
 @ServiceClient(builder = ConfidentialLedgerClientBuilder.class, isAsync = true)
 public final class ConfidentialLedgerAsyncClient {
-    @Generated private final ConfidentialLedgersImpl serviceClient;
+    @Generated private final ConfidentialLedgerClientImpl serviceClient;
 
     /**
      * Initializes an instance of ConfidentialLedgerAsyncClient class.
@@ -30,7 +30,7 @@ public final class ConfidentialLedgerAsyncClient {
      * @param serviceClient the service client implementation.
      */
     @Generated
-    ConfidentialLedgerAsyncClient(ConfidentialLedgersImpl serviceClient) {
+    ConfidentialLedgerAsyncClient(ConfidentialLedgerClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -128,11 +128,13 @@ public final class ConfidentialLedgerAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * [
-     *     {
-     *         collectionId: String
-     *     }
-     * ]
+     * {
+     *     collections: [
+     *         {
+     *             collectionId: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -140,8 +142,7 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of identifiers for ledger collections along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return a group of ledger collections along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

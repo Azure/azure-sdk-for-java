@@ -19,7 +19,7 @@ public final class GetCollectionIdsTests extends ConfidentialLedgerClientTestBas
         Response<BinaryData> response = confidentialLedgerClient.listCollectionsWithResponse(requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("[{\"collectionId\":\"first\"},{\"collectionId\":\"second\"}]")
+                BinaryData.fromString("{\"collections\":[{\"collectionId\":\"first\"},{\"collectionId\":\"second\"}]}")
                         .toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }

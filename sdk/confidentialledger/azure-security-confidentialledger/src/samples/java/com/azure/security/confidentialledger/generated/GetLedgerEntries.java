@@ -7,7 +7,6 @@ package com.azure.security.confidentialledger.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerClient;
 import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
@@ -18,14 +17,13 @@ public class GetLedgerEntries {
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("myledger.eastus.cloudapp.azure.com")
-                        .identityServiceUri(Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI"))
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.confidentialledgerlistledgerentries.getledgerentries
+        // BEGIN:com.azure.security.confidentialledger.generated.listledgerentries.getledgerentries
         RequestOptions requestOptions =
                 new RequestOptions()
                         .addQueryParam("fromTransactionId", "3.14")
                         .addQueryParam("toTransactionId", "3.42");
         PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.confidentialledgerlistledgerentries.getledgerentries
+        // END:com.azure.security.confidentialledger.generated.listledgerentries.getledgerentries
     }
 }

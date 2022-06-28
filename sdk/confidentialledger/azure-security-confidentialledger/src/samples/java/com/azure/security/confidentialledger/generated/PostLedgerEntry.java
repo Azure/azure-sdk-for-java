@@ -7,7 +7,6 @@ package com.azure.security.confidentialledger.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerClient;
 import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
@@ -18,12 +17,11 @@ public class PostLedgerEntry {
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("myledger.eastus.cloudapp.azure.com")
-                        .identityServiceUri(Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI"))
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.confidentialledgerpostledgerentry.postledgerentry
+        // BEGIN:com.azure.security.confidentialledger.generated.postledgerentry.postledgerentry
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
-        // END:com.azure.security.confidentialledger.generated.confidentialledgerpostledgerentry.postledgerentry
+        // END:com.azure.security.confidentialledger.generated.postledgerentry.postledgerentry
     }
 }

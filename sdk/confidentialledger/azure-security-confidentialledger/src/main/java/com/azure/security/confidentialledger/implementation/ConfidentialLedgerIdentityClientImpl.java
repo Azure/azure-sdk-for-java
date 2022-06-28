@@ -19,43 +19,135 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.security.confidentialledger.ConfidentialLedgerIdentityServiceVersion;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfidentialLedgerIdentityServices. */
-public final class ConfidentialLedgerIdentityServicesImpl {
+/** Initializes a new instance of the ConfidentialLedgerIdentityClient type. */
+public final class ConfidentialLedgerIdentityClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final ConfidentialLedgerIdentityServicesService service;
+    private final ConfidentialLedgerIdentityClientService service;
 
-    /** The service client containing this operation class. */
-    private final ConfidentialLedgerClientImpl client;
+    /** The Identity Service URL, for example https://identity.accledger.azure.com. */
+    private final String identityServiceUri;
 
     /**
-     * Initializes an instance of ConfidentialLedgerIdentityServicesImpl.
+     * Gets The Identity Service URL, for example https://identity.accledger.azure.com.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @return the identityServiceUri value.
      */
-    ConfidentialLedgerIdentityServicesImpl(ConfidentialLedgerClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        ConfidentialLedgerIdentityServicesService.class,
-                        client.getHttpPipeline(),
-                        client.getSerializerAdapter());
-        this.client = client;
+    public String getIdentityServiceUri() {
+        return this.identityServiceUri;
+    }
+
+    /** Service version. */
+    private final ConfidentialLedgerIdentityServiceVersion serviceVersion;
+
+    /**
+     * Gets Service version.
+     *
+     * @return the serviceVersion value.
+     */
+    public ConfidentialLedgerIdentityServiceVersion getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /**
-     * The interface defining all the services for ConfidentialLedgerClientConfidentialLedgerIdentityServices to be used
-     * by the proxy service to perform REST calls.
+     * Initializes an instance of ConfidentialLedgerIdentityClient client.
+     *
+     * @param identityServiceUri The Identity Service URL, for example https://identity.accledger.azure.com.
+     * @param serviceVersion Service version.
+     */
+    public ConfidentialLedgerIdentityClientImpl(
+            String identityServiceUri, ConfidentialLedgerIdentityServiceVersion serviceVersion) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                identityServiceUri,
+                serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of ConfidentialLedgerIdentityClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param identityServiceUri The Identity Service URL, for example https://identity.accledger.azure.com.
+     * @param serviceVersion Service version.
+     */
+    public ConfidentialLedgerIdentityClientImpl(
+            HttpPipeline httpPipeline,
+            String identityServiceUri,
+            ConfidentialLedgerIdentityServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), identityServiceUri, serviceVersion);
+    }
+
+    /**
+     * Initializes an instance of ConfidentialLedgerIdentityClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param identityServiceUri The Identity Service URL, for example https://identity.accledger.azure.com.
+     * @param serviceVersion Service version.
+     */
+    public ConfidentialLedgerIdentityClientImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String identityServiceUri,
+            ConfidentialLedgerIdentityServiceVersion serviceVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.identityServiceUri = identityServiceUri;
+        this.serviceVersion = serviceVersion;
+        this.service =
+                RestProxy.create(
+                        ConfidentialLedgerIdentityClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for ConfidentialLedgerIdentityClient to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{identityServiceUri}")
-    @ServiceInterface(name = "ConfidentialLedgerCl")
-    private interface ConfidentialLedgerIdentityServicesService {
+    @ServiceInterface(name = "ConfidentialLedgerId")
+    private interface ConfidentialLedgerIdentityClientService {
         @Get("/ledgerIdentity/{ledgerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -105,8 +197,8 @@ public final class ConfidentialLedgerIdentityServicesImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getLedgerIdentity(
-                                this.client.getIdentityServiceUri(),
-                                this.client.getServiceVersion().getVersion(),
+                                this.getIdentityServiceUri(),
+                                this.getServiceVersion().getVersion(),
                                 ledgerId,
                                 accept,
                                 requestOptions,
@@ -140,8 +232,8 @@ public final class ConfidentialLedgerIdentityServicesImpl {
             String ledgerId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getLedgerIdentity(
-                this.client.getIdentityServiceUri(),
-                this.client.getServiceVersion().getVersion(),
+                this.getIdentityServiceUri(),
+                this.getServiceVersion().getVersion(),
                 ledgerId,
                 accept,
                 requestOptions,

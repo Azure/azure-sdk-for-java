@@ -11,14 +11,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class GetLedgerIdentityTests extends ConfidentialLedgerClientTestBase {
+public final class GetLedgerIdentityTests extends ConfidentialLedgerIdentityClientTestBase {
     @Test
     @Disabled
     public void testGetLedgerIdentityTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                confidentialLedgerIdentityServiceClient.getLedgerIdentityWithResponse(
-                        "contoso-ledger-12345", requestOptions);
+                confidentialLedgerIdentityClient.getLedgerIdentityWithResponse("contoso-ledger-12345", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

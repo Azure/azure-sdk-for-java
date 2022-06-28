@@ -7,7 +7,6 @@ package com.azure.security.confidentialledger.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerClient;
 import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
@@ -18,11 +17,10 @@ public class GetEnclaveQuotes {
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("myledger.eastus.cloudapp.azure.com")
-                        .identityServiceUri(Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI"))
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.confidentialledgergetenclavequotes.getenclavequotes
+        // BEGIN:com.azure.security.confidentialledger.generated.getenclavequotes.getenclavequotes
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getEnclaveQuotesWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.confidentialledgergetenclavequotes.getenclavequotes
+        // END:com.azure.security.confidentialledger.generated.getenclavequotes.getenclavequotes
     }
 }

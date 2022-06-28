@@ -6,7 +6,6 @@ package com.azure.security.confidentialledger.generated;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerClient;
 import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
@@ -17,11 +16,10 @@ public class DeleteUser {
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("myledger.eastus.cloudapp.azure.com")
-                        .identityServiceUri(Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI"))
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.confidentialledgerdeleteuser.deleteuser
+        // BEGIN:com.azure.security.confidentialledger.generated.deleteuser.deleteuser
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = confidentialLedgerClient.deleteUserWithResponse("AAD object id", requestOptions);
-        // END:com.azure.security.confidentialledger.generated.confidentialledgerdeleteuser.deleteuser
+        // END:com.azure.security.confidentialledger.generated.deleteuser.deleteuser
     }
 }

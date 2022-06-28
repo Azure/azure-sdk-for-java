@@ -124,11 +124,13 @@ public final class ConfidentialLedgerClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * [
-     *     {
-     *         collectionId: String
-     *     }
-     * ]
+     * {
+     *     collections: [
+     *         {
+     *             collectionId: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -136,7 +138,7 @@ public final class ConfidentialLedgerClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of identifiers for ledger collections along with {@link Response}.
+     * @return a group of ledger collections along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
