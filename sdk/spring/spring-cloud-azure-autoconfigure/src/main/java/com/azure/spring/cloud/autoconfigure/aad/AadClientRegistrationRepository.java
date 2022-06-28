@@ -159,8 +159,8 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
 
         if (ON_BEHALF_OF.equals(authorizationGrantType)) {
             authorizationGrantType = JWT_BEARER;
-            LOGGER.warn("The grant type 'on_behalf_of' of the client '{}' is not recommended, it will be "
-                + "replaced with 'urn:ietf:params:oauth:grant-type:jwt-bearer'.", registrationId);
+            LOGGER.warn("The grant type 'on_behalf_of' is an alias, it will be replaced with "
+                + "'urn:ietf:params:oauth:grant-type:jwt-bearer' for client {}.", registrationId);
         }
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)

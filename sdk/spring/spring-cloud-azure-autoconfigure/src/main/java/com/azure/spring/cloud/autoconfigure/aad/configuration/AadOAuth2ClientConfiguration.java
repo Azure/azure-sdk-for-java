@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aad.AadOAuth2ClientAuthenticationJwkResolver;
-import com.azure.spring.cloud.autoconfigure.aad.OAuth2ClientAuthenticationJwkResolver;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2ClientAuthenticationJwkResolver;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.OAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientCertificatePropertiesCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;
@@ -77,7 +77,7 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Conditional(ClientCertificatePropertiesCondition.class)
-    public OAuth2ClientAuthenticationJwkResolver oAuth2ClientAuthenticationJwkResolver(AadAuthenticationProperties properties) {
+    OAuth2ClientAuthenticationJwkResolver oAuth2ClientAuthenticationJwkResolver(AadAuthenticationProperties properties) {
         return new AadOAuth2ClientAuthenticationJwkResolver(
             properties.getCredential().getClientCertificatePath(),
             properties.getCredential().getClientCertificatePassword());

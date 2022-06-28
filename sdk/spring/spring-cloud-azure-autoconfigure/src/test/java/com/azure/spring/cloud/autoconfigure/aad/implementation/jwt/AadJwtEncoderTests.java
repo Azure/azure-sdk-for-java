@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;
 
-import com.azure.spring.cloud.autoconfigure.aad.TestJwtClaimsSets;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwtClaimsSets;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;

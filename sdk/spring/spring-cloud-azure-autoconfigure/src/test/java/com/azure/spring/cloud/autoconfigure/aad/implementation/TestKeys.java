@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.aad;
+package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

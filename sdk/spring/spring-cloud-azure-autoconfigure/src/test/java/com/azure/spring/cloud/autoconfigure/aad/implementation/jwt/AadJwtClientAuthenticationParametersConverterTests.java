@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;
 
-import com.azure.spring.cloud.autoconfigure.aad.TestJwks;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.TestJwks;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -23,7 +23,7 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.function.Function;
 
-import static com.azure.spring.cloud.autoconfigure.aad.TestClientRegistrations.clientRegistration;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.TestClientRegistrations.clientRegistration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertNull;
