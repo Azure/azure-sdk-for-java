@@ -68,7 +68,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 else {
                     checkpointJson = checkpointJsonList.get(0);
                 }
-                //convert JSON representation into Checkpoint
                 try {
                     Checkpoint checkpoint = jacksonAdapter.deserialize(checkpointJson, Checkpoint.class, SerializerEncoding.JSON);
                     list.add(checkpoint);
@@ -80,7 +79,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             jedisPool.returnResource(jedis);
             return Flux.fromStream(list.stream());
         }
-
     }
 
     /**
@@ -109,6 +107,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 else {
                     partitionOwnershipJson = partitionOwnershipJsonList.get(0);
                 }
+
                 //convert JSON representation into PartitionOwnership
                 try {
                     PartitionOwnership partitionOwnership = jacksonAdapter.deserialize(partitionOwnershipJson, PartitionOwnership.class, SerializerEncoding.JSON);

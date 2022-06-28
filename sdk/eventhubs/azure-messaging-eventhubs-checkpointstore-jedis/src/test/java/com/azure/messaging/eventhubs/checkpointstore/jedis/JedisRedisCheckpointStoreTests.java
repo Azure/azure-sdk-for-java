@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs.checkpointstore.jedis;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -18,7 +20,9 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -28,12 +32,12 @@ public class JedisRedisCheckpointStoreTests {
     JedisPool jedisPool;
     JedisRedisCheckpointStore store;
     Jedis jedis;
-
     @BeforeEach
     public void setup() {
         jedisPool = mock(JedisPool.class);
         jedis = mock(Jedis.class);
         store = new JedisRedisCheckpointStore(jedisPool);
+
     }
 
     @Test
@@ -48,7 +52,7 @@ public class JedisRedisCheckpointStoreTests {
         Set<String> value = new HashSet<>();
         List<String> list = new ArrayList<>();
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup");
+        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
 
         try {
             list.add(jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
@@ -59,9 +63,10 @@ public class JedisRedisCheckpointStoreTests {
 
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.smembers(anyString())).thenReturn(value);
-        when(jedis.hmget(anyString(), anyString())).thenReturn(list);
+        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
 
+        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
+            eq("checkpoint"))).thenReturn(list);
         //assert
         StepVerifier.create(store.listCheckpoints("fullyQualifiedNamespace", "eventHubName", "consumerGroup"))
             .assertNext(checkpointTest -> {
@@ -77,14 +82,58 @@ public class JedisRedisCheckpointStoreTests {
         //arrange
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.smembers(anyString())).thenThrow(new IllegalArgumentException());
+        when(jedis.smembers("//")).thenThrow(new IllegalArgumentException());
         //assert
-        try {
-            store.listCheckpoints("fullyQualifiedNamespace", "eventHubName", "consumerGroup");
-        } catch (IllegalArgumentException e) {
-            assert (true);
-            return;
-        }
-        assert (false);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> store.listCheckpoints("", "", ""));
     }
+
+    @Test
+    public void testListOwnership() {
+        //arrange
+        PartitionOwnership partitionOwnership = new PartitionOwnership()
+            .setFullyQualifiedNamespace("fullyQualifiedNamespace")
+            .setEventHubName("eventHubName")
+            .setConsumerGroup("consumerGroup")
+            .setPartitionId("one")
+            .setOwnerId("ownerOne")
+            .setETag("eTag");
+
+        Set<String> value = new HashSet<>();
+        List<String> list = new ArrayList<>();
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
+        try {
+            list.add(jacksonAdapter.serialize(partitionOwnership, SerializerEncoding.JSON));
+        }
+        catch (IOException e) {
+            System.out.println("Hello");
+        }
+
+        //act
+        when(jedisPool.getResource()).thenReturn(jedis);
+        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
+
+        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
+            eq("partitionOwnership"))).thenReturn(list);
+        //assert
+        StepVerifier.create(store.listOwnership("fullyQualifiedNamespace", "eventHubName", "consumerGroup"))
+            .assertNext(partitionOwnershipTest -> {
+                assertEquals("fullyQualifiedNamespace", partitionOwnershipTest.getFullyQualifiedNamespace());
+                assertEquals("eventHubName", partitionOwnershipTest.getEventHubName());
+                assertEquals("consumerGroup", partitionOwnershipTest.getConsumerGroup());
+                assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void testListOwnershipEmptyList() {
+        //arrange
+        //act
+        when(jedisPool.getResource()).thenReturn(jedis);
+        when(jedis.smembers("//")).thenThrow(new IllegalArgumentException());
+        //assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> store.listOwnership("", "", ""));
+    }
+
 }
