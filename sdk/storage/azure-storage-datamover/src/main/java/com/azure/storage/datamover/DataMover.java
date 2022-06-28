@@ -42,7 +42,13 @@ public class DataMover {
     }
 
     private DataTransfer transferViaSasUri(StorageResource from, StorageResource to) {
-        throw new UnsupportedOperationException("not implemented yet");
+        DataTransfer dataTransfer = new DataTransfer();
+
+        String sasUri = from.getSasUri();
+        to.consumeSasUri(sasUri);
+
+        dataTransfer.latch.countDown();
+        return dataTransfer;
     }
 
     private DataTransfer transferViaStreams(StorageResource from, StorageResource to) {

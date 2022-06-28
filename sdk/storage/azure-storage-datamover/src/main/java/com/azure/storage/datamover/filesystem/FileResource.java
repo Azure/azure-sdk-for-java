@@ -66,6 +66,16 @@ class FileResource extends StorageResource {
     }
 
     @Override
+    protected String getSasUri() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected void consumeSasUri(String sasUri) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     protected List<String> getPath() {
         return abstractPath;
     }

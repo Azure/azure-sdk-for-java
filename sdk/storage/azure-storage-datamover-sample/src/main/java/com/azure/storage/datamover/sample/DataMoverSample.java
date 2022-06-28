@@ -1,5 +1,6 @@
 package com.azure.storage.datamover.sample;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -38,29 +39,34 @@ public class DataMoverSample {
         cleanup(blobServiceClient, shareServiceClient);
 
         transferFileToBlob(dataMover, blobServiceClient);
-        transferDirectoryToBlobContainer(dataMover, blobServiceClient);
+        BlobContainerClient blobContainerClient = transferDirectoryToBlobContainer(dataMover, blobServiceClient);
 
         transferFileToShareFile(dataMover, shareServiceClient);
-        transferDirectoryToShare(dataMover, shareServiceClient);
+        ShareClient shareClient = transferDirectoryToShare(dataMover, shareServiceClient);
         transferDirectoryToShareDirectory(dataMover, shareServiceClient);
+
+        transferBlobContainerToShare(dataMover, blobContainerClient, shareServiceClient);
+
+        transferShareToBlobContainer(dataMover, shareClient, blobServiceClient);
     }
 
-
-
-    private static void transferFileToBlob(DataMover dataMover, BlobServiceClient blobServiceClient) throws Exception {
+    private static BlobClient transferFileToBlob(DataMover dataMover, BlobServiceClient blobServiceClient) throws Exception {
         BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-01-filetoblob");
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
 
         StorageResource localFile = FileSystemResources.file(sampleFile);
-        StorageResource blob = BlobResources.blob(containerClient.getBlobClient("samplefile.txt"));
+        BlobClient blobClient = containerClient.getBlobClient("samplefile.txt");
+        StorageResource blob = BlobResources.blob(blobClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localFile, blob);
 
         dataTransfer.awaitCompletion();
+
+        return blobClient;
     }
 
-    private static void transferDirectoryToBlobContainer(DataMover dataMover, BlobServiceClient blobServiceClient) throws Exception {
+    private static BlobContainerClient transferDirectoryToBlobContainer(DataMover dataMover, BlobServiceClient blobServiceClient) throws Exception {
         BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-02-directorytoblobcontainer");
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
@@ -71,6 +77,8 @@ public class DataMoverSample {
         DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, blobContainer);
 
         dataTransfer.awaitCompletion();
+
+        return containerClient;
     }
 
     private static void transferFileToShareFile(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
@@ -87,7 +95,7 @@ public class DataMoverSample {
         dataTransfer.awaitCompletion();
     }
 
-    private static void transferDirectoryToShare(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
+    private static ShareClient transferDirectoryToShare(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
         ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-04-directorytoshare");
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
@@ -98,10 +106,12 @@ public class DataMoverSample {
         DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, share);
 
         dataTransfer.awaitCompletion();
+
+        return shareClient;
     }
 
     private static void transferDirectoryToShareDirectory(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
-        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-04-directorytosharedirectory");
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-05-directorytosharedirectory");
         ShareDirectoryClient shareDirectoryClient = shareClient.createDirectory("foo");
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
@@ -110,6 +120,30 @@ public class DataMoverSample {
         StorageResourceContainer shareDirectory = FileShareResources.directory(shareDirectoryClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, shareDirectory);
+
+        dataTransfer.awaitCompletion();
+    }
+
+    private static void transferBlobContainerToShare(
+        DataMover dataMover, BlobContainerClient blobContainerClient, ShareServiceClient shareServiceClient) throws Exception {
+
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-06-blobcontainertoshare");
+
+        StorageResourceContainer blobContainer = BlobResources.blobContainer(blobContainerClient);
+        StorageResourceContainer share = FileShareResources.share(shareClient);
+
+        DataTransfer dataTransfer = dataMover.startTransfer(blobContainer, share);
+
+        dataTransfer.awaitCompletion();
+    }
+
+    private static void transferShareToBlobContainer(DataMover dataMover, ShareClient shareClient, BlobServiceClient blobServiceClient) throws Exception{
+        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-07-sharetoblobcontainer");
+
+        StorageResourceContainer share = FileShareResources.share(shareClient);
+        StorageResourceContainer blobContainer = BlobResources.blobContainer(containerClient);
+
+        DataTransfer dataTransfer = dataMover.startTransfer(share, blobContainer);
 
         dataTransfer.awaitCompletion();
     }

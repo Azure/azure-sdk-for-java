@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class FileShareDirectoryResourceContainer extends StorageResourceContainer {
 
@@ -24,11 +25,21 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
 
     @Override
     protected Iterable<StorageResource> listResources() {
-        return shareDirectoryClient.listFilesAndDirectories()
-            .stream().filter(
-                item -> !item.isDirectory()
-            ).map(item -> new FileShareResource(shareDirectoryClient.getFileClient(item.getName()), shareDirectoryClient))
+        return listResources(shareDirectoryClient, shareDirectoryClient)
             .collect(Collectors.toList());
+    }
+
+    private Stream<StorageResource> listResources(ShareDirectoryClient directoryClient, ShareDirectoryClient rootDir) {
+        return directoryClient
+            .listFilesAndDirectories()
+            .stream()
+            .flatMap(item -> {
+                if (item.isDirectory()) {
+                    return listResources(directoryClient.getSubdirectoryClient(item.getName()), rootDir);
+                } else {
+                    return Stream.of(new FileShareResource(directoryClient.getFileClient(item.getName()), rootDir));
+                }
+            });
     }
 
     @Override

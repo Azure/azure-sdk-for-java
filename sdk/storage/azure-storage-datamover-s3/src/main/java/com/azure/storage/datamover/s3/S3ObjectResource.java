@@ -70,6 +70,18 @@ class S3ObjectResource extends StorageResource {
     }
 
     @Override
+    protected String getSasUri() {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected void consumeSasUri(String sasUri) {
+        // TODO
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     protected List<String> getPath() {
         return Collections.singletonList(objectKey);
     }

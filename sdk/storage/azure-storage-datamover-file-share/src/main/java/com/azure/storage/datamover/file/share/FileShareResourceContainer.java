@@ -5,6 +5,7 @@ import com.azure.storage.datamover.StorageResourceContainer;
 import com.azure.storage.datamover.models.TransferCapabilities;
 import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class FileShareResourceContainer extends StorageResourceContainer {
 
@@ -24,12 +26,21 @@ class FileShareResourceContainer extends StorageResourceContainer {
 
     @Override
     protected Iterable<StorageResource> listResources() {
-        return shareClient.getRootDirectoryClient()
-            .listFilesAndDirectories()
-            .stream().filter(
-                item -> !item.isDirectory()
-            ).map(item -> new FileShareResource(shareClient.getFileClient(item.getName()), shareClient.getRootDirectoryClient()))
+        return listResources(shareClient.getRootDirectoryClient(), shareClient.getRootDirectoryClient())
             .collect(Collectors.toList());
+    }
+
+    private Stream<StorageResource> listResources(ShareDirectoryClient directoryClient, ShareDirectoryClient rootDir) {
+        return directoryClient
+            .listFilesAndDirectories()
+            .stream()
+            .flatMap(item -> {
+                if (item.isDirectory()) {
+                    return listResources(directoryClient.getSubdirectoryClient(item.getName()), rootDir);
+                } else {
+                    return Stream.of(new FileShareResource(directoryClient.getFileClient(item.getName()), rootDir));
+                }
+            });
     }
 
     @Override

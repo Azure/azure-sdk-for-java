@@ -12,8 +12,10 @@ import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,6 +98,37 @@ class FileShareResource extends StorageResource {
             }
         }
         shareFileClient.upload(inputStream, length, new ParallelTransferOptions());
+    }
+
+    @Override
+    protected String getSasUri() {
+        return shareFileClient.getFileUrl() + "?" + shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new ShareSasPermission().setReadPermission(true)));
+    }
+
+    @Override
+    protected void consumeSasUri(String sasUri) {
+        try {
+            if (!shareFileClient.exists()) {
+                // TODO HEAD sas uri.
+                shareFileClient.create(10 * 1024 * 1024);
+            }
+        } catch (ShareStorageException e) {
+            if (root != null && ShareErrorCode.PARENT_NOT_FOUND.equals(e.getErrorCode())) {
+                ShareDirectoryClient directoryClient = root;
+                List<String> path = getPath();
+                for (int i = 0; i < path.size() - 1; i++) {
+                    directoryClient = directoryClient.getSubdirectoryClient(path.get(i));
+                    directoryClient.createIfNotExists();
+                }
+                // TODO HEAD sas uri.
+                shareFileClient.create(10 * 1024 * 1024);
+            } else  {
+                throw e;
+            }
+        }
+
+        shareFileClient.beginCopy(sasUri, Collections.emptyMap(), Duration.ofSeconds(1)).waitForCompletion();
     }
 
     @Override
