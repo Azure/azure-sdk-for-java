@@ -50,6 +50,9 @@ stages:
         - name: azure-json
           groupId: com.azure
           safeName: azurejson
+        - name: azure-json-gson
+          groupId: com.azure
+          safeName: azurejsongson
       MatrixReplace:
         - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml

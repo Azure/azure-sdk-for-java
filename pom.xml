@@ -227,6 +227,7 @@
         <module>sdk/core/azure-core-test</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
         <module>sdk/core/azure-json</module>
+        <module>sdk/core/azure-json-gson</module>
 
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>

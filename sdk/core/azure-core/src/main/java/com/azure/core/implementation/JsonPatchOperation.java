@@ -171,8 +171,6 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
                     if (reader.isStartArrayOrObject()) {
                         // value is an arbitrary array or object, read the entire JSON sub-stream.
                         value = Option.of(jsonReader.readChildren());
-                    } else if (reader.currentToken() == JsonToken.NULL) {
-                        value = Option.empty();
                     } else {
                         value = Option.of(jsonReader.getTextValue());
                     }

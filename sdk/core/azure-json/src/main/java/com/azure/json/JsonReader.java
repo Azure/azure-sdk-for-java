@@ -4,6 +4,7 @@
 package com.azure.json;
 
 import java.io.Closeable;
+import java.util.Base64;
 
 /**
  * Reads a JSON encoded value as a stream of tokens.
@@ -53,6 +54,21 @@ public abstract class JsonReader implements Closeable {
     private static boolean isEndArrayOrObject(JsonToken token) {
         return token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT;
     }
+
+    /**
+     * Gets the binary value if the reader is currently pointing to a {@link JsonToken#STRING} token.
+     * <p>
+     * This returns the equivalent of {@link Base64#getDecoder()} {@link Base64.Decoder#decode(String)}.
+     * <p>
+     * If the reader is pointing to a {@link JsonToken#NULL} null will be returned. If the reader is pointing to any
+     * other token type an {@link IllegalStateException} will be thrown.
+     *
+     * @return The binary value based on whether the current token is {@link JsonToken#STRING} or
+     * {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the reader isn't pointing to either {@link JsonToken#STRING} or
+     * {@link JsonToken#NULL}.
+     */
+    public abstract byte[] getBinaryValue();
 
     /**
      * Gets the boolean value if the reader is currently pointing to a {@link JsonToken#BOOLEAN} token.
@@ -189,7 +205,7 @@ public abstract class JsonReader implements Closeable {
         JsonToken token = currentToken();
 
         // Not pointing to an array or object start, no-op.
-        if (token != JsonToken.START_ARRAY && token != JsonToken.START_OBJECT) {
+        if (!isStartArrayOrObject(token)) {
             return buffer;
         }
 
@@ -234,27 +250,6 @@ public abstract class JsonReader implements Closeable {
 
         return buffer;
     }
-
-//    /**
-//     * Prepares the {@link JsonReader} for reading an object.
-//     * <p>
-//     * Object reading begins by getting the {@link JsonToken} the {@link JsonReader} is currently pointing. If the
-//     * current token is null it's an indicator that the {@link JsonReader} hasn't begun reading the underlying JSON
-//     * stream. In this case it will iterate to the next token to begin reading.
-//     * <p>
-//     * If the returned {@link JsonToken} is null this is an indication that the JSON stream has completed reading.
-//     *
-//     * @return The {@link JsonToken} where object reading will begin.
-//     */
-//    public final JsonToken beginReadingObject() {
-//        JsonToken token = currentToken();
-//
-//        if (token == null) {
-//            token = nextToken();
-//        }
-//
-//        return token;
-//    }
 
     /**
      * Gets the text value for the {@link #currentToken()}.

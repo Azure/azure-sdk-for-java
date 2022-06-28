@@ -43,7 +43,7 @@ public abstract class JsonWriterContractTests {
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
-    public final void basicOperations(Consumer<JsonWriter> operation, String expectedJson) {
+    public void basicOperations(Consumer<JsonWriter> operation, String expectedJson) {
         operation.accept(getJsonWriter());
 
         assertEquals(expectedJson, getJsonWriterContents());
@@ -180,7 +180,7 @@ public abstract class JsonWriterContractTests {
 
     @ParameterizedTest
     @MethodSource("basicExceptionsSupplier")
-    public final void basicExceptions(Consumer<JsonWriter> operation, Class<? extends Throwable> expectedException) {
+    public void basicExceptions(Consumer<JsonWriter> operation, Class<? extends Throwable> expectedException) {
         assertThrows(expectedException, () -> operation.accept(getJsonWriter()));
     }
 

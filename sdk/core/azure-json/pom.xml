@@ -91,6 +91,22 @@
 
   <build>
     <plugins>
+      <!-- JsonWriterContractTests is inherited by tests in azure-json-* -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- This plugin scans reports spotbugs in the code -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
