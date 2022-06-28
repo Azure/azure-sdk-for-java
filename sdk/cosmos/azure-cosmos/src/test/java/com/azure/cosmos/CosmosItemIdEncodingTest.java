@@ -227,7 +227,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
 
         TestScenario scenario = new TestScenario(
             "IdWithBase64EncodedIdCharacters",
-            "WithAllowedSpecial,=.:~+-@()^${}[]!_Chars",
+            safeBase64EncodedId,
             new TestScenarioExpectations(
                 ConnectionMode.GATEWAY,
                 HttpConstants.StatusCodes.CREATED,
