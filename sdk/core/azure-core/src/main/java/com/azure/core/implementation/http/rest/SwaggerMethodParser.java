@@ -28,6 +28,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -627,6 +628,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     boolean isReactiveType(Type type) {
         return (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)
-            || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class));
+            || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class)
+            || TypeUtil.isTypeOrSubTypeOf(type, StreamResponse.class));
+        //Note: StreamResponse will be added to sync flows in a follow-up PR. Currently, their reactive body types are handled in Async Rest Proxy.
     }
 }

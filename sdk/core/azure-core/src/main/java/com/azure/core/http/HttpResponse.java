@@ -7,20 +7,14 @@ import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.StreamUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 /**
@@ -81,7 +75,7 @@ public abstract class HttpResponse implements Closeable {
      */
     public BinaryData getBodyAsBinaryData() {
         Flux<ByteBuffer> body = getBody();
-        if (body !=null) {
+        if (body != null) {
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
         } else {
             return null;

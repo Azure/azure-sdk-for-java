@@ -5,7 +5,6 @@ package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.implementation.http.rest.MissingRequiredAnnotationException;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.CoreUtils;
 
