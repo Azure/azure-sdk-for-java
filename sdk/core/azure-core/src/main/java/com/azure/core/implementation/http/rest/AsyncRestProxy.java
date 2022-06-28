@@ -126,10 +126,6 @@ public class AsyncRestProxy extends RestProxyBase {
     private Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                                  final SwaggerMethodParser methodParser, final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
-            if (entityType.equals(StreamResponse.class)) {
-                return Mono.fromCallable(() -> createResponse(response, entityType, null));
-            }
-
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 return response.getSourceResponse().getBody().ignoreElements()

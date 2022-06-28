@@ -135,10 +135,6 @@ public class SyncRestProxy extends RestProxyBase {
                                                 final SwaggerMethodParser methodParser,
                                                 final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
-            if (entityType.equals(StreamResponse.class)) {
-                return createResponse(response, entityType, null);
-            }
-
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 response.getSourceResponse().close();

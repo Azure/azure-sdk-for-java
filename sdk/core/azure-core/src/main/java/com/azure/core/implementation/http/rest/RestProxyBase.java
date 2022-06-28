@@ -159,8 +159,6 @@ public abstract class RestProxyBase {
                 return cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
                     decodedHeaders));
             }
-        } else if (cls.equals(StreamResponse.class)) {
-            return new StreamResponse(request, httpResponse);
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
