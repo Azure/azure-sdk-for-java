@@ -15,6 +15,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -23,9 +24,13 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Objects;
+
+import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 
 /**
  * Implements a operation resource polling strategy, typically from Operation-Location.
@@ -35,10 +40,12 @@ import java.util.Objects;
  *           kept
  */
 public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T, U> {
+    private static final ClientLogger LOGGER = new ClientLogger(OperationResourcePollingStrategy.class);
     private static final String DEFAULT_OPERATION_LOCATION_HEADER = "Operation-Location";
 
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
+    private final String endpoint;
     private final String operationLocationHeaderName;
     private final Context context;
 
@@ -72,20 +79,25 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
      */
     public OperationResourcePollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
                                             String operationLocationHeaderName, Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
-        this.operationLocationHeaderName = operationLocationHeaderName != null ? operationLocationHeaderName
-            : DEFAULT_OPERATION_LOCATION_HEADER;
-        this.context = context == null ? Context.NONE : context;
+        this(httpPipeline, null, serializer, operationLocationHeaderName, context);
     }
 
+    public OperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
+        String operationLocationHeaderName, Context context) {
+        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
+        this.endpoint = endpoint;
+        this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
+        this.operationLocationHeaderName = operationLocationHeaderName != null ? operationLocationHeaderName
+                                               : DEFAULT_OPERATION_LOCATION_HEADER;
+        this.context = context == null ? Context.NONE : context;
+    }
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
         HttpHeader operationLocationHeader = initialResponse.getHeaders().get(operationLocationHeaderName);
         if (operationLocationHeader != null) {
             try {
-                new URL(operationLocationHeader.getValue());
+                new URL(getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
                 return Mono.just(true);
             } catch (MalformedURLException e) {
                 return Mono.just(false);
@@ -100,10 +112,12 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         HttpHeader operationLocationHeader = response.getHeaders().get(operationLocationHeaderName);
         HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
         if (operationLocationHeader != null) {
-            pollingContext.setData(operationLocationHeaderName, operationLocationHeader.getValue());
+            pollingContext.setData(operationLocationHeaderName,
+                getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
         }
         if (locationHeader != null) {
-            pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
+            pollingContext.setData(PollingConstants.LOCATION,
+                getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
         }
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());

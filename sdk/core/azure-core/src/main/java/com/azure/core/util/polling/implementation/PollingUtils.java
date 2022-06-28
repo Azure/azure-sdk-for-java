@@ -5,9 +5,14 @@ package com.azure.core.util.polling.implementation;
 
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Utility class for handling polling responses.
@@ -73,6 +78,30 @@ public final class PollingUtils {
             return serializeResponse(response, serializer)
                 .flatMap(binaryData -> deserializeResponse(binaryData, serializer, typeReference));
         }
+    }
+
+    /**
+     * Create an absolute path from the endpoint if the 'path' is relative. Otherwise, return the 'path' as absolute
+     * path.
+     *
+     * @param path an relative path or absolute path.
+     * @param endpoint an endpoint to create the absolute path if the path is relative.
+     * @return an absolute path.
+     */
+    public static String getAbsolutePath(String path, String endpoint, ClientLogger logger) {
+        try {
+            URI uri = new URI(path);
+            if (!uri.isAbsolute()) {
+                if (CoreUtils.isNullOrEmpty(endpoint)) {
+                    throw logger.logExceptionAsError(new IllegalArgumentException(
+                        "Relative path requires endpoint to be non-null or non-empty to create an absolute path."));
+                }
+                return endpoint + path;
+            }
+        } catch (URISyntaxException ex) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'path' must be a valid URI.", ex));
+        }
+        return path;
     }
 
     private PollingUtils() {
