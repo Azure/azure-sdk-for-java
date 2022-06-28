@@ -275,8 +275,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws IllegalStateException if sender is already disposed.
-     * @throws ServiceBusException if the message could not be sent.
-     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
+     * @throws ServiceBusException if the message could not be sent or {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
@@ -301,10 +300,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when all messages have been sent to the Service Bus resource.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
-     * @throws ServiceBusException if the message could not be sent.
-     * @throws IllegalStateException if sender is already disposed.
-     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
+     * @throws ServiceBusException if the message could not be sent or {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages) {
         return sendIterable(messages, null);
@@ -679,7 +677,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             StreamSupport.stream(messages.spliterator(), false)
                 .forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
-        });
+        }).onErrorMap(this::mapError);
     }
 
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,

@@ -672,12 +672,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatch")));
+        }
+
+        if (maxMessages <= 0) {
+            return fluxError(LOGGER, new IllegalArgumentException("'maxMessages' is not positive."));
         }
 
         return connectionProcessor
@@ -708,7 +713,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     });
 
                 return Flux.merge(messages, handle);
-            });
+            })
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -740,6 +746,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
@@ -859,10 +866,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if deferred message cannot be received.
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
-        if (isDisposed.get()) {
-            return monoError(LOGGER, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
-        }
         return receiveDeferredMessage(sequenceNumber, receiverOptions.getSessionId());
     }
 
@@ -927,12 +930,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
      * @throws ServiceBusException if deferred message cannot be received.
      */
     Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessageBatch")));
+        }
+        if (sequenceNumbers == null) {
+            return fluxError(LOGGER, new NullPointerException("'sequenceNumbers' cannot be null"));
         }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -1082,10 +1089,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A lock renewal operation for the message.
      *
-     * @throws NullPointerException if {@code maxLockRenewalDuration} is null.
+     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      * @throws ServiceBusException if the session lock renewal operation cannot be started.
-     * @throws IllegalArgumentException if {@code maxLockRenewalDuration} is negative.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string or {@code maxLockRenewalDuration} is negative.
      */
     public Mono<Void> renewSessionLock(Duration maxLockRenewalDuration) {
         return this.renewSessionLock(receiverOptions.getSessionId(), maxLockRenewalDuration);

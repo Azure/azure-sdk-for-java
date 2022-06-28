@@ -473,6 +473,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      * @throws IllegalStateException if the receiver is already disposed.
+     * @throws NullPointerException if {@code maxWaitTime} is null.
      * @throws ServiceBusException if an error occurs while receiving messages.
      * @see <a href="https://aka.ms/azsdk/java/servicebus/sync-receive/prefetch">Synchronous receive and prefetch</a>
      */
@@ -556,6 +557,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      *
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
      * @throws ServiceBusException if deferred message cannot be received.
      */
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
@@ -597,7 +599,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      * @param onError A function to call when an error occurs during lock renewal.
      *
-     * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
+     * @throws NullPointerException if {@code message}, {@code message.getLockToken()}, or
+     *      {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      * @throws ServiceBusException If the message cannot be renewed.
@@ -635,6 +638,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalArgumentException if {@code sessionId} is an empty string or {@code maxLockRenewalDuration} is negative.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     * @throws ServiceBusException if the session lock renewal operation cannot be started.
      */
     public void renewSessionLock(Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId(), maxLockRenewalDuration, onError);
