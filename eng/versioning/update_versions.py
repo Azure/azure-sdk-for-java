@@ -214,7 +214,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     # into the verion_map. If UpdateType.all is selected then versions for both
     # the libraries and external dependencies are being updated.
     if update_type == UpdateType.library or update_type == UpdateType.all:
-        version_file = get_version_file(build_type.name)
+        version_file = get_version_file('version_' + build_type.name)
         load_version_map_from_file(version_file, version_map)
 
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:

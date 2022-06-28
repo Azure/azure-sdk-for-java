@@ -165,7 +165,7 @@ def get_version_file(version_file_name: str, print_name: str = 'version_file='):
     real_path = os.path.realpath(__file__)
     dir_path = os.path.dirname(real_path)
 
-    version_file = os.path.join(dir_path, 'version_' + version_file_name + '.txt')
+    version_file = os.path.join(dir_path, version_file_name + '.txt')
     print(print_name + version_file)
 
     return version_file

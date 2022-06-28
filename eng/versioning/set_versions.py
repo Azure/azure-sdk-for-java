@@ -65,7 +65,7 @@ prerelease_data_regex = re.compile(prerelease_data_version_regex)
 # This function assumes that the version file has already been updated with dev
 # versions for the appropriate target packages.
 def set_dev_zero_version(build_type, build_qualifier):
-    version_file = get_version_file(build_type.name)
+    version_file = get_version_file('version_' + build_type.name)
 
     # Assuming a build qualifier of the form: "alpha.20200204.123"
     # Converts "alpha.20200204.123" -> "alpha.20200204.0"
@@ -122,7 +122,7 @@ def set_dev_zero_version(build_type, build_qualifier):
 
 def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifact_id, group_id):
 
-    version_file = get_version_file(build_type.name)
+    version_file = get_version_file('version_' + build_type.name)
     library_to_update = group_id + ':' + artifact_id
     print('adding build_qualifier({}) to {}'.format(build_qualifier, library_to_update))
     version_map = {}
@@ -205,7 +205,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
 # ensure current version compatibility amongst the various libraries for a given built type
 def prep_version_file_for_source_testing(build_type):
 
-    version_file = get_version_file(build_type.name)
+    version_file = get_version_file('version_' + build_type.name)
     file_changed = False
 
     # The version map is needed to get the 'current' version of any beta dependencies
@@ -249,7 +249,7 @@ def prep_version_file_for_source_testing(build_type):
 # current version and increment the current version
 def increment_or_set_library_version(build_type, artifact_id, group_id, new_version=None):
 
-    version_file = get_version_file(build_type.name)
+    version_file = get_version_file('version_' + build_type.name)
     library_to_update = group_id + ':' + artifact_id
 
     artifact_found = False
@@ -327,7 +327,7 @@ def increment_or_set_library_version(build_type, artifact_id, group_id, new_vers
 # that doesn't match our versioning scheme
 def verify_current_version_of_artifact(build_type, artifact_id, group_id):
 
-    version_file = get_version_file(build_type.name)
+    version_file = get_version_file('version_' + build_type.name)
     library_to_update = group_id + ':' + artifact_id
 
     artifact_found = False
