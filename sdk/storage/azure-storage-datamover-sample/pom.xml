@@ -46,29 +46,29 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-datamover</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-datamover;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-datamover-blob</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-datamover-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-datamover-file-share</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-datamover-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-datamover-s3</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-datamover-s3;current} -->
     </dependency>
 
     <!-- Pull this up to avoid conflict with AWS SDK -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.2</version>
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 </project>
