@@ -73,19 +73,19 @@ public final class GsonJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeEndObject() {
-        validateAndUpdate(writer::beginObject, JsonToken.END_OBJECT, false);
+        validateAndUpdate(writer::endObject, JsonToken.END_OBJECT, false);
         return this;
     }
 
     @Override
     public JsonWriter writeStartArray() {
-        validateAndUpdate(writer::beginObject, JsonToken.START_ARRAY, false);
+        validateAndUpdate(writer::beginArray, JsonToken.START_ARRAY, false);
         return this;
     }
 
     @Override
     public JsonWriter writeEndArray() {
-        validateAndUpdate(writer::beginObject, JsonToken.END_ARRAY, false);
+        validateAndUpdate(writer::endArray, JsonToken.END_ARRAY, false);
         return this;
     }
 

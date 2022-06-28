@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json;
+package com.azure.json.contract;
 
-import org.junit.jupiter.api.Test;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Tests the contract of {@link JsonReader}.
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  * written to be considered an acceptable implementation.
  * <p>
  * Each test will only create a single instance of {@link JsonReader} to simplify the usage of
- * {@link #getJsonReader(byte[])}.
+ * {@link #getJsonReader(String)}.
  */
 public abstract class JsonReaderContractTests {
     /**
@@ -34,21 +33,12 @@ public abstract class JsonReaderContractTests {
      * @param json The JSON to be read.
      * @return The {@link JsonReader} that a test will use.
      */
-    protected abstract JsonReader getJsonReader(byte[] json);
-
-    @Test
-    public void jsonFalse() {
-        JsonReader reader = getJsonReader("false".getBytes(StandardCharsets.UTF_8));
-        reader.nextToken();
-
-        boolean actualValue = assertDoesNotThrow(reader::getBooleanValue);
-        assertFalse(actualValue);
-    }
+    protected abstract JsonReader getJsonReader(String json);
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
     public <T> void basicOperations(String json, T expectedValue, Function<JsonReader, T> function) {
-        JsonReader reader = getJsonReader(json.getBytes(StandardCharsets.UTF_8));
+        JsonReader reader = getJsonReader(json);
         reader.nextToken(); // Initialize the JsonReader for reading.
 
         T actualValue = assertDoesNotThrow(() -> function.apply(reader));
@@ -95,7 +85,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryOperationsSupplier")
     public void binaryOperations(String json, byte[] expectedValue, Function<JsonReader, byte[]> function) {
-        JsonReader reader = getJsonReader(json.getBytes(StandardCharsets.UTF_8));
+        JsonReader reader = getJsonReader(json);
         reader.nextToken(); // Initialize the JsonReader for reading.
 
         byte[] actualValue = assertDoesNotThrow(() -> function.apply(reader));

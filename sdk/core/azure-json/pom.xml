@@ -48,6 +48,7 @@
 
     <javaModulesSurefireArgLine>
       --add-opens com.azure.json/com.azure.json=ALL-UNNAMED
+      --add-opens com.azure.json/com.azure.json.contract=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Ignore shaded code -->

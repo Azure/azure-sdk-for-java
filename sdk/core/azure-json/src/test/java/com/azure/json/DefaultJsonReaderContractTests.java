@@ -3,12 +3,14 @@
 
 package com.azure.json;
 
+import com.azure.json.contract.JsonReaderContractTests;
+
 /**
  * Tests {@link DefaultJsonReader} against the contract required by {@link JsonReader}.
  */
 public class DefaultJsonReaderContractTests extends JsonReaderContractTests {
     @Override
-    public JsonReader getJsonReader(byte[] json) {
-        return DefaultJsonReader.fromBytes(json);
+    public JsonReader getJsonReader(String json) {
+        return DefaultJsonReader.fromString(json);
     }
 }

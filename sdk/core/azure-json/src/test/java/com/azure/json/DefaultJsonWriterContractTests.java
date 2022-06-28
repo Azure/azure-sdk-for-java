@@ -3,7 +3,9 @@
 
 package com.azure.json;
 
+import com.azure.json.contract.JsonWriterContractTests;
 import com.azure.json.implementation.AccessibleByteArrayOutputStream;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.nio.charset.StandardCharsets;
 
@@ -12,12 +14,17 @@ import java.nio.charset.StandardCharsets;
  */
 public class DefaultJsonWriterContractTests extends JsonWriterContractTests {
     private AccessibleByteArrayOutputStream outputStream;
+    private JsonWriter writer;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.outputStream = new AccessibleByteArrayOutputStream();
+        this.writer = DefaultJsonWriter.fromStream(outputStream);
+    }
 
     @Override
     public JsonWriter getJsonWriter() {
-        outputStream = new AccessibleByteArrayOutputStream();
-
-        return DefaultJsonWriter.fromStream(outputStream);
+        return writer;
     }
 
     @Override

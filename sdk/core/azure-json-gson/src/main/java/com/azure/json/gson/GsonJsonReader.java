@@ -112,7 +112,11 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public String getStringValue() {
-        return callWithWrappedIoException(reader::nextString);
+        if (currentToken == JsonToken.NULL) {
+            return null;
+        } else {
+            return callWithWrappedIoException(reader::nextString);
+        }
     }
 
     @Override
