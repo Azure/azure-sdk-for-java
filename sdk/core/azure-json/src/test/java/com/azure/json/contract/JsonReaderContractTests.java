@@ -4,6 +4,8 @@
 package com.azure.json.contract;
 
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,6 +18,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests the contract of {@link JsonReader}.
@@ -101,6 +106,46 @@ public abstract class JsonReaderContractTests {
             Arguments.of("\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"",
                 "Hello".getBytes(StandardCharsets.UTF_8), createJsonConsumer(JsonReader::getBinaryValue))
         );
+    }
+
+    @Test
+    public void simpleObject() {
+        String json = "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}";
+        JsonReader reader = getJsonReader(json);
+
+        assertNull(reader.currentToken());
+        reader.nextToken();
+        assertEquals(JsonToken.START_OBJECT, reader.currentToken());
+
+        String stringProperty = null;
+        boolean hasNullProperty = false;
+        int integerProperty = 0;
+        float floatProperty = 0.0F;
+        boolean booleanProperty = false;
+        while (reader.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = reader.getFieldName();
+            reader.nextToken();
+
+            if ("stringProperty".equals(fieldName)) {
+                stringProperty = reader.getStringValue();
+            } else if ("nullProperty".equals(fieldName)) {
+                hasNullProperty = true;
+            } else if ("integerProperty".equals(fieldName)) {
+                integerProperty = reader.getIntValue();
+            } else if ("floatProperty".equals(fieldName)) {
+                floatProperty = reader.getFloatValue();
+            } else if ("booleanProperty".equals(fieldName)) {
+                booleanProperty = reader.getBooleanValue();
+            } else {
+                fail("Unknown property name: '" + fieldName + "'");
+            }
+        }
+
+        assertEquals("string", stringProperty);
+        assertTrue(hasNullProperty, "Didn't find the expected 'nullProperty'.");
+        assertEquals(10, integerProperty);
+        assertEquals(10.0F, floatProperty);
+        assertEquals(true, booleanProperty);
     }
 
     private static <T> Function<JsonReader, T> createJsonConsumer(Function<JsonReader, T> func) {

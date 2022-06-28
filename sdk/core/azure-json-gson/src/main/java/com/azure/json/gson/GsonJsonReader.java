@@ -23,6 +23,7 @@ import static com.azure.json.implementation.CheckExceptionUtils.invokeWithWrappe
 public final class GsonJsonReader extends JsonReader {
     private final com.google.gson.stream.JsonReader reader;
 
+    private com.google.gson.stream.JsonToken gsonCurrentToken;
     private JsonToken currentToken;
 
     /**
@@ -67,11 +68,16 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() {
-        if (currentToken != null) {
-            invokeWithWrappedIoException(reader::skipValue);
+        if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_OBJECT) {
+            invokeWithWrappedIoException(reader::beginObject);
+        } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_ARRAY) {
+            invokeWithWrappedIoException(reader::beginArray);
+        } else if (currentToken == JsonToken.NULL) {
+            invokeWithWrappedIoException(reader::nextNull);
         }
 
-        currentToken = callWithWrappedIoException(() -> mapToken(reader.peek()));
+        gsonCurrentToken = callWithWrappedIoException(reader::peek);
+        currentToken = mapToken(gsonCurrentToken);
         return currentToken;
     }
 
