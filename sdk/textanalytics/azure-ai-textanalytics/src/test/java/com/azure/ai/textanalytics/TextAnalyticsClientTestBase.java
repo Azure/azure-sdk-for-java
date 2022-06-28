@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifiedCategory;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -24,7 +24,7 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.MultiLabelClassificationAction;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -39,8 +39,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SingleLabelClassificationAction;
-import com.azure.ai.textanalytics.models.LabelClassificationResult;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
+import com.azure.ai.textanalytics.models.LabelClassifyResult;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -1197,16 +1197,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setSingleLabelClassificationActions(
-                    new SingleLabelClassificationAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
+                .setSingleLabelClassifyActions(
+                    new SingleLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
                         AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
     void classifyCustomMultiCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setMultiLabelClassificationActions(
-                    new MultiLabelClassificationAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
+                .setMultiLabelClassifyActions(
+                    new MultiLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
                         AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME)));
     }
 
@@ -1568,21 +1568,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             actualSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
-    static void validateLabelClassificationResult(LabelClassificationResult documentResult) {
+    static void validateLabelClassificationResult(LabelClassifyResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());
         } else {
             assertNull(documentResult.getError());
-            for (ClassificationCategory classification : documentResult.getClassifications()) {
+            for (ClassifiedCategory classification : documentResult.getClassifiedCategories()) {
                 validateDocumentClassification(classification);
             }
         }
     }
 
-    static void validateDocumentClassification(ClassificationCategory classificationCategory) {
-        assertNotNull(classificationCategory.getCategory());
-        assertNotNull(classificationCategory.getConfidenceScore());
+    static void validateDocumentClassification(ClassifiedCategory classifiedCategory) {
+        assertNotNull(classifiedCategory.getCategory());
+        assertNotNull(classifiedCategory.getConfidenceScore());
     }
 
     // Healthcare task

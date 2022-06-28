@@ -5,12 +5,13 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOptions;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.LabelClassificationResult;
+import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
+import com.azure.ai.textanalytics.models.ClassifiedCategory;
+import com.azure.ai.textanalytics.models.LabelClassifyResult;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.LabelClassificationResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 
@@ -45,12 +46,12 @@ public class Test {
                 + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                 + "if diarrhea worsen.");
 
-        AnalyzeLabelClassificationOptions options = new AnalyzeLabelClassificationOptions()
+        SingleLabelClassifyOptions options = new SingleLabelClassifyOptions()
                                                      .setServiceLogsDisabled(true);
 
-        client.beginAnalyzeSingleLabelClassification(documents, "en", "{project_name}", "{deployment_name}", options)
+        client.beginSingleLabelClassify(documents, "en", "{project_name}", "{deployment_name}", options)
             .flatMap(pollResult -> {
-                AnalyzeLabelClassificationOperationDetail operationResult = pollResult.getValue();
+                LabelClassifyOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -87,12 +88,12 @@ public class Test {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        AnalyzeLabelClassificationOptions options = new AnalyzeLabelClassificationOptions()
+        SingleLabelClassifyOptions options = new SingleLabelClassifyOptions()
                                                      .setServiceLogsDisabled(true);
 
-        client.beginAnalyzeSingleLabelClassification(documents, "{project_name}", "{deployment_name}", options)
+        client.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}", options)
             .flatMap(pollResult -> {
-                AnalyzeLabelClassificationOperationDetail operationResult = pollResult.getValue();
+                LabelClassifyOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -114,18 +115,18 @@ public class Test {
     }
 
     private static void processAnalyzeCategoryClassificationResultCollection(
-        PagedResponse<LabelClassificationResultCollection> perPage) {
+        PagedResponse<LabelClassifyResultCollection> perPage) {
         System.out.printf("Response code: %d, Continuation Token: %s.%n",
             perPage.getStatusCode(), perPage.getContinuationToken());
-        for (LabelClassificationResultCollection documentsResults : perPage.getElements()) {
+        for (LabelClassifyResultCollection documentsResults : perPage.getElements()) {
             System.out.printf("Project name: %s, deployment name: %s.%n",
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
-            for (LabelClassificationResult documentResult : documentsResults) {
+            for (LabelClassifyResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
                 if (!documentResult.isError()) {
-                    for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
+                    for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
                         System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                            classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                            classifiedCategory.getCategory(), classifiedCategory.getConfidenceScore());
                     }
                 } else {
                     System.out.printf("\tCannot classify category of document. Error: %s%n",
@@ -150,12 +151,12 @@ public class Test {
                 + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                 + "if diarrhea worsen.");
 
-        final AnalyzeLabelClassificationOptions analyzeLabelClassificationOptions = new AnalyzeLabelClassificationOptions();
+        final MultiLabelClassifyOptions multiLabelClassifyOptions = new MultiLabelClassifyOptions();
 
-        client.beginAnalyzeMultiLabelClassification(documents, "en", "{project_name}", "{deployment_name}",
-            analyzeLabelClassificationOptions)
+        client.beginMultiLabelClassify(documents, "en", "{project_name}", "{deployment_name}",
+            multiLabelClassifyOptions)
             .flatMap(pollResult -> {
-                AnalyzeLabelClassificationOperationDetail operationResult = pollResult.getValue();
+                LabelClassifyOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -192,12 +193,12 @@ public class Test {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        final AnalyzeLabelClassificationOptions analyzeLabelClassificationOptions = new AnalyzeLabelClassificationOptions();
+        final MultiLabelClassifyOptions multiLabelClassifyOptions = new MultiLabelClassifyOptions();
 
-        client.beginAnalyzeMultiLabelClassification(documents, "{project_name}", "{deployment_name}",
-            analyzeLabelClassificationOptions)
+        client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}",
+            multiLabelClassifyOptions)
             .flatMap(pollResult -> {
-                AnalyzeLabelClassificationOperationDetail operationResult = pollResult.getValue();
+                LabelClassifyOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -219,19 +220,19 @@ public class Test {
     }
 
     private static void processMultiCategoryClassificationResult(
-        PagedResponse<LabelClassificationResultCollection> perPage) {
+        PagedResponse<LabelClassifyResultCollection> perPage) {
         System.out.printf("Response code: %d, Continuation Token: %s.%n",
             perPage.getStatusCode(), perPage.getContinuationToken());
 
-        for (LabelClassificationResultCollection documentsResults : perPage.getElements()) {
+        for (LabelClassifyResultCollection documentsResults : perPage.getElements()) {
             System.out.printf("Project name: %s, deployment name: %s.%n",
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
-            for (LabelClassificationResult documentResult : documentsResults) {
+            for (LabelClassifyResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
                 if (!documentResult.isError()) {
-                    for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
+                    for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
                         System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                            classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                            classifiedCategory.getCategory(), classifiedCategory.getConfidenceScore());
                     }
                 } else {
                     System.out.printf("\tCannot classify multi categories of document. Error: %s%n",

@@ -3,44 +3,44 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeLabelClassificationOperationDetailPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.LabelClassifyOperationDetailPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeLabelClassificationOperationDetail} model.
+ * The {@link LabelClassifyOperationDetail} model.
  */
 @Immutable
-public final class AnalyzeLabelClassificationOperationDetail {
+public final class LabelClassifyOperationDetail {
     private String operationId;
     private OffsetDateTime createdAt;
     private OffsetDateTime expiresAt;
     private OffsetDateTime lastModifiedAt;
 
     static {
-        AnalyzeLabelClassificationOperationDetailPropertiesHelper.setAccessor(
-            new AnalyzeLabelClassificationOperationDetailPropertiesHelper.AnalyzeLabelClassificationOperationDetailAccessor() {
+        LabelClassifyOperationDetailPropertiesHelper.setAccessor(
+            new LabelClassifyOperationDetailPropertiesHelper.LabelClassifyOperationDetailAccessor() {
                 @Override
-                public void setOperationId(AnalyzeLabelClassificationOperationDetail operationResult,
+                public void setOperationId(LabelClassifyOperationDetail operationResult,
                     String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
                 @Override
-                public void setExpiresAt(AnalyzeLabelClassificationOperationDetail operationDetail,
+                public void setExpiresAt(LabelClassifyOperationDetail operationDetail,
                     OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AnalyzeLabelClassificationOperationDetail operationDetail,
+                public void setCreatedAt(LabelClassifyOperationDetail operationDetail,
                     OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
-                public void setLastModifiedAt(AnalyzeLabelClassificationOperationDetail operationDetail,
+                public void setLastModifiedAt(LabelClassifyOperationDetail operationDetail,
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
@@ -49,9 +49,9 @@ public final class AnalyzeLabelClassificationOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeLabelClassificationOperationDetail}.
+     * Gets the operationId property of the {@link LabelClassifyOperationDetail}.
      *
-     * @return The operationId property of the {@link AnalyzeLabelClassificationOperationDetail}.
+     * @return The operationId property of the {@link LabelClassifyOperationDetail}.
      */
     public String getOperationId() {
         return operationId;

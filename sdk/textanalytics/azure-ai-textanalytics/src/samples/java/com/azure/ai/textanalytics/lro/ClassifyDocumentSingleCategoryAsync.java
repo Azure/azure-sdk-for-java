@@ -7,12 +7,12 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.SingleLabelClassificationAction;
-import com.azure.ai.textanalytics.models.SingleLabelClassificationActionResult;
-import com.azure.ai.textanalytics.models.LabelClassificationResult;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
+import com.azure.ai.textanalytics.models.LabelClassifyResult;
+import com.azure.ai.textanalytics.models.ClassifiedCategory;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.LabelClassificationResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -51,8 +51,8 @@ public class ClassifyDocumentSingleCategoryAsync {
         // See the service documentation for regional support and how to train a model to classify your documents,
         // see https://aka.ms/azsdk/textanalytics/customfunctionalities
         client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setSingleLabelClassificationActions(
-                new SingleLabelClassificationAction("{project_name}", "{deployment_name}")),
+            new TextAnalyticsActions().setSingleLabelClassifyActions(
+                new SingleLabelClassifyAction("{project_name}", "{deployment_name}")),
             "en",
             null)
             .flatMap(result -> {
@@ -81,17 +81,17 @@ public class ClassifyDocumentSingleCategoryAsync {
     }
 
     private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
-        for (SingleLabelClassificationActionResult actionResult : actionsResult.getSingleLabelClassificationResults()) {
+        for (SingleLabelClassifyActionResult actionResult : actionsResult.getSingleLabelClassifyResults()) {
             if (!actionResult.isError()) {
-                LabelClassificationResultCollection documentsResults = actionResult.getDocumentsResults();
+                LabelClassifyResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (LabelClassificationResult documentResult : documentsResults) {
+                for (LabelClassifyResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
-                        for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
+                        for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
                             System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                                classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
+                                classifiedCategory.getCategory(), classifiedCategory.getConfidenceScore());
                         }
                     } else {
                         System.out.printf("\tCannot classify category of document. Error: %s%n",

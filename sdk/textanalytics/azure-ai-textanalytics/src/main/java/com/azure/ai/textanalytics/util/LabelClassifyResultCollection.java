@@ -3,39 +3,39 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.LabelClassificationResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.LabelClassificationResult;
+import com.azure.ai.textanalytics.implementation.LabelClassifyResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.LabelClassifyResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link LabelClassificationResult} along with project name,
+ * A collection model that contains a list of {@link LabelClassifyResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class LabelClassificationResultCollection extends IterableStream<LabelClassificationResult> {
+public final class LabelClassifyResultCollection extends IterableStream<LabelClassifyResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        LabelClassificationResultCollectionPropertiesHelper.setAccessor(
-            new LabelClassificationResultCollectionPropertiesHelper.LabelClassificationResultCollectionAccessor() {
+        LabelClassifyResultCollectionPropertiesHelper.setAccessor(
+            new LabelClassifyResultCollectionPropertiesHelper.LabelClassifyResultCollectionAccessor() {
                 @Override
-                public void setProjectName(LabelClassificationResultCollection resultCollection,
+                public void setProjectName(LabelClassifyResultCollection resultCollection,
                     String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
                 @Override
-                public void setDeploymentName(LabelClassificationResultCollection resultCollection,
+                public void setDeploymentName(LabelClassifyResultCollection resultCollection,
                     String deploymentName) {
                     resultCollection.setDeploymentName(deploymentName);
                 }
 
                 @Override
-                public void setStatistics(LabelClassificationResultCollection resultCollection,
+                public void setStatistics(LabelClassifyResultCollection resultCollection,
                     TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
@@ -43,12 +43,12 @@ public final class LabelClassificationResultCollection extends IterableStream<La
     }
 
     /**
-     * Create a {@link LabelClassificationResultCollection} model that maintains a list of
-     * {@link LabelClassificationResult} along with model version and batch's statistics.
+     * Create a {@link LabelClassifyResultCollection} model that maintains a list of
+     * {@link LabelClassifyResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link LabelClassificationResult}.
+     * @param documentResults A list of {@link LabelClassifyResult}.
      */
-    public LabelClassificationResultCollection(Iterable<LabelClassificationResult> documentResults) {
+    public LabelClassifyResultCollection(Iterable<LabelClassifyResult> documentResults) {
         super(documentResults);
     }
 

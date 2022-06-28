@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOptions;
+import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -20,6 +20,7 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -29,7 +30,7 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeLabelClassificationPagedIterable;
+import com.azure.ai.textanalytics.util.LabelClassifyPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1668,9 +1669,9 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
-        beginAnalyzeSingleLabelClassification(Iterable<String> documents, String language, String projectName,
-            String deploymentName, AnalyzeLabelClassificationOptions options) {
+    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+        beginSingleLabelClassify(Iterable<String> documents, String language, String projectName,
+            String deploymentName, SingleLabelClassifyOptions options) {
         return null;
     }
 
@@ -1685,9 +1686,9 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
-        beginAnalyzeSingleLabelClassification(Iterable<TextDocumentInput> documents, String projectName,
-        String deploymentName, AnalyzeLabelClassificationOptions options, Context context) {
+    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+        beginSingleLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
+        String deploymentName, SingleLabelClassifyOptions options, Context context) {
         return null;
     }
 
@@ -1703,9 +1704,9 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
-        beginAnalyzeMultiLabelClassification(Iterable<String> documents, String language, String projectName,
-            String deploymentName, AnalyzeLabelClassificationOptions options) {
+    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+        beginMultiLabelClassify(Iterable<String> documents, String language, String projectName,
+            String deploymentName, MultiLabelClassifyOptions options) {
         return null;
     }
 
@@ -1721,9 +1722,9 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedIterable>
-        beginAnalyzeMultiLabelClassification(Iterable<TextDocumentInput> documents, String projectName,
-            String deploymentName, AnalyzeLabelClassificationOptions options, Context context) {
+    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+        beginMultiLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
+            String deploymentName, MultiLabelClassifyOptions options, Context context) {
         return null;
     }
 

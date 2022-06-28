@@ -2434,7 +2434,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getSingleLabelClassificationResults().forEach(
+                actionsResult -> actionsResult.getSingleLabelClassifyResults().forEach(
                     customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
                         documentResult -> validateLabelClassificationResult(documentResult))));
         });
@@ -2455,7 +2455,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getMultiLabelClassificationResults().forEach(
+                actionsResult -> actionsResult.getMultiLabelClassifyResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
                         documentResult -> validateLabelClassificationResult(documentResult))));
         });

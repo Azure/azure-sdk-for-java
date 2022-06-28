@@ -6,27 +6,27 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Configurations that allow callers to specify details about how to execute a single-label classification action
+ * Configurations that allow callers to specify details about how to execute a multi-label classification action
  * in a set of documents.
  *
- * See the service documentation for regional support of custom single classification:
+ * See the service documentation for regional support of custom multi classification:
  * https://aka.ms/azsdk/textanalytics/customfunctionalities
  */
 @Fluent
-public final class SingleLabelClassificationAction {
+public final class MultiLabelClassifyAction {
     private final String projectName;
     private final String deploymentName;
     private String actionName;
     private boolean disableServiceLogs;
 
     /**
-     * Configurations that allow callers to specify details about how to execute a single-label classification action
+     * Configurations that allow callers to specify details about how to execute a multi-label classification action
      * in a set of documents.
      *
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment being consumed.
      */
-    public SingleLabelClassificationAction(String projectName, String deploymentName) {
+    public MultiLabelClassifyAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
     }
@@ -45,9 +45,9 @@ public final class SingleLabelClassificationAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link SingleLabelClassificationAction} object itself.
+     * @return The {@link MultiLabelClassifyAction} object itself.
      */
-    public SingleLabelClassificationAction setActionName(String actionName) {
+    public MultiLabelClassifyAction setActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -88,9 +88,9 @@ public final class SingleLabelClassificationAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link SingleLabelClassificationAction} object itself.
+     * @return The {@link MultiLabelClassifyAction} object itself.
      */
-    public SingleLabelClassificationAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public MultiLabelClassifyAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

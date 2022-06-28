@@ -7,8 +7,8 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.SingleLabelClassificationActionResult;
-import com.azure.ai.textanalytics.models.MultiLabelClassificationActionResult;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyActionResult;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
@@ -42,9 +42,9 @@ public final class AnalyzeActionsResultPropertiesHelper {
         void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults);
         void setSingleCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<SingleLabelClassificationActionResult> singleCategoryClassifyResults);
+            IterableStream<SingleLabelClassifyActionResult> singleCategoryClassifyResults);
         void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<MultiLabelClassificationActionResult> multiCategoryClassifyResults);
+            IterableStream<MultiLabelClassifyActionResult> multiCategoryClassifyResults);
     }
 
     /**
@@ -93,12 +93,12 @@ public final class AnalyzeActionsResultPropertiesHelper {
     }
 
     public static void setClassifySingleCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<SingleLabelClassificationActionResult> classifyCustomCategoryResults) {
+        IterableStream<SingleLabelClassifyActionResult> classifyCustomCategoryResults) {
         accessor.setSingleCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoryResults);
     }
 
     public static void setClassifyMultiCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<MultiLabelClassificationActionResult> classifyCustomCategoriesResults) {
+        IterableStream<MultiLabelClassifyActionResult> classifyCustomCategoriesResults) {
         accessor.setMultiCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoriesResults);
     }
 }

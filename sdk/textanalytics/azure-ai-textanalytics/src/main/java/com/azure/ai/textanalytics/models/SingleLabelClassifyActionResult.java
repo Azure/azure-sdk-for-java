@@ -3,19 +3,19 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.MultiLabelClassificationActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.LabelClassificationResultCollection;
+import com.azure.ai.textanalytics.implementation.SingleLabelClassifyActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link MultiLabelClassificationActionResult} is the result for multi-label classification action analysis.
+ * The {@link SingleLabelClassifyActionResult} model.
  */
 @Immutable
-public final class MultiLabelClassificationActionResult extends TextAnalyticsActionResult {
-    private LabelClassificationResultCollection documentsResults;
+public final class SingleLabelClassifyActionResult extends TextAnalyticsActionResult {
+    private LabelClassifyResultCollection documentsResults;
 
     static {
-        MultiLabelClassificationActionResultPropertiesHelper.setAccessor(
+        SingleLabelClassifyActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
@@ -27,12 +27,12 @@ public final class MultiLabelClassificationActionResult extends TextAnalyticsAct
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public LabelClassificationResultCollection getDocumentsResults() {
+    public LabelClassifyResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(LabelClassificationResultCollection documentsResults) {
+    private void setDocumentsResults(LabelClassifyResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

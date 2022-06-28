@@ -6,10 +6,10 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link AnalyzeLabelClassificationOptions} model.
+ * The {@link SingleLabelClassifyOptions} model.
  */
 @Fluent
-public final class AnalyzeLabelClassificationOptions {
+public final class SingleLabelClassifyOptions {
     private boolean disableServiceLogs;
     private boolean includeStatistics;
 
@@ -30,9 +30,9 @@ public final class AnalyzeLabelClassificationOptions {
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link AnalyzeLabelClassificationOptions} object itself.
+     * @return the {@link SingleLabelClassifyOptions} object itself.
      */
-    public AnalyzeLabelClassificationOptions setIncludeStatistics(boolean includeStatistics) {
+    public SingleLabelClassifyOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
         return this;
     }
@@ -55,9 +55,9 @@ public final class AnalyzeLabelClassificationOptions {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link MultiLabelClassificationAction} object itself.
+     * @return The {@link MultiLabelClassifyAction} object itself.
      */
-    public AnalyzeLabelClassificationOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+    public SingleLabelClassifyOptions setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

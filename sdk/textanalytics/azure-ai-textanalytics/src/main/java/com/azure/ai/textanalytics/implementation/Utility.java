@@ -62,7 +62,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassifiedCategory;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -79,7 +79,7 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
-import com.azure.ai.textanalytics.models.LabelClassificationResult;
+import com.azure.ai.textanalytics.models.LabelClassifyResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -106,7 +106,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.LabelClassificationResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
@@ -1227,68 +1227,68 @@ public final class Utility {
 
     /**
      * Helper method to convert {@link CustomSingleClassificationResult} to
-     * {@link LabelClassificationResultCollection}.
+     * {@link LabelClassifyResultCollection}.
      *
      * @param customSingleClassificationResult The {@link CustomSingleClassificationResult}.
      *
-     * @return A {@link LabelClassificationResultCollection}.
+     * @return A {@link LabelClassifyResultCollection}.
      */
-    public static LabelClassificationResultCollection toLabelClassificationResultCollection(
+    public static LabelClassifyResultCollection toLabelClassificationResultCollection(
         CustomLabelClassificationResult customSingleClassificationResult) {
-        final List<LabelClassificationResult> labelClassificationResults = new ArrayList<>();
+        final List<LabelClassifyResult> labelClassifyResults = new ArrayList<>();
         final List<CustomLabelClassificationResultDocumentsItem> singleClassificationDocuments =
             customSingleClassificationResult.getDocuments();
 
         for (CustomLabelClassificationResultDocumentsItem documentSummary : singleClassificationDocuments) {
-            labelClassificationResults.add(toSingleCategoryClassifyResult(documentSummary));
+            labelClassifyResults.add(toSingleCategoryClassifyResult(documentSummary));
         }
 
         for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
-            labelClassificationResults.add(new LabelClassificationResult(documentError.getId(), null,
+            labelClassifyResults.add(new LabelClassifyResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
 
-        final LabelClassificationResultCollection resultCollection =
-            new LabelClassificationResultCollection(labelClassificationResults);
-        LabelClassificationResultCollectionPropertiesHelper.setProjectName(resultCollection,
+        final LabelClassifyResultCollection resultCollection =
+            new LabelClassifyResultCollection(labelClassifyResults);
+        LabelClassifyResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customSingleClassificationResult.getProjectName());
-        LabelClassificationResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
+        LabelClassifyResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
             customSingleClassificationResult.getDeploymentName());
         if (customSingleClassificationResult.getStatistics() != null) {
-            LabelClassificationResultCollectionPropertiesHelper.setStatistics(resultCollection,
+            LabelClassifyResultCollectionPropertiesHelper.setStatistics(resultCollection,
                 toBatchStatistics(customSingleClassificationResult.getStatistics()));
         }
         return resultCollection;
     }
 
-    private static LabelClassificationResult toSingleCategoryClassifyResult(
+    private static LabelClassifyResult toSingleCategoryClassifyResult(
         CustomLabelClassificationResultDocumentsItem singleClassificationDocument) {
         final List<ClassificationResult> classificationResult = singleClassificationDocument.getClassProperty();
         // Warnings
         final List<TextAnalyticsWarning> warnings = singleClassificationDocument.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final LabelClassificationResult labelClassificationResult = new LabelClassificationResult(
+        final LabelClassifyResult labelClassifyResult = new LabelClassifyResult(
             singleClassificationDocument.getId(),
             singleClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
         // Single category classification will only have one category.
-        LabelClassificationResultPropertiesHelper.setClassifications(labelClassificationResult,
+        LabelClassifyResultPropertiesHelper.setClassifications(labelClassifyResult,
             IterableStream.of(toDocumentClassifications(classificationResult)));
-        LabelClassificationResultPropertiesHelper.setWarnings(labelClassificationResult,
+        LabelClassifyResultPropertiesHelper.setWarnings(labelClassifyResult,
             new IterableStream<>(warnings));
-        return labelClassificationResult;
+        return labelClassifyResult;
     }
 
-    private static List<ClassificationCategory> toDocumentClassifications(List<ClassificationResult> classificationResults) {
-        List<ClassificationCategory> classificationCategories = new ArrayList<>();
+    private static List<ClassifiedCategory> toDocumentClassifications(List<ClassificationResult> classificationResults) {
+        List<ClassifiedCategory> classificationCategories = new ArrayList<>();
         for (ClassificationResult classificationResult : classificationResults) {
-            final ClassificationCategory classificationCategory = new ClassificationCategory();
-            ClassificationCategoryPropertiesHelper.setCategory(classificationCategory, classificationResult.getCategory());
-            ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory,
+            final ClassifiedCategory classifiedCategory = new ClassifiedCategory();
+            ClassifiedCategoryPropertiesHelper.setCategory(classifiedCategory, classificationResult.getCategory());
+            ClassifiedCategoryPropertiesHelper.setConfidenceScore(classifiedCategory,
                 classificationResult.getConfidenceScore());
-            classificationCategories.add(classificationCategory);
+            classificationCategories.add(classifiedCategory);
         }
         return classificationCategories;
     }

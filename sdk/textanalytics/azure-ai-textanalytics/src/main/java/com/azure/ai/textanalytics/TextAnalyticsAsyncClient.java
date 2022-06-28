@@ -8,10 +8,9 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeLabelClassificationOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
+import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -21,8 +20,10 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -31,8 +32,8 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassifyPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.AnalyzeLabelClassificationPagedFlux;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1774,9 +1775,9 @@ public final class TextAnalyticsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
-        beginAnalyzeSingleLabelClassification(Iterable<String> documents, String language,
-            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
+    public PollerFlux<LabelClassifyOperationDetail, LabelClassifyPagedFlux>
+        beginSingleLabelClassify(Iterable<String> documents, String language,
+            String projectName, String deploymentName, SingleLabelClassifyOptions options) {
         return null;
     }
 
@@ -1790,9 +1791,9 @@ public final class TextAnalyticsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
-        beginAnalyzeSingleLabelClassification(Iterable<TextDocumentInput> documents,
-            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
+    public PollerFlux<LabelClassifyOperationDetail, LabelClassifyPagedFlux>
+        beginSingleLabelClassify(Iterable<TextDocumentInput> documents,
+            String projectName, String deploymentName, SingleLabelClassifyOptions options) {
         return null;
     }
 
@@ -1809,9 +1810,9 @@ public final class TextAnalyticsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
-        beginAnalyzeMultiLabelClassification(Iterable<String> documents, String language,
-            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
+    public PollerFlux<LabelClassifyOperationDetail, LabelClassifyPagedFlux>
+        beginMultiLabelClassify(Iterable<String> documents, String language,
+            String projectName, String deploymentName, MultiLabelClassifyOptions options) {
         return null;
     }
 
@@ -1826,9 +1827,9 @@ public final class TextAnalyticsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeLabelClassificationOperationDetail, AnalyzeLabelClassificationPagedFlux>
-        beginAnalyzeMultiLabelClassification(Iterable<TextDocumentInput> documents,
-            String projectName, String deploymentName, AnalyzeLabelClassificationOptions options) {
+    public PollerFlux<LabelClassifyOperationDetail, LabelClassifyPagedFlux>
+        beginMultiLabelClassify(Iterable<TextDocumentInput> documents,
+            String projectName, String deploymentName, MultiLabelClassifyOptions options) {
         return null;
     }
 
