@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.33.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.32.0 (2022-06-27)
 #### Other Changes
 * Remove requires `io.netty.transport.epoll` from `module-info`.
