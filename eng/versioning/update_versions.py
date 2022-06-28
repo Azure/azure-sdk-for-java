@@ -48,6 +48,7 @@ from utils import version_regex_str_no_anchor
 from utils import version_update_start_marker
 from utils import version_update_end_marker
 from utils import version_update_marker
+from utils import get_version_file
 import xml.etree.ElementTree as ET
 
 def update_versions(update_type, version_map, ext_dep_map, target_file, skip_readme, auto_version_increment):
@@ -213,12 +214,11 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     # into the verion_map. If UpdateType.all is selected then versions for both
     # the libraries and external dependencies are being updated.
     if update_type == UpdateType.library or update_type == UpdateType.all:
-        version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
-        print('version_file=' + version_file)
+        version_file = get_version_file(build_type.name)
         load_version_map_from_file(version_file, version_map)
 
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
-        dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
+        dependency_file = get_version_file('external_dependencies', 'external_dependency_file=')
         print('external_dependency_file=' + dependency_file)
         load_version_map_from_file(dependency_file, ext_dep_map)
 
