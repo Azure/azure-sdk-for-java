@@ -4,7 +4,7 @@
 > [!IMPORTANT]
 > This release supports Spring Boot version 2.7.x and above.
 #### Features Added
-* Updated `azure-cosmos` to version `4.31.1`.
+* Updated `azure-cosmos` to version `4.32.0`.
 * Updated `Spring Boot` to version `2.7.1`.
 * Updated `Spring Data Commons` to version `2.7.1`.
 #### Other Changes
