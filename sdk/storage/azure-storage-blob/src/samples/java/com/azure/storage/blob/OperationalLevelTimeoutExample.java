@@ -3,36 +3,19 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Locale;
-import java.util.concurrent.TimeoutException;
 
 /**
  * This example shows how to start using the Azure Storage Blob SDK for Java.
@@ -101,8 +84,7 @@ public class OperationalLevelTimeoutExample {
         BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerbasic" + System.currentTimeMillis());
 
         /*
-         * Create a container in Storage blob account with a timeout duration of 3 seconds, below the timeout duration
-         * passed in the policy. This will trigger a timeout exception.
+         * A timeout exception will occur if the blob create container call takes longer than 3 seconds to complete.
          */
         try {
             blobContainerClient.createIfNotExistsWithResponse(new BlobContainerCreateOptions(), Duration.ofSeconds(3L), Context.NONE);
