@@ -328,7 +328,7 @@ org.ow2.asm:asm;9.1
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.2
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.3
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
