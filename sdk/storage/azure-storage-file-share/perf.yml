@@ -19,6 +19,9 @@ parameters:
     displayName: AdditionalArguments (passed to PerfAutomation)
     type: string
     default: ' '
+  - name: toolsBranch
+    type: string
+    default: 'main'
 
 extends:
   template: /eng/pipelines/templates/jobs/perf.yml
@@ -30,3 +33,4 @@ extends:
     arguments: ${{ parameters.arguments }}
     iterations: ${{ parameters.iterations }}
     additionalArguments: ${{ parameters.additionalArguments }}
+    toolsBranch: ${{ parameters.toolsBranch }}

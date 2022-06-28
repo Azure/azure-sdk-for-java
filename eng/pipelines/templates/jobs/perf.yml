@@ -23,6 +23,9 @@ parameters:
   - name: additionalArguments
     type: string
     default: ''
+  - name: toolsBranch
+    type: string
+    default: 'main'
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -37,6 +40,7 @@ resources:
     type: github
     endpoint: Azure
     name: Azure/azure-sdk-tools
+    ref: ${{ parameters.toolsBranch }}
 
 jobs:
 - job: Perf
