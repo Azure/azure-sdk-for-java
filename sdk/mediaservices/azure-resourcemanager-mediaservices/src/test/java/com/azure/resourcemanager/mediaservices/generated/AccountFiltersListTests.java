@@ -14,7 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.AssetInner;
+import com.azure.resourcemanager.mediaservices.models.AccountFilter;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +25,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AssetsClientListTests {
+public final class AccountFiltersListTests {
     @Test
     public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -33,7 +33,7 @@ public final class AssetsClientListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"created\":\"2021-06-23T04:09:23Z\",\"lastModified\":\"2021-02-22T05:27:57Z\",\"alternateId\":\"hv\",\"description\":\"lkvn\",\"container\":\"lrigjkskyri\",\"storageAccountName\":\"vzidsxwaab\",\"storageEncryptionFormat\":\"None\"},\"id\":\"rygznmmaxriz\",\"name\":\"zob\",\"type\":\"opxlhslnelxieixy\"}]}";
+            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":2220841351589915126,\"endTimestamp\":7162692697812879561,\"presentationWindowDuration\":7771885144500029839,\"liveBackoffDuration\":7322499256241128041,\"timescale\":3765841685495474303,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":497715430},\"tracks\":[]},\"id\":\"ypoq\",\"name\":\"yhlqhykprlpyznu\",\"type\":\"iq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,15 +61,20 @@ public final class AssetsClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AssetInner> response =
-            manager
-                .serviceClient()
-                .getAssets()
-                .list("jqg", "cfhmlrqryxyn", "nzrdpsovwxz", 848041898, "tgoe", Context.NONE);
+        PagedIterable<AccountFilter> response = manager.accountFilters().list("lajrnwxacevehj", "uyxoaf", Context.NONE);
 
-        Assertions.assertEquals("hv", response.iterator().next().alternateId());
-        Assertions.assertEquals("lkvn", response.iterator().next().description());
-        Assertions.assertEquals("lrigjkskyri", response.iterator().next().container());
-        Assertions.assertEquals("vzidsxwaab", response.iterator().next().storageAccountName());
+        Assertions
+            .assertEquals(2220841351589915126L, response.iterator().next().presentationTimeRange().startTimestamp());
+        Assertions
+            .assertEquals(7162692697812879561L, response.iterator().next().presentationTimeRange().endTimestamp());
+        Assertions
+            .assertEquals(
+                7771885144500029839L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
+        Assertions
+            .assertEquals(
+                7322499256241128041L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(3765841685495474303L, response.iterator().next().presentationTimeRange().timescale());
+        Assertions.assertEquals(false, response.iterator().next().presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(497715430, response.iterator().next().firstQuality().bitrate());
     }
 }

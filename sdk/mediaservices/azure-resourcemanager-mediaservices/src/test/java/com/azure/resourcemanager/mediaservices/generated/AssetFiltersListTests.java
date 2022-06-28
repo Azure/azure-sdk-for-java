@@ -14,7 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.AssetFilterInner;
+import com.azure.resourcemanager.mediaservices.models.AssetFilter;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +25,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AssetFiltersClientListTests {
+public final class AssetFiltersListTests {
     @Test
     public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -33,7 +33,7 @@ public final class AssetFiltersClientListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1472225226718696941,\"endTimestamp\":6249985858118905531,\"presentationWindowDuration\":767486201426523354,\"liveBackoffDuration\":3711176566749226600,\"timescale\":7267482395817324073,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":1272146098},\"tracks\":[]},\"id\":\"eickpz\",\"name\":\"cpopmxel\",\"type\":\"wcltyjede\"}]}";
+            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":2744971356321102617,\"endTimestamp\":5296191187768659414,\"presentationWindowDuration\":5873895983218419754,\"liveBackoffDuration\":459990683430118031,\"timescale\":3236995184702099443,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":494637597},\"tracks\":[]},\"id\":\"cbm\",\"name\":\"qvx\",\"type\":\"vwf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,21 +61,21 @@ public final class AssetFiltersClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AssetFilterInner> response =
-            manager.serviceClient().getAssetFilters().list("llxecwc", "ojphslhc", "wjutifdwfmv", Context.NONE);
+        PagedIterable<AssetFilter> response =
+            manager.assetFilters().list("haivm", "yasflvgsgzwy", "akoi", Context.NONE);
 
         Assertions
-            .assertEquals(1472225226718696941L, response.iterator().next().presentationTimeRange().startTimestamp());
+            .assertEquals(2744971356321102617L, response.iterator().next().presentationTimeRange().startTimestamp());
         Assertions
-            .assertEquals(6249985858118905531L, response.iterator().next().presentationTimeRange().endTimestamp());
-        Assertions
-            .assertEquals(
-                767486201426523354L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
+            .assertEquals(5296191187768659414L, response.iterator().next().presentationTimeRange().endTimestamp());
         Assertions
             .assertEquals(
-                3711176566749226600L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(7267482395817324073L, response.iterator().next().presentationTimeRange().timescale());
+                5873895983218419754L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
+        Assertions
+            .assertEquals(
+                459990683430118031L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(3236995184702099443L, response.iterator().next().presentationTimeRange().timescale());
         Assertions.assertEquals(true, response.iterator().next().presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(1272146098, response.iterator().next().firstQuality().bitrate());
+        Assertions.assertEquals(494637597, response.iterator().next().firstQuality().bitrate());
     }
 }

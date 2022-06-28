@@ -22,7 +22,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveOutputsClientDeleteTests {
+public final class LiveEventsDeleteTests {
     @Test
     public void testDelete() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -57,6 +57,6 @@ public final class LiveOutputsClientDeleteTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveOutputs().delete("vitac", "xmfcsserxhtv", "oxhlw", "tsjgqrsx", Context.NONE);
+        manager.liveEvents().delete("kv", "irhgfgrwsdp", "ra", Context.NONE);
     }
 }

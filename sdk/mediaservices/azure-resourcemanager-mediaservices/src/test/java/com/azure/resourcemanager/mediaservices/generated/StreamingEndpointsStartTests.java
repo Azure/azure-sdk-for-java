@@ -9,12 +9,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackInner;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,15 +22,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class TracksClientListTests {
+public final class StreamingEndpointsStartTests {
     @Test
-    public void testList() throws Exception {
+    public void testStart() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Failed\"},\"id\":\"abzxrvxcushsp\",\"name\":\"aivmxyasflvgs\",\"type\":\"zwywako\"}]}";
+        String responseStr = "{}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,7 +57,6 @@ public final class TracksClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AssetTrackInner> response =
-            manager.serviceClient().getTracks().list("xm", "f", "kqscazuawxtzx", Context.NONE);
+        manager.streamingEndpoints().start("vcopex", "m", "urbuhhlkyqltq", Context.NONE);
     }
 }

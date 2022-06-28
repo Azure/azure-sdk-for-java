@@ -11,25 +11,29 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.models.Hls;
+import com.azure.resourcemanager.mediaservices.models.LiveOutput;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientAllocateTests {
+public final class LiveOutputsCreateTests {
     @Test
-    public void testAllocate() throws Exception {
+    public void testCreate() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"properties\":{\"description\":\"uir\",\"assetName\":\"p\",\"archiveWindowLength\":\"PT222H19M54S\",\"manifestName\":\"szonwpngajinn\",\"hls\":{\"fragmentsPerTsSegment\":1627836178},\"outputSnapTime\":6323984046331506795,\"created\":\"2021-06-18T11:11:58Z\",\"lastModified\":\"2021-08-29T22:16:11Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\"},\"id\":\"khenlus\",\"name\":\"nrd\",\"type\":\"jxtxrdc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +61,24 @@ public final class LiveEventsClientAllocateTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().allocate("fjmyccxlzhco", "ovne", "henlusfnr", Context.NONE);
+        LiveOutput response =
+            manager
+                .liveOutputs()
+                .define("uahokq")
+                .withExistingLiveEvent("pubowsepdfg", "mtdherngb", "c")
+                .withDescription("kauxof")
+                .withAssetName("hfphwpnulaiywze")
+                .withArchiveWindowLength(Duration.parse("PT39H36M23S"))
+                .withManifestName("hs")
+                .withHls(new Hls().withFragmentsPerTsSegment(2105999737))
+                .withOutputSnapTime(7340513566453152134L)
+                .create();
+
+        Assertions.assertEquals("uir", response.description());
+        Assertions.assertEquals("p", response.assetName());
+        Assertions.assertEquals(Duration.parse("PT222H19M54S"), response.archiveWindowLength());
+        Assertions.assertEquals("szonwpngajinn", response.manifestName());
+        Assertions.assertEquals(1627836178, response.hls().fragmentsPerTsSegment());
+        Assertions.assertEquals(6323984046331506795L, response.outputSnapTime());
     }
 }

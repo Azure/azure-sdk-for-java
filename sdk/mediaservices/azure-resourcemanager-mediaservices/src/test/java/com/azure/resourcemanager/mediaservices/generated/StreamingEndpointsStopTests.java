@@ -22,9 +22,9 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientStartTests {
+public final class StreamingEndpointsStopTests {
     @Test
-    public void testStart() throws Exception {
+    public void testStop() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
@@ -57,6 +57,6 @@ public final class LiveEventsClientStartTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getLiveEvents().start("tjxtxr", "cq", "jvidttge", Context.NONE);
+        manager.streamingEndpoints().stop("rogtuwkf", "djk", "sysidfvclglxnf", Context.NONE);
     }
 }

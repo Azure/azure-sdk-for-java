@@ -9,34 +9,27 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
-import com.azure.resourcemanager.mediaservices.models.AccountEncryptionKeyType;
-import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
-import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class MediaservicesClientListByResourceGroupTests {
+public final class LiveEventsAllocateTests {
     @Test
-    public void testListByResourceGroup() throws Exception {
+    public void testAllocate() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"System\",\"encryption\":{\"type\":\"CustomerKey\",\"status\":\"bnn\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Failed\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"ixhcmavmqfoudor\",\"userAssignedIdentities\":{}},\"location\":\"prot\",\"tags\":{\"ugcmjkavlgorb\":\"undmbx\",\"zcyjtot\":\"ftpmdtzfjltfv\",\"dbzqgqqihed\":\"vopvp\"},\"id\":\"vqwt\",\"name\":\"mkyi\",\"type\":\"cysihs\"}]}";
+        String responseStr = "{}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +57,6 @@ public final class MediaservicesClientListByResourceGroupTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<MediaServiceInner> response =
-            manager.serviceClient().getMediaservices().listByResourceGroup("smexiitdf", Context.NONE);
-
-        Assertions.assertEquals("prot", response.iterator().next().location());
-        Assertions.assertEquals("undmbx", response.iterator().next().tags().get("ugcmjkavlgorb"));
-        Assertions.assertEquals("ixhcmavmqfoudor", response.iterator().next().identity().type());
-        Assertions.assertEquals(StorageAuthentication.SYSTEM, response.iterator().next().storageAuthentication());
-        Assertions.assertEquals(AccountEncryptionKeyType.CUSTOMER_KEY, response.iterator().next().encryption().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        manager.liveEvents().allocate("zvzbglbyv", "ctctbrxkjz", "rgxffmshkw", Context.NONE);
     }
 }

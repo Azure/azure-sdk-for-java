@@ -13,7 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
+import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,9 +23,9 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveEventsClientStopTests {
+public final class StreamingEndpointsScaleTests {
     @Test
-    public void testStop() throws Exception {
+    public void testScale() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
@@ -59,13 +59,12 @@ public final class LiveEventsClientStopTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager
-            .serviceClient()
-            .getLiveEvents()
-            .stop(
-                "uslvyjtcvuwkasi",
-                "iesfuug",
-                "tuqfecjxeygtu",
-                new LiveEventActionInput().withRemoveOutputsOnStop(true),
+            .streamingEndpoints()
+            .scale(
+                "ijtk",
+                "usqogsfikayia",
+                "sharujtj",
+                new StreamingEntityScaleUnit().withScaleUnit(650202313),
                 Context.NONE);
     }
 }

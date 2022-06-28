@@ -11,12 +11,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryptionKeyType;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
+import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
@@ -33,7 +32,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class MediaservicesClientCreateOrUpdateTests {
+public final class MediaservicesCreateOrUpdateTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -41,7 +40,7 @@ public final class MediaservicesClientCreateOrUpdateTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"encryption\":{\"type\":\"SystemKey\",\"status\":\"atutmzlbiojlvfhr\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"yurmochpprprs\",\"userAssignedIdentities\":{}},\"location\":\"yzejnhlbk\",\"tags\":{\"hahzvechndbnwi\":\"pcpil\"},\"id\":\"hol\",\"name\":\"wjwiuub\",\"type\":\"efqsfapaqtferrqw\"}";
+            "{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"encryption\":{\"type\":\"SystemKey\",\"status\":\"xijj\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"mcjn\",\"userAssignedIdentities\":{}},\"location\":\"xtbjwgnyfusfzsv\",\"tags\":{\"rqryxynqn\":\"kzhajqglcfhm\",\"sovwxznptgoeiyb\":\"rd\",\"kvntjlrigjkskyri\":\"abpfhvfs\",\"aabzmif\":\"ovzidsx\"},\"id\":\"ygznmmaxrizk\",\"name\":\"obgop\",\"type\":\"lhslnelxieixyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,31 +68,27 @@ public final class MediaservicesClientCreateOrUpdateTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MediaServiceInner response =
+        MediaService response =
             manager
-                .serviceClient()
-                .getMediaservices()
-                .createOrUpdate(
-                    "qcwdhoh",
-                    "dtmcd",
-                    new MediaServiceInner()
-                        .withLocation("z")
-                        .withTags(mapOf("jmygvk", "xeqoc", "fezrx", "qkjjeokbz", "q", "czurtlei", "zvd", "bkwvzg"))
-                        .withIdentity(
-                            new MediaServiceIdentity().withType("yskonqzink").withUserAssignedIdentities(mapOf()))
-                        .withStorageAccounts(Arrays.asList())
-                        .withStorageAuthentication(StorageAuthentication.SYSTEM)
-                        .withEncryption(new AccountEncryption().withType(AccountEncryptionKeyType.SYSTEM_KEY))
-                        .withKeyDelivery(new KeyDelivery())
-                        .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
-                    Context.NONE);
+                .mediaservices()
+                .define("dlat")
+                .withRegion("pbzpcpiljhahz")
+                .withExistingResourceGroup("sbostzel")
+                .withTags(mapOf("dbn", "h", "ubwefqs", "ieholewjwi", "qtferrqwexjkmf", "ap"))
+                .withIdentity(new MediaServiceIdentity().withType("snmokayzej").withUserAssignedIdentities(mapOf()))
+                .withStorageAccounts(Arrays.asList())
+                .withStorageAuthentication(StorageAuthentication.MANAGED_IDENTITY)
+                .withEncryption(new AccountEncryption().withType(AccountEncryptionKeyType.CUSTOMER_KEY))
+                .withKeyDelivery(new KeyDelivery())
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .create();
 
-        Assertions.assertEquals("yzejnhlbk", response.location());
-        Assertions.assertEquals("pcpil", response.tags().get("hahzvechndbnwi"));
-        Assertions.assertEquals("yurmochpprprs", response.identity().type());
+        Assertions.assertEquals("xtbjwgnyfusfzsv", response.location());
+        Assertions.assertEquals("kzhajqglcfhm", response.tags().get("rqryxynqn"));
+        Assertions.assertEquals("mcjn", response.identity().type());
         Assertions.assertEquals(StorageAuthentication.MANAGED_IDENTITY, response.storageAuthentication());
         Assertions.assertEquals(AccountEncryptionKeyType.SYSTEM_KEY, response.encryption().type());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
     }
 
     @SuppressWarnings("unchecked")

@@ -9,27 +9,32 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
+import com.azure.resourcemanager.mediaservices.models.Job;
+import com.azure.resourcemanager.mediaservices.models.Priority;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class StreamingEndpointsClientStartTests {
+public final class JobsListTests {
     @Test
-    public void testStart() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{}";
+        String responseStr =
+            "{\"value\":[{\"properties\":{\"created\":\"2021-03-19T14:28:01Z\",\"state\":\"Finished\",\"description\":\"fujg\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-03-24T15:15:46Z\",\"outputs\":[],\"priority\":\"High\",\"correlationData\":{\"mxswvruunzz\":\"ttaqutdew\",\"yinljqe\":\"gehkfkimrtixokff\"},\"startTime\":\"2021-11-10T09:12:18Z\",\"endTime\":\"2021-04-18T13:05:47Z\"},\"id\":\"monstshiyxgve\",\"name\":\"fclduccbirdsv\",\"type\":\"wcobie\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,6 +62,11 @@ public final class StreamingEndpointsClientStartTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceClient().getStreamingEndpoints().start("rwgdnqzbrfks", "zhzmtksjci", "digsxcdgl", Context.NONE);
+        PagedIterable<Job> response =
+            manager.jobs().list("waxfewzjkj", "xfdeqvhpsyl", "ksh", "bffmbmxz", "rgywwp", Context.NONE);
+
+        Assertions.assertEquals("fujg", response.iterator().next().description());
+        Assertions.assertEquals(Priority.HIGH, response.iterator().next().priority());
+        Assertions.assertEquals("ttaqutdew", response.iterator().next().correlationData().get("mxswvruunzz"));
     }
 }

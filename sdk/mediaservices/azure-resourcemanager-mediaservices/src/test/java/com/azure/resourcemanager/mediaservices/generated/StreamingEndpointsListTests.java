@@ -14,10 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
-import com.azure.resourcemanager.mediaservices.models.AccountEncryptionKeyType;
-import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
-import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
+import com.azure.resourcemanager.mediaservices.models.StreamingEndpoint;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -28,7 +25,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class MediaservicesClientListTests {
+public final class StreamingEndpointsListTests {
     @Test
     public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -36,7 +33,7 @@ public final class MediaservicesClientListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"System\",\"encryption\":{\"type\":\"CustomerKey\",\"status\":\"gqqnobpudcda\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Failed\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"asqbucljgkyex\",\"userAssignedIdentities\":{}},\"location\":\"aipidsdaultxi\",\"tags\":{\"lnqnmcjn\":\"mfqwa\"},\"id\":\"zqdqxt\",\"name\":\"jw\",\"type\":\"nyfusfzsvtuikzh\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"kasizie\",\"scaleUnits\":791127597,\"availabilitySetName\":\"ughtuqfecjxeygtu\",\"accessControl\":{},\"maxCacheAge\":4489320944093922339,\"customHostNames\":[\"mr\",\"wnjlxu\",\"rhwpus\",\"jbaqehgpdoh\"],\"hostName\":\"qatucoigebxnc\",\"cdnEnabled\":true,\"cdnProvider\":\"pbnwgfmxjgcg\",\"cdnProfile\":\"bgdlfgtdysna\",\"provisioningState\":\"flq\",\"resourceState\":\"Deleting\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"amz\",\"crossDomainPolicy\":\"wdkqzeqy\"},\"freeTrialEndTime\":\"2021-01-20T19:50:29Z\",\"created\":\"2021-03-27T03:11:25Z\",\"lastModified\":\"2021-10-28T09:33:28Z\"},\"sku\":{\"name\":\"fza\",\"capacity\":741252839},\"location\":\"wcegyamlbn\",\"tags\":{\"jvpilguooqja\":\"ac\"},\"id\":\"m\",\"name\":\"itgueiookjbs\",\"type\":\"hrtdtpdelq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +61,21 @@ public final class MediaservicesClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<MediaServiceInner> response = manager.serviceClient().getMediaservices().list(Context.NONE);
+        PagedIterable<StreamingEndpoint> response =
+            manager.streamingEndpoints().list("tjvidt", "gepuslvyjtc", Context.NONE);
 
-        Assertions.assertEquals("aipidsdaultxi", response.iterator().next().location());
-        Assertions.assertEquals("mfqwa", response.iterator().next().tags().get("lnqnmcjn"));
-        Assertions.assertEquals("asqbucljgkyex", response.iterator().next().identity().type());
-        Assertions.assertEquals(StorageAuthentication.SYSTEM, response.iterator().next().storageAuthentication());
-        Assertions.assertEquals(AccountEncryptionKeyType.CUSTOMER_KEY, response.iterator().next().encryption().type());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
+        Assertions.assertEquals("wcegyamlbn", response.iterator().next().location());
+        Assertions.assertEquals("ac", response.iterator().next().tags().get("jvpilguooqja"));
+        Assertions.assertEquals(741252839, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("kasizie", response.iterator().next().description());
+        Assertions.assertEquals(791127597, response.iterator().next().scaleUnits());
+        Assertions.assertEquals("ughtuqfecjxeygtu", response.iterator().next().availabilitySetName());
+        Assertions.assertEquals(4489320944093922339L, response.iterator().next().maxCacheAge());
+        Assertions.assertEquals("mr", response.iterator().next().customHostNames().get(0));
+        Assertions.assertEquals(true, response.iterator().next().cdnEnabled());
+        Assertions.assertEquals("pbnwgfmxjgcg", response.iterator().next().cdnProvider());
+        Assertions.assertEquals("bgdlfgtdysna", response.iterator().next().cdnProfile());
+        Assertions.assertEquals("amz", response.iterator().next().crossSiteAccessPolicies().clientAccessPolicy());
+        Assertions.assertEquals("wdkqzeqy", response.iterator().next().crossSiteAccessPolicies().crossDomainPolicy());
     }
 }

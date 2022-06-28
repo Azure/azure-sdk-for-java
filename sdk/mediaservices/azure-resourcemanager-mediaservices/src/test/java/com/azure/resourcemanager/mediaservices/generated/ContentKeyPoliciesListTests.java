@@ -14,7 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicy;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +25,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class StreamingEndpointsClientListTests {
+public final class ContentKeyPoliciesListTests {
     @Test
     public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -33,7 +33,7 @@ public final class StreamingEndpointsClientListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"elyetndnbf\",\"scaleUnits\":834158684,\"availabilitySetName\":\"gagflnlgmtrwah\",\"accessControl\":{},\"maxCacheAge\":521923206412713182,\"customHostNames\":[\"r\",\"lrohkpig\",\"fusuckzmkwklsno\",\"axmqeqal\"],\"hostName\":\"jnhgwydyyn\",\"cdnEnabled\":false,\"cdnProvider\":\"hgbvqtan\",\"cdnProfile\":\"fdlpukhpyr\",\"provisioningState\":\"izjcpeog\",\"resourceState\":\"Stopping\",\"crossSiteAccessPolicies\":{\"clientAccessPolicy\":\"brouxdd\",\"crossDomainPolicy\":\"fhp\"},\"freeTrialEndTime\":\"2021-05-12T21:56:51Z\",\"created\":\"2021-11-10T15:36:49Z\",\"lastModified\":\"2021-06-14T12:47:01Z\"},\"sku\":{\"name\":\"xhpdulontacnpqwt\",\"capacity\":1565487990},\"location\":\"uevrhrljyoogwxhn\",\"tags\":{\"arenlvhhtklnvnaf\":\"ugwbsreurfqkf\"},\"id\":\"vkyfedevjbosl\",\"name\":\"qxypokkhminq\",\"type\":\"ymc\"}]}";
+            "{\"value\":[{\"properties\":{\"created\":\"2021-08-04T10:36:25Z\",\"lastModified\":\"2021-08-17T17:08:13Z\",\"description\":\"zjedmstkvnlv\",\"options\":[]},\"id\":\"uiiznktwfansnvpd\",\"name\":\"bmikost\",\"type\":\"z\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,21 +61,11 @@ public final class StreamingEndpointsClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<StreamingEndpointInner> response =
-            manager.serviceClient().getStreamingEndpoints().list("p", "uuuybnchrsziz", Context.NONE);
+        PagedIterable<ContentKeyPolicy> response =
+            manager
+                .contentKeyPolicies()
+                .list("gbqi", "kxkbsazgakgacyr", "m", 1512551942, "mspofapvuhryl", Context.NONE);
 
-        Assertions.assertEquals("uevrhrljyoogwxhn", response.iterator().next().location());
-        Assertions.assertEquals("ugwbsreurfqkf", response.iterator().next().tags().get("arenlvhhtklnvnaf"));
-        Assertions.assertEquals(1565487990, response.iterator().next().sku().capacity());
-        Assertions.assertEquals("elyetndnbf", response.iterator().next().description());
-        Assertions.assertEquals(834158684, response.iterator().next().scaleUnits());
-        Assertions.assertEquals("gagflnlgmtrwah", response.iterator().next().availabilitySetName());
-        Assertions.assertEquals(521923206412713182L, response.iterator().next().maxCacheAge());
-        Assertions.assertEquals("r", response.iterator().next().customHostNames().get(0));
-        Assertions.assertEquals(false, response.iterator().next().cdnEnabled());
-        Assertions.assertEquals("hgbvqtan", response.iterator().next().cdnProvider());
-        Assertions.assertEquals("fdlpukhpyr", response.iterator().next().cdnProfile());
-        Assertions.assertEquals("brouxdd", response.iterator().next().crossSiteAccessPolicies().clientAccessPolicy());
-        Assertions.assertEquals("fhp", response.iterator().next().crossSiteAccessPolicies().crossDomainPolicy());
+        Assertions.assertEquals("zjedmstkvnlv", response.iterator().next().description());
     }
 }

@@ -9,15 +9,17 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
-import com.azure.resourcemanager.mediaservices.models.Hls;
+import com.azure.resourcemanager.mediaservices.models.AccountEncryptionKeyType;
+import com.azure.resourcemanager.mediaservices.models.MediaService;
+import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,15 +28,15 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class LiveOutputsClientCreateTests {
+public final class MediaservicesListTests {
     @Test
-    public void testCreate() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"jtkbusqogsfika\",\"assetName\":\"ians\",\"archiveWindowLength\":\"PT8H46M37S\",\"manifestName\":\"ujtjiqxfz\",\"hls\":{\"fragmentsPerTsSegment\":2008272584},\"outputSnapTime\":6130586229705056651,\"created\":\"2021-10-28T10:50:56Z\",\"lastModified\":\"2021-08-04T14:26:18Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Running\"},\"id\":\"qqekewvnqvcdlgu\",\"name\":\"ucmfdj\",\"type\":\"nlaxpunjqikcz\"}";
+            "{\"value\":[{\"properties\":{\"storageAccounts\":[],\"storageAuthentication\":\"System\",\"encryption\":{\"type\":\"SystemKey\",\"status\":\"cdzsu\"},\"keyDelivery\":{},\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"InProgress\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"muapcvhdbevw\",\"userAssignedIdentities\":{}},\"location\":\"skonqzinkf\",\"tags\":{\"ljmygvkzqkjjeokb\":\"bzbowxeqo\",\"q\":\"efezrxcczurtlei\",\"zvd\":\"bkwvzg\"},\"id\":\"bzdixzmq\",\"name\":\"noda\",\"type\":\"opqhewjptmc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,29 +64,13 @@ public final class LiveOutputsClientCreateTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LiveOutputInner response =
-            manager
-                .serviceClient()
-                .getLiveOutputs()
-                .create(
-                    "jjvpilguooqja",
-                    "m",
-                    "itgueiookjbs",
-                    "hrtdtpdelq",
-                    new LiveOutputInner()
-                        .withDescription("lmotoebnfxofvcj")
-                        .withAssetName("gdirazf")
-                        .withArchiveWindowLength(Duration.parse("PT208H52M25S"))
-                        .withManifestName("jwabmd")
-                        .withHls(new Hls().withFragmentsPerTsSegment(2062234995))
-                        .withOutputSnapTime(4251807303057644449L),
-                    Context.NONE);
+        PagedIterable<MediaService> response = manager.mediaservices().list(Context.NONE);
 
-        Assertions.assertEquals("jtkbusqogsfika", response.description());
-        Assertions.assertEquals("ians", response.assetName());
-        Assertions.assertEquals(Duration.parse("PT8H46M37S"), response.archiveWindowLength());
-        Assertions.assertEquals("ujtjiqxfz", response.manifestName());
-        Assertions.assertEquals(2008272584, response.hls().fragmentsPerTsSegment());
-        Assertions.assertEquals(6130586229705056651L, response.outputSnapTime());
+        Assertions.assertEquals("skonqzinkf", response.iterator().next().location());
+        Assertions.assertEquals("bzbowxeqo", response.iterator().next().tags().get("ljmygvkzqkjjeokb"));
+        Assertions.assertEquals("muapcvhdbevw", response.iterator().next().identity().type());
+        Assertions.assertEquals(StorageAuthentication.SYSTEM, response.iterator().next().storageAuthentication());
+        Assertions.assertEquals(AccountEncryptionKeyType.SYSTEM_KEY, response.iterator().next().encryption().type());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
     }
 }

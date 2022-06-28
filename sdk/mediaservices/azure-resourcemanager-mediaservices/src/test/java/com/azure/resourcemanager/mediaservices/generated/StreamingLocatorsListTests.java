@@ -14,7 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
+import com.azure.resourcemanager.mediaservices.models.StreamingLocator;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +25,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class AccountFiltersClientListTests {
+public final class StreamingLocatorsListTests {
     @Test
     public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -33,7 +33,7 @@ public final class AccountFiltersClientListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":2220841351589915126,\"endTimestamp\":7162692697812879561,\"presentationWindowDuration\":7771885144500029839,\"liveBackoffDuration\":7322499256241128041,\"timescale\":3765841685495474303,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":497715430},\"tracks\":[]},\"id\":\"ypoq\",\"name\":\"yhlqhykprlpyznu\",\"type\":\"iq\"}]}";
+            "{\"value\":[{\"properties\":{\"assetName\":\"txx\",\"created\":\"2021-06-29T13:46:46Z\",\"startTime\":\"2021-06-09T22:40:53Z\",\"endTime\":\"2021-01-22T10:22:07Z\",\"streamingPolicyName\":\"xgrytfmp\",\"defaultContentKeyPolicyName\":\"cil\",\"contentKeys\":[],\"alternativeMediaId\":\"ykggnoxuztrksx\",\"filters\":[\"d\",\"cpfnznthjtwkja\"]},\"id\":\"rxuzvoam\",\"name\":\"tcqiosmg\",\"type\":\"zah\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,21 +61,15 @@ public final class AccountFiltersClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AccountFilterInner> response =
-            manager.serviceClient().getAccountFilters().list("lajrnwxacevehj", "uyxoaf", Context.NONE);
+        PagedIterable<StreamingLocator> response =
+            manager.streamingLocators().list("atftgzpnpbsw", "e", "loccsrmozihm", 2097389313, "g", Context.NONE);
 
-        Assertions
-            .assertEquals(2220841351589915126L, response.iterator().next().presentationTimeRange().startTimestamp());
-        Assertions
-            .assertEquals(7162692697812879561L, response.iterator().next().presentationTimeRange().endTimestamp());
-        Assertions
-            .assertEquals(
-                7771885144500029839L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
-        Assertions
-            .assertEquals(
-                7322499256241128041L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(3765841685495474303L, response.iterator().next().presentationTimeRange().timescale());
-        Assertions.assertEquals(false, response.iterator().next().presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(497715430, response.iterator().next().firstQuality().bitrate());
+        Assertions.assertEquals("txx", response.iterator().next().assetName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T22:40:53Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T10:22:07Z"), response.iterator().next().endTime());
+        Assertions.assertEquals("xgrytfmp", response.iterator().next().streamingPolicyName());
+        Assertions.assertEquals("cil", response.iterator().next().defaultContentKeyPolicyName());
+        Assertions.assertEquals("ykggnoxuztrksx", response.iterator().next().alternativeMediaId());
+        Assertions.assertEquals("d", response.iterator().next().filters().get(0));
     }
 }

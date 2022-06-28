@@ -9,32 +9,29 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
-import com.azure.resourcemanager.mediaservices.models.Priority;
+import com.azure.resourcemanager.mediaservices.models.AssetTrack;
+import com.azure.resourcemanager.mediaservices.models.TrackBase;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class JobsClientListTests {
+public final class TracksCreateOrUpdateTests {
     @Test
-    public void testList() throws Exception {
+    public void testCreateOrUpdate() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"created\":\"2020-12-22T17:55:02Z\",\"state\":\"Canceling\",\"description\":\"fzvaylptr\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-08-23T02:35:52Z\",\"outputs\":[],\"priority\":\"High\",\"correlationData\":{\"kchcxwa\":\"w\",\"kjexfdeqvhp\":\"fewz\",\"zjrgyww\":\"ylkkshkbffmbm\"},\"startTime\":\"2021-06-18T17:27:40Z\",\"endTime\":\"2021-03-19T14:28:01Z\"},\"id\":\"ptfujgicgaaoept\",\"name\":\"aqutdewemxswvruu\",\"type\":\"zzjgehkfki\"}]}";
+            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ebwtswb\",\"name\":\"uwfmduragegizvc\",\"type\":\"felisdjub\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +59,12 @@ public final class JobsClientListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<JobInner> response =
+        AssetTrack response =
             manager
-                .serviceClient()
-                .getJobs()
-                .list("ostbzbkiwb", "qnyophzfyls", "crpfbcunez", "cez", "lfwyfwlwxjwetn", Context.NONE);
-
-        Assertions.assertEquals("fzvaylptr", response.iterator().next().description());
-        Assertions.assertEquals(Priority.HIGH, response.iterator().next().priority());
-        Assertions.assertEquals("w", response.iterator().next().correlationData().get("kchcxwa"));
+                .tracks()
+                .define("htmwwinh")
+                .withExistingAsset("o", "dbxiqx", "iiqbi")
+                .withTrack(new TrackBase())
+                .create();
     }
 }

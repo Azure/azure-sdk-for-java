@@ -13,8 +13,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
-import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackInner;
-import com.azure.resourcemanager.mediaservices.models.TrackBase;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,15 +22,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class TracksClientCreateOrUpdateTests {
+public final class StreamingEndpointsDeleteTests {
     @Test
-    public void testCreateOrUpdate() throws Exception {
+    public void testDelete() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"gnxf\",\"name\":\"qonmpqoxwdof\",\"type\":\"bxiqxeiiqbimht\"}";
+        String responseStr = "{}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,16 +57,6 @@ public final class TracksClientCreateOrUpdateTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AssetTrackInner response =
-            manager
-                .serviceClient()
-                .getTracks()
-                .createOrUpdate(
-                    "hknsmjbl",
-                    "ljhlnymzotq",
-                    "ryuzcbmqqv",
-                    "mv",
-                    new AssetTrackInner().withTrack(new TrackBase()),
-                    Context.NONE);
+        manager.streamingEndpoints().delete("cslmotoebnfxo", "vcjkgd", "razftxejwabmdujt", Context.NONE);
     }
 }
