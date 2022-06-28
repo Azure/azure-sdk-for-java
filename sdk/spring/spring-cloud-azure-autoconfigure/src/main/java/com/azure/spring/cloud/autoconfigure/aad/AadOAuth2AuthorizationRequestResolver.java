@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @see OAuth2AuthorizationRequestResolver
  */
-public final class AadOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
+public class AadOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
     private final AadAuthenticationProperties properties;
