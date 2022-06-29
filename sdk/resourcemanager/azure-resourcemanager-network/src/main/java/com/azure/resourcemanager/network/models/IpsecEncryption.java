@@ -48,7 +48,11 @@ public final class IpsecEncryption extends ExpandableStringEnum<IpsecEncryption>
         return fromString(name, IpsecEncryption.class);
     }
 
-    /** @return known IpsecEncryption values. */
+    /**
+     * Gets known IpsecEncryption values.
+     *
+     * @return known IpsecEncryption values.
+     */
     public static Collection<IpsecEncryption> values() {
         return values(IpsecEncryption.class);
     }

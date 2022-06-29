@@ -485,9 +485,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
-  <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
+  <!-- Suppress VisibilityModifier in MemberConverterImplTests and FieldBuilderTests.-->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
+  <suppress checks="VisibilityModifier" files="com.azure.search.documents.indexes.FieldBuilderTests.java"/>
 
   <!-- Code generation doesn't add a space between '{' and '}' when the class is empty. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>
@@ -514,4 +515,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- AzureFileSystemProvider requires a deferred instantiation of the static logger to prevent a potential runtime exception. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.nio.AzureFileSystemProvider"/>
+
+  <!-- EncryptedBlobAsyncClient and EncryptedBlobClient overriding methods for download behavior; cannot change signature -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.storage.blob.specialized.cryptography.(EncryptedBlobAsyncClient|EncryptedBlobClient)"/>
 </suppressions>

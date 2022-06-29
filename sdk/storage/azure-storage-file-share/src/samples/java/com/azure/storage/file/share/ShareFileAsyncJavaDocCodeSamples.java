@@ -240,7 +240,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, Duration, ShareFileCopyOptions)}
+     * Generates a code sample for using {@link ShareFileAsyncClient#beginCopy(String, ShareFileCopyOptions, Duration)}
      */
     public void beginCopy3() {
         ShareFileAsyncClient shareFileAsyncClient = createAsyncClientWithSASToken();
@@ -262,14 +262,14 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .setSmbProperties(smbProperties)
             .setFilePermission(filePermission)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setDestinationRequestConditions(requestConditions)
             .setSmbPropertiesToCopy(list)
             .setPermissionCopyModeType(PermissionCopyModeType.SOURCE)
             .setMetadata(Collections.singletonMap("file", "metadata"));
 
         PollerFlux<ShareFileCopyInfo, Void> poller = shareFileAsyncClient.beginCopy(
-            "https://{accountName}.file.core.windows.net?{SASToken}", Duration.ofSeconds(2), options);
+            "https://{accountName}.file.core.windows.net?{SASToken}", options, Duration.ofSeconds(2));
 
         poller.subscribe(response -> {
             final ShareFileCopyInfo value = response.getValue();

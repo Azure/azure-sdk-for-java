@@ -30,7 +30,11 @@ public final class DdosCustomPolicyProtocol extends ExpandableStringEnum<DdosCus
         return fromString(name, DdosCustomPolicyProtocol.class);
     }
 
-    /** @return known DdosCustomPolicyProtocol values. */
+    /**
+     * Gets known DdosCustomPolicyProtocol values.
+     *
+     * @return known DdosCustomPolicyProtocol values.
+     */
     public static Collection<DdosCustomPolicyProtocol> values() {
         return values(DdosCustomPolicyProtocol.class);
     }
