@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.digitaltwins.core;
+package com.azure.digitaltwins.core.implementation.serializer;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.azure.digitaltwins.core.BasicDigitalTwinComponent;
+import com.azure.digitaltwins.core.DigitalTwinPropertyMetadata;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -24,15 +26,15 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
- * An optional helper class for serializing twin metadata.
+ * An optional helper class for serializing a twin components.
  */
-public final class BasicDigitalTwinMetadataSerializer extends StdSerializer<BasicDigitalTwinMetadata> {
+public final class BasicDigitalTwinComponentSerializer extends StdSerializer<BasicDigitalTwinComponent> {
     private static final long serialVersionUID = 1L;
     
     /**
      * Default constructor for serializer.
      */
-    public BasicDigitalTwinMetadataSerializer() { 
+    public BasicDigitalTwinComponentSerializer() { 
         this(null); 
     } 
 
@@ -40,24 +42,36 @@ public final class BasicDigitalTwinMetadataSerializer extends StdSerializer<Basi
      * Constructor for serializer allowing one pass in the handled type.
      * @param t The handled type.
      */
-    public BasicDigitalTwinMetadataSerializer(Class<BasicDigitalTwinMetadata> t) { 
+    public BasicDigitalTwinComponentSerializer(Class<BasicDigitalTwinComponent> t) { 
         super(t); 
     }
 
     @Override
-    public void serialize(BasicDigitalTwinMetadata value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+    public void serialize(BasicDigitalTwinComponent value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         
         jgen.writeStartObject();
         
-        jgen.writeStringField(DigitalTwinsJsonPropertyNames.METADATA_MODEL, value.getModelId());
+        // Write contents
+        for (Entry<String, Object> contentEntry : value.getContents().entrySet()) {
+            jgen.writeFieldName(contentEntry.getKey());
+            mapper.writeValue(jgen, contentEntry.getValue());
+        }
         
-        for (Entry<String, DigitalTwinPropertyMetadata> propertyMetadataEntry : value.getPropertyMetadata().entrySet()) {
+        // Write metadata
+        jgen.writeFieldName(DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA);
+        jgen.writeStartObject();
+        
+        jgen.writeFieldName(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        mapper.writeValue(jgen, value.getLastUpdatedOn().toString());
+        
+        for (Entry<String, DigitalTwinPropertyMetadata> propertyMetadataEntry : value.getMetadata().entrySet()) {
             jgen.writeFieldName(propertyMetadataEntry.getKey());
             mapper.writeValue(jgen, propertyMetadataEntry.getValue());
         }
+        jgen.writeEndObject();
         
         jgen.writeEndObject();
     }

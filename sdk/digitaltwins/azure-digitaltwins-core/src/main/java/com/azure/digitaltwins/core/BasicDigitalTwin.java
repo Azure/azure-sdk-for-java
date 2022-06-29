@@ -4,6 +4,8 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinDeserializer;
+import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinSerializer;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -66,7 +68,7 @@ public final class BasicDigitalTwin {
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param lastUpdatedOn The date and time the digital twin was last updated.
      */
-    protected BasicDigitalTwin(String digitalTwinId, OffsetDateTime lastUpdatedOn) {
+    public BasicDigitalTwin(String digitalTwinId, OffsetDateTime lastUpdatedOn) {
         this(digitalTwinId);
         
         this.lastUpdatedOn = lastUpdatedOn;

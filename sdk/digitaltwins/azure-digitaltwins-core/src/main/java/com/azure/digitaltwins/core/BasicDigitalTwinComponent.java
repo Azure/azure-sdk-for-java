@@ -4,6 +4,8 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinComponentDeserializer;
+import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinComponentSerializer;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -55,7 +57,7 @@ public final class BasicDigitalTwinComponent {
      * added to aid in deserialization.
      * @param lastUpdatedOn The date and time the digital twin was last updated.
      */
-    protected BasicDigitalTwinComponent(OffsetDateTime lastUpdatedOn) {
+    public BasicDigitalTwinComponent(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
     }
 
