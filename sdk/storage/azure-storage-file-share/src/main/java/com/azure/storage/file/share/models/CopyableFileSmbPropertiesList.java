@@ -15,6 +15,16 @@ public final class CopyableFileSmbPropertiesList {
     private Boolean isSetLastWrittenOn;
     private Boolean isSetChangedOn;
 
+    /**
+     * Creates an instance of information about the file smb properties.
+     */
+    public CopyableFileSmbPropertiesList() {
+        isSetFileAttributes = false;
+        isSetCreatedOn = false;
+        isSetLastWrittenOn = false;
+        isSetChangedOn = false;
+    }
+
     /***
      * @return a flag indicating whether file attributes should be copied from source file.
      */
@@ -27,7 +37,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param fileAttributes Flag indicating whether to copy file attributes from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setFileAttributes(boolean fileAttributes) {
+    public CopyableFileSmbPropertiesList setFileAttributes(Boolean fileAttributes) {
         isSetFileAttributes = fileAttributes;
         return this;
     }
@@ -43,7 +53,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param createdOn Flag indicating whether to copy created on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setCreatedOn(boolean createdOn) {
+    public CopyableFileSmbPropertiesList setCreatedOn(Boolean createdOn) {
         isSetCreatedOn = createdOn;
         return this;
     }
@@ -59,7 +69,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param lastWrittenOn Flag indicating whether to copy last written on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setLastWrittenOn(boolean lastWrittenOn) {
+    public CopyableFileSmbPropertiesList setLastWrittenOn(Boolean lastWrittenOn) {
         isSetLastWrittenOn = lastWrittenOn;
         return this;
     }
@@ -75,7 +85,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param changedOn Flag indicating whether to copy changed on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setChangedOn(boolean changedOn) {
+    public CopyableFileSmbPropertiesList setChangedOn(Boolean changedOn) {
         isSetChangedOn = changedOn;
         return this;
     }
