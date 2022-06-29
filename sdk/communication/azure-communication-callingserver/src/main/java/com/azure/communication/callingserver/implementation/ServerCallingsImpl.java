@@ -5,9 +5,8 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.AnswerCallResponseInternal;
+import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesDto;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CreateCallResponseInternal;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
 import com.azure.core.annotation.BodyParam;
@@ -57,7 +56,7 @@ public final class ServerCallingsImpl {
         @Post("/calling/callConnections")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CreateCallResponseInternal>> createCall(
+        Mono<Response<CallConnectionPropertiesDto>> createCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateCallRequestInternal body,
@@ -65,9 +64,9 @@ public final class ServerCallingsImpl {
                 Context context);
 
         @Post("/calling/callConnections:answer")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<AnswerCallResponseInternal>> answerCall(
+        Mono<Response<CallConnectionPropertiesDto>> answerCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
@@ -100,10 +99,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the create call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResponseInternal>> createCallWithResponseAsync(CreateCallRequestInternal body) {
+    public Mono<Response<CallConnectionPropertiesDto>> createCallWithResponseAsync(CreateCallRequestInternal body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -119,10 +118,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the create call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResponseInternal>> createCallWithResponseAsync(
+    public Mono<Response<CallConnectionPropertiesDto>> createCallWithResponseAsync(
             CreateCallRequestInternal body, Context context) {
         final String accept = "application/json";
         return service.createCall(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
@@ -135,13 +134,13 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the create call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResponseInternal> createCallAsync(CreateCallRequestInternal body) {
+    public Mono<CallConnectionPropertiesDto> createCallAsync(CreateCallRequestInternal body) {
         return createCallWithResponseAsync(body)
                 .flatMap(
-                        (Response<CreateCallResponseInternal> res) -> {
+                        (Response<CallConnectionPropertiesDto> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -158,13 +157,13 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the create call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResponseInternal> createCallAsync(CreateCallRequestInternal body, Context context) {
+    public Mono<CallConnectionPropertiesDto> createCallAsync(CreateCallRequestInternal body, Context context) {
         return createCallWithResponseAsync(body, context)
                 .flatMap(
-                        (Response<CreateCallResponseInternal> res) -> {
+                        (Response<CallConnectionPropertiesDto> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -180,10 +179,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the create call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResponseInternal createCall(CreateCallRequestInternal body) {
+    public CallConnectionPropertiesDto createCall(CreateCallRequestInternal body) {
         return createCallAsync(body).block();
     }
 
@@ -195,10 +194,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the create call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResponseInternal> createCallWithResponse(
+    public Response<CallConnectionPropertiesDto> createCallWithResponse(
             CreateCallRequestInternal body, Context context) {
         return createCallWithResponseAsync(body, context).block();
     }
@@ -210,10 +209,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the answer call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResponseInternal>> answerCallWithResponseAsync(
+    public Mono<Response<CallConnectionPropertiesDto>> answerCallWithResponseAsync(
             AnswerCallRequestInternal answerCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -234,10 +233,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the answer call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResponseInternal>> answerCallWithResponseAsync(
+    public Mono<Response<CallConnectionPropertiesDto>> answerCallWithResponseAsync(
             AnswerCallRequestInternal answerCallRequest, Context context) {
         final String accept = "application/json";
         return service.answerCall(
@@ -251,13 +250,13 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the answer call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResponseInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
+    public Mono<CallConnectionPropertiesDto> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
         return answerCallWithResponseAsync(answerCallRequest)
                 .flatMap(
-                        (Response<AnswerCallResponseInternal> res) -> {
+                        (Response<CallConnectionPropertiesDto> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -274,14 +273,14 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the answer call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResponseInternal> answerCallAsync(
+    public Mono<CallConnectionPropertiesDto> answerCallAsync(
             AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context)
                 .flatMap(
-                        (Response<AnswerCallResponseInternal> res) -> {
+                        (Response<CallConnectionPropertiesDto> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -297,10 +296,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the answer call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnswerCallResponseInternal answerCall(AnswerCallRequestInternal answerCallRequest) {
+    public CallConnectionPropertiesDto answerCall(AnswerCallRequestInternal answerCallRequest) {
         return answerCallAsync(answerCallRequest).block();
     }
 
@@ -312,10 +311,10 @@ public final class ServerCallingsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the answer call operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResponseInternal> answerCallWithResponse(
+    public Response<CallConnectionPropertiesDto> answerCallWithResponse(
             AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context).block();
     }

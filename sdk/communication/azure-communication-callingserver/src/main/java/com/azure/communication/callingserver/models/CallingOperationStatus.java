@@ -31,8 +31,17 @@ public final class CallingOperationStatus extends ExpandableStringEnum<CallingOp
         return fromString(name, CallingOperationStatus.class);
     }
 
-    /** @return known CallingOperationStatus values. */
+    /** Return the values.
+     * @return known CallingOperationStatus values.
+     * */
     public static Collection<CallingOperationStatus> values() {
         return values(CallingOperationStatus.class);
+    }
+
+    /**
+     * Private constructor
+     */
+    private CallingOperationStatus() {
+
     }
 }

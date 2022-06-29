@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation;
 import com.azure.communication.callingserver.implementation.models.AcsCallParticipantDto;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
-import com.azure.communication.callingserver.implementation.models.GetCallResponseInternal;
+import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesDto;
 import com.azure.communication.callingserver.implementation.models.GetParticipantRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsResponseInternal;
@@ -32,6 +32,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CallConnections. */
@@ -63,7 +64,7 @@ public final class CallConnectionsImpl {
         @Get("/calling/callConnections/{callConnectionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<GetCallResponseInternal>> getCall(
+        Mono<Response<CallConnectionPropertiesDto>> getCall(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -96,6 +97,16 @@ public final class CallConnectionsImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") TransferToParticipantRequestInternal transferToParticipantRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/calling/callConnections/{callConnectionId}/participants")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<List<AcsCallParticipantDto>>> getParticipants(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -143,7 +154,7 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallResponseInternal>> getCallWithResponseAsync(String callConnectionId) {
+    public Mono<Response<CallConnectionPropertiesDto>> getCallWithResponseAsync(String callConnectionId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -166,7 +177,8 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallResponseInternal>> getCallWithResponseAsync(String callConnectionId, Context context) {
+    public Mono<Response<CallConnectionPropertiesDto>> getCallWithResponseAsync(
+            String callConnectionId, Context context) {
         final String accept = "application/json";
         return service.getCall(
                 this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
@@ -182,10 +194,10 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallResponseInternal> getCallAsync(String callConnectionId) {
+    public Mono<CallConnectionPropertiesDto> getCallAsync(String callConnectionId) {
         return getCallWithResponseAsync(callConnectionId)
                 .flatMap(
-                        (Response<GetCallResponseInternal> res) -> {
+                        (Response<CallConnectionPropertiesDto> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -205,10 +217,10 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallResponseInternal> getCallAsync(String callConnectionId, Context context) {
+    public Mono<CallConnectionPropertiesDto> getCallAsync(String callConnectionId, Context context) {
         return getCallWithResponseAsync(callConnectionId, context)
                 .flatMap(
-                        (Response<GetCallResponseInternal> res) -> {
+                        (Response<CallConnectionPropertiesDto> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -227,7 +239,7 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCallResponseInternal getCall(String callConnectionId) {
+    public CallConnectionPropertiesDto getCall(String callConnectionId) {
         return getCallAsync(callConnectionId).block();
     }
 
@@ -242,7 +254,7 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetCallResponseInternal> getCallWithResponse(String callConnectionId, Context context) {
+    public Response<CallConnectionPropertiesDto> getCallWithResponse(String callConnectionId, Context context) {
         return getCallWithResponseAsync(callConnectionId, context).block();
     }
 
@@ -562,6 +574,120 @@ public final class CallConnectionsImpl {
     }
 
     /**
+     * Get participants from a call.
+     *
+     * @param callConnectionId The call connection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<AcsCallParticipantDto>>> getParticipantsWithResponseAsync(String callConnectionId) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getParticipants(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Get participants from a call.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<AcsCallParticipantDto>>> getParticipantsWithResponseAsync(
+            String callConnectionId, Context context) {
+        final String accept = "application/json";
+        return service.getParticipants(
+                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get participants from a call.
+     *
+     * @param callConnectionId The call connection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<AcsCallParticipantDto>> getParticipantsAsync(String callConnectionId) {
+        return getParticipantsWithResponseAsync(callConnectionId)
+                .flatMap(
+                        (Response<List<AcsCallParticipantDto>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Get participants from a call.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<AcsCallParticipantDto>> getParticipantsAsync(String callConnectionId, Context context) {
+        return getParticipantsWithResponseAsync(callConnectionId, context)
+                .flatMap(
+                        (Response<List<AcsCallParticipantDto>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Get participants from a call.
+     *
+     * @param callConnectionId The call connection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AcsCallParticipantDto> getParticipants(String callConnectionId) {
+        return getParticipantsAsync(callConnectionId).block();
+    }
+
+    /**
+     * Get participants from a call.
+     *
+     * @param callConnectionId The call connection Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<AcsCallParticipantDto>> getParticipantsWithResponse(String callConnectionId, Context context) {
+        return getParticipantsWithResponseAsync(callConnectionId, context).block();
+    }
+
+    /**
      * Add participants to the call.
      *
      * @param callConnectionId The call connection Id.
@@ -824,14 +950,14 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participants from a call.
+     * Get a participant from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param getParticipantsRequest The get participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participants from a call.
+     * @return a participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcsCallParticipantDto>> getParticipantWithResponseAsync(
@@ -849,7 +975,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participants from a call.
+     * Get a participant from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param getParticipantsRequest The get participant request.
@@ -857,7 +983,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participants from a call.
+     * @return a participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcsCallParticipantDto>> getParticipantWithResponseAsync(
@@ -873,14 +999,14 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participants from a call.
+     * Get a participant from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param getParticipantsRequest The get participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participants from a call.
+     * @return a participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcsCallParticipantDto> getParticipantAsync(
@@ -897,7 +1023,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participants from a call.
+     * Get a participant from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param getParticipantsRequest The get participant request.
@@ -905,7 +1031,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participants from a call.
+     * @return a participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcsCallParticipantDto> getParticipantAsync(
@@ -922,14 +1048,14 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participants from a call.
+     * Get a participant from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param getParticipantsRequest The get participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participants from a call.
+     * @return a participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AcsCallParticipantDto getParticipant(
@@ -938,7 +1064,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participants from a call.
+     * Get a participant from a call.
      *
      * @param callConnectionId The call connection Id.
      * @param getParticipantsRequest The get participant request.
@@ -946,7 +1072,7 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participants from a call.
+     * @return a participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcsCallParticipantDto> getParticipantWithResponse(

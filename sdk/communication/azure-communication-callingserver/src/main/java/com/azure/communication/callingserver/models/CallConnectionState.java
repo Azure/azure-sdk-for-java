@@ -39,8 +39,17 @@ public final class CallConnectionState extends ExpandableStringEnum<CallConnecti
         return fromString(name, CallConnectionState.class);
     }
 
-    /** @return known CallConnectionState values. */
+    /** Return values
+     * @return known CallConnectionState values.
+     */
     public static Collection<CallConnectionState> values() {
         return values(CallConnectionState.class);
+    }
+
+    /**
+     * Private constructor
+     */
+    private CallConnectionState() {
+
     }
 }

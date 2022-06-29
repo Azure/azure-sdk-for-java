@@ -86,6 +86,18 @@ public final class AzureCommunicationCallingServerServiceImpl {
         return this.callConnections;
     }
 
+    /** The ContentsImpl object to access its operations. */
+    private final ContentsImpl contents;
+
+    /**
+     * Gets the ContentsImpl object to access its operations.
+     *
+     * @return the ContentsImpl object.
+     */
+    public ContentsImpl getContents() {
+        return this.contents;
+    }
+
     /**
      * Initializes an instance of AzureCommunicationCallingServerService client.
      *
@@ -129,5 +141,6 @@ public final class AzureCommunicationCallingServerServiceImpl {
         this.apiVersion = apiVersion;
         this.serverCallings = new ServerCallingsImpl(this);
         this.callConnections = new CallConnectionsImpl(this);
+        this.contents = new ContentsImpl(this);
     }
 }

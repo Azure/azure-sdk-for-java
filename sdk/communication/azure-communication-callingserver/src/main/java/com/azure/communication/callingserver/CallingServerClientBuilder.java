@@ -81,6 +81,13 @@ public final class CallingServerClientBuilder implements
     private RetryOptions retryOptions;
 
     /**
+     * Private constructor
+     */
+    private CallingServerClientBuilder() {
+
+    }
+
+    /**
      * Set endpoint of the service.
      *
      * @param endpoint url of the service.
