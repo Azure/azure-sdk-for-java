@@ -26,7 +26,7 @@ import com.azure.core.util.AzureAttributeCollection;
  * AzureLongHistogram amqpLinkDuration = meter
  *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
  *
- * AzureAttributeBuilder attributes = meter.createAttributeBuilder&#40;&#41;
+ * AzureAttributeCollection attributes = meter.createAttributeBuilder&#40;&#41;
  *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
  *
  * &#47;&#47; when measured operation starts, record the measurement
@@ -59,7 +59,7 @@ public interface AzureMeter {
      * AzureLongHistogram amqpLinkDuration = meter
      *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
      *
-     * AzureAttributeBuilder attributes = meter.createAttributeBuilder&#40;&#41;
+     * AzureAttributeCollection attributes = meter.createAttributeBuilder&#40;&#41;
      *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
      *
      * &#47;&#47; when measured operation starts, record the measurement
@@ -89,7 +89,7 @@ public interface AzureMeter {
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#counter for more details.
      * <!-- src_embed com.azure.core.util.metrics.AzureMeter.longCounter -->
      * <pre>
-     * AzureAttributeBuilder attributes = defaultMeter.createAttributeBuilder&#40;&#41;
+     * AzureAttributeCollection attributes = defaultMeter.createAttributeBuilder&#40;&#41;
      *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
      *     .add&#40;&quot;error&quot;, true&#41;;
      *
@@ -144,11 +144,11 @@ public interface AzureMeter {
      * <pre>
      *
      * &#47;&#47; Create attributes for possible error codes. Can be done lazily once specific error code is received.
-     * AzureAttributeBuilder successAttributes = defaultMeter.createAttributeBuilder&#40;&#41;
+     * AzureAttributeCollection successAttributes = defaultMeter.createAttributeBuilder&#40;&#41;
      *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
      *     .add&#40;&quot;error&quot;, true&#41;;
      *
-     * AzureAttributeBuilder errorAttributes =  defaultMeter.createAttributeBuilder&#40;&#41;
+     * AzureAttributeCollection errorAttributes =  defaultMeter.createAttributeBuilder&#40;&#41;
      *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
      *     .add&#40;&quot;error&quot;, false&#41;;
      *
