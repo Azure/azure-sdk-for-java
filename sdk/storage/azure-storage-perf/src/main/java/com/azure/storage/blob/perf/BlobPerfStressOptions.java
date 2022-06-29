@@ -9,7 +9,7 @@ import com.beust.jcommander.Parameter;
 
 public class BlobPerfStressOptions extends StoragePerfStressOptions {
 
-    @Parameter(names = { "--encryption-version" })
+    @Parameter(names = { "--client-encryption" })
     private EncryptionVersion encryptionVersion = null;
 
     public EncryptionVersion getEncryptionVersion() {
