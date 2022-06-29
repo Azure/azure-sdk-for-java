@@ -14,16 +14,12 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 /**
  * Unit tests for {@link  JedisRedisCheckpointStore}
@@ -88,6 +84,20 @@ public class JedisRedisCheckpointStoreTests {
     }
 
     @Test
+    public void testCheckpointKeyNotStored() {
+        //arrange
+        Set<String> value = new HashSet<>();
+        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
+        //act
+        when(jedisPool.getResource()).thenReturn(jedis);
+        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
+        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
+            eq("checkpoint"))).thenThrow(new NoSuchElementException());
+        //assert
+        Assertions.assertThrows(NoSuchElementException.class, () -> store.listCheckpoints("fullyQualifiedNamespace", "eventHubName", "consumerGroup"));
+    }
+
+    @Test
     public void testListOwnership() {
         //arrange
         PartitionOwnership partitionOwnership = new PartitionOwnership()
@@ -134,6 +144,19 @@ public class JedisRedisCheckpointStoreTests {
         when(jedis.smembers("//")).thenThrow(new IllegalArgumentException());
         //assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> store.listOwnership("", "", ""));
+    }
+    @Test
+    public void testListOwnershipKeyNotStored() {
+        //arrange
+        Set<String> value = new HashSet<>();
+        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
+        //act
+        when(jedisPool.getResource()).thenReturn(jedis);
+        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
+        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
+            eq("partitionOwnership"))).thenThrow(new NoSuchElementException());
+        //assert
+        Assertions.assertThrows(NoSuchElementException.class, () -> store.listOwnership("fullyQualifiedNamespace", "eventHubName", "consumerGroup"));
     }
 
 }

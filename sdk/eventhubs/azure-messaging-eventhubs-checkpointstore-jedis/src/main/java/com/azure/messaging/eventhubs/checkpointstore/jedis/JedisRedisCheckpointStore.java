@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
@@ -63,7 +64,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 List<String> checkpointJsonList = jedis.hmget(member, "checkpoint");
                 String checkpointJson;
                 if (checkpointJsonList.size() == 0) {
-                    return Flux.error(new IllegalAccessException());
+                    return Flux.error(new NoSuchElementException());
                 }
                 else {
                     checkpointJson = checkpointJsonList.get(0);
@@ -102,7 +103,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 List<String> partitionOwnershipJsonList = jedis.hmget(member, "partitionOwnership");
                 String partitionOwnershipJson;
                 if (partitionOwnershipJsonList.size() == 0) {
-                    return Flux.error(new IllegalAccessException());
+                    return Flux.error(new NoSuchElementException());
                 }
                 else {
                     partitionOwnershipJson = partitionOwnershipJsonList.get(0);
