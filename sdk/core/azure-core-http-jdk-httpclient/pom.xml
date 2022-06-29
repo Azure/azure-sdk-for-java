@@ -148,11 +148,11 @@
   </build>
 
   <profiles>
-    <!-- Library cannot build for Java 9 and below -->
+    <!-- Library cannot build for Java 11 and below -->
     <profile>
       <id>java8</id>
       <activation>
-        <jdk>[,9)</jdk>
+        <jdk>[,11)</jdk>
       </activation>
       <build>
         <plugins>
