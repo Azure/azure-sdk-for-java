@@ -29,6 +29,7 @@ import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CON
 public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallbackHandler {
 
     private static final Duration ACCESS_TOKEN_REQUEST_BLOCK_TIME = Duration.ofSeconds(30);
+    private static final String TOKEN_AUDIENCE_FORMAT = "%s://%s/.default";
 
     private final AzureKafkaProperties properties;
     private final AzureTokenCredentialResolver tokenCredentialResolver;
@@ -59,7 +60,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             throw new IllegalArgumentException("Invalid bootstrap server configured for Azure Event Hubs for Kafka! The format should be {YOUR.EVENTHUBS.FQDN}:9093.");
         }
         URI uri = URI.create("https://" + bootstrapServer);
-        this.tokenAudience = uri.getScheme() + "://" + uri.getHost();
+        this.tokenAudience = String.format(TOKEN_AUDIENCE_FORMAT, uri.getScheme(), uri.getHost());
         credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
         AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
     }
