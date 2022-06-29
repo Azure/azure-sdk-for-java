@@ -146,6 +146,7 @@ public class ComponentSyncSamples {
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
                 + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
+                + "Last Updated: " + basicDigitalTwin.getLastUpdatedOn() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getContents().get("Prop1") + "\n\t"
                 + "Prop2: " + basicDigitalTwin.getContents().get("Prop2") + " with sourceTime " + basicDigitalTwin.getMetadata().getPropertyMetadata().get("Prop2").getSourceTime() + "\n\t"
                 + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
