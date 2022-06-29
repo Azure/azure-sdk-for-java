@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -12,10 +13,15 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Synchronous client that supports calling server operations.
@@ -409,6 +415,98 @@ public final class CallingServerClient {
                                                                                String operationContext, Context context) {
         return callingServerAsyncClient.removeParticipantsWithResponseInternal(callConnectionId, participantsToRemove,
             operationContext, context).block();
+    }
+    //endregion
+
+    //region Recording Management actions
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
+        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
+    }
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
+     * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationStream - A stream where to write the downloaded content.
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadToWithResponse(String sourceEndpoint,
+                                                 OutputStream destinationStream,
+                                                 HttpRange httpRange,
+                                                 final Context context) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
+        return callingServerAsyncClient
+            .downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
+            .block();
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadTo(String sourceEndpoint,
+                           Path destinationPath,
+                           ParallelDownloadOptions parallelDownloadOptions,
+                           boolean overwrite) {
+        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadToWithResponse(String sourceEndpoint,
+                                                 Path destinationPath,
+                                                 ParallelDownloadOptions parallelDownloadOptions,
+                                                 boolean overwrite,
+                                                 final Context context) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
+            parallelDownloadOptions, overwrite, context).block();
+    }
+
+    /**
+     * Delete the content located in the deleteEndpoint
+     *
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRecording(String deleteEndpoint, final Context context) {
+        callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
+    }
+
+    /**
+     * Delete the content located in the deleteEndpoint
+     *
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
+        return callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
     //endregion
 }

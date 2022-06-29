@@ -1,0 +1,39 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (11.0.11; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "416",
+      "Date" : "Thu, 03 Jun 2021 00:22:03 GMT"
+    },
+    "Exception" : null
+  },
+    {
+      "Method" : "GET",
+      "Uri" : "https://REDACTED.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata",
+      "Headers" : {
+        "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (11.0.11; Windows 10; 10.0)"
+      },
+      "Response" : {
+        "content-length" : "957",
+        "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+        "Cache-Control" : "no-cache, max-age=0, s-maxage=0, private",
+        "Server" : "Microsoft-HTTPAPI/2.0",
+        "Content-Range" : "bytes 0-956/957",
+        "retry-after" : "0",
+        "StatusCode" : "206",
+        "Body" : "ew0KICAicmVzb3VyY2VJZCI6ICI2MzFmYThkOC1hYWI1LTRhYzUtOGUxNS0yNjFhYTI1OTA3NTAiLA0KICAiY2FsbElkIjogImEzMjdhOGU0LTRjMjQtNGM4NC05ZmUyLTA5ZmZlNjIzYzg1OCIsDQogICJjaHVua0RvY3VtZW50SWQiOiAiMC1ldXMtZDItM2NjYTIxNzU4OTFmMjFjNmM5YTU5NzVhMTJjMDE0MWMiLA0KICAiY2h1bmtJbmRleCI6IDAsDQogICJjaHVua1N0YXJ0VGltZSI6ICIyMDIxLTA2LTAyVDIxOjQ1OjQxLjY0OTQyMjRaIiwNCiAgImNodW5rRHVyYXRpb24iOiA1NTgwLjAsDQogICJwYXVzZVJlc3VtZUludGVydmFscyI6IFtdLA0KICAicmVjb3JkaW5nSW5mbyI6IHsNCiAgICAiY29udGVudFR5cGUiOiAibWl4ZWQiLA0KICAgICJjaGFubmVsVHlwZSI6ICJhdWRpb1ZpZGVvIiwNCiAgICAiZm9ybWF0IjogIm1wNCIsDQogICAgImF1ZGlvQ29uZmlndXJhdGlvbiI6IHsNCiAgICAgICJzYW1wbGVSYXRlIjogMTYwMDAsDQogICAgICAiYml0UmF0ZSI6IDEyODAwMCwNCiAgICAgICJjaGFubmVscyI6IDENCiAgICB9LA0KICAgICJ2aWRlb0NvbmZpZ3VyYXRpb24iOiB7DQogICAgICAibG9uZ2VyU2lkZUxlbmd0aCI6IDE5MjAsDQogICAgICAic2hvcnRlclNpZGVMZW5ndGgiOiAxMDgwLA0KICAgICAgImZyYW1lcmF0ZSI6IDgsDQogICAgICAiYml0UmF0ZSI6IDEwMDAwMDANCiAgICB9DQogIH0sDQogICJwYXJ0aWNpcGFudHMiOiBbDQogICAgew0KICAgICAgInBhcnRpY2lwYW50SWQiOiAiODphY3M6NjMxZmE4ZDgtYWFiNS00YWM1LThlMTUtMjYxYWEyNTkwNzUwXzAwMDAwMDBhLTZlOGItYjMzYy1kZWZkLThiM2EwZDAwNTFjYiINCiAgICB9LA0KICAgIHsNCiAgICAgICJwYXJ0aWNpcGFudElkIjogIjg6YWNzOjYzMWZhOGQ4LWFhYjUtNGFjNS04ZTE1LTI2MWFhMjU5MDc1MF8wMDAwMDAwYS02ZThiLWNhMTctZGVmZC04YjNhMGQwMDUxY2QiDQogICAgfQ0KICBdDQp9",
+        "Date" : "Thu, 03 Jun 2021 00:07:30 GMT",
+        "Content-Type" : "application/octet-stream"
+      },
+      "Exception" : null
+    } ],
+  "variables" : [ ]
+}

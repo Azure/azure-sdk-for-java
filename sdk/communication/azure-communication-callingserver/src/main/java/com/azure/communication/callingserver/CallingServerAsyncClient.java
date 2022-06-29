@@ -19,6 +19,7 @@ import com.azure.communication.callingserver.implementation.models.RejectCallReq
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.implementation.models.CallSourceDto;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
@@ -30,17 +31,37 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.fluxError;
 
 /**
  * Asynchronous client that supports calling server operations.
@@ -56,11 +77,19 @@ public final class CallingServerAsyncClient {
     private final CallConnectionsImpl callConnectionInternal;
     private final ServerCallingsImpl serverCallingInternal;
     private final ClientLogger logger;
+    private final ContentDownloader contentDownloader;
+    private final HttpPipeline httpPipelineInternal;
+    private final String resourceEndpoint;
 
     CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
         callConnectionInternal = callServiceClient.getCallConnections();
         serverCallingInternal = callServiceClient.getServerCallings();
         logger = new ClientLogger(CallingServerAsyncClient.class);
+        contentDownloader = new ContentDownloader(
+            callServiceClient.getEndpoint(),
+            callServiceClient.getHttpPipeline());
+        httpPipelineInternal = callServiceClient.getHttpPipeline();
+        resourceEndpoint = callServiceClient.getEndpoint();
     }
 
     //region Pre-call Actions
@@ -617,6 +646,215 @@ public final class CallingServerAsyncClient {
                 response -> new SimpleResponse<>(response, new RemoveParticipantsResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+    //endregion
+
+    //region Recording management Actions
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
+     * passed as parameter.
+     * @param sourceEndpoint - URL where the content is located.
+     * @return A {@link Flux} object containing the byte stream of the content requested.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            return downloadStream(sourceEndpoint, null);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
+     * passed as parameter.
+     * @param sourceEndpoint - URL where the content is located.
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @return A {@link Flux} object containing the byte stream of the content requested.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, httpRange, null)
+                .map(Response::getValue)
+                .flux()
+                .flatMap(flux -> flux);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the recording content, (e.g. Recording's metadata, Recording video, etc.) from the {@code endpoint}.
+     * @param sourceEndpoint - URL where the content is located.
+     * @param range - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @return A {@link Mono} object containing a {@link Response} with the byte stream of the content requested.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     * @return Response for a successful downloadTo request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> downloadTo(
+        String sourceEndpoint,
+        Path destinationPath,
+        ParallelDownloadOptions parallelDownloadOptions,
+        boolean overwrite) {
+        try {
+            return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null)
+                .then();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        Path destinationPath,
+        ParallelDownloadOptions parallelDownloadOptions,
+        boolean overwrite) {
+        try {
+            return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        OutputStream destinationStream,
+        HttpRange httpRange,
+        Context context) {
+
+        return contentDownloader.downloadToStreamWithResponse(sourceEndpoint, destinationStream, httpRange, context);
+    }
+
+    Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        Path destinationPath,
+        ParallelDownloadOptions parallelDownloadOptions,
+        boolean overwrite,
+        Context context) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+
+        Set<OpenOption> openOptions = new HashSet<>();
+
+        if (overwrite) {
+            openOptions.add(StandardOpenOption.CREATE);
+        } else {
+            openOptions.add(StandardOpenOption.CREATE_NEW);
+        }
+        openOptions.add(StandardOpenOption.WRITE);
+
+        try {
+            AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
+            return downloadToWithResponse(sourceEndpoint, destinationPath, file, parallelDownloadOptions, context);
+        } catch (IOException ex) {
+            return monoError(logger, new RuntimeException(ex));
+        }
+    }
+
+    Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        Path destinationPath,
+        AsynchronousFileChannel fileChannel,
+        ParallelDownloadOptions parallelDownloadOptions,
+        Context context
+    ) {
+        ParallelDownloadOptions finalParallelDownloadOptions =
+            parallelDownloadOptions == null
+                ? new ParallelDownloadOptions()
+                : parallelDownloadOptions;
+
+        return Mono.just(fileChannel).flatMap(
+                c -> contentDownloader.downloadToFileWithResponse(sourceEndpoint, c, finalParallelDownloadOptions, context))
+            .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType));
+    }
+    /**
+     * Delete the content located at the deleteEndpoint
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRecording(String deleteEndpoint) {
+        try {
+            return deleteRecordingWithResponse(deleteEndpoint, null).then();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Delete the content located at the deleteEndpoint
+     * Recording deletion will be done using parallel workers.
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<HttpResponse>> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
+        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteEndpoint);
+        URL urlToSignWith = getUrlToSignRequestWith(deleteEndpoint);
+        Context finalContext;
+        if (context == null) {
+            finalContext = new Context("hmacSignatureURL", urlToSignWith);
+        } else {
+            finalContext = context.addData("hmacSignatureURL", urlToSignWith);
+        }
+        Mono<HttpResponse> httpResponse = httpPipelineInternal.send(request, finalContext);
+        try {
+            return httpResponse.map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private URL getUrlToSignRequestWith(String endpoint) {
+        try {
+            String path = new URL(endpoint).getPath();
+
+            if (path.startsWith("/")) {
+                path = path.substring(1);
+            }
+
+            return new URL(resourceEndpoint + path);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
     //endregion

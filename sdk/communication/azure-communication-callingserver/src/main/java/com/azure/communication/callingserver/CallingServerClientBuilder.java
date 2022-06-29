@@ -80,10 +80,7 @@ public final class CallingServerClientBuilder implements
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
 
-    /**
-     * Private constructor
-     */
-    private CallingServerClientBuilder() {
+    public CallingServerClientBuilder() {
 
     }
 
