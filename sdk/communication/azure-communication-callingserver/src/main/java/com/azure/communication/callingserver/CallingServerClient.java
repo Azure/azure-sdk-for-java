@@ -419,6 +419,14 @@ public final class CallingServerClient {
     //endregion
 
     //region Recording Management actions
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
+     * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationStream - A stream where to write the downloaded content.
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
         downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
