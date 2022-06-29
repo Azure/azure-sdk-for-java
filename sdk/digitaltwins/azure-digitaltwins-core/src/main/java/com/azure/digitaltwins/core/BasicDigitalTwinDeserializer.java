@@ -19,7 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-public class BasicDigitalTwinDeserializer extends StdDeserializer<BasicDigitalTwin> {
+/**
+ * An optional helper class for deserializing a digital twin.
+ */
+public final class BasicDigitalTwinDeserializer extends StdDeserializer<BasicDigitalTwin> {
+    private static final long serialVersionUID = 1L;
     
     public BasicDigitalTwinDeserializer() { 
         this(null); 

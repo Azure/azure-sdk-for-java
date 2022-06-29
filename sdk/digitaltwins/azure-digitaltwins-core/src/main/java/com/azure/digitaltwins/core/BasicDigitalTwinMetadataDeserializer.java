@@ -19,7 +19,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-public class BasicDigitalTwinMetadataDeserializer extends StdDeserializer<BasicDigitalTwinMetadata> {
+/**
+ * An optional helper class for deserializing twin metadata.
+ */
+public final class BasicDigitalTwinMetadataDeserializer extends StdDeserializer<BasicDigitalTwinMetadata> {
+    private static final long serialVersionUID = 1L;
     
     public BasicDigitalTwinMetadataDeserializer() { 
         this(null); 
