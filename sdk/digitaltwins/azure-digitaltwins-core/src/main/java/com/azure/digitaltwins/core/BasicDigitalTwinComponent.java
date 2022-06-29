@@ -50,6 +50,11 @@ public final class BasicDigitalTwinComponent {
     public BasicDigitalTwinComponent() {
     }
     
+    /**
+     * Construct a digital twin component, specifying the time the component was last updated. This is primarily
+     * added to aid in deserialization.
+     * @param lastUpdatedOn The date and time the digital twin was last updated.
+     */
     protected BasicDigitalTwinComponent(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
     }

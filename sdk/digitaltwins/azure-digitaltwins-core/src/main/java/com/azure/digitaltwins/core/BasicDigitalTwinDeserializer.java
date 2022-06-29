@@ -34,6 +34,7 @@ public final class BasicDigitalTwinDeserializer extends StdDeserializer<BasicDig
 
     /**
      * Constructor for deserializer allowing one pass in the value class.
+     * @param vc The value class.
      */
     public BasicDigitalTwinDeserializer(Class<?> vc) { 
         super(vc); 

@@ -38,6 +38,7 @@ public final class BasicDigitalTwinMetadataSerializer extends StdSerializer<Basi
 
     /**
      * Constructor for serializer allowing one pass in the handled type.
+     * @param t The handled type.
      */
     public BasicDigitalTwinMetadataSerializer(Class<BasicDigitalTwinMetadata> t) { 
         super(t); 

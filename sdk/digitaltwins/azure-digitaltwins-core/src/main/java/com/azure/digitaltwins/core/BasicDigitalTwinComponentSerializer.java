@@ -37,7 +37,8 @@ public final class BasicDigitalTwinComponentSerializer extends StdSerializer<Bas
     } 
 
     /**
-     * Constructor for deserializer allowing one pass in the value class.
+     * Constructor for serializer allowing one pass in the handled type.
+     * @param t The handled type.
      */
     public BasicDigitalTwinComponentSerializer(Class<BasicDigitalTwinComponent> t) { 
         super(t); 

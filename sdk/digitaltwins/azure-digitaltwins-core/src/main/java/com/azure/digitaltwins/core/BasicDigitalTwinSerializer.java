@@ -38,6 +38,7 @@ public final class BasicDigitalTwinSerializer extends StdSerializer<BasicDigital
 
     /**
      * Constructor for serializer allowing one pass in the handled type.
+     * @param t The handled type.
      */
     public BasicDigitalTwinSerializer(Class<BasicDigitalTwin> t) { 
         super(t); 
