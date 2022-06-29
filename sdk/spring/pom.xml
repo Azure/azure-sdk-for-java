@@ -55,7 +55,6 @@
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus</module>
-        <module>spring-cloud-azure-test-eventhubs-binder</module>
         <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-integration-tests</module>
       </modules>
