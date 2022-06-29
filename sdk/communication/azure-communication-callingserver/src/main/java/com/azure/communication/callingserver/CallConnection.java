@@ -11,6 +11,7 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public final class CallConnection {
         this.callConnectionId = callConnectionPropertiesDto.getCallConnectionId();
         this.source = CommunicationIdentifierConverter.convert(callConnectionPropertiesDto.getSource());
         this.alternateCallerId = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesDto.getAlternateCallerId());
-        this.targets = null;
+        this.targets = new ArrayList<>();
         callConnectionPropertiesDto.getTargets().forEach(target -> this.targets.add(CommunicationIdentifierConverter.convert(target)));
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesDto.getCallConnectionState().toString());
         this.subject = callConnectionPropertiesDto.getSubject();
