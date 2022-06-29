@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
- * The sample demonstrates how handle terminal error from {@link ServiceBusReceiverAsyncClient} (aka LowLevelClient)
- * and recreate the LowLevelClient to continue receive.
- * 
+ * The sample demonstrates how handle terminal error from {@link ServiceBusReceiverAsyncClient#receiveMessages()}
+ * and recreate the client to continue receiving messages.
+ *
  * <p>
- * The {@link ServiceBusReceiverAsyncClient} emits a terminal error (hence no longer emit messages) in
- * the following cases -
+ * The {@link ServiceBusReceiverAsyncClient#receiveMessages()} emits a terminal error (hence no longer emit messages)
+ * in the following cases -
  *
  * <ul>
  * <li>When the connection encounters a non-retriable error. A few examples of non-retriable errors are - the app
@@ -39,7 +39,7 @@ import java.util.function.Function;
  *
  * <p>
  * When these cases happen, the usual pattern is to log the terminal error for auditing and create a new client
- * to receive messages.
+ * to continue receiving messages.
  */
 public class ServiceBusReceiverAsyncClientRetrySample {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientRetrySample.class);
@@ -48,8 +48,8 @@ public class ServiceBusReceiverAsyncClientRetrySample {
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     /**
-     * Main method to show how to handle terminal error from ServiceBusReceiverAsyncClient to
-     * continue receive from Service Bus queue.
+     * Main method of the sample showing how to handle terminal error from
+     * {@link ServiceBusReceiverAsyncClient#receiveMessages()} and recreate the client to continue receiving messages.
      *
      * @param args Unused arguments to the program.
      *
@@ -61,8 +61,8 @@ public class ServiceBusReceiverAsyncClientRetrySample {
     }
 
     /**
-     * Run method to invoke this demo on how to handle terminal error from ServiceBusReceiverAsyncClient to
-     * continue receive from Service Bus queue.
+     * Run method to invoke this demo on how to handle terminal error from
+     * {@link ServiceBusReceiverAsyncClient#receiveMessages()} and recreate the client to continue receiving messages.
      */
     @Test
     public void run() throws InterruptedException {
