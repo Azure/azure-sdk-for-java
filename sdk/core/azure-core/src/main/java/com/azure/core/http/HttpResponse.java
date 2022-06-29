@@ -7,7 +7,6 @@ import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +20,6 @@ import java.nio.charset.Charset;
  * The response of an {@link HttpRequest}.
  */
 public abstract class HttpResponse implements Closeable {
-    private static final ClientLogger LOGGER = new ClientLogger(HttpResponse.class);
     private final HttpRequest request;
 
     /**

@@ -78,8 +78,9 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser = getMethodParser(method);
         RequestOptions options = methodParser.setRequestOptions(args);
         boolean isReactive = methodParser.isReactive();
+        boolean isStreamResponseType = methodParser.isStreamResponse();
 
-        if (isReactive) {
+        if (isReactive || isStreamResponseType) {
             return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                 options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
         } else {

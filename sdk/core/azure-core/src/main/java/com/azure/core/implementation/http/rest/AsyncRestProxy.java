@@ -9,7 +9,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -171,14 +170,7 @@ public class AsyncRestProxy extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            if (methodParser.getReturnType().equals(StreamResponse.class)) {
-                // TODO (kasobol-msft) this is a hack.
-                // We don't need entity in that case but we can't change the else case yet
-                // it somehow relies on eager consumption and tests hang otherwise.
-                asyncResult = Mono.empty();
-            } else {
-                asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
-            }
+            asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getSourceResponse().getBodyAsByteArray().mapNotNull(response::getDecodedBody);

@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
-import com.azure.core.implementation.http.rest.PercentEscaper;
-import com.azure.core.implementation.http.rest.UrlEscapers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

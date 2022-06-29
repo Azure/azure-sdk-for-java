@@ -92,6 +92,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final int contextPosition;
     private final int requestOptionsPosition;
     private final boolean isReactive;
+    private final boolean isStreamResponse;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
     private UnexpectedExceptionInformation defaultException;
@@ -257,6 +258,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         this.isReactive = isReactiveMethod;
+        this.isStreamResponse = isStreamResponseType(returnType);
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
     }
@@ -628,8 +630,20 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     boolean isReactiveType(Type type) {
         return (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)
-            || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class)
-            || TypeUtil.isTypeOrSubTypeOf(type, StreamResponse.class));
+            || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class));
+    }
+
+    boolean isStreamResponseType(Type type) {
         //Note: StreamResponse will be added to sync flows in a follow-up PR. Currently, their reactive body types are handled in Async Rest Proxy.
+        return TypeUtil.isTypeOrSubTypeOf(type, StreamResponse.class);
+    }
+
+    /**
+     * Indicates whether the swagger method is of Stream Response type or not.
+     *
+     * @return the boolean flag indicating whether the swagger method is Stream Response return type or not.
+     */
+    public boolean isStreamResponse() {
+        return isStreamResponse;
     }
 }

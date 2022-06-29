@@ -95,7 +95,7 @@ public abstract class RestProxyBase {
         return interfaceParser.getMethodParser(method);
     }
 
-    public Object invoke(Object proxy, final Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
+    public final Object invoke(Object proxy, final Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
                          Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, boolean isAsync, Object[] args) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 

@@ -60,6 +60,7 @@
       --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
       --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -9,15 +9,15 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.implementation.http.rest.RestProxyUtils;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -32,53 +32,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link RestProxy}.
  */
 public class SyncRestProxyTests {
-    private static final byte[] EXPECTED = new byte[]{0, 1, 2, 3, 4};
-
-    @Test
-    public void emptyRequestBody() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
-
-        try {
-            RestProxyUtils.validateLengthSync(httpRequest);
-        } catch (Exception e) {
-            fail("The test Should not have thrown any exception.");
-        }
-    }
-
-    @Test
-    public void expectedBodyLength() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED)
-            .setHeader("Content-Length", "5");
-
-        assertArrayEquals(EXPECTED, collectRequest(httpRequest));
-    }
-
-    @Test
-    public void unexpectedBodyLength() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(EXPECTED);
-
-        UnexpectedLengthException unexpectedLengthException =  assertThrows(UnexpectedLengthException.class,
-            () -> collectRequest(httpRequest.setHeader("Content-Length", "4")));
-        assertEquals("Request body emitted 5 bytes, more than the expected 4 bytes.",
-            unexpectedLengthException.getMessage());
-
-        unexpectedLengthException =  assertThrows(UnexpectedLengthException.class,
-            () -> collectRequest(httpRequest.setHeader("Content-Length", "6")));
-        assertEquals("Request body emitted 5 bytes, less than the expected 6 bytes.",
-            unexpectedLengthException.getMessage());
-    }
 
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")

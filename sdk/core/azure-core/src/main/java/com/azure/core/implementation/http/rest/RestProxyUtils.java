@@ -37,8 +37,6 @@ import java.util.List;
 public final class RestProxyUtils {
 
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
-    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
-        new ResponseExceptionConstructorCache();
     public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
     public static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
@@ -55,23 +53,25 @@ public final class RestProxyUtils {
         }
 
         return Mono.fromCallable(() -> {
-            Long bodyLength = body.getLength();
+            BinaryDataContent content = BinaryDataHelper.getContent(body);
             long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-            if (bodyLength != null) {
-                if (bodyLength < expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                        bodyLength, expectedLength), bodyLength, expectedLength);
-                } else if (bodyLength > expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        bodyLength, expectedLength), bodyLength, expectedLength);
-                }
+            if (content instanceof InputStreamContent) {
+                InputStream validatingInputStream = new LengthValidatingInputStream(
+                    content.toStream(), expectedLength);
+                request.setBody(BinaryData.fromStream(validatingInputStream));
+            } else if (content instanceof FluxByteBufferContent) {
+                request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
             } else {
-                BinaryDataContent content = BinaryDataHelper.getContent(body);
-                if (content instanceof InputStreamContent) {
-                    InputStream validatingInputStream = new LengthValidatingInputStream(
-                        content.toStream(), expectedLength);
-                    request.setBody(BinaryData.fromStream(validatingInputStream));
-                } else {
+                Long bodyLength = body.getLength();
+                if (bodyLength != null) {
+                    if (bodyLength < expectedLength) {
+                        throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                            bodyLength, expectedLength), bodyLength, expectedLength);
+                    } else if (bodyLength > expectedLength) {
+                        throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                            bodyLength, expectedLength), bodyLength, expectedLength);
+                    }
+                } else  {
                     request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
                 }
             }
@@ -122,46 +122,42 @@ public final class RestProxyUtils {
     public static BinaryData validateLengthSync(final HttpRequest request) {
         final BinaryData binaryData = request.getBodyAsBinaryData();
         if (binaryData == null) {
-            return binaryData;
+            return null;
         }
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
         Long length = binaryData.getLength();
         BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
-        if (length == null) {
-            if (bdc instanceof FluxByteBufferContent) {
-                throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
-            } else if (bdc instanceof InputStreamContent) {
-                InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
-                InputStream inputStream = inputStreamContent.toStream();
-                LengthValidatingInputStream lengthValidatingInputStream =
-                    new LengthValidatingInputStream(inputStream, expectedLength);
-                return BinaryData.fromStream(lengthValidatingInputStream);
-            } else {
-                byte[] b = (bdc).toBytes();
-                long len = b.length;
-                if (len > expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        len, expectedLength), len, expectedLength);
-                }
-
-                if (len < expectedLength) {
-                    throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                        len, expectedLength), len, expectedLength);
-                }
-                return BinaryData.fromBytes(b);
-            }
+        if (bdc instanceof FluxByteBufferContent) {
+            throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
+        } else if (bdc instanceof InputStreamContent) {
+            InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
+            InputStream inputStream = inputStreamContent.toStream();
+            LengthValidatingInputStream lengthValidatingInputStream =
+                new LengthValidatingInputStream(inputStream, expectedLength);
+            return BinaryData.fromStream(lengthValidatingInputStream);
         } else {
-            if (length > expectedLength) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                    length, expectedLength), length, expectedLength);
+            if (length == null) {
+                byte[] b = (bdc).toBytes();
+                length = ((Integer) b.length).longValue();
+                validateLength(length, expectedLength);
+                return BinaryData.fromBytes(b);
+            } else {
+                validateLength(length, expectedLength);
+                return binaryData;
             }
+        }
+    }
 
-            if (length < expectedLength) {
-                throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                    length, expectedLength), length, expectedLength);
-            }
-            return binaryData;
+    private static void validateLength(long length, long expectedLength) {
+        if (length > expectedLength) {
+            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
+                length, expectedLength), length, expectedLength);
+        }
+
+        if (length < expectedLength) {
+            throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
+                length, expectedLength), length, expectedLength);
         }
     }
 
