@@ -37,7 +37,7 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
             rand.nextBytes(data);
             FakeKey key = new FakeKey("keyId", data);
 
-            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(EncryptionVersion.valueOf(options.getEncryptionVersion()))
+            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(options.getEncryptionVersion())
                 .blobClient(blobContainerClient.getBlobClient(blobName))
                 .key(key, KeyWrapAlgorithm.A256KW.toString());
 
