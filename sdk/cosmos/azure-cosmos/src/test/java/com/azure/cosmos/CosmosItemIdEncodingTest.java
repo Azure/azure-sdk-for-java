@@ -439,7 +439,7 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             this.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT ?
                 scenario.Direct : scenario.Gateway;
 
-        this.logger.info("Scenario: {}, Id: \"{}\"", scenario.Name, scenario.Id);
+        logger.info("Scenario: {}, Id: \"{}\"", scenario.Name, scenario.Id);
 
         try {
             CosmosItemResponse<ObjectNode> response = this.container.createItem(
