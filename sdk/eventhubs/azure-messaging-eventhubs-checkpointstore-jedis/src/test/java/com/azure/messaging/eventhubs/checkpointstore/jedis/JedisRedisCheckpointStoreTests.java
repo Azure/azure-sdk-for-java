@@ -14,7 +14,11 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
@@ -159,4 +163,23 @@ public class JedisRedisCheckpointStoreTests {
         Assertions.assertThrows(NoSuchElementException.class, () -> store.listOwnership("fullyQualifiedNamespace", "eventHubName", "consumerGroup"));
     }
 
+    @Test
+    public void testClaimOwnership() {
+
+        List<PartitionOwnership> partitionOwnershipList = new ArrayList<>();
+        Assertions.assertEquals(store.claimOwnership(partitionOwnershipList), null);
+    }
+
+    @Test
+    public void testUpdateCheckpoint() {
+        Checkpoint checkpoint = new Checkpoint()
+            .setConsumerGroup("consumerGroup")
+            .setEventHubName("eventHubName")
+            .setFullyQualifiedNamespace("fullyQualifiedNamespace")
+            .setPartitionId("one")
+            .setSequenceNumber((long) 1);
+        when(jedisPool.getResource()).thenReturn(jedis);
+        when(jedis.exists("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(true);
+        Assertions.assertEquals(store.updateCheckpoint(checkpoint), null);
+    }
 }
