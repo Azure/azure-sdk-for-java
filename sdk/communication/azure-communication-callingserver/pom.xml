@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-callingserver</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
 
   <name>Microsoft Azure client library for CallingServer service</name>
   <description>
@@ -23,7 +23,7 @@
     For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-callingserver/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-callingserver/CHANGELOG.md.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
-  
+
   <repositories>
 	<repository>
 	  <id>azure-sdk-for-java-communication</id>
