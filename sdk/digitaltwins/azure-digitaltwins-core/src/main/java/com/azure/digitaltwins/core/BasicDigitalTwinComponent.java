@@ -44,6 +44,9 @@ public final class BasicDigitalTwinComponent {
     @JsonIgnore
     private final Map<String, Object> contents = new HashMap<>();
     
+    /**
+     * Construct an empty digital twin component.
+     */
     public BasicDigitalTwinComponent() {
     }
     

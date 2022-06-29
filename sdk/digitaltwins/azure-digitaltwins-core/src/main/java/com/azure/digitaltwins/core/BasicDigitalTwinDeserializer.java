@@ -25,10 +25,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public final class BasicDigitalTwinDeserializer extends StdDeserializer<BasicDigitalTwin> {
     private static final long serialVersionUID = 1L;
     
+    /**
+     * Default constructor for deserializer.
+     */
     public BasicDigitalTwinDeserializer() { 
         this(null); 
     } 
 
+    /**
+     * Constructor for deserializer allowing one pass in the value class.
+     */
     public BasicDigitalTwinDeserializer(Class<?> vc) { 
         super(vc); 
     }

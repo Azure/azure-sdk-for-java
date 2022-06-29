@@ -29,10 +29,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public final class BasicDigitalTwinSerializer extends StdSerializer<BasicDigitalTwin> {
     private static final long serialVersionUID = 1L;
     
+    /**
+     * Default constructor for serializer.
+     */
     public BasicDigitalTwinSerializer() { 
         this(null); 
     } 
 
+    /**
+     * Constructor for serializer allowing one pass in the handled type.
+     */
     public BasicDigitalTwinSerializer(Class<BasicDigitalTwin> t) { 
         super(t); 
     }
