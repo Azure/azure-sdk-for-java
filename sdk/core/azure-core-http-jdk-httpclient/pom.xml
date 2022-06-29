@@ -148,11 +148,11 @@
   </build>
 
   <profiles>
-    <!-- Library cannot build for Java 10 and below -->
+    <!-- Library cannot build for Java 9 and below -->
     <profile>
       <id>java8</id>
       <activation>
-        <jdk>[,11)</jdk>
+        <jdk>[,9)</jdk>
       </activation>
       <build>
         <plugins>
@@ -262,6 +262,16 @@
                 </goals>
                 <configuration combine.self="override">
                   <release>11</release>
+                </configuration>
+              </execution>
+
+              <execution>
+                <id>base-modules-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release combine.self="override">11</release>
                 </configuration>
               </execution>
               <!-- Here the 'base-testCompile' execution section of java-lts profile defined in parent pom.client.xml is overridden.
