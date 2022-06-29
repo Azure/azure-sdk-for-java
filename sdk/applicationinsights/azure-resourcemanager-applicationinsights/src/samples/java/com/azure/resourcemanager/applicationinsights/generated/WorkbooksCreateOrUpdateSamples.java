@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.resourcemanager.applicationinsights.models.Kind;
 import com.azure.resourcemanager.applicationinsights.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.applicationinsights.models.UserAssignedIdentity;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookResourceIdentity;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Workbooks CreateOrUpdate. */
 public final class WorkbooksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedAdd.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedAdd.json
      */
     /**
      * Sample code: WorkbookManagedAdd.
@@ -35,7 +35,7 @@ public final class WorkbooksCreateOrUpdateSamples {
                         mapOf(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid",
                             new UserAssignedIdentity())))
-            .withKind(Kind.SHARED)
+            .withKind(WorkbookSharedTypeKind.SHARED)
             .withDisplayName("Sample workbook")
             .withSerializedData(
                 "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text -"
@@ -51,7 +51,7 @@ public final class WorkbooksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookAdd.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookAdd.json
      */
     /**
      * Sample code: WorkbookAdd.
@@ -65,7 +65,7 @@ public final class WorkbooksCreateOrUpdateSamples {
             .withRegion("westus")
             .withExistingResourceGroup("my-resource-group")
             .withTags(mapOf("TagSample01", "sample01", "TagSample02", "sample02"))
-            .withKind(Kind.SHARED)
+            .withKind(WorkbookSharedTypeKind.SHARED)
             .withDisplayName("Sample workbook")
             .withSerializedData(
                 "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r"

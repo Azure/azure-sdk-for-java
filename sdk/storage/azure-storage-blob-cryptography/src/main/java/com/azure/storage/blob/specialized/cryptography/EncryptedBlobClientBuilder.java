@@ -38,6 +38,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -122,6 +123,7 @@ public final class EncryptedBlobClientBuilder implements
     private String snapshot;
     private String versionId;
     private boolean requiresEncryption;
+    private EncryptionVersion encryptionVersion;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -145,12 +147,27 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private LogLevel v1UsageLogLevel = LogLevel.WARNING;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
+     * @deprecated Use {@link EncryptedBlobClientBuilder#EncryptedBlobClientBuilder(EncryptionVersion)}.
      */
+    @Deprecated
     public EncryptedBlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+    }
+
+    /**
+     *
+     * @param version The version of the client side encryption protocol to use. It is highly recommended that v2 be
+     * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
+     * client configured to encrypt using v2 can decrypt blobs that use the v1 protocol.
+     */
+    public EncryptedBlobClientBuilder(EncryptionVersion version) {
+        Objects.requireNonNull(version);
+        logOptions = getDefaultHttpLogOptions();
+        this.encryptionVersion = version;
     }
 
     /**
@@ -203,6 +220,14 @@ public final class EncryptedBlobClientBuilder implements
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
+        this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
+        if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
+            LOGGER.log(this.v1UsageLogLevel, () -> "Client is being configured to use v1 of client side encryption, "
+                + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+                + "recommended the version be set to v2 using the constructor");
+            this.v1UsageLogLevel = LogLevel.INFORMATIONAL; // Log subsequently at a lower level to not pollute logs
+        }
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -214,7 +239,7 @@ public final class EncryptedBlobClientBuilder implements
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
     }
 
 

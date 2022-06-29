@@ -27,7 +27,11 @@ public final class ItemScopePath extends ExpandableStringEnum<ItemScopePath> {
         return fromString(name, ItemScopePath.class);
     }
 
-    /** @return known ItemScopePath values. */
+    /**
+     * Gets known ItemScopePath values.
+     *
+     * @return known ItemScopePath values.
+     */
     public static Collection<ItemScopePath> values() {
         return values(ItemScopePath.class);
     }

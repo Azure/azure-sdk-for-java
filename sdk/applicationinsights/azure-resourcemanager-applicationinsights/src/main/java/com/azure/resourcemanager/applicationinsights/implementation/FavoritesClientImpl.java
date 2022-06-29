@@ -304,14 +304,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         Boolean canFetchContent,
         List<String> tags) {
         return listWithResponseAsync(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentFavoriteInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -333,14 +326,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final Boolean canFetchContent = null;
         final List<String> tags = null;
         return listWithResponseAsync(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentFavoriteInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -517,14 +503,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
     private Mono<ApplicationInsightsComponentFavoriteInner> getAsync(
         String resourceGroupName, String resourceName, String favoriteId) {
         return getWithResponseAsync(resourceGroupName, resourceName, favoriteId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFavoriteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -717,14 +696,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return addWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFavoriteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -925,14 +897,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFavoriteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1096,8 +1061,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String favoriteId) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, favoriteId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName, favoriteId).flatMap(ignored -> Mono.empty());
     }
 
     /**

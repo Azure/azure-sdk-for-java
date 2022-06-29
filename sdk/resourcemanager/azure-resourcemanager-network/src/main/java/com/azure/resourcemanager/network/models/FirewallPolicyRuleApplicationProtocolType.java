@@ -28,7 +28,11 @@ public final class FirewallPolicyRuleApplicationProtocolType
         return fromString(name, FirewallPolicyRuleApplicationProtocolType.class);
     }
 
-    /** @return known FirewallPolicyRuleApplicationProtocolType values. */
+    /**
+     * Gets known FirewallPolicyRuleApplicationProtocolType values.
+     *
+     * @return known FirewallPolicyRuleApplicationProtocolType values.
+     */
     public static Collection<FirewallPolicyRuleApplicationProtocolType> values() {
         return values(FirewallPolicyRuleApplicationProtocolType.class);
     }

@@ -4,9 +4,26 @@
 
 ### Features Added
 
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+- Added `BinaryData.toReplayableBinaryData` and `BinaryData.toReplayableBinaryDataAsync` to allow
+  transforming `BinaryData` instances into replayable `BinaryData` for all content types.
+- Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
+  - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
+  - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
+  - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
+  - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
+- Added `ProgressReporter` and `ProgressListener` to provide ability to track progress of I/O operations.
+- Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
+  - Added ability to get and set `ProgressReporter` on `Context`.
+- Added `HttpPipelineCallContext.getContext()`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
+  could block file deletion on Windows.
+- Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
 
 ### Other Changes
 

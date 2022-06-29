@@ -256,14 +256,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
     private Mono<ComponentLinkedStorageAccountsInner> getAsync(
         String resourceGroupName, String resourceName, StorageType storageType) {
         return getWithResponseAsync(resourceGroupName, resourceName, storageType)
-            .flatMap(
-                (Response<ComponentLinkedStorageAccountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -459,14 +452,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
         ComponentLinkedStorageAccountsInner linkedStorageAccountsProperties) {
         return createAndUpdateWithResponseAsync(
                 resourceGroupName, resourceName, storageType, linkedStorageAccountsProperties)
-            .flatMap(
-                (Response<ComponentLinkedStorageAccountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -675,14 +661,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
         StorageType storageType,
         ComponentLinkedStorageAccountsPatch linkedStorageAccountsProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, storageType, linkedStorageAccountsProperties)
-            .flatMap(
-                (Response<ComponentLinkedStorageAccountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -852,8 +831,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, StorageType storageType) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, storageType)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName, storageType).flatMap(ignored -> Mono.empty());
     }
 
     /**

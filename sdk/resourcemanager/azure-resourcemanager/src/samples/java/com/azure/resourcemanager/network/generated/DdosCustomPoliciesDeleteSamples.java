@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DdosCustomPolicies Delete. */
 public final class DdosCustomPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DdosCustomPolicyDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/DdosCustomPolicyDelete.json
      */
     /**
      * Sample code: Delete DDoS custom policy.

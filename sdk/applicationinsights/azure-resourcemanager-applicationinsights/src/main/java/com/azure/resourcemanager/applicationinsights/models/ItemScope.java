@@ -27,7 +27,11 @@ public final class ItemScope extends ExpandableStringEnum<ItemScope> {
         return fromString(name, ItemScope.class);
     }
 
-    /** @return known ItemScope values. */
+    /**
+     * Gets known ItemScope values.
+     *
+     * @return known ItemScope values.
+     */
     public static Collection<ItemScope> values() {
         return values(ItemScope.class);
     }

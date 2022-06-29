@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of capacity pool resources. */
 @Fluent
 public final class CapacityPoolList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolList.class);
-
     /*
      * List of Capacity pools
      */

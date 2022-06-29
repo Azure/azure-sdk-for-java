@@ -24,6 +24,11 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     public static final String PREFIX = "spring.jms.servicebus";
 
+    /**
+     * Whether to enable Servive Bus JMS autoconfiguration.
+     */
+    private boolean enabled = true;
+
     private static final String DEFAULT_REMOTE_URL = "amqp://localhost:5672";
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
@@ -65,6 +70,22 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      * Login password of the AMQP broker.
      */
     private String password;
+
+    /**
+     * Whether to enable Service Bus JMS autoconfiguration.
+     * @return Whether to enable Service Bus autoconfiguration
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Set whether to enable Service Bus JMS autoconfiguation.
+     * @param enabled whether to enable Service Bus autoconfiguration.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     /**
      * Get the URL of the AMQP broker.

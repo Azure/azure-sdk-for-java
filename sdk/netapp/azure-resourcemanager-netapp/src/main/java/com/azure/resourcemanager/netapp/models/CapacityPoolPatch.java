@@ -6,17 +6,13 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.PoolPatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Capacity pool patch resource. */
 @Fluent
 public final class CapacityPoolPatch extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolPatch.class);
-
     /*
      * Capacity pool properties
      */

@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;dependency} -->
+      <version>1.2.3</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

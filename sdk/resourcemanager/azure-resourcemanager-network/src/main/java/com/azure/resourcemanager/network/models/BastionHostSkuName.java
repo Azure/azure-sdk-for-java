@@ -27,7 +27,11 @@ public final class BastionHostSkuName extends ExpandableStringEnum<BastionHostSk
         return fromString(name, BastionHostSkuName.class);
     }
 
-    /** @return known BastionHostSkuName values. */
+    /**
+     * Gets known BastionHostSkuName values.
+     *
+     * @return known BastionHostSkuName values.
+     */
     public static Collection<BastionHostSkuName> values() {
         return values(BastionHostSkuName.class);
     }

@@ -27,7 +27,11 @@ public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
         return fromString(name, AvsDataStore.class);
     }
 
-    /** @return known AvsDataStore values. */
+    /**
+     * Gets known AvsDataStore values.
+     *
+     * @return known AvsDataStore values.
+     */
     public static Collection<AvsDataStore> values() {
         return values(AvsDataStore.class);
     }

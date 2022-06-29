@@ -3,12 +3,14 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.SyncAsyncExtension;
+import com.azure.core.SyncAsyncTest;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.clients.NoOpHttpClient;
-import org.junit.jupiter.api.Test;
+import com.azure.core.util.Context;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,18 +18,34 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProtocolPolicyTests {
+    static final HttpRequest HTTP_REQUEST;
 
-    @Test
-    public void withOverwrite() throws MalformedURLException {
+    static {
+        try {
+            HTTP_REQUEST = createHttpRequest("https://www.bing.com");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @SyncAsyncTest
+    public void withOverwrite() throws Exception {
         final HttpPipeline pipeline = createPipeline("ftp", "ftp://www.bing.com");
-        pipeline.send(createHttpRequest("http://www.bing.com"));
+        SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
+            () -> pipeline.send(HTTP_REQUEST)
+        );
     }
 
-    @Test
-    public void withNoOverwrite() throws MalformedURLException {
+    @SyncAsyncTest
+    public void withNoOverwrite() throws Exception {
         final HttpPipeline pipeline = createPipeline("ftp", false, "https://www.bing.com");
-        pipeline.send(createHttpRequest("https://www.bing.com"));
+        SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
+            () -> pipeline.send(HTTP_REQUEST)
+        );
     }
+
     private static HttpPipeline createPipeline(String protocol, String expectedUrl) {
         return new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())

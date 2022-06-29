@@ -33,7 +33,11 @@ public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<Virtu
         return fromString(name, VirtualNetworkPeeringLevel.class);
     }
 
-    /** @return known VirtualNetworkPeeringLevel values. */
+    /**
+     * Gets known VirtualNetworkPeeringLevel values.
+     *
+     * @return known VirtualNetworkPeeringLevel values.
+     */
     public static Collection<VirtualNetworkPeeringLevel> values() {
         return values(VirtualNetworkPeeringLevel.class);
     }
