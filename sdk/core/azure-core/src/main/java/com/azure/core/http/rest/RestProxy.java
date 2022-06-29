@@ -12,6 +12,7 @@ import com.azure.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
@@ -77,10 +78,13 @@ public final class RestProxy implements InvocationHandler {
         // Evaluating here allows the package private methods to be invoked here for downstream use.
         final SwaggerMethodParser methodParser = getMethodParser(method);
         RequestOptions options = methodParser.setRequestOptions(args);
+        Context context = methodParser.setContext(args);
         boolean isReactive = methodParser.isReactive();
         boolean isStreamResponseType = methodParser.isStreamResponse();
+        boolean syncRestProxyEnabled = Contexts.with(context).isRestProxySyncProxyEnabled();
 
-        if (isReactive || isStreamResponseType) {
+
+        if (isReactive || isStreamResponseType || !syncRestProxyEnabled) {
             return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                 options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
         } else {
