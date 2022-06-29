@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.32.0-beta.1 (Unreleased)
+### 4.33.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -11,10 +11,15 @@
 #### Other Changes
 * Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
 * Remove requires `io.netty.transport.epoll` from `module-info`.
+
+### 4.32.0 (2022-06-27)
+#### Other Changes
+* Remove requires `io.netty.transport.epoll` from `module-info` - See [PR 29509](https://github.com/Azure/azure-sdk-for-java/pull/29509)
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 ### 4.31.0 (2022-06-08)
-
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.31.0 and above.
 #### Bugs Fixed
 * Fixed Store Response headers case insensitivity. - See [PR 29268](https://github.com/Azure/azure-sdk-for-java/pull/29268)
 
@@ -22,7 +27,6 @@
 * Add `IdleStateHandler` after Ssl handshake has completed and improvement on keeping inner exceptions for creating new channels. 
 
 ### 4.30.1 (2022-06-01)
-
 #### Other Changes
 * Made CosmosPatchOperations thread-safe. Usually there is no reason to modify a CosmosPatchOperations instance concurrently form multiple threads - but making it thread-safe acts as protection in case this is done anyway - See [PR 29143](https://github.com/Azure/azure-sdk-for-java/pull/29143)
 * Added system property to allow overriding proxy setting for client telemetry endpoint. - See [PR 29022](https://github.com/Azure/azure-sdk-for-java/pull/29022)
@@ -218,8 +222,6 @@
 * Added support to switch off IO thread for response processing.
 
 ### 4.18.0 (2021-08-16)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.18.0 and above.
 #### New Features
 * Integrated cosmos diagnostics with open telemetry tracer.
 

@@ -261,6 +261,51 @@
           "justification": "To move kafka properties customization to bean post processor."
         },
         {
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.aad\\.configuration\\.AadOAuth2ClientConfiguration\\..*",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old:": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX",
+          "justification": "Unused constant."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "new": "method com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration::builderFactoryBeanPostProcessor()",
           "justification": "Shouldn't have been a public API and was recently released."

@@ -10,27 +10,19 @@ import java.util.List;
  * This type allows users to specify optional smb properties to be copied from the source file.
  */
 public final class CopyableFileSmbPropertiesList {
-    private boolean isSetNone;
-    private boolean isSetFileAttributes;
-    private boolean isSetCreatedOn;
-    private boolean isSetLastWrittenOn;
-    private boolean isSetChangedOn;
-    private boolean isSetAll;
+    private Boolean isSetFileAttributes;
+    private Boolean isSetCreatedOn;
+    private Boolean isSetLastWrittenOn;
+    private Boolean isSetChangedOn;
 
-    /***
-     * @return a flag indicating if no smb properties should be copied from source file.
+    /**
+     * Creates an instance of information about the file smb properties.
      */
-    public Boolean isNone() {
-        return isSetNone;
-    }
-
-    /***
-     * @param isNone Flag indicating whether no smb properties should be copied
-     * @return the updated {@link CopyableFileSmbPropertiesList}
-     */
-    public CopyableFileSmbPropertiesList setNone(boolean isNone) {
-        isSetNone = isNone;
-        return this;
+    public CopyableFileSmbPropertiesList() {
+        isSetFileAttributes = false;
+        isSetCreatedOn = false;
+        isSetLastWrittenOn = false;
+        isSetChangedOn = false;
     }
 
     /***
@@ -45,7 +37,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param fileAttributes Flag indicating whether to copy file attributes from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setFileAttributes(boolean fileAttributes) {
+    public CopyableFileSmbPropertiesList setFileAttributes(Boolean fileAttributes) {
         isSetFileAttributes = fileAttributes;
         return this;
     }
@@ -61,7 +53,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param createdOn Flag indicating whether to copy created on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setCreatedOn(boolean createdOn) {
+    public CopyableFileSmbPropertiesList setCreatedOn(Boolean createdOn) {
         isSetCreatedOn = createdOn;
         return this;
     }
@@ -77,7 +69,7 @@ public final class CopyableFileSmbPropertiesList {
      * @param lastWrittenOn Flag indicating whether to copy last written on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setLastWrittenOn(boolean lastWrittenOn) {
+    public CopyableFileSmbPropertiesList setLastWrittenOn(Boolean lastWrittenOn) {
         isSetLastWrittenOn = lastWrittenOn;
         return this;
     }
@@ -93,24 +85,8 @@ public final class CopyableFileSmbPropertiesList {
      * @param changedOn Flag indicating whether to copy changed on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
-    public CopyableFileSmbPropertiesList setChangedOn(boolean changedOn) {
+    public CopyableFileSmbPropertiesList setChangedOn(Boolean changedOn) {
         isSetChangedOn = changedOn;
-        return this;
-    }
-
-    /**
-     * @return a flag indicating whether all attributes should be copied from source file.
-     */
-    public Boolean isAll() {
-        return isSetAll;
-    }
-
-    /**
-     * @param setAll Flag indicating whether to copy all attributes from source file
-     * @return the updated {@link CopyableFileSmbPropertiesList}
-     */
-    public CopyableFileSmbPropertiesList setAll(boolean setAll) {
-        isSetAll = setAll;
         return this;
     }
 
@@ -119,9 +95,6 @@ public final class CopyableFileSmbPropertiesList {
      */
     public List<CopyableFileSmbProperties> toList() {
         List<CopyableFileSmbProperties> details = new ArrayList<>();
-        if (this.isSetNone) {
-            details.add(CopyableFileSmbProperties.NONE);
-        }
         if (this.isSetFileAttributes) {
             details.add(CopyableFileSmbProperties.FILE_ATTRIBUTES);
         }
@@ -136,9 +109,6 @@ public final class CopyableFileSmbPropertiesList {
         }
         if (this.isSetChangedOn) {
             details.add(CopyableFileSmbProperties.CHANGED_ON);
-        }
-        if (this.isSetAll) {
-            details.add(CopyableFileSmbProperties.ALL);
         }
         return details;
     }
