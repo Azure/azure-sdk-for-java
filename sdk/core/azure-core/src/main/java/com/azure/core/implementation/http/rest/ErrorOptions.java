@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
+
+import com.azure.core.http.rest.RequestOptions;
 
 /**
  * Determines how errors are handled by requests using {@link RequestOptions}.
  */
-enum ErrorOptions {
+public enum ErrorOptions {
     /**
      * Throw exceptions when an HTTP response with a status code indicating an error (400 or above) is received.
      */

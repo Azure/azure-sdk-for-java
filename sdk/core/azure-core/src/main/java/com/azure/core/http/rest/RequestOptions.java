@@ -5,6 +5,8 @@ package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.http.rest.ErrorOptions;
+import com.azure.core.implementation.http.rest.UrlEscapers;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
