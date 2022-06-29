@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
@@ -33,6 +34,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final RetryStrategy retryStrategy;
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
+
+    private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
+
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+        }
+    };
 
     /**
      * Creates {@link RetryPolicy} using {@link ExponentialBackoff#ExponentialBackoff()} as the {@link RetryStrategy}.
@@ -69,7 +77,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. null is valid if, and only if,
      * {@code retryAfterHeader} is null.
      * @throws NullPointerException If {@code retryStrategy} is null or when {@code retryAfterTimeUnit} is null and
-     * {@code retryAfterHeader} is not null.
+     *                              {@code retryAfterHeader} is not null.
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
@@ -119,8 +127,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return attemptAsync(context, next, context.getHttpRequest(), 0);
     }
 
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return attemptSync(context, next, context.getHttpRequest(), 0);
+    }
+
+
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-        final HttpRequest originalHttpRequest, final int tryCount) {
+                                            final HttpRequest originalHttpRequest, final int tryCount) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         return next.clone().process()
@@ -156,7 +170,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetryException(err, tryCount)) {
                     LOGGER.atVerbose()
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                            .log("Error resume.", err);
+                        .log("Error resume.", err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
@@ -166,6 +180,54 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return Mono.error(err);
                 }
             });
+    }
+
+    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextSyncPolicy next,
+                                     final HttpRequest originalHttpRequest, final int tryCount) {
+        context.setHttpRequest(originalHttpRequest.copy());
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+        try {
+            HttpResponse httpResponse = next.clone().processSync();
+            if (shouldRetry(httpResponse, tryCount)) {
+                final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+                    retryAfterHeader, retryAfterTimeUnit);
+                LOGGER.atVerbose()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+                    .log("Retrying.");
+
+                Flux<ByteBuffer> responseBody = httpResponse.getBody();
+                if (responseBody == null) {
+                    return attemptSync(context, next, originalHttpRequest, tryCount + 1);
+                        // .delaySubscription(delayDuration);
+                } else {
+                    httpResponse.getBody().ignoreElements().block();
+
+                    return attemptSync(context, next, originalHttpRequest, tryCount + 1);
+                            // .delaySubscription(delayDuration));
+                }
+            } else {
+                if (tryCount >= retryStrategy.getMaxRetries()) {
+                    LOGGER.atInfo()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                        .log("Retry attempts have been exhausted.");
+                }
+                return httpResponse;
+            }
+        } catch (RuntimeException    err) {
+            if (shouldRetryException(err, tryCount)) {
+                LOGGER.atVerbose()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .log("Error resume.", err);
+                return attemptSync(context, next, originalHttpRequest, tryCount + 1);
+                    // .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
+            } else {
+                LOGGER.atError()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .log("Retry attempts have been exhausted.", err);
+                throw LOGGER.logExceptionAsError(err);
+            }
+        }
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
@@ -180,7 +242,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-        String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
+                                           String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (isNullOrEmpty(retryAfterHeader)) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
@@ -201,7 +263,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
     static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
-        Supplier<OffsetDateTime> nowSupplier) {
+                                           Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;

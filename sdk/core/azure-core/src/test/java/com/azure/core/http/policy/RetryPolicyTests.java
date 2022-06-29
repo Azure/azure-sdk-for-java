@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.SyncAsyncExtension;
+import com.azure.core.SyncAsyncTest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -11,6 +13,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
@@ -229,17 +232,24 @@ public class RetryPolicyTests {
         );
     }
 
-    @Test
+    @SyncAsyncTest
     public void retryMax() {
         final int maxRetries = 5;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 int count = -1;
+                int syncCount = -1;
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     Assertions.assertTrue(count++ < maxRetries);
                     return Mono.just(new MockHttpResponse(request, 500));
+                }
+
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    Assertions.assertTrue(syncCount++ < maxRetries);
+                    return new MockHttpResponse(request, 500);
                 }
             })
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(1))))
@@ -248,6 +258,12 @@ public class RetryPolicyTests {
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .assertNext(response -> assertEquals(500, response.getStatusCode()))
             .verifyComplete();
+
+        HttpResponse httpResponse = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE),
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))
+        );
+        assertEquals(500, httpResponse.getStatusCode());
     }
 
     @Test
