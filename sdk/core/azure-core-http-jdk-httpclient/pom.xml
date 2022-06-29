@@ -148,7 +148,7 @@
   </build>
 
   <profiles>
-    <!-- Library cannot build for Java 10 and below -->
+    <!-- Library cannot build for Java 11 and below -->
     <profile>
       <id>java8</id>
       <activation>
