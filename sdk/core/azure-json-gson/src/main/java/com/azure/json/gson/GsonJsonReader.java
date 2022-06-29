@@ -68,10 +68,16 @@ public final class GsonJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() {
+        // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
+        // The contract of JsonReader implicitly overlooks these properties.
         if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_OBJECT) {
             invokeWithWrappedIoException(reader::beginObject);
+        } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_OBJECT) {
+            invokeWithWrappedIoException(reader::endObject);
         } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_ARRAY) {
             invokeWithWrappedIoException(reader::beginArray);
+        } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_ARRAY) {
+            invokeWithWrappedIoException(reader::endArray);
         } else if (currentToken == JsonToken.NULL) {
             invokeWithWrappedIoException(reader::nextNull);
         }
