@@ -975,7 +975,7 @@
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
-              <!-- this will generate module-info with major class version 61 or higher (i.e Java 17 or higher) -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
               <execution>
                 <id>default-compile</id>
                 <goals>
@@ -985,19 +985,25 @@
                   <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
-              <!-- then compile with Java 11 as the base version that supports module-info -->
+
+              <!-- then compile with Java 9 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
               when the Azure SDK policy is changed -->
-              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <!-- executing this after default-compile will generate module-info with major class version 53 (i.e Java 9) -->
               <execution>
                 <id>base-modules-compile</id>
                 <goals>
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <release>11</release>
+                  <!-- Use Java 9 to compile the module-info as we should support the lowest version above 8 available though most commonly this will be Java 11 as it's LTS -->
+                  <release>9</release>
+                  <includes>
+                    <include>module-info.java</include>
+                  </includes>
                 </configuration>
               </execution>
+
               <!-- then compile without module-info for Java 8 -->
               <execution>
                 <id>base-compile</id>
@@ -1023,16 +1029,20 @@
                 </configuration>
               </execution>
 
-              <!-- compile tests with Java 11 -->
-              <execution>
-                <id>base-modules-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <testRelease>11</testRelease>
-                </configuration>
-              </execution>
+              <!-- compile tests with Java 9 -->
+              <!-- At this time recompiling tests with Java 9 isn't necessary as they don't have module-infos. If/when they have module-infos added uncomment this execution. -->
+<!--              <execution>-->
+<!--                <id>base-modules-testCompile</id>-->
+<!--                <goals>-->
+<!--                  <goal>testCompile</goal>-->
+<!--                </goals>-->
+<!--                <configuration>-->
+<!--                  <testRelease>9</testRelease>-->
+<!--                  <testIncludes>-->
+<!--                    <testInclude>module-info.java</testInclude>-->
+<!--                  </testIncludes>-->
+<!--                </configuration>-->
+<!--              </execution>-->
 
               <!-- then compile with Java 8 -->
               <execution>
