@@ -118,14 +118,14 @@ public class ConnectionManager {
         if (client != null) {
             return client;
         }
-        
-        for (ConfigurationClientWrapper wrapper: clients) {
+
+        for (ConfigurationClientWrapper wrapper : clients) {
             if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
-                LOGGER.info("Using Client: " + wrapper.getEndpoint());
+                LOGGER.debug("Using Client: " + wrapper.getEndpoint());
                 return wrapper;
             }
         }
-        
+
         LOGGER.error("No client avaiable for use currently.");
         return null;
     }
@@ -176,23 +176,16 @@ public class ConnectionManager {
             }
         } else if (configStore.getEndpoints().size() > 0) {
             for (String endpoint : configStore.getEndpoints()) {
-                clients.add(buildClientEndpoint(endpoint, builder, clientIdIsPresent));
+                clients.add(buildClientEndpoint(tokenCredential, endpoint, builder, clientIdIsPresent));
             }
         } else if (configStore.getEndpoint() != null) {
-            client = buildClientEndpoint(configStore.getEndpoint(), builder, clientIdIsPresent);
+            client = buildClientEndpoint(tokenCredential, configStore.getEndpoint(), builder, clientIdIsPresent);
         }
     }
 
-    private ConfigurationClientWrapper buildClientEndpoint(String endpoint, ConfigurationClientBuilder builder,
-        boolean clientIdIsPresent)
+    private ConfigurationClientWrapper buildClientEndpoint(TokenCredential tokenCredential,
+        String endpoint, ConfigurationClientBuilder builder, boolean clientIdIsPresent)
         throws IllegalArgumentException {
-
-        TokenCredential tokenCredential = null;
-
-        if (tokenCredentialProvider != null) {
-            tokenCredential = tokenCredentialProvider.getAppConfigCredential(endpoint);
-        }
-
         if (tokenCredential != null) {
             // User Provided Token Credential
             LOGGER.debug("Connecting to " + endpoint + " using AppConfigurationCredentialProvider.");
@@ -216,7 +209,8 @@ public class ConnectionManager {
         return modifyAndBuildClient(builder, endpoint);
     }
 
-    private ConfigurationClientWrapper buildClientConnectionString(String connectionString, ConfigurationClientBuilder builder)
+    private ConfigurationClientWrapper buildClientConnectionString(String connectionString,
+        ConfigurationClientBuilder builder)
         throws IllegalArgumentException {
         String endpoint = getEndpointFromConnectionString(connectionString);
         LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
@@ -264,7 +258,7 @@ public class ConnectionManager {
     /**
      * @return creates an instance of ConfigurationClientBuilder
      */
-    private ConfigurationClientBuilder getBuilder() {
+    ConfigurationClientBuilder getBuilder() {
         return new ConfigurationClientBuilder();
     }
 
