@@ -26,7 +26,6 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -36,24 +35,14 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class BlobOutputStream extends StorageOutputStream {
 
-    private AtomicBoolean isAlreadyClosed;
-    private final boolean isMultipleClosedAllowed;
-
-    BlobOutputStream(final int writeThreshold) {
-        super(writeThreshold);
-        this.isAlreadyClosed = new AtomicBoolean();
-        isMultipleClosedAllowed = false;
-    }
+    private volatile boolean isClosed;
 
     /**
      *
      * @param writeThreshold How many bytes the output will retain before it initiates a write to the Storage service.
-     * @param isMultipleClosedAllowed option for user to ignore exception if close() will be called multiple times.
      */
-    BlobOutputStream(final int writeThreshold, boolean isMultipleClosedAllowed) {
+    BlobOutputStream(final int writeThreshold) {
         super(writeThreshold);
-        this.isAlreadyClosed = new AtomicBoolean();
-        this.isMultipleClosedAllowed = isMultipleClosedAllowed;
     }
 
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
@@ -112,8 +101,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         BlockBlobOutputStreamOptions options, Context context) {
         options = options == null ? new BlockBlobOutputStreamOptions() : options;
         return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
-            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
-            options.getMultipleClosedOption(), context);
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -132,11 +120,11 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     @Override
     public synchronized void close() throws IOException {
         try {
-            // check if multiple closes are expected to be made and stream is already closed
-            if (isMultipleClosedAllowed && !isAlreadyClosed.compareAndSet(false, true)) {
+            // if the stream is already closed, we can stop executing any further steps to avoid throwing
+            // STREAM_CLOSED exception
+            if (isClosed) {
                 return;
             }
-            // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
             // if an exception was thrown by any thread in the threadExecutor, realize it now
             this.checkStreamState();
 
@@ -155,9 +143,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 throw lastError;
             }
         } finally {
-            // if close() is called again, an exception will be thrown
             this.lastError = new IOException(Constants.STREAM_CLOSED);
-            isAlreadyClosed.set(true);
+            isClosed = true;
         }
     }
 
@@ -229,8 +216,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
-            final BlobRequestConditions requestConditions, final boolean isMultipleClosedAllowed, Context context) {
-            super(Integer.MAX_VALUE, isMultipleClosedAllowed); // writeThreshold is effectively not used by BlockBlobOutputStream.
+            final BlobRequestConditions requestConditions, Context context) {
+            super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
             // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
             context = context == null || context.equals(Context.NONE) ? null : context;
 

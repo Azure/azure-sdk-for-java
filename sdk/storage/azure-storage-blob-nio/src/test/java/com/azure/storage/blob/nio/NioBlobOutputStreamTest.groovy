@@ -11,7 +11,6 @@ import com.azure.storage.blob.options.BlockBlobOutputStreamOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.file.ClosedFileSystemException
@@ -268,7 +267,7 @@ class NioBlobOutputStreamTest extends APISpec {
     def "Close does not throw error"() {
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
-        def nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new BlockBlobOutputStreamOptions(true)), path)
+        def nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new BlockBlobOutputStreamOptions()), path)
 
         when:
         nioStream.write(1)

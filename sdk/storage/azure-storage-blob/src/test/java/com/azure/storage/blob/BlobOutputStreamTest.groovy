@@ -12,7 +12,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Unroll
 
 class BlobOutputStreamTest extends APISpec {
@@ -42,7 +41,7 @@ class BlobOutputStreamTest extends APISpec {
 
         when:
         // set option for allowing multiple close() calls
-        def outputStream = blockBlobClient.getBlobOutputStream(new BlockBlobOutputStreamOptions(true))
+        def outputStream = blockBlobClient.getBlobOutputStream(new BlockBlobOutputStreamOptions())
 
         outputStream.write(data)
         outputStream.close()

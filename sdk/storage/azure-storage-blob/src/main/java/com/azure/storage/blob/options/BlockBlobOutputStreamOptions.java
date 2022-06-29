@@ -20,22 +20,6 @@ public class BlockBlobOutputStreamOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private final boolean isMultipleClosedAllowed;
-
-    /**
-     * Create default {@link BlockBlobOutputStreamOptions}
-     */
-    public BlockBlobOutputStreamOptions() {
-        this.isMultipleClosedAllowed = false;
-    }
-
-    /**
-     * @param isMultipleClosedAllowed flag for whether close() will be called on the stream multiple times and whether
-     * to ignore the STREAM_CLOSED exception.
-     */
-    public BlockBlobOutputStreamOptions(boolean isMultipleClosedAllowed) {
-        this.isMultipleClosedAllowed = isMultipleClosedAllowed;
-    }
 
     /**
      * @return {@link ParallelTransferOptions}
@@ -131,12 +115,5 @@ public class BlockBlobOutputStreamOptions {
     public BlockBlobOutputStreamOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
-    }
-
-    /**
-     * @return the flag for whether close() will be called multiple times on the stream.
-     */
-    public boolean getMultipleClosedOption() {
-        return isMultipleClosedAllowed;
     }
 }
