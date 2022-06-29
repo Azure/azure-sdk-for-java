@@ -4,10 +4,7 @@
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import com.azure.digitaltwins.core.BasicDigitalTwinMetadata;

@@ -4,24 +4,16 @@
 package com.azure.digitaltwins.core.implementation.serializer;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import com.azure.digitaltwins.core.BasicDigitalTwinComponent;
 import com.azure.digitaltwins.core.DigitalTwinPropertyMetadata;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
