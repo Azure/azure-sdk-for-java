@@ -406,6 +406,42 @@ public final class CallingServerAsyncClient {
     }
 
     /**
+     * Get all participants.
+     *
+     * @param callConnectionId The connection id of the call
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<AcsCallParticipant>> listParticipants(String callConnectionId) {
+        return listParticipantsWithResponse(callConnectionId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Get all participants.
+     *
+     * @param callConnectionId The connection id of the call
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<AcsCallParticipant>>> listParticipantsWithResponse(String callConnectionId) {
+        return withContext(context -> listParticipantsWithResponseInternal(callConnectionId, context));
+    }
+
+    Mono<Response<List<AcsCallParticipant>>> listParticipantsWithResponseInternal(String callConnectionId, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, context).map(response ->
+                new SimpleResponse<>(response,
+                    response.getValue().stream().map(AcsCallParticipantConverter::convert).collect(Collectors.toList())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Transfer the call to a participant.
      *
      * @param callConnectionId The connection id of the call

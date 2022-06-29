@@ -249,7 +249,7 @@ public final class CallingServerClient {
     }
 
     /**
-     * Get a specific participant.
+     * Get all participants.
      *
      * @param callConnectionId The connection id of the call
      * @param participant The participant.
@@ -262,6 +262,31 @@ public final class CallingServerClient {
                                                                    CommunicationIdentifier participant,
                                                                    Context context) {
         return callingServerAsyncClient.getParticipantWithResponseInternal(callConnectionId, participant, context).block();
+    }
+
+    /**
+     * Get all participants.
+     *
+     * @param callConnectionId The connection id of the call
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AcsCallParticipant> listParticipants(String callConnectionId) {
+        return callingServerAsyncClient.listParticipants(callConnectionId).block();
+    }
+
+    /**
+     * Get all participants.
+     *
+     * @param callConnectionId The connection id of the call
+     * @param context A {@link Context} representing the request context.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for a successful get call connection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<AcsCallParticipant>> listParticipantsWithResponse(String callConnectionId, Context context) {
+        return callingServerAsyncClient.listParticipantsWithResponseInternal(callConnectionId, context).block();
     }
 
     /**
