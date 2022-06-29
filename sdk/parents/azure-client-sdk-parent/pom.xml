@@ -1031,6 +1031,7 @@
 
               <!-- compile tests with Java 9 -->
               <!-- At this time recompiling tests with Java 9 isn't necessary as they don't have module-infos. If/when they have module-infos added uncomment this execution. -->
+              <!-- See https://github.com/Azure/azure-sdk-for-java/issues/29245 for more information -->
 <!--              <execution>-->
 <!--                <id>base-modules-testCompile</id>-->
 <!--                <goals>-->
