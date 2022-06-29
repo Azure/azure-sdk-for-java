@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
+@JsonDeserialize(using = BasicDigitalTwinDeserializer.class)
+@JsonSerialize(using = BasicDigitalTwinSerializer.class)
 public final class BasicDigitalTwin {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ID, required = true)
@@ -34,6 +39,9 @@ public final class BasicDigitalTwin {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
     private String etag;
+
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)
+    private OffsetDateTime lastUpdatedOn;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
     private BasicDigitalTwinMetadata metadata;
@@ -51,6 +59,13 @@ public final class BasicDigitalTwin {
 
     // Empty constructor for json deserialization purposes
     private BasicDigitalTwin() {
+    }
+    
+    // Used for json deserialization purposes
+    protected BasicDigitalTwin(String digitalTwinId, OffsetDateTime lastUpdatedOn) {
+        this(digitalTwinId);
+        
+        this.lastUpdatedOn = lastUpdatedOn;
     }
 
     /**
@@ -77,6 +92,14 @@ public final class BasicDigitalTwin {
     public BasicDigitalTwin setETag(String etag) {
         this.etag = etag;
         return this;
+    }
+
+    /**
+     * Gets the date and time when the twin was last updated.
+     * @return The date and time the twin was last updated.
+     */
+    public OffsetDateTime getLastUpdatedOn() {
+        return lastUpdatedOn;
     }
 
     /**

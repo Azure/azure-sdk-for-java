@@ -114,12 +114,10 @@ public class ComponentSyncSamples {
                 new BasicDigitalTwinComponent()
                     .addToContents("ComponentProp1", "Component value 1")
                     .addToContents("ComponentProp2", 123)
-                    .setMetadata(
-                        new BasicDigitalTwinComponentMetadata()
-                            .addPropertyMetadata(
-                                "ComponentProp2",
-                                new DigitalTwinPropertyMetadata()
-                                    .setSourceTime(OffsetDateTime.now(Clock.systemUTC()))))
+                    .addMetadata(
+                        "ComponentProp2",
+                        new DigitalTwinPropertyMetadata()
+                            .setSourceTime(OffsetDateTime.now(Clock.systemUTC())))
             );
 
         BasicDigitalTwin basicTwinResponse = client.createOrReplaceDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);

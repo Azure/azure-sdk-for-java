@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -22,13 +24,12 @@ import java.util.Map;
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonDeserialize(using = BasicDigitalTwinMetadataDeserializer.class)
+@JsonSerialize(using = BasicDigitalTwinMetadataSerializer.class)
 public final class BasicDigitalTwinMetadata {
-
+    
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
     private String modelId;
-
-    @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)
-    private OffsetDateTime lastUpdatedOn;
 
     @JsonIgnore
     private final Map<String, DigitalTwinPropertyMetadata> propertyMetadata = new HashMap<>();
@@ -54,24 +55,6 @@ public final class BasicDigitalTwinMetadata {
      */
     public BasicDigitalTwinMetadata setModelId(String modelId) {
         this.modelId = modelId;
-        return this;
-    }
-
-    /**
-     * Gets the date and time when the twin was last updated.
-     * @return The date and time the twin was last updated.
-     */
-    public OffsetDateTime getLastUpdatedOn() {
-        return lastUpdatedOn;
-    }
-
-    /**
-     * Sets the date and time when the twin was last updated.
-     * @param lastUpdatedOn The time the twin was last updated by the service.
-     * @return The BasicDigitalTwinMetadata object itself.
-     */
-    public BasicDigitalTwinMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
         return this;
     }
 

@@ -15,11 +15,6 @@ public enum DigitalTwinsServiceVersion implements ServiceVersion {
     V2020_10_31("2020-10-31"),
     
     /**
-     * Service version {@code 2021-06-30-preview}.
-     */
-    V2021_06_30_PREVIEW("2021-06-30-preview"),
-    
-    /**
      * Service version {@code 2022-05-31}.
      */
     V2022_05_31("2022-05-31");
