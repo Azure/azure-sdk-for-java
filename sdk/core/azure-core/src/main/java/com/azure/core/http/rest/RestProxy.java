@@ -12,7 +12,6 @@ import com.azure.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.Contexts;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +31,8 @@ public final class RestProxy implements InvocationHandler {
     private final AsyncRestProxy asyncRestProxy;
     private final HttpPipeline httpPipeline;
     private final SyncRestProxy syncRestProxy;
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+
 
     /**
      * Create a RestProxy.
@@ -81,7 +82,7 @@ public final class RestProxy implements InvocationHandler {
         Context context = methodParser.setContext(args);
         boolean isReactive = methodParser.isReactive();
         boolean isStreamResponseType = methodParser.isStreamResponse();
-        boolean syncRestProxyEnabled = Contexts.with(context).isRestProxySyncProxyEnabled();
+        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE).orElse(false);
 
 
         if (isReactive || isStreamResponseType || !syncRestProxyEnabled) {

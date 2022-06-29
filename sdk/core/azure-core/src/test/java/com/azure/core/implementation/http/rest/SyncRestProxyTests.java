@@ -20,7 +20,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.Contexts;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -40,6 +39,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class SyncRestProxyTests {
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+
 
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
@@ -63,7 +64,7 @@ public class SyncRestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Context context =  Contexts.empty().setRestProxySyncProxyEnable(true).getContext();
+        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes)),
             "application/json", (long) bytes.length, context);
         assertEquals(200, response.getStatusCode());

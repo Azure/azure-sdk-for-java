@@ -53,24 +53,6 @@ public final class Contexts {
     }
 
     /**
-     * Configure whether Sync Rest Proxy should be used or not for the Sync APIs.
-     * @param restProxySyncProxyEnable The flag indicating if sync rest proxy should be enabled or not.
-     * @return Itself.
-     */
-    public Contexts setRestProxySyncProxyEnable(boolean restProxySyncProxyEnable) {
-        context = context.addData(Keys.HTTP_REST_PROXY_SYNC_PROXY_ENABLE, restProxySyncProxyEnable);
-        return this;
-    }
-
-    /**
-     * Retrieves the {@link Boolean} flag from the {@link Context} indicating if Sync Rest Proxy is enabled or not.
-     * @return The {@link Boolean} flag indicating whether sync rest proxy is enabled or not.
-     */
-    public boolean isRestProxySyncProxyEnabled() {
-        return (boolean) context.getData(Keys.HTTP_REST_PROXY_SYNC_PROXY_ENABLE).orElse(false);
-    }
-
-    /**
      * Returns a version of the {@link Context} reflecting mutations.
      * @return The version of the {@link Context} reflecting mutations.
      */
@@ -89,6 +71,5 @@ public final class Contexts {
          * A {@link Context} key for the outgoing request's {@link ProgressReporter}.
          */
         public static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.azure.core.http.request.progress.reporter";
-        public static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     }
 }
