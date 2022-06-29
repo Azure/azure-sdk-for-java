@@ -14,18 +14,6 @@
 - Upgrade `azure-sdk-bom` to 1.2.3.
 - Upgrade `azure-spring-data-cosmos` to 3.23.0.
 
-### Spring Cloud Azure Actuator
-This section includes changes in `spring-cloud-azure-actuator` module.
-
-#### Dependency Updates
-- Upgrade `azure-cosmos` to 4.32.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
-
-### Spring Cloud Azure Actuator Autoconfigure
-This section includes changes in `spring-cloud-azure-actuator-autoconfigure` module.
-
-#### Dependency Updates
-- Upgrade `azure-cosmos` to 4.32.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
-
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
@@ -49,13 +37,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
-- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398). 
-
-### Spring Cloud Azure Service
-This section includes changes in `spring-cloud-azure-service` module.
-
-#### Dependency Updates
-- Upgrade `azure-cosmos` to 4.32.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
+- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398).
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
@@ -85,18 +67,6 @@ This section includes changes in `spring-cloud-azure-starter-active-directory-b2
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
-
-### Spring Cloud Azure Starter Cosmos
-This section includes changes in `spring-cloud-azure-starter-cosmos` module.
-
-#### Dependency Updates
-- Upgrade `azure-cosmos` to 4.32.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
-
-### Spring Cloud Azure Starter Data Cosmos
-This section includes changes in `spring-cloud-azure-starter-data-cosmos` module.
-
-#### Dependency Updates
--  Upgrade `azure-spring-data-cosmos` to 3.23.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
 
 ### Spring Integration Azure Storage Queue
 This section includes changes in `spring-integration-azure-storage-queue` module.
