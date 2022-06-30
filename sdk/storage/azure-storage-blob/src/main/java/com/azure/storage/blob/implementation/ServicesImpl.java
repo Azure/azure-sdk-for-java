@@ -22,9 +22,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
@@ -40,6 +39,8 @@ import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -161,6 +162,21 @@ public final class ServicesImpl {
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @BodyParam("application/xml") Flux<ByteBuffer> body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<StreamResponse> submitBatch(
+                @HostParam("url") String url,
+                @QueryParam("comp") String comp,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-Type") String multipartContentType,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/xml") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -315,8 +331,11 @@ public final class ServicesImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String listBlobContainersIncludeTypeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter()
-                        .serializeList(listBlobContainersIncludeType, CollectionFormat.CSV);
+                (listBlobContainersIncludeType == null)
+                        ? null
+                        : listBlobContainersIncludeType.stream()
+                                .map(value -> Objects.toString(value, ""))
+                                .collect(Collectors.joining(","));
         return service.listBlobContainersSegment(
                         this.client.getUrl(),
                         comp,
@@ -414,6 +433,47 @@ public final class ServicesImpl {
             long contentLength,
             String multipartContentType,
             Flux<ByteBuffer> body,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String comp = "batch";
+        final String accept = "application/xml";
+        return service.submitBatch(
+                this.client.getUrl(),
+                comp,
+                contentLength,
+                multipartContentType,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param contentLength The length of the request.
+     * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary.
+     *     Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
+     * @param body Initial data.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> submitBatchWithResponseAsync(
+            long contentLength,
+            String multipartContentType,
+            BinaryData body,
             Integer timeout,
             String requestId,
             Context context) {

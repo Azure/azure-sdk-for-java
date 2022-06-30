@@ -16,6 +16,8 @@ import java.util.Objects;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_CBC_256;
+import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_GCM_256;
 
 /**
  * Represents the encryption data that is stored on the service.
@@ -221,6 +223,10 @@ final class EncryptionData {
         return MAPPER.writeValueAsString(this);
     }
 
+    /*
+    Validates that encryption data is present if the client requires encryption and that appropriate values are present
+    for the given protocol version.
+     */
     static EncryptionData getAndValidateEncryptionData(String encryptionDataString, boolean requiresEncryption) {
         if (encryptionDataString == null) {
             if (requiresEncryption) {
@@ -237,9 +243,19 @@ final class EncryptionData {
                     "contentEncryptionIV in encryptionData cannot be null");
                 Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
                     + "encryptionData.wrappedContentKey cannot be null");
+                if (!encryptionData.getEncryptionAgent().getAlgorithm().equals(AES_CBC_256)) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Encryption algorithm does not match v1 protocol: "
+                            + encryptionData.getEncryptionAgent().getAlgorithm()));
+                }
             } else if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V2)) {
                 Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
                     + "encryptionData.wrappedContentKey cannot be null");
+                if (!encryptionData.getEncryptionAgent().getAlgorithm().equals(AES_GCM_256)) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Encryption algorithm does not match v2 protocol: "
+                            + encryptionData.getEncryptionAgent().getAlgorithm()));
+                }
             } else {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.ROOT,
                     "Invalid Encryption Agent. This version of the client library does not understand the "

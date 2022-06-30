@@ -128,6 +128,10 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ScalingPlanInner innerModel() {
         return this.innerObject;
     }

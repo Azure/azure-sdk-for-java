@@ -13,10 +13,9 @@ import com.azure.resourcemanager.digitaltwins.fluent.TimeSeriesDatabaseConnectio
 import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnection;
 import com.azure.resourcemanager.digitaltwins.models.TimeSeriesDatabaseConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDatabaseConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesDatabaseConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TimeSeriesDatabaseConnectionsImpl.class);
 
     private final TimeSeriesDatabaseConnectionsClient innerClient;
 
@@ -95,7 +94,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public TimeSeriesDatabaseConnection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +112,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public Response<TimeSeriesDatabaseConnection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public TimeSeriesDatabaseConnection deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +170,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +195,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
     public TimeSeriesDatabaseConnection deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -204,7 +203,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String resourceName = Utils.getValueFromIdByName(id, "digitalTwinsInstances");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -214,7 +213,7 @@ public final class TimeSeriesDatabaseConnectionsImpl implements TimeSeriesDataba
         }
         String timeSeriesDatabaseConnectionName = Utils.getValueFromIdByName(id, "timeSeriesDatabaseConnections");
         if (timeSeriesDatabaseConnectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
