@@ -13,14 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TypesGetEnumDefByName {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.typesgetenumdefbyname.typesgetenumdefbyname
         TypesClient typesClient =
                 new TypesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.typesgetenumdefbyname.typesgetenumdefbyname
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = typesClient.getEnumDefByNameWithResponse("hive_principal_type", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.typesgetenumdefbyname.typesgetenumdefbyname
+        // END:com.azure.analytics.purview.catalog.generated.typesgetenumdefbyname.typesgetenumdefbyname
     }
 }

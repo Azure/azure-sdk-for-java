@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Patchable volume properties. */
 @Fluent
 public final class VolumePatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatchProperties.class);
-
     /*
      * serviceLevel The service level of the file system
      */

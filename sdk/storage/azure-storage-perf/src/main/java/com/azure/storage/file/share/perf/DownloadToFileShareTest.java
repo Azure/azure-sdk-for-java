@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.perf.core.DirectoryTest;
@@ -49,7 +50,7 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     public Mono<Void> setupAsync() {
         return super.setupAsync()
             .then(shareFileAsyncClient.create(options.getSize()))
-            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize()))
+            .then(shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), new ParallelTransferOptions()))
             .then();
     }
 

@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for PrivateLinkServices CreateOrUpdate. */
 public final class PrivateLinkServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateLinkServiceCreate.json
      */
     /**
      * Sample code: Create private link service.

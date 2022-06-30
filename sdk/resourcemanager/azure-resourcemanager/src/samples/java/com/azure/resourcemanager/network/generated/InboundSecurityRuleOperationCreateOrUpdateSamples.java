@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for InboundSecurityRuleOperation CreateOrUpdate. */
 public final class InboundSecurityRuleOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/InboundSecurityRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/InboundSecurityRulePut.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.

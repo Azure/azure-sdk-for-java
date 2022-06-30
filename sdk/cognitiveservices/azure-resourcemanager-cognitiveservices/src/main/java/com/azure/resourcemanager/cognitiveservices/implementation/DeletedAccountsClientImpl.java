@@ -237,14 +237,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> getAsync(String location, String resourceGroupName, String accountName) {
         return getWithResponseAsync(location, resourceGroupName, accountName)
-            .flatMap(
-                (Response<AccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

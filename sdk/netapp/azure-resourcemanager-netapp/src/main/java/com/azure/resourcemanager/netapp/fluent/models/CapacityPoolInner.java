@@ -11,15 +11,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Capacity pool resource. */
 @Fluent
 public final class CapacityPoolInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityPoolInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -33,7 +30,8 @@ public final class CapacityPoolInner extends Resource {
     private PoolProperties innerProperties = new PoolProperties();
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -57,7 +55,7 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -241,7 +239,7 @@ public final class CapacityPoolInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model CapacityPoolInner"));
@@ -249,4 +247,6 @@ public final class CapacityPoolInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CapacityPoolInner.class);
 }

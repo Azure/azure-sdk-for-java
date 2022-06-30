@@ -30,7 +30,11 @@ public final class ProbeProtocol extends ExpandableStringEnum<ProbeProtocol> {
         return fromString(name, ProbeProtocol.class);
     }
 
-    /** @return known ProbeProtocol values. */
+    /**
+     * Gets known ProbeProtocol values.
+     *
+     * @return known ProbeProtocol values.
+     */
     public static Collection<ProbeProtocol> values() {
         return values(ProbeProtocol.class);
     }

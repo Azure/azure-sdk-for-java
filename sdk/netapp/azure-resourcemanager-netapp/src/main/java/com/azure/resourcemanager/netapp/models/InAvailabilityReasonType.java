@@ -27,7 +27,11 @@ public final class InAvailabilityReasonType extends ExpandableStringEnum<InAvail
         return fromString(name, InAvailabilityReasonType.class);
     }
 
-    /** @return known InAvailabilityReasonType values. */
+    /**
+     * Gets known InAvailabilityReasonType values.
+     *
+     * @return known InAvailabilityReasonType values.
+     */
     public static Collection<InAvailabilityReasonType> values() {
         return values(InAvailabilityReasonType.class);
     }

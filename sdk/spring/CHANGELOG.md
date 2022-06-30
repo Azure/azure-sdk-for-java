@@ -1,9 +1,12 @@
 # Release History
 
 ## 4.3.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.1 and Spring Cloud dependencies version to 2021.0.3
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
+- GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
+- Support Jwt Client authentication for Azure AD Starter.
 
 ### Breaking Changes
 
@@ -14,12 +17,25 @@
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-#### Breaking Changes
+#### Features Added
 + Add `AzureStorageConfiguration` to make Azure storage service share common property configuration [#29094](https://github.com/Azure/azure-sdk-for-java/pull/29094).
     +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
++ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29306](https://github.com/Azure/azure-sdk-for-java/pull/29306).
+    + Add properties `spring.cloud.azure.keyvault`.
++ Support OAuth2 authentication configuration for Spring ecosystems of Kafka [#29404](https://github.com/Azure/azure-sdk-for-java/pull/29404).
+
+#### Breaking Changes
+- Deprecate support of connection string or Azure Resource Manager based authentication for Spring ecosystems of Kafka [#29404](https://github.com/Azure/azure-sdk-for-java/pull/29404).
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+#### Features Added
+- Add `enabled` option in `AzureServiceBusJmsProperties` [#29232](https://github.com/Azure/azure-sdk-for-java/issues/29232).
+
+#### Bugs Fixed
+- Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
+- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398). 
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
@@ -34,11 +50,32 @@ This section includes changes in `spring-cloud-azure-starter-active-directory` m
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
+#### Features Added
++ Support Jwt Client authentication [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
+
+#### Breaking Changes
++ Deprecated classes and properties type changed [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
+    + Deprecated ~~AadAuthorizationGrantType~~, use `AuthorizationGrantType` instead.
+    + Deprecated ~~AadOAuth2AuthenticatedPrincipal~~, ~~AadJwtBearerTokenAuthenticationConverter~~, use the default converter `JwtAuthenticationConverter` instead in `AadResourceServerWebSecurityConfigurerAdapter`.
+    + The type of property *authorizationGrantType* is changed to `AuthorizationGrantType` in `AuthorizationClientProperties` class.
+    + Deprecated ~~AadOboOAuth2AuthorizedClientProvider~~, use `JwtBearerOAuth2AuthorizedClientProvider` instead.
+
 ### Spring Cloud Azure Starter Active Directory B2C
 This section includes changes in `spring-cloud-azure-starter-active-directory-b2c` module.
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+### Spring Integration Azure Storage Queue
+This section includes changes in `spring-integration-azure-storage-queue` module.
+
+#### Features Added
+- Add configurable visibility timeout to `StorageQueueMessageSource` to allow configuring visibility timeout of message source at startup [#29567](https://github.com/Azure/azure-sdk-for-java/pull/29567).
+
+#### Breaking Changes
++ Deprecated classes and properties type changed [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
+    + Deprecated *~~AadAuthorizationGrantType~~*, use `AuthorizationGrantType` instead.
+    + The type of property *authorizationGrantType* is changed to `AuthorizationGrantType` in `AuthorizationClientProperties` class.
 
 ## 4.2.0 (2022-05-26)
 

@@ -83,6 +83,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AmazonRdsForSqlServerTable", value = AmazonRdsForSqlServerTableDataset.class),
     @JsonSubTypes.Type(name = "RestResource", value = RestResourceDataset.class),
     @JsonSubTypes.Type(name = "SapTableResource", value = SapTableResourceDataset.class),
+    @JsonSubTypes.Type(name = "SapOdpResource", value = SapOdpResourceDataset.class),
     @JsonSubTypes.Type(name = "WebTable", value = WebTableDataset.class),
     @JsonSubTypes.Type(name = "AzureSearchIndex", value = AzureSearchIndexDataset.class),
     @JsonSubTypes.Type(name = "HttpFile", value = HttpDataset.class),

@@ -36,7 +36,11 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
         return fromString(name, UpdateState.class);
     }
 
-    /** @return known UpdateState values. */
+    /**
+     * Gets known UpdateState values.
+     *
+     * @return known UpdateState values.
+     */
     public static Collection<UpdateState> values() {
         return values(UpdateState.class);
     }

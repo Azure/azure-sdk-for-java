@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateDnsZoneGroups Get. */
 public final class PrivateDnsZoneGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateEndpointDnsZoneGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointDnsZoneGroupGet.json
      */
     /**
      * Sample code: Get private dns zone group.

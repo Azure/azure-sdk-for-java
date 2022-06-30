@@ -30,7 +30,11 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
         return fromString(name, MetricAggregationType.class);
     }
 
-    /** @return known MetricAggregationType values. */
+    /**
+     * Gets known MetricAggregationType values.
+     *
+     * @return known MetricAggregationType values.
+     */
     public static Collection<MetricAggregationType> values() {
         return values(MetricAggregationType.class);
     }

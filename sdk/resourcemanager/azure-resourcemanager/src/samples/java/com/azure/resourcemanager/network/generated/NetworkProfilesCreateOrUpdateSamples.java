@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for NetworkProfiles CreateOrUpdate. */
 public final class NetworkProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkProfileCreateConfigOnly.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkProfileCreateConfigOnly.json
      */
     /**
      * Sample code: Create network profile defaults.

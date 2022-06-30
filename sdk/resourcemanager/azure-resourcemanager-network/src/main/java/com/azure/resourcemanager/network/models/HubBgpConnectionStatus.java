@@ -33,7 +33,11 @@ public final class HubBgpConnectionStatus extends ExpandableStringEnum<HubBgpCon
         return fromString(name, HubBgpConnectionStatus.class);
     }
 
-    /** @return known HubBgpConnectionStatus values. */
+    /**
+     * Gets known HubBgpConnectionStatus values.
+     *
+     * @return known HubBgpConnectionStatus values.
+     */
     public static Collection<HubBgpConnectionStatus> values() {
         return values(HubBgpConnectionStatus.class);
     }
