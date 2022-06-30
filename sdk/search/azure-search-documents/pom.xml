@@ -40,6 +40,8 @@
       --add-reads com.azure.core.test=ALL-UNNAMED
       --add-reads com.azure.core.http.netty=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <spotbugs.includeTests>true</spotbugs.includeTests>
   </properties>
 
   <dependencies>
