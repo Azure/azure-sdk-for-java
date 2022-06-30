@@ -3,6 +3,12 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.models.CallLocator;
+import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
+import com.azure.communication.callingserver.implementation.models.RecordingChannel;
+import com.azure.communication.callingserver.implementation.models.RecordingContent;
+import com.azure.communication.callingserver.implementation.models.RecordingFormat;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
@@ -19,7 +25,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import java.io.OutputStream;
+import java.net.URI;
 import java.nio.file.Path;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Objects;
 
@@ -419,6 +427,157 @@ public final class CallingServerClient {
     //endregion
 
     //region Recording Management actions
+    /**
+     * Start recording of the call.     *
+     *
+     * @param callLocator the call locator.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StartCallRecordingResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+        return callingServerAsyncClient.startRecording(callLocator, recordingStateCallbackUri).block();
+    }
+
+    /**
+     * Start recording of the call.     *
+     *
+     * @param callLocator the call locator.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param content Content Type.
+     * @param format Format Type.
+     * @param channel Channel Type
+     * @param context A {@link Context} representing the request context.
+     * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StartCallRecordingResponse> startRecordingWithResponse(
+        CallLocator callLocator,
+        URI recordingStateCallbackUri,
+        RecordingContent content,
+        RecordingFormat format,
+        RecordingChannel channel,
+        Context context) {
+        return callingServerAsyncClient.startRecordingWithResponse(
+            callLocator,
+            recordingStateCallbackUri,
+            content,
+            format,
+            channel,
+            context).block();
+    }
+
+    /**
+     * Stop recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopRecording(String recordingId) {
+        callingServerAsyncClient.stopRecording(recordingId).block();
+    }
+
+    /**
+     * Stop recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @param context A {@link Context} representing the request context.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful stop recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
+        return callingServerAsyncClient.stopRecordingWithResponse(recordingId, context).block();
+    }
+
+    /**
+     * Pause recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void pauseRecording(String recordingId) {
+        callingServerAsyncClient.pauseRecording(recordingId).block();
+    }
+
+    /**
+     * Pause recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @param context A {@link Context} representing the request context.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful pause recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
+        return callingServerAsyncClient.pauseRecordingWithResponse(recordingId, context).block();
+    }
+
+    /**
+     * Resume recording of the call.
+     *
+     * @param recordingId The recording id to stop.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resumeRecording(String recordingId) {
+        callingServerAsyncClient.resumeRecording(recordingId).block();
+    }
+
+    /**
+     * Resume recording of the call.
+     *
+     * @param recordingId The recording id to stop.
+     * @param context A {@link Context} representing the request context.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful resume recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resumeRecordingWithResponse(String recordingId, final Context context) {
+        return callingServerAsyncClient.resumeRecordingWithResponse(recordingId, context).block();
+    }
+
+    /**
+     * Get the current recording state by recording id.
+     *
+     * @param recordingId The recording id to stop.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetCallRecordingStateResponse getRecordingState(String recordingId) {
+        return callingServerAsyncClient.getRecordingState(recordingId).block();
+    }
+
+    /**
+     * Get the current recording state by recording id.
+     *
+     * @param recordingId The recording id to stop.
+     * @param context A {@link Context} representing the request context.
+//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetCallRecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+        return callingServerAsyncClient.getRecordingStateWithResponse(recordingId, context).block();
+    }
+
     /**
      * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
      * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
