@@ -6,6 +6,9 @@ package com.azure.security.confidentialledger.generated;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,5 +18,14 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
     public void testGetEnclaveQuotes() throws Exception {
         Response<BinaryData> enclaveQuotesWithResponse = confidentialLedgerClient.getEnclaveQuotesWithResponse(null);
         Assertions.assertEquals(enclaveQuotesWithResponse.getStatusCode(), 200);
+        BinaryData parsedResponse = enclaveQuotesWithResponse.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        JsonNode enclaveQuotes = responseBodyJson.get("enclaveQuotes");
+        String enclaveQuotesKey = enclaveQuotes.fields().next().getKey();
+        Assertions.assertEquals(enclaveQuotes.get(enclaveQuotesKey).get("quoteVersion").asText(), "OE_SGX_v1");
+
+
     }
 }
