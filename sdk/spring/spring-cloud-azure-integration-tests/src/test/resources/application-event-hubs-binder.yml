@@ -1,28 +1,29 @@
-spring:
-  cloud:
-    azure:
-      eventhubs:
-        connection-string: ${EVENTHUB_CONNECTION_STRING_TEST_EVENTHUB}
-        processor:
-          checkpoint-store:
-            account-name: ${STORAGE_ACCOUNT_TEST_EVENTHUB}
-            account-key: ${STORAGE_ACCOUNT_KEY_TEST_EVENTHUB}
-            endpoint: ${PRIMARY_STORAGE_BLOB_ENDPOINT}
-    stream:
-      function:
-        definition: consume;supply
-      bindings:
-        consume-in-0:
-          group: $Default
-      default:
-        producer:
-          errorChannelEnabled: true
-logging:
-  level:
-    com.azure:
-      core:
-        amqp: WARN
-      messaging:
-        servicebus: WARN
-        eventhubs: WARN
-      identity: WARN
+#spring:
+#  cloud:
+#    azure:
+#      eventhubs:
+#        connection-string: Endpoint=sb://muyaospace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=tjbnbb4kFofNjCsVrU6HUeYB6ENM6EvCuTFdG8RRVck=
+#        processor:
+#          checkpoint-store:
+#            account-name: myaostorage_1656491494057
+#            account-key: dgIzUIu4b7qwzbV5QA/fNTMdpsOIvkdHl897Ia9WS0nhGqlfyjP2gVATr59fX5M500fnRb/ji6BC+AStjmFwAw==
+#            endpoint: https://myaostorage.blob.core.windows.net/
+#    stream:
+#      function:
+#        definition: consume;supply
+#      bindings:
+#        consume-in-0:
+#          group: $Default
+#      default:
+#        producer:
+#          errorChannelEnabled: true
+#      default-binder: eventhubs
+#logging:
+#  level:
+#    com.azure:
+#      core:
+#        amqp: WARN
+#      messaging:
+#        servicebus: WARN
+#        eventhubs: WARN
+#      identity: WARN
