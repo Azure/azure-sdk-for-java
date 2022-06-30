@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 
 import java.util.Map;
 
-/** Request options for updating ExceptionPolicy. */
+/**
+ * Request options for updating ExceptionPolicy.
+ * ExceptionPolicy: A policy that defines actions to execute when exception are triggered.
+ */
 @Fluent
 public class UpdateExceptionPolicyOptions {
     private String id;

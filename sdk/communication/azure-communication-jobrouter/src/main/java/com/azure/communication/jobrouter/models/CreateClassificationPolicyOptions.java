@@ -11,7 +11,9 @@ import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
-/** Request options for Create ClassificationPolicy. */
+/** Request options for Create ClassificationPolicy.
+ * ClassificationPolicy: A container for the rules that govern how jobs are classified.
+ */
 @Fluent
 public final class CreateClassificationPolicyOptions extends ClassificationPolicyOptions {
     /**

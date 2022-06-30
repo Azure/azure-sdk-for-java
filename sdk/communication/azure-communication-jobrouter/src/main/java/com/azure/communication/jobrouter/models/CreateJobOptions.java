@@ -2,6 +2,10 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.models.JobOptions;
 
+/**
+ * Request options to create a job.
+ * Job: A unit of work to be routed.
+ */
 public class CreateJobOptions extends JobOptions {
     /**
      * Constructor for CreateJobOptions.
