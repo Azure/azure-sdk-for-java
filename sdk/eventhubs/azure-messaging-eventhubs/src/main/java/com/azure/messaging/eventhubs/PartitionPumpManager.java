@@ -28,6 +28,8 @@ import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
@@ -64,6 +66,24 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUE
 class PartitionPumpManager {
     private static final int MAXIMUM_QUEUE_SIZE = 10000;
     private static final ClientLogger LOGGER = new ClientLogger(PartitionPumpManager.class);
+
+    private static final boolean HAS_BACKPRESSURE_WINDOW_TIMEOUT;
+    static {
+        final Class<?> fluxClazz = reactor.core.publisher.Flux.class;
+        boolean hasBackPressureWindowTimeout = true;
+        try {
+            // The backpressure aware window-timeout operator is available from reactor-core v3.4.19, but
+            // the user app, or its transitive dependencies may downgrade the reactor-core, so fall back
+            // to the window-timeout API without back pressure to avoid runtime NoSuchMethodException.
+            MethodHandles.publicLookup().findVirtual(fluxClazz, "windowTimeout",
+                MethodType.methodType(fluxClazz, int.class, Duration.class, boolean.class));
+        } catch (IllegalAccessException | NoSuchMethodException error) {
+            hasBackPressureWindowTimeout = false;
+            LOGGER.verbose("Failed to locate backpressure aware variant of windowTimeout, "
+                + "falling back to non-backpressure variant.", error);
+        }
+        HAS_BACKPRESSURE_WINDOW_TIMEOUT = hasBackPressureWindowTimeout;
+    }
 
     //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
     // for each partition pump that will have at most number of processors * 4.
@@ -244,8 +264,13 @@ class PartitionPumpManager {
                 });
 
             if (maxWaitTime != null) {
-                partitionEventFlux = receiver
-                    .windowTimeout(maxBatchSize, maxWaitTime);
+                if (HAS_BACKPRESSURE_WINDOW_TIMEOUT) {
+                    partitionEventFlux = receiver
+                        .windowTimeout(maxBatchSize, maxWaitTime, true);
+                } else {
+                    partitionEventFlux = receiver
+                        .windowTimeout(maxBatchSize, maxWaitTime);
+                }
             } else {
                 partitionEventFlux = receiver
                     .window(maxBatchSize);
