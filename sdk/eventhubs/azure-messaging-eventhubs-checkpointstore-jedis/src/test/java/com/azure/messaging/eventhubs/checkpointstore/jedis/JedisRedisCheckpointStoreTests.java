@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +13,6 @@ import reactor.test.StepVerifier;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
@@ -29,15 +28,16 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link  JedisRedisCheckpointStore}
  */
 public class JedisRedisCheckpointStoreTests {
-    JedisPool jedisPool;
-    JedisRedisCheckpointStore store;
-    Jedis jedis;
+    private JedisPool jedisPool;
+    private JedisRedisCheckpointStore store;
+    private Jedis jedis;
+    private JsonSerializer jsonSerializer;
     @BeforeEach
     public void setup() {
         jedisPool = mock(JedisPool.class);
         jedis = mock(Jedis.class);
         store = new JedisRedisCheckpointStore(jedisPool);
-
+        jsonSerializer = JsonSerializerProviders.createInstance(true);
     }
 
     @Test
@@ -51,20 +51,12 @@ public class JedisRedisCheckpointStoreTests {
             .setSequenceNumber((long) 1);
         Set<String> value = new HashSet<>();
         List<String> list = new ArrayList<>();
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
         value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
-
-        try {
-            list.add(jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
-        }
-        catch (IOException e) {
-            System.out.println("Hello");
-        }
-
+        byte[] bytes = jsonSerializer.serializeToBytes(checkpoint);
+        list.add(new String(bytes));
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
-
         when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
             eq("checkpoint"))).thenReturn(list);
         //assert
@@ -114,14 +106,9 @@ public class JedisRedisCheckpointStoreTests {
 
         Set<String> value = new HashSet<>();
         List<String> list = new ArrayList<>();
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
         value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
-        try {
-            list.add(jacksonAdapter.serialize(partitionOwnership, SerializerEncoding.JSON));
-        }
-        catch (IOException e) {
-            System.out.println("Hello");
-        }
+        byte[] bytes = jsonSerializer.serializeToBytes(partitionOwnership);
+        list.add(new String(bytes));
 
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
@@ -167,7 +154,7 @@ public class JedisRedisCheckpointStoreTests {
     public void testClaimOwnership() {
 
         List<PartitionOwnership> partitionOwnershipList = new ArrayList<>();
-        Assertions.assertEquals(store.claimOwnership(partitionOwnershipList), null);
+        Assertions.assertNull(store.claimOwnership(partitionOwnershipList));
     }
 
     @Test
@@ -180,6 +167,6 @@ public class JedisRedisCheckpointStoreTests {
             .setSequenceNumber((long) 1);
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.exists("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(true);
-        Assertions.assertEquals(store.updateCheckpoint(checkpoint), null);
+        Assertions.assertNull(store.updateCheckpoint(checkpoint));
     }
 }
