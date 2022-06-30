@@ -28,7 +28,11 @@ public final class SapCloudForCustomerSinkWriteBehavior
         return fromString(name, SapCloudForCustomerSinkWriteBehavior.class);
     }
 
-    /** @return known SapCloudForCustomerSinkWriteBehavior values. */
+    /**
+     * Gets known SapCloudForCustomerSinkWriteBehavior values.
+     *
+     * @return known SapCloudForCustomerSinkWriteBehavior values.
+     */
     public static Collection<SapCloudForCustomerSinkWriteBehavior> values() {
         return values(SapCloudForCustomerSinkWriteBehavior.class);
     }

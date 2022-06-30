@@ -26,10 +26,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -149,6 +154,103 @@ public class CosmosItemTest extends TestSuiteBase {
                                                                                     InternalObjectNode.class);
         validateItemResponse(properties, readResponse1);
 
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithSoftTimeoutAndFallback() throws Exception {
+        String pk = UUID.randomUUID().toString();
+        String id = UUID.randomUUID().toString();
+        ObjectNode properties = getDocumentDefinition(id, pk);
+        ObjectNode fallBackProperties = getDocumentDefinition("justFallback", "justFallback");
+        container.createItem(properties);
+
+        String successfulResponse = wrapWithSoftTimeoutAndFallback(
+            container
+                .asyncContainer
+                .readItem(id,
+                    new PartitionKey(pk),
+                    new CosmosItemRequestOptions(),
+                    ObjectNode.class),
+            Duration.ofDays(3),
+            fallBackProperties)
+            .map(node -> node.get("id").asText())
+            .block();
+
+        assertThat(successfulResponse).isEqualTo(id);
+
+        String timedOutResponse = wrapWithSoftTimeoutAndFallback(
+            container
+                .asyncContainer
+                .readItem(id,
+                    new PartitionKey(pk),
+                    new CosmosItemRequestOptions(),
+                    ObjectNode.class),
+            Duration.ofNanos(10),
+            fallBackProperties)
+            .map(node -> node.get("id").asText())
+            .block();
+
+        assertThat(timedOutResponse).isEqualTo("justFallback");
+
+        // Just ensure the logging of the soft timeout can finish
+        Thread.sleep(1000);
+    }
+
+    static <T> Mono<T> wrapWithSoftTimeoutAndFallback(
+        Mono<CosmosItemResponse<T>> source,
+        Duration softTimeout,
+        T fallback) {
+
+        // Execute the readItem with transformation to return the json payload
+        // asynchronously with a "soft timeout" - meaning when the "soft timeout"
+        // elapses a default/fallback response is returned but the original async call is not
+        // cancelled, but allowed to complete. This makes it possible to still emit diagnostics
+        // or process the eventually successful call
+        AtomicBoolean timeoutElapsed = new AtomicBoolean(false);
+        return Mono
+            .<T>create(sink -> {
+                source
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .subscribe(
+                        response -> {
+                            if (timeoutElapsed.get()) {
+                                logger.warn(
+                                    "COMPLETED SUCCESSFULLY after timeout elapsed. Diagnostics: {}",
+                                    response.getDiagnostics().toString());
+                            } else {
+                                logger.info("COMPLETED SUCCESSFULLY");
+                            }
+
+                            sink.success(response.getItem());
+                        },
+                        error -> {
+                            final Throwable unwrappedException = Exceptions.unwrap(error);
+                            if (unwrappedException instanceof CosmosException) {
+                                final CosmosException cosmosException = (CosmosException) unwrappedException;
+
+                                logger.error(
+                                    "COMPLETED WITH COSMOS FAILURE. Diagnostics: {}",
+                                    cosmosException.getDiagnostics() != null ?
+                                        cosmosException.getDiagnostics().toString() : "n/a",
+                                    cosmosException);
+                            } else {
+                                logger.error("COMPLETED WITH GENERIC FAILURE", error);
+                            }
+
+                            if (timeoutElapsed.get()) {
+                                // fallback returned already - don't emit unobserved error
+                                sink.success();
+                            } else {
+                                sink.error(error);
+                            }
+                        }
+                    );
+            })
+            .timeout(softTimeout)
+            .onErrorResume(error -> {
+                timeoutElapsed.set(true);
+                return Mono.just(fallback);
+            });
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

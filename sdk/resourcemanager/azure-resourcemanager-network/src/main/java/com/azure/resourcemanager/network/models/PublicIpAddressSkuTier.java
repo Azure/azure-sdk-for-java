@@ -27,7 +27,11 @@ public final class PublicIpAddressSkuTier extends ExpandableStringEnum<PublicIpA
         return fromString(name, PublicIpAddressSkuTier.class);
     }
 
-    /** @return known PublicIpAddressSkuTier values. */
+    /**
+     * Gets known PublicIpAddressSkuTier values.
+     *
+     * @return known PublicIpAddressSkuTier values.
+     */
     public static Collection<PublicIpAddressSkuTier> values() {
         return values(PublicIpAddressSkuTier.class);
     }

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicie
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionPolicyResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicies;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionPoliciesImpl implements ProtectionPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionPoliciesImpl.class);
 
     private final ProtectionPoliciesClient innerClient;
 
@@ -63,14 +62,14 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
     public ProtectionPolicyResource getById(String id) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -78,7 +77,7 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
         }
         String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,14 +89,14 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
     public Response<ProtectionPolicyResource> getByIdWithResponse(String id, Context context) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
         }
         String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,14 +116,14 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
     public void deleteById(String id) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +131,7 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
         }
         String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,14 +143,14 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
     public void deleteByIdWithResponse(String id, Context context) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +158,7 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
         }
         String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
-  <version>1.1.4</version>
+  <version>1.1.10</version>
 </dependency>
 ```
 
@@ -164,11 +164,14 @@ Use the `deleteUser` function to delete a user.
 communicationIdentityClient.deleteUser(user);
 ```
 
-### Exchanging AAD access token of a Teams User for a Communication Identity access token
-Use the `getTokenForTeamsUser` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+### Exchanging Azure AD access token of a Teams User for a Communication Identity access token
+Use the `getTokenForTeamsUser` function to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
 
 ```java readme-sample-getTokenForTeamsUser
-AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
+String clientId = "<Client ID of an Azure AD application>";
+String userObjectId = "<Object ID of an Azure AD user (Teams User)>";
+GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
+AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(options);
 System.out.println("User token value: " + accessToken.getToken());
 System.out.println("Expires at: " + accessToken.getExpiresAt());
 ```

@@ -30,7 +30,11 @@ public final class DataFlowComputeType extends ExpandableStringEnum<DataFlowComp
         return fromString(name, DataFlowComputeType.class);
     }
 
-    /** @return known DataFlowComputeType values. */
+    /**
+     * Gets known DataFlowComputeType values.
+     *
+     * @return known DataFlowComputeType values.
+     */
     public static Collection<DataFlowComputeType> values() {
         return values(DataFlowComputeType.class);
     }

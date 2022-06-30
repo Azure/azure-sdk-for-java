@@ -36,7 +36,11 @@ public final class CopyOptions extends ExpandableStringEnum<CopyOptions> {
         return fromString(name, CopyOptions.class);
     }
 
-    /** @return known CopyOptions values. */
+    /**
+     * Gets known CopyOptions values.
+     *
+     * @return known CopyOptions values.
+     */
     public static Collection<CopyOptions> values() {
         return values(CopyOptions.class);
     }

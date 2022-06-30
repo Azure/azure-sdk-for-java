@@ -33,7 +33,11 @@ public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
         return fromString(name, AlertSeverity.class);
     }
 
-    /** @return known AlertSeverity values. */
+    /**
+     * Gets known AlertSeverity values.
+     *
+     * @return known AlertSeverity values.
+     */
     public static Collection<AlertSeverity> values() {
         return values(AlertSeverity.class);
     }

@@ -160,7 +160,7 @@ public abstract class StorageInputStream extends InputStream {
      */
     private synchronized void checkStreamState() {
         if (this.streamFaulted) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage(), this.lastError));
         }
     }
 

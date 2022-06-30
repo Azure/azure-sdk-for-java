@@ -10,10 +10,10 @@ import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Grammar is a super set of this RFC: https://tools.ietf.org/html/rfc6902#section-4.1
@@ -49,7 +49,7 @@ public final class CosmosPatchOperations {
     private final List<PatchOperation> patchOperations;
 
     private CosmosPatchOperations() {
-        this.patchOperations = new ArrayList<>();
+        this.patchOperations = Collections.synchronizedList(new ArrayList<>());
     }
 
     /**
@@ -255,22 +255,22 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    // NOTE returning this patchOperations means any
+    // modifications - like adding new entries is still
+    // thread-safe - but enumerating over the collection is not
+    // unless synchronized
     List<PatchOperation> getPatchOperations() {
-        return patchOperations;
+        return this.patchOperations;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosPatchOperationsHelper.setCosmosPatchOperationsAccessor(
-            new ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor() {
-                @Override
-                public List<PatchOperation> getPatchOperations(CosmosPatchOperations cosmosPatchOperations) {
-                    return cosmosPatchOperations.getPatchOperations();
-                }
-            }
+            cosmosPatchOperations -> cosmosPatchOperations.getPatchOperations()
         );
     }
+
+    static { initialize(); }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters describes the request to regenerate access keys. */
 @Fluent
 public final class RegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateKeyParameters.class);
-
     /*
      * The keyType to regenerate. Must be either 'primary' or
      * 'secondary'(case-insensitive).

@@ -36,7 +36,11 @@ public final class BuildpackBindingProvisioningState extends ExpandableStringEnu
         return fromString(name, BuildpackBindingProvisioningState.class);
     }
 
-    /** @return known BuildpackBindingProvisioningState values. */
+    /**
+     * Gets known BuildpackBindingProvisioningState values.
+     *
+     * @return known BuildpackBindingProvisioningState values.
+     */
     public static Collection<BuildpackBindingProvisioningState> values() {
         return values(BuildpackBindingProvisioningState.class);
     }

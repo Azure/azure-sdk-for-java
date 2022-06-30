@@ -45,6 +45,18 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromStream(InputStream, Long)}.
+     */
+    public void fromStreamWithLength() {
+        // BEGIN: com.azure.core.util.BinaryData.fromStream#InputStream-Long
+        byte[] bytes = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        BinaryData binaryData = BinaryData.fromStream(inputStream, (long) bytes.length);
+        System.out.println(binaryData.toString());
+        // END: com.azure.core.util.BinaryData.fromStream#InputStream-Long
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromStreamAsync(InputStream)}
      */
     public void fromStreamAsync() throws InterruptedException {
@@ -64,6 +76,29 @@ public class BinaryDataJavaDocCodeSnippet {
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.util.BinaryData.fromStreamAsync#InputStream
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromStreamAsync(InputStream, Long)}
+     */
+    public void fromStreamAsyncWithLength() throws InterruptedException {
+        // BEGIN: com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long
+        byte[] bytes = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+
+        Mono<BinaryData> binaryDataMono = BinaryData.fromStreamAsync(inputStream, (long) bytes.length);
+
+        Disposable subscriber = binaryDataMono
+            .map(binaryData -> {
+                System.out.println(binaryData.toString());
+                return true;
+            })
+            .subscribe();
+
+        // So that your program wait for above subscribe to complete.
+        TimeUnit.SECONDS.sleep(5);
+        subscriber.dispose();
+        // END: com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long
     }
 
     /**
@@ -87,6 +122,55 @@ public class BinaryDataJavaDocCodeSnippet {
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
         // END: com.azure.core.util.BinaryData.fromFlux#Flux
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFlux(Flux, Long)}.
+     */
+    public void fromFluxWithLength() throws InterruptedException {
+        // BEGIN: com.azure.core.util.BinaryData.fromFlux#Flux-Long
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final long length = data.length;
+        final Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(dataFlux, length);
+
+        Disposable subscriber = binaryDataMono
+            .map(binaryData -> {
+                System.out.println(binaryData.toString());
+                return true;
+            })
+            .subscribe();
+
+        // So that your program wait for above subscribe to complete.
+        TimeUnit.SECONDS.sleep(5);
+        subscriber.dispose();
+        // END: com.azure.core.util.BinaryData.fromFlux#Flux-Long
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFlux(Flux, Long)}.
+     */
+    public void fromFluxWithLengthLazily() throws InterruptedException {
+        // BEGIN: com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        final long length = data.length;
+        final boolean shouldAggregateData = false;
+        final Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
+
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(dataFlux, length, shouldAggregateData);
+
+        Disposable subscriber = binaryDataMono
+            .map(binaryData -> {
+                System.out.println(binaryData.toString());
+                return true;
+            })
+            .subscribe();
+
+        // So that your program wait for above subscribe to complete.
+        TimeUnit.SECONDS.sleep(5);
+        subscriber.dispose();
+        // END: com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean
     }
 
     /**
@@ -130,6 +214,33 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: com.azure.core.util.BinaryData.fromFile#Path-int
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, Long, Long)}.
+     */
+    public void fromFileSegment() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-Long-Long
+        long position = 1024;
+        long length = 100 * 1048;
+        BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-Long-Long
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, Long, Long, int)}.
+     */
+    public void fromFileSegmentWithChunkSize() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int
+        long position = 1024;
+        long length = 100 * 1048;
+        int chunkSize = 8092;
+        BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length, chunkSize);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int
     }
 
     /**
@@ -689,6 +800,58 @@ public class BinaryDataJavaDocCodeSnippet {
         binaryData.toByteBuffer().get(bytes, 0, data.length);
         System.out.println(new String(bytes));
         // END: com.azure.util.BinaryData.toByteBuffer
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#isReplayable()},
+     * {@link BinaryData#toReplayableBinaryData()}
+     */
+    public void replayablity() {
+        // BEGIN: com.azure.util.BinaryData.replayability
+        BinaryData binaryData = binaryDataProducer();
+
+        if (!binaryData.isReplayable()) {
+            binaryData = binaryData.toReplayableBinaryData();
+        }
+
+        streamConsumer(binaryData.toStream());
+        streamConsumer(binaryData.toStream());
+        // END: com.azure.util.BinaryData.replayability
+    }
+
+    private BinaryData binaryDataProducer() {
+        final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
+        return BinaryData.fromBytes(data);
+    }
+
+    private void streamConsumer(InputStream stream) {
+        // no-op
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#isReplayable()},
+     * {@link BinaryData#toReplayableBinaryData()}
+     */
+    public void replayablityAsync() {
+        // BEGIN: com.azure.util.BinaryData.replayabilityAsync
+        Mono.fromCallable(() -> binaryDataProducer())
+            .flatMap(binaryData -> {
+                if (binaryData.isReplayable()) {
+                    return Mono.just(binaryData);
+                } else  {
+                    return binaryData.toReplayableBinaryDataAsync();
+                }
+            })
+            .flatMap(replayableBinaryData ->
+                fluxConsumer(replayableBinaryData.toFluxByteBuffer())
+                    .then(fluxConsumer(replayableBinaryData.toFluxByteBuffer())))
+            .subscribe();
+        // END: com.azure.util.BinaryData.replayabilityAsync
+    }
+
+    private Mono<Void> fluxConsumer(Flux<ByteBuffer> flux) {
+        // no-op
+        return Mono.empty();
     }
 
     public static class MyJsonSerializer implements JsonSerializer {

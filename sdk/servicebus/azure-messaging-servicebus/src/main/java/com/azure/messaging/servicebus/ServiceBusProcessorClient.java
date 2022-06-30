@@ -123,7 +123,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private static final int SCHEDULER_INTERVAL_IN_SECONDS = 10;
-    private final ClientLogger logger = new ClientLogger(ServiceBusProcessorClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorClient.class);
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
@@ -209,7 +209,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     public synchronized void start() {
         if (isRunning.getAndSet(true)) {
-            logger.info("Processor is already running");
+            LOGGER.info("Processor is already running");
             return;
         }
 
@@ -346,20 +346,20 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                             handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
                             endProcessTracingSpan(processSpanContext, Signal.error(ex));
                             if (!processorOptions.isDisableAutoComplete()) {
-                                logger.warning("Error when processing message. Abandoning message.", ex);
+                                LOGGER.warning("Error when processing message. Abandoning message.", ex);
                                 abandonMessage(serviceBusMessageContext, receiverClient);
                             }
                         }
                     }
                     if (isRunning.get()) {
-                        logger.verbose("Requesting 1 more message from upstream");
+                        LOGGER.verbose("Requesting 1 more message from upstream");
                         subscription.request(1);
                     }
                 }
 
                 @Override
                 public void onError(Throwable throwable) {
-                    logger.info("Error receiving messages.", throwable);
+                    LOGGER.info("Error receiving messages.", throwable);
                     handleError(throwable);
                     if (isRunning.get()) {
                         restartMessageReceiver(subscription);
@@ -368,7 +368,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
                 @Override
                 public void onComplete() {
-                    logger.info("Completed receiving messages.");
+                    LOGGER.info("Completed receiving messages.");
                     if (isRunning.get()) {
                         restartMessageReceiver(subscription);
                     }
@@ -376,10 +376,19 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             };
         }
 
-        receiverClient.receiveMessagesWithContext()
-            .parallel(processorOptions.getMaxConcurrentCalls(), 1)
-            .runOn(Schedulers.boundedElastic(), 1)
-            .subscribe(subscribers);
+        if (processorOptions.getMaxConcurrentCalls() > 1) {
+            receiverClient.receiveMessagesWithContext()
+                .parallel(processorOptions.getMaxConcurrentCalls(), 1)
+                .runOn(Schedulers.boundedElastic(), 1)
+                .subscribe(subscribers);
+        } else {
+            // For the default case, i.e., when max-concurrent-call is one, the Processor handler can be invoked on
+            // the same Bounded-Elastic thread that the Low-Level Receiver obtained. This way, we can avoid
+            // the unnecessary thread hopping and allocation that otherwise would have been introduced by the parallel
+            // and runOn operators for this code path.
+            receiverClient.receiveMessagesWithContext()
+                .subscribe(subscribers[0]);
+        }
     }
 
     private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
@@ -397,11 +406,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             try {
                 close.close();
             } catch (Exception exception) {
-                logger.error("endTracingSpan().close() failed with an error {}", exception);
+                LOGGER.error("endTracingSpan().close() failed with an error {}", exception);
             }
 
         } else {
-            logger.warning(String.format(Locale.US,
+            LOGGER.warning(String.format(Locale.US,
                 "Process span scope type is not of type AutoCloseable, but type: %s. Not closing the scope"
                     + " and span", spanScope.get() != null ? spanScope.getClass() : "null"));
         }
@@ -435,7 +444,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         try {
             receiverClient.abandon(serviceBusMessageContext.getMessage()).block();
         } catch (Exception exception) {
-            logger.verbose("Failed to abandon message", exception);
+            LOGGER.verbose("Failed to abandon message", exception);
         }
     }
 
@@ -446,7 +455,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             final String entityPath = client.getEntityPath();
             processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
         } catch (Exception ex) {
-            logger.verbose("Error from error handler. Ignoring error.", ex);
+            LOGGER.verbose("Error from error handler. Ignoring error.", ex);
         }
     }
 

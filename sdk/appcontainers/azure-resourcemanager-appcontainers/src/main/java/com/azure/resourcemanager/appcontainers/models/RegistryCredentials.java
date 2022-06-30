@@ -28,6 +28,14 @@ public final class RegistryCredentials {
     @JsonProperty(value = "passwordSecretRef")
     private String passwordSecretRef;
 
+    /*
+     * A Managed Identity to use to authenticate with Azure Container Registry.
+     * For user-assigned identities, use the full user-assigned identity
+     * Resource ID. For system-assigned identities, use 'system'
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
     /**
      * Get the server property: Container Registry Server.
      *
@@ -85,6 +93,30 @@ public final class RegistryCredentials {
      */
     public RegistryCredentials withPasswordSecretRef(String passwordSecretRef) {
         this.passwordSecretRef = passwordSecretRef;
+        return this;
+    }
+
+    /**
+     * Get the identity property: A Managed Identity to use to authenticate with Azure Container Registry. For
+     * user-assigned identities, use the full user-assigned identity Resource ID. For system-assigned identities, use
+     * 'system'.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: A Managed Identity to use to authenticate with Azure Container Registry. For
+     * user-assigned identities, use the full user-assigned identity Resource ID. For system-assigned identities, use
+     * 'system'.
+     *
+     * @param identity the identity value to set.
+     * @return the RegistryCredentials object itself.
+     */
+    public RegistryCredentials withIdentity(String identity) {
+        this.identity = identity;
         return this;
     }
 

@@ -31,7 +31,11 @@ public final class ConnectionMonitorTestConfigurationProtocol
         return fromString(name, ConnectionMonitorTestConfigurationProtocol.class);
     }
 
-    /** @return known ConnectionMonitorTestConfigurationProtocol values. */
+    /**
+     * Gets known ConnectionMonitorTestConfigurationProtocol values.
+     *
+     * @return known ConnectionMonitorTestConfigurationProtocol values.
+     */
     public static Collection<ConnectionMonitorTestConfigurationProtocol> values() {
         return values(ConnectionMonitorTestConfigurationProtocol.class);
     }

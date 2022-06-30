@@ -58,7 +58,7 @@ public class ManagementChannel implements EventHubManagementNode {
     private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
 
-    private final ClientLogger logger = new ClientLogger(ManagementChannel.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementChannel.class);
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
@@ -97,14 +97,14 @@ public class ManagementChannel implements EventHubManagementNode {
         this.subscription = responseChannelMono
             .flatMapMany(e -> e.getEndpointStates().distinctUntilChanged())
             .subscribe(e -> {
-                logger.info("Management endpoint state: {}", e);
+                LOGGER.info("Management endpoint state: {}", e);
                 endpointStateSink.next(e);
             }, error -> {
-                    logger.error("Exception occurred:", error);
+                    LOGGER.error("Exception occurred:", error);
                     endpointStateSink.error(error);
                     close();
                 }, () -> {
-                    logger.info("Complete.");
+                    LOGGER.info("Complete.");
                     endpointStateSink.complete();
                     close();
                 });
@@ -168,7 +168,7 @@ public class ManagementChannel implements EventHubManagementNode {
                         final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
                             statusDescription, channel.getErrorContext());
 
-                        sink.error(logger.logExceptionAsWarning(Exceptions.propagate(error)));
+                        sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
                     }
                 }));
         });

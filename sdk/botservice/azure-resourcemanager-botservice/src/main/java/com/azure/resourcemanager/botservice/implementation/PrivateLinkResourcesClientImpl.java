@@ -178,14 +178,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     private Mono<PrivateLinkResourceListResultInner> listByBotResourceAsync(
         String resourceGroupName, String resourceName) {
         return listByBotResourceWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<PrivateLinkResourceListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -4,8 +4,10 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -170,10 +172,25 @@ import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_S
 public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
+    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    }
+
+    static {
+        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+            @Override
+            public BinaryData createBinaryData(BinaryDataContent content) {
+                return new BinaryData(content);
+            }
+
+            @Override
+            public BinaryDataContent getContent(BinaryData binaryData) {
+                return binaryData.content;
+            }
+        });
     }
 
     /**
@@ -201,7 +218,37 @@ public final class BinaryData {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream) {
-        return new BinaryData(new InputStreamContent(inputStream));
+        return fromStream(inputStream, null);
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link InputStream}. Depending on the type of
+     * inputStream, the BinaryData instance created may or may not allow reading the content more than once. The
+     * stream content is not cached if the stream is not read into a format that requires the content to be fully read
+     * into memory.
+     * <p>
+     * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
+     * </p>
+     *
+     * <p><strong>Create an instance from an InputStream</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
+     * <pre>
+     * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;bytes&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;inputStream, &#40;long&#41; bytes.length&#41;;
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream-Long -->
+     *
+     * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
+     * @return A {@link BinaryData} representing the {@link InputStream}.
+     * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
+     * @throws NullPointerException If {@code inputStream} is null.
+     */
+    public static BinaryData fromStream(InputStream inputStream, Long length) {
+        return new BinaryData(new InputStreamContent(inputStream, length));
     }
 
     /**
@@ -235,13 +282,51 @@ public final class BinaryData {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
-        return Mono.fromCallable(() -> fromStream(inputStream));
+        return fromStreamAsync(inputStream, null);
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link InputStream}.
+     * <b>NOTE:</b> The {@link InputStream} is not closed by this function.
+     *
+     * <p><strong>Create an instance from an InputStream</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
+     * <pre>
+     * byte[] bytes = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;bytes&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromStreamAsync&#40;inputStream, &#40;long&#41; bytes.length&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromStreamAsync#InputStream-Long -->
+     *
+     * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
+     * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
+     * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
+     * @throws NullPointerException If {@code inputStream} is null.
+     */
+    public static Mono<BinaryData> fromStreamAsync(InputStream inputStream, Long length) {
+        return Mono.fromCallable(() -> fromStream(inputStream, length));
     }
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
+     *
+     * <p>This method aggregates data into single byte array.</p>
      *
      * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
      * <pre>
@@ -268,11 +353,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
-        }
-        return FluxUtil.collectBytesInByteBufferStream(data)
-                .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        return fromFlux(data, null);
     }
 
     /**
@@ -280,12 +361,15 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <p>This method aggregates data into single byte array.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final long length = data.length;
      * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
      *
-     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux&#41;;
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux, length&#41;;
      *
      * Disposable subscriber = binaryDataMono
      *     .map&#40;binaryData -&gt; &#123;
@@ -298,7 +382,7 @@ public final class BinaryData {
      * TimeUnit.SECONDS.sleep&#40;5&#41;;
      * subscriber.dispose&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -307,18 +391,66 @@ public final class BinaryData {
      * @throws NullPointerException if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
+        return fromFlux(data, length, true);
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     *
+     * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final long length = data.length;
+     * final boolean shouldAggregateData = false;
+     * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux, length, shouldAggregateData&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     *
+     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
+     * @param bufferContent A flag indicating whether {@link Flux} should be buffered eagerly or
+     *                  consumption deferred.
+     * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
+     * @throws IllegalArgumentException if the length is less than zero.
+     * @throws NullPointerException if {@code data} is null.
+     */
+    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean bufferContent) {
         if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
         if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        if (length != null) {
-            return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
-                    .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        if (bufferContent && length != null && length > MAX_ARRAY_SIZE) {
+            return monoError(LOGGER, new IllegalArgumentException(
+                String.format("'length' cannot be greater than %d when content buffering is enabled.",
+                    MAX_ARRAY_SIZE)));
         }
-        return FluxUtil.collectBytesInByteBufferStream(data)
+        if (bufferContent) {
+            if (length != null) {
+                return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
+                    .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+            }
+            return FluxUtil.collectBytesInByteBufferStream(data)
                 .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        } else {
+            return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
+        }
     }
 
     /**
@@ -598,6 +730,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
      * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
      * <pre>
      * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
@@ -636,7 +770,71 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
-        return new BinaryData(new FileContent(file, chunkSize));
+        return new BinaryData(new FileContent(file, chunkSize, null, null));
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Maximum number of bytes to be read from the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, Long position, Long length) {
+        return new BinaryData(new FileContent(file, STREAM_READ_SIZE, position, length));
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * int chunkSize = 8092;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Maximum number of bytes to be read from the path.
+     * @param chunkSize The requested size for each read of the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, Long position, Long length, int chunkSize) {
+        return new BinaryData(new FileContent(file, chunkSize, position, length));
     }
 
     /**
@@ -1326,5 +1524,130 @@ public final class BinaryData {
      */
     public Long getLength() {
         return content.getLength();
+    }
+
+    /**
+     * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     *
+     * <p>
+     * Replayability does not imply thread-safety. The caller must not use data accessors simultaneously
+     * regardless of what this method returns.
+     * </p>
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayability -->
+     * <pre>
+     * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     *
+     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     * &#125;
+     *
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayability -->
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
+     * <pre>
+     * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
+     *     .flatMap&#40;binaryData -&gt; &#123;
+     *         if &#40;binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *             return Mono.just&#40;binaryData&#41;;
+     *         &#125; else  &#123;
+     *             return binaryData.toReplayableBinaryDataAsync&#40;&#41;;
+     *         &#125;
+     *     &#125;&#41;
+     *     .flatMap&#40;replayableBinaryData -&gt;
+     *         fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;
+     *             .then&#40;fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayabilityAsync -->
+     *
+     * @return a flag indicating whether the content can be repeatedly consumed using all accessors.
+     */
+    public boolean isReplayable() {
+        return content.isReplayable();
+    }
+
+    /**
+     * Converts the {@link BinaryData} into a {@link BinaryData} that is replayable, i.e. content
+     * can be consumed repeatedly using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     *
+     * <p>
+     * A {@link BinaryData} that is already replayable is returned as is. Otherwise techniques like
+     * marking and resetting a stream or buffering in memory are employed to assure replayability.
+     * </p>
+     *
+     * <p>
+     * Replayability does not imply thread-safety. The caller must not use data accessors of returned
+     * {@link BinaryData} simultaneously.
+     * </p>
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayability -->
+     * <pre>
+     * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     *
+     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     * &#125;
+     *
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayability -->
+     *
+     * @return Replayable {@link BinaryData}.
+     */
+    public BinaryData toReplayableBinaryData() {
+        if (this.isReplayable()) {
+            return this;
+        } else {
+            return new BinaryData(content.toReplayableContent());
+        }
+    }
+
+    /**
+     * Converts the {@link BinaryData} into a {@link BinaryData} that is replayable, i.e. content
+     * can be consumed repeatedly using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     *
+     * <p>
+     * A {@link BinaryData} that is already replayable is returned as is. Otherwise techniques like
+     * marking and resetting a stream or buffering in memory are employed to assure replayability.
+     * </p>
+     *
+     * <p>
+     * Replayability does not imply thread-safety. The caller must not use data accessors of returned
+     * {@link BinaryData} simultaneously.
+     * </p>
+     *
+     * <!-- src_embed com.azure.util.BinaryData.replayabilityAsync -->
+     * <pre>
+     * Mono.fromCallable&#40;&#40;&#41; -&gt; binaryDataProducer&#40;&#41;&#41;
+     *     .flatMap&#40;binaryData -&gt; &#123;
+     *         if &#40;binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *             return Mono.just&#40;binaryData&#41;;
+     *         &#125; else  &#123;
+     *             return binaryData.toReplayableBinaryDataAsync&#40;&#41;;
+     *         &#125;
+     *     &#125;&#41;
+     *     .flatMap&#40;replayableBinaryData -&gt;
+     *         fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;
+     *             .then&#40;fluxConsumer&#40;replayableBinaryData.toFluxByteBuffer&#40;&#41;&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.replayabilityAsync -->
+     *
+     * @return A {@link Mono} of {@link BinaryData} representing the replayable {@link BinaryData}.
+     */
+    public Mono<BinaryData> toReplayableBinaryDataAsync() {
+        if (isReplayable()) {
+            return Mono.just(this);
+        } else {
+            return content.toReplayableContentAsync().map(BinaryData::new);
+        }
     }
 }

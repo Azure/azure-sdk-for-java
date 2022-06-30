@@ -24,7 +24,11 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
         return fromString(name, Db2AuthenticationType.class);
     }
 
-    /** @return known Db2AuthenticationType values. */
+    /**
+     * Gets known Db2AuthenticationType values.
+     *
+     * @return known Db2AuthenticationType values.
+     */
     public static Collection<Db2AuthenticationType> values() {
         return values(Db2AuthenticationType.class);
     }

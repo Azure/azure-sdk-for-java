@@ -8,56 +8,10 @@
   <artifactId>azure-template-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <profiles>
-    <!-- DO NOT CHANGE THE ORDER IN WHICH THESE PROFILES ARE DEFINED -->
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-sdk-template</module>
-        <module>azure-sdk-template-two</module>
-        <module>azure-sdk-template-three</module>
-      </modules>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-sdk-template</artifactId>
-          <version>1.2.2-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-sdk-template-two</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template-two;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-sdk-template-three</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template-three;current} -->
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-sdk-template</module>
-        <module>azure-sdk-template-two</module>
-        <module>azure-sdk-template-three</module>
-        <module>azure-template-perf</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+    <module>azure-sdk-template</module>
+    <module>azure-sdk-template-two</module>
+    <module>azure-sdk-template-three</module>
+    <module>azure-template-perf</module>
+  </modules>
 </project>

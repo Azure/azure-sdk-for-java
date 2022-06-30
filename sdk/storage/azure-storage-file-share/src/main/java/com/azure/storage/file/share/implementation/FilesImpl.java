@@ -23,6 +23,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
@@ -200,6 +201,26 @@ public final class FilesImpl {
                 Context context);
 
         @Put("/{shareName}/{fileName}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRange(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-write") ShareFileRangeWriteType fileRangeWrite,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-MD5") String contentMD5,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
+                @BodyParam("application/octet-stream") BinaryData optionalbody,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<ResponseBase<FilesSetMetadataHeaders, Void>> setMetadata(
@@ -339,6 +360,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("Accept") String accept,
@@ -790,6 +812,72 @@ public final class FilesImpl {
     }
 
     /**
+     * Upload a range of bytes to a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param range Specifies the range of bytes to be written. Both the start and end of the range must be specified.
+     *     For an update operation, the range can be up to 4 MB in size. For a clear operation, the range can be up to
+     *     the value of the file's full size. The File service accepts only a single byte range for the Range and
+     *     'x-ms-range' headers, and the byte range must be specified in the following format: bytes=startByte-endByte.
+     * @param fileRangeWrite Specify one of the following options: - Update: Writes the bytes specified by the request
+     *     body into the specified range. The Range and Content-Length headers must match to perform the update. -
+     *     Clear: Clears the specified range and releases the space used in storage for that range. To clear a range,
+     *     set the Content-Length header to zero, and set the Range header to a value that indicates the range to clear,
+     *     up to maximum file size.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     *     header is set to clear, the value of this header must be set to zero.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     *     transport. When the Content-MD5 header is specified, the File service compares the hash of the content that
+     *     has arrived with the header value that was sent. If the two hashes do not match, the operation will fail with
+     *     error code 400 (Bad Request).
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param optionalbody Initial data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(
+            String shareName,
+            String fileName,
+            String range,
+            ShareFileRangeWriteType fileRangeWrite,
+            long contentLength,
+            Integer timeout,
+            byte[] contentMD5,
+            String leaseId,
+            FileLastWrittenMode fileLastWrittenMode,
+            BinaryData optionalbody,
+            Context context) {
+        final String comp = "range";
+        final String accept = "application/xml";
+        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        return service.uploadRange(
+                this.client.getUrl(),
+                shareName,
+                fileName,
+                comp,
+                timeout,
+                range,
+                fileRangeWrite,
+                contentLength,
+                contentMD5Converted,
+                this.client.getVersion(),
+                leaseId,
+                fileLastWrittenMode,
+                optionalbody,
+                accept,
+                context);
+    }
+
+    /**
      * Updates user-defined metadata for the specified file.
      *
      * @param shareName The name of the target share.
@@ -1196,6 +1284,11 @@ public final class FilesImpl {
             fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
         }
         String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
         Boolean setArchiveAttributeInternal = null;
         if (copyFileSmbInfo != null) {
             setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
@@ -1216,6 +1309,7 @@ public final class FilesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
+                fileChangeTime,
                 setArchiveAttribute,
                 leaseId,
                 accept,

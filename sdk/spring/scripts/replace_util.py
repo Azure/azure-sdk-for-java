@@ -48,7 +48,7 @@ config = {
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     args = get_args()
     init_log(args)
@@ -57,7 +57,7 @@ def main():
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
@@ -130,7 +130,7 @@ def replace_artifact_id(module, pom):
     :param module: module name
     :param pom: pom file path
     """
-    log.debug('Replacing artifact id in file: {}'.format(pom, module))
+    log.debug('Replacing artifact id in file: {}'.format(pom))
     pom_dict = config[module][pom]
     if ARTIFACT_ID_PAIRS not in pom_dict:
         log.warn('No config key {} in pom parameters.'.format(ARTIFACT_ID_PAIRS))

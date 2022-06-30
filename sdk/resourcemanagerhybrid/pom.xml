@@ -14,7 +14,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <codesnippetRootDirectory>${project.basedir}/azure-resourcemanager/src/samples/java</codesnippetRootDirectory>
           <includeSource>false</includeSource>
@@ -38,126 +38,20 @@
     </plugins>
   </build>
 
-  <profiles>
-    <!-- DO NOT CHANGE THE ORDER IN WHICH THESE PROFILES ARE DEFINED -->
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-resourcemanager</module>
-        <module>azure-resourcemanager-appservice</module>
-        <module>azure-resourcemanager-authorization</module>
-        <module>azure-resourcemanager-compute</module>
-        <module>azure-resourcemanager-containerregistry</module>
-        <module>azure-resourcemanager-containerservice</module>
-        <module>azure-resourcemanager-dns</module>
-        <module>azure-resourcemanager-eventhubs</module>
-        <module>azure-resourcemanager-keyvault</module>
-        <module>azure-resourcemanager-monitor</module>
-        <module>azure-resourcemanager-network</module>
-        <module>azure-resourcemanager-resources</module>
-        <module>azure-resourcemanager-storage</module>
-      </modules>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-appservice</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-authorization</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-compute</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-containerregistry</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-containerservice</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-dns</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-eventhubs</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-keyvault</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-monitor</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-network</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-resources</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-storage</artifactId>
-          <version>1.0.0-hybrid</version>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-resourcemanager</module>
-        <module>azure-resourcemanager-appservice</module>
-        <module>azure-resourcemanager-authorization</module>
-        <module>azure-resourcemanager-compute</module>
-        <module>azure-resourcemanager-containerregistry</module>
-        <module>azure-resourcemanager-containerservice</module>
-        <module>azure-resourcemanager-dns</module>
-        <module>azure-resourcemanager-eventhubs</module>
-        <module>azure-resourcemanager-keyvault</module>
-        <module>azure-resourcemanager-monitor</module>
-        <module>azure-resourcemanager-network</module>
-        <module>azure-resourcemanager-resources</module>
-        <module>azure-resourcemanager-storage</module>
-        <module>azure-resourcemanager-test</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+    <module>azure-resourcemanager</module>
+    <module>azure-resourcemanager-appservice</module>
+    <module>azure-resourcemanager-authorization</module>
+    <module>azure-resourcemanager-compute</module>
+    <module>azure-resourcemanager-containerregistry</module>
+    <module>azure-resourcemanager-containerservice</module>
+    <module>azure-resourcemanager-dns</module>
+    <module>azure-resourcemanager-eventhubs</module>
+    <module>azure-resourcemanager-keyvault</module>
+    <module>azure-resourcemanager-monitor</module>
+    <module>azure-resourcemanager-network</module>
+    <module>azure-resourcemanager-resources</module>
+    <module>azure-resourcemanager-storage</module>
+    <module>azure-resourcemanager-test</module>
+  </modules>
 </project>

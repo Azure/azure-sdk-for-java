@@ -43,6 +43,9 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: template
+    EnableBatchRelease: true
+    # If you're copying template for a new pipeline, remove this variable. It is only valid for the template pipeline.
+    TestPipeline: true
     Artifacts:
       - name: azure-sdk-template
         groupId: com.azure
@@ -55,4 +58,7 @@ extends:
         safeName: azuresdktemplatethree
     AdditionalModules:
       - name: azure-template-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
         groupId: com.azure

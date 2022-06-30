@@ -574,14 +574,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     private Mono<IncidentCommentInner> getAsync(
         String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, incidentId, incidentCommentId)
-            .flatMap(
-                (Response<IncidentCommentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -784,14 +777,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
         IncidentCommentInner incidentComment) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, incidentId, incidentCommentId, incidentComment)
-            .flatMap(
-                (Response<IncidentCommentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -977,7 +963,7 @@ public final class IncidentCommentsClientImpl implements IncidentCommentsClient 
     private Mono<Void> deleteAsync(
         String resourceGroupName, String workspaceName, String incidentId, String incidentCommentId) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, incidentId, incidentCommentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

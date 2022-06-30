@@ -344,14 +344,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     public Mono<PolicySetDefinitionInner> createOrUpdateAsync(
         String policySetDefinitionName, PolicySetDefinitionInner parameters) {
         return createOrUpdateWithResponseAsync(policySetDefinitionName, parameters)
-            .flatMap(
-                (Response<PolicySetDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -484,7 +477,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String policySetDefinitionName) {
-        return deleteWithResponseAsync(policySetDefinitionName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(policySetDefinitionName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -613,15 +606,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> getAsync(String policySetDefinitionName) {
-        return getWithResponseAsync(policySetDefinitionName)
-            .flatMap(
-                (Response<PolicySetDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(policySetDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -725,15 +710,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicySetDefinitionInner> getBuiltInAsync(String policySetDefinitionName) {
-        return getBuiltInWithResponseAsync(policySetDefinitionName)
-            .flatMap(
-                (Response<PolicySetDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getBuiltInWithResponseAsync(policySetDefinitionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1331,14 +1308,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     public Mono<PolicySetDefinitionInner> createOrUpdateAtManagementGroupAsync(
         String policySetDefinitionName, String managementGroupId, PolicySetDefinitionInner parameters) {
         return createOrUpdateAtManagementGroupWithResponseAsync(policySetDefinitionName, managementGroupId, parameters)
-            .flatMap(
-                (Response<PolicySetDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1475,7 +1445,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupAsync(String policySetDefinitionName, String managementGroupId) {
         return deleteAtManagementGroupWithResponseAsync(policySetDefinitionName, managementGroupId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1604,14 +1574,7 @@ public final class PolicySetDefinitionsClientImpl implements PolicySetDefinition
     public Mono<PolicySetDefinitionInner> getAtManagementGroupAsync(
         String policySetDefinitionName, String managementGroupId) {
         return getAtManagementGroupWithResponseAsync(policySetDefinitionName, managementGroupId)
-            .flatMap(
-                (Response<PolicySetDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

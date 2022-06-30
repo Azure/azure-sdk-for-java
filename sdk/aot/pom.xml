@@ -8,50 +8,10 @@
   <artifactId>azure-aot-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <profiles>
-    <!-- DO NOT CHANGE THE ORDER IN WHICH THESE PROFILES ARE DEFINED -->
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-aot-graalvm-support</module>
-        <module>azure-aot-graalvm-support-netty</module>
-      </modules>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;current} -->
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-aot-graalvm-support</module>
-        <module>azure-aot-graalvm-support-netty</module>
-        <module>azure-aot-graalvm-samples</module>
-        <module>azure-aot-graalvm-perf</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+    <module>azure-aot-graalvm-support</module>
+    <module>azure-aot-graalvm-support-netty</module>
+    <module>azure-aot-graalvm-samples</module>
+    <module>azure-aot-graalvm-perf</module>
+  </modules>
 </project>

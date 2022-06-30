@@ -9,12 +9,12 @@
 > see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
+use: '@autorest/java@4.1.0'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.QueueStorage/preview/2018-03-28/queue.json
 java: true
 output-folder: ../

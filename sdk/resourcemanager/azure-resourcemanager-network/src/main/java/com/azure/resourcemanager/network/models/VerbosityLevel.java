@@ -30,7 +30,11 @@ public final class VerbosityLevel extends ExpandableStringEnum<VerbosityLevel> {
         return fromString(name, VerbosityLevel.class);
     }
 
-    /** @return known VerbosityLevel values. */
+    /**
+     * Gets known VerbosityLevel values.
+     *
+     * @return known VerbosityLevel values.
+     */
     public static Collection<VerbosityLevel> values() {
         return values(VerbosityLevel.class);
     }

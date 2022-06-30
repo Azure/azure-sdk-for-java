@@ -9,7 +9,7 @@ package com.azure.spring.cloud.autoconfigure.aad.properties;
 public class AadCredentialProperties {
 
     /**
-     * Client id to use when performing service principal authentication with Azure.
+     * Client ID to use when performing service principal authentication with Azure.
      */
     private String clientId;
 
@@ -19,8 +19,18 @@ public class AadCredentialProperties {
     private String clientSecret;
 
     /**
+     * Path of a PFX or P12 certificate file to use when performing service principal authentication with Azure.
+     */
+    private String clientCertificatePath;
+
+    /**
+     * Password of the certificate file.
+     */
+    private String clientCertificatePassword;
+
+    /**
      *
-     * @return The client id.
+     * @return The client ID.
      */
     public String getClientId() {
         return clientId;
@@ -28,7 +38,7 @@ public class AadCredentialProperties {
 
     /**
      *
-     * @param clientId The client id.
+     * @param clientId The client ID.
      */
     public void setClientId(String clientId) {
         this.clientId = clientId;
@@ -48,5 +58,33 @@ public class AadCredentialProperties {
      */
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+    }
+
+    /**
+     * @return The client certificate path.
+     */
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
+    }
+
+    /**
+     * @param clientCertificatePath The client certificate path.
+     */
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
+    }
+
+    /**
+     * @return The client certificate password.
+     */
+    public String getClientCertificatePassword() {
+        return clientCertificatePassword;
+    }
+
+    /**
+     * @param clientCertificatePassword The client certificate password.
+     */
+    public void setClientCertificatePassword(String clientCertificatePassword) {
+        this.clientCertificatePassword = clientCertificatePassword;
     }
 }

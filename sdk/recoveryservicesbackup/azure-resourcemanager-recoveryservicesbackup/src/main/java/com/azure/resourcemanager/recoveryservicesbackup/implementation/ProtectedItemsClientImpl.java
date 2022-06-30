@@ -24,15 +24,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectedItemsClient. */
 public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectedItemsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectedItemsService service;
 
@@ -284,14 +281,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         String protectedItemName,
         String filter) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -313,14 +303,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
         final String filter = null;
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -552,14 +535,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         ProtectedItemResourceInner parameters) {
         return createOrUpdateWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
-            .flatMap(
-                (Response<ProtectedItemResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -771,7 +747,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     private Mono<Void> deleteAsync(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -22,8 +22,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesHeaders;
@@ -34,6 +32,8 @@ import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
@@ -199,7 +199,9 @@ public final class ServicesImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listSharesSegment(
                         this.client.getUrl(),
                         comp,
@@ -219,7 +221,7 @@ public final class ServicesImpl {
                                         res.getHeaders(),
                                         res.getValue().getShareItems(),
                                         res.getValue().getNextMarker(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 
     /**
@@ -245,6 +247,6 @@ public final class ServicesImpl {
                                         res.getHeaders(),
                                         res.getValue().getShareItems(),
                                         res.getValue().getNextMarker(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 }

@@ -24,12 +24,12 @@ stages:
           vmImage: 'ubuntu-20.04'
 
         steps:
-        - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
+        - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
           parameters:
             JobType: 'Reporting'
-            SDKType: 'client'
-            ServiceDirectory: 'aggregate-report'
-
+            Artifacts:
+              - name: aggregate-reports # fake artifact name
+                groupId: reports # fake group Id
 
         # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
         # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -66,7 +66,6 @@ stages:
             publishJUnitResults: false
             goals: 'clean package'
 
-
         - task: Maven@3
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
@@ -79,11 +78,21 @@ stages:
             publishJUnitResults: false
             goals: 'javadoc:aggregate'
 
+         # Generate the pom file with all the modules required for creating an aggregate code coverage report
+        - task: PythonScript@0
+          displayName: 'Generate pom for aggregate code coverage report'
+          inputs:
+            scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
+            # Management and Spring track 2 groups will be added after
+            # https://github.com/Azure/azure-sdk-for-java/issues/29273 is resolved
+            arguments: '--groups com.azure'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+
         - task: Maven@3
           displayName: 'Generate Aggregate JaCoCo coverage report'
           inputs:
-            mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Pjacoco -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
+            mavenPomFile: aggregate-coverage-pom.xml
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -DskipCompile=true -DskipTestCompile=true'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -120,7 +129,7 @@ stages:
 
         - pwsh: |
             Copy-Item -Path target/site/apidocs -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
-            Copy-Item -Path eng/jacoco-test-coverage/target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
+            Copy-Item -Path target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
             Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
             Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
             Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
@@ -144,6 +153,9 @@ stages:
         timeoutInMinutes: 120
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
+          - name: DisableDockerDetector
+            value: false
+
         pool:
           # CredScan build task is Windows only (https://aka.ms/credscan).
           vmImage: 'windows-2019'
@@ -154,6 +166,11 @@ stages:
           # Only run if building all libraries succeeded.
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           displayName: 'Component Detection'
+
+        - task: ms.nuget-security-analysis.nuget-security-analysis.nuget-security-analysis@0
+          # Use the same conditions as the Component Detection
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          displayName: 'Secure Supply Chain Analysis'
 
         # Run link verification at the end as it will run no matter the pipeline passing or failing.
         # If this task fails with an error it shouldn't prevent aggregate reports from being generated.

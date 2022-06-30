@@ -10,12 +10,12 @@
 > see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
+use: '@autorest/java@4.1.0'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-06-08/file.json
 java: true
 output-folder: ../
@@ -379,16 +379,6 @@ directive:
   where: $["x-ms-paths"]["/{shareName}/{directory}?restype=directory&comp=list"].get
   transform: >
     delete $["x-ms-pageable"];
-```
-
-### Remove CopyFileSmbInfoChangeTime from file copy
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-    const op = $["/{shareName}/{fileName}?comp=copy"];
-    op.put.parameters.splice(11,1);
 ```
 
 ### Change PutRange response file-last-write-time to ISO8601

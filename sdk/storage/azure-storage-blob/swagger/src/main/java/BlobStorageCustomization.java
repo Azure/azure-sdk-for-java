@@ -8,12 +8,15 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Modifier;
+
 /**
  * Customization class for Blob Storage.
  */
 public class BlobStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
+
         // Implementation models customizations
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
@@ -22,6 +25,35 @@ public class BlobStorageCustomization extends Customization {
         // Models customizations
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
+        models.getClass("PageList").getMethod("getNextMarker").setModifier(Modifier.PRIVATE);
+        models.getClass("PageList").getMethod("setNextMarker").setModifier(Modifier.PRIVATE);
+
+        // Add Accessor to PageList
+        String pageListFileName = "src/main/java/com/azure/storage/blob/models/PageList.java";
+
+        String fileContent = customization.getRawEditor().getFileContent(pageListFileName);
+        int startImportIndex = fileContent.indexOf("import com.azure.core.annotation.Fluent;") + 40;
+        int startStaticIndex = fileContent.indexOf("class PageList {") + 16;
+        String updatedFileContent = fileContent.substring(0, startImportIndex)
+            + "import com.azure.storage.blob.implementation.models.PageListHelper;"
+            + fileContent.substring(startImportIndex, startStaticIndex)
+            + "static {\n"
+            + "        PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {\n"
+            + "            @Override\n"
+            + "            public String getNextMarker(PageList pageList) {\n"
+            + "                return pageList.getNextMarker();\n"
+            + "            }\n"
+            + "\n"
+            + "            @Override\n"
+            + "            public PageList setNextMarker(PageList pageList, String marker) {\n"
+            + "                return pageList.setNextMarker(marker);\n"
+            + "            }\n"
+            + "        });\n"
+            + "    } "
+            + fileContent.substring(startStaticIndex);
+
+        customization.getRawEditor().removeFile(pageListFileName);
+        customization.getRawEditor().addFile(pageListFileName, updatedFileContent);
 
         models.getClass("BlobCopySourceTags").rename("BlobCopySourceTagsMode");
 
@@ -99,5 +131,19 @@ public class BlobStorageCustomization extends Customization {
         listBlobsIncludeItem.renameEnumMember("IMMUTABILITYPOLICY", "IMMUTABILITY_POLICY")
             .renameEnumMember("LEGALHOLD", "LEGAL_HOLD")
             .renameEnumMember("DELETEDWITHVERSIONS", "DELETED_WITH_VERSIONS");
+
+        // BlobErrorCode
+        // Fix typo
+        String blobErrorCodeFile = "src/main/java/com/azure/storage/blob/models/BlobErrorCode.java";
+        String blobErrorCodeFileContent = customization.getRawEditor().getFileContent(blobErrorCodeFile);
+        blobErrorCodeFileContent = blobErrorCodeFileContent.replaceAll("SnaphotOperationRateExceeded", "SnapshotOperationRateExceeded");
+        customization.getRawEditor().replaceFile(blobErrorCodeFile, blobErrorCodeFileContent);
+        // deprecate
+        ClassCustomization blobErrorCode = models.getClass("BlobErrorCode");
+        blobErrorCode.getConstant("SNAPHOT_OPERATION_RATE_EXCEEDED")
+            .addAnnotation("@Deprecated")
+            .getJavadoc()
+            .setDeprecated("Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}");
+
     }
 }

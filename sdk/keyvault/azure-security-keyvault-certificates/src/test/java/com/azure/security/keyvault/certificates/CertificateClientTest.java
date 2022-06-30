@@ -608,7 +608,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createIssuerRunner((issuer) -> {
             CertificateIssuer createdIssuer = certificateClient.createIssuer(issuer);
 
-            validateIssuer(issuer, createdIssuer);
+            assertTrue(issuerCreatedCorrectly(issuer, createdIssuer));
         });
     }
 
@@ -647,7 +647,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             CertificateIssuer createdIssuer = certificateClient.createIssuer(issuer);
             CertificateIssuer retrievedIssuer = certificateClient.getIssuer(issuer.getName());
 
-            validateIssuer(issuer, retrievedIssuer);
+            assertTrue(issuerCreatedCorrectly(issuer, retrievedIssuer));
         });
     }
 
@@ -669,7 +669,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             CertificateIssuer createdIssuer = certificateClient.createIssuer(issuer);
             CertificateIssuer deletedIssuer = certificateClient.deleteIssuer(issuer.getName());
 
-            validateIssuer(issuer, deletedIssuer);
+            assertTrue(issuerCreatedCorrectly(issuer, deletedIssuer));
         });
     }
 
@@ -693,7 +693,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             for (CertificateIssuer issuer : certificateIssuersToList.values()) {
                 CertificateIssuer certificateIssuer = certificateClient.createIssuer(issuer);
 
-                validateIssuer(issuer, certificateIssuer);
+                assertTrue(issuerCreatedCorrectly(issuer, certificateIssuer));
             }
 
             for (IssuerProperties issuerProperties : certificateClient.listPropertiesOfIssuers()) {
@@ -705,6 +705,19 @@ public class CertificateClientTest extends CertificateClientTestBase {
             for (CertificateIssuer issuer : certificateIssuers.values()) {
                 certificateClient.deleteIssuer(issuer.getName());
             }
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateIssuer(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        createCertificateClient(httpClient, serviceVersion);
+
+        updateIssuerRunner((issuerToCreate, issuerToUpdate) -> {
+            CertificateIssuer createdIssuer = certificateClient.createIssuer(issuerToCreate);
+            CertificateIssuer updatedIssuer = certificateClient.updateIssuer(issuerToUpdate);
+
+            assertTrue(issuerUpdatedCorrectly(issuerToCreate, updatedIssuer));
         });
     }
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.9.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.9.0 (2022-06-03)
+
+### Features Added
+- Added `getRequestUrl` and `canSendBinaryData` methods to HttpClientTests
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+- 
+## 1.8.0 (2022-05-06)
+
+### Features Added
+
+- Added `TestConfigurationSource` to enable mocking of a `ConfigurationSource`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
 
 ## 1.7.10 (2022-04-01)
 

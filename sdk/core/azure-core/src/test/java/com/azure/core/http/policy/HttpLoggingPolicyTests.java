@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -12,12 +13,20 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.LogLevel;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -31,6 +40,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UncheckedIOException;
@@ -40,8 +50,12 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -49,7 +63,9 @@ import java.util.stream.Stream;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
@@ -61,7 +77,6 @@ public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
     private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
 
-    private String originalLogLevel;
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
 
@@ -82,7 +97,7 @@ public class HttpLoggingPolicyTests {
     @AfterEach
     public void cleanupAfterTest() {
         // Reset or clear the log level after the test completes.
-        setPropertyToOriginalOrClear(originalLogLevel);
+        clearTestLogLevel();
 
         // Reset System.err to the original PrintStream.
         System.setOut(originalSystemOut);
@@ -94,7 +109,7 @@ public class HttpLoggingPolicyTests {
     @ParameterizedTest
     @MethodSource("redactQueryParametersSupplier")
     public void redactQueryParameters(String requestUrl, String expectedQueryString,
-        Set<String> allowedQueryParameters) {
+                                      Set<String> allowedQueryParameters) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new HttpLoggingPolicy(new HttpLogOptions()
                 .setLogLevel(HttpLogDetailLevel.BASIC)
@@ -104,6 +119,25 @@ public class HttpLoggingPolicyTests {
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
             .verifyComplete();
+
+        assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
+    }
+
+    /**
+     * Tests that a query string will be properly redacted before it is logged.
+     */
+    @ParameterizedTest
+    @MethodSource("redactQueryParametersSupplier")
+    public void redactQueryParametersSync(String requestUrl, String expectedQueryString,
+                                          Set<String> allowedQueryParameters) {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions()
+                .setLogLevel(HttpLogDetailLevel.BASIC)
+                .setAllowedQueryParamNames(allowedQueryParameters)))
+            .httpClient(new NoOpHttpClient())
+            .build();
+
+        pipeline.sendSync(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT);
 
         assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
     }
@@ -156,7 +190,40 @@ public class HttpLoggingPolicyTests {
             .verifyComplete();
 
         String logString = convertOutputStreamToString(logCaptureStream);
-        assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+        assertEquals(1, messages.size());
+
+        HttpLogMessage expectedRequest = HttpLogMessage.request(HttpMethod.POST, "https://test.com", data);
+        expectedRequest.assertEqual(messages.get(0), HttpLogDetailLevel.BODY, LogLevel.INFORMATIONAL);
+    }
+
+    /**
+     * Tests that logging the request body doesn't consume the stream before it is sent over the network.
+     */
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateLoggingDoesNotConsumeSupplierSync")
+    public void validateLoggingDoesNotConsumeRequestSync(BinaryData requestBody, byte[] data, int contentLength)
+        throws MalformedURLException {
+        URL requestUrl = new URL("https://test.com");
+        HttpHeaders requestHeaders = new HttpHeaders()
+            .set("Content-Type", ContentType.APPLICATION_JSON)
+            .set("Content-Length", Integer.toString(contentLength));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody())
+                .doOnSuccess(bytes -> assertArrayEquals(data, bytes))
+                .then(Mono.empty()))
+            .build();
+
+        pipeline.sendSync(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, requestBody), CONTEXT);
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+        assertEquals(1, messages.size());
+
+        HttpLogMessage expectedRequest = HttpLogMessage.request(HttpMethod.POST, "https://test.com", data);
+        expectedRequest.assertEqual(messages.get(0), HttpLogDetailLevel.BODY, LogLevel.INFORMATIONAL);
     }
 
     /**
@@ -185,6 +252,39 @@ public class HttpLoggingPolicyTests {
         assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
     }
 
+    /**
+     * Tests that logging the response body doesn't consume the stream before it is returned from the service call.
+     */
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @MethodSource("validateLoggingDoesNotConsumeSupplierSync")
+    public void validateLoggingDoesNotConsumeResponseSync(BinaryData responseBody, byte[] data, int contentLength) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .set("Content-Type", ContentType.APPLICATION_JSON)
+            .set("Content-Length", Integer.toString(contentLength));
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(ignored -> Mono.just(new MockHttpResponse(ignored, responseHeaders, responseBody)))
+            .build();
+
+        HttpResponse response = pipeline.sendSync(request, CONTEXT);
+        assertArrayEquals(data, response.getBodyAsByteArray().block());
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+        assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+    }
+
+    private static Stream<Arguments> validateLoggingDoesNotConsumeSupplierSync() {
+        byte[] data = "this is a test".getBytes(StandardCharsets.UTF_8);
+
+        return Stream.of(
+            Arguments.of(BinaryData.fromBytes(data), data, data.length),
+
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(data)), data, data.length)
+        );
+    }
+
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplier() {
         byte[] data = "this is a test".getBytes(StandardCharsets.UTF_8);
         byte[] repeatingData = new byte[data.length * 3];
@@ -203,7 +303,7 @@ public class HttpLoggingPolicyTests {
             Arguments.of(Flux.just(ByteBuffer.wrap(data)).publish().autoConnect(), data, data.length),
 
             // Multiple emission cold flux.
-            Arguments.of(Flux.fromArray(new ByteBuffer[]{
+            Arguments.of(Flux.fromArray(new ByteBuffer[] {
                 ByteBuffer.wrap(data),
                 ByteBuffer.wrap(data),
                 ByteBuffer.wrap(data)
@@ -228,11 +328,20 @@ public class HttpLoggingPolicyTests {
     private static class MockHttpResponse extends HttpResponse {
         private final HttpHeaders headers;
         private final Flux<ByteBuffer> body;
+        private final BinaryData binaryDataBody;
 
         MockHttpResponse(HttpRequest request, HttpHeaders headers, Flux<ByteBuffer> body) {
             super(request);
             this.headers = headers;
             this.body = body;
+            this.binaryDataBody = null;
+        }
+
+        MockHttpResponse(HttpRequest request, HttpHeaders headers, BinaryData body) {
+            super(request);
+            this.headers = headers;
+            this.binaryDataBody = body;
+            this.body = null;
         }
 
         @Override
@@ -252,7 +361,11 @@ public class HttpLoggingPolicyTests {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return body;
+            if (body == null && binaryDataBody != null) {
+                return binaryDataBody.toFluxByteBuffer();
+            } else {
+                return body;
+            }
         }
 
         @Override
@@ -274,37 +387,167 @@ public class HttpLoggingPolicyTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
         names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
-    public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel) {
+    public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel)
+        throws JsonProcessingException, InterruptedException {
         AtomicInteger requestCount = new AtomicInteger();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com")
+            .setHeader("x-ms-client-request-id", "client-request-id");
+
+        byte[] responseBody = new byte[] {24, 42};
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .set("Content-Length", Integer.toString(responseBody.length))
+            .set("x-ms-request-id", "server-request-id");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
             .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
                 ? Mono.error(new RuntimeException("Try again!"))
-                : Mono.just(new com.azure.core.http.MockHttpResponse(ignored, 200)))
+                : Mono.fromCallable(
+                    () -> new com.azure.core.http.MockHttpResponse(ignored, 200, responseHeaders, responseBody)))
             .build();
 
-        StepVerifier.create(pipeline.send(request, CONTEXT))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+        HttpLogMessage expectedRetry1 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
+            .setTryCount(1)
+            .setHeaders(request.getHeaders());
+        HttpLogMessage expectedRetry2 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
+            .setTryCount(2)
+            .setHeaders(request.getHeaders());
+        HttpLogMessage expectedResponse = HttpLogMessage.response("https://test.com", responseBody, 200)
+            .setHeaders(responseHeaders);
+
+        StepVerifier.create(pipeline.send(request, CONTEXT)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
+                .doFinally(s -> {
+                    String logString = convertOutputStreamToString(logCaptureStream);
+                    List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+                    assertEquals(3, messages.size());
+
+                    expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
+                    expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
+                    expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+                }))
+            .assertNext(body -> assertArrayEquals(responseBody, body))
             .verifyComplete();
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
+        names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
+    public void loggingHeadersAndBodyVerbose(HttpLogDetailLevel logLevel) throws JsonProcessingException {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+        byte[] requestBody = new byte[] {42};
+        byte[] responseBody = new byte[] {24, 42};
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://test.com")
+            .setBody(requestBody)
+            .setHeader("x-ms-client-request-id", "client-request-id");
+
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .set("Content-Length", Integer.toString(responseBody.length))
+            .set("x-ms-request-id", "server-request-id");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
+            .httpClient(r -> Mono.just(new com.azure.core.http.MockHttpResponse(r, 200, responseHeaders, responseBody)))
+            .build();
+
+        HttpLogMessage expectedRequest = HttpLogMessage.request(HttpMethod.POST, "https://test.com", requestBody)
+            .setHeaders(request.getHeaders());
+        HttpLogMessage expectedResponse = HttpLogMessage.response("https://test.com", responseBody, 200)
+            .setHeaders(responseHeaders);
+
+        StepVerifier.create(pipeline.send(request, CONTEXT)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody()))
+                .doFinally(s -> {
+                    String logString = convertOutputStreamToString(logCaptureStream);
+
+                    List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+                    assertEquals(2, messages.size());
+
+                    expectedRequest.assertEqual(messages.get(0), logLevel, LogLevel.VERBOSE);
+                    expectedResponse.assertEqual(messages.get(1), logLevel, LogLevel.VERBOSE);
+                }))
+            .assertNext(body -> assertArrayEquals(responseBody, body))
+            .verifyComplete();
+    }
+
+    @Disabled("Until retry policy sync workflow implemented")
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
+        names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
+    public void loggingIncludesRetryCountSync(HttpLogDetailLevel logLevel) {
+        AtomicInteger requestCount = new AtomicInteger();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com")
+            .setHeader("x-ms-client-request-id", "client-request-id");
+
+        byte[] responseBody = new byte[] {24, 42};
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .set("Content-Length", Integer.toString(responseBody.length))
+            .set("x-ms-request-id", "server-request-id");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
+            .httpClient(ignored -> (requestCount.getAndIncrement() == 0)
+                ? Mono.error(new RuntimeException("Try again!"))
+                : Mono.just(new com.azure.core.http.MockHttpResponse(ignored, 200, responseHeaders, responseBody)))
+            .build();
+
+        HttpLogMessage expectedRetry1 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
+            .setTryCount(1)
+            .setHeaders(request.getHeaders());
+        HttpLogMessage expectedRetry2 = HttpLogMessage.request(HttpMethod.GET, "https://test.com", null)
+            .setTryCount(2)
+            .setHeaders(request.getHeaders());
+        HttpLogMessage expectedResponse = HttpLogMessage.response("https://test.com", responseBody, 200)
+            .setHeaders(responseHeaders);
+
+        HttpResponse response = pipeline.sendSync(request, CONTEXT);
 
         String logString = convertOutputStreamToString(logCaptureStream);
-        assertTrue(logString.contains("Try count: 1"));
-        assertTrue(logString.contains("Try count: 2"));
+        List<HttpLogMessage> messages = HttpLogMessage.fromString(logString);
+        assertEquals(3, messages.size());
+
+        expectedRetry1.assertEqual(messages.get(0), logLevel, LogLevel.INFORMATIONAL);
+        expectedRetry2.assertEqual(messages.get(1), logLevel, LogLevel.INFORMATIONAL);
+        expectedResponse.assertEqual(messages.get(2), logLevel, LogLevel.INFORMATIONAL);
+
+        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
+    }
+
+    @ParameterizedTest(name = "[{index}] {displayName}")
+    @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
+        names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
+    public void loggingHeadersAndBodyVerboseSync(HttpLogDetailLevel logLevel) throws JsonProcessingException {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+        byte[] requestBody = new byte[] {42};
+        byte[] responseBody = new byte[] {24, 42};
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://test.com")
+            .setBody(requestBody)
+            .setHeader("x-ms-client-request-id", "client-request-id");
+
+        HttpHeaders responseHeaders = new HttpHeaders()
+            .set("Content-Length", Integer.toString(responseBody.length))
+            .set("x-ms-request-id", "server-request-id");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(), new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(logLevel)))
+            .httpClient(r -> Mono.just(new com.azure.core.http.MockHttpResponse(r, 200, responseHeaders, responseBody)))
+            .build();
+
+        HttpLogMessage expectedRequest = HttpLogMessage.request(HttpMethod.POST, "https://test.com", requestBody)
+            .setHeaders(request.getHeaders());
+        HttpLogMessage expectedResponse = HttpLogMessage.response("https://test.com", responseBody, 200)
+            .setHeaders(responseHeaders);
+
+        HttpResponse response = pipeline.sendSync(request, CONTEXT);
+        assertArrayEquals(responseBody, response.getBodyAsByteArray().block());
     }
 
     private void setupLogLevel(int logLevelToSet) {
-        originalLogLevel = EnvironmentConfiguration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
         EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
-    private void setPropertyToOriginalOrClear(String originalValue) {
-        if (CoreUtils.isNullOrEmpty(originalValue)) {
-            EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
-        } else {
-            EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalValue);
-        }
+    private void clearTestLogLevel() {
+        EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
     }
 
     private static String convertOutputStreamToString(ByteArrayOutputStream stream) {
@@ -312,6 +555,196 @@ public class HttpLoggingPolicyTests {
             return stream.toString(StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    public static class HttpLogMessage {
+        private static final ObjectMapper SERIALIZER =
+            new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+        private static final Integer MAGIC_NUMBER = 42;
+
+        @JsonProperty("az.sdk.message")
+        private String message;
+
+        @JsonProperty("method")
+        private String method;
+
+        @JsonProperty("url")
+        private String url;
+
+        @JsonProperty("contentLength")
+        private Integer contentLength;
+
+        @JsonProperty("body")
+        private String body;
+
+        @JsonProperty("tryCount")
+        private Integer tryCount;
+
+        @JsonProperty("statusCode")
+        private Integer statusCode;
+
+        @JsonProperty("durationMs")
+        private Integer durationMs;
+
+        private Map<String, String> headers = new HashMap<>();
+
+        public HttpLogMessage() {
+        }
+
+        private static HttpLogMessage request(HttpMethod method, String url, byte[] body) {
+            return new HttpLogMessage()
+                .setMessage("HTTP request")
+                .setMethod(method.toString())
+                .setUrl(url)
+                .setBody(body != null ? new String(body, StandardCharsets.UTF_8) : null)
+                .setContentLength(body == null ? 0 : body.length);
+        }
+
+        private static HttpLogMessage response(String url, byte[] body, Integer statusCode) {
+            return new HttpLogMessage()
+                .setMessage("HTTP response")
+                .setUrl(url)
+                .setStatusCode(statusCode)
+                .setDurationMs(MAGIC_NUMBER)
+                .setBody(body != null ? new String(body, StandardCharsets.UTF_8) : null)
+                .setContentLength(body == null ? 0 : body.length);
+        }
+
+
+        public HttpLogMessage setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public HttpLogMessage setMethod(String method) {
+            this.method = method;
+            return this;
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public HttpLogMessage setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public HttpLogMessage setContentLength(Integer contentLength) {
+            this.contentLength = contentLength;
+            return this;
+        }
+
+        public Integer getContentLength() {
+            return contentLength;
+        }
+
+        public HttpLogMessage setTryCount(Integer tryCount) {
+            this.tryCount = tryCount;
+            return this;
+        }
+
+        public Integer getTryCount() {
+            return tryCount;
+        }
+
+        public HttpLogMessage setStatusCode(Integer statusCode) {
+            this.statusCode = statusCode;
+            return this;
+        }
+
+        public Integer getStatusCode() {
+            return statusCode;
+        }
+
+        public HttpLogMessage setDurationMs(Integer durationMs) {
+            this.durationMs = durationMs;
+            return this;
+        }
+
+        public Integer getDurationMs() {
+            return durationMs;
+        }
+
+        public HttpLogMessage setBody(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public String getBody() {
+            return body;
+        }
+
+        @JsonAnyGetter
+        public Map<String, String> getHeaders() {
+            return headers;
+        }
+
+        @JsonAnySetter
+        public HttpLogMessage addHeader(String name, String value) {
+            headers.put(name, value);
+            return this;
+        }
+
+        public HttpLogMessage setHeaders(HttpHeaders headers) {
+            for (HttpHeader h : headers) {
+                this.headers.put(h.getName(), h.getValue());
+            }
+
+            return this;
+        }
+
+        public static List<HttpLogMessage> fromString(String logRecord) {
+
+            List<HttpLogMessage> messages = new ArrayList<>();
+
+            int start = logRecord.indexOf("{\"az.sdk.message\"");
+            for (; start >= 0; start = logRecord.indexOf("{\"az.sdk.message\"", start + 1)) {
+                String msg = logRecord.substring(start, logRecord.lastIndexOf("}") + 1);
+                try {
+                    messages.add(SERIALIZER.readValue(msg, HttpLogMessage.class));
+                } catch (JsonMappingException ex) {
+                    ex.printStackTrace();
+                } catch (Exception ex) {
+                    fail(ex);
+                }
+            }
+
+            return messages;
+        }
+
+        void assertEqual(HttpLogMessage other, HttpLogDetailLevel httpLevel, LogLevel logLevel) {
+
+            assertEquals(this.message, other.message);
+            assertEquals(this.method, other.method);
+            assertEquals(this.url, other.url);
+            assertEquals(this.contentLength, other.contentLength);
+            assertEquals(this.tryCount, other.tryCount);
+            assertEquals(this.statusCode, other.statusCode);
+            if (this.durationMs != null) {
+                assertNotNull(other.durationMs);
+            }
+
+            if (httpLevel.shouldLogBody()) {
+                assertEquals(this.body, other.body);
+            }
+
+            if (httpLevel.shouldLogHeaders() && logLevel == LogLevel.VERBOSE) {
+                assertEquals(this.headers.size(), other.headers.size());
+
+                for (Map.Entry<String, String> kvp : this.headers.entrySet()) {
+                    assertEquals(kvp.getValue(), other.headers.get(kvp.getKey()));
+                }
+            }
         }
     }
 }

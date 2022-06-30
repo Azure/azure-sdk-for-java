@@ -7,13 +7,16 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
@@ -22,7 +25,9 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     private final Flux<ByteBuffer> content;
     private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+    private final AtomicReference<FluxByteBufferContent> cachedReplayableContent = new AtomicReference<>();
     private final Long length;
+    private final boolean isReplayable;
 
     /**
      * Creates an instance of {@link FluxByteBufferContent}.
@@ -40,12 +45,22 @@ public final class FluxByteBufferContent extends BinaryDataContent {
      * @throws NullPointerException if {@code content} is null.
      */
     public FluxByteBufferContent(Flux<ByteBuffer> content, Long length) {
+        // There's currently no way to tell if Flux is replayable or not.
+        // https://github.com/reactor/reactor-core/issues/1977
+        this(content, length, false);
+    }
+
+    private FluxByteBufferContent(Flux<ByteBuffer> content, Long length, boolean isReplayable) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
         this.length = length;
+        this.isReplayable = isReplayable;
     }
 
     @Override
     public Long getLength() {
+        if (bytes.get() != null) {
+            return (long) bytes.get().length;
+        }
         return length;
     }
 
@@ -82,6 +97,47 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return content;
+    }
+
+    @Override
+    public boolean isReplayable() {
+        return isReplayable;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        if (isReplayable) {
+            return this;
+        }
+
+        FluxByteBufferContent replayableContent = cachedReplayableContent.get();
+        if (replayableContent != null) {
+            return replayableContent;
+        }
+
+        Flux<ByteBuffer> bufferedFlux = content
+            .map(buffer -> {
+                // deep copy direct buffers
+                ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
+                copy.put(buffer);
+                copy.flip();
+                return copy;
+            })
+            // collectList() uses ArrayList. We don't want to be bound by array capacity
+            // and we don't need random access.
+            .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
+            .cache()
+            .flatMapMany(
+                // Duplicate buffers on re-subscription.
+                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate));
+        replayableContent = new FluxByteBufferContent(bufferedFlux, length, true);
+        cachedReplayableContent.set(replayableContent);
+        return replayableContent;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.fromCallable(this::toReplayableContent);
     }
 
     private byte[] getBytes() {

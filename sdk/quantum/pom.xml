@@ -8,42 +8,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
-  <profiles>
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-quantum-jobs</module>
-      </modules>
-
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-quantum-jobs</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-quantum-jobs;current} -->
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-quantum-jobs</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+      <module>azure-quantum-jobs</module>
+  </modules>
 </project>

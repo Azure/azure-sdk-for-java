@@ -40,7 +40,11 @@ public final class PartnerRegistrationProvisioningState
         return fromString(name, PartnerRegistrationProvisioningState.class);
     }
 
-    /** @return known PartnerRegistrationProvisioningState values. */
+    /**
+     * Gets known PartnerRegistrationProvisioningState values.
+     *
+     * @return known PartnerRegistrationProvisioningState values.
+     */
     public static Collection<PartnerRegistrationProvisioningState> values() {
         return values(PartnerRegistrationProvisioningState.class);
     }

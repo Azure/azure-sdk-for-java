@@ -12,25 +12,45 @@ import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
+import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyConnectException;
+import io.netty.handler.stream.ChunkedNioFile;
+import io.netty.handler.stream.ChunkedStream;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
+import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -48,6 +68,9 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
+
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
 
@@ -94,8 +117,8 @@ class NettyAsyncHttpClient implements HttpClient {
             .orElse(this.responseTimeout);
 
         return nettyClient
-            .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
-            .doAfterRequest((r, connection) -> addResponseTimeoutHandler(connection, effectiveResponseTimeout))
+            .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
+            .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
@@ -153,13 +176,83 @@ class NettyAsyncHttpClient implements HttpClient {
                     hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
                 }
             }
-            if (restRequest.getBody() != null) {
-                Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
-                return reactorNettyOutbound.send(nettyByteBufFlux);
+            BinaryData body = restRequest.getBodyAsBinaryData();
+            if (body != null) {
+                BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+                if (bodyContent instanceof ByteArrayContent) {
+                    // This is marginally more performant than reactorNettyOutbound.sendByteArray which
+                    // adds extra operators to achieve same result.
+                    // The bytes are in memory at this time anyway and Unpooled.wrappedBuffer is lightweight.
+                    return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(bodyContent.toBytes())));
+                } else if (bodyContent instanceof StringContent
+                    || bodyContent instanceof SerializableContent) {
+                    // This defers encoding final bytes until emission happens.
+                    return reactorNettyOutbound.send(
+                        Mono.fromSupplier(() -> Unpooled.wrappedBuffer(bodyContent.toBytes())));
+                } else if (bodyContent instanceof FileContent) {
+                    return sendFile(restRequest, reactorNettyOutbound, (FileContent) bodyContent);
+                } else if (bodyContent instanceof InputStreamContent) {
+                    return sendInputStream(reactorNettyOutbound, (InputStreamContent) bodyContent);
+                } else {
+                    Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
+                    return reactorNettyOutbound.send(nettyByteBufFlux);
+                }
             } else {
                 return reactorNettyOutbound;
             }
         };
+    }
+
+    private static NettyOutbound sendFile(
+        HttpRequest restRequest, NettyOutbound reactorNettyOutbound, FileContent fileContent) {
+        // NettyOutbound uses such logic internally for ssl connections but with smaller buffer of 1KB.
+        // We use simplified check here to handle https instead of original check that Netty uses
+        // as other corner cases are not existent (i.e. different protocols using ssl).
+        // But in case we missed them these will be still handled by Netty's logic - they'd just use 1KB chunk
+        // and this check should be evolved when they're discovered.
+        if (restRequest.getUrl().getProtocol().equals("https")) {
+            return reactorNettyOutbound.sendUsing(
+                () -> FileChannel.open(fileContent.getFile(), StandardOpenOption.READ),
+                (c, fc) -> {
+                    if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
+                        c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
+                    }
+
+                    try {
+                        return new ChunkedNioFile(
+                            fc, fileContent.getPosition(), fileContent.getLength(), fileContent.getChunkSize());
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                    }
+                },
+                (fc) -> {
+                    try {
+                        fc.close();
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                    }
+                });
+        } else {
+            // Beware of NettyOutbound.sendFile(Path) it involves extra file length lookup.
+            // This is going to use zero-copy transfer if there's no ssl
+            return reactorNettyOutbound.sendFile(
+                fileContent.getFile(), fileContent.getPosition(), fileContent.getLength());
+        }
+    }
+
+    private static NettyOutbound sendInputStream(NettyOutbound reactorNettyOutbound, InputStreamContent bodyContent) {
+        return reactorNettyOutbound.sendUsing(
+            bodyContent::toStream,
+            (c, stream) -> {
+                if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
+                    c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
+                }
+
+                return new ChunkedStream(stream);
+            },
+            (stream) -> {
+                // NO-OP. We don't close streams passed to our APIs.
+            });
     }
 
     /**
@@ -192,19 +285,30 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Adds write timeout handler once the request is ready to begin sending.
+     * Adds request handlers:
+     * - write timeout handler once the request is ready to begin sending.
+     * - progress handler if progress tracking has been requested.
      */
-    private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
+    private void addRequestHandlers(Connection connection, Context context) {
+        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
+        if (progressReporter != null) {
+            connection.addHandlerLast(
+                RequestProgressReportingHandler.HANDLER_NAME, new RequestProgressReportingHandler(progressReporter));
+        }
     }
 
     /*
-     * Remove write timeout handler from the connection as the request has finished sending, then add response timeout
+     * After request has been sent:
+     * - Remove Progress Handler
+     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
      * handler.
      */
-    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
+    private static void doAfterRequest(Connection connection, long responseTimeoutMillis) {
+        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
         connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
+            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeoutMillis));
     }
 
     /*

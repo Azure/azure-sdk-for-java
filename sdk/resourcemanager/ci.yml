@@ -79,83 +79,213 @@ pr:
       - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
       - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
+parameters:
+- name: release_azureresourcemanager
+  displayName: 'azure-resourcemanager'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerappplatform
+  displayName: 'azure-resourcemanager-appplatform'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerappservice
+  displayName: 'azure-resourcemanager-appservice'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerauthorization
+  displayName: 'azure-resourcemanager-authorization'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagercdn
+  displayName: 'azure-resourcemanager-cdn'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagercompute
+  displayName: 'azure-resourcemanager-compute'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagercontainerinstance
+  displayName: 'azure-resourcemanager-containerinstance'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagercontainerregistry
+  displayName: 'azure-resourcemanager-containerregistry'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagercontainerservice
+  displayName: 'azure-resourcemanager-containerservice'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagercosmos
+  displayName: 'azure-resourcemanager-cosmos'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerdns
+  displayName: 'azure-resourcemanager-dns'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagereventhubs
+  displayName: 'azure-resourcemanager-eventhubs'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerkeyvault
+  displayName: 'azure-resourcemanager-keyvault'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagermonitor
+  displayName: 'azure-resourcemanager-monitor'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagermsi
+  displayName: 'azure-resourcemanager-msi'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagernetwork
+  displayName: 'azure-resourcemanager-network'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerprivatedns
+  displayName: 'azure-resourcemanager-privatedns'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerredis
+  displayName: 'azure-resourcemanager-redis'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerresources
+  displayName: 'azure-resourcemanager-resources'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagersearch
+  displayName: 'azure-resourcemanager-search'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerservicebus
+  displayName: 'azure-resourcemanager-servicebus'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagersql
+  displayName: 'azure-resourcemanager-sql'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerstorage
+  displayName: 'azure-resourcemanager-storage'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagertrafficmanager
+  displayName: 'azure-resourcemanager-trafficmanager'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: resourcemanager
+    EnableBatchRelease: true
+    UseEsrpRelease: false
     Artifacts:
       - name: azure-resourcemanager
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanager
+        releaseInBatch: ${{ parameters.release_azureresourcemanager }}
       - name: azure-resourcemanager-appplatform
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappplatform
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappplatform }}
       - name: azure-resourcemanager-appservice
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappservice
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappservice }}
       - name: azure-resourcemanager-authorization
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerauthorization
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerauthorization }}
       - name: azure-resourcemanager-cdn
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercdn
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercdn }}
       - name: azure-resourcemanager-compute
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercompute
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercompute }}
       - name: azure-resourcemanager-containerinstance
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerinstance
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerinstance }}
       - name: azure-resourcemanager-containerregistry
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerregistry
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerregistry }}
       - name: azure-resourcemanager-containerservice
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerservice
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservice }}
       - name: azure-resourcemanager-cosmos
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercosmos
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercosmos }}
       - name: azure-resourcemanager-dns
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdns
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdns }}
       - name: azure-resourcemanager-eventhubs
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventhubs
+        releaseInBatch: ${{ parameters.release_azureresourcemanagereventhubs }}
       - name: azure-resourcemanager-keyvault
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerkeyvault
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerkeyvault }}
       - name: azure-resourcemanager-monitor
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermonitor
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermonitor }}
       - name: azure-resourcemanager-msi
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermsi
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermsi }}
       - name: azure-resourcemanager-network
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagernetwork
+        releaseInBatch: ${{ parameters.release_azureresourcemanagernetwork }}
       - name: azure-resourcemanager-privatedns
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerprivatedns
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerprivatedns }}
       - name: azure-resourcemanager-redis
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerredis
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerredis }}
       - name: azure-resourcemanager-resources
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresources
-      - name: azure-resourcemanager-samples
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagersamples
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresources }}
       - name: azure-resourcemanager-search
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersearch
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersearch }}
       - name: azure-resourcemanager-servicebus
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerservicebus
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerservicebus }}
       - name: azure-resourcemanager-sql
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersql
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersql }}
       - name: azure-resourcemanager-storage
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerstorage
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerstorage }}
       - name: azure-resourcemanager-trafficmanager
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagertrafficmanager
+        releaseInBatch: ${{ parameters.release_azureresourcemanagertrafficmanager }}
+    AdditionalModules:
+      - name: azure-resourcemanager-samples
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersamples
+      - name: azure-resourcemanager-perf
+        groupId: com.azure.resourcemanager
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

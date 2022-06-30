@@ -1,6 +1,24 @@
 # Release History
 
-## 2.15.0-beta.1 (Unreleased)
+## 2.17.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
 
 ### Features Added
 
@@ -11,6 +29,7 @@
 - Supported `Java_17` runtime for all tiers.
 - Supported `jvmOptions()` in `SpringAppDeployment` for all tiers.
 - Supported Enterprise Tier `runtimeVersion()` in `SpringAppDeployment`.
+- Supported Enterprise Tier binding `Spring App` to `Service Registry`.
 
 ### Breaking Changes
 
@@ -30,7 +49,7 @@
 
 #### Dependency Updates
 
-- Updated `api-version` to `2022-01-01-preview`.
+- Updated `api-version` to `2022-04-01`.
 
 ## 2.14.0 (2022-04-11)
 

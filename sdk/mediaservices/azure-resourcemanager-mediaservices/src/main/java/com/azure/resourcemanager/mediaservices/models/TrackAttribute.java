@@ -27,7 +27,11 @@ public final class TrackAttribute extends ExpandableStringEnum<TrackAttribute> {
         return fromString(name, TrackAttribute.class);
     }
 
-    /** @return known TrackAttribute values. */
+    /**
+     * Gets known TrackAttribute values.
+     *
+     * @return known TrackAttribute values.
+     */
     public static Collection<TrackAttribute> values() {
         return values(TrackAttribute.class);
     }

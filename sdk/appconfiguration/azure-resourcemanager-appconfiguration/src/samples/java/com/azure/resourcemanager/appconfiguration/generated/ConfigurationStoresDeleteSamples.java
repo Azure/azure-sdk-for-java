@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationStores Delete. */
 public final class ConfigurationStoresDeleteSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/preview/2021-10-01-preview/examples/ConfigurationStoresDelete.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresDelete.json
      */
     /**
      * Sample code: ConfigurationStores_Delete.

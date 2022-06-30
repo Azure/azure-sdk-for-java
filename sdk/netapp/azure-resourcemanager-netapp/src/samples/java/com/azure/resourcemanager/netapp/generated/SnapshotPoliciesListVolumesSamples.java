@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SnapshotPolicies ListVolumes. */
 public final class SnapshotPoliciesListVolumesSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/SnapshotPolicies_ListVolumes.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/SnapshotPolicies_ListVolumes.json
      */
     /**
      * Sample code: SnapshotPolicies_ListVolumes.

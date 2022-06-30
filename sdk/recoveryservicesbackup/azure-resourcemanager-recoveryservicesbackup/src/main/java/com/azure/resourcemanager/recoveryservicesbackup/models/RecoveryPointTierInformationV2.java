@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** RecoveryPoint Tier Information V2. */
 @Fluent
 public final class RecoveryPointTierInformationV2 extends RecoveryPointTierInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointTierInformationV2.class);
-
     /** {@inheritDoc} */
     @Override
     public RecoveryPointTierInformationV2 withType(RecoveryPointTierType type) {

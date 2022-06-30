@@ -29,7 +29,7 @@ import java.util.Objects;
  * &#47;&#47; By setting autoRegisterSchema to true, if the schema does not exist in the Schema Registry instance, it is
  * &#47;&#47; added to the instance. By default, this is false, so it will error if the schema is not found.
  * SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder&#40;&#41;
- *     .schemaRegistryAsyncClient&#40;schemaRegistryAsyncClient&#41;
+ *     .schemaRegistryClient&#40;schemaRegistryAsyncClient&#41;
  *     .autoRegisterSchemas&#40;true&#41;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
@@ -111,7 +111,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      *
      * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance.
      */
-    public SchemaRegistryApacheAvroSerializerBuilder schemaRegistryAsyncClient(
+    public SchemaRegistryApacheAvroSerializerBuilder schemaRegistryClient(
             SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
         this.schemaRegistryAsyncClient = schemaRegistryAsyncClient;
         return this;
@@ -122,7 +122,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      *
      * @return A new instance of {@link SchemaRegistryApacheAvroSerializer}.
      *
-     * @throws NullPointerException if {@link #schemaRegistryAsyncClient(SchemaRegistryAsyncClient)} is {@code null}
+     * @throws NullPointerException if {@link #schemaRegistryClient(SchemaRegistryAsyncClient)} is {@code null}
      * @throws IllegalStateException if {@link #autoRegisterSchemas(boolean)} is {@code true} but {@link
      *         #schemaGroup(String) schemaGroup} is {@code null}.
      */

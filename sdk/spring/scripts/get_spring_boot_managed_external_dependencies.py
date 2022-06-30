@@ -2,11 +2,13 @@
 # This script is used to get all 3rd party dependencies managed by spring-boot-dependencies and spring-cloud-dependencies.
 #
 # How to use this script.
-#  1. Update `SPRING_BOOT_VERSION` and `SPRING_CLOUD_VERSION` in this script manually.
+#  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
+#     Get `SPRING_CLOUD_VERSION` from https://github.com/spring-cloud/spring-cloud-release/tags.
 #     Note that spring-cloud version should compatible with spring-boot version.
-#     Refs: https://spring.io/projects/spring-cloud
-#  2. Run command `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py`.
-#  3. Then a file named `spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt` will be created.
+#     Refs: https://spring.io/projects/spring-cloud.
+#  2. Run command: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 2.7.0 -c 2021.0.3`.
+#     Or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3`.
+#  3. Then a file named `spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt` will be created.
 #
 # Please refer to ./README.md to get more information about this script.
 ############################################################################################################################################
@@ -22,31 +24,54 @@ from urllib.error import HTTPError
 from log import log
 from pom import Pom
 
-SPRING_BOOT_VERSION = '2.6.6'
-SPRING_CLOUD_VERSION = '2021.0.2'
-
-ROOT_POMS = [
-    'org.springframework.boot:spring-boot-starter-parent;{}'.format(SPRING_BOOT_VERSION),
-    'org.springframework.boot:spring-boot-dependencies;{}'.format(SPRING_BOOT_VERSION),
-    'org.springframework.cloud:spring-cloud-dependencies;{}'.format(SPRING_CLOUD_VERSION)
-]
-SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(SPRING_BOOT_VERSION)
 MAVEN_NAME_SPACE = {'maven': 'http://maven.apache.org/POM/4.0.0'}
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
+    parser.add_argument('-c', '--spring_cloud_dependencies_version', type = str, required = True)
+    parser.add_argument(
+        '--log',
+        type = str,
+        choices = ['debug', 'info', 'warn', 'error', 'none'],
+        required = False,
+        default = 'info',
+        help = 'Set log level.'
+    )
+    args = parser.parse_args()
+    log.set_log_level(args.log)
+    return args
+
+
+def get_root_poms(spring_boot_dependencies_version, spring_cloud_dependencies_version):
+    return [
+        'org.springframework.boot:spring-boot-starter-parent;{}'.format(spring_boot_dependencies_version),
+        'org.springframework.boot:spring-boot-dependencies;{}'.format(spring_boot_dependencies_version),
+        'org.springframework.cloud:spring-cloud-dependencies;{}'.format(spring_cloud_dependencies_version)
+    ]
+
+
+def get_spring_boot_managed_external_dependencies_file_name(spring_boot_dependencies_version):
+    return 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_dependencies_version)
 
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = {}
-    for root_pom in ROOT_POMS:
+    args = get_args()
+    spring_boot_dependencies_version = args.spring_boot_dependencies_version
+    spring_cloud_dependencies_version = args.spring_cloud_dependencies_version
+    for root_pom in get_root_poms(spring_boot_dependencies_version, spring_cloud_dependencies_version):
         update_dependency_dict(dependency_dict, root_pom)
-    output_version_dict_to_file(dependency_dict, SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME)
+    output_version_dict_to_file(dependency_dict, get_spring_boot_managed_external_dependencies_file_name(spring_boot_dependencies_version))
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
@@ -166,24 +191,6 @@ def print_dict(d):
         print('key = {}, value = {}.'.format(key, value))
 
 
-def init():
-    parser = argparse.ArgumentParser(
-        description='Get spring-boot managed external dependencies and write into {}'.format(SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME)
-    )
-    parser.add_argument(
-        '--log',
-        type = str,
-        choices = ['debug', 'info', 'warn', 'error', 'none'],
-        required = False,
-        default = 'info',
-        help = 'Set log level.'
-    )
-    args = parser.parse_args()
-    log.set_log_level(args.log)
-    # log.log_level_test()
-
-
 if __name__ == '__main__':
     # unittest.main()
-    init()
     main()

@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2022-01-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2022-06-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7a1d86a9-3e82-451b-b1b3-75284096988a",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.6 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "05b36056-544d-4a80-9fba-1616fe3cfc7b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "458",
+      "x-envoy-upstream-service-time" : "365",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dc04e488-4713-4daa-a9cd-3c73f17a8c60",
+      "apim-request-id" : "6a6cae6b-8c3e-4fad-80e8-3cae3ecc3bf7",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR\",\n  \"targetResourceRegion\": \"eastus\",\n  \"targetModelId\": \"b230f068-99f7-4fd1-99b5-857145fa3296\",\n  \"targetModelLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/b230f068-99f7-4fd1-99b5-857145fa3296?api-version=2022-01-30-preview\",\n  \"accessToken\": \"ee7e03dd-a290-4492-b5f4-84647f703702\",\n  \"expirationDateTime\": \"2022-01-25T00:11:30Z\"\n}",
-      "Date" : "Mon, 24 Jan 2022 23:11:30 GMT",
+      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR\",\n  \"targetResourceRegion\": \"eastus\",\n  \"targetModelId\": \"da2aeab8-cd9a-4288-8a38-3a24650bdd8f\",\n  \"targetModelLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/da2aeab8-cd9a-4288-8a38-3a24650bdd8f?api-version=2022-06-30-preview\",\n  \"accessToken\": \"03a74d5e-14fe-41ae-b3db-8ab8b6774103\",\n  \"expirationDateTime\": \"2022-06-17T22:08:39Z\"\n}",
+      "Date" : "Fri, 17 Jun 2022 21:08:39 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

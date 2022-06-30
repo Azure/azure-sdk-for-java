@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -78,6 +79,39 @@ public class PathClientJavaDocCodeSamples {
             new Context(key1, value1));
         System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
         // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#createWithResponse(DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
+
+        Response<PathInfo> response = client.createWithResponse(options, timeout, new Context(key1, value1));
+        System.out.printf("Last Modified Time:%s", response.getValue().getLastModified());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.createWithResponse#DataLakePathCreateOptions-Duration-Context
     }
 
     /**
@@ -501,8 +535,11 @@ public class PathClientJavaDocCodeSamples {
         String permissions = "permissions";
         String umask = "umask";
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(metadata);
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata);
 
         Response<PathInfo> response = client.createIfNotExistsWithResponse(options, timeout, new Context(key1, value1));
         if (response.getStatusCode() == 409) {
@@ -531,7 +568,7 @@ public class PathClientJavaDocCodeSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
 
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");

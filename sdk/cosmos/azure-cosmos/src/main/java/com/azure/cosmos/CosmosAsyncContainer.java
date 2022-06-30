@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Document;
@@ -14,6 +13,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -25,7 +25,6 @@ import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
@@ -52,23 +51,19 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -440,51 +435,69 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
     }
 
-    /**
-     * Initializes the container by warming up the caches and connections for the current read region.
+    /***
+     *  Best effort to initializes the container by warming up the caches and connections for the current read region.
      *
-     * <p><br>The execution of this method is expected to result in some RU charges to your account.
-     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
-     * item indexing, number of projections. For more information regarding RU considerations please visit
-     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
-     * </p>
+     *  Depending on how many partitions the container has, the total time needed will also change. But generally you can use the following formula
+     *  to get an estimated time:
+     *  If it took 200ms to establish a connection, and you have 100 partitions in your container
+     *  then it will take around (100 * 4 / CPUCores) * 200ms to open all connections after get the address list
      *
-     * <p>
-     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
-     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
-     * </p>
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
      *
-     * @return Mono of Void
+     *  @return Mono of Void.
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        int retryCount = Configs.getOpenConnectionsRetriesCount();
 
         if(isInitialized.compareAndSet(false, true)) {
-            return this.getFeedRanges().flatMap(feedRanges -> {
-                List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-                SqlQuerySpec querySpec = new SqlQuerySpec();
-                querySpec.setQueryText("select * from c where c.id = @id");
-                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
-                    UUID.randomUUID().toString())));
-
-                for (int i = 0; i < retryCount; i++) {
-                    for (FeedRange feedRange : feedRanges) {
-                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                        options.setFeedRange(feedRange);
-                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                            ObjectNode.class);
-                        fluxList.add(cosmosPagedFlux.byPage());
-                    }
-                }
-
-                Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
-                return listMono.flatMap(objects -> Mono.empty());
-            });
+            return withContext(context -> openConnectionsAndInitCachesInternal()
+                                            .flatMap(openResult -> {
+                                                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                                                return Mono.empty();
+                                            }));
         } else {
-            logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            logger.warn(
+                    String.format(
+                        "OpenConnectionsAndInitCaches is already called once on Container %s, no operation will take place in this call",
+                        this.getId()));
             return Mono.empty();
         }
+    }
+
+    /***
+     * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
+     *
+     * @return a string represents the open result.
+     */
+    private Mono<String> openConnectionsAndInitCachesInternal() {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
+                .collectList()
+                .flatMap(openConnectionResponses -> {
+                    // Generate a simple statistics string for open connections
+                    int total = openConnectionResponses.size();
+
+                    ConcurrentHashMap<String, Boolean> endPointOpenConnectionsStatistics = new ConcurrentHashMap<>();
+                    for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
+                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURI().getAuthority(), (key, value) -> {
+                            if (value == null) {
+                                return openConnectionResponse.isConnected();
+                            }
+
+                            // Sometimes different replicas can landed on the same server, that is why we could reach here
+                            // We will only create max one connection for each endpoint in openConnectionsAndInitCaches
+                            // if one failed, one succeeded, then it is still good
+                            return openConnectionResponse.isConnected() || value;
+                        });
+                    }
+
+                    long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
+                    return Mono.just(String.format(
+                            "EndpointsConnected: %s, Failed: %s", endpointConnected, endPointOpenConnectionsStatistics.size() - endpointConnected));
+                });
     }
 
     /**
@@ -1651,8 +1664,8 @@ public class CosmosAsyncContainer {
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
      *     new ThroughputControlGroupConfigBuilder&#40;&#41;
-     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
-     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .targetThroughputThreshold&#40;0.1&#41;
      *         .build&#40;&#41;;
      *
      * container.enableLocalThroughputControlGroup&#40;groupConfig&#41;;
@@ -1675,8 +1688,8 @@ public class CosmosAsyncContainer {
      * <pre>
      * ThroughputControlGroupConfig groupConfig =
      *     new ThroughputControlGroupConfigBuilder&#40;&#41;
-     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
-     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .targetThroughputThreshold&#40;0.1&#41;
      *         .build&#40;&#41;;
      *
      * GlobalThroughputControlConfig globalControlConfig =
@@ -1706,16 +1719,10 @@ public class CosmosAsyncContainer {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncContainerHelper.setCosmosAsyncContainerAccessor(
-            new ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor() {
-                @Override
-                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(CosmosAsyncContainer cosmosAsyncContainer,
-                                                                                                               CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
-                                                                                                               Class<T> classType) {
-                    return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
-                }
-            });
+            CosmosAsyncContainer::queryChangeFeedInternalFunc);
     }
+
+    static { initialize(); }
 }

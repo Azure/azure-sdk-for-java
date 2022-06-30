@@ -30,7 +30,11 @@ public final class VariableType extends ExpandableStringEnum<VariableType> {
         return fromString(name, VariableType.class);
     }
 
-    /** @return known VariableType values. */
+    /**
+     * Gets known VariableType values.
+     *
+     * @return known VariableType values.
+     */
     public static Collection<VariableType> values() {
         return values(VariableType.class);
     }

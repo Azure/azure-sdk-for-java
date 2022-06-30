@@ -20,7 +20,7 @@ public final class DocumentError {
      * Document Error.
      */
     @JsonProperty(value = "error", required = true)
-    private TextAnalyticsError error;
+    private Error error;
 
     /**
      * Get the id property: Document Id.
@@ -47,7 +47,7 @@ public final class DocumentError {
      *
      * @return the error value.
      */
-    public TextAnalyticsError getError() {
+    public Error getError() {
         return this.error;
     }
 
@@ -57,7 +57,7 @@ public final class DocumentError {
      * @param error the error value to set.
      * @return the DocumentError object itself.
      */
-    public DocumentError setError(TextAnalyticsError error) {
+    public DocumentError setError(Error error) {
         this.error = error;
         return this;
     }

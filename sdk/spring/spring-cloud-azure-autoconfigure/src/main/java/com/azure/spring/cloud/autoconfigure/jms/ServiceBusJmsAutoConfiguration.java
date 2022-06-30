@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
@@ -42,6 +43,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentif
 @AutoConfigureAfter({
     JndiConnectionFactoryAutoConfiguration.class,
     AzureServiceBusResourceManagerAutoConfiguration.class })
+@ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
 @EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
@@ -69,7 +71,7 @@ public class ServiceBusJmsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnMissingProperty(prefix = "spring.jms.servicebus", name = "connection-string")
-    public static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(
+    static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Extended information of the container. */
 @Fluent
 public final class AzureWorkloadContainerExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadContainerExtendedInfo.class);
-
     /*
      * Host Os Name in case of Stand Alone and Cluster Name in case of
      * distributed container.

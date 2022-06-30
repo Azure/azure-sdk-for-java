@@ -1,6 +1,50 @@
 # Release History
 
-## 1.28.0-beta.1 (Unreleased)
+## 1.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+- Added `BinaryData.toReplayableBinaryData` and `BinaryData.toReplayableBinaryDataAsync` to allow
+  transforming `BinaryData` instances into replayable `BinaryData` for all content types.
+- Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
+  - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
+  - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
+  - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
+  - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
+- Added `ProgressReporter` and `ProgressListener` to provide ability to track progress of I/O operations.
+- Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
+  - Added ability to get and set `ProgressReporter` on `Context`.
+- Added `HttpPipelineCallContext.getContext()`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
+  could block file deletion on Windows.
+- Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
+
+### Other Changes
+
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
+## 1.29.0 (2022-06-03)
+
+### Features Added
+
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+- Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
+  that represents slice of the file.
+
+## 1.28.0 (2022-05-06)
 
 ### Features Added
 
@@ -16,11 +60,15 @@
 ### Breaking Changes
 
 - Deprecated `Configuration.put`, `Configuration.remove`, `Configuration.clone`, and default `Configuration` constructor.
-  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`. 
-
-### Bugs Fixed
+  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`.
+- Moved Netty TC Native dependency to `azure-core-http-netty`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.14` to `3.4.17`.
+- Upgraded Jackson from `2.13.2.1` to `2.13.2.2`.
 
 ## 1.27.0 (2022-04-01)
 

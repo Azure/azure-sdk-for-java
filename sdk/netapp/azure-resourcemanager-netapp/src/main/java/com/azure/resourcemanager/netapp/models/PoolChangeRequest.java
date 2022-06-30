@@ -6,14 +6,11 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Pool change request. */
 @Fluent
 public final class PoolChangeRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolChangeRequest.class);
-
     /*
      * Resource id of the pool to move volume to
      */
@@ -47,10 +44,12 @@ public final class PoolChangeRequest {
      */
     public void validate() {
         if (newPoolResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property newPoolResourceId in model PoolChangeRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PoolChangeRequest.class);
 }

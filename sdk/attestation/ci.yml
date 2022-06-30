@@ -33,15 +33,27 @@ pr:
       - sdk/attestation/azure-resourcemanager-attestation/pom.xml
       - sdk/attestation/azure-security-attestation/pom.xml
 
+parameters:
+- name: release_azuresecurityattestation
+  displayName: 'azure-security-attestation'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerattestation
+  displayName: 'azure-resourcemanager-attestation'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: attestation
-    TestPipeline: true
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-security-attestation
         groupId: com.azure
         safeName: azuresecurityattestation
+        releaseInBatch: ${{ parameters.release_azuresecurityattestation }}
       - name: azure-resourcemanager-attestation
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerattestation
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerattestation }}

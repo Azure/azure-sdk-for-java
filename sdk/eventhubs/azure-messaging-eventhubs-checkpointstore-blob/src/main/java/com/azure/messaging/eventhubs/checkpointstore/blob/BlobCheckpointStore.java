@@ -63,9 +63,9 @@ public class BlobCheckpointStore implements CheckpointStore {
     public static final String EMPTY_STRING = "";
 
     private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap(EMPTY_STRING.getBytes(UTF_8));
+    private static final ClientLogger LOGGER = new ClientLogger(BlobCheckpointStore.class);
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;
-    private final ClientLogger logger = new ClientLogger(BlobCheckpointStore.class);
     private final Map<String, BlobAsyncClient> blobClients = new ConcurrentHashMap<>();
 
     /**
@@ -110,7 +110,7 @@ public class BlobCheckpointStore implements CheckpointStore {
 
     private Mono<Checkpoint> convertToCheckpoint(BlobItem blobItem) {
         String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
             .log(Messages.FOUND_BLOB_FOR_PARTITION);
         if (names.length == 5) {
@@ -119,14 +119,14 @@ public class BlobCheckpointStore implements CheckpointStore {
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
 
             if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
                     .log(Messages.NO_METADATA_AVAILABLE_FOR_BLOB);
                 return Mono.empty();
             }
 
             Map<String, String> metadata = blobItem.getMetadata();
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
                 .addKeyValue(SEQUENCE_NUMBER_LOG_KEY, metadata.get(SEQUENCE_NUMBER))
                 .addKeyValue(OFFSET_LOG_KEY, metadata.get(OFFSET))
@@ -190,27 +190,27 @@ public class BlobCheckpointStore implements CheckpointStore {
                         .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
                             blobRequestConditions)
                         .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                            logger.atVerbose()
+                            LOGGER.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
                                 .log(Messages.CLAIM_ERROR, error);
-                            return Mono.empty();
+                            return Mono.error(error);
                         }, Mono::empty);
                 } else {
                     // update existing blob
                     blobRequestConditions.setIfMatch(partitionOwnership.getETag());
                     return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
                         .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                            logger.atVerbose()
+                            LOGGER.atVerbose()
                                 .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
                                 .log(Messages.CLAIM_ERROR, error);
-                            return Mono.empty();
+                            return Mono.error(error);
                         }, Mono::empty);
                 }
             } catch (Exception ex) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
                     .log(Messages.CLAIM_ERROR, ex);
-                return Mono.empty();
+                return Mono.error(ex);
             }
         });
     }
@@ -228,7 +228,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint == null || (checkpoint.getSequenceNumber() == null && checkpoint.getOffset() == null)) {
-            throw logger.logExceptionAsWarning(Exceptions
+            throw LOGGER.logExceptionAsWarning(Exceptions
                 .propagate(new IllegalStateException(
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
         }
@@ -272,7 +272,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     private Mono<PartitionOwnership> convertToPartitionOwnership(BlobItem blobItem) {
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
             .log(Messages.FOUND_BLOB_FOR_PARTITION);
 
@@ -282,7 +282,7 @@ public class BlobCheckpointStore implements CheckpointStore {
             // fullyqualifiednamespace/eventhub/consumergroup/ownership/<partitionId>
             // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
             if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-                logger.atWarning()
+                LOGGER.atWarning()
                     .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
                     .log(Messages.NO_METADATA_AVAILABLE_FOR_BLOB);
                 return Mono.empty();
@@ -295,7 +295,7 @@ public class BlobCheckpointStore implements CheckpointStore {
                 ownerId = EMPTY_STRING;
             }
 
-            logger.atVerbose()
+            LOGGER.atVerbose()
                 .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
                 .addKeyValue(OWNER_ID_LOG_KEY, ownerId)
                 .log(Messages.BLOB_OWNER_INFO);

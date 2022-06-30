@@ -20,6 +20,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
   }
 
@@ -39,6 +40,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     configuration.enableClientTelemetry shouldEqual true
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
     configuration.clientTelemetryEndpoint shouldEqual None
 
     val userConfig2 = Map(
@@ -54,6 +56,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration2.key shouldEqual userConfig2("spark.cosmos.accountKey")
     configuration2.useGatewayMode shouldBe false
     configuration2.useEventualConsistency shouldEqual forceEventual
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
     configuration2.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     configuration2.enableClientTelemetry shouldEqual false
     configuration2.clientTelemetryEndpoint shouldEqual Some("SomeEndpoint01")
@@ -71,6 +74,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration3.key shouldEqual userConfig3("spark.cosmos.accountKey")
     configuration3.useGatewayMode shouldBe false
     configuration3.useEventualConsistency shouldEqual forceEventual
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
     configuration3.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     configuration3.enableClientTelemetry shouldEqual true
     configuration3.clientTelemetryEndpoint shouldEqual Some("SomeEndpoint03")
@@ -96,6 +100,25 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
     configuration.useGatewayMode shouldBe true
     configuration.useEventualConsistency shouldEqual forceEventual
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName} $myApp"
+  }
+
+  it should "allow disabling endpoint rediscovery" in {
+    val myApp = "myApp"
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.disableTcpConnectionEndpointRediscovery" -> "true",
+    )
+
+    val forceEventual = false
+    val configuration = CosmosClientConfiguration(userConfig, forceEventual)
+
+    configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
+    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.useGatewayMode shouldBe false
+    configuration.useEventualConsistency shouldEqual forceEventual
+    configuration.disableTcpConnectionEndpointRediscovery shouldEqual true
   }
 }

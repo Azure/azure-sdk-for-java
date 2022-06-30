@@ -277,7 +277,7 @@ public final class ServicesImpl {
                                         res.getHeaders(),
                                         res.getValue().getQueueItems(),
                                         res.getValue().getNextMarker(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 
     /**
@@ -307,6 +307,6 @@ public final class ServicesImpl {
                                         res.getHeaders(),
                                         res.getValue().getQueueItems(),
                                         res.getValue().getNextMarker(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 }

@@ -27,7 +27,11 @@ public final class DnsEndpointType extends ExpandableStringEnum<DnsEndpointType>
         return fromString(name, DnsEndpointType.class);
     }
 
-    /** @return known DnsEndpointType values. */
+    /**
+     * Gets known DnsEndpointType values.
+     *
+     * @return known DnsEndpointType values.
+     */
     public static Collection<DnsEndpointType> values() {
         return values(DnsEndpointType.class);
     }

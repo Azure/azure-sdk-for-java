@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Backups. */
 @Fluent
 public final class BackupsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupsList.class);
-
     /*
      * A list of Backups
      */

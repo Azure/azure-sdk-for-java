@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.15 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,129 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.16 (2022-06-20)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SapOdpLinkedService` was added
+
+* `models.PurviewConfiguration` was added
+
+* `models.GlobalParameterResource` was added
+
+* `models.GlobalParameters` was added
+
+* `models.SapOdpResourceDataset` was added
+
+* `models.SapOdpSource` was added
+
+* `models.GlobalParameterResource$Update` was added
+
+* `models.GlobalParameterResource$UpdateStages` was added
+
+* `models.GlobalParameterListResponse` was added
+
+* `models.GlobalParameterResource$Definition` was added
+
+* `models.GlobalParameterResource$DefinitionStages` was added
+
+#### `models.DataFlowResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `DataFactoryManager` was modified
+
+* `globalParameters()` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `sourceStagingConcurrency()` was added
+* `withSourceStagingConcurrency(java.lang.Object)` was added
+
+#### `models.PrivateEndpointConnectionResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ManagedPrivateEndpointResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.TriggerResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DatasetResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Factory$Definition` was modified
+
+* `withPurviewConfiguration(models.PurviewConfiguration)` was added
+
+#### `models.ManagedVirtualNetworkResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.Factory` was modified
+
+* `resourceGroupName()` was added
+* `purviewConfiguration()` was added
+
+#### `models.RestServiceLinkedService` was modified
+
+* `withTokenEndpoint(java.lang.Object)` was added
+* `resource()` was added
+* `scope()` was added
+* `tokenEndpoint()` was added
+* `withClientId(java.lang.Object)` was added
+* `withScope(java.lang.Object)` was added
+* `clientSecret()` was added
+* `clientId()` was added
+* `withClientSecret(models.SecretBase)` was added
+* `withResource(java.lang.Object)` was added
+
+#### `models.IntegrationRuntimeResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `withSourceStagingConcurrency(java.lang.Object)` was added
+* `sourceStagingConcurrency()` was added
+
+#### `models.LinkedServiceResource` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PipelineResource` was modified
+
+* `resourceGroupName()` was added
+
+## 1.0.0-beta.15 (2022-05-10)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PrivateEndpoint` was added
+
+#### `models.PrivateLinkConnectionApprovalRequest` was modified
+
+* `withPrivateEndpoint(models.PrivateEndpoint)` was added
+* `privateEndpoint()` was added
+
+#### `models.PowerQuerySink` was modified
+
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+
+#### `models.DataFlowSink` was modified
+
+* `rejectedDataLinkedService()` was added
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
 
 ## 1.0.0-beta.14 (2022-04-19)
 

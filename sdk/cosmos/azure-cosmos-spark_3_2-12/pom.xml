@@ -35,6 +35,8 @@
     <cosmos.spark.skip>true</cosmos.spark.skip>
     <maven.main.skip>${cosmos.spark.skip}</maven.main.skip>
     <maven.test.skip>${cosmos.spark.skip}</maven.test.skip>
+
+    <cosmos-spark-version>3.1</cosmos-spark-version>
   </properties>
 
   <developers>
@@ -61,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.33.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -84,13 +86,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.16</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,7 +104,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -183,8 +185,8 @@
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.5.4]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.2.2]</include>  <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.3]</include>  <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -213,24 +215,76 @@
               <failOnWarning>false</failOnWarning>
             </configuration>
           </plugin>
+          <!-- START: Empty Java Doc -->
+          <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+              to pass the required checks on Maven. The way this works is by setting the classesDirectory
+              to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+              is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+              will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+              and recreated with the README.md being copied every time to guarantee that, when building locally,
+              it'll have the latest copy of the README.md file.
+          -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
             <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <executions>
               <execution>
-                <id>empty-javadoc-jar</id>
+                <id>empty-javadoc-jar-with-readme</id>
                 <phase>package</phase>
                 <goals>
                   <goal>jar</goal>
                 </goals>
                 <configuration>
                   <classifier>javadoc</classifier>
-                  <classesDirectory>${basedir}/javadoc</classesDirectory>
+                  <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
                 </configuration>
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>copy-readme-to-javadocTemp</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                    <delete includeEmptyDirs="true" quiet="true">
+                      <fileset dir="${project.basedir}/javadocTemp"/>
+                    </delete>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${project.basedir}/javadocTemp/README.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- END: Empty Java Doc -->
           <plugin>
             <groupId>net.alchim31.maven</groupId>
             <artifactId>scala-maven-plugin</artifactId>
@@ -328,6 +382,9 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
             <configuration>
+              <systemProperties>
+                <cosmos-spark-version>${cosmos-spark-version}</cosmos-spark-version>
+              </systemProperties>
               <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
               <junitxml>.</junitxml>
               <filereports>SparkTestSuite.txt</filereports>

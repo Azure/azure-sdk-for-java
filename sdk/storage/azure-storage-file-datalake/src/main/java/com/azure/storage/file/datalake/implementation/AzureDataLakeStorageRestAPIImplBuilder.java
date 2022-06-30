@@ -197,6 +197,26 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     }
 
     /*
+     * The lease duration is required to acquire a lease, and specifies the
+     * duration of the lease in seconds.  The lease duration must be between 15
+     * and 60 seconds or -1 for infinite lease.
+     */
+    @Generated private int xMsLeaseDuration;
+
+    /**
+     * Sets The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The
+     * lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     *
+     * @param xMsLeaseDuration the xMsLeaseDuration value.
+     * @return the AzureDataLakeStorageRestAPIImplBuilder.
+     */
+    @Generated
+    public AzureDataLakeStorageRestAPIImplBuilder xMsLeaseDuration(int xMsLeaseDuration) {
+        this.xMsLeaseDuration = xMsLeaseDuration;
+        return this;
+    }
+
+    /*
      * The filesystem identifier.
      */
     @Generated private String fileSystem;
@@ -286,7 +306,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
         }
         AzureDataLakeStorageRestAPIImpl client =
                 new AzureDataLakeStorageRestAPIImpl(
-                        pipeline, serializerAdapter, url, resource, version, fileSystem, path);
+                        pipeline, serializerAdapter, url, resource, version, xMsLeaseDuration, fileSystem, path);
         return client;
     }
 

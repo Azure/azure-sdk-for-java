@@ -34,7 +34,7 @@ public final class AzurePropertiesUtils {
     public static <T extends AzureProperties> void copyAzureCommonProperties(AzureProperties source, T target) {
         // call explicitly for these fields could be defined as final
         BeanUtils.copyProperties(source.getClient(), target.getClient());
-        copyHttpLoggingProperties(source, target, false);
+        copyHttpClientProperties(source, target, false);
 
         BeanUtils.copyProperties(source.getProxy(), target.getProxy());
         BeanUtils.copyProperties(source.getProfile(), target.getProfile());
@@ -61,7 +61,7 @@ public final class AzurePropertiesUtils {
      */
     public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
         copyPropertiesIgnoreNull(source.getClient(), target.getClient());
-        copyHttpLoggingProperties(source, target, true);
+        copyHttpClientProperties(source, target, true);
 
         copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
         copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
@@ -103,9 +103,9 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
     }
 
-    private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source,
-                                                                              T target,
-                                                                              boolean ignoreNull) {
+    private static <T extends AzureProperties> void copyHttpClientProperties(AzureProperties source,
+                                                                             T target,
+                                                                             boolean ignoreNull) {
         if (source.getClient() instanceof ClientOptionsProvider.HttpClientOptions
             && target.getClient() instanceof ClientOptionsProvider.HttpClientOptions) {
 
@@ -118,6 +118,7 @@ public final class AzurePropertiesUtils {
             }
             targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
             targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
+            targetClient.getHeaders().addAll(sourceClient.getHeaders());
         }
     }
 
@@ -139,6 +140,5 @@ public final class AzurePropertiesUtils {
     private static String[] findNullPropertyNames(Object source) {
         return findPropertyNames(source, Objects::isNull);
     }
-
 
 }

@@ -472,14 +472,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WebTestInner> getByResourceGroupAsync(String resourceGroupName, String webTestName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, webTestName)
-            .flatMap(
-                (Response<WebTestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -646,14 +639,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
     private Mono<WebTestInner> createOrUpdateAsync(
         String resourceGroupName, String webTestName, WebTestInner webTestDefinition) {
         return createOrUpdateWithResponseAsync(resourceGroupName, webTestName, webTestDefinition)
-            .flatMap(
-                (Response<WebTestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -818,14 +804,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WebTestInner> updateTagsAsync(String resourceGroupName, String webTestName, TagsResource webTestTags) {
         return updateTagsWithResponseAsync(resourceGroupName, webTestName, webTestTags)
-            .flatMap(
-                (Response<WebTestInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -965,7 +944,7 @@ public final class WebTestsClientImpl implements WebTestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String webTestName) {
-        return deleteWithResponseAsync(resourceGroupName, webTestName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, webTestName).flatMap(ignored -> Mono.empty());
     }
 
     /**

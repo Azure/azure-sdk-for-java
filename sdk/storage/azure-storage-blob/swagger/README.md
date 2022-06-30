@@ -10,13 +10,13 @@
 > see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/seanmcc-msft/azure-rest-api-specs/feature/storage/copySourceTags/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-04-10/blob.json
+use: '@autorest/java@4.1.0'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e515b6251fdc21015282d2e84b85beec7c091763/specification/storage/data-plane/Microsoft.BlobStorage/preview/2021-04-10/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -573,6 +573,24 @@ directive:
   where: $.parameters.BlobDeleteType
   transform: >
     $["x-ms-enum"].modelAsString = true;
+```
+
+### Delete PageBlob_GetPageRanges x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete PageList_GetPageRangesDiff x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
+  transform: >
+    delete $["x-ms-pageable"];
 ```
 
 ### BlobCopySourceTags expandable string enum
