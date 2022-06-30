@@ -9,7 +9,7 @@ import com.azure.communication.jobrouter.implementation.models.BestWorkerMode;
 import com.azure.communication.jobrouter.implementation.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.implementation.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionRule;

@@ -7,7 +7,6 @@ import java.util.Map;
 public abstract class JobOptions {
     protected String id;
     protected String channelReference;
-    protected JobStatus jobStatus;
     protected OffsetDateTime enqueueTimeUtc;
     protected String channelId;
     protected String classificationPolicyId;
@@ -15,111 +14,167 @@ public abstract class JobOptions {
     protected Integer priority;
     protected String dispositionCode;
     protected List<WorkerSelector> requestedWorkerSelectors;
-    protected List<WorkerSelector> attachedWorkerSelectors;
     protected Map<String, Object> labels;
-    protected Map<String, JobAssignment> assignments;
     protected Map<String, Object> tags;
     protected Map<String, String> notes;
 
-    /*
-     * Reference to an external parent context, eg. call ID.
+    /**
+     * Returns the id of RouterJob.
+     * @return id.
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Returns the reference to an external parent context, eg. call ID.
+     * @return channelReference
      */
     public String getChannelReference() {
         return this.channelReference;
     }
 
-    /*
-     * The state of the Job.
-     */
-    public JobStatus getJobStatus() {
-        return this.jobStatus;
-    }
-
-    /*
-     * The time a job was queued.
+    /**
+     * Returns the time a job was queued.
+     * @return enqueueTimeUtc
      */
     public OffsetDateTime getEnqueueTimeUtc() {
         return this.enqueueTimeUtc;
     }
 
-    /*
-     * The channel identifier. eg. voice, chat, etc.
+    /**
+     * Returns the channel identifier. eg. voice, chat, etc.
+     * @return channelId
      */
     public String getChannelId() {
         return this.channelId;
     }
 
-    /*
-     * The Id of the Classification policy used for classifying a job.
+    /**
+     * Returns the Id of the Classification policy used for classifying a job.
+     * @return classificationPolicyId
      */
     public String getClassificationPolicyId() {
         return this.classificationPolicyId;
     }
 
-    /*
-     * The Id of the Queue that this job is queued to.
+    /**
+     * Returns the Id of the Queue that this job is queued to.
+     * @return queueId
      */
     public String getQueueId() {
         return this.queueId;
     }
 
-    /*
-     * The priority of this job.
+    /**
+     * Returns the priority of this job.
+     * @return priority
      */
     public Integer getPriority() {
         return this.priority;
     }
 
-    /*
-     * Reason code for cancelled or closed jobs.
+    /**
+     * Returns the reason code for cancelled or closed jobs.
+     * @return dispositionCode
      */
     public String getDispositionCode() {
         return this.dispositionCode;
     }
 
-    /*
-     * A collection of manually specified label selectors, which a worker must
-     * satisfy in order to process this job.
+    /**
+     * Returns the collection of manually specified label selectors that a worker must
+     * satisfy in order to process a job.
+     * @return requestedWorkerSelectors
      */
     public List<WorkerSelector> getRequestedWorkerSelectors() {
         return this.requestedWorkerSelectors;
     }
 
-    /*
-     * A collection of label selectors attached by a classification policy,
-     * which a worker must satisfy in order to process this job.
-     */
-    public List<WorkerSelector> getAttachedWorkerSelectors() {
-        return this.attachedWorkerSelectors;
-    }
-
-    /*
+    /**
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
+     * @return labels
      */
     public Map<String, Object> getLabels() {
         return this.labels;
     }
 
-    /*
-     * A collection of the assignments of the job.
-     * Key is AssignmentId.
-     */
-    public Map<String, JobAssignment> getAssignments() {
-        return this.assignments;
-    }
-
-    /*
+    /**
      * A set of non-identifying attributes attached to this job
+     * @return tags
      */
     public Map<String, Object> getTags() {
         return this.tags;
     }
 
-    /*
+    /**
      * Notes attached to a job, sorted by timestamp
+     * @return note
      */
     public Map<String, String> getNotes() {
         return this.notes;
+    }
+
+    /**
+     * Sets classificationPolicyId.
+     * @param classificationPolicyId The Id of the Classification policy used for classifying a job.
+     * @return this
+     */
+    public JobOptions setClassificationPolicyId(String classificationPolicyId) {
+        this.classificationPolicyId = classificationPolicyId;
+        return this;
+    }
+
+    /**
+     * Sets dispositionCode.
+     * @param dispositionCode Reason code for cancelled or closed jobs.
+     * @return this
+     */
+    public JobOptions setDispositionCode(String dispositionCode) {
+        this.dispositionCode = dispositionCode;
+        return this;
+    }
+
+    /**
+     * Sets requestedWorkerSelectors.
+     * @param requestedWorkerSelectors A collection of manually specified label selectors, which a worker must
+     *   satisfy in order to process this job.
+     * @return this
+     */
+    public JobOptions setRequestedWorkerSelectors(List<WorkerSelector> requestedWorkerSelectors) {
+        this.requestedWorkerSelectors = requestedWorkerSelectors;
+        return this;
+    }
+
+    /**
+     * Sets labels.
+     * @param labels A set of key/value pairs that are identifying attributes used by the
+     *   rules engines to make decisions.
+     * @return this
+     */
+    public JobOptions setLabels(Map<String, Object> labels) {
+        this.labels = labels;
+        return this;
+    }
+
+    /**
+     * Sets tags.
+     * @param tags A set of non-identifying attributes attached to this job.
+     * @return this
+     */
+    public JobOptions setTags(Map<String, Object> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Sets notes.
+     * @param notes Notes attached to a job, sorted by timestamp.
+     * @return this
+     */
+    public JobOptions setNotes(Map<String, String> notes) {
+        this.notes = notes;
+        return this;
     }
 }

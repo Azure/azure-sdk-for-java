@@ -3,10 +3,14 @@
 
 package com.azure.communication.jobrouter;
 
+import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.RouterJobAdapter;
 import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
 import com.azure.communication.jobrouter.implementation.models.JobQueue;
@@ -26,7 +30,9 @@ import com.azure.communication.jobrouter.models.CreateClassificationPolicyOption
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.implementation.convertors.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -217,23 +223,21 @@ public final class RouterClient {
     /**
      * Create a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy createDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
-        return this.client.createDistributionPolicy(id, distributionPolicy).block();
+    public DistributionPolicy createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        return this.client.createDistributionPolicy(createDistributionPolicyOptions).block();
     }
 
     /**
      * Create a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
      * @param context The context to associate with this operation.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,30 +245,29 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> createDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
-        return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy, context).block();
+    public Response<DistributionPolicy> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions, Context context) {
+        DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+        return this.client.upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context).block();
     }
 
     /**
      * Update a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy updateDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
-        return this.client.createDistributionPolicy(id, distributionPolicy).block();
+    public DistributionPolicy updateDistributionPolicy(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
+        return this.client.updateDistributionPolicy(updateDistributionPolicyOptions).block();
     }
 
     /**
      * Update a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @param context The context to associate with this operation.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,8 +275,9 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> updateDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy, Context context) {
-        return this.client.upsertDistributionPolicyWithResponse(id, distributionPolicy, context).block();
+    public Response<DistributionPolicy> updateDistributionPolicyWithResponse(UpdateDistributionPolicyOptions updateDistributionPolicyOptions, Context context) {
+        DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+        return this.client.upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context).block();
     }
 
     /**
@@ -507,23 +511,21 @@ public final class RouterClient {
     /**
      * Create a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param createJobOptions Options to create a RouterJob.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob createJob(String id, RouterJob routerJob) {
-        return this.client.createJob(id, routerJob).block();
+    public RouterJob createJob(CreateJobOptions createJobOptions) {
+        return this.client.createJob(createJobOptions).block();
     }
 
     /**
      * Create a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param createJobOptions Options to create a RouterJob.
      * @param context The context to associate with this operation.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,30 +533,29 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> createJobWithResponse(String id, RouterJob routerJob, Context context) {
-        return this.client.upsertJobWithResponse(id, routerJob, context).block();
+    public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, Context context) {
+        RouterJob routerJob = RouterJobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+        return this.client.upsertJobWithResponse(createJobOptions.getId(), routerJob, context).block();
     }
 
     /**
      * Update a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob updateJob(String id, RouterJob routerJob) {
-        return this.client.createJob(id, routerJob).block();
+    public RouterJob updateJob(UpdateJobOptions updateJobOptions) {
+        return this.client.updateJob(updateJobOptions).block();
     }
 
     /**
      * Update a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param updateJobOptions Options to update RouterJob.
      * @param context The context to associate with this operation.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -562,8 +563,9 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> updateJobWithResponse(String id, RouterJob routerJob, Context context) {
-        return this.client.upsertJobWithResponse(id, routerJob, context).block();
+    public Response<RouterJob> updateJobWithResponse(UpdateJobOptions updateJobOptions, Context context) {
+        RouterJob routerJob = RouterJobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+        return this.client.upsertJobWithResponse(updateJobOptions.getId(), routerJob, context).block();
     }
 
     /**

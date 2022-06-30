@@ -14,7 +14,7 @@ public class ClassificationPolicyAdapter {
 
     /**
      * Converts {@link CreateClassificationPolicyOptions} to {@link ClassificationPolicy}.
-     * @param createClassificationPolicyOptions
+     * @param createClassificationPolicyOptions Container with options to create a classification policy.
      * @return classification policy.
      */
     public static ClassificationPolicy convertCreateOptionsToClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
@@ -26,6 +26,11 @@ public class ClassificationPolicyAdapter {
             .setWorkerSelectors(createClassificationPolicyOptions.getWorkerSelectors());
     }
 
+    /**
+     * Converts {@link UpdateClassificationPolicyOptions} to {@link ClassificationPolicy}.
+     * @param updateClassificationPolicyOptions Container with options to update a distribution policy.
+     * @return classification policy.
+     */
     public static ClassificationPolicy convertUpdateOptionsToClassificationPolicy(UpdateClassificationPolicyOptions updateClassificationPolicyOptions) {
         return new ClassificationPolicy()
             .setName(updateClassificationPolicyOptions.getName())

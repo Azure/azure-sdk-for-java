@@ -11,7 +11,7 @@ import com.azure.communication.jobrouter.implementation.models.ClassificationPol
 import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyCollection;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollection;

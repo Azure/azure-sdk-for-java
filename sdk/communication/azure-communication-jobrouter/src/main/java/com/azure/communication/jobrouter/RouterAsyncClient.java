@@ -5,10 +5,14 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
+import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.RouterJobAdapter;
 import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
 import com.azure.communication.jobrouter.implementation.models.JobQueue;
@@ -28,7 +32,9 @@ import com.azure.communication.jobrouter.models.CreateClassificationPolicyOption
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.implementation.convertors.ExceptionPolicyAdapter;
 import com.azure.communication.jobrouter.models.UpdateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -315,17 +321,17 @@ public final class RouterAsyncClient {
     /**
      * Creates a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> createDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+    public Mono<DistributionPolicy> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         try {
-            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context)
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+            return withContext(context -> upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context)
                 .flatMap(
                     (Response<DistributionPolicy> res) -> {
                         if (res.getValue() != null) {
@@ -342,17 +348,17 @@ public final class RouterAsyncClient {
     /**
      * Creates a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> createDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
+    public Mono<Response<DistributionPolicy>> createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         try {
-            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context));
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+            return withContext(context -> upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getId(), distributionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -361,17 +367,17 @@ public final class RouterAsyncClient {
     /**
      * Updates a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> updateDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+    public Mono<DistributionPolicy> updateDistributionPolicy(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
         try {
-            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context)
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+            return withContext(context -> upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context)
                 .flatMap(
                     (Response<DistributionPolicy> res) -> {
                         if (res.getValue() != null) {
@@ -388,17 +394,17 @@ public final class RouterAsyncClient {
     /**
      * Updates a distribution policy.
      *
-     * @param id Id of the distribution policy.
-     * @param distributionPolicy Model of distribution policy properties to be patched.
+     * @param updateDistributionPolicyOptions Request options to update distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> updateDistributionPolicyWithResponse(String id, DistributionPolicy distributionPolicy) {
+    public Mono<Response<DistributionPolicy>> updateDistributionPolicyWithResponse(UpdateDistributionPolicyOptions updateDistributionPolicyOptions) {
         try {
-            return withContext(context -> upsertDistributionPolicyWithResponse(id, distributionPolicy, context));
+            DistributionPolicy distributionPolicy = DistributionPolicyAdapter.convertUpdateOptionsToClassificationPolicy(updateDistributionPolicyOptions);
+            return withContext(context -> upsertDistributionPolicyWithResponse(updateDistributionPolicyOptions.getId(), distributionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -626,17 +632,17 @@ public final class RouterAsyncClient {
     /**
      * Updates an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param updateExceptionPolicyOptions Options to update ExceptionPolicy.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> updateExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
+    public Mono<Response<ExceptionPolicy>> updateExceptionPolicyWithResponse(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
         try {
-            return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context));
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertUpdateOptionsToExceptionPolicy(updateExceptionPolicyOptions);
+            return withContext(context -> upsertExceptionPolicyWithResponse(updateExceptionPolicyOptions.getId(), exceptionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -791,17 +797,17 @@ public final class RouterAsyncClient {
     /**
      * Create a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param createJobOptions Options to create RouterJob.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> createJob(String id, RouterJob routerJob) {
+    public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         try {
-            return withContext(context -> upsertJobWithResponse(id, routerJob, context)
+            RouterJob routerJob = RouterJobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
                         if (res.getValue() != null) {
@@ -818,36 +824,36 @@ public final class RouterAsyncClient {
     /**
      * Create a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param createJobOptions Options to create RouterJob.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> createJobWithResponse(String id, RouterJob routerJob) {
+    public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         try {
-            return withContext(context -> upsertJobWithResponse(id, routerJob, context));
+            RouterJob routerJob = RouterJobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     /**
-     * Create a job.
+     * Updates a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> updateJob(String id, RouterJob routerJob) {
+    public Mono<RouterJob> updateJob(UpdateJobOptions updateJobOptions) {
         try {
-            return withContext(context -> upsertJobWithResponse(id, routerJob, context)
+            RouterJob routerJob = RouterJobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
                         if (res.getValue() != null) {
@@ -862,19 +868,19 @@ public final class RouterAsyncClient {
     }
 
     /**
-     * Create a job.
+     * Updates a job.
      *
-     * @param id Id of the job.
-     * @param routerJob Model of job properties to be created or patched.
+     * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> updateJobWithResponse(String id, RouterJob routerJob) {
+    public Mono<Response<RouterJob>> updateJobWithResponse(UpdateJobOptions updateJobOptions) {
         try {
-            return withContext(context -> upsertJobWithResponse(id, routerJob, context));
+            RouterJob routerJob = RouterJobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
