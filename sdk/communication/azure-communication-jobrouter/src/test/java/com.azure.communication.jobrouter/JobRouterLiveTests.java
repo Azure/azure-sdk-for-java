@@ -9,6 +9,7 @@ import com.azure.communication.jobrouter.implementation.models.BestWorkerMode;
 import com.azure.communication.jobrouter.implementation.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.implementation.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
@@ -57,15 +58,18 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         // Setup
         String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", JAVA_LIVE_TEST);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
-        DistributionPolicy distributionPolicy = new DistributionPolicy()
-            .setMode(new BestWorkerMode()
+
+        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
+            bestWorkerModeDistributionPolicyId,
+            bestWorkerModeDistributionPolicyName,
+            10.0,
+            new BestWorkerMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(bestWorkerModeDistributionPolicyName)
-            .setOfferTtlSeconds(10.0);
+                .setMaxConcurrentOffers(10)
+        );
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
@@ -87,16 +91,18 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
                 .setAppKey("MyAppKey")
                 .setClientId("MyClientId"));
 
-        DistributionPolicy distributionPolicy = new DistributionPolicy()
-            .setMode(new BestWorkerMode()
+        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
+            bestWorkerModeDistributionPolicyId,
+            bestWorkerModeDistributionPolicyName,
+            10.0,
+            new BestWorkerMode()
                 .setScoringRule(azureFunctionRule)
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(bestWorkerModeDistributionPolicyName)
-            .setOfferTtlSeconds(10.0);
+                .setMaxConcurrentOffers(10)
+        );
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
@@ -112,15 +118,17 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         String longestIdleModeDistributionPolicyId = String.format("%s-Longest-DistributionPolicy", JAVA_LIVE_TEST);
         String longestIdleModeDistributionPolicyName = String.format("%s-Name", longestIdleModeDistributionPolicyId);
 
-        DistributionPolicy distributionPolicy = new DistributionPolicy()
-            .setMode(new LongestIdleMode()
+        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
+            longestIdleModeDistributionPolicyId,
+            longestIdleModeDistributionPolicyName,
+            10.0,
+            new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(longestIdleModeDistributionPolicyName)
-            .setOfferTtlSeconds(10.0);
+                .setMaxConcurrentOffers(10)
+        );
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(longestIdleModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(longestIdleModeDistributionPolicyId, result.getId());
@@ -136,15 +144,17 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", JAVA_LIVE_TEST);
         String roundRobinModeDistributionPolicyName = String.format("%s-Name", roundRobinModeDistributionPolicyId);
 
-        DistributionPolicy distributionPolicy = new DistributionPolicy()
-            .setMode(new RoundRobinMode()
+        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
+            roundRobinModeDistributionPolicyId,
+            roundRobinModeDistributionPolicyName,
+            10.0,
+            new RoundRobinMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(roundRobinModeDistributionPolicyName)
-            .setOfferTtlSeconds(10.0);
+                .setMaxConcurrentOffers(10)
+        );
 
         // Action
-        DistributionPolicy result = routerClient.createDistributionPolicy(roundRobinModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
 
         // Verify
         assertEquals(roundRobinModeDistributionPolicyId, result.getId());
@@ -330,14 +340,16 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     private DistributionPolicy createDistributionPolicy(String id) {
         String distributionPolicyName = String.format("%s-Name", id);
 
-        DistributionPolicy distributionPolicy = new DistributionPolicy()
-            .setMode(new LongestIdleMode()
+        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
+            id,
+            distributionPolicyName,
+            10.0,
+            new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10))
-            .setName(distributionPolicyName)
-            .setOfferTtlSeconds(10.0);
+                .setMaxConcurrentOffers(10)
+        );
 
-        return routerClient.createDistributionPolicy(id, distributionPolicy);
+        return routerClient.createDistributionPolicy(createDistributionPolicyOptions);
     }
 
     private JobQueue createQueue(String queueId, String distributionPolicyId) {
