@@ -52,11 +52,10 @@ class MacPool {
         } catch (CloneNotSupportedException e) {
 
             LOGGER.warn(
-                "Cloning for the {} algorithm with provider {} {} ({}) not possible - this will " +
+                "Cloning for the {} algorithm with provider {} ({}) not possible - this will " +
                     "result in less than ideal performance.",
                 this.macInstance.getAlgorithm(),
-                this.macInstance.getProvider().getName(),
-                this.macInstance.getProvider().getVersionStr(),
+                this.macInstance.getProvider().toString(),
                 this.macInstance.getProvider().getInfo());
 
             this.isMacInstanceCloneable.set(false);
