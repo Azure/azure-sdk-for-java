@@ -354,7 +354,8 @@ com.azure.resourcemanager:azure-resourcemanager-education;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-orbital;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
-
+unreleased_com.azure:azure-core-amqp;2.6.0-beta.1
+unreleased_com.azure:azure-core;1.30.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

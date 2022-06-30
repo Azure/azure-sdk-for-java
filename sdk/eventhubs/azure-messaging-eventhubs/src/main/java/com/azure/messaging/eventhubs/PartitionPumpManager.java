@@ -69,14 +69,13 @@ class PartitionPumpManager {
 
     private static final boolean HAS_BACKPRESSURE_WINDOW_TIMEOUT;
     static {
-        final Class<?> fluxClazz = reactor.core.publisher.Flux.class;
         boolean hasBackPressureWindowTimeout = true;
         try {
             // The backpressure aware window-timeout operator is available from reactor-core v3.4.19, but
             // the user app, or its transitive dependencies may downgrade the reactor-core, so fall back
             // to the window-timeout API without back pressure to avoid runtime NoSuchMethodException.
-            MethodHandles.publicLookup().findVirtual(fluxClazz, "windowTimeout",
-                MethodType.methodType(fluxClazz, int.class, Duration.class, boolean.class));
+            MethodHandles.publicLookup().findVirtual(Flux.class, "windowTimeout",
+                MethodType.methodType(Flux.class, int.class, Duration.class, boolean.class));
         } catch (IllegalAccessException | NoSuchMethodException error) {
             hasBackPressureWindowTimeout = false;
             LOGGER.verbose("Failed to locate backpressure aware variant of windowTimeout, "
