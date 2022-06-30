@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.CosmosException;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -9,7 +11,6 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 /**
@@ -23,30 +24,24 @@ import java.util.function.Function;
  * 1. For example 1 replica moved out of the 4 replicas available. 3 replicas could still be processing requests.
  *    The request going to the 1 stale replica would be retried.
  * 2. AsyncCacheNonBlocking updates the value in the cache rather than recreating it on each refresh. This will help reduce object creation.
- *
  */
 public class AsyncCacheNonBlocking<TKey, TValue> {
     private final static Logger logger = LoggerFactory.getLogger(AsyncCacheNonBlocking.class);
     private final ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values;
-    private final IEqualityComparer<TKey> keyEqualityComparer;
 
-    private AsyncCacheNonBlocking(ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values, IEqualityComparer<TKey> keyEqualityComparer) {
+    private AsyncCacheNonBlocking(ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values) {
         this.values = values;
-        this.keyEqualityComparer = keyEqualityComparer;
-    }
-
-    private AsyncCacheNonBlocking(IEqualityComparer<TKey> keyEqualityComparer) {
-        this(new ConcurrentHashMap<>(), keyEqualityComparer);
     }
 
     public AsyncCacheNonBlocking() {
-        this((value1, value2) -> {
-            if (value1 == value2)
-                return true;
-            if (value1 == null || value2 == null)
-                return false;
-            return value1.equals(value2);
-        });
+        this(new ConcurrentHashMap<>());
+    }
+
+    private Boolean removeNotFoundFromCacheException(CosmosException e) {
+        if (e.getStatusCode() == HttpResponseStatus.NOT_FOUND.code()) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -92,15 +87,19 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     return Mono.just(value);
                 }
 
-                Mono<TValue> refreshMono = initialLazyValue.createAndWaitForBackgroundRefreshTaskAsync(singleValueInitFunc);
+                Mono<TValue> refreshMono = initialLazyValue.createAndWaitForBackgroundRefreshTaskAsync(key, singleValueInitFunc);
 
                 return refreshMono.onErrorResume(
                     (exception) -> {
                         if (logger.isDebugEnabled()) {
                             logger.debug("refresh cache [{}] resulted in error", key, exception);
                         }
+
                         if (initialLazyValue.shouldRemoveFromCache()) {
-                            this.remove(key);
+                            // In some scenarios when a background failure occurs like a 404 the initial cache value should be removed.
+                            if (removeNotFoundFromCacheException((CosmosException)exception)) {
+                                this.remove(key);
+                            }
                         }
                         return Mono.error(exception);
                     }
@@ -129,7 +128,9 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     logger.debug("cache[{}] resulted in error", key, exception);
                 }
                 // Remove the failed task from the dictionary so future requests can send other calls..
-                this.remove(key);
+                if (initialLazyValue.shouldRemoveFromCache()) {
+                    this.remove(key);
+                }
                 return Mono.error(exception);
             }
         );
@@ -153,52 +154,48 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
      * to use the stale value while the refresh is occurring.
      */
     private class AsyncLazyWithRefresh<TValue> {
-        private final Function<TValue, Mono<TValue>> createValueFunc;
+//        private final Function<TValue, Mono<TValue>> createValueFunc;
         private final AtomicBoolean removeFromCache = new AtomicBoolean(false);
         private AtomicReference<Mono<TValue>> value;
-        private final AtomicReference<Mono<TValue>> refreshInProgress;
+        private Mono<TValue> refreshInProgress;
+        private final AtomicBoolean refreshInProgressCompleted = new AtomicBoolean(false);
 
         public AsyncLazyWithRefresh(TValue value) {
-            this.createValueFunc = null;
             this.value = new AtomicReference<>();
             this.value.set(Mono.just(value));
-            this.refreshInProgress = new AtomicReference<>();
+            this.refreshInProgress = null;
         }
 
         public AsyncLazyWithRefresh(Function<TValue, Mono<TValue>> taskFactory) {
-            this.createValueFunc = taskFactory;
             this.value = new AtomicReference<>();
-            this.refreshInProgress = new AtomicReference<>();
+            this.value.set(taskFactory.apply(null).cache());
+            this.refreshInProgress = null;
         }
 
         public Mono<TValue> getValueAsync() {
-            this.value.compareAndSet(null, this.createValueFunc.apply(null));
 
-            return this.value.get().cache();
+            return this.value.get();
         }
 
         public Mono<TValue> value() {
             return value.get();
         }
 
-        public Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(Function<TValue, Mono<TValue>> createRefreshFunction) {
+        @SuppressWarnings("unchecked")
+        public Mono<TValue> createAndWaitForBackgroundRefreshTaskAsync(TKey key, Function<TValue, Mono<TValue>> createRefreshFunction) {
             Mono<TValue> valueMono = this.value.get();
-            AtomicReference<TValue> originalValue = new AtomicReference<>();
 
             return valueMono.flatMap(value -> {
-                originalValue.set(value);
-                return valueMono;
-            }).flatMap(value -> {
-                if(this.refreshInProgress.compareAndSet(null, createRefreshFunction.apply(originalValue.get()))) {
-                    return this.refreshInProgress.get().cache()
+                if(this.refreshInProgressCompleted.compareAndSet(false, true)) {
+                    this.refreshInProgress = createRefreshFunction.apply(value).cache();
+                    return this.refreshInProgress
                         .flatMap(response -> {
                             this.value.set(Mono.just(response));
-
-                            this.refreshInProgress.set(null);
+                            this.refreshInProgressCompleted.set(false);
                             return this.value.get();
                         });
                 }
-                return this.refreshInProgress.get();
+                return this.refreshInProgress;
             });
         }
 
