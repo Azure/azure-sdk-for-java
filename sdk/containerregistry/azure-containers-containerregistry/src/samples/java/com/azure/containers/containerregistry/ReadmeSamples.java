@@ -194,6 +194,24 @@ public class ReadmeSamples {
         // END: readme-sample-anonymousClientThrows
     }
 
+    public void anonymousAsyncClientThrows() {
+        final String endpoint = getEndpoint();
+        final String repositoryName = getRepositoryName();
+
+        ContainerRegistryAsyncClient anonymousClient = new ContainerRegistryClientBuilder()
+            .endpoint(endpoint)
+            .buildAsyncClient();
+
+        // BEGIN: readme-sample-anonymousAsyncClientThrows
+        anonymousClient.deleteRepository(repositoryName)
+            .doOnSuccess(
+                ignored -> System.out.println("Unexpected Success: Delete is not allowed on anonymous access!"))
+            .doOnError(
+                error -> error instanceof ClientAuthenticationException,
+                error -> System.out.println("Expected exception: Delete is not allowed on anonymous access"));
+        // END: readme-sample-anonymousAsyncClientThrows
+    }
+
     public void enableHttpLogging() {
         final String endpoint = getEndpoint();
         final String repositoryName = getRepositoryName();

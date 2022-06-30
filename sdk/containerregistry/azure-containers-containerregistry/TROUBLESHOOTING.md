@@ -4,12 +4,15 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ## General Troubleshooting
 
-Container registry service methods throw a [HttpResponseException][HttpResponseException] on failure.
+Container registry service methods throw a [HttpResponseException][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java] or its subclass on failure.
+
+Here's the example of how to catch it with synchronous client
 
 ```java readme-sample-getProperties
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 ContainerRepository containerRepository = new ContainerRegistryClientBuilder()
     .endpoint(endpoint)
+    .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
     .credential(credential)
     .buildClient()
     .getRepository(repositoryName);
@@ -20,8 +23,19 @@ try {
 }
 ```
 
-Azure Container Registry client library log errors by default. The errors and warnings in the logs or traces generally provide
-useful insights into what went wrong and sometimes include corrective actions to fix issues.
+With async clients, you can catch and handle exceptions in the error callbacks:
+
+```java readme-sample-anonymousAsyncClientThrows
+anonymousClient.deleteRepository(repositoryName)
+    .doOnSuccess(
+        ignored -> System.out.println("Unexpected Success: Delete is not allowed on anonymous access!"))
+    .doOnError(
+        error -> error instanceof ClientAuthenticationException,
+        error -> System.out.println("Expected exception: Delete is not allowed on anonymous access"));
+```
+
+Azure Container Registry client library log errors by default. The errors and warnings in the logs or traces provide
+useful insights into what went wrong and include corrective actions to fix common issues.
 
 Make sure logging or tracing are enabled to monitor the behavior of the application and to troubleshoot issues with Azure Container Registry library. 
 
