@@ -5,7 +5,8 @@ stages:
     parameters:
       SupportedClouds: 'Public,UsGov,China'
       TestResourceDirectories:
-        - spring/spring-cloud-azure-integration-tests/test-resources
+        - spring/spring-cloud-azure-integration-tests/test-resources/eventhubs-binder
+        - spring/spring-cloud-azure-integration-tests/test-resources/servicebus-binder
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
