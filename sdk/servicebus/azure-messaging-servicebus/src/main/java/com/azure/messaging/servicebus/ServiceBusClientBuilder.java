@@ -278,8 +278,8 @@ public final class ServiceBusClientBuilder implements
     }
 
     /**
-     * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
-     * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
+     * Sets a custom endpoint address when connecting to the Service Bus service. This can be useful when your network
+     * does not allow connecting to the standard Azure Service Bus endpoint address, but does allow connecting through
      * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
      * <p>
      * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
