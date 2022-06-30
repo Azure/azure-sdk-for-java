@@ -1,10 +1,10 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.6.0 (2022-06-30)
 
 ### Features Added
 
-### Breaking Changes
+ - Added `AmqpMessageConstant` `MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state")`.
 
 ### Bugs Fixed
 
@@ -12,6 +12,10 @@
 - Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
 
 ## 2.5.2 (2022-06-03)
 

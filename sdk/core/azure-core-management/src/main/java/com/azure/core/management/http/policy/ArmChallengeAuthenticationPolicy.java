@@ -23,8 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * The pipeline policy that applies a token credential to an HTTP request
- * with "Bearer" scheme in ARM challenge based authentication scenarios.
+ * The pipeline policy that applies a token credential to an HTTP request with "Bearer" scheme in ARM challenge based
+ * authentication scenarios.
  */
 public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationPolicy {
     private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
@@ -63,6 +63,17 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     }
 
     @Override
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
+        String[] scopes = this.scopes;
+        scopes = getScopes(context, scopes);
+
+        if (scopes != null) {
+            context.setData(ARM_SCOPES_KEY, scopes);
+            setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes));
+        }
+    }
+
+    @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
@@ -90,12 +101,45 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         return setAuthorizationHeader(context,
                             new TokenRequestContext()
                                 .addScopes(scopes).setClaims(claims))
-                                   .flatMap(b -> Mono.just(true));
+                            .flatMap(b -> Mono.just(true));
                     }
                 }
             }
             return Mono.just(false);
         });
+    }
+
+    @Override
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        if (response.getStatusCode() == 401 && authHeader != null) {
+            List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
+            for (AuthenticationChallenge authenticationChallenge : challenges) {
+                Map<String, String> extractedChallengeParams =
+                    parseChallengeParams(authenticationChallenge.getChallengeParameters());
+                if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
+                    String claims = new String(Base64.getUrlDecoder()
+                        .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
+
+                    String[] scopes;
+                    // We should've retrieved and configured the scopes in on Before logic,
+                    // re-use it here as an optimization.
+                    try {
+                        scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
+                    } catch (NoSuchElementException e) {
+                        scopes = this.scopes;
+                    }
+
+                    // If scopes wasn't configured in On Before logic or at constructor level,
+                    // then this method will retrieve it again.
+                    scopes = getScopes(context, scopes);
+                    setAuthorizationHeaderSync(context, new TokenRequestContext().addScopes(scopes).setClaims(claims));
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.12.3 (2022-06-30)
 
 ### Features Added
 
@@ -14,11 +14,13 @@
   httpClient.send(request, context).subscribe();
   ```
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded Netty from `4.1.76.Final` to `4.1.86.Final`.
+- Upgraded Reactor Netty from `1.0.18` to `1.0.20`.
 
 ## 1.12.2 (2022-06-03)
 
