@@ -32,12 +32,21 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
         String blobName = "randomblobtest-" + UUID.randomUUID().toString();
 
         if (options.getEncryptionVersion() != null) {
+            EncryptionVersion version;
+            if (options.getEncryptionVersion().equals("1.0")) {
+                version = EncryptionVersion.V1;
+            } else if (options.getEncryptionVersion().equals("2.0")) {
+                version = EncryptionVersion.V2;
+            } else {
+                throw new IllegalArgumentException("Encryption version not recognized");
+            }
+
             Random rand = new Random(System.currentTimeMillis());
             byte[] data = new byte[256];
             rand.nextBytes(data);
             FakeKey key = new FakeKey("keyId", data);
 
-            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(options.getEncryptionVersion())
+            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
                 .blobClient(blobContainerClient.getBlobClient(blobName))
                 .key(key, KeyWrapAlgorithm.A256KW.toString());
 
