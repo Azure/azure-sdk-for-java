@@ -121,7 +121,9 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
             .format(HMAC_DATETIMEFORMATTER_PATTERN);
         headers.put(X_MS_DATE_HEADER, utcNow);
-        headers.put(HOST_HEADER, url.getHost());
+        //headers.put(HOST_HEADER, url.getHost());
+        headers.put("X_FORWARDED_HOST", "acstestappjuntu.communication.azure.com");
+        headers.put(HOST_HEADER, "acstestappjuntu.communication.azure.com");
         addSignatureHeader(url, httpMethod, headers);
         return headers;
     }

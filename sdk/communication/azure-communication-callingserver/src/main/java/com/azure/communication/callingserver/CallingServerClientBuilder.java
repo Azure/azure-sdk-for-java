@@ -291,12 +291,13 @@ public final class CallingServerClientBuilder implements
      * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
      * specified by additionalPolicies will be applied after them
      *
+     * @param isDebug Turn on/off debug mode
      * @return The updated {@link CallingServerClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerAsyncClient buildAsyncClient() {
-        return new CallingServerAsyncClient(createServiceImpl());
+    public CallingServerAsyncClient buildAsyncClient(boolean isDebug) {
+        return new CallingServerAsyncClient(createServiceImpl(isDebug));
     }
 
     /**
@@ -304,21 +305,22 @@ public final class CallingServerClientBuilder implements
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
      * additionalPolicies will be applied after them.
      *
+     * @param isDebug Turn on/off debug mode
      * @return Updated {@link CallingServerClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerClient buildClient() {
-        return new CallingServerClient(buildAsyncClient());
+    public CallingServerClient buildClient(boolean isDebug) {
+        return new CallingServerClient(buildAsyncClient(isDebug));
     }
 
-    private AzureCommunicationCallingServerServiceImpl createServiceImpl() {
+    private AzureCommunicationCallingServerServiceImpl createServiceImpl(boolean isDebug) {
         boolean isConnectionStringSet = connectionString != null && !connectionString.trim().isEmpty();
         boolean isEndpointSet = endpoint != null && !endpoint.trim().isEmpty();
         boolean isAzureKeyCredentialSet = azureKeyCredential != null;
         boolean isTokenCredentialSet = tokenCredential != null;
 
-        if (isConnectionStringSet && isEndpointSet) {
+        if (isConnectionStringSet && isEndpointSet && !isDebug) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
         }
@@ -338,7 +340,11 @@ public final class CallingServerClientBuilder implements
                 "Both 'tokenCredential' and 'keyCredential' are set. Just one may be used."));
         }
 
-        if (isConnectionStringSet) {
+        if (isConnectionStringSet && isEndpointSet && isDebug) {
+            CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
+            String accessKey = connectionStringObject.getAccessKey();
+            credential(new AzureKeyCredential(accessKey));
+        } else if (isConnectionStringSet) {
             CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
             String endpoint = connectionStringObject.getEndpoint();
             String accessKey = connectionStringObject.getAccessKey();
