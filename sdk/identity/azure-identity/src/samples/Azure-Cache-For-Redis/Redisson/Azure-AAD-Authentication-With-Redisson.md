@@ -55,7 +55,7 @@ String token = clientCertificateCredential
 // Create Client Configuration
 Config config = new Config();
 config.useSingleServer()
-        .setAddress("redis://YOUR_HOST_NAME.cache.windows.net:6379")
+        .setAddress("redis://YOUR_HOST_NAME.cache.windows.net:6380")
         .setKeepAlive(true)
         .setUsername("Username")
         .setPassword(token)
@@ -91,7 +91,7 @@ TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cachein
 AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
 
 // Create Redisson Client
-RedissonClient redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6379", "USERNAME", accessToken);
+RedissonClient redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6380", "USERNAME", accessToken);
 
 int maxTries = 3;
 int i = 0;
@@ -113,7 +113,7 @@ while (i < maxTries) {
         // If access token is expired, we need to create a new client with a valid token as password.
         if (accessToken.isExpired()) {
             redisson.shutdown();
-            redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6379", "USERNAME", getAccessToken(clientCertificateCredential, trc));
+            redisson = createRedissonClient("redis://YOUR_HOST_NAME.cache.windows.net:6380", "USERNAME", getAccessToken(clientCertificateCredential, trc));
         }
     } catch (Exception e) {
         // Handle Exception as required

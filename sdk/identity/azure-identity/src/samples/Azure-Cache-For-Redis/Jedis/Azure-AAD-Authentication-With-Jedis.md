@@ -45,17 +45,13 @@ When migrating your existing your application code, you need to replace the pass
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
-//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-        .clientId("YOUR-CLIENT-ID")
-        .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
-        .tenantId("YOUR-TENANT-ID")
-        .build();
+//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-String token = clientCertificateCredential
-        .getToken(new TokenRequestContext()
-                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+String token = defaultAzureCredential
+    .getToken(new TokenRequestContext()
+        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
 
 // SSL connection is required for non 6379 ports. It is recommeded to use SSL connections.
 boolean useSsl = true; 
