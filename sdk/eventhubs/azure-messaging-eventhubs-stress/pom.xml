@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>2.7.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -65,7 +65,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
+        <version>2.7.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -83,7 +83,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-include-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.7.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
