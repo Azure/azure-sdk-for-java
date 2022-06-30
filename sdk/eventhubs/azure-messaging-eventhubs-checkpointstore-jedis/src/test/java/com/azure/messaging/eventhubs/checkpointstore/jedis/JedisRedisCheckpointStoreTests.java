@@ -32,6 +32,13 @@ public class JedisRedisCheckpointStoreTests {
     private JedisRedisCheckpointStore store;
     private Jedis jedis;
     private JsonSerializer jsonSerializer;
+
+    private static final String FULLY_QUALIFIED_NAMESPACE = "fullyQualifiedNamespace";
+    private static final String EVENT_HUB_NAME = "eventHubName";
+    private static final String CONSUMER_GROUP = "consumerGroup";
+    private static final String PARTITION_ID = "1";
+    private static final String PREFIX = JedisRedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
+    private static final String KEY = JedisRedisCheckpointStore.keyBuilder(PREFIX, PARTITION_ID);
     @BeforeEach
     public void setup() {
         jedisPool = mock(JedisPool.class);
@@ -44,84 +51,82 @@ public class JedisRedisCheckpointStoreTests {
     public void testListCheckpoints() {
         //arrange
         Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroup("consumerGroup")
-            .setEventHubName("eventHubName")
-            .setFullyQualifiedNamespace("fullyQualifiedNamespace")
-            .setPartitionId("one")
-            .setSequenceNumber((long) 1);
+            .setConsumerGroup(CONSUMER_GROUP)
+            .setEventHubName(EVENT_HUB_NAME)
+            .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
+            .setPartitionId(PARTITION_ID)
+            .setSequenceNumber(1L);
         Set<String> value = new HashSet<>();
         List<String> list = new ArrayList<>();
-        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
+        value.add(JedisRedisCheckpointStore.keyBuilder(PREFIX, PARTITION_ID));
         byte[] bytes = jsonSerializer.serializeToBytes(checkpoint);
         list.add(new String(bytes));
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
-        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
-            eq("checkpoint"))).thenReturn(list);
+        when(jedis.smembers(PREFIX)).thenReturn(value);
+        when(jedis.hmget(eq(KEY),
+            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(list);
         //assert
-        StepVerifier.create(store.listCheckpoints("fullyQualifiedNamespace", "eventHubName", "consumerGroup"))
+        StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(checkpointTest -> {
-                assertEquals("fullyQualifiedNamespace", checkpointTest.getFullyQualifiedNamespace());
-                assertEquals("eventHubName", checkpointTest.getEventHubName());
-                assertEquals("consumerGroup", checkpointTest.getConsumerGroup());
+                assertEquals(FULLY_QUALIFIED_NAMESPACE, checkpointTest.getFullyQualifiedNamespace());
+                assertEquals(EVENT_HUB_NAME, checkpointTest.getEventHubName());
+                assertEquals(CONSUMER_GROUP, checkpointTest.getConsumerGroup());
             })
             .verifyComplete();
     }
 
     @Test
     public void testListCheckpointsEmptyList() {
-        //arrange
-        //act
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers("//")).thenThrow(new IllegalArgumentException());
-        //assert
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> store.listCheckpoints("", "", ""));
     }
 
     @Test
     public void testCheckpointKeyNotStored() {
-        //arrange
+
         Set<String> value = new HashSet<>();
-        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
-        //act
+        value.add(KEY);
+
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
-        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
-            eq("checkpoint"))).thenThrow(new NoSuchElementException());
-        //assert
-        Assertions.assertThrows(NoSuchElementException.class, () -> store.listCheckpoints("fullyQualifiedNamespace", "eventHubName", "consumerGroup"));
+        when(jedis.smembers(PREFIX)).thenReturn(value);
+        when(jedis.hmget(eq(KEY),
+            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenThrow(new NoSuchElementException());
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP));
     }
 
     @Test
     public void testListOwnership() {
         //arrange
         PartitionOwnership partitionOwnership = new PartitionOwnership()
-            .setFullyQualifiedNamespace("fullyQualifiedNamespace")
-            .setEventHubName("eventHubName")
-            .setConsumerGroup("consumerGroup")
-            .setPartitionId("one")
+            .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
+            .setEventHubName(EVENT_HUB_NAME)
+            .setConsumerGroup(CONSUMER_GROUP)
+            .setPartitionId(PARTITION_ID)
             .setOwnerId("ownerOne")
             .setETag("eTag");
 
         Set<String> value = new HashSet<>();
         List<String> list = new ArrayList<>();
-        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
+        value.add(KEY);
         byte[] bytes = jsonSerializer.serializeToBytes(partitionOwnership);
         list.add(new String(bytes));
 
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
+        when(jedis.smembers(PREFIX)).thenReturn(value);
 
-        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
-            eq("partitionOwnership"))).thenReturn(list);
+        when(jedis.hmget(eq(KEY),
+            eq(JedisRedisCheckpointStore.PARTITION_OWNERSHIP))).thenReturn(list);
         //assert
-        StepVerifier.create(store.listOwnership("fullyQualifiedNamespace", "eventHubName", "consumerGroup"))
+        StepVerifier.create(store.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(partitionOwnershipTest -> {
-                assertEquals("fullyQualifiedNamespace", partitionOwnershipTest.getFullyQualifiedNamespace());
-                assertEquals("eventHubName", partitionOwnershipTest.getEventHubName());
-                assertEquals("consumerGroup", partitionOwnershipTest.getConsumerGroup());
+                assertEquals(FULLY_QUALIFIED_NAMESPACE, partitionOwnershipTest.getFullyQualifiedNamespace());
+                assertEquals(EVENT_HUB_NAME, partitionOwnershipTest.getEventHubName());
+                assertEquals(CONSUMER_GROUP, partitionOwnershipTest.getConsumerGroup());
                 assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
             })
             .verifyComplete();
@@ -140,14 +145,14 @@ public class JedisRedisCheckpointStoreTests {
     public void testListOwnershipKeyNotStored() {
         //arrange
         Set<String> value = new HashSet<>();
-        value.add("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one");
+        value.add(KEY);
         //act
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.smembers("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(value);
-        when(jedis.hmget(eq("fullyQualifiedNamespace/eventHubNamespace/consumerGroup/one"),
-            eq("partitionOwnership"))).thenThrow(new NoSuchElementException());
+        when(jedis.smembers(PREFIX)).thenReturn(value);
+        when(jedis.hmget(eq(KEY),
+            eq(JedisRedisCheckpointStore.PARTITION_OWNERSHIP))).thenThrow(new NoSuchElementException());
         //assert
-        Assertions.assertThrows(NoSuchElementException.class, () -> store.listOwnership("fullyQualifiedNamespace", "eventHubName", "consumerGroup"));
+        Assertions.assertThrows(NoSuchElementException.class, () -> store.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP));
     }
 
     @Test
@@ -160,13 +165,13 @@ public class JedisRedisCheckpointStoreTests {
     @Test
     public void testUpdateCheckpoint() {
         Checkpoint checkpoint = new Checkpoint()
-            .setConsumerGroup("consumerGroup")
-            .setEventHubName("eventHubName")
-            .setFullyQualifiedNamespace("fullyQualifiedNamespace")
-            .setPartitionId("one")
+            .setConsumerGroup(CONSUMER_GROUP)
+            .setEventHubName(EVENT_HUB_NAME)
+            .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAMESPACE)
+            .setPartitionId(PARTITION_ID)
             .setSequenceNumber((long) 1);
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.exists("fullyQualifiedNamespace/eventHubName/consumerGroup")).thenReturn(true);
+        when(jedis.exists(PREFIX)).thenReturn(true);
         Assertions.assertNull(store.updateCheckpoint(checkpoint));
     }
 }
