@@ -6,23 +6,23 @@ import com.azure.communication.jobrouter.implementation.models.DistributionMode;
  * Abstract class for Create and Update DistributionPolicy Options.
  */
 public abstract class DistributionPolicyOptions {
-    /*
+    /**
      * The unique identifier of the policy.
      */
     protected String id;
 
-    /*
+    /**
      * The human readable name of the policy.
      */
     protected String name;
 
-    /*
+    /**
      * The expiry time of any offers created under this policy will be governed
      * by the offer time to live.
      */
     protected Double offerTtlSeconds;
 
-    /*
+    /**
      * Abstract base class for defining a distribution mode
      */
     protected DistributionMode mode;
