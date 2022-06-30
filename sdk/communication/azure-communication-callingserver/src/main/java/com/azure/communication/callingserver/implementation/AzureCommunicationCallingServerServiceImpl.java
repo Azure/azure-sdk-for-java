@@ -98,6 +98,18 @@ public final class AzureCommunicationCallingServerServiceImpl {
         return this.contents;
     }
 
+    /** The ServerCallsImpl object to access its operations. */
+    private final ServerCallsImpl serverCalls;
+
+    /**
+     * Gets the ServerCallsImpl object to access its operations.
+     *
+     * @return the ServerCallsImpl object.
+     */
+    public ServerCallsImpl getServerCalls() {
+        return this.serverCalls;
+    }
+
     /**
      * Initializes an instance of AzureCommunicationCallingServerService client.
      *
@@ -142,5 +154,6 @@ public final class AzureCommunicationCallingServerServiceImpl {
         this.serverCallings = new ServerCallingsImpl(this);
         this.callConnections = new CallConnectionsImpl(this);
         this.contents = new ContentsImpl(this);
+        this.serverCalls = new ServerCallsImpl(this);
     }
 }

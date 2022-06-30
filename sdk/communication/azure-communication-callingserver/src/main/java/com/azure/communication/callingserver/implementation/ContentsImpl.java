@@ -6,6 +6,8 @@ package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
 import com.azure.communication.callingserver.implementation.models.PlayResponse;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -50,7 +52,7 @@ public final class ContentsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface ContentsService {
-        @Post("/calling/callConnections/{callConnectionId}/content/:play")
+        @Post("/calling/callConnections/{callConnectionId}/content:play")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<PlayResponse>> play(
@@ -60,12 +62,22 @@ public final class ContentsImpl {
                 @BodyParam("application/json") PlayRequest playRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Post("/calling/recordings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<StartCallRecordingResponse>> recording(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StartCallRecordingRequest startCallRecording,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
-     * Play audio.
+     * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
+     * @param callConnectionId The call connection ID.
      * @param playRequest The playRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -87,9 +99,9 @@ public final class ContentsImpl {
     }
 
     /**
-     * Play audio.
+     * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
+     * @param callConnectionId The call connection ID.
      * @param playRequest The playRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,9 +118,9 @@ public final class ContentsImpl {
     }
 
     /**
-     * Play audio.
+     * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
+     * @param callConnectionId The call connection ID.
      * @param playRequest The playRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -129,9 +141,9 @@ public final class ContentsImpl {
     }
 
     /**
-     * Play audio.
+     * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
+     * @param callConnectionId The call connection ID.
      * @param playRequest The playRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,9 +165,9 @@ public final class ContentsImpl {
     }
 
     /**
-     * Play audio.
+     * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
+     * @param callConnectionId The call connection ID.
      * @param playRequest The playRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -168,9 +180,9 @@ public final class ContentsImpl {
     }
 
     /**
-     * Play audio.
+     * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
+     * @param callConnectionId The call connection ID.
      * @param playRequest The playRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,5 +193,122 @@ public final class ContentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayResponse> playWithResponse(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context).block();
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartCallRecordingResponse>> recordingWithResponseAsync(
+            StartCallRecordingRequest startCallRecording) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.recording(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                startCallRecording,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartCallRecordingResponse>> recordingWithResponseAsync(
+            StartCallRecordingRequest startCallRecording, Context context) {
+        final String accept = "application/json";
+        return service.recording(
+                this.client.getEndpoint(), this.client.getApiVersion(), startCallRecording, accept, context);
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartCallRecordingResponse> recordingAsync(StartCallRecordingRequest startCallRecording) {
+        return recordingWithResponseAsync(startCallRecording)
+                .flatMap(
+                        (Response<StartCallRecordingResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartCallRecordingResponse> recordingAsync(
+            StartCallRecordingRequest startCallRecording, Context context) {
+        return recordingWithResponseAsync(startCallRecording, context)
+                .flatMap(
+                        (Response<StartCallRecordingResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StartCallRecordingResponse recording(StartCallRecordingRequest startCallRecording) {
+        return recordingAsync(startCallRecording).block();
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StartCallRecordingResponse> recordingWithResponse(
+            StartCallRecordingRequest startCallRecording, Context context) {
+        return recordingWithResponseAsync(startCallRecording, context).block();
     }
 }

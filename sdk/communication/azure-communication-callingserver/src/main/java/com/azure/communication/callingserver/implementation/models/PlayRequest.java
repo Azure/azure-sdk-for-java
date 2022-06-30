@@ -21,7 +21,7 @@ public final class PlayRequest {
      * The list of call participants play provided audio to.
      * Plays to everyone in the call when not provided.
      */
-    @JsonProperty(value = "playTo")
+    @JsonProperty(value = "playTo", required = true)
     private List<CommunicationIdentifierModel> playTo;
 
     /*

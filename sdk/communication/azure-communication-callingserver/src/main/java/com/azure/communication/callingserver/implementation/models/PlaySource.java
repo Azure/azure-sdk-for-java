@@ -16,6 +16,12 @@ public final class PlaySource {
     @JsonProperty(value = "sourceType", required = true)
     private PlaySourceType sourceType;
 
+    /*
+     * Defines the identifier to be used for caching related media
+     */
+    @JsonProperty(value = "playSourceId")
+    private String playSourceId;
+
     /**
      * Get the sourceType property: Defines the type of the play source.
      *
@@ -33,6 +39,26 @@ public final class PlaySource {
      */
     public PlaySource setSourceType(PlaySourceType sourceType) {
         this.sourceType = sourceType;
+        return this;
+    }
+
+    /**
+     * Get the playSourceId property: Defines the identifier to be used for caching related media.
+     *
+     * @return the playSourceId value.
+     */
+    public String getPlaySourceId() {
+        return this.playSourceId;
+    }
+
+    /**
+     * Set the playSourceId property: Defines the identifier to be used for caching related media.
+     *
+     * @param playSourceId the playSourceId value to set.
+     * @return the PlaySource object itself.
+     */
+    public PlaySource setPlaySourceId(String playSourceId) {
+        this.playSourceId = playSourceId;
         return this;
     }
 }
