@@ -516,5 +516,14 @@ public final class CallingServerClient {
     public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
         return callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
+
+    /***
+     * Returns an object of ContentCapabilities
+     * @param callConnectionId
+     * @return
+     */ @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContentCapabilities getContentCapabilities(String callConnectionId) {
+        return new ContentCapabilities(callingServerAsyncClient.getContentCapabilities(callConnectionId));
+    }
     //endregion
 }

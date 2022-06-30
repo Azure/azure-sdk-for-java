@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallingsImpl;
 import com.azure.communication.callingserver.implementation.converters.AcsCallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
@@ -76,6 +77,7 @@ import static com.azure.core.util.FluxUtil.fluxError;
 public final class CallingServerAsyncClient {
     private final CallConnectionsImpl callConnectionInternal;
     private final ServerCallingsImpl serverCallingInternal;
+    private final ContentsImpl contentsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
@@ -84,6 +86,7 @@ public final class CallingServerAsyncClient {
     CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
         callConnectionInternal = callServiceClient.getCallConnections();
         serverCallingInternal = callServiceClient.getServerCallings();
+        contentsInternal = callServiceClient.getContents();
         logger = new ClientLogger(CallingServerAsyncClient.class);
         contentDownloader = new ContentDownloader(
             callServiceClient.getEndpoint(),
@@ -842,6 +845,16 @@ public final class CallingServerAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /***
+     * Returns an object of ContentCapabilities
+     * @param callConnectionId
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ContentCapabilitiesAsync getContentCapabilities(String callConnectionId) {
+        return new ContentCapabilitiesAsync(callConnectionId, contentsInternal);
     }
 
     private URL getUrlToSignRequestWith(String endpoint) {
