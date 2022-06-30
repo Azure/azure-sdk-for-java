@@ -3,7 +3,7 @@
 ## 12.18.0-beta.2 (Unreleased)
 
 ### Features Added
-- BlobOutputStream.close() will now ignore STREAM_CLOSED exception when called multiple times.
+- BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
 
 ## 12.18.0-beta.1 (2022-06-15)
 
