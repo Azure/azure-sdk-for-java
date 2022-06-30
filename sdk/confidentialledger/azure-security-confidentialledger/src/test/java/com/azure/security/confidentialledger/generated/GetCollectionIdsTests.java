@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -45,11 +44,10 @@ public final class GetCollectionIdsTests extends ConfidentialLedgerClientTestBas
             String value = collectionJson.get("collectionId").toString();
             collectionKeys.add(value);
         });
-        System.out.println(collectionKeys);
-        Assertions.assertTrue(collectionKeys.contains("1"));
-        Assertions.assertTrue(collectionKeys.contains("2"));
-        Assertions.assertTrue(collectionKeys.contains("3"));
-        Assertions.assertTrue(collectionKeys.contains("4"));
-        Assertions.assertTrue(collectionKeys.contains("subledger:0"));
+        collectionKeys.stream().anyMatch((item) -> item.contains("1"));
+        collectionKeys.stream().anyMatch((item) -> item.contains("2"));
+        collectionKeys.stream().anyMatch((item) -> item.contains("3"));
+        collectionKeys.stream().anyMatch((item) -> item.contains("4"));
+        collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
     }
 }

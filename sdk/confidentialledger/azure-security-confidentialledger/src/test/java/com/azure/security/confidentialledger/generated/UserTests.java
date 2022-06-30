@@ -8,6 +8,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.azure.core.util.Configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -15,25 +16,30 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public final class PostLedgerEntryTests extends ConfidentialLedgerClientTestBase {
+public final class UserTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testPostLedgerEntryTests() {
-        BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
+    public void testGetUserTests() {
+        String userAad = Configuration.getGlobalConfiguration().get("USERAAD", "");
+
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
+
+        Response<BinaryData> response = confidentialLedgerClient.getUserWithResponse(userAad, requestOptions);
+        
         BinaryData parsedResponse = response.getValue();
+
+        Assertions.assertEquals(200, response.getStatusCode());
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseBodyJson = null;
 
         try {
-            
             responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
         } catch (IOException e) {
             e.printStackTrace();
             Assertions.assertTrue(false);
         }
-        
-        Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
+
+        Assertions.assertEquals(responseBodyJson.get("assignedRole").asText(), "Administrator");
+        Assertions.assertEquals(responseBodyJson.get("userId").asText(), userAad);
     }
 }

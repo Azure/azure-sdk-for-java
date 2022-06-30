@@ -7,20 +7,34 @@ package com.azure.security.confidentialledger.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTestBase {
     @Test
-    @Disabled
     public void testGetConsortiumMembersTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getConsortiumMembersWithResponse(requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString("{\"members\":[{\"certificate\":\"<PEM certificate>\",\"id\":\"0\"}]}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        
+        BinaryData parsedResponse = response.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseBodyJson = null;
+
+        try {
+            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+        JsonNode enclaveQuotes = responseBodyJson.get("members");
+
+        Assertions.assertNotNull(enclaveQuotes.get(0).get("id"));
     }
 }
