@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -107,8 +108,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             currentChannel = amqpChannel;
 
             final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
-            logger.info("Next AMQP channel received, updating {} current subscribers", subscribers.size());
-
             currentSubscribers.forEach(subscription -> subscription.onNext(amqpChannel));
 
             connectionSubscription = endpointStatesFunction.apply(amqpChannel).subscribe(
@@ -227,8 +226,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             synchronized (lock) {
                 final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
                 subscribers = new ConcurrentLinkedDeque<>();
-                logger.info("Error in AMQP channel processor. Notifying {} subscribers.", currentSubscribers.size());
-
                 currentSubscribers.forEach(subscriber -> subscriber.onError(throwable));
             }
         }
@@ -242,7 +239,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         synchronized (lock) {
             final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
             subscribers = new ConcurrentLinkedDeque<>();
-            logger.info("AMQP channel processor completed. Notifying {} subscribers.", currentSubscribers.size());
             currentSubscribers.forEach(subscriber -> subscriber.onComplete());
         }
     }
@@ -270,8 +266,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             }
         }
 
+        subscriber.onAdd();
         subscribers.add(subscriber);
-        logger.atVerbose().addKeyValue("subscribers", subscribers.size()).log("Added a subscriber.");
 
         if (!isRetryPending.get()) {
             requestUpstream();
@@ -370,17 +366,31 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
      * which removes itself from the tracking list, then propagates the notification to the wrapped subscriber.
      */
     private static final class ChannelSubscriber<T> extends Operators.MonoSubscriber<T, T> {
+
         private final AmqpChannelProcessor<T> processor;
+        // subscriberId is only needed for logging and not every subscriber is logged, so let's make it lazy.
+        private String subscriberId = null;
 
         private ChannelSubscriber(CoreSubscriber<? super T> actual, AmqpChannelProcessor<T> processor) {
             super(actual);
             this.processor = processor;
         }
 
+        void onAdd() {
+            // most subscribers never get here and will be completed immediately after they are created.
+            subscriberId = UUID.randomUUID().toString().substring(0, 6);
+            processor.logger.atVerbose()
+                .addKeyValue("subscriberId", subscriberId)
+                .log("Added subscriber.");
+        }
+
         @Override
         public void cancel() {
             processor.subscribers.remove(this);
             super.cancel();
+            processor.logger.atVerbose()
+                .addKeyValue("subscriberId", subscriberId)
+                .log("Canceled subscriber");
         }
 
         @Override
@@ -389,6 +399,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 // first untrack before calling into external code.
                 processor.subscribers.remove(this);
                 actual.onComplete();
+                processor.logger.atInfo()
+                    .addKeyValue("subscriberId", subscriberId)
+                    .log("AMQP channel processor completed.");
             }
         }
 
@@ -397,6 +410,10 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             if (!isCancelled()) {
                 processor.subscribers.remove(this);
                 super.complete(channel);
+
+                processor.logger.atInfo()
+                    .addKeyValue("subscriberId", subscriberId)
+                    .log("Next AMQP channel received.");
             }
         }
 
@@ -405,6 +422,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             if (!isCancelled()) {
                 processor.subscribers.remove(this);
                 actual.onError(throwable);
+                processor.logger.atInfo()
+                    .addKeyValue("subscriberId", subscriberId)
+                    .log("Error in AMQP channel processor.");
             } else {
                 Operators.onErrorDropped(throwable, currentContext());
             }
