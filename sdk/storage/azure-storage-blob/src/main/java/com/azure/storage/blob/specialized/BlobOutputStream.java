@@ -135,7 +135,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             try {
                 this.commit();
             } catch (final BlobStorageException e) {
-                throw new IOException(e);
+                throw new IOException("The blob has not been commited. Data has not been persisted.", e);
             }
             /* Need this check because for block blob the buffered upload error only manifests itself after commit is
                called */

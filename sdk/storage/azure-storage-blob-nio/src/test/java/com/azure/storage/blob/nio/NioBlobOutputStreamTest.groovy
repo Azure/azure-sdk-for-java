@@ -257,11 +257,12 @@ class NioBlobOutputStreamTest extends APISpec {
 
     def "Close error"() {
         when:
+        // now calling close multiple times does not cause any error
         nioStream.close()
         nioStream.close()
 
         then:
-        thrown(IOException)
+        notThrown(IOException)
     }
 
     def "Close does not throw error"() {
@@ -278,7 +279,6 @@ class NioBlobOutputStreamTest extends APISpec {
         then:
         notThrown(IOException)
     }
-
 
     def "Close fs closed"() {
         when:
