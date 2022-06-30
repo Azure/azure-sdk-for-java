@@ -5,30 +5,45 @@ package com.azure.cosmos.implementation;
 
 import javax.crypto.Mac;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 class MacPool {
     final Mac macInstance;
     final ConcurrentLinkedQueue<Mac> pool;
+    final AtomicBoolean isMacInstanceCloneable = new AtomicBoolean(true);
+    final Supplier<Mac> macProvider;
 
-    public MacPool(Mac rootMac) {
-        if (rootMac == null) {
-            throw new IllegalArgumentException("rootMac");
+    public MacPool(Supplier<Mac> macProvider) {
+        if (macProvider == null) {
+            throw new IllegalArgumentException("macProvider");
         }
 
-        this.macInstance = rootMac;
+        this.macProvider = macProvider;
+        this.macInstance = macProvider.get();
         this.pool = new ConcurrentLinkedQueue<>();
     }
 
     public ReUsableMac take() {
-        try {
-            Mac cachedInstance = pool.poll();
-            if (cachedInstance == null) {
-                cachedInstance = (Mac) this.macInstance.clone();
-            }
+        Mac cachedInstance = pool.poll();
+        if (cachedInstance == null) {
+            cachedInstance = this.createNewMac();
+        }
 
-            return new ReUsableMac(cachedInstance, this);
+        return new ReUsableMac(cachedInstance, this);
+    }
+
+    private Mac createNewMac() {
+        if (!this.isMacInstanceCloneable.get()) {
+            return this.macProvider.get();
+        }
+
+        try {
+            return (Mac) this.macInstance.clone();
         } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException(e);
+            this.isMacInstanceCloneable.set(false);
+
+            return this.macProvider.get();
         }
     }
 
