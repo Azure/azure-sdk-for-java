@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -23,7 +24,8 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsHeaders;
+import com.azure.storage.file.datalake.implementation.models.PathList;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
@@ -227,8 +229,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteIfExists() {
-        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -245,12 +246,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
      *
@@ -264,16 +265,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
         try {
             options = options == null ? new DataLakePathDeleteOptions() : options;
-            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions()).onErrorResume(t -> t
+            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t
                 instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((DataLakeStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), null));
-                });
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -355,7 +358,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return createFileWithResponse(fileName, null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
+        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -395,6 +398,64 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
+        try {
+            return createFileWithResponse(fileName, options);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates a new file within a directory. If a file with the same name already exists, the file will be
+     * overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
+     *
+     * DataLakeFileAsyncClient newFileClient = client.createFileWithResponse&#40;fileName, options&#41;.block&#40;&#41;.getValue&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-DataLakePathCreateOptions -->
+     *
+     * @param fileName Name of the file to create.
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeFileAsyncClient} used to interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, DataLakePathCreateOptions options) {
         DataLakeFileAsyncClient dataLakeFileAsyncClient;
         try {
             dataLakeFileAsyncClient = getFileAsyncClient(fileName);
@@ -402,7 +463,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             return monoError(LOGGER, ex);
         }
 
-        return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
+        return dataLakeFileAsyncClient.createWithResponse(options)
             .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
     }
 
@@ -442,8 +503,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * client.createFileIfNotExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
      *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
@@ -555,8 +619,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteFileIfExists(String fileName) {
-        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -574,12 +637,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteFileIfExistsWithResponse&#40;fileName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
@@ -589,7 +652,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * successfully deleted. If status code is 404, the specified file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
+    public Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options) {
         try {
             return withContext(context -> this.deleteFileIfExistsWithResponse(fileName, options, context));
         } catch (RuntimeException ex) {
@@ -597,7 +660,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
     }
 
-    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
+    Mono<Response<Boolean>> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
         Context context) {
         try {
             return getFileAsyncClient(fileName).deleteIfExistsWithResponse(options, context);
@@ -684,7 +747,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
 
-        return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, requestConditions)
+        return createSubdirectoryWithResponse(subdirectoryName, new DataLakePathCreateOptions()
+            .setRequestConditions(requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -726,15 +790,73 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
         try {
-            dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+            return createSubdirectoryWithResponse(subdirectoryName, options);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
 
-        return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
-            .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+    /**
+     * Creates a new sub-directory within a directory. If a sub-directory with the same name already exists, the
+     * sub-directory will be overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
+     *
+     * DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse&#40;directoryName, options&#41;
+     *     .block&#40;&#41;.getValue&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions -->
+     *
+     * @param subdirectoryName Name of the sub-directory to create.
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeDirectoryAsyncClient} used to interact with the sub-directory created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
+        DataLakePathCreateOptions options) {
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        try {
+            dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+            return dataLakeDirectoryAsyncClient.createWithResponse(options)
+                .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -772,8 +894,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * client.createSubdirectoryIfNotExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
      *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
@@ -899,7 +1024,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> deleteSubdirectoryIfExists(String subdirectoryName) {
         return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, new DataLakePathDeleteOptions())
-            .map(response -> response.getStatusCode() != 404);
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -918,12 +1043,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
      * client.deleteSubdirectoryIfExistsWithResponse&#40;directoryName, options&#41;.subscribe&#40;response -&gt; &#123;
-     *             if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *                 System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     *             &#125; else &#123;
-     *                 System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
@@ -934,17 +1059,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
+    public Mono<Response<Boolean>> deleteSubdirectoryIfExistsWithResponse(String directoryName,
         DataLakePathDeleteOptions options) {
         try {
             return deleteSubdirectoryWithResponse(directoryName, options.getIsRecursive(),
                 options.getRequestConditions())
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorResume(t -> t instanceof DataLakeStorageException
                     && ((DataLakeStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((DataLakeStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
+                            response.getHeaders(), false));
                     });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1097,7 +1223,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
-    private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
+    private Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsSegment(String marker, boolean recursive,
         boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
 
         return StorageImplUtils.applyOptionalTimeout(

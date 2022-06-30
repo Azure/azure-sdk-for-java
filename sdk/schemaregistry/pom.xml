@@ -11,49 +11,8 @@
   <artifactId>azure-data-schemaregistry-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
-  <profiles>
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-data-schemaregistry</module>
-        <module>azure-data-schemaregistry-apacheavro</module>
-      </modules>
-
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-data-schemaregistry</artifactId>
-          <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-          <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-data-schemaregistry</module>
-        <module>azure-data-schemaregistry-apacheavro</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+      <module>azure-data-schemaregistry</module>
+      <module>azure-data-schemaregistry-apacheavro</module>
+  </modules>
 </project>

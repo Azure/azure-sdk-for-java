@@ -6,7 +6,10 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
  * Defines grant types: client_credentials, authorization_code, on_behalf_of, azure_delegated.
+ *
+ * @deprecated use {@link AuthorizationGrantType} instead.
  */
+@Deprecated
 public enum AadAuthorizationGrantType {
 
     /**
@@ -50,10 +53,10 @@ public enum AadAuthorizationGrantType {
     }
 
     /**
-     * Whether the other grant type is the same as the AAD grant type.
+     * Whether the other grant type is the same as the Azure AD grant type.
      *
      * @param grantType the other grant type
-     * @return whether the other grant type is the same as the AAD grant type
+     * @return whether the other grant type is the same as the Azure AD grant type
      */
     public boolean isSameGrantType(AuthorizationGrantType grantType) {
         return this.authorizationGrantType.equals(grantType.getValue());

@@ -1,16 +1,44 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.12.3 (2022-06-30)
 
 ### Features Added
 
-### Breaking Changes
+- Added ability to track progress by passing `ProgressReporter` in the `Context`. For example:
+  ```java
+  HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+  ProgressReporter progressReporter = ProgressReporter.withProgressListener(progress -> System.out.println(progress));
+  Context context = Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext();
+  HttpRequest request = new HttpRequest(
+      HttpMethod.PUT, new URL("http://example.com"), new HttpHeaders(), BinaryData.fromString("sample body"))
+  httpClient.send(request, context).subscribe();
+  ```
 
-### Bugs Fixed
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded Netty from `4.1.76.Final` to `4.1.86.Final`.
+- Upgraded Reactor Netty from `1.0.18` to `1.0.20`.
+
+## 1.12.2 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.12.1 (2022-06-03)
 
 ### Other Changes
 
 - Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
 
 ## 1.12.0 (2022-05-06)
 

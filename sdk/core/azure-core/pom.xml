@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -49,6 +49,7 @@
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
 
@@ -59,6 +60,7 @@
       --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
       --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
@@ -89,27 +91,27 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.2.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -130,12 +132,12 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -165,7 +167,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -231,12 +233,12 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-core:[3.4.17]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.2.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.4.19]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>

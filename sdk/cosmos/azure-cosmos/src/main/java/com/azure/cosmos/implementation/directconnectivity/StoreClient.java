@@ -6,32 +6,34 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -73,6 +75,8 @@ public class StoreClient implements IStoreClient {
             userTokenProvider,
             false,
             useMultipleWriteLocations);
+
+        addressResolver.setOpenConnectionsHandler(new RntbdOpenConnectionsHandler(transportClient));
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -128,6 +132,11 @@ public class StoreClient implements IStoreClient {
         });
     }
 
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(containerLink);
+    }
+
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {
         this.updateResponseHeader(request, exception.getResponseHeaders());
         if ((!ReplicatedResourceClient.isMasterResource(request.getResourceType())) &&
@@ -142,7 +151,8 @@ public class StoreClient implements IStoreClient {
         StoreResponse storeResponse,
         RxDocumentServiceRequest request) throws InternalServerErrorException {
 
-        Map<String, String> responseHeaders = new HashMap<>(storeResponse.getResponseHeaders());
+        Map<String, String> responseHeaders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        responseHeaders.putAll(storeResponse.getResponseHeaders());
 
         this.updateResponseHeader(request, responseHeaders);
         this.captureSessionToken(request, responseHeaders);

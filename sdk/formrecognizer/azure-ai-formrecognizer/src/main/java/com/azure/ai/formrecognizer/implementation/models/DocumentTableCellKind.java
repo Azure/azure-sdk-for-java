@@ -36,7 +36,11 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
         return fromString(name, DocumentTableCellKind.class);
     }
 
-    /** @return known DocumentTableCellKind values. */
+    /**
+     * Gets known DocumentTableCellKind values.
+     *
+     * @return known DocumentTableCellKind values.
+     */
     public static Collection<DocumentTableCellKind> values() {
         return values(DocumentTableCellKind.class);
     }

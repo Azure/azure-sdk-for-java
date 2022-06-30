@@ -1,15 +1,36 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.10.0 (2022-06-30)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added `ThreadDumper` which will dump thread data if testing is assumed to be deadlocked.
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+
+## 1.9.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.9.0 (2022-06-03)
+
+### Features Added
+- Added `getRequestUrl` and `canSendBinaryData` methods to HttpClientTests
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+- 
 ## 1.8.0 (2022-05-06)
 
 ### Features Added

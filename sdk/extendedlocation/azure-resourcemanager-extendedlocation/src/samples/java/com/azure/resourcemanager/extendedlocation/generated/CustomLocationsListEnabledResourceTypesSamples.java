@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CustomLocations ListEnabledResourceTypes. */
 public final class CustomLocationsListEnabledResourceTypesSamples {
     /*
-     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/stable/2021-08-15/examples/CustomLocationsListEnabledResourceTypes.json
+     * x-ms-original-file: specification/extendedlocation/resource-manager/Microsoft.ExtendedLocation/preview/2021-08-31-preview/examples/CustomLocationsListEnabledResourceTypes.json
      */
     /**
      * Sample code: Get Custom Location.

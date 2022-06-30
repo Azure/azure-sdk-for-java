@@ -602,8 +602,7 @@ public class CosmosQueryRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
 
@@ -688,4 +687,6 @@ public class CosmosQueryRequestOptions {
                 }
             });
     }
+
+    static { initialize(); }
 }

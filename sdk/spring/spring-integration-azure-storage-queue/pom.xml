@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-integration-azure-storage-queue</artifactId>
-  <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
 
   <name>Spring Integration Azure Storage Queue</name>
   <description>Spring Integration Azure Storage Queue</description>
@@ -38,12 +38,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-core</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure-storage-queue</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -59,19 +59,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -31,6 +31,7 @@ public class ClientTelemetrySampleTest {
         String clientTelemetryStagingEndpoint = "https://tools-staging.cosmos.azure.com/api/clienttelemetry/trace/";
         String clientTelemetryTestEndpoint = "https://juno-test.documents-dev.windows-int.net/api/clienttelemetry/trace/";
         System.setProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT", clientTelemetryStagingEndpoint);
+        System.setProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG", "{\"type\":\"HTTP\", \"host\": \"localhost\", \"port\": 8080}");
 
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

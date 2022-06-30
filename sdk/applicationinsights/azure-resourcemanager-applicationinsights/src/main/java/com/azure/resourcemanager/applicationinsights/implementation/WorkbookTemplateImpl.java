@@ -84,6 +84,10 @@ public final class WorkbookTemplateImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WorkbookTemplateInner innerModel() {
         return this.innerObject;
     }

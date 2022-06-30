@@ -62,6 +62,13 @@ public final class EncryptionSetProperties {
     @JsonProperty(value = "autoKeyRotationError", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError autoKeyRotationError;
 
+    /*
+     * Multi-tenant application client id to access key vault in a different
+     * tenant. Setting the value to 'None' will clear the property.
+     */
+    @JsonProperty(value = "federatedClientId")
+    private String federatedClientId;
+
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
      *
@@ -160,6 +167,28 @@ public final class EncryptionSetProperties {
      */
     public ApiError autoKeyRotationError() {
         return this.autoKeyRotationError;
+    }
+
+    /**
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the EncryptionSetProperties object itself.
+     */
+    public EncryptionSetProperties withFederatedClientId(String federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
     }
 
     /**

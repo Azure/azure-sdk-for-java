@@ -1,5 +1,28 @@
 # Release History
 
+## 1.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.13.0 (2022-06-10)
+
+### Features Added
+
+- Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.1`.
+- Update `azure-storage-blob` dependency to `12.17.1`.
+
 ## 1.12.2 (2022-05-16)
 
 ### Other Changes

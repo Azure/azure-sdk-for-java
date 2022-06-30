@@ -19,16 +19,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = RelationshipClientBuilder.class)
 public final class RelationshipClient {
-    @Generated private final RelationshipAsyncClient asyncClient;
+    @Generated private final RelationshipAsyncClient client;
 
     /**
      * Initializes an instance of RelationshipClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    RelationshipClient(RelationshipAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    RelationshipClient(RelationshipAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -105,7 +105,7 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.asyncClient.createWithResponse(relationship, requestOptions).block();
+        return this.client.createWithResponse(relationship, requestOptions).block();
     }
 
     /**
@@ -182,7 +182,7 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.asyncClient.updateWithResponse(relationship, requestOptions).block();
+        return this.client.updateWithResponse(relationship, requestOptions).block();
     }
 
     /**
@@ -193,7 +193,7 @@ public final class RelationshipClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>extendedInfo</td><td>String</td><td>No</td><td>Limits whether includes extended information.</td></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -235,6 +235,10 @@ public final class RelationshipClient {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -294,7 +298,7 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getWithResponse(guid, requestOptions).block();
+        return this.client.getWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -311,6 +315,6 @@ public final class RelationshipClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.deleteWithResponse(guid, requestOptions).block();
+        return this.client.deleteWithResponse(guid, requestOptions).block();
     }
 }

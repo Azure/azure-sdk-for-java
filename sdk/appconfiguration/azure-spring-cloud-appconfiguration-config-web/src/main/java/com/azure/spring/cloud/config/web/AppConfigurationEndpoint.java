@@ -79,7 +79,7 @@ public class AppConfigurationEndpoint {
             String topic = requestTopic.asText();
             store = topic.substring(
                 topic.toLowerCase(Locale.ROOT).indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
-            endpoint = String.format("https://%s.", store);
+            endpoint = String.format("https://%s", store);
         } else {
             throw new IllegalArgumentException("Refresh request missing topic field.");
         }

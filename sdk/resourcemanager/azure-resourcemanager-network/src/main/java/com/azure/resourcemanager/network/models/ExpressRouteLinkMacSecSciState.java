@@ -27,7 +27,11 @@ public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<E
         return fromString(name, ExpressRouteLinkMacSecSciState.class);
     }
 
-    /** @return known ExpressRouteLinkMacSecSciState values. */
+    /**
+     * Gets known ExpressRouteLinkMacSecSciState values.
+     *
+     * @return known ExpressRouteLinkMacSecSciState values.
+     */
     public static Collection<ExpressRouteLinkMacSecSciState> values() {
         return values(ExpressRouteLinkMacSecSciState.class);
     }

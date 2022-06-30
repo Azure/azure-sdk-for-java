@@ -3,7 +3,7 @@
     "dir": "azure-resourcemanager-appplatform",
     "source": "specification/appplatform/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appplatform",
-    "args": "--tag=package-preview-2022-01 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
+    "args": "--tag=package-2022-04 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
   },
   "appservice": {
     "dir": "azure-resourcemanager-appservice",
@@ -41,7 +41,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=package-2021-12-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+    "args": "--tag=package-2022-03-02 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "compute-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
@@ -71,7 +71,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2022-03 --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
+    "args": "--tag=package-2022-04 --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
@@ -174,7 +174,7 @@
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--tag=package-2021-05 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--tag=package-2021-08 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture,ApplicationGateway,ApplicationGatewayListener"
   },
   "network-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-network",

@@ -4,8 +4,14 @@ package com.azure.spring.cloud.service.implementation.core;
 
 import org.junit.jupiter.api.Test;
 
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.END_SYMBOL_ERROR;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.ILLEGAL_SYMBOL_ERROR;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.LENGTH_ERROR;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.START_SYMBOL_ERROR;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PropertiesValidatorTest {
 

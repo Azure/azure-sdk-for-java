@@ -3,8 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.aad;
 
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtClientAuthenticationParametersConverter;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.OAuth2ClientAuthenticationJwkResolver;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -31,9 +34,15 @@ import javax.servlet.Filter;
  */
 public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+    /**
+     * A repository for OAuth 2.0 / OpenID Connect 1.0 ClientRegistration(s).
+     */
     @Autowired
     protected ClientRegistrationRepository repo;
 
+    /**
+     * OIDC user service.
+     */
     @Autowired
     protected OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
@@ -42,6 +51,12 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
      */
     @Autowired
     protected AadAuthenticationProperties properties;
+
+    /**
+     * JWK resolver implementation for client authentication.
+     */
+    @Autowired
+    protected ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers;
 
     /**
      * configure
@@ -108,9 +123,14 @@ public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigu
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         if (repo instanceof AadClientRegistrationRepository) {
-            result.setRequestEntityConverter(
+            AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
                 new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(
-                    ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes()));
+                    ((AadClientRegistrationRepository) repo).getAzureClientAccessTokenScopes());
+            OAuth2ClientAuthenticationJwkResolver jwkResolver = jwkResolvers.getIfUnique();
+            if (jwkResolver != null) {
+                converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(jwkResolver::resolve));
+            }
+            result.setRequestEntityConverter(converter);
         }
         return result;
     }

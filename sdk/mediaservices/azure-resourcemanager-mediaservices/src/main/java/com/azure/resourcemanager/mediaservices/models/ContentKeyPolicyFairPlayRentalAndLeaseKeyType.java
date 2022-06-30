@@ -39,7 +39,11 @@ public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType
         return fromString(name, ContentKeyPolicyFairPlayRentalAndLeaseKeyType.class);
     }
 
-    /** @return known ContentKeyPolicyFairPlayRentalAndLeaseKeyType values. */
+    /**
+     * Gets known ContentKeyPolicyFairPlayRentalAndLeaseKeyType values.
+     *
+     * @return known ContentKeyPolicyFairPlayRentalAndLeaseKeyType values.
+     */
     public static Collection<ContentKeyPolicyFairPlayRentalAndLeaseKeyType> values() {
         return values(ContentKeyPolicyFairPlayRentalAndLeaseKeyType.class);
     }

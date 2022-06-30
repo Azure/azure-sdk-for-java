@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit&api-version=2022-01-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit&api-version=2022-06-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e4c127f6-a761-4405-ae43-e9117bf8d61c",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d04292fa-97b0-4b8d-9b80-82290947989f",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "202",
+      "x-envoy-upstream-service-time" : "112",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6a33d6b9-27ec-4c44-acc8-5176d77923ed",
+      "apim-request-id" : "366549b6-c233-4f0a-bf9b-524284f1854e",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
-      "Date" : "Mon, 24 Jan 2022 22:47:03 GMT",
+      "Date" : "Wed, 01 Jun 2022 19:36:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

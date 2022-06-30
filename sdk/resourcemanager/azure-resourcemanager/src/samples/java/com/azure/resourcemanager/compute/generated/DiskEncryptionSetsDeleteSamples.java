@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskEncryptionSets Delete. */
 public final class DiskEncryptionSetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/DeleteADiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
      */
     /**
      * Sample code: Delete a disk encryption set.

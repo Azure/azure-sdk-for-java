@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualHubIpConfiguration List. */
 public final class VirtualHubIpConfigurationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubIpConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubIpConfigurationList.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2List.

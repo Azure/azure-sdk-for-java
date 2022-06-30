@@ -33,7 +33,11 @@ public final class ItemType extends ExpandableStringEnum<ItemType> {
         return fromString(name, ItemType.class);
     }
 
-    /** @return known ItemType values. */
+    /**
+     * Gets known ItemType values.
+     *
+     * @return known ItemType values.
+     */
     public static Collection<ItemType> values() {
         return values(ItemType.class);
     }

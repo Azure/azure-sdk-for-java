@@ -52,7 +52,7 @@ import java.util.Map;
 /** Samples for ApplicationGateways CreateOrUpdate. */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ApplicationGatewayCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -145,8 +145,8 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                     .withBackendAddresses(
                                         Arrays
                                             .asList(
-                                                new ApplicationGatewayBackendAddress(),
-                                                new ApplicationGatewayBackendAddress()))))
+                                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.1"),
+                                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.2")))))
                     .withBackendHttpSettingsCollection(
                         Arrays
                             .asList(

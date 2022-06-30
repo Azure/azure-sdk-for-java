@@ -25,7 +25,7 @@ public final class AppConfigurationWebConstants {
      * Json field name for SyncToken value
      */
     public static final String SYNC_TOKEN = "syncToken";
-    
+
     /**
      * Prefix of the validation code.
      */

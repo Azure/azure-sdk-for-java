@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.BoundingRegion;
-import com.azure.ai.formrecognizer.models.DocumentTableCell;
 import com.azure.ai.formrecognizer.models.DocumentSpan;
 import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.models.DocumentTableCell;
 
 import java.util.List;
 

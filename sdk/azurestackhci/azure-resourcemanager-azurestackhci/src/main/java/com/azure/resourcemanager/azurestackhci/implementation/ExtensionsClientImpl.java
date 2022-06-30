@@ -120,7 +120,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
                 + "/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
@@ -492,14 +492,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     private Mono<ExtensionInner> getAsync(
         String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
         return getWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName)
-            .flatMap(
-                (Response<ExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

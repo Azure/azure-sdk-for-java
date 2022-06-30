@@ -33,7 +33,11 @@ public final class AzureFirewallNetworkRuleProtocol extends ExpandableStringEnum
         return fromString(name, AzureFirewallNetworkRuleProtocol.class);
     }
 
-    /** @return known AzureFirewallNetworkRuleProtocol values. */
+    /**
+     * Gets known AzureFirewallNetworkRuleProtocol values.
+     *
+     * @return known AzureFirewallNetworkRuleProtocol values.
+     */
     public static Collection<AzureFirewallNetworkRuleProtocol> values() {
         return values(AzureFirewallNetworkRuleProtocol.class);
     }

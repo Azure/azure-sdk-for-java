@@ -1,6 +1,6 @@
 # Release History
 
-## 12.3.0-beta.2 (Unreleased)
+## 12.4.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,26 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.4.0-beta.1 (2022-06-15)
+
+### Features Added
+- Added support for 2021-08-06 service version.
+
+## 12.3.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-common` from `12.16.0` to version `12.16.1`.
+
+## 12.3.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
 
 ## 12.2.2 (2022-05-12)
 

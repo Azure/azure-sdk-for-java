@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
+      "x-ms-client-request-id" : "522274f5-bbe0-4e8a-ac92-4e3ff6590d25",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Date" : "Tue, 19 Apr 2022 09:05:27 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "105ms",
+      "MS-CV" : "PgUARQX64EWbPs23ny1twg.0",
+      "X-Azure-Ref" : "0WHteYgAAAADEnMnOwJzxQ4gkEGwZ1/tPUFJHMDFFREdFMDcxNwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"UserId: The UserId field is required.\",\"target\":\"UserId\"}}",
+      "x-ms-client-request-id" : "522274f5-bbe0-4e8a-ac92-4e3ff6590d25",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

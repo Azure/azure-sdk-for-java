@@ -27,7 +27,11 @@ public final class EntropyMode extends ExpandableStringEnum<EntropyMode> {
         return fromString(name, EntropyMode.class);
     }
 
-    /** @return known EntropyMode values. */
+    /**
+     * Gets known EntropyMode values.
+     *
+     * @return known EntropyMode values.
+     */
     public static Collection<EntropyMode> values() {
         return values(EntropyMode.class);
     }

@@ -6,8 +6,6 @@ package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The key-value resource along with all resource properties. */
 @Fluent
 public final class KeyValueInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyValueInner.class);
-
     /*
      * All key-value properties.
      */

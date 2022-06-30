@@ -10,7 +10,45 @@ import java.util.List;
 
 /** The HealthcareEntity model. */
 @Fluent
-public final class HealthcareEntity extends HealthcareEntityProperties {
+public final class HealthcareEntity {
+    /*
+     * Entity text as appears in the request.
+     */
+    @JsonProperty(value = "text", required = true)
+    private String text;
+
+    /*
+     * Healthcare Entity Category.
+     */
+    @JsonProperty(value = "category", required = true)
+    private HealthcareEntityCategory category;
+
+    /*
+     * (Optional) Entity sub type.
+     */
+    @JsonProperty(value = "subcategory")
+    private String subcategory;
+
+    /*
+     * Start position for the entity text. Use of different 'stringIndexType'
+     * values can affect the offset returned.
+     */
+    @JsonProperty(value = "offset", required = true)
+    private int offset;
+
+    /*
+     * Length for the entity text. Use of different 'stringIndexType' values
+     * can affect the length returned.
+     */
+    @JsonProperty(value = "length", required = true)
+    private int length;
+
+    /*
+     * Confidence score between 0 and 1 of the extracted entity.
+     */
+    @JsonProperty(value = "confidenceScore", required = true)
+    private double confidenceScore;
+
     /*
      * The assertion property.
      */
@@ -29,6 +67,130 @@ public final class HealthcareEntity extends HealthcareEntityProperties {
      */
     @JsonProperty(value = "links")
     private List<HealthcareEntityLink> links;
+
+    /**
+     * Get the text property: Entity text as appears in the request.
+     *
+     * @return the text value.
+     */
+    public String getText() {
+        return this.text;
+    }
+
+    /**
+     * Set the text property: Entity text as appears in the request.
+     *
+     * @param text the text value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
+     * Get the category property: Healthcare Entity Category.
+     *
+     * @return the category value.
+     */
+    public HealthcareEntityCategory getCategory() {
+        return this.category;
+    }
+
+    /**
+     * Set the category property: Healthcare Entity Category.
+     *
+     * @param category the category value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setCategory(HealthcareEntityCategory category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
+     * Get the subcategory property: (Optional) Entity sub type.
+     *
+     * @return the subcategory value.
+     */
+    public String getSubcategory() {
+        return this.subcategory;
+    }
+
+    /**
+     * Set the subcategory property: (Optional) Entity sub type.
+     *
+     * @param subcategory the subcategory value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+        return this;
+    }
+
+    /**
+     * Get the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
+     * the offset returned.
+     *
+     * @return the offset value.
+     */
+    public int getOffset() {
+        return this.offset;
+    }
+
+    /**
+     * Set the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
+     * the offset returned.
+     *
+     * @param offset the offset value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setOffset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Get the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
+     * length returned.
+     *
+     * @return the length value.
+     */
+    public int getLength() {
+        return this.length;
+    }
+
+    /**
+     * Set the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
+     * length returned.
+     *
+     * @param length the length value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setLength(int length) {
+        this.length = length;
+        return this;
+    }
+
+    /**
+     * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
+     *
+     * @return the confidenceScore value.
+     */
+    public double getConfidenceScore() {
+        return this.confidenceScore;
+    }
+
+    /**
+     * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
+     *
+     * @param confidenceScore the confidenceScore value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setConfidenceScore(double confidenceScore) {
+        this.confidenceScore = confidenceScore;
+        return this;
+    }
 
     /**
      * Get the assertion property: The assertion property.

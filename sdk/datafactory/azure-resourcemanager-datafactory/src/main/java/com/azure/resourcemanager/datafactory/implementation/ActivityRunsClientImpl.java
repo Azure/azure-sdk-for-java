@@ -211,14 +211,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
     private Mono<ActivityRunsQueryResponseInner> queryByPipelineRunAsync(
         String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters) {
         return queryByPipelineRunWithResponseAsync(resourceGroupName, factoryName, runId, filterParameters)
-            .flatMap(
-                (Response<ActivityRunsQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

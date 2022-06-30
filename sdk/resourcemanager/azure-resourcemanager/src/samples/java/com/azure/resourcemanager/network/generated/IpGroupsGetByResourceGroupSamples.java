@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IpGroups GetByResourceGroup. */
 public final class IpGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/IpGroupsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/IpGroupsGet.json
      */
     /**
      * Sample code: Get_IpGroups.

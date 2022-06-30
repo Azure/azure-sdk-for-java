@@ -1,14 +1,39 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.6.0 (2022-06-30)
 
 ### Features Added
 
-### Breaking Changes
+ - Added `AmqpMessageConstant` `MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state")`.
 
 ### Bugs Fixed
 
+- Ensure ReactorReceiver EndpointStates terminates if there is no remote-close acknowledgment ([#29212](https://github.com/Azure/azure-sdk-for-java/issues/29212))
+- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+
+## 2.5.2 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 2.5.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
 
 ## 2.5.0 (2022-05-06)
 

@@ -27,7 +27,11 @@ public final class VpnNatRuleType extends ExpandableStringEnum<VpnNatRuleType> {
         return fromString(name, VpnNatRuleType.class);
     }
 
-    /** @return known VpnNatRuleType values. */
+    /**
+     * Gets known VpnNatRuleType values.
+     *
+     * @return known VpnNatRuleType values.
+     */
     public static Collection<VpnNatRuleType> values() {
         return values(VpnNatRuleType.class);
     }

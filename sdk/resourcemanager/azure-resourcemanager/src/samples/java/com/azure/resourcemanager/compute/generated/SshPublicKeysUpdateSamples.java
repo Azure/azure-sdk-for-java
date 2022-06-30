@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for SshPublicKeys Update. */
 public final class SshPublicKeysUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Update_MaximumSet_Gen.
@@ -33,7 +33,7 @@ public final class SshPublicKeysUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SshPublicKeys_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKeys_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKeys_Update_MinimumSet_Gen.

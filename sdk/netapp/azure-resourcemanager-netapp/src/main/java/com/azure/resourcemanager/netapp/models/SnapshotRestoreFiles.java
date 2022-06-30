@@ -6,15 +6,12 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Restore payload for Single File Snapshot Restore. */
 @Fluent
 public final class SnapshotRestoreFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotRestoreFiles.class);
-
     /*
      * List of files to be restored
      */
@@ -74,9 +71,11 @@ public final class SnapshotRestoreFiles {
      */
     public void validate() {
         if (filePaths() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotRestoreFiles.class);
 }

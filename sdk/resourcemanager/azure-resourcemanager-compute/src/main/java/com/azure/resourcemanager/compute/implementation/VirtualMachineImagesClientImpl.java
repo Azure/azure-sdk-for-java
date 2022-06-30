@@ -23,6 +23,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
+import com.azure.resourcemanager.compute.fluent.models.VmImagesInEdgeZoneListResultInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -134,6 +135,21 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/edgeZones/{edgeZone}"
+                + "/vmimages")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<VmImagesInEdgeZoneListResultInner>> listByEdgeZone(
+            @HostParam("$host") String endpoint,
+            @PathParam("location") String location,
+            @PathParam("edgeZone") String edgeZone,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -179,7 +195,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -243,7 +259,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -362,7 +378,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -435,7 +451,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -583,7 +599,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -633,7 +649,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -723,7 +739,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -768,7 +784,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -857,7 +873,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -912,7 +928,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -979,5 +995,149 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     public Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(
         String location, String publisherName, String offer, Context context) {
         return listSkusWithResponseAsync(location, publisherName, offer, context).block();
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<VmImagesInEdgeZoneListResultInner>> listByEdgeZoneWithResponseAsync(
+        String location, String edgeZone) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByEdgeZone(
+                            this.client.getEndpoint(),
+                            location,
+                            edgeZone,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<VmImagesInEdgeZoneListResultInner>> listByEdgeZoneWithResponseAsync(
+        String location, String edgeZone, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (edgeZone == null) {
+            return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2022-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByEdgeZone(
+                this.client.getEndpoint(),
+                location,
+                edgeZone,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context);
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VmImagesInEdgeZoneListResultInner> listByEdgeZoneAsync(String location, String edgeZone) {
+        return listByEdgeZoneWithResponseAsync(location, edgeZone).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VmImagesInEdgeZoneListResultInner listByEdgeZone(String location, String edgeZone) {
+        return listByEdgeZoneAsync(location, edgeZone).block();
+    }
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VmImagesInEdgeZoneListResultInner> listByEdgeZoneWithResponse(
+        String location, String edgeZone, Context context) {
+        return listByEdgeZoneWithResponseAsync(location, edgeZone, context).block();
     }
 }

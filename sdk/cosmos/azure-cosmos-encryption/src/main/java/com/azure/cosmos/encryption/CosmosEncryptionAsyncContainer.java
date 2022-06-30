@@ -568,7 +568,13 @@ public final class CosmosEncryptionAsyncContainer {
                                                            Class<T> itemType) {
         this.setRequestHeaders(options);
         List<Mono<PatchOperation>> monoList = new ArrayList<>();
-        for (PatchOperation patchOperation : cosmosPatchOperationsAccessor.getPatchOperations(cosmosPatchOperations)) {
+        List<PatchOperation> operations = cosmosPatchOperationsAccessor.getPatchOperations(cosmosPatchOperations);
+        List<PatchOperation> operationsSnapshot;
+        synchronized (operations) {
+            operationsSnapshot = new ArrayList<>(operations);
+        }
+
+        for (PatchOperation patchOperation : operationsSnapshot) {
             Mono<PatchOperation> itemPatchOperationMono = null;
             if (patchOperation.getOperationType() == PatchOperationType.REMOVE) {
                 itemPatchOperationMono = Mono.just(patchOperation);
@@ -596,8 +602,15 @@ public final class CosmosEncryptionAsyncContainer {
         CosmosPatchOperations encryptedCosmosPatchOperations = CosmosPatchOperations.create();
 
         return encryptedPatchOperationsListMono.flatMap(patchOperations -> {
-            cosmosPatchOperationsAccessor.getPatchOperations(encryptedCosmosPatchOperations).addAll(patchOperations);
-            return patchItemInternalHelper(itemId, partitionKey, encryptedCosmosPatchOperations, finalRequestOptions,itemType, false);
+            List<PatchOperation> snapshot =
+                cosmosPatchOperationsAccessor.getPatchOperations(encryptedCosmosPatchOperations);
+
+            synchronized(snapshot) {
+                snapshot.addAll(patchOperations);
+            }
+
+            return patchItemInternalHelper(
+                itemId, partitionKey, encryptedCosmosPatchOperations, finalRequestOptions,itemType, false);
         });
     }
 
