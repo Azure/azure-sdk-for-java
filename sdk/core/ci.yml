@@ -39,7 +39,7 @@ parameters:
 - name: release_azurecoreamqpexperimental
   displayName: 'azure-core-amqp-experimental'
   type: boolean
-  default: true
+  default: false
 - name: release_azurecoreexperimental
   displayName: 'azure-core-experimental'
   type: boolean
@@ -47,7 +47,7 @@ parameters:
 - name: release_azurecorehttpjdkhttpclient
   displayName: 'azure-core-http-jdk-httpclient'
   type: boolean
-  default: true
+  default: false
 - name: release_azurecorehttpnetty
   displayName: 'azure-core-http-netty'
   type: boolean
@@ -56,6 +56,10 @@ parameters:
   displayName: 'azure-core-http-okhttp'
   type: boolean
   default: true
+- name: release_azurecorehttpvertx
+  displayName: 'azure-core-http-vertx'
+  type: boolean
+  default: false
 - name: release_azurecoremanagement
   displayName: 'azure-core-management'
   type: boolean
@@ -116,6 +120,10 @@ extends:
         groupId: com.azure
         safeName: azurecorehttpokhttp
         releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
+      - name: azure-core-http-vertx
+        groupId: com.azure
+        safeName: azurecorehttpvertx
+        releaseInBatch: ${{ parameters.release_azurecorehttpvertx }}
       - name: azure-core-management
         groupId: com.azure
         safeName: azurecoremanagement

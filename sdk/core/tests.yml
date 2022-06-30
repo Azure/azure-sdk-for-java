@@ -26,6 +26,9 @@ stages:
         - name: azure-core-http-okhttp
           groupId: com.azure
           safeName: azurecorehttpokhttp
+        - name: azure-core-http-vertx
+          groupId: com.azure
+          safeName: azurecorehttpvertx
         - name: azure-core-management
           groupId: com.azure
           safeName: azurecoremanagement
