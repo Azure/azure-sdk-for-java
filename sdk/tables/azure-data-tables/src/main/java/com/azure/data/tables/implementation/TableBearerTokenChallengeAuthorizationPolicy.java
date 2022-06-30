@@ -44,48 +44,6 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
         this.enableTenantDiscovery = enableTenantDiscovery;
     }
 
-    /**
-     * Extracts attributes off the bearer challenge in the authentication header.
-     *
-     * @param authenticateHeader The authentication header containing the challenge.
-     * @param authChallengePrefix The authentication challenge name.
-     *
-     * @return A challenge attributes map.
-     */
-    private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
-                                                                  String authChallengePrefix) {
-        if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
-            return Collections.emptyMap();
-        }
-
-        authenticateHeader =
-            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
-
-        String[] attributes = authenticateHeader.split(" ");
-        Map<String, String> attributeMap = new HashMap<>();
-
-        for (String pair : attributes) {
-            String[] keyValue = pair.split("=");
-
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
-        }
-
-        return attributeMap;
-    }
-
-    /**
-     * Verifies whether a challenge is bearer or not.
-     *
-     * @param authenticateHeader The authentication header containing all the challenges.
-     * @param authChallengePrefix The authentication challenge name.
-     *
-     * @return A boolean indicating if the challenge is a bearer challenge or not.
-     */
-    private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
-        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
-    }
-
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
@@ -127,4 +85,82 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
                 .then(Mono.just(true));
         });
     }
+
+    @Override
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
+        if (this.tenantId != null || !enableTenantDiscovery) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext()
+                .addScopes(this.scopes)
+                .setTenantId(this.tenantId);
+
+            setAuthorizationHeaderSync(context, tokenRequestContext);
+        }
+
+    }
+
+    @Override
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        Map<String, String> challengeAttributes =
+            extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+
+        String authorizationUriString = challengeAttributes.get("authorization_uri");
+        final URI authorizationUri;
+
+        try {
+            authorizationUri = new URI(authorizationUriString);
+        } catch (URISyntaxException e) {
+            // The challenge authorization URI is invalid.
+            return false;
+        }
+
+        this.tenantId = authorizationUri.getPath().split("/")[1];
+
+        TokenRequestContext tokenRequestContext = new TokenRequestContext()
+            .addScopes(this.scopes)
+            .setTenantId(this.tenantId);
+
+        setAuthorizationHeaderSync(context, tokenRequestContext);
+        return true;
+    }
+
+    /**
+     * Extracts attributes off the bearer challenge in the authentication header.
+     *
+     * @param authenticateHeader The authentication header containing the challenge.
+     * @param authChallengePrefix The authentication challenge name.
+     * @return A challenge attributes map.
+     */
+    private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
+                                                                  String authChallengePrefix) {
+        if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
+            return Collections.emptyMap();
+        }
+
+        authenticateHeader =
+            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+
+        String[] attributes = authenticateHeader.split(" ");
+        Map<String, String> attributeMap = new HashMap<>();
+
+        for (String pair : attributes) {
+            String[] keyValue = pair.split("=");
+
+            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+        }
+
+        return attributeMap;
+    }
+
+    /**
+     * Verifies whether a challenge is bearer or not.
+     *
+     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authChallengePrefix The authentication challenge name.
+     * @return A boolean indicating if the challenge is a bearer challenge or not.
+     */
+    private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
+        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
+    }
+
 }
