@@ -185,8 +185,7 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                                 reader.nextToken();
 
                                 if ("baz".equals(fieldName)) {
-                                    baz = JsonUtils.readArray(reader,
-                                        r -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                                    baz = JsonUtils.readArray(reader, JsonReader::getStringValue);
                                 } else if ("q".equals(fieldName)) {
                                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                                         fieldName = reader.getFieldName();
@@ -202,8 +201,7 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                                                 fieldName = reader.getFieldName();
                                                 reader.nextToken();
 
-                                                qux.put(fieldName,
-                                                    JsonUtils.getNullableProperty(reader, JsonReader::getStringValue));
+                                                qux.put(fieldName, reader.getStringValue());
                                             }
                                         } else {
                                             reader.skipChildren();

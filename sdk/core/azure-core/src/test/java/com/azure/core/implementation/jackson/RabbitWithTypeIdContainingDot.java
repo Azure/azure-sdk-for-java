@@ -60,10 +60,9 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
                 if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getStringValue();
                 } else if ("tailLength".equals(fieldName)) {
-                    tailLength = JsonUtils.getNullableProperty(reader, JsonReader::getIntValue);
+                    tailLength = reader.getIntegerNullableValue();
                 } else if ("meals".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
-                    meals = JsonUtils.readArray(reader,
-                        r -> JsonUtils.getNullableProperty(r, JsonReader::getStringValue));
+                    meals = JsonUtils.readArray(reader, JsonReader::getStringValue);
                 } else {
                     reader.skipChildren();
                 }

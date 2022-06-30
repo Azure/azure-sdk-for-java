@@ -5,12 +5,10 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import static com.azure.core.util.serializer.JsonUtils.getNullableProperty;
 
 /**
  * Model used for testing JSON flattening.
@@ -68,7 +66,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration
                         fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("primary".equals(fieldName)) {
-                            configuration.setPrimary(getNullableProperty(reader, JsonReader::getBooleanValue));
+                            configuration.setPrimary(reader.getBooleanNullableValue());
                         } else {
                             reader.skipChildren();
                         }
