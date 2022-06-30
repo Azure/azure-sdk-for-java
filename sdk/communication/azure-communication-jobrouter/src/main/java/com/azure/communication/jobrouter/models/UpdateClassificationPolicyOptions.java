@@ -13,10 +13,19 @@ import java.util.List;
  */
 @Fluent
 public class UpdateClassificationPolicyOptions extends ClassificationPolicyOptions {
+    /**
+     * Constructor for UpdateClassificationPolicyOptions
+     * @param id Unique identifier of this policy.
+     */
     public UpdateClassificationPolicyOptions(String id) {
         this.id = id;
     }
 
+    /**
+     * Sets name.
+     * @param name Friendly name of this policy.
+     * @return this
+     */
     public UpdateClassificationPolicyOptions setName(String name) {
         this.name = name;
         return this;
