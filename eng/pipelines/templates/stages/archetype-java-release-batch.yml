@@ -143,14 +143,14 @@ stages:
             # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
             # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
             # select any artifacts to be released.
-            - task: PowerShell@2
-              displayName: Verify Release Set
-              inputs:
-                pwsh: true
-                filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
-                arguments: >
-                  -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-                  -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
+            #- task: PowerShell@2
+            #  displayName: Verify Release Set
+            #  inputs:
+            #    pwsh: true
+            #    filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
+            #    arguments: >
+            #      -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+            #      -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
 
         - deployment: TagRepository
           displayName: "Create release tag"
