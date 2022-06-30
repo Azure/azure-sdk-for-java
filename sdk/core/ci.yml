@@ -145,5 +145,7 @@ extends:
         groupId: com.azure
       - name: azure-json
         groupId: com.azure
+      - name: azure-json-gson
+        groupId: com.azure
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

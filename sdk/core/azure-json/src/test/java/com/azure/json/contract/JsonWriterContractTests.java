@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json;
+package com.azure.json.contract;
 
+import com.azure.json.JsonWriteState;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,7 +45,7 @@ public abstract class JsonWriterContractTests {
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
-    public final void basicOperations(Consumer<JsonWriter> operation, String expectedJson) {
+    public void basicOperations(Consumer<JsonWriter> operation, String expectedJson) {
         operation.accept(getJsonWriter());
 
         assertEquals(expectedJson, getJsonWriterContents());
@@ -180,7 +182,7 @@ public abstract class JsonWriterContractTests {
 
     @ParameterizedTest
     @MethodSource("basicExceptionsSupplier")
-    public final void basicExceptions(Consumer<JsonWriter> operation, Class<? extends Throwable> expectedException) {
+    public void basicExceptions(Consumer<JsonWriter> operation, Class<? extends Throwable> expectedException) {
         assertThrows(expectedException, () -> operation.accept(getJsonWriter()));
     }
 

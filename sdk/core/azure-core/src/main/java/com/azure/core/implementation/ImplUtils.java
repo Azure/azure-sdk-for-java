@@ -27,6 +27,28 @@ public final class ImplUtils {
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private static final String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
 
+    private static final String[] JSON_STRING_ESCAPES;
+
+    static {
+        // JSON string escapes are only needed in ASCII.
+        JSON_STRING_ESCAPES = new String[128];
+
+        // Control characters need to be converted to their unicode equivalent.
+        for (int i = 0; i < 32; i++) {
+            // Convert the ASCII character into hex.
+            JSON_STRING_ESCAPES[i] = String.format("\\u%04x", i);
+        }
+
+        // Special characters that need to be escaped.
+        JSON_STRING_ESCAPES['"'] = "\\\"";
+        JSON_STRING_ESCAPES['\\'] = "\\\\";
+        JSON_STRING_ESCAPES['\t'] = "\\t";
+        JSON_STRING_ESCAPES['\b'] = "\\b";
+        JSON_STRING_ESCAPES['\n'] = "\\n";
+        JSON_STRING_ESCAPES['\r'] = "\\r";
+        JSON_STRING_ESCAPES['\f'] = "\\f";
+    }
+
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
      * <p>
@@ -138,6 +160,54 @@ public final class ImplUtils {
 
         // All optimizations have been exhausted, fallback to buffering write.
         stream.write(FluxUtil.byteBufferToArray(buffer));
+    }
+
+    /**
+     * Writes a String into a JSON output escaping the required characters.
+     *
+     * @param input The String input.
+     * @param output The JSON output.
+     */
+    public static void safeWriteStringIntoJson(String input, StringBuilder output) {
+        int inputLength = input.length();
+        int lastWrite = 0;
+
+        for (int i = 0; i < inputLength; i++) {
+            char c = input.charAt(i);
+
+            String replacement;
+            if (c < 128) {
+                replacement = JSON_STRING_ESCAPES[c];
+                if (replacement == null) {
+                    // Character doesn't need to replaced, skip it.
+                    continue;
+                }
+            } else if (c == '\u2028') {
+                replacement = "\\u2028";
+            } else if (c == '\u2029') {
+                replacement = "\\u2029";
+            } else {
+                // Character doesn't need to replaced, skip it.
+                continue;
+            }
+
+            // If a range of characters that don't need to be escaped were skipped write them now.
+            if (lastWrite < i) {
+                output.append(input, lastWrite, i);
+            }
+
+            // Write the replacement character.
+            output.append(replacement);
+            lastWrite = i + 1;
+        }
+
+        if (lastWrite == 0) {
+            // No characters were escaped, write the whole input.
+            output.append(input);
+        } else if (lastWrite < inputLength) {
+            // If the last characters in the input didn't need escaping write them now.
+            output.append(input, lastWrite, inputLength);
+        }
     }
 
     private ImplUtils() {

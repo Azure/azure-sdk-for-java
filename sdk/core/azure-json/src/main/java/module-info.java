@@ -4,5 +4,5 @@
 module com.azure.json  {
     exports com.azure.json;
 
-    exports com.azure.json.implementation.jackson.core.io to com.azure.core;
+    exports com.azure.json.implementation to com.azure.json.gson;
 }

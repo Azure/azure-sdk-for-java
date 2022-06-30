@@ -4,6 +4,7 @@
 package com.azure.json;
 
 import java.io.Closeable;
+import java.util.Base64;
 
 /**
  * Reads a JSON encoded value as a stream of tokens.
@@ -55,39 +56,58 @@ public abstract class JsonReader implements Closeable {
     }
 
     /**
+     * Gets the binary value if the reader is currently pointing to a {@link JsonToken#STRING} token.
+     * <p>
+     * This returns the equivalent of {@link Base64#getDecoder()} {@link Base64.Decoder#decode(String)}.
+     * <p>
+     * If the reader is pointing to a {@link JsonToken#NULL} null will be returned. If the reader is pointing to any
+     * other token type an {@link IllegalStateException} will be thrown.
+     *
+     * @return The binary value based on whether the current token is {@link JsonToken#STRING} or
+     * {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the reader isn't pointing to either {@link JsonToken#STRING} or
+     * {@link JsonToken#NULL}.
+     */
+    public abstract byte[] getBinaryValue();
+
+    /**
      * Gets the boolean value if the reader is currently pointing to a {@link JsonToken#BOOLEAN} token.
      * <p>
      * If the reader is pointing to any other token type an {@link IllegalStateException} will be thrown.
+     * <p>
+     * If {@link Boolean} should be read use {@link #getBooleanNullableValue()}.
      *
-     * @return The boolean value based on whether the current token is {@link JsonToken#BOOLEAN}.
+     * @return The boolean value based on the {@link JsonToken#BOOLEAN}.
      * @throws IllegalStateException If the reader isn't pointing to {@link JsonToken#BOOLEAN}.
      */
     public abstract boolean getBooleanValue();
 
     /**
-     * Gets the double value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
-     * {@link JsonToken#STRING}.
+     * Gets the {@link Boolean} value if the reader is currently pointing to a {@link JsonToken#BOOLEAN} token or null
+     * if the reader is currently pointing to a {@link JsonToken#NULL}.
      * <p>
-     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
-     * converted to a double.
+     * If the reader is pointing to any other token type an {@link IllegalStateException} will be thrown.
      * <p>
-     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * If boolean should be read use {@link #getBooleanValue()}.
      *
-     * @return The double value based on the current token.
-     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
-     * double.
-     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
+     * @return The {@link Boolean} value based on the current token.
+     * @throws IllegalStateException If the reader isn't pointing to {@link JsonToken#BOOLEAN} or
+     * {@link JsonToken#NULL}.
      */
-    public abstract double getDoubleValue();
+    public final Boolean getBooleanNullableValue() {
+        return currentToken() == JsonToken.NULL ? null : getBooleanValue();
+    }
 
     /**
      * Gets the float value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
      * {@link JsonToken#STRING}.
      * <p>
      * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
-     * converted to a double.
+     * converted to a float.
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If {@link Float} should be read use {@link #getFloatNullableValue()}.
      *
      * @return The float value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
@@ -97,6 +117,66 @@ public abstract class JsonReader implements Closeable {
     public abstract float getFloatValue();
 
     /**
+     * Gets the {@link Float} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
+     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
+     * <p>
+     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
+     * converted to a float.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If float should be read use {@link #getFloatValue()}.
+     *
+     * @return The {@link Float} value based on the current token.
+     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
+     * float.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
+     * {@link JsonToken#NULL}.
+     */
+    public final Float getFloatNullableValue() {
+        return currentToken() == JsonToken.NULL ? null : getFloatValue();
+    }
+
+    /**
+     * Gets the double value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
+     * {@link JsonToken#STRING}.
+     * <p>
+     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
+     * converted to a double.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If {@link Double} should be read use {@link #getDoubleNullableValue()}.
+     *
+     * @return The double value based on the current token.
+     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
+     * double.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
+     */
+    public abstract double getDoubleValue();
+
+    /**
+     * Gets the {@link Double} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
+     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
+     * <p>
+     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
+     * converted to a double.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If double should be read use {@link #getDoubleValue()}.
+     *
+     * @return The {@link Double} value based on the current token.
+     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
+     * double.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
+     * {@link JsonToken#NULL}.
+     */
+    public final Double getDoubleNullableValue() {
+        return currentToken() == JsonToken.NULL ? null : getDoubleValue();
+    }
+
+    /**
      * Gets the int value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
      * {@link JsonToken#STRING}.
      * <p>
@@ -104,6 +184,8 @@ public abstract class JsonReader implements Closeable {
      * converted to an int.
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If {@link Integer} should be read use {@link #getIntegerNullableValue()}
      *
      * @return The int value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to an
@@ -113,6 +195,27 @@ public abstract class JsonReader implements Closeable {
     public abstract int getIntValue();
 
     /**
+     * Gets the {@link Integer} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
+     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
+     * <p>
+     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
+     * converted to an int.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If int should be read use {@link #getIntValue()}
+     *
+     * @return The {@link Integer} value based on the current token.
+     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to an
+     * int.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
+     * {@link JsonToken#NULL}.
+     */
+    public final Integer getIntegerNullableValue() {
+        return currentToken() == JsonToken.NULL ? null : getIntValue();
+    }
+
+    /**
      * Gets the long value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
      * {@link JsonToken#STRING}.
      * <p>
@@ -120,6 +223,8 @@ public abstract class JsonReader implements Closeable {
      * converted to a long.
      * <p>
      * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If {@link Long} should be read use {@link #getLongNullableValue()}.
      *
      * @return The long value based on the current token.
      * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
@@ -127,6 +232,27 @@ public abstract class JsonReader implements Closeable {
      * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
      */
     public abstract long getLongValue();
+
+    /**
+     * Gets the {@link Long} value if the reader is currently pointing to a {@link JsonToken#NUMBER},
+     * {@link JsonToken#STRING}, or {@link JsonToken#NULL}.
+     * <p>
+     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
+     * converted to a long.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     * <p>
+     * If long should be read use {@link #getLongValue()}.
+     *
+     * @return The {@link Long} value based on the current token.
+     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
+     * long.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER}, {@link JsonToken#STRING}, or
+     * {@link JsonToken#NULL}.
+     */
+    public final Long getLongNullableValue() {
+        return currentToken() == JsonToken.NULL ? null : getLongValue();
+    }
 
     /**
      * Gets the String value if the reader is currently pointing to a {@link JsonToken#BOOLEAN}, {@link JsonToken#NULL},
@@ -189,7 +315,7 @@ public abstract class JsonReader implements Closeable {
         JsonToken token = currentToken();
 
         // Not pointing to an array or object start, no-op.
-        if (token != JsonToken.START_ARRAY && token != JsonToken.START_OBJECT) {
+        if (!isStartArrayOrObject(token)) {
             return buffer;
         }
 
@@ -234,27 +360,6 @@ public abstract class JsonReader implements Closeable {
 
         return buffer;
     }
-
-//    /**
-//     * Prepares the {@link JsonReader} for reading an object.
-//     * <p>
-//     * Object reading begins by getting the {@link JsonToken} the {@link JsonReader} is currently pointing. If the
-//     * current token is null it's an indicator that the {@link JsonReader} hasn't begun reading the underlying JSON
-//     * stream. In this case it will iterate to the next token to begin reading.
-//     * <p>
-//     * If the returned {@link JsonToken} is null this is an indication that the JSON stream has completed reading.
-//     *
-//     * @return The {@link JsonToken} where object reading will begin.
-//     */
-//    public final JsonToken beginReadingObject() {
-//        JsonToken token = currentToken();
-//
-//        if (token == null) {
-//            token = nextToken();
-//        }
-//
-//        return token;
-//    }
 
     /**
      * Gets the text value for the {@link #currentToken()}.

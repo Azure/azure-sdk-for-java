@@ -3,13 +3,14 @@
 
 package com.azure.json;
 
-import com.azure.json.implementation.IoExceptionSupplier;
 import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.JsonParser;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+
+import static com.azure.json.implementation.CheckExceptionUtils.callWithWrappedIoException;
 
 /**
  * Default {@link JsonReader} implementation.
@@ -27,7 +28,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
      * {@code byte[]}.
      */
-    public static DefaultJsonReader fromBytes(byte[] json) {
+    public static JsonReader fromBytes(byte[] json) {
         return callWithWrappedIoException(() -> new DefaultJsonReader(FACTORY.createParser(json)));
     }
 
@@ -38,7 +39,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @return An instance of {@link DefaultJsonReader}.
      * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON String.
      */
-    public static DefaultJsonReader fromString(String json) {
+    public static JsonReader fromString(String json) {
         return callWithWrappedIoException(() -> new DefaultJsonReader(FACTORY.createParser(json)));
     }
 
@@ -50,7 +51,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON
      * {@link InputStream}.
      */
-    public static DefaultJsonReader fromStream(InputStream json) {
+    public static JsonReader fromStream(InputStream json) {
         return callWithWrappedIoException(() -> new DefaultJsonReader(FACTORY.createParser(json)));
     }
 
@@ -60,12 +61,21 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public JsonToken currentToken() {
-        return mapFromParserToken(parser.currentToken());
+        return mapToken(parser.currentToken());
     }
 
     @Override
     public JsonToken nextToken() {
-        return callWithWrappedIoException(() -> mapFromParserToken(parser.nextToken()));
+        return callWithWrappedIoException(() -> mapToken(parser.nextToken()));
+    }
+
+    @Override
+    public byte[] getBinaryValue() {
+        if (currentToken() == JsonToken.NULL) {
+            return null;
+        } else {
+            return callWithWrappedIoException(parser::getBinaryValue);
+        }
     }
 
     @Override
@@ -114,12 +124,12 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     /*
-     * Maps the Jackson Core JsonToken to the azure-core JsonToken.
+     * Maps the Jackson Core JsonToken to the azure-json JsonToken.
      *
-     * azure-core doesn't support the EMBEDDED_OBJECT or NOT_AVAILABLE Jackson Core JsonTokens, but those should only
+     * azure-json doesn't support the EMBEDDED_OBJECT or NOT_AVAILABLE Jackson Core JsonTokens, but those should only
      * be returned by specialty implementations that aren't used.
      */
-    private static JsonToken mapFromParserToken(com.azure.json.implementation.jackson.core.JsonToken token) {
+    private static JsonToken mapToken(com.azure.json.implementation.jackson.core.JsonToken token) {
         // Special case for when currentToken is called after instantiating the JsonReader.
         if (token == null) {
             return null;
@@ -158,9 +168,5 @@ public final class DefaultJsonReader extends JsonReader {
             default:
                 throw new IllegalStateException("Unsupported token type: '" + token + "'.");
         }
-    }
-
-    private static <T> T callWithWrappedIoException(IoExceptionSupplier<T> func) {
-        return func.getWithUncheckedIoException();
     }
 }

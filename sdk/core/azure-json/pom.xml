@@ -48,6 +48,7 @@
 
     <javaModulesSurefireArgLine>
       --add-opens com.azure.json/com.azure.json=ALL-UNNAMED
+      --add-opens com.azure.json/com.azure.json.contract=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Ignore shaded code -->
@@ -80,17 +81,26 @@
       <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <!-- JsonWriterContractTests is inherited by tests in azure-json-* -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- This plugin scans reports spotbugs in the code -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
@@ -151,7 +161,7 @@
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-core</artifactId>
-          <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+          <version>2.13.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
         </dependency>
       </dependencies>
 
@@ -199,7 +209,7 @@
               <rules>
                 <bannedDependencies>
                   <includes>
-                    <include>com.fasterxml.jackson.core:jackson-core:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                    <include>com.fasterxml.jackson.core:jackson-core:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                   </includes>
                 </bannedDependencies>
               </rules>

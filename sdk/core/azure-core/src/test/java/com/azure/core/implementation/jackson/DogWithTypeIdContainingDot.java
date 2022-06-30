@@ -68,7 +68,7 @@ public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
                         reader.nextToken();
 
                         if ("cuteLevel".equals(fieldName)) {
-                            cuteLevel = JsonUtils.getNullableProperty(reader, JsonReader::getIntValue);
+                            cuteLevel = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

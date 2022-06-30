@@ -5,7 +5,6 @@ package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
@@ -17,6 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static com.azure.core.implementation.ImplUtils.safeWriteStringIntoJson;
 import static com.azure.core.implementation.logging.LoggingUtils.doesArgsHaveThrowable;
 import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable;
 
@@ -40,7 +40,6 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  */
 @Fluent
 public final class LoggingEventBuilder {
-    private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
     private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
 
@@ -284,7 +283,7 @@ public final class LoggingEventBuilder {
             // marker for Azure SDK logs so we'll write it even if there is no message
             .append(AZURE_SDK_LOG_MESSAGE_KEY)
             .append("\":\"");
-        JSON_STRING_ENCODER.quoteAsString(message, sb);
+        safeWriteStringIntoJson(message, sb);
         sb.append("\"");
 
         if (throwable != null) {
@@ -293,7 +292,7 @@ public final class LoggingEventBuilder {
             String exceptionMessage = throwable.getMessage();
             if (exceptionMessage != null) {
                 sb.append("\"");
-                JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
+                safeWriteStringIntoJson(exceptionMessage, sb);
                 sb.append("\"");
             } else {
                 sb.append("null");
@@ -304,10 +303,7 @@ public final class LoggingEventBuilder {
             sb.append(",").append(globalContextCached);
         }
 
-        for (int i = 0; i < context.size(); i++) {
-            context.get(i)
-                .write(sb.append(","));
-        }
+        context.forEach(value -> value.write(sb.append(',')));
 
         sb.append("}");
         return sb.toString();
@@ -377,7 +373,7 @@ public final class LoggingEventBuilder {
      *
      * @param context to serialize.
      *
-     * @returns Serialized JSON fragment or an empty string.
+     * @return Serialized JSON fragment or an empty string.
      */
     static String writeJsonFragment(Map<String, Object> context) {
         if (CoreUtils.isNullOrEmpty(context)) {
@@ -396,42 +392,25 @@ public final class LoggingEventBuilder {
 
     private static StringBuilder writeKeyAndValue(String key, Object value, StringBuilder formatter) {
         formatter.append("\"");
-        JSON_STRING_ENCODER.quoteAsString(key, formatter);
+        safeWriteStringIntoJson(key, formatter);
         formatter.append("\":");
 
         if (value == null) {
             return formatter.append("null");
         }
 
-        if (isPrimitive(value)) {
-            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+        if (value.getClass().isPrimitive()
+            || value instanceof Boolean
+            || value instanceof Number
+            || value instanceof Character) {
+            // Does this need safe writing given that primitives cannot have non-safe characters?
+            safeWriteStringIntoJson(value.toString(), formatter);
             return formatter;
         }
 
         formatter.append("\"");
-        JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
+        safeWriteStringIntoJson(value.toString(), formatter);
         return formatter.append("\"");
-    }
-
-    /**
-     *  Returns true if the value is an instance of a primitive type and false otherwise.
-     */
-    private static boolean isPrimitive(Object value) {
-        // most of the time values are strings
-        if (value instanceof String) {
-            return false;
-        }
-
-        if (value instanceof Boolean
-            || value instanceof Integer
-            || value instanceof Long
-            || value instanceof Byte
-            || value instanceof Double
-            || value instanceof Float) {
-            return true;
-        }
-
-        return false;
     }
 
     private static final class ContextKeyValuePair {

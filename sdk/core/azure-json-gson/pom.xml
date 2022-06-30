@@ -13,12 +13,12 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-core-serializeradapter-jackson</artifactId>
+  <artifactId>azure-json-gson</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializeradapter-jackson;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json-gson;current} -->
 
-  <name>Microsoft Azure Jackson SerializerAdapter Library</name>
-  <description>This package contains the Jackson SerializerAdapter client plugin for azure-core.</description>
+  <name>Microsoft Azure Java GSON JSON Library</name>
+  <description>This package contains a GSON-based JSON implementation.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,7 +45,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+
     <javaModulesSurefireArgLine>
+      --add-opens com.azure.json.gson/com.azure.json.gson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -59,8 +61,21 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.9.0</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -85,6 +100,37 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.google.code.gson:gson:[2.9.0]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
+            </plugin>
+          </plugins>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
