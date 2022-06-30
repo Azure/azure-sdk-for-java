@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
@@ -24,7 +24,7 @@ public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
         VaultAndKey vaultAndKey = createVaultAndKey(vaultName, clientId);
 
         // create disk encryption set
-        DiskEncryptionSetInner diskEncryptionSet = createDiskEncryptionSet("des1",
+        DiskEncryptionSet diskEncryptionSet = createDiskEncryptionSet("des1",
             DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, vaultAndKey);
 
         final String aksName = generateRandomResourceName("aks", 15);

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DpsCertificate Delete. */
 public final class DpsCertificateDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSDeleteCertificate.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSDeleteCertificate.json
      */
     /**
      * Sample code: DPSDeleteCertificate.

@@ -52,7 +52,9 @@ class StorageSpec extends Specification {
     }
 
     def cleanup() {
-        interceptorManager.close()
+        if (interceptorManager != null) {
+            interceptorManager.close()
+        }
     }
 
     protected static TestEnvironment getEnvironment() {

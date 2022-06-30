@@ -33,20 +33,43 @@ pr:
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-resourcemanager-purview/pom.xml
 
+parameters:
+- name: release_azureanalyticspurviewadministration
+  displayName: 'azure-analytics-purview-administration'
+  type: boolean
+  default: true
+- name: release_azureanalyticspurviewcatalog
+  displayName: 'azure-analytics-purview-catalog'
+  type: boolean
+  default: true
+- name: release_azureanalyticspurviewscanning
+  displayName: 'azure-analytics-purview-scanning'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerpurview
+  displayName: 'azure-resourcemanager-purview'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: purview
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-analytics-purview-administration
         groupId: com.azure
         safeName: azureanalyticspurviewadministration
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewadministration }}
       - name: azure-analytics-purview-catalog
         groupId: com.azure
         safeName: azureanalyticspurviewcatalog
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewcatalog }}
       - name: azure-analytics-purview-scanning
         groupId: com.azure
         safeName: azureanalyticspurviewscanning
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewscanning }}
       - name: azure-resourcemanager-purview
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerpurview }}

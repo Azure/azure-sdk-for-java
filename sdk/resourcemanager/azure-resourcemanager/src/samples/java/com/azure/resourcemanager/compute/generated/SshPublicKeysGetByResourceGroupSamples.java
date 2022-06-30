@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SshPublicKeys GetByResourceGroup. */
 public final class SshPublicKeysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetAnSshPublicKey.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/sshPublicKeyExamples/SshPublicKey_Get.json
      */
     /**
      * Sample code: Get an ssh public key.

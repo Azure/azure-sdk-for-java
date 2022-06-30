@@ -13,13 +13,16 @@ import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Isolated("Run this by itself as it captures System.out")
 @ExtendWith(OutputCaptureExtension.class)
 public class KeyVaultCertificateUserAgentTests {
 
@@ -54,7 +57,12 @@ public class KeyVaultCertificateUserAgentTests {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).contains(String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES));
+                String allOutput = output.getAll();
+                String format1 = String.format("User-Agent:%s",
+                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
+                String format2 = String.format("\"User-Agent\":\"%s",
+                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
+                assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }
 }

@@ -13,15 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityDeleteByGuid {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitydeletebyguid.entitydeletebyguid
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitydeletebyguid.entitydeletebyguid
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 entityClient.deleteByGuidWithResponse("fd279eb4-f6c3-1b0b-ad67-e4f8abd2972f", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitydeletebyguid.entitydeletebyguid
+        // END:com.azure.analytics.purview.catalog.generated.entitydeletebyguid.entitydeletebyguid
     }
 }

@@ -13,6 +13,9 @@ import org.springframework.beans.factory.BeanNameAware;
 public abstract class AbstractMessageListenerContainer implements MessageListenerContainer, BeanNameAware {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractMessageListenerContainer.class);
 
+    /**
+     * Life cycle monitor.
+     */
     protected final Object lifecycleMonitor = new Object();
 
     // Settings that are changed at runtime

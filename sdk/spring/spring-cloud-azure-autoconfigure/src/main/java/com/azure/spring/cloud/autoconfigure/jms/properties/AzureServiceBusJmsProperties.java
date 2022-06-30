@@ -19,7 +19,15 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
 public class AzureServiceBusJmsProperties implements InitializingBean {
 
+    /**
+     * Service Bus JMS properties prefix.
+     */
     public static final String PREFIX = "spring.jms.servicebus";
+
+    /**
+     * Whether to enable Servive Bus JMS autoconfiguration.
+     */
+    private boolean enabled = true;
 
     private static final String DEFAULT_REMOTE_URL = "amqp://localhost:5672";
 
@@ -62,6 +70,22 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      * Login password of the AMQP broker.
      */
     private String password;
+
+    /**
+     * Whether to enable Service Bus JMS autoconfiguration.
+     * @return Whether to enable Service Bus autoconfiguration
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
+     * Set whether to enable Service Bus JMS autoconfiguation.
+     * @param enabled whether to enable Service Bus autoconfiguration.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     /**
      * Get the URL of the AMQP broker.
@@ -249,42 +273,92 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
          */
         private int topicPrefetch = 0;
 
+        /**
+         * Gets the all prefetch value.
+         *
+         * @return The all prefect value.
+         */
         public int getAll() {
             return Math.max(all, 0);
         }
 
+        /**
+         * Sets the all prefetch value.
+         *
+         * @param all The all prefetch value.
+         */
         public void setAll(int all) {
             this.all = all;
         }
 
+        /**
+         * Gets the durable topic prefetch value.
+         *
+         * @return The durable topic prefetch value.
+         */
         public int getDurableTopicPrefetch() {
             return durableTopicPrefetch > 0 ? durableTopicPrefetch : getAll();
         }
 
+        /**
+         * Sets the durable topic prefetch value.
+         *
+         * @param durableTopicPrefetch The durable topic prefetch value.
+         */
         public void setDurableTopicPrefetch(int durableTopicPrefetch) {
             this.durableTopicPrefetch = durableTopicPrefetch;
         }
 
+        /**
+         * Gets the queue browser prefetch value.
+         *
+         * @return The queue browser prefetch value.
+         */
         public int getQueueBrowserPrefetch() {
             return queueBrowserPrefetch > 0 ? queueBrowserPrefetch : getAll();
         }
 
+        /**
+         * Sets the queue browser prefetch value.
+         *
+         * @param queueBrowserPrefetch The queue browser prefetch value.
+         */
         public void setQueueBrowserPrefetch(int queueBrowserPrefetch) {
             this.queueBrowserPrefetch = queueBrowserPrefetch;
         }
 
+        /**
+         * Gets the queue prefetch value.
+         *
+         * @return The queue prefetch value.
+         */
         public int getQueuePrefetch() {
             return queuePrefetch > 0 ? queuePrefetch : getAll();
         }
 
+        /**
+         * Sets the queue prefetch value.
+         *
+         * @param queuePrefetch The queue prefetch value.
+         */
         public void setQueuePrefetch(int queuePrefetch) {
             this.queuePrefetch = queuePrefetch;
         }
 
+        /**
+         * Gets the topic prefetch value.
+         *
+         * @return The topic prefetch value.
+         */
         public int getTopicPrefetch() {
             return topicPrefetch > 0 ? topicPrefetch : getAll();
         }
 
+        /**
+         * Sets the topic prefetch value.
+         *
+         * @param topicPrefetch The topic prefetch value.
+         */
         public void setTopicPrefetch(int topicPrefetch) {
             this.topicPrefetch = topicPrefetch;
         }
@@ -321,42 +395,92 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
          */
         private Integer phase;
 
+        /**
+         * Whether reply destination type is topic.
+         *
+         * @return Whether reply destination type is topic.
+         */
         public Boolean isReplyPubSubDomain() {
             return replyPubSubDomain;
         }
 
+        /**
+         * Sets whether reply destination is topic.
+         *
+         * @param replyPubSubDomain Whether reply destination is topic.
+         */
         public void setReplyPubSubDomain(Boolean replyPubSubDomain) {
             this.replyPubSubDomain = replyPubSubDomain;
         }
 
+        /**
+         * Gets the reply QoS settings.
+         *
+         * @return The reply QoS settings.
+         */
         public QosSettings getReplyQosSettings() {
             return replyQosSettings;
         }
 
+        /**
+         * Sets the reply QoS settings.
+         *
+         * @param replyQosSettings The reply QoS settings.
+         */
         public void setReplyQosSettings(QosSettings replyQosSettings) {
             this.replyQosSettings = replyQosSettings;
         }
 
+        /**
+         * Whether the subscription is durable.
+         *
+         * @return Whether the subscription is durable.
+         */
         public Boolean isSubscriptionDurable() {
             return subscriptionDurable;
         }
 
+        /**
+         * Sets whether the subscription is durable.
+         *
+         * @param subscriptionDurable Whether the subscription is durable.
+         */
         public void setSubscriptionDurable(Boolean subscriptionDurable) {
             this.subscriptionDurable = subscriptionDurable;
         }
 
+        /**
+         * Whether the subscription is shared.
+         *
+         * @return Whether the subscription is shared.
+         */
         public Boolean isSubscriptionShared() {
             return subscriptionShared;
         }
 
+        /**
+         * Sets whether the subscription is shared.
+         *
+         * @param subscriptionShared Whether the subscription is shared.
+         */
         public void setSubscriptionShared(Boolean subscriptionShared) {
             this.subscriptionShared = subscriptionShared;
         }
 
+        /**
+         * Gets the phase.
+         *
+         * @return The phase.
+         */
         public Integer getPhase() {
             return phase;
         }
 
+        /**
+         * Sets the phase.
+         *
+         * @param phase The phase.
+         */
         public void setPhase(Integer phase) {
             this.phase = phase;
         }

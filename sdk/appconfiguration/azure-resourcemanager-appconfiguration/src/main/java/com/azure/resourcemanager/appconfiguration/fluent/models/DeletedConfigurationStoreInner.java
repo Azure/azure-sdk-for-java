@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Deleted configuration store information with extended details. */
 @Fluent
 public final class DeletedConfigurationStoreInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedConfigurationStoreInner.class);
-
     /*
      * The resource ID for the deleted configuration store.
      */

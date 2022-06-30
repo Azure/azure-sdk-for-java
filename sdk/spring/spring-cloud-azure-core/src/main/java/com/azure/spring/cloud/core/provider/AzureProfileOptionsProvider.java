@@ -3,8 +3,13 @@
 
 package com.azure.spring.cloud.core.provider;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Interface to be implemented by classes that wish to provide the Azure profile options.
@@ -53,12 +58,46 @@ public interface AzureProfileOptionsProvider {
      * types will be OTHER.
      */
     enum CloudType {
-
+        /**
+         * Azure
+         */
         AZURE,
+
+        /**
+         * Azure China
+         */
         AZURE_CHINA,
+
+        /**
+         * Azure Germany
+         */
         AZURE_GERMANY,
+
+        /**
+         * Azure US government
+         */
         AZURE_US_GOVERNMENT,
-        OTHER
+
+        /**
+         * Other
+         */
+        OTHER;
+
+        private static final Map<String, CloudType> CLOUD_TYPE_MAP = initMap();
+
+        private static Map<String, CloudType> initMap() {
+            return Collections.unmodifiableMap(Arrays.stream(CloudType.values())
+                         .collect(Collectors.toMap(c -> c.name(), Function.identity())));
+        }
+
+        /**
+         * Get the {@link CloudType} from {@link String} value.
+         * @param cloudType the cloud type string value
+         * @return the {@link CloudType}
+         */
+        public static CloudType get(String cloudType) {
+            return CLOUD_TYPE_MAP.get(cloudType.toUpperCase(Locale.ROOT));
+        }
     }
 
     /**

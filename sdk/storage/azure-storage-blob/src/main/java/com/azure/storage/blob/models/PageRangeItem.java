@@ -3,12 +3,14 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRange;
 import com.azure.storage.blob.specialized.PageBlobClient;
 
 /**
  * Represents a page range on a page blob returned by {@link PageBlobClient#listPageRanges(BlobRange)}.
  */
+@Immutable
 public final class PageRangeItem {
     private final HttpRange range;
     private final boolean isClear;

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnGateways Delete. */
 public final class VpnGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnGatewayDelete.json
      */
     /**
      * Sample code: VpnGatewayDelete.

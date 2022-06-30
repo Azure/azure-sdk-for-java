@@ -22,7 +22,7 @@ result in all dependencies being included in your project.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-bom</artifactId>
-      <version>1.2.0</version>
+      <version>1.2.3</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>

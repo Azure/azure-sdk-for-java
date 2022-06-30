@@ -206,7 +206,7 @@ public final class ServiceLinkerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.servicelinker")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -263,7 +263,11 @@ public final class ServiceLinkerManager {
         }
     }
 
-    /** @return Resource collection API of Linkers. */
+    /**
+     * Gets the resource collection API of Linkers. It manages LinkerResource.
+     *
+     * @return Resource collection API of Linkers.
+     */
     public Linkers linkers() {
         if (this.linkers == null) {
             this.linkers = new LinkersImpl(clientObject.getLinkers(), this);
@@ -271,7 +275,11 @@ public final class ServiceLinkerManager {
         return linkers;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);

@@ -856,9 +856,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         try {
 
             DirectConnectionConfig connectionConfig = DirectConnectionConfig.getDefaultConfig();
-            if (connectionStateListenerEnabled) {
-                connectionConfig.setConnectionEndpointRediscoveryEnabled(true);
-            }
+            connectionConfig.setConnectionEndpointRediscoveryEnabled(connectionStateListenerEnabled);
 
             client1 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -1126,7 +1124,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
         assertThat(diagnostics).contains("\"startTimeUTC\"");
-        assertThat(diagnostics).contains("\"durationInMicroSec\"");
+        assertThat(diagnostics).contains("\"durationInMilliSecs\"");
     }
 
     public void isValidJSON(final String json) {

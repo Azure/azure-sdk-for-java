@@ -10,139 +10,6 @@
 
   <profiles>
     <profile>
-      <id>coverage</id>
-      <modules>
-        <module>spring-messaging-azure</module>
-        <module>spring-messaging-azure-eventhubs</module>
-        <module>spring-messaging-azure-servicebus</module>
-        <module>spring-messaging-azure-storage-queue</module>
-        <module>spring-integration-azure-core</module>
-        <module>spring-integration-azure-eventhubs</module>
-        <module>spring-integration-azure-servicebus</module>
-        <module>spring-integration-azure-storage-queue</module>
-        <module>spring-cloud-azure-core</module>
-        <module>spring-cloud-azure-service</module>
-        <module>spring-cloud-azure-resourcemanager</module>
-        <module>spring-cloud-azure-actuator</module>
-        <module>spring-cloud-azure-actuator-autoconfigure</module>
-        <module>spring-cloud-azure-autoconfigure</module>
-        <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
-        <module>spring-cloud-azure-stream-binder-eventhubs</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-core</module>
-        <module>spring-cloud-azure-stream-binder-servicebus</module>
-        <module>spring-cloud-azure-trace-sleuth</module>
-      </modules>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-messaging-azure</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-messaging-azure-eventhubs</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-messaging-azure-servicebus</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-messaging-azure-storage-queue</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-integration-azure-core</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-integration-azure-eventhubs</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-integration-azure-servicebus</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-integration-azure-storage-queue</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-core</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-service</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-          <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>default</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -169,10 +36,12 @@
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
+        <module>spring-cloud-azure-starter-storage</module>
         <module>spring-cloud-azure-starter-storage-blob</module>
         <module>spring-cloud-azure-starter-storage-file-share</module>
         <module>spring-cloud-azure-starter-storage-queue</module>
@@ -218,10 +87,12 @@
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
+        <module>spring-cloud-azure-starter-storage</module>
         <module>spring-cloud-azure-starter-storage-blob</module>
         <module>spring-cloud-azure-starter-storage-file-share</module>
         <module>spring-cloud-azure-starter-storage-queue</module>

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnSiteLinkConnections Get. */
 public final class VpnSiteLinkConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnSiteLinkConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnSiteLinkConnectionGet.json
      */
     /**
      * Sample code: VpnSiteLinkConnectionGet.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks RevisionsList. */
 public final class WorkbooksRevisionsListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionsList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookRevisionsList.json
      */
     /**
      * Sample code: WorkbookRevisionsList.

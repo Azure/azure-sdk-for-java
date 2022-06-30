@@ -30,7 +30,11 @@ public final class VolumeStorageToNetworkProximity extends ExpandableStringEnum<
         return fromString(name, VolumeStorageToNetworkProximity.class);
     }
 
-    /** @return known VolumeStorageToNetworkProximity values. */
+    /**
+     * Gets known VolumeStorageToNetworkProximity values.
+     *
+     * @return known VolumeStorageToNetworkProximity values.
+     */
     public static Collection<VolumeStorageToNetworkProximity> values() {
         return values(VolumeStorageToNetworkProximity.class);
     }

@@ -13,39 +13,47 @@ public class ThreadInterruptedStatusRestoreTest {
 
     @Test
     void testThreadInterruptedRestoreFromAnotherThread() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        Thread testThread = new TestThread(latch, true);
+        CountDownLatch latchForInWhile = new CountDownLatch(1);
+        CountDownLatch latchForInCatch = new CountDownLatch(1);
+        TestThread testThread = new TestThread(latchForInWhile, latchForInCatch, true);
         testThread.setDaemon(true);
         testThread.start();
-        TimeUnit.SECONDS.sleep(2L);
+        latchForInWhile.await();
         testThread.interrupt();
-        latch.await(5, TimeUnit.SECONDS);
+        latchForInCatch.await();
+
         System.out.println(Thread.currentThread().getName() + ": begin assertion");
-        Assertions.assertTrue(testThread.isInterrupted());
+        Assertions.assertTrue((testThread).getIsInterrupted());
         System.out.println(Thread.currentThread().getName() + ": end assertion");
     }
 
     @Test
     void testThreadInterruptedNotRestoreFromAnotherThread() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        Thread testThread = new TestThread(latch, false);
+        CountDownLatch latchForInWhile = new CountDownLatch(1);
+        CountDownLatch latchForInCatch = new CountDownLatch(1);
+        TestThread testThread = new TestThread(latchForInWhile, latchForInCatch, false);
         testThread.setDaemon(true);
         testThread.start();
-        TimeUnit.SECONDS.sleep(2L);
+        latchForInWhile.await();
         testThread.interrupt();
-        latch.await(5, TimeUnit.SECONDS);
+        latchForInCatch.await();
+
         System.out.println(Thread.currentThread().getName() + ": begin assertion");
-        Assertions.assertFalse(testThread.isInterrupted());
+        Assertions.assertFalse(testThread.getIsInterrupted());
         System.out.println(Thread.currentThread().getName() + ": end assertion");
     }
 
+
     static class TestThread extends Thread {
-        private final CountDownLatch latch;
+        private final CountDownLatch latchForInWhile;
+        private final CountDownLatch latchForInCatch;
 
         private final boolean restore;
+        boolean isInterrupted = false;
 
-        TestThread(CountDownLatch latch, boolean restore) {
-            this.latch = latch;
+        TestThread(CountDownLatch latchForInWhile, CountDownLatch latchForInCatch, boolean restore) {
+            this.latchForInWhile = latchForInWhile;
+            this.latchForInCatch = latchForInCatch;
             this.restore = restore;
         }
 
@@ -53,6 +61,7 @@ public class ThreadInterruptedStatusRestoreTest {
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
                 try {
+                    latchForInWhile.countDown();
                     TimeUnit.SECONDS.sleep(3);
                 } catch (InterruptedException ex) {
                     System.out.println(Thread.currentThread().getName() + ": current thread was interrupted!");
@@ -60,21 +69,14 @@ public class ThreadInterruptedStatusRestoreTest {
                         Thread.currentThread().interrupt();
                     }
 
-                    latch.countDown();
-                    someMethodConsumingTime();
+                    this.isInterrupted = Thread.currentThread().isInterrupted();
+                    latchForInCatch.countDown();
                 }
             }
         }
 
-        private void someMethodConsumingTime() {
-            long sum = 0;
-            for (int i = 0; i < 10000; i++) {
-                if (i % 2 != 0) {
-                    sum++;
-                }
-            }
-
-            System.out.println(Thread.currentThread().getName() + ": sum = " + sum);
+        boolean getIsInterrupted() {
+            return this.isInterrupted;
         }
     }
 }

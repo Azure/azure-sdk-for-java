@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for DiskEncryptionSets Update. */
 public final class DiskEncryptionSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateADiskEncryptionSetWithRotationToLatestKeyVersionEnabled.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabled.json
      */
     /**
      * Sample code: Update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Succeeded.
@@ -45,7 +45,7 @@ public final class DiskEncryptionSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateADiskEncryptionSetWithRotationToLatestKeyVersionEnabledInProgress.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update_WithRotationToLatestKeyVersionEnabledInProgress.json
      */
     /**
      * Sample code: Update a disk encryption set with rotationToLatestKeyVersionEnabled set to true - Updating.
@@ -73,7 +73,7 @@ public final class DiskEncryptionSetsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateADiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskEncryptionSetExamples/DiskEncryptionSet_Update.json
      */
     /**
      * Sample code: Update a disk encryption set.

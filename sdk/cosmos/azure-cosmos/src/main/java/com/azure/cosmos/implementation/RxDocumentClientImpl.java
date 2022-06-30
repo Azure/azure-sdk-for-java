@@ -178,6 +178,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final AtomicBoolean throughputControlEnabled;
     private ThroughputControlStore throughputControlStore;
+    private final ClientTelemetryConfig clientTelemetryConfig;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -191,9 +192,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                                ApiType apiType) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
+                                ApiType apiType,
+                                ClientTelemetryConfig clientTelemetryConfig) {
+        this(
+                serviceEndpoint,
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                consistencyLevel,
+                configs,
+                credential,
+                null,
+                sessionCapturingOverride,
+                connectionSharingAcrossClientsEnabled,
+                contentResponseOnWriteEnabled,
+                metadataCachesSnapshot,
+                apiType,
+                clientTelemetryConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -210,9 +225,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                                ApiType apiType) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
+                                ApiType apiType,
+                                ClientTelemetryConfig clientTelemetryConfig) {
+        this(
+                serviceEndpoint,
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                consistencyLevel,
+                configs,
+                credential,
+                tokenCredential,
+                sessionCapturingOverride,
+                connectionSharingAcrossClientsEnabled,
+                contentResponseOnWriteEnabled,
+                metadataCachesSnapshot,
+                apiType,
+                clientTelemetryConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -228,9 +257,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                                ApiType apiType) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-            credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
+                                ApiType apiType,
+                                ClientTelemetryConfig clientTelemetryConfig) {
+        this(
+                serviceEndpoint,
+                masterKeyOrResourceToken,
+                connectionPolicy,
+                consistencyLevel,
+                configs,
+                credential,
+                tokenCredential,
+                sessionCapturingOverrideEnabled,
+                connectionSharingAcrossClientsEnabled,
+                contentResponseOnWriteEnabled,
+                metadataCachesSnapshot,
+                apiType,
+                clientTelemetryConfig);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -285,7 +327,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled,
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                         ApiType apiType) {
+                         ApiType apiType,
+                         ClientTelemetryConfig clientTelemetryConfig) {
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.incrementAndGet();
@@ -372,6 +415,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
+            this.clientTelemetryConfig = clientTelemetryConfig;
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -457,10 +501,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache);
 
             updateGatewayProxy();
-            clientTelemetry = new ClientTelemetry(this, null, UUID.randomUUID().toString(),
-                ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
-                connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
-                null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
+            clientTelemetry = new ClientTelemetry(
+                    this,
+                    null,
+                    UUID.randomUUID().toString(),
+                    ManagementFactory.getRuntimeMXBean().getName(),
+                    userAgentContainer.getUserAgent(),
+                    connectionPolicy.getConnectionMode(),
+                    globalEndpointManager.getLatestDatabaseAccount().getId(),
+                    null,
+                    null,
+                    this.configs,
+                    this.clientTelemetryConfig,
+                    this,
+                    this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;

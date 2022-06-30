@@ -25,7 +25,11 @@ public final class ConnectionMonitorEndpointFilterItemType
         return fromString(name, ConnectionMonitorEndpointFilterItemType.class);
     }
 
-    /** @return known ConnectionMonitorEndpointFilterItemType values. */
+    /**
+     * Gets known ConnectionMonitorEndpointFilterItemType values.
+     *
+     * @return known ConnectionMonitorEndpointFilterItemType values.
+     */
     public static Collection<ConnectionMonitorEndpointFilterItemType> values() {
         return values(ConnectionMonitorEndpointFilterItemType.class);
     }

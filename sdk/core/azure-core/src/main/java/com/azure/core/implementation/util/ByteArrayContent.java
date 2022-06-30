@@ -64,4 +64,19 @@ public final class ByteArrayContent extends BinaryDataContent {
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes()).asReadOnlyBuffer()).flux();
     }
+
+    @Override
+    public boolean isReplayable() {
+        return true;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.just(this);
+    }
 }

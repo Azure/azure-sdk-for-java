@@ -51,6 +51,7 @@
         <module>sdk/core/azure-core-http-jdk-httpclient</module>
         <module>sdk/core/azure-core-http-netty</module>
 <!--        <module>sdk/core/azure-core-http-okhttp</module>-->
+        <module>sdk/core/azure-core-http-vertx</module>
         <module>sdk/core/azure-core-management</module>
         <module>sdk/core/azure-core-serializer-avro-apache</module>
         <module>sdk/core/azure-core-serializer-json-gson</module>
@@ -215,6 +216,7 @@
         <module>sdk/core/azure-core-http-jdk-httpclient</module>
         <module>sdk/core/azure-core-http-netty</module>
         <module>sdk/core/azure-core-http-okhttp</module>
+        <module>sdk/core/azure-core-http-vertx</module>
         <module>sdk/core/azure-core-management</module>
         <module>sdk/core/azure-core-serializer-avro-apache</module>
         <module>sdk/core/azure-core-serializer-json-gson</module>
@@ -343,9 +345,10 @@
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                 <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-                <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
-                  for more Java documentation, including quick starts, tutorials, and code samples.
-                </footer>
+                <!-- footer is deprecated and throws warning in Java 17 and fails the aggregate javadoc build -->
+<!--                <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site-->
+<!--                  for more Java documentation, including quick starts, tutorials, and code samples.-->
+<!--                </footer>-->
                 <linksource>false</linksource>
                 <excludePackageNames>
                   *.impl*:
@@ -893,7 +896,9 @@
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/dnsresolver</module>
+        <module>sdk/dynatrace</module>
         <module>sdk/edgeorder</module>
+        <module>sdk/education</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -920,6 +925,7 @@
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
         <module>sdk/logz</module>
+        <module>sdk/machinelearning</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
@@ -938,6 +944,7 @@
         <module>sdk/notificationhubs</module>
         <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
+        <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>

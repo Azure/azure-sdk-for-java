@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
 /** Samples for Pools Update. */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Pools_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.

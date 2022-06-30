@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for GalleryImageVersions Update. */
 public final class GalleryImageVersionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/UpdateASimpleGalleryImageVersion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Update.json
      */
     /**
      * Sample code: Update a simple Gallery Image Version (Managed Image as source).
@@ -56,7 +56,7 @@ public final class GalleryImageVersionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/UpdateASimpleGalleryImageVersionWithoutSourceId.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
      */
     /**
      * Sample code: Update a simple Gallery Image Version without source id.

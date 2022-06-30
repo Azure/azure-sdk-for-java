@@ -58,6 +58,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     </properties>
 
     <dependencies>
@@ -65,17 +66,17 @@
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
-            <version>3.8.1</version>  <!-- {x-version-update;org.apache.maven:maven-plugin-api;external_dependency} -->
+            <version>3.8.6</version> <!-- {x-version-update;org.apache.maven:maven-plugin-api;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.6.0</version>  <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
+            <version>3.6.4</version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-project</artifactId>
-            <version>2.2.1</version>  <!-- {x-version-update;org.apache.maven:maven-project;external_dependency} -->
+            <version>2.2.1</version> <!-- {x-version-update;org.apache.maven:maven-project;external_dependency} -->
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId>
@@ -86,14 +87,14 @@
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
-            <version>3.20.2</version>  <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
+            <version>3.24.2</version> <!-- {x-version-update;com.github.javaparser:javaparser-core;external_dependency} -->
         </dependency>
 
         <!-- Annotation scanning -->
         <dependency>
             <groupId>net.oneandone.reflections8</groupId>
             <artifactId>reflections8</artifactId>
-            <version>0.11.7</version>  <!-- {x-version-update;net.oneandone.reflections8:reflections8;external_dependency} -->
+            <version>0.11.7</version> <!-- {x-version-update;net.oneandone.reflections8:reflections8;external_dependency} -->
         </dependency>
 
         <dependency>
@@ -133,7 +134,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-plugin-plugin;external_dependency} -->
+                <version>3.6.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-plugin-plugin;external_dependency} -->
                 <executions>
 
                     <execution>
@@ -146,6 +147,60 @@
                 <configuration>
                     <goalPrefix>azure</goalPrefix>
                 </configuration>
+            </plugin>
+
+            <!-- generate sources jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${packageOutputDirectory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy the pom file to output -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- generate javadoc jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

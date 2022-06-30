@@ -375,6 +375,23 @@ public abstract class CertificateClientTestBase extends TestBase {
         testRunner.accept(certificateIssuers);
     }
 
+    void updateIssuerRunner(BiConsumer<CertificateIssuer, CertificateIssuer> testRunner) {
+        String issuerName = testResourceNamer.randomName("testIssuer", 25);
+        final CertificateIssuer certificateIssuer = setupIssuer(issuerName);
+        final CertificateIssuer issuerForUpdate = new CertificateIssuer(issuerName, "Test")
+            .setAdministratorContacts(Arrays.asList(new AdministratorContact()
+                .setFirstName("otherFirst")
+                .setLastName("otherLast")
+                .setEmail("otherFirst.otherLast@hotmail.com")
+                .setPhone("67890")))
+            .setAccountId("otherIssuerAccountId")
+            .setEnabled(false)
+            .setOrganizationId("otherOrgId")
+            .setPassword("test456");
+
+        testRunner.accept(certificateIssuer, issuerForUpdate);
+    }
+
     @Test
     public abstract void setContacts(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
@@ -540,7 +557,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         return x509Certificate;
     }
 
-    Boolean validateIssuer(CertificateIssuer expected, CertificateIssuer actual) {
+    boolean issuerCreatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
         return expected.getAccountId().equals(actual.getAccountId())
             && expected.isEnabled().equals(actual.isEnabled())
             && (actual.getCreatedOn() != null)
@@ -549,6 +566,18 @@ public abstract class CertificateClientTestBase extends TestBase {
             && (actual.getId().length() > 0)
             && expected.getName().equals(actual.getName())
             && expected.getOrganizationId().equals(actual.getOrganizationId())
+            && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
+    }
+
+    boolean issuerUpdatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
+        return !expected.getAccountId().equals(actual.getAccountId())
+            && !expected.isEnabled().equals(actual.isEnabled())
+            && (actual.getCreatedOn() != null)
+            && (actual.getUpdatedOn() != null)
+            && (actual.getId() != null)
+            && (actual.getId().length() > 0)
+            && expected.getName().equals(actual.getName())
+            && !expected.getOrganizationId().equals(actual.getOrganizationId())
             && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
     }
 

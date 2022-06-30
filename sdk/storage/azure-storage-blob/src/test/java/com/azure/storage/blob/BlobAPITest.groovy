@@ -7,9 +7,11 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
+import com.azure.core.util.HttpClientOptions
 import com.azure.core.util.UrlBuilder
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -272,6 +274,38 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(IllegalStateException)
+    }
+
+    def "Upload fail with small timeouts for service client"() {
+        setup:
+        // setting very small timeout values for the service client
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new BlobServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        def size = 1024
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        def blobContainer = serviceClient.createBlobContainer(generateContainerName())
+        def blobClient = blobContainer.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(input, size, null, null, null, null, null, Duration.ofSeconds(10), null)
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
+
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -2834,6 +2868,7 @@ class BlobAPITest extends APISpec {
         def headers = response.getHeaders()
 
         then:
+        response.getValue()
         response.getStatusCode() == 202
         headers.getValue("x-ms-request-id") != null
         headers.getValue("x-ms-version") != null
@@ -2853,6 +2888,7 @@ class BlobAPITest extends APISpec {
         def response = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
+        !response.getValue()
         response.getStatusCode() == 404
     }
 
@@ -2862,7 +2898,9 @@ class BlobAPITest extends APISpec {
         def secondResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
 
         then:
+        initialResponse.getValue()
         initialResponse.getStatusCode() == 202
+        !secondResponse.getValue()
         secondResponse.getStatusCode() == 404
 
     }
