@@ -247,7 +247,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                     if (this.currentCredentialKey != this.credential.getKey()) {
                         byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
                         this.currentCredentialKey = this.credential.getKey();
-                        this.macPool = new MacPool(() -> this.createMac(masterKeyBytes));
+                        this.macPool = new MacPool(() -> createMac(masterKeyBytes));
                     }
                 } finally {
                     this.macInstanceLock.unlock();

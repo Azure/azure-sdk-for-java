@@ -3,12 +3,16 @@
 
 package com.azure.cosmos.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.Mac;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 class MacPool {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MacPool.class);
     final Mac macInstance;
     final ConcurrentLinkedQueue<Mac> pool;
     final AtomicBoolean isMacInstanceCloneable = new AtomicBoolean(true);
@@ -38,9 +42,23 @@ class MacPool {
             return this.macProvider.get();
         }
 
+        // Cloning teh rootMac is the fastest option
+        // But while Mac implements Cloneable interface not every MacSpi is required to support cloning
+        // If it doesn't  - bad for performance - but functionally correct and necessary
+        // - see https://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/HowToImplAProvider.html#Step11
+        // - see https://docs.oracle.com/en/java/javase/18/docs/api/java.base/javax/crypto/Mac.html#clone()
         try {
             return (Mac) this.macInstance.clone();
         } catch (CloneNotSupportedException e) {
+
+            LOGGER.warn(
+                "Cloning for the {} algorithm with provider {} {} ({}) not possible - this will " +
+                    "result in less than ideal performance.",
+                this.macInstance.getAlgorithm(),
+                this.macInstance.getProvider().getName(),
+                this.macInstance.getProvider().getVersionStr(),
+                this.macInstance.getProvider().getInfo());
+
             this.isMacInstanceCloneable.set(false);
 
             return this.macProvider.get();
