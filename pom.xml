@@ -944,6 +944,7 @@
         <module>sdk/notificationhubs</module>
         <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
+        <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>

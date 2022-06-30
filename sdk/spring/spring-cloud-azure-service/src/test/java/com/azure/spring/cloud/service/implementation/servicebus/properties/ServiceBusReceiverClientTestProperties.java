@@ -11,6 +11,17 @@ import java.time.Duration;
 public class ServiceBusReceiverClientTestProperties extends ServiceBusClientCommonTestProperties implements ServiceBusReceiverClientProperties {
 
     private String subscriptionName;
+    private Boolean sessionEnabled;
+    private Boolean autoComplete;
+    private Integer prefetchCount;
+    private SubQueue subQueue;
+    private ServiceBusReceiveMode receiveMode;
+    private Duration maxAutoLockRenewDuration;
+
+    @Override
+    public String getSubscriptionName() {
+        return subscriptionName;
+    }
 
     public void setSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
@@ -18,36 +29,55 @@ public class ServiceBusReceiverClientTestProperties extends ServiceBusClientComm
 
     @Override
     public Boolean getSessionEnabled() {
-        return null;
+        return sessionEnabled;
+    }
+
+    public void setSessionEnabled(Boolean sessionEnabled) {
+        this.sessionEnabled = sessionEnabled;
     }
 
     @Override
     public Boolean getAutoComplete() {
-        return null;
+        return autoComplete;
+    }
+
+    public void setAutoComplete(Boolean autoComplete) {
+        this.autoComplete = autoComplete;
     }
 
     @Override
     public Integer getPrefetchCount() {
-        return null;
+        return prefetchCount;
+    }
+
+    public void setPrefetchCount(Integer prefetchCount) {
+        this.prefetchCount = prefetchCount;
     }
 
     @Override
     public SubQueue getSubQueue() {
-        return null;
+        return subQueue;
+    }
+
+    public void setSubQueue(SubQueue subQueue) {
+        this.subQueue = subQueue;
     }
 
     @Override
     public ServiceBusReceiveMode getReceiveMode() {
-        return null;
+        return receiveMode;
     }
 
-    @Override
-    public String getSubscriptionName() {
-        return subscriptionName;
+    public void setReceiveMode(ServiceBusReceiveMode receiveMode) {
+        this.receiveMode = receiveMode;
     }
 
     @Override
     public Duration getMaxAutoLockRenewDuration() {
-        return null;
+        return maxAutoLockRenewDuration;
+    }
+
+    public void setMaxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+        this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
     }
 }

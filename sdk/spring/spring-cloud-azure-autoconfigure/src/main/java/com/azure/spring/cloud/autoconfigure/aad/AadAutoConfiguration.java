@@ -24,10 +24,7 @@ import org.springframework.context.annotation.Import;
     AadPropertiesConfiguration.class,
     AadWebApplicationConfiguration.class,
     AadResourceServerConfiguration.class,
-    AadOAuth2ClientConfiguration.OAuth2ClientRepositoryConfiguration.class,
-    AadOAuth2ClientConfiguration.WebApplicationWithoutResourceServerOAuth2AuthorizedClientManagerConfiguration.class,
-    AadOAuth2ClientConfiguration.ResourceServerWithOBOOAuth2AuthorizedClientManagerConfiguration.class,
-    AadOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration.class
+    AadOAuth2ClientConfiguration.class
 })
 public class AadAutoConfiguration {
 

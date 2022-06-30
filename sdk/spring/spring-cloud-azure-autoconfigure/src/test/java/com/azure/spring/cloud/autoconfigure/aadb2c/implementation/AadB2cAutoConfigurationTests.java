@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.Arrays;
@@ -54,7 +54,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 assertTrue(authorizationClients.containsKey("test"));
                 assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
-                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AadAuthorizationGrantType.CLIENT_CREDENTIALS);
+                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
 
                 Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
                 assertEquals(authenticateAdditionalParameters.size(), 2);

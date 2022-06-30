@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The Custom Locations patchable resource definition. */
 @Fluent
 public final class PatchableCustomLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchableCustomLocations.class);
-
     /*
      * Identity for the resource.
      */

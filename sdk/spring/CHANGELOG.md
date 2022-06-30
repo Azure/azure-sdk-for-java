@@ -1,10 +1,12 @@
 # Release History
 
 ## 4.3.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.1 and Spring Cloud dependencies version to 2021.0.3
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
 - GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
+- Support Jwt Client authentication for Azure AD Starter.
 
 ### Breaking Changes
 
@@ -48,12 +50,32 @@ This section includes changes in `spring-cloud-azure-starter-active-directory` m
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
+#### Features Added
++ Support Jwt Client authentication [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
+
+#### Breaking Changes
++ Deprecated classes and properties type changed [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
+    + Deprecated ~~AadAuthorizationGrantType~~, use `AuthorizationGrantType` instead.
+    + Deprecated ~~AadOAuth2AuthenticatedPrincipal~~, ~~AadJwtBearerTokenAuthenticationConverter~~, use the default converter `JwtAuthenticationConverter` instead in `AadResourceServerWebSecurityConfigurerAdapter`.
+    + The type of property *authorizationGrantType* is changed to `AuthorizationGrantType` in `AuthorizationClientProperties` class.
+    + Deprecated ~~AadOboOAuth2AuthorizedClientProvider~~, use `JwtBearerOAuth2AuthorizedClientProvider` instead.
+
 ### Spring Cloud Azure Starter Active Directory B2C
 This section includes changes in `spring-cloud-azure-starter-active-directory-b2c` module.
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
+### Spring Integration Azure Storage Queue
+This section includes changes in `spring-integration-azure-storage-queue` module.
+
+#### Features Added
+- Add configurable visibility timeout to `StorageQueueMessageSource` to allow configuring visibility timeout of message source at startup [#29567](https://github.com/Azure/azure-sdk-for-java/pull/29567).
+
+#### Breaking Changes
++ Deprecated classes and properties type changed [#29471](https://github.com/Azure/azure-sdk-for-java/pull/29471).
+    + Deprecated *~~AadAuthorizationGrantType~~*, use `AuthorizationGrantType` instead.
+    + The type of property *authorizationGrantType* is changed to `AuthorizationGrantType` in `AuthorizationClientProperties` class.
 
 ## 4.2.0 (2022-05-26)
 

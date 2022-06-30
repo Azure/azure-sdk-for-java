@@ -26,16 +26,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -43,7 +46,8 @@ import java.util.Objects;
  */
 class OkHttpAsyncHttpClient implements HttpClient {
 
-    private static final Mono<RequestBody> EMPTY_REQUEST_BODY_MONO = Mono.just(RequestBody.create(new byte[0]));
+    private static final ClientLogger LOGGER = new ClientLogger(OkHttpAsyncHttpClient.class);
+    private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(new byte[0]);
 
     final OkHttpClient httpClient;
 
@@ -74,16 +78,31 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //   3. If Flux<ByteBuffer> asynchronous then subscribe does not block caller thread
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
-            toOkHttpRequest(request, progressReporter).subscribe(okHttpRequest -> {
-                try {
-                    Call call = httpClient.newCall(okHttpRequest);
-                    call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
-                    sink.onCancel(call::cancel);
-                } catch (Exception ex) {
-                    sink.error(ex);
-                }
-            }, sink::error);
+            Mono.fromCallable(() -> toOkHttpRequest(request, progressReporter))
+                .subscribe(okHttpRequest -> {
+                    try {
+                        Call call = httpClient.newCall(okHttpRequest);
+                        call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
+                        sink.onCancel(call::cancel);
+                    } catch (Exception ex) {
+                        sink.error(ex);
+                    }
+                }, sink::error);
         }));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+
+        Request okHttpRequest = toOkHttpRequest(request, progressReporter);
+        try {
+            Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+            return toHttpResponse(request, okHttpResponse, eagerlyReadResponse);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 
     /**
@@ -91,9 +110,9 @@ class OkHttpAsyncHttpClient implements HttpClient {
      *
      * @param request the azure-core request
      * @param progressReporter the {@link ProgressReporter}. Can be null.
-     * @return the Mono emitting okhttp request
+     * @return the okhttp request
      */
-    private Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
+    private okhttp3.Request toOkHttpRequest(HttpRequest request, ProgressReporter progressReporter) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -106,19 +125,17 @@ class OkHttpAsyncHttpClient implements HttpClient {
         }
 
         if (request.getHttpMethod() == HttpMethod.GET) {
-            return Mono.just(requestBuilder.get().build());
+            return requestBuilder.get().build();
         } else if (request.getHttpMethod() == HttpMethod.HEAD) {
-            return Mono.just(requestBuilder.head().build());
+            return requestBuilder.head().build();
         }
 
-        return toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders())
-            .map(okhttpRequestBody -> {
-                if (progressReporter != null) {
-                    okhttpRequestBody = new OkHttpProgressReportingRequestBody(okhttpRequestBody, progressReporter);
-                }
-                return requestBuilder.method(request.getHttpMethod().toString(), okhttpRequestBody)
-                    .build();
-            });
+        RequestBody okHttpRequestBody = toOkHttpRequestBody(request.getBodyAsBinaryData(), request.getHeaders());
+        if (progressReporter != null) {
+            okHttpRequestBody = new OkHttpProgressReportingRequestBody(okHttpRequestBody, progressReporter);
+        }
+        return requestBuilder.method(request.getHttpMethod().toString(), okHttpRequestBody)
+            .build();
     }
 
     /**
@@ -128,34 +145,33 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @param headers the headers associated with the original request
      * @return the Mono emitting okhttp request
      */
-    private Mono<RequestBody> toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
+    private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
+        if (bodyContent == null) {
+            return EMPTY_REQUEST_BODY;
+        }
+
         String contentType = headers.getValue("Content-Type");
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-        if (bodyContent == null) {
-            return EMPTY_REQUEST_BODY_MONO;
-        }
-
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof ByteArrayContent) {
-            return Mono.just(RequestBody.create(content.toBytes(), mediaType));
-        } else if (content instanceof StringContent
+        if (content instanceof ByteArrayContent
+            || content instanceof StringContent
             || content instanceof SerializableContent) {
-            return Mono.fromCallable(() -> RequestBody.create(content.toBytes(), mediaType));
+            return RequestBody.create(content.toBytes(), mediaType);
         } else {
             long effectiveContentLength = getRequestContentLength(content, headers);
             if (content instanceof InputStreamContent) {
                 // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return Mono.just(new OkHttpInputStreamRequestBody(
-                    (InputStreamContent) content, effectiveContentLength, mediaType));
+                return new OkHttpInputStreamRequestBody(
+                    (InputStreamContent) content, effectiveContentLength, mediaType);
             } else if (content instanceof FileContent) {
                 // The OkHttpFileRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return Mono.just(new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType));
+                return new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType);
             } else {
                 // The OkHttpFluxRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-                return Mono.just(new OkHttpFluxRequestBody(
-                    content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis()));
+                return new OkHttpFluxRequestBody(
+                    content, effectiveContentLength, mediaType, httpClient.callTimeoutMillis());
             }
         }
     }
@@ -172,6 +188,27 @@ class OkHttpAsyncHttpClient implements HttpClient {
             }
         }
         return contentLength;
+    }
+
+    private static HttpResponse toHttpResponse(
+        HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse) throws IOException {
+        /*
+         * Use a buffered response when we are eagerly reading the response from the network and the body isn't
+         * empty.
+         */
+        if (eagerlyReadResponse) {
+            try (ResponseBody body = response.body()) {
+                if (Objects.nonNull(body)) {
+                    byte[] bytes = body.bytes();
+                    return new OkHttpAsyncBufferedResponse(response, request, bytes);
+                } else {
+                    // Body is null, use the non-buffering response.
+                    return new OkHttpAsyncResponse(response, request);
+                }
+            }
+        } else {
+            return new OkHttpAsyncResponse(response, request);
+        }
     }
 
     private static class OkHttpCallback implements okhttp3.Callback {
@@ -200,27 +237,12 @@ class OkHttpAsyncHttpClient implements HttpClient {
         @SuppressWarnings("NullableProblems")
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
-            /*
-             * Use a buffered response when we are eagerly reading the response from the network and the body isn't
-             * empty.
-             */
-            if (eagerlyReadResponse) {
-                ResponseBody body = response.body();
-                if (Objects.nonNull(body)) {
-                    try {
-                        byte[] bytes = body.bytes();
-                        body.close();
-                        sink.success(new OkHttpAsyncBufferedResponse(response, request, bytes));
-                    } catch (IOException ex) {
-                        // Reading the body bytes may cause an IOException, if it happens propagate it.
-                        sink.error(ex);
-                    }
-                } else {
-                    // Body is null, use the non-buffering response.
-                    sink.success(new OkHttpAsyncResponse(response, request));
-                }
-            } else {
-                sink.success(new OkHttpAsyncResponse(response, request));
+            try {
+                HttpResponse httpResponse = toHttpResponse(request, response, eagerlyReadResponse);
+                sink.success(httpResponse);
+            } catch (IOException ex) {
+                // Reading the body bytes may cause an IOException, if it happens propagate it.
+                sink.error(ex);
             }
         }
     }

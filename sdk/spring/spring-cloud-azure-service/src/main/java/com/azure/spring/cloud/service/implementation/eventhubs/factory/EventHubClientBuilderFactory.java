@@ -6,10 +6,13 @@ package com.azure.spring.cloud.service.implementation.eventhubs.factory;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
@@ -20,6 +23,9 @@ import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +36,8 @@ import java.util.function.BiConsumer;
  * blob properties.
  */
 public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubClientBuilder> {
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(EventHubClientBuilderFactory.class);
 
     private final EventHubClientCommonProperties eventHubsProperties;
 
@@ -68,14 +76,21 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected BiConsumer<EventHubClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                eventHubsProperties.getEventHubName(),
-                                                                tokenCredential);
+        return (builder, tokenCredential) -> builder.credential(tokenCredential);
     }
 
     @Override
     protected BiConsumer<EventHubClientBuilder, String> consumeConnectionString() {
-        return (builder, connectionString) -> builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
+        return (builder, connectionString) -> {
+            if (StringUtils.hasText(this.eventHubsProperties.getEventHubName())) {
+                builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
+            } else {
+                LOGGER.info("The eventhub name is not configured, will call credential method instead of connectionString method.");
+                final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+                TokenCredential tokenCredential = getTokenCredential(properties);
+                builder.credential(tokenCredential);
+            }
+        };
     }
 
     @Override
@@ -96,6 +111,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         PropertyMapper mapper = new PropertyMapper();
 
         mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
+        mapper.from(eventHubsProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        mapper.from(eventHubsProperties.getEventHubName()).to(builder::eventHubName);
 
         if (this.eventHubsProperties instanceof EventHubsNamespaceProperties) {
             mapper.from(((EventHubsNamespaceProperties) this.eventHubsProperties).getSharedConnection())
@@ -119,13 +136,21 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(c -> builder.credential(
-                eventHubsProperties.getFullyQualifiedNamespace(), eventHubsProperties.getEventHubName(), c)),
-            new SasAuthenticationDescriptor(c -> builder.credential(
-                eventHubsProperties.getFullyQualifiedNamespace(), eventHubsProperties.getEventHubName(), c)),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(
-                eventHubsProperties.getFullyQualifiedNamespace(), eventHubsProperties.getEventHubName(), c))
+            new NamedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(c))
         );
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
     }
 
 }

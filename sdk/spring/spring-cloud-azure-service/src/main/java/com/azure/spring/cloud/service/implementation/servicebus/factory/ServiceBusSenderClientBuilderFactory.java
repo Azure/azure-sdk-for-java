@@ -49,6 +49,7 @@ public class ServiceBusSenderClientBuilderFactory
     protected void configureService(ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
         Assert.notNull(senderClientProperties.getEntityType(), "Entity type cannot be null.");
         Assert.notNull(senderClientProperties.getEntityName(), "Entity name cannot be null.");
+        super.configureService(builder);
         final PropertyMapper propertyMapper = new PropertyMapper();
 
         if (ServiceBusEntityType.QUEUE == senderClientProperties.getEntityType()) {

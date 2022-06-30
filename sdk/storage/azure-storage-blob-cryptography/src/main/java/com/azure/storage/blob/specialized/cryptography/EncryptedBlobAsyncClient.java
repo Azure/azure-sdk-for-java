@@ -9,25 +9,32 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -36,33 +43,29 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.ShortBufferException;
-import javax.crypto.spec.GCMParameterSpec;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_PKCS5PADDING;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -105,6 +108,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private final EncryptionVersion encryptionVersion;
 
+    private final boolean requiresEncryption;
+
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      *
@@ -125,13 +130,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
+        this.requiresEncryption = requiresEncryption;
     }
 
     /**
@@ -148,7 +154,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion);
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
     }
 
     /**
@@ -169,7 +175,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId(), encryptionVersion);
+            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+    }
+
+    boolean isEncryptionRequired() {
+        return this.requiresEncryption;
     }
 
     /**
@@ -597,197 +607,39 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            SecretKey aesKey = generateSecretKey();
+            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey());
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
-            keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
-                CryptographyConstants.AGENT_METADATA_VALUE);
+            keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);
 
-            byte[] keyToWrap;
-            switch (this.encryptionVersion) {
-                case V2:
-                    /*
-                     * Prevent a downgrade attack by prepending the protocol version to the key (padded to 8 bytes) before
-                     * wrapping.
-                     */
-                    ByteArrayOutputStream keyStream = new ByteArrayOutputStream((256 / 8) + 8);
-                    keyStream.write(CryptographyConstants.ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8));
-                    for (int i = 0; i < 5; i++) {
-                        keyStream.write(0);
-                    }
-                    keyStream.write(aesKey.getEncoded());
-                    keyToWrap = keyStream.toByteArray();
-                    break;
-                case V1:
-                    keyToWrap = aesKey.getEncoded();
-                    break;
-                default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
-                        + this.encryptionVersion));
-            }
+            byte[] keyToWrap = encryptor.getKeyToWrap();
+
             return keyWrapper.getKeyId().flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, keyToWrap)
                 .map(encryptedKey -> {
                     WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
                     EncryptionData encryptionData;
                     Flux<ByteBuffer> encryptedTextFlux;
-                    switch (this.encryptionVersion) {
-                        case V1:
-                            Cipher cbcCipher;
-                            try {
-                                cbcCipher = generateCBCCipher(aesKey);
-                            } catch (GeneralSecurityException e) {
-                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                            }
-                            // Build EncryptionData
-                            encryptionData = new EncryptionData()
-                                .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
-                                    EncryptionAlgorithm.AES_CBC_256))
-                                .setKeyWrappingMetadata(keyWrappingMetadata)
-                                .setContentEncryptionIV(cbcCipher.getIV())
-                                .setWrappedContentKey(wrappedKey);
-
-                            encryptedTextFlux = encryptV1(plainTextFlux, cbcCipher);
-                            break;
-                        case V2:
-                            // Build EncryptionData
-                            encryptionData = new EncryptionData()
-                                .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V2,
-                                    EncryptionAlgorithm.AES_GCM_256))
-                                .setKeyWrappingMetadata(keyWrappingMetadata)
-                                .setEncryptedRegionInfo(new EncryptedRegionInfo(
-                                    GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH))
-                                .setWrappedContentKey(wrappedKey);
-
-                            encryptedTextFlux = encryptV2(plainTextFlux, aesKey);
-
-                            break;
-                        default:
-                            throw LOGGER.logExceptionAsError(new IllegalStateException("Encryption version not supported"));
+                    try {
+                        encryptionData = encryptor.buildEncryptionData(keyWrappingMetadata, wrappedKey);
+                        encryptedTextFlux = encryptor.encrypt(plainTextFlux);
+                    } catch (GeneralSecurityException e) {
+                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                     }
 
                     return new EncryptedBlob(encryptionData, encryptedTextFlux);
                 }));
-        } catch (GeneralSecurityException | IOException e) {
+        } catch (GeneralSecurityException e) {
             // These are hardcoded and guaranteed to work. There is no reason to propagate a checked exception.
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
-    private Flux<ByteBuffer> encryptV2(Flux<ByteBuffer> plainTextFlux, SecretKey aesKey) {
-        Flux<ByteBuffer> encryptedTextFlux;
-        BufferStagingArea stagingArea =
-            new BufferStagingArea(GCM_ENCRYPTION_REGION_LENGTH, GCM_ENCRYPTION_REGION_LENGTH);
-
-        encryptedTextFlux =
-            UploadUtils.chunkSource(plainTextFlux,
-                    new com.azure.storage.common.ParallelTransferOptions()
-                        .setBlockSizeLong((long) GCM_ENCRYPTION_REGION_LENGTH))
-                .flatMapSequential(stagingArea::write)
-                .concatWith(Flux.defer(stagingArea::flush))
-                .index()
-                .flatMapSequential(tuple -> {
-                    Cipher gcmCipher;
-                    try {
-                        // We use the index as the nonce as a counter guarantees each nonce is used
-                        // only once with a given key.
-                        gcmCipher = generateGCMCipher(aesKey, tuple.getT1());
-                    } catch (NoSuchPaddingException | NoSuchAlgorithmException
-                        | InvalidAlgorithmParameterException | InvalidKeyException e) {
-                        throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                    }
-
-                    // Expected size of each encryption region after calling doFinal. Last one may
-                    // be less, will never be more.
-                    ByteBuffer encryptedRegion = ByteBuffer.allocate(
-                        GCM_ENCRYPTION_REGION_LENGTH + TAG_LENGTH);
-
-                    // Each flux is at most 1 BufferAggregator of 4mb
-                    Flux<ByteBuffer> cipherTextWithTag = tuple.getT2()
-                        .asFlux()
-                        .map(buffer -> {
-                            // Write into the preallocated buffer and always return this buffer.
-                            try {
-                                gcmCipher.update(buffer, encryptedRegion);
-                            } catch (ShortBufferException e) {
-                                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-                            }
-                            return encryptedRegion;
-                        })
-                        .then(Mono.fromCallable(() -> {
-                            // We have already written all the data to the cipher. Passing in a final
-                            // empty buffer allows us to force completion and return the filled buffer.
-                            gcmCipher.doFinal(ByteBuffer.allocate(0), encryptedRegion);
-                            encryptedRegion.flip();
-                            return encryptedRegion;
-                        })).flux();
-
-                    return Flux.concat(Flux.just(ByteBuffer.wrap(gcmCipher.getIV())),
-                        cipherTextWithTag);
-                }, 1, 1);
-        return encryptedTextFlux;
-    }
-
-    private Flux<ByteBuffer> encryptV1(Flux<ByteBuffer> plainTextFlux, Cipher cbcCipher) {
-        Flux<ByteBuffer> encryptedTextFlux;
-        // Encrypt plain text with content encryption key
-        encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
-            int outputSize = cbcCipher.getOutputSize(plainTextBuffer.remaining());
-
-            /*
-             * This should be the only place we allocate memory in encryptBlob(). Although there is an
-             * overload that can encrypt in place that would save allocations, we do not want to overwrite
-             * customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
-             * we should implement pooling.
-             */
-            ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
-
-            int encryptedBytes;
-            try {
-                encryptedBytes = cbcCipher.update(plainTextBuffer, encryptedTextBuffer);
-            } catch (ShortBufferException e) {
-                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-            }
-            encryptedTextBuffer.position(0);
-            encryptedTextBuffer.limit(encryptedBytes);
-            return encryptedTextBuffer;
-        });
-
-        /*
-         * Defer() ensures the contained code is not executed until the Flux is subscribed to, in
-         * other words, cipher.doFinal() will not be called until the plainTextFlux has completed
-         * and therefore all other data has been encrypted.
-         */
-        encryptedTextFlux = Flux.concat(encryptedTextFlux,
-            Mono.fromCallable(() -> ByteBuffer.wrap(cbcCipher.doFinal())));
-        return encryptedTextFlux;
-    }
-
     SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(CryptographyConstants.AES);
-        keyGen.init(256);
+        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
+        keyGen.init(AES_KEY_SIZE_BITS);
 
         return keyGen.generateKey();
-    }
-
-    Cipher generateCBCCipher(SecretKey aesKey) throws GeneralSecurityException {
-        Cipher cipher = Cipher.getInstance(AES_CBC_PKCS5PADDING);
-
-        // Generate content encryption key
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-
-        return cipher;
-    }
-
-    Cipher generateGCMCipher(SecretKey aesKey, long index) throws NoSuchPaddingException, NoSuchAlgorithmException,
-        InvalidAlgorithmParameterException, InvalidKeyException {
-        Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
-        byte[] iv = ByteBuffer.allocate(12).putLong(index).array(); // standard gcm nonce is 12 bytes per James' doc
-
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
-        return cipher;
     }
 
     /**
@@ -807,6 +659,128 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
         });
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Deprecated
+    @Override
+    public Flux<ByteBuffer> download() {
+        return downloadStream();
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @Override
+    public Flux<ByteBuffer> downloadStream() {
+        return downloadStreamWithResponse(null, null, null, false).flatMapMany(BlobDownloadAsyncResponse::getValue);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BinaryData> downloadContent() {
+        return downloadContentWithResponse(null, null)
+            .flatMap(response -> BinaryData.fromFlux(response.getValue().toFluxByteBuffer()));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        if (EncryptedBlobClient.isRangeRequest(range)) {
+            return populateRequestConditionsAndContext(requestConditions,
+                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5));
+        } else {
+            return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
+        }
+    }
+
+    private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
+        Supplier<Mono<T>> downloadCall) {
+        return this.getPropertiesWithResponse(requestConditions)
+            .flatMap(response -> {
+                BlobRequestConditions requestConditionsFinal = requestConditions == null
+                    ? new BlobRequestConditions() : requestConditions;
+
+                requestConditionsFinal.setIfMatch(response.getValue().getETag());
+                Mono<T> result = downloadCall.get();
+                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+                    result = result.contextWrite(context ->
+                        context.put(ENCRYPTION_DATA_KEY,
+                            EncryptionData.getAndValidateEncryptionData(
+                                response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY), requiresEncryption))
+                    );
+                }
+                return result;
+            });
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(
+        DownloadRetryOptions options,
+        BlobRequestConditions requestConditions) {
+        return populateRequestConditionsAndContext(requestConditions,
+            () -> super.downloadContentWithResponse(options, requestConditions));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobProperties> downloadToFile(String filePath) {
+        return downloadToFile(filePath, false);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<BlobProperties> downloadToFile(String filePath, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+        }
+        return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5) {
+        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, options, requestConditions,
+            rangeGetContentMd5, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return this.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+                    .setParallelTransferOptions(finalParallelTransferOptions)
+                    .setDownloadRetryOptions(options).setRequestConditions(requestConditions)
+                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        return populateRequestConditionsAndContext(options.getRequestConditions(),
+            () -> super.downloadToFileWithResponse(options));
     }
 
     /**

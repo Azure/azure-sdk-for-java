@@ -6,6 +6,7 @@ package com.azure.spring.cloud.service.implementation.cosmos;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import java.time.Duration;
+import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -88,12 +90,40 @@ public class CosmosClientBuilderFactoryTests extends
     }
 
     @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureCosmosTestProperties properties = new AzureCosmosTestProperties();
+        properties.setEndpoint("test-endpoint");
+        properties.setConsistencyLevel(ConsistencyLevel.SESSION);
+        properties.setClientTelemetryEnabled(true);
+        properties.setConnectionSharingAcrossClientsEnabled(true);
+        properties.setContentResponseOnWriteEnabled(true);
+        properties.setEndpointDiscoveryEnabled(true);
+        properties.setMultipleWriteRegionsEnabled(true);
+        properties.setReadRequestsFallbackEnabled(true);
+        properties.setSessionCapturingOverrideEnabled(true);
+        properties.getPreferredRegions().add("eastus");
+
+        final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
+        final CosmosClientBuilder builder = factoryExt.build();
+
+        verify(builder, times(1)).endpoint("test-endpoint");
+        verify(builder, times(1)).consistencyLevel(ConsistencyLevel.SESSION);
+        verify(builder, times(1)).clientTelemetryEnabled(true);
+        verify(builder, times(1)).connectionSharingAcrossClientsEnabled(true);
+        verify(builder, times(1)).contentResponseOnWriteEnabled(true);
+        verify(builder, times(1)).endpointDiscoveryEnabled(true);
+        verify(builder, times(1)).multipleWriteRegionsEnabled(true);
+        verify(builder, times(1)).readRequestsFallbackEnabled(true);
+        verify(builder, times(1)).sessionCapturingOverrideEnabled(true);
+        verify(builder, times(1)).preferredRegions(Arrays.asList("eastus"));
+    }
+
+    @Override
     protected void verifyCredentialCalled(CosmosClientBuilder builder,
                                           Class<? extends TokenCredential> tokenCredentialClass,
                                           VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
-
 
     static class CosmosClientBuilderFactoryExt extends CosmosClientBuilderFactory {
 

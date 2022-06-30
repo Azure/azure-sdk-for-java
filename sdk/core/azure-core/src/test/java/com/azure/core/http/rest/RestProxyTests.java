@@ -15,6 +15,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
@@ -182,7 +183,7 @@ public class RestProxyTests {
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
         Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxy.mergeRequestOptionsContext(context, options).getValues();
+        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {

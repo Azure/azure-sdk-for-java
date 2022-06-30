@@ -27,7 +27,11 @@ public final class SessionHostLoadBalancingAlgorithm extends ExpandableStringEnu
         return fromString(name, SessionHostLoadBalancingAlgorithm.class);
     }
 
-    /** @return known SessionHostLoadBalancingAlgorithm values. */
+    /**
+     * Gets known SessionHostLoadBalancingAlgorithm values.
+     *
+     * @return known SessionHostLoadBalancingAlgorithm values.
+     */
     public static Collection<SessionHostLoadBalancingAlgorithm> values() {
         return values(SessionHostLoadBalancingAlgorithm.class);
     }
