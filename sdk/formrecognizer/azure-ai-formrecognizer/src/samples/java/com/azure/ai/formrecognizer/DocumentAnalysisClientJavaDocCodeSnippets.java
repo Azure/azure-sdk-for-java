@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
 import java.io.ByteArrayInputStream;
@@ -98,54 +99,51 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link DocumentAnalysisClient#beginAnalyzeDocument(String, InputStream, long)}
+     * {@link DocumentAnalysisClient#beginAnalyzeDocument(String, BinaryData, long)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocument() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long
+        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         byte[] fileContent = Files.readAllBytes(document.toPath());
-        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
 
-            documentAnalysisClient.beginAnalyzeDocument(modelId, targetStream, document.length())
-                .getFinalResult()
-                .getDocuments().stream()
-                .map(AnalyzedDocument::getFields)
-                .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
-                    System.out.printf("Field text: %s%n", key);
-                    System.out.printf("Field value data content: %s%n", documentField.getContent());
-                    System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
-                }));
-        }
-        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long
+        documentAnalysisClient.beginAnalyzeDocument(modelId, BinaryData.fromBytes(fileContent), document.length())
+            .getFinalResult()
+            .getDocuments().stream()
+            .map(AnalyzedDocument::getFields)
+            .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
+                System.out.printf("Field text: %s%n", key);
+                System.out.printf("Field value data content: %s%n", documentField.getContent());
+                System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
+            }));
     }
+    // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long
+
 
     /**
      * Code snippet for
-     * {@link DocumentAnalysisClient#beginAnalyzeDocument(String, InputStream, long, AnalyzeDocumentOptions, Context)} with options
+     * {@link DocumentAnalysisClient#beginAnalyzeDocument(String, BinaryData, long, AnalyzeDocumentOptions, Context)} with options
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long-AnalyzeDocumentOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
         File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
         byte[] fileContent = Files.readAllBytes(document.toPath());
 
-        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            documentAnalysisClient.beginAnalyzeDocument(modelId, targetStream, document.length(),
-                    new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")), Context.NONE)
-                .getFinalResult()
-                .getDocuments().stream()
-                .map(AnalyzedDocument::getFields)
-                .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
-                    System.out.printf("Field text: %s%n", key);
-                    System.out.printf("Field value data content: %s%n", documentField.getContent());
-                    System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
-                }));
-        }
-        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long-AnalyzeDocumentOptions-Context
+        documentAnalysisClient.beginAnalyzeDocument(modelId, BinaryData.fromBytes(fileContent), document.length(),
+                new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")), Context.NONE)
+            .getFinalResult()
+            .getDocuments().stream()
+            .map(AnalyzedDocument::getFields)
+            .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
+                System.out.printf("Field text: %s%n", key);
+                System.out.printf("Field value data content: %s%n", documentField.getContent());
+                System.out.printf("Confidence score: %.2f%n", documentField.getConfidence());
+            }));
+        // END: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context
     }
 }
