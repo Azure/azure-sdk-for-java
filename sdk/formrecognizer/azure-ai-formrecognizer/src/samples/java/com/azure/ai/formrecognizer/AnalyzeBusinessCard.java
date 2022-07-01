@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.ByteArrayInputStream;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -39,11 +41,11 @@ public class AnalyzeBusinessCard {
 
         File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources"
             + "/sample-forms/businessCards/businessCard.jpg");
-        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        Path filePath = sourceFile.toPath();
+        BinaryData businessCardData = BinaryData.fromFile(filePath);
 
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller =
-            client.beginAnalyzeDocument("prebuilt-businessCard", targetStream, sourceFile.length());
+            client.beginAnalyzeDocument("prebuilt-businessCard", businessCardData, sourceFile.length());
 
         AnalyzeResult businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
 

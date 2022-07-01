@@ -111,7 +111,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         actualCustomModel.getDocTypes().forEach((s, docTypeInfo) -> assertNotNull(docTypeInfo.getFieldSchema()));
     }
 
-    void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
+    void
+    blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
 
         if (interceptorManager.isPlaybackMode()) {
