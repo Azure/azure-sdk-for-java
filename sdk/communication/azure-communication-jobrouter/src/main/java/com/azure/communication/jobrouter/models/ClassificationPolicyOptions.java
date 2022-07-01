@@ -5,10 +5,12 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAttachment;
-import com.azure.communication.jobrouter.models.RouterRule;
 
 import java.util.List;
 
+/**
+ * Abstract class for Create and Update ClassificationPolicyOptions.
+ */
 public abstract class ClassificationPolicyOptions {
     /**
      * Unique identifier of this policy.
