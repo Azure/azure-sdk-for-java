@@ -11,17 +11,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
 import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceManagementListDeviceTags {
+public class DeviceManagementListDeploymentsForDeviceClassSubgroup {
     public static void main(String[] args) {
-        // BEGIN: com.azure.iot.deviceupdate.generated.devicemanagementlistdevicetags.devicemanagementlistdevicetags
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdeploymentsfordeviceclasssubgroup.devicemanagementlistdeploymentsfordeviceclasssubgroup
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = deviceManagementClient.listDeviceTags(requestOptions);
-        // END: com.azure.iot.deviceupdate.generated.devicemanagementlistdevicetags.devicemanagementlistdevicetags
+        PagedIterable<BinaryData> response =
+                deviceManagementClient.listDeploymentsForDeviceClassSubgroup(
+                        "TestGroup", "deviceClassId1", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdeploymentsfordeviceclasssubgroup.devicemanagementlistdeploymentsfordeviceclasssubgroup
     }
 }

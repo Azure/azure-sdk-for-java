@@ -4,14 +4,13 @@
 
 package com.azure.iot.deviceupdate.generated;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
+import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
 import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceManagementListDevices {
+public class DeviceManagementDeleteDeploymentForDeviceClassSubgroup {
     public static void main(String[] args) {
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
@@ -19,9 +18,11 @@ public class DeviceManagementListDevices {
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdevices.devicemanagementlistdevices
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementdeletedeploymentfordeviceclasssubgroup.devicemanagementdeletedeploymentfordeviceclasssubgroup
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = deviceManagementClient.listDevices(requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdevices.devicemanagementlistdevices
+        Response<Void> response =
+                deviceManagementClient.deleteDeploymentForDeviceClassSubgroupWithResponse(
+                        "TestGroup", "deviceClassId", "deploymentId", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementdeletedeploymentfordeviceclasssubgroup.devicemanagementdeletedeploymentfordeviceclasssubgroup
     }
 }

@@ -11,7 +11,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
 import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceManagementListDevices {
+public class DeviceManagementListDeviceHealth {
     public static void main(String[] args) {
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
@@ -19,9 +19,10 @@ public class DeviceManagementListDevices {
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdevices.devicemanagementlistdevices
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = deviceManagementClient.listDevices(requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdevices.devicemanagementlistdevices
+        PagedIterable<BinaryData> response =
+                deviceManagementClient.listDeviceHealth("state eq 'unhealthy'", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
     }
 }
