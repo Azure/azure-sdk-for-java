@@ -3,12 +3,7 @@
 ## 12.18.0-beta.2 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
 
 ## 12.18.0-beta.1 (2022-06-15)
 
