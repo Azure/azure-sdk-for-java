@@ -86,20 +86,20 @@ public class Uri {
             switch (status) {
                 case Unhealthy:
                     this.lastUnknownTimestamp = Instant.now();
-                    newStatus = HealthStatus.Unhealthy;
+                    newStatus = status;
                     break;
 
                 case UnhealthyPending:
                     if (previousStatus == HealthStatus.Unhealthy || previousStatus == HealthStatus.UnhealthyPending) {
                         this.lastUnhealthyPendingTimestamp = Instant.now();
-                        newStatus = HealthStatus.UnhealthyPending;
+                        newStatus = status;
                     }
                     break;
                 case Healthy:
                     if (previousStatus != HealthStatus.Unhealthy
                         || (previousStatus == HealthStatus.Unhealthy &&
                             Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0)) {
-                        newStatus = HealthStatus.Healthy;
+                        newStatus = status;
                     }
                     break;
                 case Unknown:

@@ -92,7 +92,6 @@ public class DocumentServiceRequestContext implements Cloneable {
             if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.GONE
                     || cosmosException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT
                     || cosmosException.getStatusCode() >= 500) {
-                // TODO: also mark the endpoint as unhealthy
                 this.failedAddresses.add(address);
             }
         }
