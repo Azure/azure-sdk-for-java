@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/redis/ci.yml
+      - sdk/redis/azure-resourcemanager-redis-generated/
+    exclude:
+      - sdk/redis/pom.xml
+      - sdk/redis/azure-resourcemanager-redis-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/redis/ci.yml
+      - sdk/redis/azure-resourcemanager-redis-generated/
+    exclude:
+      - sdk/redis/pom.xml
+      - sdk/redis/azure-resourcemanager-redis-generated/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerredisgenerated
+    displayName: azure-resourcemanager-redis-generated
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: redis
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-redis-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerredisgenerated
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerredisgenerated }}
