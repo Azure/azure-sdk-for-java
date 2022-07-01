@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
