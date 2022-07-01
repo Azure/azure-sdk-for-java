@@ -9,7 +9,7 @@ function Run-Scenario {
         [Parameter(Mandatory=$true, Position=0)]
         [string] $HeapSize,
         [Parameter(Mandatory=$true, Position=1)]
-        [string] $HeapDumpPath
+        [string] $HeapDumpPath,
         [Parameter(Mandatory=$true, Position=2)]
         [string] $Scenario,
         [Parameter(Mandatory=$false, Position=3)]
