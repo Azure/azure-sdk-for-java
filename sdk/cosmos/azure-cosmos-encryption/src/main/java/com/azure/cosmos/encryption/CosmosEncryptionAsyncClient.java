@@ -100,17 +100,17 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             return this.containerPropertiesCacheByContainerId.getAsync(
                 cacheKey,
                 null,
-                () -> container.read().
+                cachedValue -> container.read().
                     map(cosmosContainerResponse -> getContainerPropertiesWithVersionValidation(cosmosContainerResponse)));
         } else {
             return this.containerPropertiesCacheByContainerId.getAsync(
                 cacheKey,
                 null,
-                () -> container.read().map(cosmosContainerResponse -> getContainerPropertiesWithVersionValidation(cosmosContainerResponse)))
+                cachedValue -> container.read().map(cosmosContainerResponse -> getContainerPropertiesWithVersionValidation(cosmosContainerResponse)))
                 .flatMap(clientEncryptionPolicy -> this.containerPropertiesCacheByContainerId.getAsync(
                     cacheKey,
                     clientEncryptionPolicy,
-                    () -> container.read().map(cosmosContainerResponse -> getContainerPropertiesWithVersionValidation(cosmosContainerResponse))));
+                    cachedValue -> container.read().map(cosmosContainerResponse -> getContainerPropertiesWithVersionValidation(cosmosContainerResponse))));
         }
     }
 
@@ -136,15 +136,15 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         }
 
         if (!shouldForceRefresh && !shouldForceRefreshGateway) {
-            return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
+            return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, cachedValue -> {
                 return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
                     clientEncryptionKeyId, requestOptions);
             });
         } else {
-            return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
+            return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, cachedValue ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
                     clientEncryptionKeyId, requestOptions)
-            ).flatMap(cachedClientEncryptionProperties -> this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, cachedClientEncryptionProperties, () ->
+            ).flatMap(cachedClientEncryptionProperties -> this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, cachedClientEncryptionProperties, cachedValue ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
                     clientEncryptionKeyId, requestOptions)));
         }

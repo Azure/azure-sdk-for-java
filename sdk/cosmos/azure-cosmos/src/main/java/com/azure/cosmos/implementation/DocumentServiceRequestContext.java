@@ -5,13 +5,17 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
@@ -37,8 +41,11 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
+    public volatile boolean replicaAddressValidationEnabled;
+    private final Set<Uri> failedAddresses;
 
     public DocumentServiceRequestContext() {
+        this.failedAddresses = ConcurrentHashMap.newKeySet();
     }
 
     /**
@@ -73,6 +80,22 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.locationIndexToRoute = null;
         this.locationEndpointToRoute = null;
         this.usePreferredLocations = null;
+    }
+
+    public Set<Uri> getFailedEndpoints() {
+        return this.failedAddresses;
+    }
+
+    public void addToFailedEndpoints(Exception exception, Uri address) {
+        if (exception instanceof CosmosException) {
+            CosmosException cosmosException = (CosmosException) exception;
+            if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.GONE
+                    || cosmosException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                    || cosmosException.getStatusCode() >= 500) {
+                // TODO: also mark the endpoint as unhealthy
+                this.failedAddresses.add(address);
+            }
+        }
     }
 
     @Override

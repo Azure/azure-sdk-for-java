@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -36,7 +37,7 @@ public class RntbdRequestRecordTests {
 
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, ResourceType.Document),
-            new URI("http://localhost/replica-path")
+            new Uri(new URI("http://localhost/replica-path").toString())
         );
 
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);

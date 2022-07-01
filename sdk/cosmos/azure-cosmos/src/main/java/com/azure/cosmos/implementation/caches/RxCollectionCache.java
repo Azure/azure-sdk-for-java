@@ -114,7 +114,7 @@ public abstract class RxCollectionCache {
 
             this.collectionInfoByNameCache.refresh(
                     resourceFullName,
-                    () -> {
+                    cachedValue -> {
                         Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties);
                         return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(collection.getResourceId(), collection));
                     });
@@ -157,7 +157,7 @@ public abstract class RxCollectionCache {
         Mono<DocumentCollection> async = this.collectionInfoByIdCache.getAsync(
             collectionResourceId,
             null,
-            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties));
+            cachedValue -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties));
         return async.map(Utils.ValueHolder::new);
     }
 
@@ -178,7 +178,7 @@ public abstract class RxCollectionCache {
         return this.collectionInfoByNameCache.getAsync(
             resourceFullName,
             obsoleteValue,
-            () -> {
+            cachedValue -> {
                 Mono<DocumentCollection> collectionObs = this.getByNameAsync(
                     metaDataDiagnosticsContext, resourceFullName, properties);
                 return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
@@ -201,7 +201,7 @@ public abstract class RxCollectionCache {
             mono = this.collectionInfoByNameCache.getAsync(
                     resourceFullName,
                     obsoleteValue,
-                    () -> {
+                    cachedValue -> {
                         Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, request.properties);
                         return collectionObs.doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);

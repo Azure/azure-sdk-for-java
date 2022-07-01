@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -46,6 +47,7 @@ public class StoreReader {
     private final AddressSelector addressSelector;
     private final ISessionContainer sessionContainer;
     private String lastReadAddress;
+    private final AddressEnumerator addressEnumerator;
 
     public StoreReader(
             TransportClient transportClient,
@@ -54,6 +56,7 @@ public class StoreReader {
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
         this.sessionContainer = sessionContainer;
+        this.addressEnumerator = new AddressEnumerator();
     }
 
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
@@ -165,6 +168,8 @@ public class StoreReader {
                         Exception storeException = Utils.as(unwrappedException, Exception.class);
                         if (storeException == null) {
                             return Flux.error(unwrappedException);
+                        } else {
+                            request.requestContext.addToFailedEndpoints(storeException, storeRespAndURI.getRight());
                         }
 
 //                    Exception storeException = readTask.Exception != null ? readTask.Exception.InnerException : null;
@@ -204,23 +209,23 @@ public class StoreReader {
             return Flux.error(new GoneException());
         }
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
-        int uriIndex = StoreReader.generateNextRandom(resolveApiResults.size());
 
-        while (resolveApiResults.size() > 0) {
-            uriIndex = uriIndex % resolveApiResults.size();
-            Uri uri = resolveApiResults.get(uriIndex);
+        List<Uri> addressRandomPermutation = this.addressEnumerator.getTransportAddresses(entity, resolveApiResults);
+
+        int startIndex = 0;
+
+        while(startIndex < addressRandomPermutation.size()) {
+            Uri addressUri = addressRandomPermutation.get(startIndex);
             Pair<Mono<StoreResponse>, Uri> res;
             try {
-                res = this.readFromStoreAsync(resolveApiResults.get(uriIndex),
-                                              entity);
+                res = this.readFromStoreAsync(addressUri, entity);
 
             } catch (Exception e) {
-                res = Pair.of(Mono.error(e), uri);
+                res = Pair.of(Mono.error(e), addressUri);
             }
 
             readStoreTasks.add(Pair.of(res.getLeft().flux(), res.getRight()));
-            resolveApiResults.remove(uriIndex);
-
+            startIndex++;
 
             if (!forceReadAll && readStoreTasks.size() == replicasToRead.get()) {
                 break;

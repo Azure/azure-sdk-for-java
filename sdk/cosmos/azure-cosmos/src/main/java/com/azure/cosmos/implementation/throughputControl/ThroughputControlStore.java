@@ -203,7 +203,7 @@ public class ThroughputControlStore {
                         return null;
                     });
 
-                    this.containerControllerCache.refresh(containerNameLink, () -> this.createAndInitContainerController(containerNameLink));
+                    this.containerControllerCache.refresh(containerNameLink, cachedValue -> this.createAndInitContainerController(containerNameLink));
                     return this.resolveContainerController(containerNameLink)
                         .flatMap(updatedContainerController -> {
                             if (updatedContainerController.canHandleRequest(request)) {
@@ -231,7 +231,7 @@ public class ThroughputControlStore {
         return this.containerControllerCache.getAsync(
                     containerNameLink,
                     null,
-                    () -> this.createAndInitContainerController(containerNameLink))
+                    cachedValue -> this.createAndInitContainerController(containerNameLink))
                 .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
@@ -291,7 +291,7 @@ public class ThroughputControlStore {
             this.collectionCache.refresh(null, containerLink, null);
             this.containerControllerCache.refresh(
                 containerLink,
-                () -> createAndInitContainerController(containerLink)
+                cachedValue -> createAndInitContainerController(containerLink)
             );
         }
     }

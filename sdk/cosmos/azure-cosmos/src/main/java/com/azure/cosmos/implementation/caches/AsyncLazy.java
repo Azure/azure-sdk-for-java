@@ -35,7 +35,7 @@ class AsyncLazy<TValue> {
         this.failed = false;
     }
 
-    private AsyncLazy(Mono<TValue> single) {
+    public AsyncLazy(Mono<TValue> single) {
         logger.debug("constructor");
         this.single = single
                 .doOnSuccess(v -> this.value = v)

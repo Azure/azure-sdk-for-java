@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +14,6 @@ import io.micrometer.core.instrument.Timer;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 
-import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
@@ -38,20 +38,20 @@ public final class RntbdRequestArgs {
     private final long nanoTimeCreated;
     private final Stopwatch lifetime;
     private final String origin;
-    private final URI physicalAddress;
+    private final Uri physicalAddressUri;
     private final String replicaPath;
     private final RxDocumentServiceRequest serviceRequest;
     private final long transportRequestId;
 
-    public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final URI physicalAddress) {
+    public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final Uri physicalAddressUri) {
         this.sample = Timer.start();
         this.activityId = serviceRequest.getActivityId();
         this.timeCreated = Instant.now();
         this.nanoTimeCreated = System.nanoTime();
         this.lifetime = Stopwatch.createStarted();
-        this.origin = physicalAddress.getScheme() + "://" + physicalAddress.getAuthority();
-        this.physicalAddress = physicalAddress;
-        this.replicaPath = StringUtils.stripEnd(physicalAddress.getPath(), "/");
+        this.origin = physicalAddressUri.getURI().getScheme() + "://" + physicalAddressUri.getURI().getAuthority();
+        this.physicalAddressUri = physicalAddressUri;
+        this.replicaPath = StringUtils.stripEnd(physicalAddressUri.getURI().getPath(), "/");
         this.serviceRequest = serviceRequest;
         this.transportRequestId = instanceCount.incrementAndGet();
     }
@@ -79,8 +79,8 @@ public final class RntbdRequestArgs {
     }
 
     @JsonIgnore
-    public URI physicalAddress() {
-        return this.physicalAddress;
+    public Uri physicalAddressUri() {
+        return this.physicalAddressUri;
     }
 
     @JsonProperty

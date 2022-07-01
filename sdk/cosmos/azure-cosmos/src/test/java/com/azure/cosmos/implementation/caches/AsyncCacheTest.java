@@ -32,7 +32,7 @@ public class AsyncCacheTest {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 int key = j;
-                tasks.add(cache.getAsync(key, -1, () -> refreshFunc.apply(key)));
+                tasks.add(cache.getAsync(key, -1, cachedValue -> refreshFunc.apply(key)));
             }
         }
 
@@ -40,7 +40,7 @@ public class AsyncCacheTest {
         o.collectList().single().block();
 
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(10);
-        assertThat(cache.getAsync(2, -1, () -> refreshFunc.apply(2)).block()).isEqualTo(4);
+        assertThat(cache.getAsync(2, -1, cachedValue -> refreshFunc.apply(2)).block()).isEqualTo(4);
 
         Function<Integer, Mono<Integer>> refreshFunc1 = key -> {
             numberOfCacheRefreshes.incrementAndGet();
@@ -51,12 +51,12 @@ public class AsyncCacheTest {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 int key = j;
-                tasks1.add(cache.getAsync(key, key * 2, () -> refreshFunc1.apply(key)));
+                tasks1.add(cache.getAsync(key, key * 2, cachedValue -> refreshFunc1.apply(key)));
             }
 
             for (int j = 0; j < 10; j++) {
                 int key = j;
-                tasks1.add(cache.getAsync(key, key * 2 , () -> refreshFunc1.apply(key)));
+                tasks1.add(cache.getAsync(key, key * 2 , cachedValue -> refreshFunc1.apply(key)));
             }
         }
 
@@ -64,6 +64,6 @@ public class AsyncCacheTest {
         o1.collectList().single().block();
 
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
-        assertThat(cache.getAsync(2, -1, () -> refreshFunc.apply(2)).block()).isEqualTo(5);
+        assertThat(cache.getAsync(2, -1, cachedValue -> refreshFunc.apply(2)).block()).isEqualTo(5);
     }
 }

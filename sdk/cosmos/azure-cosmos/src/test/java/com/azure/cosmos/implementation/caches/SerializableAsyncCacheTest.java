@@ -40,8 +40,7 @@ public class SerializableAsyncCacheTest {
             String collectionLink = "db/mydb/colls/" + collectionDef.getId();
 
             // populate the cache
-            collectionInfoByNameCache.getAsync(collectionLink, null,
-                () -> Mono.just(collectionDef)).block();
+            collectionInfoByNameCache.getAsync(collectionLink, null, cachedValue -> Mono.just(collectionDef)).block();
         }
 
         ConcurrentHashMap<String, AsyncLazy<DocumentCollection>> originalInternalCache =
@@ -61,11 +60,17 @@ public class SerializableAsyncCacheTest {
         assertThat(newInternalCache).hasSize(cnt);
 
         for (String collectionLink : originalInternalCache.keySet()) {
-            DocumentCollection resultFromNewCache = newAsyncCache.getAsync(collectionLink, null,
-                () -> Mono.error(new RuntimeException("not expected"))).block();
+            DocumentCollection resultFromNewCache =
+                    newAsyncCache.getAsync(
+                            collectionLink,
+                            null,
+                            cachedValue -> Mono.error(new RuntimeException("not expected"))).block();
 
-            DocumentCollection resultFromOldCache = collectionInfoByNameCache.getAsync(collectionLink, null,
-                () -> Mono.error(new RuntimeException("not expected"))).block();
+            DocumentCollection resultFromOldCache =
+                    collectionInfoByNameCache.getAsync(
+                            collectionLink,
+                            null,
+                            cachedValue -> Mono.error(new RuntimeException("not expected"))).block();
 
             assertThat(resultFromNewCache.toJson()).isEqualTo(resultFromOldCache.toJson());
         }

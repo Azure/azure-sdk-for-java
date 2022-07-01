@@ -228,7 +228,7 @@ public class RntbdTransportClient extends TransportClient {
 
         final URI address = addressUri.getURI();
 
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 

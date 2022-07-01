@@ -46,7 +46,7 @@ public final class EncryptionSettings {
         String propertyName,
         EncryptionProcessor encryptionProcessor) {
         Mono<CachedEncryptionSettings> settingsMono = this.encryptionSettingCacheByPropertyName.getAsync(propertyName
-            , null, () -> fetchCachedEncryptionSettingsAsync(propertyName, encryptionProcessor));
+            , null, cachedValue -> fetchCachedEncryptionSettingsAsync(propertyName, encryptionProcessor));
         return settingsMono.flatMap(cachedEncryptionSettings -> {
             if (cachedEncryptionSettings == null) {
                 return Mono.empty();
@@ -60,8 +60,12 @@ public final class EncryptionSettings {
             // the user might have rewraped the Key and that is when we try to force fetch it from the Backend.
             // So we only read back from the backend only when an operation like wrap/unwrap with the Master Key fails.
             if (cachedEncryptionSettings.getEncryptionSettingsExpiryUtc().isBefore(Instant.now())) {
-                return this.encryptionSettingCacheByPropertyName.getAsync(propertyName, cachedEncryptionSettings,
-                    () -> fetchCachedEncryptionSettingsAsync(propertyName, encryptionProcessor)).map(latestCachedEncryptionSettings -> cachedEncryptionSettings.getEncryptionSettings());
+                return this.encryptionSettingCacheByPropertyName.getAsync(
+                        propertyName,
+                        cachedEncryptionSettings,
+                        cachedValue ->
+                                fetchCachedEncryptionSettingsAsync(propertyName, encryptionProcessor))
+                                .map(latestCachedEncryptionSettings -> cachedEncryptionSettings.getEncryptionSettings());
             }
             return Mono.just(cachedEncryptionSettings.getEncryptionSettings());
         });
