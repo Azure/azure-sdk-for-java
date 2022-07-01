@@ -49,6 +49,48 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         super(credential);
     }
 
+    /**
+     * Extracts attributes off the bearer challenge in the authentication header.
+     *
+     * @param authenticateHeader The authentication header containing the challenge.
+     * @param authChallengePrefix The authentication challenge name.
+     *
+     * @return A challenge attributes map.
+     */
+    private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
+                                                                  String authChallengePrefix) {
+        if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
+            return Collections.emptyMap();
+        }
+
+        authenticateHeader =
+            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+
+        String[] attributes = authenticateHeader.split(", ");
+        Map<String, String> attributeMap = new HashMap<>();
+
+        for (String pair : attributes) {
+            String[] keyValue = pair.split("=");
+
+            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+        }
+
+        return attributeMap;
+    }
+
+    /**
+     * Verifies whether a challenge is bearer or not.
+     *
+     * @param authenticateHeader The authentication header containing all the challenges.
+     * @param authChallengePrefix The authentication challenge name.
+     *
+     * @return A boolean indicating if the challenge is a bearer challenge or not.
+     */
+    private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
+        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
+    }
+
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
@@ -151,7 +193,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-
         HttpRequest request = context.getHttpRequest();
 
         // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
@@ -194,7 +235,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         Optional<Object> contentLengthOptional = context.getData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
 
         if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
-            request.setBody((BinaryData) contentOptional.get());
+            request.setBody(BinaryData.fromObject(contentOptional.get()));
             request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
         }
 
@@ -240,52 +281,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             .addScopes(this.challenge.getScopes())
             .setTenantId(this.challenge.getTenantId());
 
-        setAuthorizationHeader(context, tokenRequestContext);
+        setAuthorizationHeaderSync(context, tokenRequestContext);
         return true;
-    }
-
-    public static void clearCache() {
-        CHALLENGE_CACHE.clear();
-    }
-
-    /**
-     * Extracts attributes off the bearer challenge in the authentication header.
-     *
-     * @param authenticateHeader The authentication header containing the challenge.
-     * @param authChallengePrefix The authentication challenge name.
-     * @return A challenge attributes map.
-     */
-    private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
-                                                                  String authChallengePrefix) {
-        if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
-            return Collections.emptyMap();
-        }
-
-        authenticateHeader =
-            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
-
-        String[] attributes = authenticateHeader.split(", ");
-        Map<String, String> attributeMap = new HashMap<>();
-
-        for (String pair : attributes) {
-            String[] keyValue = pair.split("=");
-
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
-        }
-
-        return attributeMap;
-    }
-
-    /**
-     * Verifies whether a challenge is bearer or not.
-     *
-     * @param authenticateHeader The authentication header containing all the challenges.
-     * @param authChallengePrefix The authentication challenge name.
-     * @return A boolean indicating if the challenge is a bearer challenge or not.
-     */
-    private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
-        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 
     private static class ChallengeParameters {
@@ -320,6 +317,10 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         public String getTenantId() {
             return tenantId;
         }
+    }
+
+    public static void clearCache() {
+        CHALLENGE_CACHE.clear();
     }
 
     /**

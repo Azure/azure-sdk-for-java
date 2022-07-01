@@ -128,6 +128,7 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
      *
      * @param authenticateHeader The authentication header containing the challenge.
      * @param authChallengePrefix The authentication challenge name.
+     *
      * @return A challenge attributes map.
      */
     private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
@@ -156,11 +157,11 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
      *
      * @param authenticateHeader The authentication header containing all the challenges.
      * @param authChallengePrefix The authentication challenge name.
+     *
      * @return A boolean indicating if the challenge is a bearer challenge or not.
      */
     private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
         return (!CoreUtils.isNullOrEmpty(authenticateHeader)
             && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
-
 }
