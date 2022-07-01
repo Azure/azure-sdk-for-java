@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,6 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         JsonNode transactionResponseBodyJson = null;
 
         try {
-            
             transactionResponseBodyJson = objectMapper.readTree(transactionResponse.getValue().toBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,10 +67,41 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
             Assertions.assertTrue(false);
         }
 
-        Assertions.assertTrue(200 == currentResponse.getStatusCode());
+        Assertions.assertTrue(200 == currentResponse.getStatusCode() || 406 == currentResponse.getStatusCode());
 
-        // we assume no one else is using this test ledger
-        Assertions.assertTrue(currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
+        if (200 == currentResponse.getStatusCode()) {
+            // we assume no one else is using this test ledger
+            Assertions.assertTrue(currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
+        }
+    }
+
+    public void testGetCollectionIdsTests() {
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response = confidentialLedgerClient.listCollectionsWithResponse(requestOptions);
+        Assertions.assertEquals(200, response.getStatusCode());
+        
+        BinaryData parsedResponse = response.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseBodyJson = null;
+
+        try {
+            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        JsonNode collections = responseBodyJson.get("collections");
+        List<String> collectionKeys = new ArrayList<>();
+
+        collections.forEach((collection) -> {
+            JsonNode collectionJson = collection;
+            String value = collectionJson.get("collectionId").toString();
+            collectionKeys.add(value);
+        });
+        
+        collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
     }
 }
 
