@@ -64,16 +64,16 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             for (String member : members) {
                 //get the associated JSON representation for each for the members
                 List<String> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
-                jedisPool.returnResource(jedis);
                 if (checkpointJsonList == null) {
+                    jedisPool.returnResource(jedis);
                     return Flux.error(new IllegalStateException("No checkpoints persist in Redis for the given parameters."));
-                }
-                else {
+                } else {
                     String checkpointJson = checkpointJsonList.get(0);
                     Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(Checkpoint.class));
                     listStoredCheckpoints.add(checkpoint);
                 }
             }
+            jedisPool.returnResource(jedis);
             return Flux.fromIterable(listStoredCheckpoints);
         }
     }
@@ -97,8 +97,8 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             for (String member : members) {
                 //get the associated JSON representation for each for the members
                 List<String> partitionOwnershipJsonList = jedis.hmget(member, PARTITION_OWNERSHIP);
-                jedisPool.returnResource(jedis);
                 if (partitionOwnershipJsonList == null) {
+                    jedisPool.returnResource(jedis);
                     return Flux.error(new IllegalStateException("No ownership record persist in Redis for the given parameters."));
                 } else {
                     String partitionOwnershipJson = partitionOwnershipJsonList.get(0);
@@ -106,6 +106,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     listStoredOwnerships.add(partitionOwnership);
                 }
             }
+            jedisPool.returnResource(jedis);
             return Flux.fromIterable(listStoredOwnerships);
         }
     }
