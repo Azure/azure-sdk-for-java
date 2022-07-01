@@ -68,9 +68,9 @@ public class ComposeTurtles implements JsonSerializable<ComposeTurtles> {
         return jsonWriter.writeStartObject()
             .writeStringField("description", description, false)
             .writeJsonField("turtlesSet1Lead", turtlesSet1Lead, false)
-            .writeArrayField("turtlesSet1", turtlesSet1, JsonWriter::writeJson)
+            .writeArrayField("turtlesSet1", turtlesSet1, false, JsonWriter::writeJson)
             .writeJsonField("turtlesSet2Lead", turtlesSet2Lead, false)
-            .writeArrayField("turtlesSet2", turtlesSet2, JsonWriter::writeJson)
+            .writeArrayField("turtlesSet2", turtlesSet2, false, JsonWriter::writeJson)
             .writeEndObject()
             .flush();
     }
@@ -92,11 +92,11 @@ public class ComposeTurtles implements JsonSerializable<ComposeTurtles> {
                 } else if ("turtlesSet1Lead".equals(fieldName)) {
                     turtleSet1Lead = TurtleWithTypeIdContainingDot.fromJson(reader);
                 } else if ("turtlesSet1".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
-                    turtleSet1 = JsonUtils.readArray(reader, TurtleWithTypeIdContainingDot::fromJson);
+                    turtleSet1 = reader.readArray(TurtleWithTypeIdContainingDot::fromJson);
                 } else if ("turtlesSet2Lead".equals(fieldName)) {
                     turtleSet2Lead = NonEmptyAnimalWithTypeIdContainingDot.fromJson(jsonReader);
                 } else if ("turtlesSet2".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
-                    turtleSet2 = JsonUtils.readArray(reader, NonEmptyAnimalWithTypeIdContainingDot::fromJson);
+                    turtleSet2 = reader.readArray(NonEmptyAnimalWithTypeIdContainingDot::fromJson);
                 } else {
                     reader.skipChildren();
                 }

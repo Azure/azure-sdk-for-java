@@ -88,15 +88,11 @@ public class Foo implements JsonSerializable<Foo> {
 
             if (baz != null || qux != null) {
                 jsonWriter.writeStartObject("props")
-                    .writeArrayField("baz", baz, JsonWriter::writeString);
+                    .writeArrayField("baz", baz, false, JsonWriter::writeString);
 
                 if (qux != null) {
                     jsonWriter.writeStartObject("q")
-                        .writeStartObject("qux");
-
-                    qux.forEach(jsonWriter::writeStringField);
-
-                    jsonWriter.writeEndObject()
+                        .writeMapField("qux", qux, JsonWriter::writeString)
                         .writeEndObject();
                 }
 
@@ -157,7 +153,7 @@ public class Foo implements JsonSerializable<Foo> {
                                 reader.nextToken();
 
                                 if ("baz".equals(fieldName)) {
-                                    baz = JsonUtils.readArray(reader, JsonReader::getStringValue);
+                                    baz = reader.readArray(JsonReader::getStringValue);
                                 } else if ("q".equals(fieldName)) {
                                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                                         fieldName = reader.getFieldName();
@@ -195,7 +191,7 @@ public class Foo implements JsonSerializable<Foo> {
                         reader.nextToken();
 
                         if ("empty".equals(fieldName)) {
-                            empty = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                            empty = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

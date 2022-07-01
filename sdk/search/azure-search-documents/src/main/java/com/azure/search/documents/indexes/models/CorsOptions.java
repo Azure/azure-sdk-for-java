@@ -77,7 +77,7 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField(
-                "allowedOrigins", this.allowedOrigins, (writer, element) -> writer.writeString(element));
+                "allowedOrigins", this.allowedOrigins, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeLongField("maxAgeInSeconds", this.maxAgeInSeconds, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -102,7 +102,7 @@ public final class CorsOptions implements JsonSerializable<CorsOptions> {
                         reader.nextToken();
 
                         if ("allowedOrigins".equals(fieldName)) {
-                            allowedOrigins = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            allowedOrigins = reader.readArray(reader1 -> reader1.getStringValue());
                             allowedOriginsFound = true;
                         } else if ("maxAgeInSeconds".equals(fieldName)) {
                             maxAgeInSeconds = reader.getLongNullableValue();

@@ -46,7 +46,7 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField(
-                "configurations", this.configurations, (writer, element) -> writer.writeJson(element));
+                "configurations", this.configurations, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -67,8 +67,7 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
                         reader.nextToken();
 
                         if ("configurations".equals(fieldName)) {
-                            configurations =
-                                    JsonUtils.readArray(reader, reader1 -> SemanticConfiguration.fromJson(reader1));
+                            configurations = reader.readArray(reader1 -> SemanticConfiguration.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

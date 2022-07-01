@@ -290,9 +290,10 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag, false);
         jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag, false);
         jsonWriter.writeDoubleField("minimumCoverage", this.minimumCoverage, false);
-        jsonWriter.writeArrayField("OrderBy", this.orderBy, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("$select", this.select, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("OrderBy", this.orderBy, false, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "searchFields", this.searchFields, false, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("$select", this.select, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeIntegerField("$top", this.top, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -332,11 +333,11 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
                         } else if ("minimumCoverage".equals(fieldName)) {
                             minimumCoverage = reader.getDoubleNullableValue();
                         } else if ("OrderBy".equals(fieldName)) {
-                            orderBy = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            orderBy = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("searchFields".equals(fieldName)) {
-                            searchFields = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            searchFields = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("$select".equals(fieldName)) {
-                            select = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            select = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("$top".equals(fieldName)) {
                             top = reader.getIntegerNullableValue();
                         } else {

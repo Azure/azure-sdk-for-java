@@ -59,26 +59,31 @@ public abstract class JsonReaderContractTests {
             // Boolean
             Arguments.of("false", false, createJsonConsumer(JsonReader::getBooleanValue)),
             Arguments.of("true", true, createJsonConsumer(JsonReader::getBooleanValue)),
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getBooleanNullableValue)),
 
             // Double
             Arguments.of("-42.0", -42D, createJsonConsumer(JsonReader::getDoubleValue)),
             Arguments.of("-42", -42D, createJsonConsumer(JsonReader::getDoubleValue)),
             Arguments.of("42.0", 42D, createJsonConsumer(JsonReader::getDoubleValue)),
             Arguments.of("42", 42D, createJsonConsumer(JsonReader::getDoubleValue)),
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getDoubleNullableValue)),
 
             // Float
             Arguments.of("-42.0", -42F, createJsonConsumer(JsonReader::getFloatValue)),
             Arguments.of("-42", -42F, createJsonConsumer(JsonReader::getFloatValue)),
             Arguments.of("42.0", 42F, createJsonConsumer(JsonReader::getFloatValue)),
             Arguments.of("42", 42F, createJsonConsumer(JsonReader::getFloatValue)),
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getFloatNullableValue)),
 
             // Integer
             Arguments.of("-42", -42, createJsonConsumer(JsonReader::getIntValue)),
             Arguments.of("42", 42, createJsonConsumer(JsonReader::getIntValue)),
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getIntegerNullableValue)),
 
             // Long
             Arguments.of("-42", -42L, createJsonConsumer(JsonReader::getLongValue)),
             Arguments.of("42", 42L, createJsonConsumer(JsonReader::getLongValue)),
+            Arguments.of("null", null, createJsonConsumer(JsonReader::getLongNullableValue)),
 
             // String
             Arguments.of("null", null, createJsonConsumer(JsonReader::getStringValue)),

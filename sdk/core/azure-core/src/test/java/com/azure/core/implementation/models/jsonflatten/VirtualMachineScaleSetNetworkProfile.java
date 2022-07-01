@@ -32,7 +32,8 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonSerializa
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject()
-            .writeArrayField("networkInterfaceConfigurations", networkInterfaceConfigurations, JsonWriter::writeJson)
+            .writeArrayField("networkInterfaceConfigurations", networkInterfaceConfigurations, false,
+                JsonWriter::writeJson)
             .writeEndObject()
             .flush();
     }
@@ -46,8 +47,8 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonSerializa
                 reader.nextToken();
 
                 if ("networkInterfaceConfigurations".equals(fieldName)) {
-                    profile.setNetworkInterfaceConfigurations(JsonUtils.readArray(reader,
-                        VirtualMachineScaleSetNetworkConfiguration::fromJson));
+                    profile.setNetworkInterfaceConfigurations(
+                        reader.readArray(VirtualMachineScaleSetNetworkConfiguration::fromJson));
                 } else {
                     reader.skipChildren();
                 }

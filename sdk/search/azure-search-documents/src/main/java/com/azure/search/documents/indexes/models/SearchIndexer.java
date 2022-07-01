@@ -393,9 +393,10 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
         jsonWriter.writeStringField("targetIndexName", this.targetIndexName, false);
         jsonWriter.writeJsonField("schedule", this.schedule, false);
         jsonWriter.writeJsonField("parameters", this.parameters, false);
-        jsonWriter.writeArrayField("fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField(
-                "outputFieldMappings", this.outputFieldMappings, (writer, element) -> writer.writeJson(element));
+                "fieldMappings", this.fieldMappings, false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "outputFieldMappings", this.outputFieldMappings, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("disabled", this.isDisabled, false);
         jsonWriter.writeStringField("@odata.etag", this.eTag, false);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
@@ -449,10 +450,9 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                         } else if ("parameters".equals(fieldName)) {
                             parameters = IndexingParameters.fromJson(reader);
                         } else if ("fieldMappings".equals(fieldName)) {
-                            fieldMappings = JsonUtils.readArray(reader, reader1 -> FieldMapping.fromJson(reader1));
+                            fieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
                         } else if ("outputFieldMappings".equals(fieldName)) {
-                            outputFieldMappings =
-                                    JsonUtils.readArray(reader, reader1 -> FieldMapping.fromJson(reader1));
+                            outputFieldMappings = reader.readArray(reader1 -> FieldMapping.fromJson(reader1));
                         } else if ("disabled".equals(fieldName)) {
                             isDisabled = reader.getBooleanNullableValue();
                         } else if ("@odata.etag".equals(fieldName)) {

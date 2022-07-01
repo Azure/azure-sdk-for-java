@@ -99,9 +99,9 @@ public final class SearchIndexerKnowledgeStoreProjection
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("objects", this.objects, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tables", this.tables, false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("objects", this.objects, false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("files", this.files, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -125,22 +125,19 @@ public final class SearchIndexerKnowledgeStoreProjection
 
                         if ("tables".equals(fieldName)) {
                             tables =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     SearchIndexerKnowledgeStoreTableProjectionSelector.fromJson(
                                                             reader1));
                         } else if ("objects".equals(fieldName)) {
                             objects =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     SearchIndexerKnowledgeStoreObjectProjectionSelector.fromJson(
                                                             reader1));
                         } else if ("files".equals(fieldName)) {
                             files =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     SearchIndexerKnowledgeStoreFileProjectionSelector.fromJson(
                                                             reader1));

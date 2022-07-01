@@ -105,15 +105,11 @@ public class NewFoo implements JsonSerializable<NewFoo> {
 
             if (baz != null || qux != null) {
                 jsonWriter.writeStartObject("props")
-                    .writeArrayField("baz", baz, JsonWriter::writeString);
+                    .writeArrayField("baz", baz, false, JsonWriter::writeString);
 
                 if (qux != null) {
                     jsonWriter.writeStartObject("q")
-                        .writeStartObject("qux");
-
-                    qux.forEach(jsonWriter::writeStringField);
-
-                    jsonWriter.writeEndObject()
+                        .writeMapField("qux", qux, JsonWriter::writeString)
                         .writeEndObject();
                 }
 
@@ -130,14 +126,8 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                 .writeEndObject();
         }
 
-        if (additionalPropertiesProperty != null) {
-            jsonWriter.writeStartObject("additionalProperties");
-
-            additionalPropertiesProperty.forEach((key, value) ->
-                JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));
-
-            jsonWriter.writeEndObject();
-        }
+        jsonWriter.writeMapField("additionalProperties", additionalPropertiesProperty, false,
+            JsonUtils::writeUntypedField);
 
         if (additionalProperties != null) {
             additionalProperties.forEach((key, value) ->
@@ -184,7 +174,7 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                                 reader.nextToken();
 
                                 if ("baz".equals(fieldName)) {
-                                    baz = JsonUtils.readArray(reader, JsonReader::getStringValue);
+                                    baz = reader.readArray(JsonReader::getStringValue);
                                 } else if ("q".equals(fieldName)) {
                                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                                         fieldName = reader.getFieldName();
@@ -222,7 +212,7 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                         reader.nextToken();
 
                         if ("empty".equals(fieldName)) {
-                            empty = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                            empty = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

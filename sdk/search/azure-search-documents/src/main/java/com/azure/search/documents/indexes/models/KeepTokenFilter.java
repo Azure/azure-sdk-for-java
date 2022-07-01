@@ -81,7 +81,8 @@ public final class KeepTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeArrayField("keepWords", this.keepWords, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "keepWords", this.keepWords, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("keepWordsCase", this.lowerCaseKeepWords, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -115,7 +116,7 @@ public final class KeepTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("keepWords".equals(fieldName)) {
-                            keepWords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            keepWords = reader.readArray(reader1 -> reader1.getStringValue());
                             keepWordsFound = true;
                         } else if ("keepWordsCase".equals(fieldName)) {
                             lowerCaseKeepWords = reader.getBooleanNullableValue();

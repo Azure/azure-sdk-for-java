@@ -36,7 +36,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
         jsonWriter.writeStringField("generatedKeyName", getGeneratedKeyName(), false);
         jsonWriter.writeStringField("source", getSource(), false);
         jsonWriter.writeStringField("sourceContext", getSourceContext(), false);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", getInputs(), false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -75,7 +75,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
                         } else if ("sourceContext".equals(fieldName)) {
                             sourceContext = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

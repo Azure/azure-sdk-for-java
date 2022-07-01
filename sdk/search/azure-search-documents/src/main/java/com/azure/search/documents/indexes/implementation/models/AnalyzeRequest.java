@@ -182,10 +182,12 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
         jsonWriter.writeArrayField(
                 "tokenFilters",
                 this.tokenFilters,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField(
                 "charFilters",
                 this.charFilters,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject().flush();
     }
@@ -230,16 +232,14 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                                             reader, r -> LexicalNormalizerName.fromString(reader.getStringValue()));
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1,
                                                             r -> TokenFilterName.fromString(reader1.getStringValue())));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1,

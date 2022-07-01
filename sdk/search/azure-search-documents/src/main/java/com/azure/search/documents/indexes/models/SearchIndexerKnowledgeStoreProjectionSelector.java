@@ -147,7 +147,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
         jsonWriter.writeStringField("generatedKeyName", this.generatedKeyName, false);
         jsonWriter.writeStringField("source", this.source, false);
         jsonWriter.writeStringField("sourceContext", this.sourceContext, false);
-        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", this.inputs, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 }

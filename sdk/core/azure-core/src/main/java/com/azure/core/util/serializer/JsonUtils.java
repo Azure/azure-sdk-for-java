@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
@@ -24,62 +23,12 @@ import java.util.function.Function;
  */
 public final class JsonUtils {
     /**
-     * Serializes a map.
-     * <p>
-     * If the map is null this method is a no-op. Use {@link #writeMap(JsonWriter, String, Map, boolean, BiConsumer)}
-     * and passed true for {@code writeNull} if JSON null should be written.
-     *
-     * @param jsonWriter The {@link JsonWriter} where JSON will be written.
-     * @param fieldName Field name for the map.
-     * @param map The map.
-     * @param entryWriterFunc Function that writes the map entry value.
-     * @param <T> Type of map value.
-     * @return The updated {@link JsonWriter} object, or a no-op if {@code map} is null
-     */
-    public static <T> JsonWriter writeMap(JsonWriter jsonWriter, String fieldName, Map<String, T> map,
-        BiConsumer<JsonWriter, T> entryWriterFunc) {
-        return writeMap(jsonWriter, fieldName, map, false, entryWriterFunc);
-    }
-
-    /**
-     * Serializes a map.
-     * <p>
-     * If {@code map} is null and {@code writeNull} is false this method is effectively a no-op.
-     *
-     * @param jsonWriter The {@link JsonWriter} where JSON will be written.
-     * @param fieldName Field name for the map.
-     * @param map The map.
-     * @param writeNull Whether JSON null should be written if {@code map} is null.
-     * @param entryWriterFunc Function that writes the map entry value.
-     * @param <T> Type of map value.
-     * @return The updated {@link JsonWriter} object, or a no-op if {@code map} is null and {@code writeNull} is false.
-     */
-    public static <T> JsonWriter writeMap(JsonWriter jsonWriter, String fieldName, Map<String, T> map,
-        boolean writeNull, BiConsumer<JsonWriter, T> entryWriterFunc) {
-        if (map == null) {
-            return writeNull ? jsonWriter.writeNullField(fieldName).flush() : jsonWriter;
-        }
-
-        jsonWriter.writeStartObject(fieldName);
-
-        for (Map.Entry<String, T> entry : map.entrySet()) {
-            jsonWriter.writeFieldName(entry.getKey());
-            entryWriterFunc.accept(jsonWriter, entry.getValue());
-        }
-
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
      * Handles basic logic for deserializing an object before passing it into the deserialization function.
      * <p>
      * This will initialize the {@link JsonReader} for object reading and then check if the current token is
      * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} or
      * {@link JsonToken#FIELD_NAME} and throw an {@link IllegalStateException}. {@link JsonToken#FIELD_NAME} is a valid
      * starting location to support partial object reads.
-     * <p>
-     * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized and
-     * {@link #readMap(JsonReader, Function)} if a JSON map is being deserialized.
      *
      * @param jsonReader The {@link JsonReader} being read.
      * @param deserializationFunc The function that handles deserialization logic, passing the reader and current
@@ -104,85 +53,6 @@ public final class JsonUtils {
         }
 
         return deserializationFunc.apply(jsonReader);
-    }
-
-    /**
-     * Handles basic logic for deserializing an array before passing it into the deserialization function.
-     * <p>
-     * This will initialize the {@link JsonReader} for array reading and then check if the current token is
-     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_ARRAY} and throw an
-     * {@link IllegalStateException}.
-     * <p>
-     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized and
-     * {@link #readMap(JsonReader, Function)} if a JSON map is being deserialized.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @param deserializationFunc The function that handles deserialization logic.
-     * @param <T> The type of array element that is being deserialized.
-     * @return The deserialized array, or null if the {@link JsonToken#NULL} represents the object.
-     * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_ARRAY}.
-     */
-    public static <T> List<T> readArray(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
-        JsonToken currentToken = jsonReader.currentToken();
-        if (currentToken == null) {
-            currentToken = jsonReader.nextToken();
-        }
-
-        if (currentToken == JsonToken.NULL || currentToken == null) {
-            return null;
-        } else if (currentToken != JsonToken.START_ARRAY) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin array deserialization: " + currentToken);
-        }
-
-        List<T> array = new ArrayList<>();
-
-        while (jsonReader.nextToken() != JsonToken.END_ARRAY) {
-            array.add(deserializationFunc.apply(jsonReader));
-        }
-
-        return array;
-    }
-
-    /**
-     * Handles basic logic for deserializing a map before passing it into the deserialization function.
-     * <p>
-     * This will initialize the {@link JsonReader} for map reading and then check if the current token is
-     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw
-     * an {@link IllegalStateException}.
-     * <p>
-     * Use {@link #readObject(JsonReader, Function)} if a JSON object is being deserialized and
-     * {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @param deserializationFunc The function that handles deserialization logic.
-     * @param <T> The type of array element that is being deserialized.
-     * @return The deserialized array, or null if the {@link JsonToken#NULL} represents the object.
-     * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_ARRAY}.
-     */
-    public static <T> Map<String, T> readMap(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
-        JsonToken currentToken = jsonReader.currentToken();
-        if (currentToken == null) {
-            currentToken = jsonReader.nextToken();
-        }
-
-        if (currentToken == JsonToken.NULL || currentToken == null) {
-            return null;
-        } else if (currentToken != JsonToken.START_OBJECT) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin map deserialization: " + currentToken);
-        }
-
-        Map<String, T> map = new LinkedHashMap<>();
-
-        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = jsonReader.getFieldName();
-            jsonReader.nextToken();
-
-            map.put(fieldName, deserializationFunc.apply(jsonReader));
-        }
-
-        return map;
     }
 
     /**

@@ -330,7 +330,7 @@ public final class TestHelpers {
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
         JsonReader reader = DefaultJsonReader.fromBytes(loadResource(filename));
 
-        return JsonUtils.readArray(reader, reader1 -> (Map<String, Object>) JsonUtils.readUntypedField(reader1));
+        return reader.readArray(reader1 -> reader1.readMap(JsonUtils::readUntypedField));
     }
 
     @SuppressWarnings("unchecked")

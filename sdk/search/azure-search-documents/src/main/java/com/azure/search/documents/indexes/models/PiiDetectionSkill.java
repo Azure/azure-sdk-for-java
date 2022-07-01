@@ -233,8 +233,8 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", getInputs(), false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -245,7 +245,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("maskingCharacter", this.maskingCharacter, false);
         jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
         jsonWriter.writeArrayField(
-                "piiCategories", this.piiCategories, (writer, element) -> writer.writeString(element));
+                "piiCategories", this.piiCategories, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("domain", this.domain, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -285,10 +285,10 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         if ("@odata.type".equals(fieldName)) {
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -310,7 +310,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         } else if ("modelVersion".equals(fieldName)) {
                             modelVersion = reader.getStringValue();
                         } else if ("piiCategories".equals(fieldName)) {
-                            piiCategories = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            piiCategories = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("domain".equals(fieldName)) {
                             domain = reader.getStringValue();
                         } else {

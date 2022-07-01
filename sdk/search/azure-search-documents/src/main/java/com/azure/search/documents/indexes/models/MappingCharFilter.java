@@ -59,7 +59,7 @@ public final class MappingCharFilter extends CharFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeArrayField("mappings", this.mappings, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("mappings", this.mappings, false, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -91,7 +91,7 @@ public final class MappingCharFilter extends CharFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("mappings".equals(fieldName)) {
-                            mappings = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            mappings = reader.readArray(reader1 -> reader1.getStringValue());
                             mappingsFound = true;
                         } else {
                             reader.skipChildren();

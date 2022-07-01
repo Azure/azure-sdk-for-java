@@ -55,7 +55,7 @@ public final class JsonFlattenOnCollectionType implements JsonSerializable<JsonF
                         reader.nextToken();
 
                         if ("collection".equals(fieldName)) {
-                            flatten.setJsonFlattenCollection(JsonUtils.readArray(reader, JsonReader::getStringValue));
+                            flatten.setJsonFlattenCollection(reader.readArray(JsonReader::getStringValue));
                         } else {
                             reader.skipChildren();
                         }

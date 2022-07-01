@@ -513,8 +513,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField(
                 "normalizer", this.normalizerName == null ? null : this.normalizerName.toString(), false);
         jsonWriter.writeArrayField(
-                "synonymMaps", this.synonymMapNames, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+                "synonymMaps", this.synonymMapNames, false, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("fields", this.fields, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -587,9 +587,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
                                     JsonUtils.getNullableProperty(
                                             reader, r -> LexicalNormalizerName.fromString(reader.getStringValue()));
                         } else if ("synonymMaps".equals(fieldName)) {
-                            synonymMapNames = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            synonymMapNames = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("fields".equals(fieldName)) {
-                            fields = JsonUtils.readArray(reader, reader1 -> SearchField.fromJson(reader1));
+                            fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

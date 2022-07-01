@@ -35,7 +35,7 @@ public class FlattenableAnimalInfo implements JsonSerializable<FlattenableAnimal
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject()
             .writeStringField("home", home, false)
-            .writeJsonField("animal", animal)
+            .writeJsonField("animal", animal, false)
             .writeEndObject()
             .flush();
     }

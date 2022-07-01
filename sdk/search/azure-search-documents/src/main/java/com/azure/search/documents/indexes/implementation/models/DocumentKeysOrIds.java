@@ -70,9 +70,13 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("documentKeys", this.documentKeys, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField(
-                "datasourceDocumentIds", this.datasourceDocumentIds, (writer, element) -> writer.writeString(element));
+                "documentKeys", this.documentKeys, false, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "datasourceDocumentIds",
+                this.datasourceDocumentIds,
+                false,
+                (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -94,9 +98,9 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
                         reader.nextToken();
 
                         if ("documentKeys".equals(fieldName)) {
-                            documentKeys = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            documentKeys = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("datasourceDocumentIds".equals(fieldName)) {
-                            datasourceDocumentIds = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            datasourceDocumentIds = reader.readArray(reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

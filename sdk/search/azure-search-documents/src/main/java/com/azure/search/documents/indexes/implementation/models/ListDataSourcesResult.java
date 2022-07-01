@@ -46,7 +46,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.dataSources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.dataSources, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -70,8 +70,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
 
                         if ("value".equals(fieldName)) {
                             dataSources =
-                                    JsonUtils.readArray(
-                                            reader, reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
+                                    reader.readArray(reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
                             dataSourcesFound = true;
                         } else {
                             reader.skipChildren();

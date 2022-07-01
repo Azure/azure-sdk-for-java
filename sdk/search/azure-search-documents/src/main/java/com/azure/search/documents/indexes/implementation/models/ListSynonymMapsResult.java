@@ -46,7 +46,7 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.synonymMaps, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.synonymMaps, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -69,7 +69,7 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            synonymMaps = JsonUtils.readArray(reader, reader1 -> SynonymMap.fromJson(reader1));
+                            synonymMaps = reader.readArray(reader1 -> SynonymMap.fromJson(reader1));
                             synonymMapsFound = true;
                         } else {
                             reader.skipChildren();

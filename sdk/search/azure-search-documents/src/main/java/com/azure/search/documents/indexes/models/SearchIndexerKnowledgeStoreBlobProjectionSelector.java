@@ -44,7 +44,7 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
         jsonWriter.writeStringField("generatedKeyName", getGeneratedKeyName(), false);
         jsonWriter.writeStringField("source", getSource(), false);
         jsonWriter.writeStringField("sourceContext", getSourceContext(), false);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", getInputs(), false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("storageContainer", this.storageContainer, false);
         return jsonWriter.writeEndObject().flush();
     }

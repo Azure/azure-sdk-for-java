@@ -61,7 +61,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.results, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeDoubleField("@search.coverage", this.coverage, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -86,7 +86,7 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            results = JsonUtils.readArray(reader, reader1 -> SuggestResult.fromJson(reader1));
+                            results = reader.readArray(reader1 -> SuggestResult.fromJson(reader1));
                             resultsFound = true;
                         } else if ("@search.coverage".equals(fieldName)) {
                             coverage = reader.getDoubleNullableValue();

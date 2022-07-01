@@ -117,7 +117,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
             .writeStringField("message", message)
             .writeStringField("target", target, false)
             .writeJsonField("innererror", innerError, false)
-            .writeArrayField("details", errorDetails, JsonWriter::writeJson)
+            .writeArrayField("details", errorDetails, false, JsonWriter::writeJson)
             .writeEndObject()
             .flush();
     }
@@ -160,7 +160,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 } else if ("innererror".equals(fieldName)) {
                     innerError = ResponseInnerError.fromJson(jsonReader);
                 } else if ("details".equals(fieldName)) {
-                    errorDetails = JsonUtils.readArray(reader, ResponseError::fromJson);
+                    errorDetails = reader.readArray(ResponseError::fromJson);
                 } else {
                     reader.skipChildren();
                 }

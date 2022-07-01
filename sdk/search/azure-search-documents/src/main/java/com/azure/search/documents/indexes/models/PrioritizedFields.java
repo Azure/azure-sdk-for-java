@@ -120,10 +120,12 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
         jsonWriter.writeArrayField(
                 "prioritizedContentFields",
                 this.prioritizedContentFields,
+                false,
                 (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField(
                 "prioritizedKeywordsFields",
                 this.prioritizedKeywordsFields,
+                false,
                 (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
@@ -149,11 +151,9 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
                         if ("titleField".equals(fieldName)) {
                             titleField = SemanticField.fromJson(reader);
                         } else if ("prioritizedContentFields".equals(fieldName)) {
-                            prioritizedContentFields =
-                                    JsonUtils.readArray(reader, reader1 -> SemanticField.fromJson(reader1));
+                            prioritizedContentFields = reader.readArray(reader1 -> SemanticField.fromJson(reader1));
                         } else if ("prioritizedKeywordsFields".equals(fieldName)) {
-                            prioritizedKeywordsFields =
-                                    JsonUtils.readArray(reader, reader1 -> SemanticField.fromJson(reader1));
+                            prioritizedKeywordsFields = reader.readArray(reader1 -> SemanticField.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

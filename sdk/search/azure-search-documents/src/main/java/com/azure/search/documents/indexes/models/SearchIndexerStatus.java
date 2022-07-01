@@ -95,7 +95,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString(), false);
         jsonWriter.writeArrayField(
-                "executionHistory", this.executionHistory, (writer, element) -> writer.writeJson(element));
+                "executionHistory", this.executionHistory, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("limits", this.limits, false);
         jsonWriter.writeJsonField("lastResult", this.lastResult, false);
         return jsonWriter.writeEndObject().flush();
@@ -128,8 +128,7 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                             status = IndexerStatus.fromString(reader.getStringValue());
                             statusFound = true;
                         } else if ("executionHistory".equals(fieldName)) {
-                            executionHistory =
-                                    JsonUtils.readArray(reader, reader1 -> IndexerExecutionResult.fromJson(reader1));
+                            executionHistory = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
                             executionHistoryFound = true;
                         } else if ("limits".equals(fieldName)) {
                             limits = SearchIndexerLimits.fromJson(reader);

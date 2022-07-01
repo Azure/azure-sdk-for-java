@@ -153,14 +153,16 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.results, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeLongField("@odata.count", this.count, false);
         jsonWriter.writeDoubleField("@search.coverage", this.coverage, false);
         jsonWriter.writeMapField(
                 "@search.facets",
                 this.facets,
+                false,
                 (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
-        jsonWriter.writeArrayField("@search.answers", this.answers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "@search.answers", this.answers, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("@search.nextPageParameters", this.nextPageParameters, false);
         jsonWriter.writeStringField("@odata.nextLink", this.nextLink, false);
         return jsonWriter.writeEndObject().flush();
@@ -191,7 +193,7 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            results = JsonUtils.readArray(reader, reader1 -> SearchResult.fromJson(reader1));
+                            results = reader.readArray(reader1 -> SearchResult.fromJson(reader1));
                             resultsFound = true;
                         } else if ("@odata.count".equals(fieldName)) {
                             count = reader.getLongNullableValue();
@@ -199,13 +201,10 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                             coverage = reader.getDoubleNullableValue();
                         } else if ("@search.facets".equals(fieldName)) {
                             facets =
-                                    JsonUtils.readMap(
-                                            reader,
-                                            reader1 ->
-                                                    JsonUtils.readArray(
-                                                            reader1, reader2 -> FacetResult.fromJson(reader2)));
+                                    reader.readMap(
+                                            reader1 -> reader1.readArray(reader2 -> FacetResult.fromJson(reader2)));
                         } else if ("@search.answers".equals(fieldName)) {
-                            answers = JsonUtils.readArray(reader, reader1 -> AnswerResult.fromJson(reader1));
+                            answers = reader.readArray(reader1 -> AnswerResult.fromJson(reader1));
                         } else if ("@search.nextPageParameters".equals(fieldName)) {
                             nextPageParameters = SearchRequest.fromJson(reader);
                         } else if ("@odata.nextLink".equals(fieldName)) {

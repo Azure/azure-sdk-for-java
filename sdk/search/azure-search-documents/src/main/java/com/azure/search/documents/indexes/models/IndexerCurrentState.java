@@ -135,10 +135,11 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
                 "resetDocsInitialChangeTrackingState", this.resetDocsInitialChangeTrackingState, false);
         jsonWriter.writeStringField("resetDocsFinalChangeTrackingState", this.resetDocsFinalChangeTrackingState, false);
         jsonWriter.writeArrayField(
-                "resetDocumentKeys", this.resetDocumentKeys, (writer, element) -> writer.writeString(element));
+                "resetDocumentKeys", this.resetDocumentKeys, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField(
                 "resetDatasourceDocumentIds",
                 this.resetDatasourceDocumentIds,
+                false,
                 (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
@@ -178,10 +179,9 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
                         } else if ("resetDocsFinalChangeTrackingState".equals(fieldName)) {
                             resetDocsFinalChangeTrackingState = reader.getStringValue();
                         } else if ("resetDocumentKeys".equals(fieldName)) {
-                            resetDocumentKeys = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            resetDocumentKeys = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("resetDatasourceDocumentIds".equals(fieldName)) {
-                            resetDatasourceDocumentIds =
-                                    JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            resetDatasourceDocumentIds = reader.readArray(reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

@@ -10,10 +10,9 @@ import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -509,7 +508,7 @@ public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocume
      * {@link JsonToken#START_ARRAY}.
      */
     public static JsonPatchDocument fromJson(JsonReader jsonReader) {
-        List<JsonPatchOperation> operations = JsonUtils.readArray(jsonReader, JsonPatchOperation::fromJson);
+        List<JsonPatchOperation> operations = jsonReader.readArray(JsonPatchOperation::fromJson);
 
         JsonPatchDocument document = new JsonPatchDocument();
 

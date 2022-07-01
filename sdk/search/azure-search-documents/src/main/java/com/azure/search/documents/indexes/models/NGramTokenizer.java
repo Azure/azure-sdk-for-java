@@ -119,6 +119,7 @@ public final class NGramTokenizer extends LexicalTokenizer {
         jsonWriter.writeArrayField(
                 "tokenChars",
                 this.tokenChars,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject().flush();
     }
@@ -157,8 +158,8 @@ public final class NGramTokenizer extends LexicalTokenizer {
                             maxGram = reader.getIntegerNullableValue();
                         } else if ("tokenChars".equals(fieldName)) {
                             tokenChars =
-                                    JsonUtils.readArray(
-                                            reader, reader1 -> TokenCharacterKind.fromString(reader1.getStringValue()));
+                                    reader.readArray(
+                                            reader1 -> TokenCharacterKind.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

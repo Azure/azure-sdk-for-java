@@ -45,7 +45,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.actions, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -68,7 +68,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            actions = JsonUtils.readArray(reader, reader1 -> IndexAction.fromJson(reader1));
+                            actions = reader.readArray(reader1 -> IndexAction.fromJson(reader1));
                             actionsFound = true;
                         } else {
                             reader.skipChildren();

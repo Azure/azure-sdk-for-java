@@ -23,11 +23,10 @@ import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSet;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkConfiguration;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetNetworkProfile;
 import com.azure.core.implementation.models.jsonflatten.VirtualMachineScaleSetVMProfile;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -720,7 +719,7 @@ public class FlatteningSerializerTests {
     }
 
     private static <T> List<T> readJsons(String json, Function<JsonReader, T> reader) {
-        return JsonUtils.readArray(DefaultJsonReader.fromString(json), reader::apply);
+        return DefaultJsonReader.fromString(json).readArray(reader);
     }
 
     private static Stream<Arguments> emptyDanglingNodeJsonSupplier() {

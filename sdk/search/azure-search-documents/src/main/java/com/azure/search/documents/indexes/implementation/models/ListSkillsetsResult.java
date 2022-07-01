@@ -46,7 +46,7 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.skillsets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.skillsets, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -69,7 +69,7 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            skillsets = JsonUtils.readArray(reader, reader1 -> SearchIndexerSkillset.fromJson(reader1));
+                            skillsets = reader.readArray(reader1 -> SearchIndexerSkillset.fromJson(reader1));
                             skillsetsFound = true;
                         } else {
                             reader.skipChildren();

@@ -38,7 +38,7 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
         return jsonWriter.writeStartObject()
             .writeStringField("@odata.type", "#Favourite.Pet.RabbitWithTypeIdContainingDot")
             .writeIntegerField("tailLength", tailLength, false)
-            .writeArrayField("meals", meals, JsonWriter::writeString)
+            .writeArrayField("meals", meals, false, JsonWriter::writeString)
             .writeEndObject()
             .flush();
     }
@@ -58,7 +58,7 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
                 } else if ("tailLength".equals(fieldName)) {
                     tailLength = reader.getIntegerNullableValue();
                 } else if ("meals".equals(fieldName) && reader.currentToken() == JsonToken.START_ARRAY) {
-                    meals = JsonUtils.readArray(reader, JsonReader::getStringValue);
+                    meals = reader.readArray(JsonReader::getStringValue);
                 } else {
                     reader.skipChildren();
                 }

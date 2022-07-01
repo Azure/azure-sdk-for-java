@@ -147,7 +147,8 @@ public final class StopwordsTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "stopwords", this.stopwords, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField(
                 "stopwordsList", this.stopwordsList == null ? null : this.stopwordsList.toString(), false);
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored, false);
@@ -185,7 +186,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("stopwords".equals(fieldName)) {
-                            stopwords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            stopwords = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("stopwordsList".equals(fieldName)) {
                             stopwordsList = StopwordsList.fromString(reader.getStringValue());
                         } else if ("ignoreCase".equals(fieldName)) {

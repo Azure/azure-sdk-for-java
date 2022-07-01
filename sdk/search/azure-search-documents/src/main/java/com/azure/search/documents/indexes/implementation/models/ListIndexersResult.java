@@ -46,7 +46,7 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.indexers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.indexers, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -69,7 +69,7 @@ public final class ListIndexersResult implements JsonSerializable<ListIndexersRe
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            indexers = JsonUtils.readArray(reader, reader1 -> SearchIndexer.fromJson(reader1));
+                            indexers = reader.readArray(reader1 -> SearchIndexer.fromJson(reader1));
                             indexersFound = true;
                         } else {
                             reader.skipChildren();

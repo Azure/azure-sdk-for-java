@@ -5,6 +5,11 @@ package com.azure.json;
 
 import java.io.Closeable;
 import java.util.Base64;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Reads a JSON encoded value as a stream of tokens.
@@ -359,6 +364,129 @@ public abstract class JsonReader implements Closeable {
         }
 
         return buffer;
+    }
+
+    /**
+     * Reads a JSON object.
+     * <p>
+     * If the {@link #currentToken()} is null this will {@link #nextToken() read the next token}. If the starting token
+     * is still null or {@link JsonToken#NULL} null will be returned. If the token is anything other than
+     * {@link JsonToken#START_OBJECT} an {@link IllegalStateException} will be thrown.
+     * <p>
+     * Once the JSON stream is prepared for object reading this will get the next token and pass this {@link JsonReader}
+     * into the {@code objectReaderFunc} to handle reading the object.
+     * <p>
+     * If a JSON array should be read use {@link #readArray(Function)} or if a JSON map should be read use
+     * {@link #readMap(Function)}.
+     *
+     * @param objectReaderFunc Function that reads each value of the key-value pair.
+     * @param <T> The value element type.
+     * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
+     * null.
+     */
+    public final <T> T readObject(Function<JsonReader, T> objectReaderFunc) {
+        JsonToken currentToken = currentToken();
+        if (currentToken == null) {
+            currentToken = nextToken();
+        }
+
+        // If the current token is JSON NULL or current token is still null return null.
+        // The current token may be null if there was no JSON content to read.
+        if (currentToken == JsonToken.NULL || currentToken == null) {
+            return null;
+        } else if (currentToken == JsonToken.END_OBJECT || currentToken == JsonToken.FIELD_NAME) {
+            // Otherwise, this is an invalid state, throw an exception.
+            throw new IllegalStateException("Unexpected token to begin deserialization: " + currentToken);
+        }
+
+        return objectReaderFunc.apply(this);
+    }
+
+    /**
+     * Reads a JSON array.
+     * <p>
+     * If the {@link #currentToken()} is null this will {@link #nextToken() read the next token}. If the starting token
+     * is still null or {@link JsonToken#NULL} null will be returned. If the token is anything other than
+     * {@link JsonToken#START_ARRAY} an {@link IllegalStateException} will be thrown.
+     * <p>
+     * Once the JSON stream is prepared for element reading this will get the element token and pass this
+     * {@link JsonReader} into the {@code elementReaderFunc} to handle reading the element of the array. If the array
+     * has no elements an empty list will be returned.
+     * <p>
+     * If a JSON object should be read use {@link #readObject(Function)} or if a JSON map should be read use
+     * {@link #readMap(Function)}.
+     *
+     * @param elementReaderFunc Function that reads each element of the array.
+     * @param <T> The array element type.
+     * @return The read JSON array, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_ARRAY}, {@link JsonToken#NULL}, or null.
+     */
+    public final <T> List<T> readArray(Function<JsonReader, T> elementReaderFunc) {
+        JsonToken currentToken = currentToken();
+        if (currentToken == null) {
+            currentToken = nextToken();
+        }
+
+        if (currentToken == JsonToken.NULL || currentToken == null) {
+            return null;
+        } else if (currentToken != JsonToken.START_ARRAY) {
+            // Otherwise, this is an invalid state, throw an exception.
+            throw new IllegalStateException("Unexpected token to begin array deserialization: " + currentToken);
+        }
+
+        List<T> array = new LinkedList<>();
+
+        while (nextToken() != JsonToken.END_ARRAY) {
+            array.add(elementReaderFunc.apply(this));
+        }
+
+        return array;
+    }
+
+    /**
+     * Reads a JSON map.
+     * <p>
+     * If the {@link #currentToken()} is null this will {@link #nextToken() read the next token}. If the starting token
+     * is still null or {@link JsonToken#NULL} null will be returned. If the token is anything other than
+     * {@link JsonToken#START_OBJECT} an {@link IllegalStateException} will be thrown.
+     * <p>
+     * Once the JSON stream is prepared for key-value reading this will get the next token and read the field name as
+     * the key then get the next token after that and pass this {@link JsonReader} into the {@code valueReaderFunc} to
+     * handle reading the value of the key-value pair. If the object has no elements an empty map will be returned.
+     * <p>
+     * If a JSON object should be read use {@link #readObject(Function)} or if a JSON array should be read use
+     * {@link #readArray(Function)}.
+     *
+     * @param valueReaderFunc Function that reads each value of the key-value pair.
+     * @param <T> The value element type.
+     * @return The read JSON map, or null if the {@link JsonToken} is null or {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the token isn't {@link JsonToken#START_OBJECT}, {@link JsonToken#NULL}, or
+     * null.
+     */
+    public final <T> Map<String, T> readMap(Function<JsonReader, T> valueReaderFunc) {
+        JsonToken currentToken = currentToken();
+        if (currentToken == null) {
+            currentToken = nextToken();
+        }
+
+        if (currentToken == JsonToken.NULL || currentToken == null) {
+            return null;
+        } else if (currentToken != JsonToken.START_OBJECT) {
+            // Otherwise, this is an invalid state, throw an exception.
+            throw new IllegalStateException("Unexpected token to begin map deserialization: " + currentToken);
+        }
+
+        Map<String, T> map = new LinkedHashMap<>();
+
+        while (nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = getFieldName();
+            nextToken();
+
+            map.put(fieldName, valueReaderFunc.apply(this));
+        }
+
+        return map;
     }
 
     /**

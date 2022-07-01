@@ -322,7 +322,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
         jsonWriter.writeBooleanField("splitOnNumerics", this.splitOnNumerics, false);
         jsonWriter.writeBooleanField("stemEnglishPossessive", this.stemEnglishPossessive, false);
         jsonWriter.writeArrayField(
-                "protectedWords", this.protectedWords, (writer, element) -> writer.writeString(element));
+                "protectedWords", this.protectedWords, false, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -380,7 +380,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                         } else if ("stemEnglishPossessive".equals(fieldName)) {
                             stemEnglishPossessive = reader.getBooleanNullableValue();
                         } else if ("protectedWords".equals(fieldName)) {
-                            protectedWords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            protectedWords = reader.readArray(reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

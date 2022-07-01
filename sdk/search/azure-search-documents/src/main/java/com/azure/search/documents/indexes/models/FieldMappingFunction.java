@@ -75,7 +75,10 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeMapField(
-                "parameters", this.parameters, (writer, element) -> JsonUtils.writeUntypedField(writer, element));
+                "parameters",
+                this.parameters,
+                false,
+                (writer, element) -> JsonUtils.writeUntypedField(writer, element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -103,8 +106,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
                             nameFound = true;
                         } else if ("parameters".equals(fieldName)) {
                             parameters =
-                                    JsonUtils.readMap(
-                                            reader,
+                                    reader.readMap(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1, r -> JsonUtils.readUntypedField(reader1)));

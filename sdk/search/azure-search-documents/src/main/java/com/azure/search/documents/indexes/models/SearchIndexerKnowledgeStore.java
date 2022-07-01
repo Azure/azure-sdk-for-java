@@ -64,7 +64,8 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString, false);
-        jsonWriter.writeArrayField("projections", this.projections, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "projections", this.projections, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -93,8 +94,8 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
                             storageConnectionStringFound = true;
                         } else if ("projections".equals(fieldName)) {
                             projections =
-                                    JsonUtils.readArray(
-                                            reader, reader1 -> SearchIndexerKnowledgeStoreProjection.fromJson(reader1));
+                                    reader.readArray(
+                                            reader1 -> SearchIndexerKnowledgeStoreProjection.fromJson(reader1));
                             projectionsFound = true;
                         } else {
                             reader.skipChildren();

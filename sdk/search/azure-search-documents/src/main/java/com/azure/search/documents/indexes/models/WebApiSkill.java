@@ -180,13 +180,14 @@ public final class WebApiSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", getInputs(), false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
         jsonWriter.writeStringField("uri", this.uri, false);
-        jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField(
+                "httpHeaders", this.httpHeaders, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod, false);
         jsonWriter.writeStringField("timeout", this.timeout == null ? null : this.timeout.toString(), false);
         jsonWriter.writeIntegerField("batchSize", this.batchSize, false);
@@ -229,10 +230,10 @@ public final class WebApiSkill extends SearchIndexerSkill {
                         if ("@odata.type".equals(fieldName)) {
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -244,7 +245,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                             uri = reader.getStringValue();
                             uriFound = true;
                         } else if ("httpHeaders".equals(fieldName)) {
-                            httpHeaders = JsonUtils.readMap(reader, reader1 -> reader1.getStringValue());
+                            httpHeaders = reader.readMap(reader1 -> reader1.getStringValue());
                         } else if ("httpMethod".equals(fieldName)) {
                             httpMethod = reader.getStringValue();
                         } else if ("timeout".equals(fieldName)) {

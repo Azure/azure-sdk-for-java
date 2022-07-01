@@ -46,7 +46,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.aliases, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.aliases, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -69,7 +69,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            aliases = JsonUtils.readArray(reader, reader1 -> SearchAlias.fromJson(reader1));
+                            aliases = reader.readArray(reader1 -> SearchAlias.fromJson(reader1));
                             aliasesFound = true;
                         } else {
                             reader.skipChildren();

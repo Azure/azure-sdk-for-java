@@ -75,7 +75,7 @@ public final class SearchError implements JsonSerializable<SearchError> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("message", this.message, false);
         jsonWriter.writeStringField("code", this.code, false);
-        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("details", this.details, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -105,7 +105,7 @@ public final class SearchError implements JsonSerializable<SearchError> {
                         } else if ("code".equals(fieldName)) {
                             code = reader.getStringValue();
                         } else if ("details".equals(fieldName)) {
-                            details = JsonUtils.readArray(reader, reader1 -> SearchError.fromJson(reader1));
+                            details = reader.readArray(reader1 -> SearchError.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

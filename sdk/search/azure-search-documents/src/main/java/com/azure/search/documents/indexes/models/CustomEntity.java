@@ -377,7 +377,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
         jsonWriter.writeBooleanField("defaultCaseSensitive", this.defaultCaseSensitive, false);
         jsonWriter.writeBooleanField("defaultAccentSensitive", this.defaultAccentSensitive, false);
         jsonWriter.writeIntegerField("defaultFuzzyEditDistance", this.defaultFuzzyEditDistance, false);
-        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("aliases", this.aliases, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -434,7 +434,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
                         } else if ("defaultFuzzyEditDistance".equals(fieldName)) {
                             defaultFuzzyEditDistance = reader.getIntegerNullableValue();
                         } else if ("aliases".equals(fieldName)) {
-                            aliases = JsonUtils.readArray(reader, reader1 -> CustomEntityAlias.fromJson(reader1));
+                            aliases = reader.readArray(reader1 -> CustomEntityAlias.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

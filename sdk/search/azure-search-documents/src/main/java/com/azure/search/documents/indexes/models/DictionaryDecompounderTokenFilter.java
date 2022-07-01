@@ -161,7 +161,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeArrayField("wordList", this.wordList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("wordList", this.wordList, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeIntegerField("minWordSize", this.minWordSize, false);
         jsonWriter.writeIntegerField("minSubwordSize", this.minSubwordSize, false);
         jsonWriter.writeIntegerField("maxSubwordSize", this.maxSubwordSize, false);
@@ -201,7 +201,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("wordList".equals(fieldName)) {
-                            wordList = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            wordList = reader.readArray(reader1 -> reader1.getStringValue());
                             wordListFound = true;
                         } else if ("minWordSize".equals(fieldName)) {
                             minWordSize = reader.getIntegerNullableValue();

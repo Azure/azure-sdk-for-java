@@ -123,7 +123,7 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeStringField("source", this.source, false);
         jsonWriter.writeStringField("sourceContext", this.sourceContext, false);
-        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", this.inputs, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -156,7 +156,7 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
                         } else if ("sourceContext".equals(fieldName)) {
                             sourceContext = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                         } else {
                             reader.skipChildren();
                         }

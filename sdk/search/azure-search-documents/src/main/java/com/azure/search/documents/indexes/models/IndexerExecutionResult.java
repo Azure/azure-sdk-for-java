@@ -216,8 +216,8 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString(), false);
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("warnings", this.warnings, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeIntField("itemsProcessed", this.itemCount);
         jsonWriter.writeIntField("itemsFailed", this.failedItemCount);
         jsonWriter.writeStringField(
@@ -268,10 +268,10 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                             status = IndexerExecutionStatus.fromString(reader.getStringValue());
                             statusFound = true;
                         } else if ("errors".equals(fieldName)) {
-                            errors = JsonUtils.readArray(reader, reader1 -> SearchIndexerError.fromJson(reader1));
+                            errors = reader.readArray(reader1 -> SearchIndexerError.fromJson(reader1));
                             errorsFound = true;
                         } else if ("warnings".equals(fieldName)) {
-                            warnings = JsonUtils.readArray(reader, reader1 -> SearchIndexerWarning.fromJson(reader1));
+                            warnings = reader.readArray(reader1 -> SearchIndexerWarning.fromJson(reader1));
                             warningsFound = true;
                         } else if ("itemsProcessed".equals(fieldName)) {
                             itemCount = reader.getIntValue();

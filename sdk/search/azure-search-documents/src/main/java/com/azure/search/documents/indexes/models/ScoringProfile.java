@@ -125,7 +125,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeJsonField("text", this.textWeights, false);
-        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("functions", this.functions, false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField(
                 "functionAggregation",
                 this.functionAggregation == null ? null : this.functionAggregation.toString(),
@@ -160,7 +160,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
                         } else if ("text".equals(fieldName)) {
                             textWeights = TextWeights.fromJson(reader);
                         } else if ("functions".equals(fieldName)) {
-                            functions = JsonUtils.readArray(reader, reader1 -> ScoringFunction.fromJson(reader1));
+                            functions = reader.readArray(reader1 -> ScoringFunction.fromJson(reader1));
                         } else if ("functionAggregation".equals(fieldName)) {
                             functionAggregation = ScoringFunctionAggregation.fromString(reader.getStringValue());
                         } else {

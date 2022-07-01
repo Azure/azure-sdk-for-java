@@ -45,7 +45,8 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("skillNames", this.skillNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "skillNames", this.skillNames, false, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -66,7 +67,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
                         reader.nextToken();
 
                         if ("skillNames".equals(fieldName)) {
-                            skillNames = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            skillNames = reader.readArray(reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

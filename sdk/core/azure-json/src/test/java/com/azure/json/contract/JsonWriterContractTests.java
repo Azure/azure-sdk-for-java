@@ -73,6 +73,7 @@ public abstract class JsonWriterContractTests {
 
             // Binary
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null, false)), ""),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(new byte[0])), "\"\""),
             Arguments.of(createJsonConsumer(
                     jsonWriter -> jsonWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
@@ -84,32 +85,43 @@ public abstract class JsonWriterContractTests {
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null)), "null"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null, true)), "null"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null, false)), ""),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null, false)), ""),
 
             // Double
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(-42D)), "-42.0"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(-42.0D)), "-42.0"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(42D)), "42.0"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(42.0D)), "42.0"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(null, false)), ""),
 
             // Float
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(-42F)), "-42.0"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(-42.0F)), "-42.0"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(42F)), "42.0"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(42.0F)), "42.0"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(null, false)), ""),
 
             // Integer
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInt(42)), "42"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInt(-42)), "-42"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInteger(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInteger(null, false)), ""),
 
             // Long
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(42L)), "42"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(-42L)), "-42"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(null, false)), ""),
 
             // Null
             Arguments.of(createJsonConsumer(JsonWriter::writeNull), "null"),
 
             // String
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString(null, false)), ""),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString("")), "\"\""),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString("null")), "\"null\""),
 
@@ -128,55 +140,109 @@ public abstract class JsonWriterContractTests {
 
             // Field name and value.
             // Binary
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(null)), "null"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBinary(new byte[0])), "\"\""),
-            Arguments.of(createJsonConsumer(
-                    jsonWriter -> jsonWriter.writeBinary("Hello".getBytes(StandardCharsets.UTF_8))),
-                "\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\""),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBinaryField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBinaryField("field", null, false)),
+                "{}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBinaryField("field", new byte[0])),
+                "{\"field\":\"\"}"),
+            Arguments.of(createJsonObjectConsumer(
+                    jsonWriter -> jsonWriter.writeBinaryField("field", "Hello".getBytes(StandardCharsets.UTF_8))),
+                "{\"field\":\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"}"),
 
             // Boolean
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(true)), "true"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(false)), "false"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", true)),
+                "{\"field\":true}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", false)),
+                "{\"field\":false}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeBooleanField("field", null, false)),
+                "{}"),
 
             // Double
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(-42D)), "-42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(-42.0D)), "-42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(42D)), "42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(42.0D)), "42.0"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", -42D)),
+                "{\"field\":-42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", -42.0D)),
+                "{\"field\":-42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", 42D)),
+                "{\"field\":42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", 42.0D)),
+                "{\"field\":42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeDoubleField("field", null, false)),
+                "{}"),
 
             // Float
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(-42F)), "-42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(-42.0F)), "-42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(42F)), "42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeFloat(42.0F)), "42.0"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeFloatField("field", -42F)),
+                "{\"field\":-42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeFloatField("field", -42.0F)),
+                "{\"field\":-42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeFloatField("field", 42F)),
+                "{\"field\":42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeFloatField("field", 42.0F)),
+                "{\"field\":42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeFloatField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeFloatField("field", null, false)),
+                "{}"),
 
             // Integer
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInt(42)), "42"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeInt(-42)), "-42"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeIntField("field", 42)),
+                "{\"field\":42}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeIntField("field", -42)),
+                "{\"field\":-42}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeIntegerField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeIntegerField("field", null, false)),
+                "{}"),
 
             // Long
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(42L)), "42"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeLong(-42L)), "-42"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeLongField("field", 42L)),
+                "{\"field\":42}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeLongField("field", -42L)),
+                "{\"field\":-42}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeLongField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeLongField("field", null, false)),
+                "{}"),
 
             // Null
-            Arguments.of(createJsonConsumer(JsonWriter::writeNull), "null"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeNullField("field")),
+                "{\"field\":null}"),
 
             // String
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString(null)), "null"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString("")), "\"\""),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeString("null")), "\"null\""),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", null)),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", null, false)),
+                "{}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", "")),
+                "{\"field\":\"\"}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeStringField("field", "null")),
+                "{\"field\":\"null\"}"),
 
             // Raw
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("\"string\"")), "\"string\""),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("42")), "42"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("42.0")), "42.0"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("true")), "true"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("false")), "false"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("null")), "null"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("[]")), "[]"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("[null]")), "[null]"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("{}")), "{}"),
-            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeRawValue("{null}")), "{null}")
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "\"string\"")),
+                "{\"field\":\"string\"}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "42")),
+                "{\"field\":42}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "42.0")),
+                "{\"field\":42.0}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "true")),
+                "{\"field\":true}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "false")),
+                "{\"field\":false}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "null")),
+                "{\"field\":null}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "[]")),
+                "{\"field\":[]}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "[null]")),
+                "{\"field\":[null]}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "{}")),
+                "{\"field\":{}}"),
+            Arguments.of(createJsonObjectConsumer(jsonWriter -> jsonWriter.writeRawField("field", "{null}")),
+                "{\"field\":{null}}")
         );
     }
 
@@ -393,5 +459,11 @@ public abstract class JsonWriterContractTests {
 
     private static Consumer<JsonWriter> createJsonConsumer(Function<JsonWriter, JsonWriter> consumptionFunction) {
         return jsonWriter -> consumptionFunction.apply(jsonWriter).flush();
+    }
+
+    private static Consumer<JsonWriter> createJsonObjectConsumer(Function<JsonWriter, JsonWriter> consumptionFunction) {
+        return jsonWriter -> consumptionFunction.apply(jsonWriter.writeStartObject())
+            .writeEndObject()
+            .flush();
     }
 }

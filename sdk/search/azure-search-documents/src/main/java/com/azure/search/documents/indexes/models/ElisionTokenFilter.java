@@ -65,7 +65,7 @@ public final class ElisionTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeArrayField("articles", this.articles, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("articles", this.articles, false, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -96,7 +96,7 @@ public final class ElisionTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("articles".equals(fieldName)) {
-                            articles = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            articles = reader.readArray(reader1 -> reader1.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

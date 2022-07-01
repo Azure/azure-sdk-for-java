@@ -45,7 +45,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.results, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -68,7 +68,7 @@ public final class IndexDocumentsResult implements JsonSerializable<IndexDocumen
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            results = JsonUtils.readArray(reader, reader1 -> IndexingResult.fromJson(reader1));
+                            results = reader.readArray(reader1 -> IndexingResult.fromJson(reader1));
                             resultsFound = true;
                         } else {
                             reader.skipChildren();

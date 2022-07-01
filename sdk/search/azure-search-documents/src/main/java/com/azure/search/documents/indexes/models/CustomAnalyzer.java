@@ -124,10 +124,12 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
         jsonWriter.writeArrayField(
                 "tokenFilters",
                 this.tokenFilters,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField(
                 "charFilters",
                 this.charFilters,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject().flush();
     }
@@ -168,16 +170,14 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
                             tokenizerFound = true;
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1,
                                                             r -> TokenFilterName.fromString(reader1.getStringValue())));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1,

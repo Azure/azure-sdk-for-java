@@ -46,7 +46,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tokens", this.tokens, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokens", this.tokens, false, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -69,7 +69,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                         reader.nextToken();
 
                         if ("tokens".equals(fieldName)) {
-                            tokens = JsonUtils.readArray(reader, reader1 -> AnalyzedTokenInfo.fromJson(reader1));
+                            tokens = reader.readArray(reader1 -> AnalyzedTokenInfo.fromJson(reader1));
                             tokensFound = true;
                         } else {
                             reader.skipChildren();

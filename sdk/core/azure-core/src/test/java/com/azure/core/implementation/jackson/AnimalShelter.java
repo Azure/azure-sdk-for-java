@@ -43,7 +43,7 @@ public class AnimalShelter implements JsonSerializable<AnimalShelter> {
 
         jsonWriter.writeStartObject("properties")
             .writeStringField("description", description, false)
-            .writeArrayField("animalsInfo", animalsInfo, JsonWriter::writeJson);
+            .writeArrayField("animalsInfo", animalsInfo, false, JsonWriter::writeJson);
 
         return jsonWriter.writeEndObject().writeEndObject().flush();
     }
@@ -77,7 +77,7 @@ public class AnimalShelter implements JsonSerializable<AnimalShelter> {
 
                         if ("animalsInfo".equals(fieldName)) {
                             hasAnimalsInfo = true;
-                            animalsInfo = JsonUtils.readArray(reader, FlattenableAnimalInfo::fromJson);
+                            animalsInfo = reader.readArray(FlattenableAnimalInfo::fromJson);
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
                         } else {

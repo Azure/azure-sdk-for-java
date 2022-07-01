@@ -112,8 +112,8 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("inputs", getInputs(), false, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), false, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -124,10 +124,12 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
         jsonWriter.writeArrayField(
                 "visualFeatures",
                 this.visualFeatures,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField(
                 "details",
                 this.details,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject().flush();
     }
@@ -163,10 +165,10 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                         if ("@odata.type".equals(fieldName)) {
                             odataType = reader.getStringValue();
                         } else if ("inputs".equals(fieldName)) {
-                            inputs = JsonUtils.readArray(reader, reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
                             inputsFound = true;
                         } else if ("outputs".equals(fieldName)) {
-                            outputs = JsonUtils.readArray(reader, reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
                             outputsFound = true;
                         } else if ("name".equals(fieldName)) {
                             name = reader.getStringValue();
@@ -181,16 +183,14 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                                             r -> ImageAnalysisSkillLanguage.fromString(reader.getStringValue()));
                         } else if ("visualFeatures".equals(fieldName)) {
                             visualFeatures =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1,
                                                             r -> VisualFeature.fromString(reader1.getStringValue())));
                         } else if ("details".equals(fieldName)) {
                             details =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     JsonUtils.getNullableProperty(
                                                             reader1,

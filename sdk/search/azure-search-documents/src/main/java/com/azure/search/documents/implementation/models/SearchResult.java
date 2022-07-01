@@ -127,8 +127,10 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
         jsonWriter.writeMapField(
                 "@search.highlights",
                 this.highlights,
+                false,
                 (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
-        jsonWriter.writeArrayField("@search.captions", this.captions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "@search.captions", this.captions, false, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             additionalProperties.forEach(
                     (key, value) -> {
@@ -168,12 +170,9 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                             rerankerScore = reader.getDoubleNullableValue();
                         } else if ("@search.highlights".equals(fieldName)) {
                             highlights =
-                                    JsonUtils.readMap(
-                                            reader,
-                                            reader1 ->
-                                                    JsonUtils.readArray(reader1, reader2 -> reader2.getStringValue()));
+                                    reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getStringValue()));
                         } else if ("@search.captions".equals(fieldName)) {
-                            captions = JsonUtils.readArray(reader, reader1 -> CaptionResult.fromJson(reader1));
+                            captions = reader.readArray(reader1 -> CaptionResult.fromJson(reader1));
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();

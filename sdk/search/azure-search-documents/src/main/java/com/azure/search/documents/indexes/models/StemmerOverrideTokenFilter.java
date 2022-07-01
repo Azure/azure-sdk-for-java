@@ -58,7 +58,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("rules", this.rules, false, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -90,7 +90,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("rules".equals(fieldName)) {
-                            rules = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            rules = reader.readArray(reader1 -> reader1.getStringValue());
                             rulesFound = true;
                         } else {
                             reader.skipChildren();

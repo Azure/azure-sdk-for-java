@@ -61,7 +61,7 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
-    public JsonWriter writeStartObject(String fieldName) {
+    public final JsonWriter writeStartObject(String fieldName) {
         return writeFieldName(fieldName).writeStartObject();
     }
 
@@ -90,7 +90,7 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
-    public JsonWriter writeStartArray(String fieldName) {
+    public final JsonWriter writeStartArray(String fieldName) {
         return writeFieldName(fieldName).writeStartArray();
     }
 
@@ -756,6 +756,7 @@ public abstract class JsonWriter implements Closeable {
      * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, BiConsumer)} to simplify adding a
      * key-value to a JSON object.
      *
+     * @param fieldName The field name.
      * @param array The array being written.
      * @param elementWriterFunc The function that writes each element of the array.
      * @param <T> The array element type.
@@ -811,6 +812,7 @@ public abstract class JsonWriter implements Closeable {
      * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, BiConsumer)} to simplify adding a key-value to
      * a JSON object.
      *
+     * @param fieldName The field name.
      * @param map The map being written.
      * @param valueWriterFunc The function that writes each value of the map.
      * @param <T> The value element type.
@@ -845,14 +847,14 @@ public abstract class JsonWriter implements Closeable {
             return writeNull ? writeNullField(fieldName) : this;
         }
 
-        writeStartArray(fieldName);
+        writeStartObject(fieldName);
 
         for (Map.Entry<String, T> entry : map.entrySet()) {
             writeFieldName(entry.getKey());
             valueWriterFunc.accept(this, entry.getValue());
         }
 
-        return writeEndArray();
+        return writeEndObject();
     }
 
     /**

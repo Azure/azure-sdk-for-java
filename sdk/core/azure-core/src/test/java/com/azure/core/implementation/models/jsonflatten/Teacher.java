@@ -4,12 +4,11 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -26,17 +25,10 @@ public class Teacher implements JsonSerializable<Teacher> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        if (students != null) {
-            jsonWriter.writeStartObject("students");
-
-            students.forEach(jsonWriter::writeJsonField);
-
-            jsonWriter.writeEndObject();
-        }
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeMapField("students", students, false, JsonWriter::writeJson)
+            .writeEndObject()
+            .flush();
     }
 
     public static Teacher fromJson(JsonReader jsonReader) {
@@ -48,17 +40,7 @@ public class Teacher implements JsonSerializable<Teacher> {
                 reader.nextToken();
 
                 if ("students".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    if (students == null) {
-                        students = new LinkedHashMap<>();
-                    }
-
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String key = reader.getFieldName();
-                        reader.nextToken();
-                        Student value = Student.fromJson(reader);
-
-                        students.put(key, value);
-                    }
+                    students = reader.readMap(Student::fromJson);
                 } else {
                     reader.skipChildren();
                 }

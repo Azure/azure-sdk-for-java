@@ -51,9 +51,9 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonSerializable<N
                 if ("@odata.type".equals(fieldName)) {
                     odataType = jsonReader.getStringValue();
                 } else if ("age".equals(fieldName)) {
-                    age = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                    age = reader.getIntegerNullableValue();
                 } else if ("size".equals(fieldName)) {
-                    size = reader.currentToken() == JsonToken.NULL ? null : reader.getIntValue();
+                    size = reader.getIntegerNullableValue();
                 } else {
                     reader.skipChildren();
                 }

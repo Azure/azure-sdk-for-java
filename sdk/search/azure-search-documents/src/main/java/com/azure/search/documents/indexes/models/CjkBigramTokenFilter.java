@@ -96,6 +96,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
         jsonWriter.writeArrayField(
                 "ignoreScripts",
                 this.ignoreScripts,
+                false,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeBooleanField("outputUnigrams", this.outputUnigrams, false);
         return jsonWriter.writeEndObject().flush();
@@ -130,8 +131,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                             nameFound = true;
                         } else if ("ignoreScripts".equals(fieldName)) {
                             ignoreScripts =
-                                    JsonUtils.readArray(
-                                            reader,
+                                    reader.readArray(
                                             reader1 ->
                                                     CjkBigramTokenFilterScripts.fromString(reader1.getStringValue()));
                         } else if ("outputUnigrams".equals(fieldName)) {

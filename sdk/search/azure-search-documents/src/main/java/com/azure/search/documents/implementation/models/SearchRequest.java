@@ -764,7 +764,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("count", this.includeTotalResultCount, false);
-        jsonWriter.writeArrayField("facets", this.facets, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("facets", this.facets, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("filter", this.filter, false);
         jsonWriter.writeStringField("highlight", this.highlightFields, false);
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag, false);
@@ -776,7 +776,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                 "scoringStatistics", this.scoringStatistics == null ? null : this.scoringStatistics.toString(), false);
         jsonWriter.writeStringField("sessionId", this.sessionId, false);
         jsonWriter.writeArrayField(
-                "scoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
+                "scoringParameters", this.scoringParameters, false, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile, false);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration, false);
         jsonWriter.writeStringField("search", this.searchText, false);
@@ -837,7 +837,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         if ("count".equals(fieldName)) {
                             includeTotalResultCount = reader.getBooleanNullableValue();
                         } else if ("facets".equals(fieldName)) {
-                            facets = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            facets = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("filter".equals(fieldName)) {
                             filter = reader.getStringValue();
                         } else if ("highlight".equals(fieldName)) {
@@ -857,7 +857,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                         } else if ("sessionId".equals(fieldName)) {
                             sessionId = reader.getStringValue();
                         } else if ("scoringParameters".equals(fieldName)) {
-                            scoringParameters = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
+                            scoringParameters = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("scoringProfile".equals(fieldName)) {
                             scoringProfile = reader.getStringValue();
                         } else if ("semanticConfiguration".equals(fieldName)) {
