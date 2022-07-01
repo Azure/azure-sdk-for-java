@@ -121,6 +121,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.throughputControlCycleId = this.throughputControlCycleId;
+        context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         return context;
     }
 }

@@ -3,20 +3,20 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.Integers;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.MutableVolatile;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
@@ -35,7 +35,6 @@ import reactor.core.scheduler.Schedulers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -918,12 +917,6 @@ public class StoreReader {
                         e -> logger.warn(
                                 "Background refresh of the addresses failed with {}", e.getMessage(), e)
                 );
-    }
-
-    private static int generateNextRandom(int maxValue) {
-        // The benefit of using ThreadLocalRandom.current() over Random is
-        // avoiding the synchronization contention due to multi-threading.
-        return ThreadLocalRandom.current().nextInt(maxValue);
     }
 
     static void verifyCanContinueOnException(CosmosException ex) {
