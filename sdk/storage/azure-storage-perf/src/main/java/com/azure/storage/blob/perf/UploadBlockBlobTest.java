@@ -19,7 +19,7 @@ public class UploadBlockBlobTest extends BlobTestBase<BlobPerfStressOptions> {
     protected final Flux<ByteBuffer> byteBufferFlux;
 
     public UploadBlockBlobTest(BlobPerfStressOptions options) {
-        super(options);
+        super(options, false, false);
         inputStream = (RepeatingInputStream) createRandomInputStream(options.getSize());
         inputStream.mark(Integer.MAX_VALUE);
         byteBufferFlux = createRandomByteBufferFlux(options.getSize());

@@ -29,7 +29,7 @@ public class DownloadBlobToFileTest extends BlobTestBase<BlobPerfStressOptions> 
     private final File tempDir;
 
     public DownloadBlobToFileTest(BlobPerfStressOptions options) {
-        super(options);
+        super(options, true, true);
 
         try {
             tempDir = Files.createTempDirectory("downloadToFileTest").toFile();
@@ -37,12 +37,6 @@ public class DownloadBlobToFileTest extends BlobTestBase<BlobPerfStressOptions> 
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-    }
-
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
-            .then();
     }
 
     @Override

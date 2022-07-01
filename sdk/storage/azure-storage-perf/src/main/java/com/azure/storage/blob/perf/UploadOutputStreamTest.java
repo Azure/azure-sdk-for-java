@@ -16,7 +16,7 @@ import static com.azure.perf.test.core.TestDataCreationHelper.writeBytesToOutput
 
 public class UploadOutputStreamTest extends BlobTestBase<BlobPerfStressOptions> {
     public UploadOutputStreamTest(BlobPerfStressOptions options) {
-        super(options);
+        super(options, false, false);
     }
 
     @Override

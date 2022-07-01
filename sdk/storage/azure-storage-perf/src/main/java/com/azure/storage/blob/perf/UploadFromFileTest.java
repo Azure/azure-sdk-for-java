@@ -27,7 +27,7 @@ public class UploadFromFileTest extends BlobTestBase<BlobPerfStressOptions> {
     }
 
     public UploadFromFileTest(BlobPerfStressOptions options) {
-        super(options);
+        super(options, false, false);
     }
 
     @Override

@@ -24,14 +24,7 @@ public class DownloadBlobNonSharedClientTest extends BlobTestBase<BlobPerfStress
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
     public DownloadBlobNonSharedClientTest(BlobPerfStressOptions options) {
-        super(options);
-    }
-
-    // Required resource setup goes here, upload the file to be downloaded during tests.
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-                   .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
-                   .then();
+        super(options, true, true);
     }
 
     // Perform the API call to be tested here

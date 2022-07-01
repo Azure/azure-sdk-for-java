@@ -21,7 +21,7 @@ public class UploadBlobNoLengthTest extends BlobTestBase<BlobPerfStressOptions> 
     protected final Flux<ByteBuffer> byteBufferFlux;
 
     public UploadBlobNoLengthTest(BlobPerfStressOptions options) {
-        super(options);
+        super(options, false, false);
         if (options.isSync()) {
             inputStream = (RepeatingInputStream) createRandomInputStream(options.getSize());
             inputStream.mark(Long.MAX_VALUE);

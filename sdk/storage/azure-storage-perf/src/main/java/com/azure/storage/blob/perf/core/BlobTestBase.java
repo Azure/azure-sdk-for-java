@@ -17,6 +17,9 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilder;
 import com.azure.storage.blob.specialized.cryptography.EncryptionVersion;
+import reactor.core.publisher.Mono;
+
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> extends ContainerTest<TOptions> {
 
@@ -25,11 +28,13 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
+    private final boolean createBlob;
+    private final boolean singletonBlob;
 
-    public BlobTestBase(TOptions options) {
+    public BlobTestBase(TOptions options, boolean createBlob, boolean singletonBlob) {
         super(options);
 
-        String blobName = "randomblobtest-" + UUID.randomUUID().toString();
+        String blobName = "randomblobtest-" + (singletonBlob ? "" : UUID.randomUUID().toString());
 
         if (options.getEncryptionVersion() != null) {
             EncryptionVersion version;
@@ -59,6 +64,39 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
 
         blockBlobClient = blobClient.getBlockBlobClient();
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient();
+
+        this.createBlob = createBlob;
+        this.singletonBlob = singletonBlob;
+    }
+
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        Mono<Void> uploadMono;
+        if (this.createBlob && this.singletonBlob) {
+            uploadMono = blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null)
+                .doFinally(x -> System.out.println("upload finished")).then();
+        } else {
+            uploadMono = Mono.empty();
+        }
+
+        return super.globalSetupAsync()
+            .then(uploadMono)
+            .then();
+    }
+
+    @Override
+    public Mono<Void> setupAsync() {
+        Mono<Void> uploadMono;
+        if (this.createBlob && !this.singletonBlob) {
+            uploadMono = blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null)
+                .doFinally(x -> System.out.println("upload finished")).then();
+        } else {
+            uploadMono = Mono.empty();
+        }
+
+        return super.setupAsync()
+            .then(uploadMono)
+            .then();
     }
 
     public long copyStream(InputStream input, OutputStream out) throws IOException {
