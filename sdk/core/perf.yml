@@ -30,4 +30,3 @@ extends:
     arguments: ${{ parameters.arguments }}
     iterations: ${{ parameters.iterations }}
     additionalArguments: ${{ parameters.additionalArguments }}
-    disableAzureResourceCreation: true
