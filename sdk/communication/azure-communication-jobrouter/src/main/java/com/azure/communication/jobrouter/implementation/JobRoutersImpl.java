@@ -4,7 +4,7 @@
 
 package com.azure.communication.jobrouter.implementation;
 
-import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResponse;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyCollection;
@@ -16,9 +16,9 @@ import com.azure.communication.jobrouter.implementation.models.DistributionPolic
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollection;
 import com.azure.communication.jobrouter.implementation.models.JobCollection;
-import com.azure.communication.jobrouter.implementation.models.JobPositionDetails;
-import com.azure.communication.jobrouter.implementation.models.JobQueue;
-import com.azure.communication.jobrouter.implementation.models.JobStateSelector;
+import com.azure.communication.jobrouter.models.JobPositionDetails;
+import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.models.JobStateSelector;
 import com.azure.communication.jobrouter.implementation.models.PagedClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.PagedDistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.PagedExceptionPolicy;
@@ -26,11 +26,11 @@ import com.azure.communication.jobrouter.implementation.models.PagedJob;
 import com.azure.communication.jobrouter.implementation.models.PagedQueue;
 import com.azure.communication.jobrouter.implementation.models.PagedWorker;
 import com.azure.communication.jobrouter.implementation.models.QueueCollection;
-import com.azure.communication.jobrouter.implementation.models.QueueStatistics;
-import com.azure.communication.jobrouter.implementation.models.RouterJob;
-import com.azure.communication.jobrouter.implementation.models.RouterWorker;
+import com.azure.communication.jobrouter.models.QueueStatistics;
+import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.WorkerCollection;
-import com.azure.communication.jobrouter.implementation.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

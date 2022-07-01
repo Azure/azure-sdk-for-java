@@ -1,6 +1,7 @@
-package com.azure.communication.jobrouter.models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.azure.communication.jobrouter.implementation.models.JobOptions;
+package com.azure.communication.jobrouter.models;
 
 /**
  * Request options to update a job.

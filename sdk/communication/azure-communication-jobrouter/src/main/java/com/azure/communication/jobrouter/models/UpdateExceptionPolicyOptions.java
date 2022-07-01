@@ -13,45 +13,13 @@ import java.util.Map;
  * ExceptionPolicy: A policy that defines actions to execute when exception are triggered.
  */
 @Fluent
-public class UpdateExceptionPolicyOptions {
-    private String id;
-
-    private String name;
-
-    private Map<String, ExceptionRule> exceptionRules;
-
+public class UpdateExceptionPolicyOptions extends ExceptionPolicyOptions {
     /**
      * Constructor for UpdateExceptionPolicyOptions.
      * @param id id of ExceptionPolicy.
      */
     public UpdateExceptionPolicyOptions(String id) {
         this.id = id;
-    }
-
-    /**
-     * Returns ExceptionPolicy id.
-     * @return id
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets name of ExceptionPolicy
-     * @param name name of exceptionPolicy
-     * @return this
-     */
-    public UpdateExceptionPolicyOptions setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Returns ExceptionPolicy name.
-     * @return name
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -62,13 +30,5 @@ public class UpdateExceptionPolicyOptions {
     public UpdateExceptionPolicyOptions setExceptionRules(Map<String, ExceptionRule> exceptionRules) {
         this.exceptionRules = exceptionRules;
         return this;
-    }
-
-    /**
-     * Returns exception rules.
-     * @return exceptionRules
-     */
-    public Map<String, ExceptionRule> getExceptionRules() {
-        return this.exceptionRules;
     }
 }

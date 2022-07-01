@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.DistributionMode;
+import com.azure.communication.jobrouter.models.DistributionMode;
 
 /**
  * Abstract class for Create and Update DistributionPolicy Options.

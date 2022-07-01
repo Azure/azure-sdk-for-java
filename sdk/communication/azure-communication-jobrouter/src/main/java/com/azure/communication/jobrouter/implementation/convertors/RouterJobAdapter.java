@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.implementation.convertors;
 
-import com.azure.communication.jobrouter.implementation.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 

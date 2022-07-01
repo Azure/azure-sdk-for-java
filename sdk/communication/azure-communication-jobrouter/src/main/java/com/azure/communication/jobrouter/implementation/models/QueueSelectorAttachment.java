@@ -24,4 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "weighted-allocation-queue-selector", value = WeightedAllocationQueueSelector.class)
 })
 @Immutable
-public abstract class QueueSelectorAttachment {}
+public abstract class QueueSelectorAttachment {
+
+}

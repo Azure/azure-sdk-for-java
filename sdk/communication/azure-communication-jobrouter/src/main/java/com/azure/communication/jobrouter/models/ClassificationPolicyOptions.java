@@ -1,4 +1,11 @@
-package com.azure.communication.jobrouter.implementation.models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.communication.jobrouter.models;
+
+import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachment;
+import com.azure.communication.jobrouter.implementation.models.WorkerSelectorAttachment;
+import com.azure.communication.jobrouter.models.RouterRule;
 
 import java.util.List;
 

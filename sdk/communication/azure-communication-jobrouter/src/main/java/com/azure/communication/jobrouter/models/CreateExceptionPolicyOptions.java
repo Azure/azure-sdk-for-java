@@ -8,17 +8,12 @@ import com.azure.core.annotation.Fluent;
 
 import java.util.Map;
 
-/** Request options for Create ExceptionPolicy.
+/**
+ * Request options for Create ExceptionPolicy.
  * ExceptionPolicy: A policy that defines actions to execute when exception are triggered.
  */
 @Fluent
-public class CreateExceptionPolicyOptions {
-
-    private String id;
-
-    private String name;
-
-    private Map<String, ExceptionRule> exceptionRules;
+public class CreateExceptionPolicyOptions extends ExceptionPolicyOptions {
 
     /**
      * Constructor for CreateExceptionPolicyOptions
@@ -28,39 +23,5 @@ public class CreateExceptionPolicyOptions {
     public CreateExceptionPolicyOptions(String id, Map<String, ExceptionRule> exceptionRules) {
         this.id = id;
         this.exceptionRules = exceptionRules;
-    }
-
-    /**
-     * Returns id of ExceptionPolicy.
-     * @return id
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Sets ExceptionPolicy name.
-     * @param name ExceptionPolicy name
-     * @return this
-     */
-    public CreateExceptionPolicyOptions setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Returns Exception Policy name.
-     * @return name
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Returns Exception Rules.
-     * @return exceptionRules.
-     */
-    public Map<String, ExceptionRule> getExceptionRules() {
-        return this.exceptionRules;
     }
 }
