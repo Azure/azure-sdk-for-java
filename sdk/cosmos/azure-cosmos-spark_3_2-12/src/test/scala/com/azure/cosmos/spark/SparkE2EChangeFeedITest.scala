@@ -7,6 +7,9 @@ import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
+import org.apache.hadoop.fs.Path
+
+import java.nio.file.Paths
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
@@ -272,6 +275,67 @@ class SparkE2EChangeFeedITest
     df.schema.equals(
       ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
+
+  "spark change feed query (incremental)" should "honor checkpoint location and read limit" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    for (sequenceNumber <- 1 to 50) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("sequenceNumber", sequenceNumber)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val checkpointLocation = "/checkpoints/" + UUID.randomUUID().toString
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation
+    )
+
+    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    val rowsArray1 = df1.collect()
+    // technically possible that even with 50 documents randomly distributed across 3 partitions some
+    // has no documents
+    // rowsArray should have size df.rdd.getNumPartitions
+    rowsArray1.size <= df1.rdd.getNumPartitions shouldEqual true
+
+    val initialCount = rowsArray1.size
+
+    df1.schema.equals(
+      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
+
+    val hdfs = org.apache.hadoop.fs.FileSystem.get(spark.sparkContext.hadoopConfiguration)
+
+    val startOffsetFolderLocation = Paths.get(checkpointLocation, "startOffset").toString
+    val startOffsetFileLocation = Paths.get(startOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
+
+    val latestOffsetFolderLocation = Paths.get(checkpointLocation, "latestOffset").toString
+    val latestOffsetFileLocation = Paths.get(latestOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
+
+    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+
+    val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
+    val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
+    val rowsArray2 = df2.collect()
+    rowsArray2 should have size 50 - initialCount
+  }
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }
