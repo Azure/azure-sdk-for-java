@@ -146,7 +146,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.32.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.32.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
