@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d8a99499-1eb9-48c1-9361-293783ac9b12",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b28e901-d15c-4fe2-9e2f-4df6752a16b5",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "124",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d8a99499-1eb9-48c1-9361-293783ac9b12",
+      "request-id" : "9b28e901-d15c-4fe2-9e2f-4df6752a16b5",
       "StatusCode" : "400",
-      "Date" : "Tue, 13 Jul 2021 19:22:18 GMT",
+      "Date" : "Thu, 27 May 2021 21:14:05 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d8a99499-1eb9-48c1-9361-293783ac9b12",
-      "elapsed-time" : "10",
+      "client-request-id" : "9b28e901-d15c-4fe2-9e2f-4df6752a16b5",
+      "elapsed-time" : "12",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.analyzers[0].name : The name field is required.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "d8a99499-1eb9-48c1-9361-293783ac9b12",
+      "x-ms-client-request-id" : "9b28e901-d15c-4fe2-9e2f-4df6752a16b5",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsnullnameanalyzere3007348a26ec4a" ]
+  "variables" : [ "hotelscanuseallregexflagsnullnameanalyzer7748879514444a6" ]
 }

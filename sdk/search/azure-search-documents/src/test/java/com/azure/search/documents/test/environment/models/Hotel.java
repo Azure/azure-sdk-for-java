@@ -112,11 +112,11 @@ public class Hotel {
     }
 
     public List<String> tags() {
-        return (this.tags == null) ? null : new ArrayList<>(this.tags);
+        return this.tags;
     }
 
     public Hotel tags(List<String> tags) {
-        this.tags = (tags == null) ? null : new ArrayList<>(tags);
+        this.tags = tags;
         return this;
     }
 
@@ -140,11 +140,11 @@ public class Hotel {
     }
 
     public Date lastRenovationDate() {
-        return (this.lastRenovationDate == null) ? null : (Date) this.lastRenovationDate.clone();
+        return this.lastRenovationDate;
     }
 
     public Hotel lastRenovationDate(Date lastRenovationDate) {
-        this.lastRenovationDate = (lastRenovationDate == null) ? null : (Date) lastRenovationDate.clone();
+        this.lastRenovationDate = lastRenovationDate;
         return this;
     }
 

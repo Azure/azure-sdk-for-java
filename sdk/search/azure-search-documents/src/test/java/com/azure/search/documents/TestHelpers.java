@@ -17,17 +17,16 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -37,8 +36,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
@@ -68,8 +67,6 @@ public final class TestHelpers {
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() {
         };
-
-    private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
     /**
      * Assert whether two objects are equal.
@@ -221,14 +218,13 @@ public final class TestHelpers {
     }
 
     private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
-        if (ex instanceof HttpResponseException) {
-            assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 
-            if (expectedMessage != null) {
-                assertTrue(ex.getMessage().contains(expectedMessage));
-            }
-        } else {
-            fail("Expected exception to be instanceof HttpResponseException", ex);
+        assertEquals(HttpResponseException.class, ex.getClass());
+
+        assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
+
+        if (expectedMessage != null) {
+            assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 
@@ -293,22 +289,19 @@ public final class TestHelpers {
     }
 
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
-        try {
-            Path path = Paths.get(TestHelpers.class.getClassLoader().getResource(filename).toURI());
+        InputStream inputStream = Objects.requireNonNull(TestHelpers.class.getClassLoader()
+            .getResourceAsStream(filename));
 
-            return deserializeToType(Files.readAllBytes(path), LIST_TYPE_REFERENCE);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        return deserializeToType(inputStream, LIST_TYPE_REFERENCE);
     }
 
-    public static Map<String, Object> convertToMap(byte[] json) {
-        return deserializeToType(json, MAP_STRING_OBJECT_TYPE_REFERENCE);
+    public static Map<String, Object> convertStreamToMap(InputStream sourceStream) {
+        return deserializeToType(sourceStream, MAP_STRING_OBJECT_TYPE_REFERENCE);
     }
 
-    private static <T> T deserializeToType(byte[] json, TypeReference<T> type) {
+    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
         try {
-            return getDefaultSerializerAdapter().deserialize(json, type.getJavaType(), SerializerEncoding.JSON);
+            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }
@@ -322,13 +315,22 @@ public final class TestHelpers {
         }
     }
 
+    @SuppressWarnings("removal")
     public static SearchIndexClient setupSharedIndex(String indexName) {
-        try {
-            byte[] hotelsTestIndexDataJsonData = loadResource(HOTELS_TESTS_INDEX_DATA_JSON);
-            JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
-            ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
+        InputStream stream = Objects.requireNonNull(AutocompleteSyncTests.class
+            .getClassLoader()
+            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON));
 
-            SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
+        try {
+            SearchIndex index = MAPPER.readValue(stream, SearchIndex.class);
+
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                searchIndexName.setAccessible(true);
+                return null;
+            });
+
+            searchIndexName.set(index, indexName);
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
@@ -363,19 +365,5 @@ public final class TestHelpers {
         }
 
         return builder.append("))'").toString();
-    }
-
-    static byte[] loadResource(String fileName) {
-        return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
-            try {
-                URI fileUri = AutocompleteSyncTests.class.getClassLoader()
-                    .getResource(fileName)
-                    .toURI();
-
-                return Files.readAllBytes(Paths.get(fileUri));
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
     }
 }

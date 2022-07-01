@@ -36,8 +36,6 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryAnswerType;
-import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -153,7 +151,7 @@ public final class SearchAsyncClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * SEARCH_ASYNC_CLIENT.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * searchAsyncClient.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;,
@@ -165,11 +163,11 @@ public final class SearchAsyncClient {
      *
      * @param documents collection of documents to upload to the target Index.
      * @return The result of the document indexing actions.
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -185,8 +183,7 @@ public final class SearchAsyncClient {
      *
      * <p> Upload dynamic SearchDocument. </p>
      *
-     * <!-- src_embed
-     * com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
@@ -200,17 +197,16 @@ public final class SearchAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
-     * -->
+     * <!-- end com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to upload to the target Index.
      * @param options Options that allow specifying document indexing behavior.
      * @return A response containing the result of the document indexing actions.
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -229,11 +225,11 @@ public final class SearchAsyncClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -243,7 +239,7 @@ public final class SearchAsyncClient {
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;merge&quot;&#41;;
-     * SEARCH_ASYNC_CLIENT.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * searchAsyncClient.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -255,11 +251,11 @@ public final class SearchAsyncClient {
      *
      * @param documents collection of documents to be merged
      * @return document index result
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -272,18 +268,17 @@ public final class SearchAsyncClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
      * <p> Merge dynamic SearchDocument. </p>
      *
-     * <!-- src_embed
-     * com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
@@ -296,17 +291,16 @@ public final class SearchAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions
-     * -->
+     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to be merged
      * @param options Options that allow specifying document indexing behavior.
      * @return response containing the document index result.
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -326,11 +320,11 @@ public final class SearchAsyncClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -341,7 +335,7 @@ public final class SearchAsyncClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * SEARCH_ASYNC_CLIENT.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * searchAsyncClient.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;,
@@ -353,11 +347,11 @@ public final class SearchAsyncClient {
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -371,19 +365,17 @@ public final class SearchAsyncClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently
-     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
-     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
-     * be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or false for {@code boolean}), which will override the value of the property currently stored
+     * in the index, even if this was not your intent. For this reason, it is strongly recommended that you always
+     * declare primitive-typed properties with their class equivalents (for example, an integer property should be of
+     * type {@code Integer} instead of {@code int}).
      *
      * <p><strong>Code Sample</strong></p>
      *
      * <p> Merge or upload dynamic SearchDocument. </p>
      *
-     * <!-- src_embed
-     * com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
-     * -->
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
@@ -397,18 +389,16 @@ public final class SearchAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions
-     * -->
+     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @param options Options that allow specifying document indexing behavior.
      * @return document index result
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -436,7 +426,7 @@ public final class SearchAsyncClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * SEARCH_ASYNC_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     * searchAsyncClient.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -448,11 +438,11 @@ public final class SearchAsyncClient {
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @return document index result.
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -468,8 +458,7 @@ public final class SearchAsyncClient {
      *
      * <p> Delete dynamic SearchDocument. </p>
      *
-     * <!-- src_embed
-     * com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
@@ -483,17 +472,16 @@ public final class SearchAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions
-     * -->
+     * <!-- end com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @param options Options that allow specifying document indexing behavior.
      * @return response containing the document index result.
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -526,7 +514,7 @@ public final class SearchAsyncClient {
      * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
      * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
      * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
-     * SEARCH_ASYNC_CLIENT.indexDocuments&#40;indexDocumentsBatch&#41;
+     * searchAsyncClient.indexDocuments&#40;indexDocumentsBatch&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -538,11 +526,11 @@ public final class SearchAsyncClient {
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch.
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -558,9 +546,7 @@ public final class SearchAsyncClient {
      *
      * <p> Index batch operation on dynamic SearchDocument. </p>
      *
-     * <!-- src_embed
-     * com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions
-     * -->
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions -->
      * <pre>
      * SearchDocument searchDocument1 = new SearchDocument&#40;&#41;;
      * searchDocument1.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
@@ -580,18 +566,16 @@ public final class SearchAsyncClient {
      *         &#125;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions
-     * -->
+     * <!-- end com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions -->
      *
      * @param batch The batch of index actions
      * @param options Options that allow specifying document indexing behavior.
      * @return Response containing the status of operations for all actions in the batch
-     * @throws IndexBatchException If an indexing action fails but other actions succeed and modify the state of the
-     * index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly catch
-     * this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing result
-     * reports the status of each indexing action in the batch, making it possible to determine the state of the index
-     * after a partial failure.
+     * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
+     * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
+     * catch this exception and check the return value {@link IndexBatchException#getIndexingResults()}. The indexing
+     * result reports the status of each indexing action in the batch, making it possible to determine the state of the
+     * index after a partial failure.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
@@ -624,7 +608,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;
+     * searchAsyncClient.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;
      *     .subscribe&#40;result -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : result.entrySet&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;,
@@ -657,7 +641,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.getDocumentWithResponse&#40;&quot;hotelId&quot;, SearchDocument.class, null&#41;
+     * searchAsyncClient.getDocumentWithResponse&#40;&quot;hotelId&quot;, SearchDocument.class, null&#41;
      *     .subscribe&#40;resultResponse -&gt; &#123;
      *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -716,7 +700,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentCount -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.getDocumentCount&#40;&#41;
+     * searchAsyncClient.getDocumentCount&#40;&#41;
      *     .subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are %d documents in service.&quot;, count&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.getDocumentCount -->
@@ -737,7 +721,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.getDocumentCountWithResponse&#40;&#41;
+     * searchAsyncClient.getDocumentCountWithResponse&#40;&#41;
      *     .subscribe&#40;countResponse -&gt; &#123;
      *         System.out.println&#40;&quot;The status code of the response is &quot; + countResponse.getStatusCode&#40;&#41;&#41;;
      *         System.out.printf&#40;&quot;There are %d documents in service.&quot;, countResponse.getValue&#40;&#41;&#41;;
@@ -776,13 +760,13 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String -->
      * <pre>
-     * SearchPagedFlux searchPagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;&#41;;
+     * SearchPagedFlux searchPagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;&#41;;
      * searchPagedFlux.getTotalCount&#40;&#41;.subscribe&#40;
      *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;
      * &#41;;
      * searchPagedFlux.byPage&#40;&#41;
-     *     .subscribe&#40;resultResponse -&gt; &#123;
-     *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
+     *     .subscribe&#40;resultRespones -&gt; &#123;
+     *         for &#40;SearchResult result: resultRespones.getValue&#40;&#41;&#41; &#123;
      *             SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
      *             for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
      *                 System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
@@ -816,19 +800,23 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
      * <pre>
-     * SearchPagedFlux pagedFlux = SEARCH_ASYNC_CLIENT.search&#40;&quot;searchText&quot;,
+     * SearchPagedFlux pagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;,
      *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;;
      *
-     * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
+     * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; &#123;
+     *     System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;;
+     * &#125;&#41;;
      *
      * pagedFlux.byPage&#40;&#41;
-     *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
-     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
-     *             : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
-     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
-     *                 keyValuePair.getValue&#40;&#41;&#41;;
-     *         &#125;
-     *     &#125;&#41;&#41;;
+     *     .subscribe&#40;searchResultResponse -&gt; &#123;
+     *         searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
+     *             for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
+     *                 : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                     keyValuePair.getValue&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
      *
@@ -842,7 +830,7 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all functional calls below.
+        // The firstPageResponse shared among all fucntional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
@@ -852,7 +840,7 @@ public final class SearchAsyncClient {
 
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all functional calls below.
+        // The firstPageResponse shared among all fucntional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
@@ -877,7 +865,7 @@ public final class SearchAsyncClient {
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
-                    result.getCoverage(), result.getAnswers());
+                    result.getCoverage());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -913,7 +901,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.suggest#String-String -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
+     * searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
      *     .subscribe&#40;results -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: results.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
@@ -923,8 +911,9 @@ public final class SearchAsyncClient {
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.suggest#String-String -->
      *
-     * @param searchText The search text.
-     * @param suggesterName The name of the suggester.
+     * @param searchText The search text on which to base suggestions
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     * definition
      * @return A {@link SuggestPagedFlux} that iterates over {@link SuggestResult} objects and provides access to the
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
@@ -943,7 +932,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     * searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
      *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;
      *     .subscribe&#40;results -&gt; &#123;
      *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: results.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
@@ -954,8 +943,9 @@ public final class SearchAsyncClient {
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions -->
      *
-     * @param searchText The search text.
-     * @param suggesterName The name of the suggester.
+     * @param searchText The search text on which to base suggestions
+     * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
+     * definition
      * @param suggestOptions Parameters to further refine the suggestion query.
      * @return A {@link SuggestPagedFlux} that iterates over {@link SuggestResult} objects and provides access to the
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
@@ -1002,8 +992,10 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;&#41;;
+     * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
      *
@@ -1025,7 +1017,7 @@ public final class SearchAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions -->
      * <pre>
-     * SEARCH_ASYNC_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
      *     new AutocompleteOptions&#40;&#41;.setAutocompleteMode&#40;AutocompleteMode.ONE_TERM_WITH_CONTEXT&#41;&#41;
      *     .subscribe&#40;result -&gt;
      *         System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;
@@ -1087,55 +1079,13 @@ public final class SearchAsyncClient {
             .setQueryType(options.getQueryType())
             .setScoringParameters(scoringParameters)
             .setScoringProfile(options.getScoringProfile())
-            .setSemanticConfiguration(options.getSemanticConfigurationName())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
-            .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
-    }
-
-    static String createSearchRequestAnswers(SearchOptions searchOptions) {
-        QueryAnswerType answer = searchOptions.getAnswers();
-        Integer answersCount = searchOptions.getAnswersCount();
-
-        // No answer has been defined.
-        if (answer == null) {
-            return null;
-        }
-
-        // No count, just send the QueryAnswer.
-        if (answersCount == null) {
-            return answer.toString();
-        }
-
-        // Answer and count, format it as the service expects.
-        return answer + "|count-" + answersCount;
-    }
-
-    static String createSearchRequestCaptions(SearchOptions searchOptions) {
-        QueryCaptionType queryCaption = searchOptions.getQueryCaption();
-        Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlightEnabled();
-
-        // No caption has been defined.
-        if (queryCaption == null) {
-            return null;
-        }
-
-        // No highlight, just send the Caption.
-        if (queryCaptionHighlight == null) {
-            return queryCaption.toString();
-        }
-
-        // Caption and highlight, format it as the service expects.
-        return queryCaption + "|highlight-" + queryCaptionHighlight;
+            .setTop(options.getTop());
     }
 
     /**

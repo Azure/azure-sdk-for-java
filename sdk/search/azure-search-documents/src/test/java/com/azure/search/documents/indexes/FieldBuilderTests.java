@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
@@ -19,8 +18,6 @@ import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynony
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
 import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -47,8 +44,7 @@ public class FieldBuilderTests {
     public void hotelListFieldSearchableThrowException() {
         Exception exception = assertThrows(RuntimeException.class, () ->
             SearchIndexClient.buildSearchFields(HotelSearchableExceptionOnList.class, null));
-        assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32),
-            "getPasscode");
+        assertExceptionMassageAndDataType(exception, SearchFieldDataType.collection(SearchFieldDataType.INT32), "getPasscode");
     }
 
     @Test
@@ -255,44 +251,8 @@ public class FieldBuilderTests {
     public void unsupportedFields() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
+        System.out.println(exception.getMessage());
         assertExceptionMassageAndDataType(exception, null, "is not supported");
-    }
-
-    @Test
-    public void validNormalizerField() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class, null);
-
-        assertEquals(1, fields.size());
-
-        SearchField normalizerField = fields.get(0);
-        assertEquals(LexicalNormalizerName.STANDARD, normalizerField.getNormalizerName());
-    }
-
-    @SuppressWarnings("unused")
-    public static final class ValidNormalizer {
-        @SimpleField(normalizerName = "standard", isFilterable = true)
-        public String validNormalizer;
-    }
-
-    @ParameterizedTest
-    @ValueSource(classes = { NonStringNormalizer.class, MissingFunctionalityNormalizer.class })
-    public void invalidNormalizerField(Class<?> type) {
-        RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(type, null));
-
-        assertTrue(ex.getMessage().contains("A field with a normalizer name"));
-    }
-
-    @SuppressWarnings("unused")
-    public static final class NonStringNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public int wrongTypeForNormalizer;
-    }
-
-    @SuppressWarnings("unused")
-    public static final class MissingFunctionalityNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public String rightTypeWrongFunctionality;
     }
 
     private void assertListFieldEquals(List<SearchField> expected, List<SearchField> actual) {

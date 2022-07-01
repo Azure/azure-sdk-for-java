@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-@SuppressWarnings("UseOfObsoleteDateTimeApi")
 public class NonNullableModel {
 
     @JsonProperty(value = "Key")
@@ -63,12 +61,12 @@ public class NonNullableModel {
     }
 
     public NonNullableModel startDate(Date startDate) {
-        this.startDate = (startDate == null) ? null : (Date) startDate.clone();
+        this.startDate = startDate;
         return this;
     }
 
     public NonNullableModel endDate(Date endDate) {
-        this.endDate = (endDate == null) ? null : (Date) endDate.clone();
+        this.endDate = endDate;
         return this;
     }
 
@@ -78,7 +76,7 @@ public class NonNullableModel {
     }
 
     public NonNullableModel buckets(Bucket[] buckets) {
-        this.buckets = CoreUtils.clone(buckets);
+        this.buckets = buckets;
         return this;
     }
 }

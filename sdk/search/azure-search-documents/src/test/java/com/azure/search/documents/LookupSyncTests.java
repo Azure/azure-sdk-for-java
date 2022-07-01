@@ -468,7 +468,7 @@ public class LookupSyncTests extends SearchTestBase {
             .dates(new OffsetDateTime[]{
                 OffsetDateTime.parse("2019-04-14T14:24:00Z"),
                 OffsetDateTime.parse("1999-12-31T23:59:59Z")})
-            .doubles(new Double[]{NEGATIVE_INFINITY, 0.0, 2.78, NaN, 3.25, POSITIVE_INFINITY})
+            .doubles(new Double[]{NEGATIVE_INFINITY, 0.0, 2.78, NaN, 3.14, POSITIVE_INFINITY})
             .ints(new int[]{1, 2, 3, 4, -13, 5, 0})
             .longs(new Long[]{-9_999_999_999_999_999L, 832_372_345_832_523L})
             .points(new GeoPoint[] { new GeoPoint(-67.0, 49.0), new GeoPoint(21.0, 47.0) })
@@ -476,7 +476,7 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     String setupIndexWithDataTypes() {
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("data-types-tests-index", 64))
+        SearchIndex index = new SearchIndex("data-types-tests-index")
             .setFields(Arrays.asList(
                  new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)

@@ -33,47 +33,12 @@ Use the Azure Cognitive Search client library to:
 
 ### Include the package
 
-#### Include the BOM file
-
-Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
-
-```xml
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-sdk-bom</artifactId>
-            <version>{bom_version_to_target}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-```
-and then include the direct dependency in the dependencies section without the version tag.
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-search-documents</artifactId>
-  </dependency>
-</dependencies>
-```
-
-#### Include direct dependency
-
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
-
-
 [//]: # ({x-version-update-start;com.azure:azure-search-documents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.10</version>
+    <version>11.4.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -120,7 +85,7 @@ Always use a query key rather than an admin key for any query originating from a
 The SDK provides three clients.
 
 * `SearchIndexClient` for CRUD operations on indexes and synonym maps.
-* `SearchIndexerClient` for CRUD operations on indexers, data sources, and skillsets.
+* `SearchIndexerClient` for CRUD operations on indexers, date sources, and skillsets.
 * `SearchClient` for all document operations.
 
 #### Create a SearchIndexClient
@@ -128,19 +93,21 @@ The SDK provides three clients.
 To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service
 URL endpoint and admin key.
 
-```java readme-sample-createIndexClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L66-L69 -->
+```java
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new AzureKeyCredential(API_KEY))
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
     .buildClient();
 ```
 
 or
 
-```java readme-sample-createIndexAsyncClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L73-L76 -->
+```java
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new AzureKeyCredential(API_KEY))
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
     .buildAsyncClient();
 ```
 
@@ -149,19 +116,21 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service
 URL endpoint and admin key.
 
-```java readme-sample-createIndexerClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L80-L83 -->
+```java
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new AzureKeyCredential(API_KEY))
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
     .buildClient();
 ```
 
 or
 
-```java readme-sample-createIndexerAsyncClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L87-L90 -->
+```java
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new AzureKeyCredential(API_KEY))
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
     .buildAsyncClient();
 ```
 
@@ -170,21 +139,23 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 Once you have the values of the Azure Cognitive Search service URL endpoint and
 admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
 
-```java readme-sample-createSearchClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L50-L54 -->
+```java
 SearchClient searchClient = new SearchClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new AzureKeyCredential(ADMIN_KEY))
-    .indexName(INDEX_NAME)
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(adminKey))
+    .indexName(indexName)
     .buildClient();
 ```
 
 or
 
-```java readme-sample-createAsyncSearchClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L58-L62 -->
+```java
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-    .endpoint(ENDPOINT)
-    .credential(new AzureKeyCredential(ADMIN_KEY))
-    .indexName(INDEX_NAME)
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(adminKey))
+    .indexName(indexName)
     .buildAsyncClient();
 ```
 
@@ -246,8 +217,9 @@ Let's explore them with a search for a "luxury" hotel.
 `SearchDocument` is the default type returned from queries when you don't provide your own.  Here we perform the search,
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
-```java readme-sample-searchWithDynamicType
-for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L122-L127 -->
+```java
+for (SearchResult searchResult : searchClient.search("luxury")) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
     String name = (String) doc.get("hotelName");
@@ -259,7 +231,8 @@ for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
 
 Define a `Hotel` class.
 
-```java readme-sample-hotelclass
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L130-L151 -->
+```java
 public class Hotel {
     private String id;
     private String name;
@@ -286,8 +259,9 @@ public class Hotel {
 
 Use it in place of `SearchDocument` when querying.
 
-```java readme-sample-searchWithStronglyType
-for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L154-L159 -->
+```java
+for (SearchResult searchResult : searchClient.search("luxury")) {
     Hotel doc = searchResult.getDocument(Hotel.class);
     String id = doc.getId();
     String name = doc.getName();
@@ -303,12 +277,13 @@ The `SearchOptions` provide powerful control over the behavior of our queries.
 
 Let's search for the top 5 luxury hotels with a good rating.
 
-```java readme-sample-searchWithSearchOptions
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L163-L168 -->
+```java
 SearchOptions options = new SearchOptions()
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
-SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search("luxury", options, Context.NONE);
+SearchPagedIterable searchResultsIterable = searchClient.search("luxury", options, Context.NONE);
 // ...
 ```
 
@@ -322,14 +297,16 @@ There are multiple ways of preparing search fields for a search index. For basic
 `List<SearchField>`. There are three annotations `SimpleFieldProperty`, `SearchFieldProperty` and `FieldBuilderIgnore`
 to configure the field of model class.
 
-```java readme-sample-createIndexUseFieldBuilder
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L242-L243 -->
+```java
 List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
-SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
+searchIndexClient.createIndex(new SearchIndex("index", searchFields));
 ```
 
 For advanced scenarios, we can build search fields using `SearchField` directly.
 
-```java readme-sample-createIndex
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L192-L238 -->
+```java
 List<SearchField> searchFieldList = new ArrayList<>();
 searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
     .setKey(true)
@@ -376,7 +353,7 @@ SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList(
 // Prepare SearchIndex with index name and search fields.
 SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
 // Create an index
-SEARCH_INDEX_CLIENT.createIndex(index);
+searchIndexClient.createIndex(index);
 ```
 
 ### Retrieving a specific document from your index
@@ -385,8 +362,9 @@ In addition to querying for documents using keywords and optional filters, you c
 your index if you already know the key. You could get the key from a query, for example, and want to show more
 information about it or navigate your customer to that document.
 
-```java readme-sample-retrieveDocuments
-Hotel hotel = SEARCH_CLIENT.getDocument("1", Hotel.class);
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L180-L181 -->
+```java
+Hotel hotel = searchClient.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
@@ -396,11 +374,12 @@ You can `Upload`, `Merge`, `MergeOrUpload`, and `Delete` multiple documents from
 There are [a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
 to be aware of.
 
-```java readme-sample-batchDocumentsOperations
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L185-L188 -->
+```java
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
 batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
 batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
-SEARCH_CLIENT.indexDocuments(batch);
+searchClient.indexDocuments(batch);
 ```
 
 The request will throw `IndexBatchException` by default if any of the individual actions fail, and you can use
@@ -412,8 +391,9 @@ to `false` to get a successful response with an `IndexDocumentsResult` for inspe
 The examples so far have been using synchronous APIs, but we provide full support for async APIs as well. You'll need
 to use [SearchAsyncClient](#create-a-searchclient).
 
-```java readme-sample-searchWithAsyncClient
-SEARCH_ASYNC_CLIENT.search("luxury")
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L172-L176 -->
+```java
+searchAsyncClient.search("luxury")
     .subscribe(result -> {
         Hotel hotel = result.getDocument(Hotel.class);
         System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
@@ -421,9 +401,6 @@ SEARCH_ASYNC_CLIENT.search("luxury")
 ```
 
 ## Troubleshooting
-
-See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/TROUBLESHOOTING.md) 
-for details on how to diagnose various failure scenarios.
 
 ### General
 
@@ -436,9 +413,10 @@ error if you try to retrieve a document that doesn't exist in your index.
 Any Search API operation that fails will throw an [`HttpResponseException`][HttpResponseException] with helpful
 [`Status codes`][status_codes]. Many of these errors are recoverable.
 
-```java readme-sample-handleErrorsWithSyncClient
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L110-L118 -->
+```java
 try {
-    Iterable<SearchResult> results = SEARCH_CLIENT.search("hotel");
+    Iterable<SearchResult> results = searchClient.search("hotel");
 } catch (HttpResponseException ex) {
     // The exception contains the HTTP status code and the detailed message
     // returned from the search service
@@ -483,26 +461,26 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[api_documentation]: https://azure.github.io/azure-sdk-for-java/search.html
+[api_documentation]: https://aka.ms/java-docs
 [search]: https://azure.microsoft.com/services/search/
 [search_docs]: https://docs.microsoft.com/azure/search/
-[azure_subscription]: https://azure.microsoft.com/free/java
+[azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-search-documents
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/search/azure-search-documents/src/samples/README.md
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/search/azure-search-documents/src
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [rest_api]: https://docs.microsoft.com/rest/api/searchservice/http-status-codes
 [create_search_service_docs]: https://docs.microsoft.com/azure/search/search-create-service-portal
 [create_search_service_ps]: https://docs.microsoft.com/azure/search/search-manage-powershell#create-or-delete-a-service
 [create_search_service_cli]: https://docs.microsoft.com/cli/azure/search/service?view=azure-cli-latest#az-search-service-create
-[HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
+[HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://docs.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://docs.microsoft.com/azure/search/search-get-started-portal
 
