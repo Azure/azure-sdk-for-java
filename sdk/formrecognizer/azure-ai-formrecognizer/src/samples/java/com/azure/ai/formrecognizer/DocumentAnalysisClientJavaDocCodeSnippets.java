@@ -11,10 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 
