@@ -24,4 +24,14 @@ public class CreateExceptionPolicyOptions extends ExceptionPolicyOptions {
         this.id = id;
         this.exceptionRules = exceptionRules;
     }
+
+    /**
+     * Sets ExceptionPolicy name.
+     * @param name ExceptionPolicy name
+     * @return this
+     */
+    public CreateExceptionPolicyOptions setName(String name) {
+        this.name = name;
+        return this;
+    }
 }

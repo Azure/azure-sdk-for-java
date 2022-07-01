@@ -51,15 +51,4 @@ public abstract class ExceptionPolicyOptions {
     public Map<String, ExceptionRule> getExceptionRules() {
         return this.exceptionRules;
     }
-
-    /**
-     * Sets ExceptionPolicy name.
-     * @param name ExceptionPolicy name
-     * @return this
-     */
-    public ExceptionPolicyOptions setName(String name) {
-        this.name = name;
-        return this;
-    }
-
 }

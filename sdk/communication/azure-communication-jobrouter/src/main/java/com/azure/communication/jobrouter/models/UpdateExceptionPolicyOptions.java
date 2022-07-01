@@ -31,4 +31,14 @@ public class UpdateExceptionPolicyOptions extends ExceptionPolicyOptions {
         this.exceptionRules = exceptionRules;
         return this;
     }
+
+    /**
+     * Sets ExceptionPolicy name.
+     * @param name ExceptionPolicy name
+     * @return this
+     */
+    public ExceptionPolicyOptions setName(String name) {
+        this.name = name;
+        return this;
+    }
 }
