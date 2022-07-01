@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
@@ -56,26 +55,26 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         try (Jedis jedis = jedisPool.getResource()) {
+            ArrayList<Checkpoint> listStoredCheckpoints = new ArrayList<>();
             Set<String> members = jedis.smembers(prefix);
             if (members.isEmpty()) {
-                return Flux.error(new IllegalArgumentException()); // no checkpoints to list
+                jedisPool.returnResource(jedis);
+                return Flux.fromIterable(listStoredCheckpoints);
             }
-            ArrayList<Checkpoint> list = new ArrayList<>();
             for (String member : members) {
                 //get the associated JSON representation for each for the members
                 List<String> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
-                String checkpointJson;
-                if (checkpointJsonList.size() == 0) {
-                    return Flux.error(new NoSuchElementException());
+                jedisPool.returnResource(jedis);
+                if (checkpointJsonList.isEmpty()) {
+                    return Flux.error(new IllegalStateException("No checkpoints persist in Redis for the given parameters."));
                 }
                 else {
-                    checkpointJson = checkpointJsonList.get(0);
+                    String checkpointJson = checkpointJsonList.get(0);
+                    Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(Checkpoint.class));
+                    listStoredCheckpoints.add(checkpoint);
                 }
-                Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(Checkpoint.class));
-                list.add(checkpoint);
             }
-            jedisPool.returnResource(jedis);
-            return Flux.fromStream(list.stream());
+            return Flux.fromIterable(listStoredCheckpoints);
         }
     }
 
@@ -90,25 +89,24 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         try (Jedis jedis = jedisPool.getResource()) {
             Set<String> members = jedis.smembers(prefix);
-            ArrayList<PartitionOwnership> list = new ArrayList<>();
+            ArrayList<PartitionOwnership> listStoredOwnerships = new ArrayList<>();
             if (members.isEmpty()) {
-                return Flux.error(new IllegalArgumentException());
+                jedisPool.returnResource(jedis);
+                return Flux.fromIterable(listStoredOwnerships);
             }
             for (String member : members) {
-
                 //get the associated JSON representation for each for the members
                 List<String> partitionOwnershipJsonList = jedis.hmget(member, PARTITION_OWNERSHIP);
-                String partitionOwnershipJson;
+                jedisPool.returnResource(jedis);
                 if (partitionOwnershipJsonList.isEmpty()) {
-                    return Flux.error(new NoSuchElementException());
+                    return Flux.error(new IllegalStateException("No ownership record persist in Redis for the given parameters."));
                 } else {
-                    partitionOwnershipJson = partitionOwnershipJsonList.get(0);
+                    String partitionOwnershipJson = partitionOwnershipJsonList.get(0);
+                    PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(PartitionOwnership.class));
+                    listStoredOwnerships.add(partitionOwnership);
                 }
-                //convert JSON representation into PartitionOwnership
-                PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(PartitionOwnership.class));
-                list.add(partitionOwnership); }
-            jedisPool.returnResource(jedis);
-            return Flux.fromStream(list.stream());
+            }
+            return Flux.fromIterable(listStoredOwnerships);
         }
     }
 
@@ -131,7 +129,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             //Case 1: new checkpoint
             if (!jedis.exists(prefix) || !jedis.exists(key)) {
                 jedis.sadd(prefix, key);
-                jedis.hset(key, "checkpoint", new String(DEFAULT_SERIALIZER.serializeToBytes(checkpoint), StandardCharsets.UTF_8));
+                jedis.hset(key, CHECKPOINT, new String(DEFAULT_SERIALIZER.serializeToBytes(checkpoint), StandardCharsets.UTF_8));
             }
             //TO DO: Case 2: checkpoint already exists in Redis cache
             jedisPool.returnResource(jedis);
