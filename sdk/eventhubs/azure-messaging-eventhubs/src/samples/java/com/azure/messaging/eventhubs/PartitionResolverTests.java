@@ -86,6 +86,7 @@ public class PartitionResolverTests {
         // Act
         short actual = PartitionResolver.generateHashCode(partitionKey);
 
+        // Assert
         assertEquals(expectedHash, actual);
     }
 }
