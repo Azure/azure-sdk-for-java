@@ -280,7 +280,7 @@ public class SearchSyncTests extends SearchTestBase {
             .count(3)
             .isEnabled(true)
             .rating(5)
-            .ratio(3.14)
+            .ratio(3.25)
             .startDate(new Date(startEpoch.getTime()))
             .endDate(new Date(startEpoch.getTime()))
             .topLevelBucket(new Bucket().bucketName("A").count(12))

@@ -42,7 +42,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.31.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.32.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <scope>provided</scope>
     </dependency>
 

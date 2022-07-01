@@ -37,7 +37,6 @@ import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetecti
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
-import reactor.core.Exceptions;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -78,11 +77,7 @@ public abstract class SearchTestBase extends TestBase {
         new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
-        try {
-            return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
-        } catch (Exception e) {
-            throw Exceptions.propagate(e);
-        }
+        return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
@@ -340,7 +335,7 @@ public abstract class SearchTestBase extends TestBase {
                     .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)),
             new ScoringProfile("ProfileFour")
                 .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
-                .setFunctions(new MagnitudeScoringFunction("Rating", 3.14,
+                .setFunctions(new MagnitudeScoringFunction("Rating", 3.25,
                     new MagnitudeScoringParameters(1, 5)
                         .setShouldBoostBeyondRangeByConstant(false))
                     .setInterpolation(ScoringFunctionInterpolation.CONSTANT))

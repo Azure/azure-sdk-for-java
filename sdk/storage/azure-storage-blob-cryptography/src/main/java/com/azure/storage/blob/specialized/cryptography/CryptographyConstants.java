@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.Constants;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 
 final class CryptographyConstants {
@@ -48,8 +49,12 @@ final class CryptographyConstants {
 
     static final int GCM_ENCRYPTION_REGION_LENGTH = 4 * Constants.MB;
 
+    static final int AES_KEY_SIZE_BITS = 256;
+
     static final String DECRYPT_UNENCRYPTED_BLOB = "Encryption client is being used but the blob metadata indicates "
         + "that it is not encrypted.";
+
+    static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
 
 
     private CryptographyConstants() {

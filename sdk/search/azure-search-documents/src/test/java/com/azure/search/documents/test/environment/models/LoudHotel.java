@@ -115,11 +115,11 @@ public class LoudHotel {
     }
 
     public List<String> TAGS() {
-        return this.TAGS;
+        return (this.TAGS) == null ? null : new ArrayList<>(this.TAGS);
     }
 
     public LoudHotel TAGS(List<String> tags) {
-        this.TAGS = tags;
+        this.TAGS = (tags == null) ? null : new ArrayList<>(tags);
         return this;
     }
 
@@ -143,11 +143,11 @@ public class LoudHotel {
     }
 
     public Date LASTRENOVATIONDATE() {
-        return this.LASTRENOVATIONDATE;
+        return (this.LASTRENOVATIONDATE == null) ? null : (Date) this.LASTRENOVATIONDATE.clone();
     }
 
     public LoudHotel LASTRENOVATIONDATE(Date lastRenovationDate) {
-        this.LASTRENOVATIONDATE = lastRenovationDate;
+        this.LASTRENOVATIONDATE = (lastRenovationDate == null) ? null : (Date) lastRenovationDate.clone();
         return this;
     }
 
@@ -179,11 +179,11 @@ public class LoudHotel {
     }
 
     public List<HotelRoom> ROOMS() {
-        return this.ROOMS;
+        return (this.ROOMS == null) ? null : new ArrayList<>(this.ROOMS);
     }
 
     public LoudHotel ROOMS(List<HotelRoom> rooms) {
-        this.ROOMS = rooms;
+        this.ROOMS = (rooms == null) ? null : new ArrayList<>(rooms);
         return this;
     }
 }

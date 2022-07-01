@@ -319,9 +319,9 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void indexWithInvalidDocumentThrowsException() {
         client = setupClient(this::createHotelIndex);
+        assert client != null;
 
-        List<SearchDocument> docs = new ArrayList<>();
-        docs.add(new SearchDocument());
+        List<SearchDocument> docs = Collections.singletonList(new SearchDocument());
 
         assertHttpResponseException(() -> client.uploadDocuments(docs), HttpURLConnection.HTTP_BAD_REQUEST, null);
     }

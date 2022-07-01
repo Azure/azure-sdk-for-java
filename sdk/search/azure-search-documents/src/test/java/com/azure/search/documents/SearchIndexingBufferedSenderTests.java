@@ -728,7 +728,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     }
 
-    private static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
+    static Stream<Consumer<SearchIndexingBufferedSender<Map<String, Object>>>> operationsThrowAfterClientIsClosedSupplier() {
         List<Map<String, Object>> simpleDocuments = Collections.singletonList(Collections.singletonMap("key", "value"));
         List<IndexAction<Map<String, Object>>> actions = simpleDocuments.stream()
             .map(document -> new IndexAction<Map<String, Object>>()
