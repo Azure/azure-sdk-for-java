@@ -15,12 +15,15 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public final class PostLedgerEntryTests extends ConfidentialLedgerClientTestBase {
+public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
     @Test
     public void testPostLedgerEntryTests() {
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
+
+        String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+
         BinaryData parsedResponse = response.getValue();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -35,5 +38,24 @@ public final class PostLedgerEntryTests extends ConfidentialLedgerClientTestBase
         }
         
         Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
+
+        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+        Assertions.assertTrue(200 == transactionResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
+
+        Response<BinaryData> getLedgerResponse = confidentialLedgerClient.getLedgerEntryWithResponse(transactionId, requestOptions);
+        Assertions.assertTrue(200 == getLedgerResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
+
+        JsonNode getLedgerResponseBodyJson = null;
+
+        try {
+            
+            getLedgerResponseBodyJson = objectMapper.readTree(getLedgerResponse.getValue().toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        System.out.println(getLedgerResponseBodyJson);
     }
 }
+

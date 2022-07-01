@@ -57,6 +57,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
                     .replaceAll("\\w+://", "")
                     .replaceAll("\\..*", "");
 
+            // this is a built in test of getLedgerIdentity
             Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
                     .getLedgerIdentityWithResponse(ledgerId, null);
             BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
