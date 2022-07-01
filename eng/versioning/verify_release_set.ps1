@@ -8,7 +8,6 @@ param(
 )
 
 . "${PSScriptRoot}/../common/scripts/common.ps1"
-. "${PSScriptRoot}/../scripts/Language-Settings.ps1"
 
 $resultsTime = [diagnostics.stopwatch]::StartNew()
 
