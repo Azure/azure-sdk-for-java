@@ -4,6 +4,7 @@
 package com.azure.json;
 
 import java.io.Closeable;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -487,6 +488,99 @@ public abstract class JsonReader implements Closeable {
         }
 
         return map;
+    }
+
+    /**
+     * Reads an untyped object.
+     * <p>
+     * If the {@link #currentToken()} is null this will {@link #nextToken() read the next token}.
+     * <p>
+     * If the starting token is {@link JsonToken#END_ARRAY}, {@link JsonToken#END_OBJECT}, or
+     * {@link JsonToken#FIELD_NAME} an {@link IllegalStateException} will be thrown as these are invalid starting points
+     * for reading an unknown type. If the untyped object is deeply nested an {@link IllegalStateException} will also be
+     * thrown to prevent a stack overflow exception.
+     * <p>
+     * The returned object will be one of the following:
+     *
+     * <ul>
+     *     <li>null if the starting token is null or {@link JsonToken#NULL}</li>
+     *     <li>true or false if the starting token is {@link JsonToken#BOOLEAN}</li>
+     *     <li>One of int, long, float, or double is the starting token is {@link JsonToken#NUMBER}, the smallest
+     *     containing value will be used based on whether the number is an integer or floating point value</li>
+     *     <li>An array of untyped elements if the starting point is {@link JsonToken#START_ARRAY}</li>
+     *     <li>A map of String-untyped value if the starting point is {@link JsonToken#START_OBJECT}</li>
+     * </ul>
+     *
+     * @return The untyped value based on the outlined return types above.
+     * @throws IllegalStateException If the starting point of the object is {@link JsonToken#END_ARRAY},
+     * {@link JsonToken#END_OBJECT}, or {@link JsonToken#FIELD_NAME} or if the untyped object is deeply nested.
+     */
+    public final Object readUntyped() {
+        JsonToken token = currentToken();
+        if (token == null) {
+            token = nextToken();
+        }
+
+        // Untyped fields cannot begin with END_OBJECT, END_ARRAY, or FIELD_NAME as these would constitute invalid JSON.
+        if (token == JsonToken.END_ARRAY || token == JsonToken.END_OBJECT || token == JsonToken.FIELD_NAME) {
+            throw new IllegalStateException("Unexpected token to begin an untyped field: " + token);
+        }
+
+        return readUntypedHelper(0);
+    }
+
+    private Object readUntypedHelper(int depth) {
+        // Keep track of array and object nested depth to prevent a StackOverflowError from occurring.
+        if (depth >= 1000) {
+            throw new IllegalStateException("Untyped object exceeded allowed object nested depth of 1000.");
+        }
+
+        JsonToken token = currentToken();
+        if (token == JsonToken.NULL || token == null) {
+            return null;
+        } else if (token == JsonToken.BOOLEAN) {
+            return getBooleanValue();
+        } else if (token == JsonToken.NUMBER) {
+            String numberText = getTextValue();
+            if (numberText.contains(".")) {
+                try {
+                    return Float.parseFloat(numberText);
+                } catch (NumberFormatException ex) {
+                    return Double.parseDouble(numberText);
+                }
+            } else {
+                try {
+                    return Integer.parseInt(numberText);
+                } catch (NumberFormatException ex) {
+                    return Long.parseLong(numberText);
+                }
+            }
+        } else if (token == JsonToken.STRING) {
+            return getStringValue();
+        } else if (token == JsonToken.START_ARRAY) {
+            List<Object> array = new ArrayList<>();
+
+            while (nextToken() != JsonToken.END_ARRAY) {
+                array.add(readUntypedHelper(depth + 1));
+            }
+
+            return array;
+        } else if (token == JsonToken.START_OBJECT) {
+            Map<String, Object> object = new LinkedHashMap<>();
+
+            while (nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = getFieldName();
+                nextToken();
+                Object value = readUntypedHelper(depth + 1);
+
+                object.put(fieldName, value);
+            }
+
+            return object;
+        }
+
+        // This should never happen as all JsonToken cases are checked above.
+        throw new IllegalStateException("Unknown token type while reading an untyped field: " + token);
     }
 
     /**
