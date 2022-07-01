@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 class PartitionResolver {
     private static final ClientLogger LOGGER = new ClientLogger(PartitionResolver.class);
     private static final int STARTING_INDEX = -1;
-    private static final int MAX_STACK_LIMIT = 256;
 
     private final AtomicInteger partitionAssignmentIndex = new AtomicInteger(STARTING_INDEX);
 
@@ -116,33 +115,34 @@ class PartitionResolver {
 
         int index = 0;
         int size = data.length;
+
         while (size > 12) {
             a += buffer.getInt(index);
             b += buffer.getInt(index + 4);
             c += buffer.getInt(index + 8);
 
             a -= c;
-            a ^= (c << 4) | (c >> 28);
+            a ^= (c << 4) | (c >>> 28);
             c += b;
 
             b -= a;
-            b ^= (a << 6) | (a >> 26);
+            b ^= (a << 6) | (a >>> 26);
             a += c;
 
             c -= b;
-            c ^= (b << 8) | (b >> 24);
+            c ^= (b << 8) | (b >>> 24);
             b += a;
 
             a -= c;
-            a ^= (c << 16) | (c >> 16);
+            a ^= (c << 16) | (c >>> 16);
             c += b;
 
             b -= a;
-            b ^= (a << 19) | (a >> 13);
+            b ^= (a << 19) | (a >>> 13);
             a += c;
 
             c -= b;
-            c ^= (b << 4) | (b >> 28);
+            c ^= (b << 4) | (b >>> 28);
             b += a;
 
             index += 12;
@@ -186,25 +186,25 @@ class PartitionResolver {
         }
 
         c ^= b;
-        c -= (b << 14) | (b >> 18);
+        c -= (b << 14) | (b >>> 18);
 
         a ^= c;
-        a -= (c << 11) | (c >> 21);
+        a -= (c << 11) | (c >>> 21);
 
         b ^= a;
-        b -= (a << 25) | (a >> 7);
+        b -= (a << 25) | (a >>> 7);
 
         c ^= b;
-        c -= (b << 16) | (b >> 16);
+        c -= (b << 16) | (b >>> 16);
 
         a ^= c;
-        a -= (c << 4) | (c >> 28);
+        a -= (c << 4) | (c >>> 28);
 
         b ^= a;
-        b -= (a << 14) | (a >> 18);
+        b -= (a << 14) | (a >>> 18);
 
         c ^= b;
-        c -= (b << 24) | (b >> 8);
+        c -= (b << 24) | (b >>> 8);
 
         return new Hashed(c, b);
     }
