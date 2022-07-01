@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.credential.BasicAuthenticationCredential;
@@ -6,6 +9,8 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.AfterEach;
@@ -15,7 +20,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 
-import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -31,10 +35,10 @@ import static org.mockito.Mockito.when;
 @Execution(ExecutionMode.SAME_THREAD)
 public class KeyVaultCredentialPolicyTest {
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private static final String AUTHENTICATE_HEADER = "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd022db57\", resource=\"https://kvtest.azure.net\"";
+    private static final String AUTHENTICATE_HEADER =
+        "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd022db57\", resource=\"https://kvtest.azure.net\"";
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer";
-
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
         Flux.fromStream(
@@ -96,10 +100,14 @@ public class KeyVaultCredentialPolicyTest {
         KeyVaultCredentialPolicy.clearCache();
     }
 
-    @Test
+    @SyncAsyncTest
     public void onChallengeCredentialPolicy() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
-        boolean onChallenge = policy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponseWithHeader).block();
+
+        boolean onChallenge = SyncAsyncExtension.execute(
+            () -> policy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponseWithHeader),
+            () -> policy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponseWithHeader)
+        );
 
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
@@ -110,7 +118,7 @@ public class KeyVaultCredentialPolicyTest {
     }
 
     @Test
-    public void onAuthorizeRequestChallengeCachePresent() throws MalformedURLException {
+    public void onAuthorizeRequestChallengeCachePresent() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
 
         // Challenge cache created
@@ -123,21 +131,27 @@ public class KeyVaultCredentialPolicyTest {
         assertTrue(tokenValue.startsWith(BEARER));
     }
 
-    @Test
+    @SyncAsyncTest
     public void onAuthorizeRequestNoCache() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
 
         // No challenge cache to use
-        policy.authorizeRequest(this.callContext).block();
+        SyncAsyncExtension.execute(
+            () -> policy.authorizeRequestSync(this.callContext),
+            () -> policy.authorizeRequest(this.callContext)
+        );
 
         assertNull(this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
     }
 
-    @Test
+    @SyncAsyncTest
     public void testSetContentLengthHeader() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
 
-        boolean onChallenge = policy.authorizeRequestOnChallenge(this.bodyFluxContext, this.unauthorizedHttpResponseWithHeader).block();
+        boolean onChallenge = SyncAsyncExtension.execute(
+            () -> policy.authorizeRequestOnChallengeSync(this.bodyContext, this.unauthorizedHttpResponseWithHeader),
+            () -> policy.authorizeRequestOnChallenge(this.bodyFluxContext, this.unauthorizedHttpResponseWithHeader)
+        );
 
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
@@ -147,26 +161,24 @@ public class KeyVaultCredentialPolicyTest {
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
         assertEquals("21", headers.getValue("content-length"));
+
+        HttpHeaders syncHeaders = this.bodyContext.getHttpRequest().getHeaders();
+        String syncTokenValue = headers.getValue(AUTHORIZATION);
+        assertFalse(syncTokenValue.isEmpty());
+        assertTrue(syncTokenValue.startsWith(BEARER));
+        assertEquals("21", syncHeaders.getValue("content-length"));
     }
 
-    @Test
+    @SyncAsyncTest
     public void onAuthorizeRequestNoScope() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
-        boolean onChallenge = policy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponseWithoutHeader).block();
+
+        boolean onChallenge = SyncAsyncExtension.execute(
+            () -> policy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponseWithoutHeader),
+            () -> policy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponseWithoutHeader)
+        );
+
         assertFalse(onChallenge);
-    }
-
-    @Test
-    public void onChallengeCredentialPolicyTestSync() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
-        boolean onChallenge = policy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponseWithHeader);
-
-        // Validate that the onChallenge ran successfully.
-        assertTrue(onChallenge);
-
-        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
-        assertFalse(tokenValue.isEmpty());
-        assertTrue(tokenValue.startsWith(BEARER));
     }
 
     @Test
@@ -181,38 +193,5 @@ public class KeyVaultCredentialPolicyTest {
         String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
-    }
-
-    @Test
-    public void onAuthorizeRequestNoCacheSync() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
-
-        // No challenge cache to use
-        policy.authorizeRequestSync(this.callContext);
-
-        assertNull(this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
-    }
-
-    @Test
-    public void testSetContentLengthHeaderSync() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
-
-        boolean onChallenge = policy.authorizeRequestOnChallengeSync(this.bodyContext, this.unauthorizedHttpResponseWithHeader);
-
-        // Validate that the onChallenge ran successfully.
-        assertTrue(onChallenge);
-
-        HttpHeaders headers = this.bodyContext.getHttpRequest().getHeaders();
-        String tokenValue = headers.getValue(AUTHORIZATION);
-        assertFalse(tokenValue.isEmpty());
-        assertTrue(tokenValue.startsWith(BEARER));
-        assertEquals("21", headers.getValue("content-length"));
-    }
-
-    @Test
-    public void onAuthorizeRequestNoScopeNoCacheSync() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential);
-        boolean onChallenge = policy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponseWithoutHeader);
-        assertFalse(onChallenge);
     }
 }

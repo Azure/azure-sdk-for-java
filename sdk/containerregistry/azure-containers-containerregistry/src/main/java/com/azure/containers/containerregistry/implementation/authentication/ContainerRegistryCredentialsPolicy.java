@@ -196,7 +196,6 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
         String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallengeSync(context, httpResponse)) {
-                return nextPolicy.processSync();
                 // Both Netty and OkHttp expect the requestBody to be closed after the connection is closed.
                 // Failure to do so results in memory leak.
                 // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
@@ -204,6 +203,8 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
                 // This can cause potential leaks in the scenarios like above, where the policy
                 // may intercept the response and prevent it from reaching the client.
                 // Hence, the policy needs to ensure that the connection is closed.
+                httpResponse.close();
+                return nextPolicy.processSync();
             } else {
                 return httpResponse;
             }
