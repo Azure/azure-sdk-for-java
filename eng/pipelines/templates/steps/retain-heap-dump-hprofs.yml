@@ -1,6 +1,6 @@
 parameters:
   - name: OomArtifactName
-    type: String
+    type: string
     default: 'oom-hprofs'
 
 steps:
