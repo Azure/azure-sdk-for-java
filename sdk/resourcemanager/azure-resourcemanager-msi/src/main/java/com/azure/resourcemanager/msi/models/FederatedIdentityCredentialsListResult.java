@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
+import com.azure.resourcemanager.msi.fluent.models.FederatedIdentityCredentialInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Values returned by the List operation. */
+/** Values returned by the List operation for federated identity credentials. */
 @Fluent
-public final class UserAssignedIdentitiesListResult {
+public final class FederatedIdentityCredentialsListResult {
     /*
-     * The collection of userAssignedIdentities returned by the listing
+     * The collection of federated identity credentials returned by the listing
      * operation.
      */
     @JsonProperty(value = "value")
-    private List<IdentityInner> value;
+    private List<FederatedIdentityCredentialInner> value;
 
     /*
      * The url to get the next page of results, if any.
@@ -26,21 +26,21 @@ public final class UserAssignedIdentitiesListResult {
     private String nextLink;
 
     /**
-     * Get the value property: The collection of userAssignedIdentities returned by the listing operation.
+     * Get the value property: The collection of federated identity credentials returned by the listing operation.
      *
      * @return the value value.
      */
-    public List<IdentityInner> value() {
+    public List<FederatedIdentityCredentialInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: The collection of userAssignedIdentities returned by the listing operation.
+     * Set the value property: The collection of federated identity credentials returned by the listing operation.
      *
      * @param value the value value to set.
-     * @return the UserAssignedIdentitiesListResult object itself.
+     * @return the FederatedIdentityCredentialsListResult object itself.
      */
-    public UserAssignedIdentitiesListResult withValue(List<IdentityInner> value) {
+    public FederatedIdentityCredentialsListResult withValue(List<FederatedIdentityCredentialInner> value) {
         this.value = value;
         return this;
     }
@@ -58,9 +58,9 @@ public final class UserAssignedIdentitiesListResult {
      * Set the nextLink property: The url to get the next page of results, if any.
      *
      * @param nextLink the nextLink value to set.
-     * @return the UserAssignedIdentitiesListResult object itself.
+     * @return the FederatedIdentityCredentialsListResult object itself.
      */
-    public UserAssignedIdentitiesListResult withNextLink(String nextLink) {
+    public FederatedIdentityCredentialsListResult withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

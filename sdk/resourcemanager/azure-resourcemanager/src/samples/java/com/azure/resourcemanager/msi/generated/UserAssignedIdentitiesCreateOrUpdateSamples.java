@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for UserAssignedIdentities CreateOrUpdate. */
 public final class UserAssignedIdentitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityCreate.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2022-01-31-preview/examples/IdentityCreate.json
      */
     /**
      * Sample code: IdentityCreate.

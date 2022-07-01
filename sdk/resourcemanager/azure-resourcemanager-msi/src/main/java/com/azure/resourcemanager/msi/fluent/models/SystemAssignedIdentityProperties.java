@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** System Assigned Identity properties. The properties associated with the system assigned identity. */
 @Immutable
 public final class SystemAssignedIdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemAssignedIdentityProperties.class);
-
     /*
      * The id of the tenant which the identity belongs to.
      */

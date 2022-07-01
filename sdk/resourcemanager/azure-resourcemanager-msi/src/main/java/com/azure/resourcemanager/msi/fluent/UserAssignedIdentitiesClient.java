@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.msi.fluent.models.AzureResourceInner;
 import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
 import com.azure.resourcemanager.msi.models.IdentityUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -25,7 +26,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<IdentityInner> listAsync();
@@ -35,7 +36,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentityInner> list();
@@ -47,7 +48,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentityInner> list(Context context);
@@ -59,7 +60,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<IdentityInner> listByResourceGroupAsync(String resourceGroupName);
@@ -71,7 +72,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentityInner> listByResourceGroup(String resourceGroupName);
@@ -84,10 +85,96 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IdentityInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AzureResourceInner> listAssociatedResourcesAsync(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken);
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AzureResourceInner> listAssociatedResourcesAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AzureResourceInner> listAssociatedResources(String resourceGroupName, String resourceName);
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AzureResourceInner> listAssociatedResources(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken,
+        Context context);
 
     /**
      * Create or update an identity in the specified subscription and resource group.
@@ -98,7 +185,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<IdentityInner>> createOrUpdateWithResponseAsync(
@@ -113,7 +200,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<IdentityInner> createOrUpdateAsync(String resourceGroupName, String resourceName, IdentityInner parameters);
@@ -142,7 +229,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IdentityInner> createOrUpdateWithResponse(
@@ -157,7 +244,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<IdentityInner>> updateWithResponseAsync(
@@ -172,7 +259,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<IdentityInner> updateAsync(String resourceGroupName, String resourceName, IdentityUpdate parameters);
@@ -201,7 +288,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IdentityInner> updateWithResponse(
@@ -215,7 +302,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<IdentityInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName);
@@ -228,7 +315,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<IdentityInner> getByResourceGroupAsync(String resourceGroupName, String resourceName);
@@ -255,7 +342,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IdentityInner> getByResourceGroupWithResponse(
@@ -269,7 +356,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName);
@@ -282,7 +369,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String resourceName);
@@ -308,7 +395,7 @@ public interface UserAssignedIdentitiesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);

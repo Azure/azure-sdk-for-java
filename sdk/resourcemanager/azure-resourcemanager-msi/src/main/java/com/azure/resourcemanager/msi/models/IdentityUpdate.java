@@ -6,9 +6,7 @@ package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.fluent.models.UserAssignedIdentityProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.UUID;
 /** Describes an identity resource. */
 @Fluent
 public final class IdentityUpdate extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityUpdate.class);
-
     /*
      * The geo-location where the resource lives
      */

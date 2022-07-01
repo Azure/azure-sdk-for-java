@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for UserAssignedIdentities GetByResourceGroup. */
 public final class UserAssignedIdentitiesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityGet.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2022-01-31-preview/examples/IdentityGet.json
      */
     /**
      * Sample code: IdentityGet.

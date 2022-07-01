@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for UserAssignedIdentities Delete. */
 public final class UserAssignedIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityDelete.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2022-01-31-preview/examples/IdentityDelete.json
      */
     /**
      * Sample code: IdentityDelete.

@@ -64,4 +64,11 @@ public interface ManagedServiceIdentityClient {
      * @return the UserAssignedIdentitiesClient object.
      */
     UserAssignedIdentitiesClient getUserAssignedIdentities();
+
+    /**
+     * Gets the FederatedIdentityCredentialsClient object to access its operations.
+     *
+     * @return the FederatedIdentityCredentialsClient object.
+     */
+    FederatedIdentityCredentialsClient getFederatedIdentityCredentials();
 }

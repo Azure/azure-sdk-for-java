@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id31993e6?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id31993e6?api-version=2022-01-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "0e1552bd-4be1-41a9-8e3c-94b05103be0c",
@@ -588,7 +588,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id1105883?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id1105883?api-version=2022-01-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "9943f12c-0f3a-4860-be9c-0c924a78856f",
@@ -1475,7 +1475,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id31993e6?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id31993e6?api-version=2022-01-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "08f35d15-80ed-4390-bc8b-33d3c6e42993",
@@ -1501,7 +1501,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id1105883?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id1105883?api-version=2022-01-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "89934f76-cee1-4502-9265-a7f6896ff430",
@@ -1864,7 +1864,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id31993e6?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id31993e6?api-version=2022-01-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "45479594-7e0b-4def-a26b-f8cbd49013e8",
@@ -1890,7 +1890,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id1105883?api-version=2018-11-30",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/656cf6ff08c4456/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-id1105883?api-version=2022-01-31-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.msi/2.16.0-beta.1 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "610e5919-e638-428f-8530-ba5a23994bad",

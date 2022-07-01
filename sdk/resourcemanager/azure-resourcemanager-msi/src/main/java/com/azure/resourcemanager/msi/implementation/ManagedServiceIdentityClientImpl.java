@@ -7,8 +7,8 @@ package com.azure.resourcemanager.msi.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.msi.fluent.FederatedIdentityCredentialsClient;
 import com.azure.resourcemanager.msi.fluent.ManagedServiceIdentityClient;
 import com.azure.resourcemanager.msi.fluent.OperationsClient;
 import com.azure.resourcemanager.msi.fluent.SystemAssignedIdentitiesClient;
@@ -19,8 +19,6 @@ import java.time.Duration;
 /** Initializes a new instance of the ManagedServiceIdentityClientImpl type. */
 @ServiceClient(builder = ManagedServiceIdentityClientBuilder.class)
 public final class ManagedServiceIdentityClientImpl extends AzureServiceClient implements ManagedServiceIdentityClient {
-    private final ClientLogger logger = new ClientLogger(ManagedServiceIdentityClientImpl.class);
-
     /** The Id of the Subscription to which the identity belongs. */
     private final String subscriptionId;
 
@@ -129,6 +127,18 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient i
         return this.userAssignedIdentities;
     }
 
+    /** The FederatedIdentityCredentialsClient object to access its operations. */
+    private final FederatedIdentityCredentialsClient federatedIdentityCredentials;
+
+    /**
+     * Gets the FederatedIdentityCredentialsClient object to access its operations.
+     *
+     * @return the FederatedIdentityCredentialsClient object.
+     */
+    public FederatedIdentityCredentialsClient getFederatedIdentityCredentials() {
+        return this.federatedIdentityCredentials;
+    }
+
     /**
      * Initializes an instance of ManagedServiceIdentityClient client.
      *
@@ -152,9 +162,10 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient i
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-11-30";
+        this.apiVersion = "2022-01-31-preview";
         this.systemAssignedIdentities = new SystemAssignedIdentitiesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.userAssignedIdentities = new UserAssignedIdentitiesClientImpl(this);
+        this.federatedIdentityCredentials = new FederatedIdentityCredentialsClientImpl(this);
     }
 }

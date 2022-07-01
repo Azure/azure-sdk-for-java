@@ -7,7 +7,6 @@ package com.azure.resourcemanager.msi.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +15,6 @@ import java.util.UUID;
 /** Describes a system assigned identity resource. */
 @Fluent
 public final class SystemAssignedIdentityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemAssignedIdentityInner.class);
-
     /*
      * The geo-location where the resource lives
      */
@@ -133,7 +130,7 @@ public final class SystemAssignedIdentityInner extends ProxyResource {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model SystemAssignedIdentityInner"));
@@ -142,4 +139,6 @@ public final class SystemAssignedIdentityInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SystemAssignedIdentityInner.class);
 }

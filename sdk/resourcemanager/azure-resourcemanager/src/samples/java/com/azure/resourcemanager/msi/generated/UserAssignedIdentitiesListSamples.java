@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for UserAssignedIdentities List. */
 public final class UserAssignedIdentitiesListSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityListBySubscription.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2022-01-31-preview/examples/IdentityListBySubscription.json
      */
     /**
      * Sample code: IdentityListBySubscription.

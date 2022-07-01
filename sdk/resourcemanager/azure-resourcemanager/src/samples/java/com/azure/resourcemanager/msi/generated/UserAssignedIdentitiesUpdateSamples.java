@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for UserAssignedIdentities Update. */
 public final class UserAssignedIdentitiesUpdateSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityUpdate.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2022-01-31-preview/examples/IdentityUpdate.json
      */
     /**
      * Sample code: IdentityUpdate.

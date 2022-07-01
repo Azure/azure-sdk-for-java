@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemAssignedIdentities GetByScope. */
 public final class SystemAssignedIdentitiesGetByScopeSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/SystemAssignedIdentityGet.json
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2022-01-31-preview/examples/SystemAssignedIdentityGet.json
      */
     /**
      * Sample code: MsiOperationsList.

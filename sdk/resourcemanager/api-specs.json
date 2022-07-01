@@ -278,7 +278,7 @@
     "dir": "azure-resourcemanager-msi",
     "source": "specification/msi/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.msi",
-    "args": "--tag=package-2018-11-30 --add-client-flatten=Identity"
+    "args": "--tag=package-preview-2022-01 --add-client-flatten=Identity"
   },
   "changes": {
     "dir": "azure-resourcemanager-resources",

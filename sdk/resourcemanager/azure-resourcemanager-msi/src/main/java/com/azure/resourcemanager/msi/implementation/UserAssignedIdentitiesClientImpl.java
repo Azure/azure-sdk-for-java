@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -29,9 +30,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.fluent.UserAssignedIdentitiesClient;
+import com.azure.resourcemanager.msi.fluent.models.AzureResourceInner;
 import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
+import com.azure.resourcemanager.msi.models.AssociatedResourcesListResult;
 import com.azure.resourcemanager.msi.models.IdentityUpdate;
 import com.azure.resourcemanager.msi.models.UserAssignedIdentitiesListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -45,8 +47,6 @@ public final class UserAssignedIdentitiesClientImpl
         InnerSupportsListing<IdentityInner>,
         InnerSupportsDelete<Void>,
         UserAssignedIdentitiesClient {
-    private final ClientLogger logger = new ClientLogger(UserAssignedIdentitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UserAssignedIdentitiesService service;
 
@@ -93,6 +93,26 @@ public final class UserAssignedIdentitiesClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
+                + "/userAssignedIdentities/{resourceName}/listAssociatedResources")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AssociatedResourcesListResult>> listAssociatedResources(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$orderby") String orderby,
+            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$skiptoken") String skiptoken,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -178,6 +198,16 @@ public final class UserAssignedIdentitiesClientImpl
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AssociatedResourcesListResult>> listAssociatedResourcesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -185,7 +215,8 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listSinglePageAsync() {
@@ -231,7 +262,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listSinglePageAsync(Context context) {
@@ -272,7 +304,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IdentityInner> listAsync() {
@@ -287,7 +319,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IdentityInner> listAsync(Context context) {
@@ -300,7 +332,7 @@ public final class UserAssignedIdentitiesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityInner> list() {
@@ -314,7 +346,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityInner> list(Context context) {
@@ -328,7 +360,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -380,7 +413,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listByResourceGroupSinglePageAsync(
@@ -429,7 +463,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IdentityInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -446,7 +480,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IdentityInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -462,7 +496,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityInner> listByResourceGroup(String resourceGroupName) {
@@ -477,11 +511,313 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IdentityInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AzureResourceInner>> listAssociatedResourcesSinglePageAsync(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAssociatedResources(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            filter,
+                            orderby,
+                            top,
+                            skip,
+                            skiptoken,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<AzureResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AzureResourceInner>> listAssociatedResourcesSinglePageAsync(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listAssociatedResources(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                filter,
+                orderby,
+                top,
+                skip,
+                skiptoken,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AzureResourceInner> listAssociatedResourcesAsync(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken) {
+        return new PagedFlux<>(
+            () ->
+                listAssociatedResourcesSinglePageAsync(
+                    resourceGroupName, resourceName, filter, orderby, top, skip, skiptoken),
+            nextLink -> listAssociatedResourcesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AzureResourceInner> listAssociatedResourcesAsync(String resourceGroupName, String resourceName) {
+        final String filter = null;
+        final String orderby = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String skiptoken = null;
+        return new PagedFlux<>(
+            () ->
+                listAssociatedResourcesSinglePageAsync(
+                    resourceGroupName, resourceName, filter, orderby, top, skip, skiptoken),
+            nextLink -> listAssociatedResourcesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<AzureResourceInner> listAssociatedResourcesAsync(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listAssociatedResourcesSinglePageAsync(
+                    resourceGroupName, resourceName, filter, orderby, top, skip, skiptoken, context),
+            nextLink -> listAssociatedResourcesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AzureResourceInner> listAssociatedResources(String resourceGroupName, String resourceName) {
+        final String filter = null;
+        final String orderby = null;
+        final Integer top = null;
+        final Integer skip = null;
+        final String skiptoken = null;
+        return new PagedIterable<>(
+            listAssociatedResourcesAsync(resourceGroupName, resourceName, filter, orderby, top, skip, skiptoken));
+    }
+
+    /**
+     * Lists the associated resources for this identity.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the identity belongs.
+     * @param resourceName The name of the identity resource.
+     * @param filter OData filter expression to apply to the query.
+     * @param orderby OData orderBy expression to apply to the query.
+     * @param top Number of records to return.
+     * @param skip Number of records to skip.
+     * @param skiptoken A skip token is used to continue retrieving items after an operation returns a partial result.
+     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
+     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources as paginated response
+     *     with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AzureResourceInner> listAssociatedResources(
+        String resourceGroupName,
+        String resourceName,
+        String filter,
+        String orderby,
+        Integer top,
+        Integer skip,
+        String skiptoken,
+        Context context) {
+        return new PagedIterable<>(
+            listAssociatedResourcesAsync(
+                resourceGroupName, resourceName, filter, orderby, top, skip, skiptoken, context));
     }
 
     /**
@@ -493,7 +829,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IdentityInner>> createOrUpdateWithResponseAsync(
@@ -549,7 +885,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IdentityInner>> createOrUpdateWithResponseAsync(
@@ -601,20 +937,13 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityInner> createOrUpdateAsync(
         String resourceGroupName, String resourceName, IdentityInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<IdentityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -643,7 +972,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IdentityInner> createOrUpdateWithResponse(
@@ -660,7 +989,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IdentityInner>> updateWithResponseAsync(
@@ -716,7 +1045,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IdentityInner>> updateWithResponseAsync(
@@ -768,19 +1097,12 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityInner> updateAsync(String resourceGroupName, String resourceName, IdentityUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<IdentityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -809,7 +1131,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an identity resource.
+     * @return describes an identity resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IdentityInner> updateWithResponse(
@@ -825,7 +1147,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IdentityInner>> getByResourceGroupWithResponseAsync(
@@ -874,7 +1196,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IdentityInner>> getByResourceGroupWithResponseAsync(
@@ -919,19 +1241,12 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IdentityInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<IdentityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -958,7 +1273,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the identity.
+     * @return the identity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IdentityInner> getByResourceGroupWithResponse(
@@ -974,7 +1289,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
@@ -1022,7 +1337,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1067,11 +1382,11 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1097,7 +1412,7 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
@@ -1111,7 +1426,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1148,7 +1464,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1183,7 +1500,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1220,7 +1538,8 @@ public final class UserAssignedIdentitiesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentityInner>> listByResourceGroupNextSinglePageAsync(
@@ -1238,6 +1557,81 @@ public final class UserAssignedIdentitiesClientImpl
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AzureResourceInner>> listAssociatedResourcesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listAssociatedResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AzureResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure resources returned by the resource action to get a list of assigned resources along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AzureResourceInner>> listAssociatedResourcesNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listAssociatedResourcesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

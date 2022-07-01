@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.msi.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Microsoft.ManagedIdentity Operation. Operation supported by the Microsoft.ManagedIdentity REST API. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Operation Name. The name of the REST Operation. This is of the format
      * {provider}/{resource}/{operation}.
