@@ -65,7 +65,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 //get the associated JSON representation for each for the members
                 List<String> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
                 jedisPool.returnResource(jedis);
-                if (checkpointJsonList.isEmpty()) {
+                if (checkpointJsonList == null) {
                     return Flux.error(new IllegalStateException("No checkpoints persist in Redis for the given parameters."));
                 }
                 else {
@@ -98,7 +98,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 //get the associated JSON representation for each for the members
                 List<String> partitionOwnershipJsonList = jedis.hmget(member, PARTITION_OWNERSHIP);
                 jedisPool.returnResource(jedis);
-                if (partitionOwnershipJsonList.isEmpty()) {
+                if (partitionOwnershipJsonList == null) {
                     return Flux.error(new IllegalStateException("No ownership record persist in Redis for the given parameters."));
                 } else {
                     String partitionOwnershipJson = partitionOwnershipJsonList.get(0);

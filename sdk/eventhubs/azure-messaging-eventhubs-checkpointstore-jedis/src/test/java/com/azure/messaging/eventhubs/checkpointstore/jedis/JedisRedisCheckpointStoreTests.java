@@ -95,7 +95,7 @@ public class JedisRedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
         when(jedis.hmget(eq(KEY),
-            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(new ArrayList<>());
+            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(null);
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .expectError(IllegalStateException.class)
@@ -152,7 +152,7 @@ public class JedisRedisCheckpointStoreTests {
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
         when(jedis.hmget(eq(KEY),
-            eq(JedisRedisCheckpointStore.PARTITION_OWNERSHIP))).thenReturn(new ArrayList<>());
+            eq(JedisRedisCheckpointStore.PARTITION_OWNERSHIP))).thenReturn(null);
 
         StepVerifier.create(store.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
             .expectError(IllegalStateException.class)
