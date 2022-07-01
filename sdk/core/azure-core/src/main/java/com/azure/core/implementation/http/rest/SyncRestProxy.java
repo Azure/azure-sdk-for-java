@@ -224,15 +224,7 @@ public class SyncRestProxy extends RestProxyBase {
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
 
         if (isJson) {
-            byte[] serializedBytes = serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON);
-
-            ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
-            serializerAdapter.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
-
-            request.setHeader("Content-Length", String.valueOf(serializedBytes.length));
-            request.setBody(BinaryData.fromBytes(serializedBytes));
-
-
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody((byte[]) bodyContentObject);
         } else if (bodyContentObject instanceof String) {
@@ -251,7 +243,6 @@ public class SyncRestProxy extends RestProxyBase {
         } else {
             byte[] serializedBytes = serializerAdapter
                 .serializeToBytes(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
-            request.setHeader("Content-Length", String.valueOf(serializedBytes.length));
             request.setBody(serializedBytes);
         }
     }
