@@ -63,6 +63,7 @@ public class ContainerRegistryCredentialPolicyTests {
 
         ContainerRegistryTokenService mockService = mock(ContainerRegistryTokenService.class);
         when(mockService.getToken(any(ContainerRegistryTokenRequestContext.class))).thenReturn(Mono.just(accessToken));
+        when(mockService.getTokenSync(any(ContainerRegistryTokenRequestContext.class))).thenReturn(accessToken);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://mytest.azurecr.io");
 
@@ -138,15 +139,12 @@ public class ContainerRegistryCredentialPolicyTests {
         verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
     }
 
-    @SyncAsyncTest
+    @Test
     public void requestAddBearerTokenToRequest() {
         ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
-        Boolean onChallenge = SyncAsyncExtension.execute(
-            () -> spyPolicy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponse),
-            () -> spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse)
-        );
+        Boolean onChallenge = spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse).block();
 
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
@@ -159,6 +157,29 @@ public class ContainerRegistryCredentialPolicyTests {
         // Validate that the token creation was called with the correct arguments.
         ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
         verify(spyPolicy).setAuthorizationHeader(any(HttpPipelineCallContext.class), argument.capture());
+
+        ContainerRegistryTokenRequestContext requestContext = argument.getValue();
+        assertEquals(SERVICENAME, requestContext.getServiceName());
+        assertEquals(SCOPENAME, requestContext.getScope());
+    }
+
+    @Test
+    public void requestAddBearerTokenToRequestSync() {
+        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
+        ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
+
+        Boolean onChallenge = spyPolicy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponse);
+
+        // Validate that the onChallenge ran successfully.
+        assertTrue(onChallenge);
+
+        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
+        assertFalse(tokenValue.isEmpty());
+        assertTrue(tokenValue.startsWith(BEARER));
+        assertTrue(tokenValue.endsWith(tokenValue));
+
+        // Validate that the token creation was called with the correct arguments.
+        ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
         verify(spyPolicy).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
