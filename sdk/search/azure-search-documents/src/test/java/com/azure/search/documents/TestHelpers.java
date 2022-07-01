@@ -134,7 +134,7 @@ public final class TestHelpers {
 
     private static byte[] serializeJsonSerializable(JsonSerializable<?> jsonSerializable) {
         if (jsonSerializable == null) {
-            return null;
+            return new byte[0];
         }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -256,13 +256,14 @@ public final class TestHelpers {
     }
 
     private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
+        if (ex instanceof HttpResponseException) {
+            assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 
-        assertEquals(HttpResponseException.class, ex.getClass());
-
-        assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
-
-        if (expectedMessage != null) {
-            assertTrue(ex.getMessage().contains(expectedMessage));
+            if (expectedMessage != null) {
+                assertTrue(ex.getMessage().contains(expectedMessage));
+            }
+        } else {
+            fail("Expected exception to be instanceof HttpResponseException", ex);
         }
     }
 

@@ -15,7 +15,7 @@ import java.util.Map;
  * Extended options that may be passed when copying a share.
  */
 @Fluent
-public class ShareFileCopyOptions {
+public final class ShareFileCopyOptions {
 
     private FileSmbProperties smbProperties;
     private String filePermission;
@@ -105,7 +105,7 @@ public class ShareFileCopyOptions {
      * @return Optional boolean Specifying to set archive attribute on a target file. True means archive attribute will
      * be set on a target file despite attribute overrides or a source file state.
      */
-    public Boolean getSetArchiveAttribute() {
+    public Boolean isArchiveAttributeSet() {
         return setArchiveAttribute;
     }
 
@@ -115,7 +115,7 @@ public class ShareFileCopyOptions {
      * attribute will be set on a target file despite attribute overrides or a source file state.
      * @return The updated options.
      */
-    public ShareFileCopyOptions setSetArchiveAttribute(Boolean archiveAttribute) {
+    public ShareFileCopyOptions setArchiveAttribute(Boolean archiveAttribute) {
         setArchiveAttribute = archiveAttribute;
         return this;
     }

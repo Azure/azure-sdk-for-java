@@ -30,6 +30,7 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     private static final List<String> KAFKA_BOOTSTRAP_SERVER = Arrays.asList("namespace.servicebus.windows.net:9093");
     private static final String TOKEN_CREDENTIAL_FIELD_NAME = "credential";
+    private static final String TOKEN_AUDIENCE_FIELD_NAME = "tokenAudience";
     private static final String AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME = "properties";
     private static final String GET_TOKEN_CREDENTIAL_METHOD_NAME = "getTokenCredential";
 
@@ -39,6 +40,18 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
             return null;
         }
     };
+
+    @Test
+    void testTokenAudienceShouldConfig() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
+
+        KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
+        handler.configure(configs, null, null);
+
+        String tokenAudience = (String) ReflectionTestUtils.getField(handler, TOKEN_AUDIENCE_FIELD_NAME);
+        assertEquals("https://namespace.servicebus.windows.net/.default", tokenAudience);
+    }
 
     @Test
     void testTokenCredentialShouldConfig() {

@@ -35,4 +35,16 @@ public interface HttpResponseLogger {
      * @return A reactive response that returns the HTTP response that was logged.
      */
     Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
+
+    /**
+     * Logs the HTTP response.
+     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponseLoggingContext)} .
+     *
+     * @param logger The {@link ClientLogger} used to log the response.
+     * @param loggingOptions The information available during response logging.
+     * @return A response that returns the HTTP response that was logged.
+     */
+    default HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+        return logResponse(logger, loggingOptions).block();
+    }
 }

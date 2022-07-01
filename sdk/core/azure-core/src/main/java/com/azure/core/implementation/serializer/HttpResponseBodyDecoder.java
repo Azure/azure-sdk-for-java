@@ -85,8 +85,9 @@ public final class HttpResponseBodyDecoder {
                 return null;
             }
 
+            byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsBinaryData().toBytes() : body;
             try {
-                return deserializeBody(body,
+                return deserializeBody(bodyAsByteArray,
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
             } catch (MalformedValueException e) {
