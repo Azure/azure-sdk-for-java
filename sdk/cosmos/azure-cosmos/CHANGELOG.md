@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.32.1 (2022-06-30)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Added a fix for `CloneNotSupportedException` when trying to instantiate a `Cosmos(Async)Client` and using a MAC provider which would not support cloning. Instead, this should be handled gracefully (less ideal perf is expected - but functionally it should work.) - See [PR 29719](https://github.com/Azure/azure-sdk-for-java/pull/29719)
 
 ### 4.32.0 (2022-06-27)
 #### Other Changes

@@ -4,15 +4,14 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.storage.StoragePerfStressOptions;
-import com.azure.storage.blob.specialized.cryptography.EncryptionVersion;
 import com.beust.jcommander.Parameter;
 
 public class BlobPerfStressOptions extends StoragePerfStressOptions {
 
     @Parameter(names = { "--client-encryption" })
-    private String encryptionVersion = null;
+    private String clientEncryption = null;
 
-    public String getEncryptionVersion() {
-        return encryptionVersion;
+    public String getClientEncryption() {
+        return clientEncryption;
     }
 }

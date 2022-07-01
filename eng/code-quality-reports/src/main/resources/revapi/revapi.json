@@ -101,6 +101,10 @@
           {
             "matcher": "java-package",
             "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.google\\.gson(\\..*)?/"
           }
         ]
       }

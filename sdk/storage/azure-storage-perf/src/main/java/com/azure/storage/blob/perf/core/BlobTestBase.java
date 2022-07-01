@@ -36,11 +36,11 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
 
         String blobName = "randomblobtest-" + (singletonBlob ? "" : UUID.randomUUID().toString());
 
-        if (options.getEncryptionVersion() != null) {
+        if (options.getClientEncryption() != null) {
             EncryptionVersion version;
-            if (options.getEncryptionVersion().equals("1.0")) {
+            if (options.getClientEncryption().equals("1.0")) {
                 version = EncryptionVersion.V1;
-            } else if (options.getEncryptionVersion().equals("2.0")) {
+            } else if (options.getClientEncryption().equals("2.0")) {
                 version = EncryptionVersion.V2;
             } else {
                 throw new IllegalArgumentException("Encryption version not recognized");

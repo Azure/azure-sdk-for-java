@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.11.0 (2022-06-30)
 
 ### Features Added
 
@@ -14,12 +14,14 @@
   httpClient.send(request, context).subscribe();
   ```
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
 - Added synchronous implementation of `HttpClient.sendSync`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded OkHttp from `4.9.2` to `4.10.0`.
 
 ## 1.10.1 (2022-06-03)
 

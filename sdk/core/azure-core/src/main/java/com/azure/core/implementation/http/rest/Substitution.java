@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 /**
  * A Substitution is a value that can be used to replace placeholder values in a URL. Placeholders look like:
  * "http://{host}.com/{fileName}.html", where "{host}" and "{fileName}" are the placeholders.
  */
-class Substitution {
+public class Substitution {
     private final String urlParameterName;
     private final int methodParameterIndex;
     private final boolean shouldEncode;
@@ -21,7 +21,7 @@ class Substitution {
      * @param shouldEncode Whether the value from the method's argument should be encoded when the substitution is
      * taking place.
      */
-    Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
+    public Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
         this.urlParameterName = urlParameterName;
         this.methodParameterIndex = methodParameterIndex;
         this.shouldEncode = shouldEncode;
