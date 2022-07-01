@@ -99,10 +99,9 @@ public final class SearchIndexerKnowledgeStoreProjection
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "tables", this.tables, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "objects", this.objects, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(jsonWriter, "files", this.files, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("objects", this.objects, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

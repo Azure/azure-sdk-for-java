@@ -393,13 +393,9 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
         jsonWriter.writeStringField("targetIndexName", this.targetIndexName, false);
         jsonWriter.writeJsonField("schedule", this.schedule, false);
         jsonWriter.writeJsonField("parameters", this.parameters, false);
-        JsonUtils.writeArray(
-                jsonWriter, "fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter,
-                "outputFieldMappings",
-                this.outputFieldMappings,
-                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("fieldMappings", this.fieldMappings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "outputFieldMappings", this.outputFieldMappings, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("disabled", this.isDisabled, false);
         jsonWriter.writeStringField("@odata.etag", this.eTag, false);
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
@@ -458,7 +454,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                             outputFieldMappings =
                                     JsonUtils.readArray(reader, reader1 -> FieldMapping.fromJson(reader1));
                         } else if ("disabled".equals(fieldName)) {
-                            isDisabled = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            isDisabled = reader.getBooleanNullableValue();
                         } else if ("@odata.etag".equals(fieldName)) {
                             eTag = reader.getStringValue();
                         } else if ("encryptionKey".equals(fieldName)) {

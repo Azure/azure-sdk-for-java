@@ -208,11 +208,11 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
                         } else if ("replacement".equals(fieldName)) {
                             replacement = JsonUtils.getNullableProperty(reader, r -> reader.getStringValue().charAt(0));
                         } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenLength = reader.getIntegerNullableValue();
                         } else if ("reverse".equals(fieldName)) {
-                            tokenOrderReversed = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            tokenOrderReversed = reader.getBooleanNullableValue();
                         } else if ("skip".equals(fieldName)) {
-                            numberOfTokensToSkip = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            numberOfTokensToSkip = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

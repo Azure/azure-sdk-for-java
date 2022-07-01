@@ -45,7 +45,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "value", this.actions, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("value", this.actions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

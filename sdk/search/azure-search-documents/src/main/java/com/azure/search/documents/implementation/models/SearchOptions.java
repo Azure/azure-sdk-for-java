@@ -728,29 +728,20 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("includeTotalCount", this.includeTotalCount, false);
-        JsonUtils.writeArray(
-                jsonWriter, "Facets", this.facets, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("Facets", this.facets, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("$filter", this.filter, false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "HighlightFields",
-                this.highlightFields,
-                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField(
+                "HighlightFields", this.highlightFields, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("highlightPostTag", this.highlightPostTag, false);
         jsonWriter.writeStringField("highlightPreTag", this.highlightPreTag, false);
         jsonWriter.writeDoubleField("minimumCoverage", this.minimumCoverage, false);
-        JsonUtils.writeArray(
-                jsonWriter, "OrderBy", this.orderBy, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("OrderBy", this.orderBy, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("queryType", this.queryType == null ? null : this.queryType.toString(), false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "ScoringParameters",
-                this.scoringParameters,
-                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField(
+                "ScoringParameters", this.scoringParameters, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scoringProfile", this.scoringProfile, false);
         jsonWriter.writeStringField("semanticConfiguration", this.semanticConfiguration, false);
-        JsonUtils.writeArray(
-                jsonWriter, "searchFields", this.searchFields, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("searchFields", this.searchFields, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField(
                 "queryLanguage", this.queryLanguage == null ? null : this.queryLanguage.toString(), false);
         jsonWriter.writeStringField("speller", this.speller == null ? null : this.speller.toString(), false);
@@ -759,16 +750,12 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         jsonWriter.writeStringField(
                 "scoringStatistics", this.scoringStatistics == null ? null : this.scoringStatistics.toString(), false);
         jsonWriter.writeStringField("sessionId", this.sessionId, false);
-        JsonUtils.writeArray(
-                jsonWriter, "$select", this.select, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("$select", this.select, (writer, element) -> writer.writeString(element));
         jsonWriter.writeIntegerField("$skip", this.skip, false);
         jsonWriter.writeIntegerField("$top", this.top, false);
         jsonWriter.writeStringField("captions", this.captions, false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "semanticFields",
-                this.semanticFields,
-                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField(
+                "semanticFields", this.semanticFields, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -812,7 +799,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         reader.nextToken();
 
                         if ("includeTotalCount".equals(fieldName)) {
-                            includeTotalCount = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            includeTotalCount = reader.getBooleanNullableValue();
                         } else if ("Facets".equals(fieldName)) {
                             facets = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("$filter".equals(fieldName)) {
@@ -824,7 +811,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("highlightPreTag".equals(fieldName)) {
                             highlightPreTag = reader.getStringValue();
                         } else if ("minimumCoverage".equals(fieldName)) {
-                            minimumCoverage = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            minimumCoverage = reader.getDoubleNullableValue();
                         } else if ("OrderBy".equals(fieldName)) {
                             orderBy = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("queryType".equals(fieldName)) {
@@ -838,9 +825,13 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("searchFields".equals(fieldName)) {
                             searchFields = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("queryLanguage".equals(fieldName)) {
-                            queryLanguage = QueryLanguage.fromString(reader.getStringValue());
+                            queryLanguage =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> QueryLanguage.fromString(reader.getStringValue()));
                         } else if ("speller".equals(fieldName)) {
-                            speller = QuerySpellerType.fromString(reader.getStringValue());
+                            speller =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> QuerySpellerType.fromString(reader.getStringValue()));
                         } else if ("answers".equals(fieldName)) {
                             answers = reader.getStringValue();
                         } else if ("searchMode".equals(fieldName)) {
@@ -852,9 +843,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("$select".equals(fieldName)) {
                             select = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("$skip".equals(fieldName)) {
-                            skip = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            skip = reader.getIntegerNullableValue();
                         } else if ("$top".equals(fieldName)) {
-                            top = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            top = reader.getIntegerNullableValue();
                         } else if ("captions".equals(fieldName)) {
                             captions = reader.getStringValue();
                         } else if ("semanticFields".equals(fieldName)) {

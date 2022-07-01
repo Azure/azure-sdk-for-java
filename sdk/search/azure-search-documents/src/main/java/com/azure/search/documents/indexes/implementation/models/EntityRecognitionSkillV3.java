@@ -150,14 +150,12 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "categories", this.categories, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode, false);
         jsonWriter.writeDoubleField("minimumPrecision", this.minimumPrecision, false);
         jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
@@ -212,7 +210,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                         } else if ("defaultLanguageCode".equals(fieldName)) {
                             defaultLanguageCode = reader.getStringValue();
                         } else if ("minimumPrecision".equals(fieldName)) {
-                            minimumPrecision = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            minimumPrecision = reader.getDoubleNullableValue();
                         } else if ("modelVersion".equals(fieldName)) {
                             modelVersion = reader.getStringValue();
                         } else {

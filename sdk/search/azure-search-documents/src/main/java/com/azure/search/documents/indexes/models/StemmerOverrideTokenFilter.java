@@ -58,7 +58,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(jsonWriter, "rules", this.rules, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 

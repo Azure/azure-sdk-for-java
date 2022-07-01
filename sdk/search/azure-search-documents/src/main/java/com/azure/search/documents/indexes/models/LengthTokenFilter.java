@@ -122,9 +122,9 @@ public final class LengthTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("min".equals(fieldName)) {
-                            minLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            minLength = reader.getIntegerNullableValue();
                         } else if ("max".equals(fieldName)) {
-                            maxLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxLength = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

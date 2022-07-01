@@ -123,8 +123,7 @@ public final class MagnitudeScoringParameters implements JsonSerializable<Magnit
                             boostingRangeEnd = reader.getDoubleValue();
                             boostingRangeEndFound = true;
                         } else if ("constantBoostBeyondRange".equals(fieldName)) {
-                            shouldBoostBeyondRangeByConstant =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            shouldBoostBeyondRangeByConstant = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

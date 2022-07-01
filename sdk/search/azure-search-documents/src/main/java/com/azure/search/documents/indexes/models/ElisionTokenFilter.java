@@ -65,8 +65,7 @@ public final class ElisionTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "articles", this.articles, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("articles", this.articles, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 

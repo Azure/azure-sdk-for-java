@@ -65,8 +65,7 @@ public final class StopAnalyzer extends LexicalAnalyzer {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "stopwords", this.stopwords, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 

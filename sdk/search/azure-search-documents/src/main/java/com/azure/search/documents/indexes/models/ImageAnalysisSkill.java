@@ -112,9 +112,8 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -122,13 +121,11 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                 "defaultLanguageCode",
                 this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString(),
                 false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "visualFeatures",
                 this.visualFeatures,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "details",
                 this.details,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -178,15 +175,26 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getStringValue());
+                            defaultLanguageCode =
+                                    JsonUtils.getNullableProperty(
+                                            reader,
+                                            r -> ImageAnalysisSkillLanguage.fromString(reader.getStringValue()));
                         } else if ("visualFeatures".equals(fieldName)) {
                             visualFeatures =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> VisualFeature.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> VisualFeature.fromString(reader1.getStringValue())));
                         } else if ("details".equals(fieldName)) {
                             details =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> ImageDetail.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> ImageDetail.fromString(reader1.getStringValue())));
                         } else {
                             reader.skipChildren();
                         }

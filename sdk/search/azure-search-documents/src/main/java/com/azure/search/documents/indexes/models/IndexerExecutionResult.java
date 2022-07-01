@@ -216,9 +216,8 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString(), false);
-        JsonUtils.writeArray(jsonWriter, "errors", this.errors, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "warnings", this.warnings, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeIntField("itemsProcessed", this.itemCount);
         jsonWriter.writeIntField("itemsFailed", this.failedItemCount);
         jsonWriter.writeStringField(
@@ -281,7 +280,10 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                             failedItemCount = reader.getIntValue();
                             failedItemCountFound = true;
                         } else if ("statusDetail".equals(fieldName)) {
-                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getStringValue());
+                            statusDetail =
+                                    JsonUtils.getNullableProperty(
+                                            reader,
+                                            r -> IndexerExecutionStatusDetail.fromString(reader.getStringValue()));
                         } else if ("currentState".equals(fieldName)) {
                             currentState = IndexerCurrentState.fromJson(reader);
                         } else if ("errorMessage".equals(fieldName)) {

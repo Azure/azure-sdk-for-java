@@ -158,8 +158,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
         jsonWriter.writeBooleanField("lowercase", this.lowerCaseTerms, false);
         jsonWriter.writeStringField("pattern", this.pattern, false);
         jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "stopwords", this.stopwords, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -193,11 +192,13 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("lowercase".equals(fieldName)) {
-                            lowerCaseTerms = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            lowerCaseTerms = reader.getBooleanNullableValue();
                         } else if ("pattern".equals(fieldName)) {
                             pattern = reader.getStringValue();
                         } else if ("flags".equals(fieldName)) {
-                            flags = RegexFlags.fromString(reader.getStringValue());
+                            flags =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> RegexFlags.fromString(reader.getStringValue()));
                         } else if ("stopwords".equals(fieldName)) {
                             stopwords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {

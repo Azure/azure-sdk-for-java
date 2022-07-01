@@ -117,9 +117,8 @@ public final class OcrSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -175,12 +174,15 @@ public final class OcrSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = OcrSkillLanguage.fromString(reader.getStringValue());
+                            defaultLanguageCode =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> OcrSkillLanguage.fromString(reader.getStringValue()));
                         } else if ("detectOrientation".equals(fieldName)) {
-                            shouldDetectOrientation =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            shouldDetectOrientation = reader.getBooleanNullableValue();
                         } else if ("lineEnding".equals(fieldName)) {
-                            lineEnding = LineEnding.fromString(reader.getStringValue());
+                            lineEnding =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LineEnding.fromString(reader.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

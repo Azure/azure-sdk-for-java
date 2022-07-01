@@ -81,8 +81,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "keywords", this.keywords, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -119,7 +118,7 @@ public final class KeywordMarkerTokenFilter extends TokenFilter {
                             keywords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             keywordsFound = true;
                         } else if ("ignoreCase".equals(fieldName)) {
-                            caseIgnored = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            caseIgnored = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

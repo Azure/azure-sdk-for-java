@@ -149,7 +149,7 @@ public final class AnswerResult implements JsonSerializable<AnswerResult> {
                         reader.nextToken();
 
                         if ("score".equals(fieldName)) {
-                            score = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            score = reader.getDoubleNullableValue();
                         } else if ("key".equals(fieldName)) {
                             key = reader.getStringValue();
                         } else if ("text".equals(fieldName)) {

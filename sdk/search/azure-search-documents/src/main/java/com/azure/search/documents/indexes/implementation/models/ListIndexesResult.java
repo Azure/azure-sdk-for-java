@@ -46,7 +46,7 @@ public final class ListIndexesResult implements JsonSerializable<ListIndexesResu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "value", this.indexes, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("value", this.indexes, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

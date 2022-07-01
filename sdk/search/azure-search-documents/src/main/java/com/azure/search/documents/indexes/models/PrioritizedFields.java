@@ -117,16 +117,14 @@ public final class PrioritizedFields implements JsonSerializable<PrioritizedFiel
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("titleField", this.titleField, false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "prioritizedContentFields",
                 this.prioritizedContentFields,
-                (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter,
+                (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
                 "prioritizedKeywordsFields",
                 this.prioritizedKeywordsFields,
-                (writer, element) -> writer.writeJson(element, false));
+                (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

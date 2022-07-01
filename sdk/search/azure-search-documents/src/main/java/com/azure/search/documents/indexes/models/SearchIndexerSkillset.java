@@ -228,7 +228,7 @@ public final class SearchIndexerSkillset implements JsonSerializable<SearchIndex
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeStringField("description", this.description, false);
-        JsonUtils.writeArray(jsonWriter, "skills", this.skills, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("cognitiveServices", this.cognitiveServicesAccount, false);
         jsonWriter.writeJsonField("knowledgeStore", this.knowledgeStore, false);
         jsonWriter.writeStringField("@odata.etag", this.eTag, false);

@@ -321,11 +321,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
         jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal, false);
         jsonWriter.writeBooleanField("splitOnNumerics", this.splitOnNumerics, false);
         jsonWriter.writeBooleanField("stemEnglishPossessive", this.stemEnglishPossessive, false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "protectedWords",
-                this.protectedWords,
-                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField(
+                "protectedWords", this.protectedWords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -365,24 +362,23 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("generateWordParts".equals(fieldName)) {
-                            generateWordParts = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            generateWordParts = reader.getBooleanNullableValue();
                         } else if ("generateNumberParts".equals(fieldName)) {
-                            generateNumberParts = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            generateNumberParts = reader.getBooleanNullableValue();
                         } else if ("catenateWords".equals(fieldName)) {
-                            wordsCatenated = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            wordsCatenated = reader.getBooleanNullableValue();
                         } else if ("catenateNumbers".equals(fieldName)) {
-                            numbersCatenated = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            numbersCatenated = reader.getBooleanNullableValue();
                         } else if ("catenateAll".equals(fieldName)) {
-                            catenateAll = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            catenateAll = reader.getBooleanNullableValue();
                         } else if ("splitOnCaseChange".equals(fieldName)) {
-                            splitOnCaseChange = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            splitOnCaseChange = reader.getBooleanNullableValue();
                         } else if ("preserveOriginal".equals(fieldName)) {
-                            preserveOriginal = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            preserveOriginal = reader.getBooleanNullableValue();
                         } else if ("splitOnNumerics".equals(fieldName)) {
-                            splitOnNumerics = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            splitOnNumerics = reader.getBooleanNullableValue();
                         } else if ("stemEnglishPossessive".equals(fieldName)) {
-                            stemEnglishPossessive =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            stemEnglishPossessive = reader.getBooleanNullableValue();
                         } else if ("protectedWords".equals(fieldName)) {
                             protectedWords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {

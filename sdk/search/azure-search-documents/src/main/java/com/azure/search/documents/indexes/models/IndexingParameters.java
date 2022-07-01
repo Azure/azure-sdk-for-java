@@ -160,11 +160,11 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("batchSize".equals(fieldName)) {
-                            batchSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            batchSize = reader.getIntegerNullableValue();
                         } else if ("maxFailedItems".equals(fieldName)) {
-                            maxFailedItems = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxFailedItems = reader.getIntegerNullableValue();
                         } else if ("maxFailedItemsPerBatch".equals(fieldName)) {
-                            maxFailedItemsPerBatch = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxFailedItemsPerBatch = reader.getIntegerNullableValue();
                         } else if ("configuration".equals(fieldName)) {
                             configuration = IndexingParametersConfiguration.fromJson(reader);
                         } else {

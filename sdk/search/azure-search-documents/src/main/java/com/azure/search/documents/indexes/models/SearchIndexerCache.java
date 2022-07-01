@@ -96,7 +96,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
                         if ("storageConnectionString".equals(fieldName)) {
                             storageConnectionString = reader.getStringValue();
                         } else if ("enableReprocessing".equals(fieldName)) {
-                            enableReprocessing = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            enableReprocessing = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

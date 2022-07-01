@@ -98,7 +98,7 @@ public final class ResourceCounter implements JsonSerializable<ResourceCounter> 
                             usage = reader.getLongValue();
                             usageFound = true;
                         } else if ("quota".equals(fieldName)) {
-                            quota = JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                            quota = reader.getLongNullableValue();
                         } else {
                             reader.skipChildren();
                         }

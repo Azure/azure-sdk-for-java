@@ -214,9 +214,8 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -286,7 +285,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
                         } else if ("region".equals(fieldName)) {
                             region = reader.getStringValue();
                         } else if ("degreeOfParallelism".equals(fieldName)) {
-                            degreeOfParallelism = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            degreeOfParallelism = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

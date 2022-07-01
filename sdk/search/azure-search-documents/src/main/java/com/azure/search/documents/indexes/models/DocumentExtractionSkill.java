@@ -115,19 +115,15 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
         jsonWriter.writeStringField("parsingMode", this.parsingMode, false);
         jsonWriter.writeStringField("dataToExtract", this.dataToExtract, false);
-        JsonUtils.writeMap(
-                jsonWriter,
-                "configuration",
-                this.configuration,
-                (writer, element) -> JsonUtils.writeUntypedField(writer, element));
+        jsonWriter.writeMapField(
+                "configuration", this.configuration, (writer, element) -> JsonUtils.writeUntypedField(writer, element));
         return jsonWriter.writeEndObject().flush();
     }
 

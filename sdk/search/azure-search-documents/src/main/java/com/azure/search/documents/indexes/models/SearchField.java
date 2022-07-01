@@ -512,12 +512,9 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 "indexAnalyzer", this.indexAnalyzerName == null ? null : this.indexAnalyzerName.toString(), false);
         jsonWriter.writeStringField(
                 "normalizer", this.normalizerName == null ? null : this.normalizerName.toString(), false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "synonymMaps",
-                this.synonymMapNames,
-                (writer, element) -> writer.writeString(element, false));
-        JsonUtils.writeArray(jsonWriter, "fields", this.fields, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField(
+                "synonymMaps", this.synonymMapNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -557,28 +554,38 @@ public final class SearchField implements JsonSerializable<SearchField> {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("type".equals(fieldName)) {
-                            type = SearchFieldDataType.fromString(reader.getStringValue());
+                            type =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SearchFieldDataType.fromString(reader.getStringValue()));
                             typeFound = true;
                         } else if ("key".equals(fieldName)) {
-                            key = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            key = reader.getBooleanNullableValue();
                         } else if ("retrievable".equals(fieldName)) {
-                            hidden = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            hidden = reader.getBooleanNullableValue();
                         } else if ("searchable".equals(fieldName)) {
-                            searchable = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            searchable = reader.getBooleanNullableValue();
                         } else if ("filterable".equals(fieldName)) {
-                            filterable = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            filterable = reader.getBooleanNullableValue();
                         } else if ("sortable".equals(fieldName)) {
-                            sortable = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            sortable = reader.getBooleanNullableValue();
                         } else if ("facetable".equals(fieldName)) {
-                            facetable = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            facetable = reader.getBooleanNullableValue();
                         } else if ("analyzer".equals(fieldName)) {
-                            analyzerName = LexicalAnalyzerName.fromString(reader.getStringValue());
+                            analyzerName =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
                         } else if ("searchAnalyzer".equals(fieldName)) {
-                            searchAnalyzerName = LexicalAnalyzerName.fromString(reader.getStringValue());
+                            searchAnalyzerName =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
                         } else if ("indexAnalyzer".equals(fieldName)) {
-                            indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getStringValue());
+                            indexAnalyzerName =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
                         } else if ("normalizer".equals(fieldName)) {
-                            normalizerName = LexicalNormalizerName.fromString(reader.getStringValue());
+                            normalizerName =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalNormalizerName.fromString(reader.getStringValue()));
                         } else if ("synonymMaps".equals(fieldName)) {
                             synonymMapNames = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else if ("fields".equals(fieldName)) {

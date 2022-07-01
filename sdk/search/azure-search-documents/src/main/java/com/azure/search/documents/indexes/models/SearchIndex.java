@@ -436,26 +436,17 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
-        JsonUtils.writeArray(jsonWriter, "fields", this.fields, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter,
-                "scoringProfiles",
-                this.scoringProfiles,
-                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField(
+                "scoringProfiles", this.scoringProfiles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile, false);
         jsonWriter.writeJsonField("corsOptions", this.corsOptions, false);
-        JsonUtils.writeArray(
-                jsonWriter, "suggesters", this.suggesters, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "analyzers", this.analyzers, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "charFilters", this.charFilters, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "normalizers", this.normalizers, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("suggesters", this.suggesters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("analyzers", this.analyzers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokenizers", this.tokenizers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokenFilters", this.tokenFilters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("charFilters", this.charFilters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("normalizers", this.normalizers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryptionKey", this.encryptionKey, false);
         jsonWriter.writeJsonField("similarity", this.similarity, false);
         jsonWriter.writeJsonField("semantic", this.semanticSettings, false);

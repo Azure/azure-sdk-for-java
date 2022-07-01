@@ -78,8 +78,7 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
-        JsonUtils.writeArray(
-                jsonWriter, "sourceFields", this.sourceFields, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("sourceFields", this.sourceFields, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("searchMode", this.searchMode, false);
         return jsonWriter.writeEndObject().flush();
     }

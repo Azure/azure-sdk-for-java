@@ -377,8 +377,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
         jsonWriter.writeBooleanField("defaultCaseSensitive", this.defaultCaseSensitive, false);
         jsonWriter.writeBooleanField("defaultAccentSensitive", this.defaultAccentSensitive, false);
         jsonWriter.writeIntegerField("defaultFuzzyEditDistance", this.defaultFuzzyEditDistance, false);
-        JsonUtils.writeArray(
-                jsonWriter, "aliases", this.aliases, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -423,18 +422,17 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
                         } else if ("id".equals(fieldName)) {
                             id = reader.getStringValue();
                         } else if ("caseSensitive".equals(fieldName)) {
-                            caseSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            caseSensitive = reader.getBooleanNullableValue();
                         } else if ("accentSensitive".equals(fieldName)) {
-                            accentSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            accentSensitive = reader.getBooleanNullableValue();
                         } else if ("fuzzyEditDistance".equals(fieldName)) {
-                            fuzzyEditDistance = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            fuzzyEditDistance = reader.getIntegerNullableValue();
                         } else if ("defaultCaseSensitive".equals(fieldName)) {
-                            defaultCaseSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            defaultCaseSensitive = reader.getBooleanNullableValue();
                         } else if ("defaultAccentSensitive".equals(fieldName)) {
-                            defaultAccentSensitive =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            defaultAccentSensitive = reader.getBooleanNullableValue();
                         } else if ("defaultFuzzyEditDistance".equals(fieldName)) {
-                            defaultFuzzyEditDistance = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            defaultFuzzyEditDistance = reader.getIntegerNullableValue();
                         } else if ("aliases".equals(fieldName)) {
                             aliases = JsonUtils.readArray(reader, reader1 -> CustomEntityAlias.fromJson(reader1));
                         } else {

@@ -94,7 +94,7 @@ public final class KeywordTokenizerV1 extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("bufferSize".equals(fieldName)) {
-                            bufferSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            bufferSize = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

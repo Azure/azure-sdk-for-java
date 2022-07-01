@@ -75,8 +75,7 @@ public final class SearchError implements JsonSerializable<SearchError> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("message", this.message, false);
         jsonWriter.writeStringField("code", this.code, false);
-        JsonUtils.writeArray(
-                jsonWriter, "details", this.details, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

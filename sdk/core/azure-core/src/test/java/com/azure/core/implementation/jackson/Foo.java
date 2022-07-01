@@ -87,9 +87,8 @@ public class Foo implements JsonSerializable<Foo> {
                 .writeStringField("bar", bar, false);
 
             if (baz != null || qux != null) {
-                jsonWriter.writeStartObject("props");
-
-                JsonUtils.writeArray(jsonWriter, "baz", baz, JsonWriter::writeString);
+                jsonWriter.writeStartObject("props")
+                    .writeArrayField("baz", baz, JsonWriter::writeString);
 
                 if (qux != null) {
                     jsonWriter.writeStartObject("q")

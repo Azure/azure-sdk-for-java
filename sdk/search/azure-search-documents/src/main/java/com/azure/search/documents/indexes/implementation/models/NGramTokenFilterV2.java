@@ -123,9 +123,9 @@ public final class NGramTokenFilterV2 extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("minGram".equals(fieldName)) {
-                            minGram = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            minGram = reader.getIntegerNullableValue();
                         } else if ("maxGram".equals(fieldName)) {
-                            maxGram = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxGram = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

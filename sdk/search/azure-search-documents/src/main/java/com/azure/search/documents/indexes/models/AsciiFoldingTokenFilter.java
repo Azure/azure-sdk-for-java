@@ -97,7 +97,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("preserveOriginal".equals(fieldName)) {
-                            preserveOriginal = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            preserveOriginal = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

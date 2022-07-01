@@ -202,9 +202,8 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -213,11 +212,10 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                 this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString(),
                 false);
         jsonWriter.writeStringField("entitiesDefinitionUri", this.entitiesDefinitionUri, false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "inlineEntitiesDefinition",
                 this.inlineEntitiesDefinition,
-                (writer, element) -> writer.writeJson(element, false));
+                (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("globalDefaultCaseSensitive", this.globalDefaultCaseSensitive, false);
         jsonWriter.writeBooleanField("globalDefaultAccentSensitive", this.globalDefaultAccentSensitive, false);
         jsonWriter.writeIntegerField("globalDefaultFuzzyEditDistance", this.globalDefaultFuzzyEditDistance, false);
@@ -270,21 +268,21 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = CustomEntityLookupSkillLanguage.fromString(reader.getStringValue());
+                            defaultLanguageCode =
+                                    JsonUtils.getNullableProperty(
+                                            reader,
+                                            r -> CustomEntityLookupSkillLanguage.fromString(reader.getStringValue()));
                         } else if ("entitiesDefinitionUri".equals(fieldName)) {
                             entitiesDefinitionUri = reader.getStringValue();
                         } else if ("inlineEntitiesDefinition".equals(fieldName)) {
                             inlineEntitiesDefinition =
                                     JsonUtils.readArray(reader, reader1 -> CustomEntity.fromJson(reader1));
                         } else if ("globalDefaultCaseSensitive".equals(fieldName)) {
-                            globalDefaultCaseSensitive =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            globalDefaultCaseSensitive = reader.getBooleanNullableValue();
                         } else if ("globalDefaultAccentSensitive".equals(fieldName)) {
-                            globalDefaultAccentSensitive =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            globalDefaultAccentSensitive = reader.getBooleanNullableValue();
                         } else if ("globalDefaultFuzzyEditDistance".equals(fieldName)) {
-                            globalDefaultFuzzyEditDistance =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            globalDefaultFuzzyEditDistance = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

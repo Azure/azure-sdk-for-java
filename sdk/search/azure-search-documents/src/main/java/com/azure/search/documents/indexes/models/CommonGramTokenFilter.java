@@ -113,8 +113,7 @@ public final class CommonGramTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "commonWords", this.commonWords, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("commonWords", this.commonWords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored, false);
         jsonWriter.writeBooleanField("queryMode", this.queryModeUsed, false);
         return jsonWriter.writeEndObject().flush();
@@ -153,9 +152,9 @@ public final class CommonGramTokenFilter extends TokenFilter {
                             commonWords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             commonWordsFound = true;
                         } else if ("ignoreCase".equals(fieldName)) {
-                            caseIgnored = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            caseIgnored = reader.getBooleanNullableValue();
                         } else if ("queryMode".equals(fieldName)) {
-                            queryModeUsed = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            queryModeUsed = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

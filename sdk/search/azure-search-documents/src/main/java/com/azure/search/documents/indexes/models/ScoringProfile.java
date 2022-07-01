@@ -125,8 +125,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeJsonField("text", this.textWeights, false);
-        JsonUtils.writeArray(
-                jsonWriter, "functions", this.functions, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField(
                 "functionAggregation",
                 this.functionAggregation == null ? null : this.functionAggregation.toString(),

@@ -123,7 +123,7 @@ public final class InputFieldMappingEntry implements JsonSerializable<InputField
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeStringField("source", this.source, false);
         jsonWriter.writeStringField("sourceContext", this.sourceContext, false);
-        JsonUtils.writeArray(jsonWriter, "inputs", this.inputs, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

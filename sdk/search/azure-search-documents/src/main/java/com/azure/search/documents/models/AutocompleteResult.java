@@ -61,7 +61,7 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "value", this.results, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeDoubleField("@search.coverage", this.coverage, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -89,7 +89,7 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
                             results = JsonUtils.readArray(reader, reader1 -> AutocompleteItem.fromJson(reader1));
                             resultsFound = true;
                         } else if ("@search.coverage".equals(fieldName)) {
-                            coverage = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            coverage = reader.getDoubleNullableValue();
                         } else {
                             reader.skipChildren();
                         }

@@ -161,8 +161,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "wordList", this.wordList, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("wordList", this.wordList, (writer, element) -> writer.writeString(element));
         jsonWriter.writeIntegerField("minWordSize", this.minWordSize, false);
         jsonWriter.writeIntegerField("minSubwordSize", this.minSubwordSize, false);
         jsonWriter.writeIntegerField("maxSubwordSize", this.maxSubwordSize, false);
@@ -205,13 +204,13 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
                             wordList = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             wordListFound = true;
                         } else if ("minWordSize".equals(fieldName)) {
-                            minWordSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            minWordSize = reader.getIntegerNullableValue();
                         } else if ("minSubwordSize".equals(fieldName)) {
-                            minSubwordSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            minSubwordSize = reader.getIntegerNullableValue();
                         } else if ("maxSubwordSize".equals(fieldName)) {
-                            maxSubwordSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxSubwordSize = reader.getIntegerNullableValue();
                         } else if ("onlyLongestMatch".equals(fieldName)) {
-                            onlyLongestMatched = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            onlyLongestMatched = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

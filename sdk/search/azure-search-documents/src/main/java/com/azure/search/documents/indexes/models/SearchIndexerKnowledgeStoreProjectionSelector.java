@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import java.util.List;
@@ -148,7 +147,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
         jsonWriter.writeStringField("generatedKeyName", this.generatedKeyName, false);
         jsonWriter.writeStringField("source", this.source, false);
         jsonWriter.writeStringField("sourceContext", this.sourceContext, false);
-        JsonUtils.writeArray(jsonWriter, "inputs", this.inputs, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 }

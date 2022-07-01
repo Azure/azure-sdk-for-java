@@ -152,9 +152,8 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "inputs", this.inputs, (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", this.outputs, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeStringField("description", this.description, false);
         jsonWriter.writeStringField("context", this.context, false);

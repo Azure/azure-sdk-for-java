@@ -45,11 +45,8 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(
-                jsonWriter,
-                "configurations",
-                this.configurations,
-                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField(
+                "configurations", this.configurations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

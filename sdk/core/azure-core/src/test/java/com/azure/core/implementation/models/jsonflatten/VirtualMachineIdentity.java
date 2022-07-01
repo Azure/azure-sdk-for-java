@@ -43,9 +43,8 @@ public final class VirtualMachineIdentity implements JsonSerializable<VirtualMac
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeArray(jsonWriter, "type", type, JsonWriter::writeString);
+        jsonWriter.writeStartObject()
+            .writeArrayField("type", type, JsonWriter::writeString);
 
         if (userAssignedIdentities != null) {
             jsonWriter.writeStartObject("userAssignedIdentities");

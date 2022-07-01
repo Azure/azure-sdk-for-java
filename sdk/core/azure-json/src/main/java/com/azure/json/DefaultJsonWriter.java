@@ -58,6 +58,12 @@ public final class DefaultJsonWriter extends JsonWriter {
     }
 
     @Override
+    public JsonWriter writeStartObject(String fieldName) {
+        validateAndUpdate(() -> generator.writeObjectFieldStart(fieldName), JsonToken.FIELD_NAME, false);
+        return this;
+    }
+
+    @Override
     public JsonWriter writeEndObject() {
         validateAndUpdate(generator::writeEndObject, JsonToken.END_OBJECT, false);
         return this;
@@ -66,6 +72,12 @@ public final class DefaultJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeStartArray() {
         validateAndUpdate(generator::writeStartArray, JsonToken.START_ARRAY, false);
+        return this;
+    }
+
+    @Override
+    public JsonWriter writeStartArray(String fieldName) {
+        validateAndUpdate(() -> generator.writeArrayFieldStart(fieldName), JsonToken.FIELD_NAME, false);
         return this;
     }
 

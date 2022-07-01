@@ -48,7 +48,7 @@ public final class TextWeights implements JsonSerializable<TextWeights> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeMap(jsonWriter, "weights", this.weights, (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeMapField("weights", this.weights, (writer, element) -> writer.writeDouble(element));
         return jsonWriter.writeEndObject().flush();
     }
 

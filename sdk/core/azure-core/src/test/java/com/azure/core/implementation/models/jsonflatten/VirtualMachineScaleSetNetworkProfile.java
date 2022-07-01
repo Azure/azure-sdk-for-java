@@ -31,12 +31,10 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonSerializa
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject();
-
-        JsonUtils.writeArray(jsonWriter, "networkInterfaceConfigurations", networkInterfaceConfigurations,
-            JsonWriter::writeJson);
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeArrayField("networkInterfaceConfigurations", networkInterfaceConfigurations, JsonWriter::writeJson)
+            .writeEndObject()
+            .flush();
     }
 
     public static VirtualMachineScaleSetNetworkProfile fromJson(JsonReader jsonReader) {

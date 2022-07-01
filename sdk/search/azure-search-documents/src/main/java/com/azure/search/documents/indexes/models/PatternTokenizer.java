@@ -173,9 +173,11 @@ public final class PatternTokenizer extends LexicalTokenizer {
                         } else if ("pattern".equals(fieldName)) {
                             pattern = reader.getStringValue();
                         } else if ("flags".equals(fieldName)) {
-                            flags = RegexFlags.fromString(reader.getStringValue());
+                            flags =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> RegexFlags.fromString(reader.getStringValue()));
                         } else if ("group".equals(fieldName)) {
-                            group = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            group = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

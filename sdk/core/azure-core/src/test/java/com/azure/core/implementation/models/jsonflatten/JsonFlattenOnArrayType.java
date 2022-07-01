@@ -34,9 +34,8 @@ public final class JsonFlattenOnArrayType implements JsonSerializable<JsonFlatte
         jsonWriter.writeStartObject();
 
         if (jsonFlattenArray != null) {
-            jsonWriter.writeStartObject("jsonflatten");
-
-            JsonUtils.writeArray(jsonWriter, "array", jsonFlattenArray, JsonWriter::writeString)
+            jsonWriter.writeStartObject("jsonflatten")
+                .writeArrayField("array", jsonFlattenArray, JsonWriter::writeString)
                 .writeEndObject();
         }
 

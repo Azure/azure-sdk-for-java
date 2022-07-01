@@ -124,8 +124,7 @@ public final class SynonymTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "synonyms", this.synonyms, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("synonyms", this.synonyms, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored, false);
         jsonWriter.writeBooleanField("expand", this.expand, false);
         return jsonWriter.writeEndObject().flush();
@@ -164,9 +163,9 @@ public final class SynonymTokenFilter extends TokenFilter {
                             synonyms = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             synonymsFound = true;
                         } else if ("ignoreCase".equals(fieldName)) {
-                            caseIgnored = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            caseIgnored = reader.getBooleanNullableValue();
                         } else if ("expand".equals(fieldName)) {
-                            expand = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            expand = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

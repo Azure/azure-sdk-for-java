@@ -36,7 +36,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
         jsonWriter.writeStringField("generatedKeyName", getGeneratedKeyName(), false);
         jsonWriter.writeStringField("source", getSource(), false);
         jsonWriter.writeStringField("sourceContext", getSourceContext(), false);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

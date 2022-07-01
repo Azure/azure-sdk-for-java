@@ -347,17 +347,17 @@ public final class AutocompleteRequest implements JsonSerializable<AutocompleteR
                         } else if ("filter".equals(fieldName)) {
                             filter = reader.getStringValue();
                         } else if ("fuzzy".equals(fieldName)) {
-                            useFuzzyMatching = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            useFuzzyMatching = reader.getBooleanNullableValue();
                         } else if ("highlightPostTag".equals(fieldName)) {
                             highlightPostTag = reader.getStringValue();
                         } else if ("highlightPreTag".equals(fieldName)) {
                             highlightPreTag = reader.getStringValue();
                         } else if ("minimumCoverage".equals(fieldName)) {
-                            minimumCoverage = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            minimumCoverage = reader.getDoubleNullableValue();
                         } else if ("searchFields".equals(fieldName)) {
                             searchFields = reader.getStringValue();
                         } else if ("top".equals(fieldName)) {
-                            top = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            top = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

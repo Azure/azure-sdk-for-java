@@ -95,7 +95,7 @@ public final class UniqueTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("onlyOnSamePosition".equals(fieldName)) {
-                            onlyOnSamePosition = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            onlyOnSamePosition = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

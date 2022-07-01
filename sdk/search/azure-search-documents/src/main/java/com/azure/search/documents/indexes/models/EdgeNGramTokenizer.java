@@ -119,8 +119,7 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeIntegerField("minGram", this.minGram, false);
         jsonWriter.writeIntegerField("maxGram", this.maxGram, false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "tokenChars",
                 this.tokenChars,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -156,9 +155,9 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("minGram".equals(fieldName)) {
-                            minGram = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            minGram = reader.getIntegerNullableValue();
                         } else if ("maxGram".equals(fieldName)) {
-                            maxGram = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxGram = reader.getIntegerNullableValue();
                         } else if ("tokenChars".equals(fieldName)) {
                             tokenChars =
                                     JsonUtils.readArray(

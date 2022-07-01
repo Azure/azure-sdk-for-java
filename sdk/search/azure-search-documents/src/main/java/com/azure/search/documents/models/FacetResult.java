@@ -95,7 +95,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
                         reader.nextToken();
 
                         if ("count".equals(fieldName)) {
-                            count = JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                            count = reader.getLongNullableValue();
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();

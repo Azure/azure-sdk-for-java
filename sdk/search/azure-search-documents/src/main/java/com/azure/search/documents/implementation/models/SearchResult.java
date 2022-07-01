@@ -124,18 +124,11 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
         jsonWriter.writeStartObject();
         jsonWriter.writeDoubleField("@search.score", this.score);
         jsonWriter.writeDoubleField("@search.rerankerScore", this.rerankerScore, false);
-        JsonUtils.writeMap(
-                jsonWriter,
+        jsonWriter.writeMapField(
                 "@search.highlights",
                 this.highlights,
-                (writer, element) ->
-                        JsonUtils.writeArray(
-                                jsonWriter,
-                                "@search.highlights",
-                                element,
-                                (writer1, element1) -> writer1.writeString(element1, false)));
-        JsonUtils.writeArray(
-                jsonWriter, "@search.captions", this.captions, (writer, element) -> writer.writeJson(element, false));
+                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeArrayField("@search.captions", this.captions, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             additionalProperties.forEach(
                     (key, value) -> {
@@ -172,7 +165,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                             score = reader.getDoubleValue();
                             scoreFound = true;
                         } else if ("@search.rerankerScore".equals(fieldName)) {
-                            rerankerScore = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            rerankerScore = reader.getDoubleNullableValue();
                         } else if ("@search.highlights".equals(fieldName)) {
                             highlights =
                                     JsonUtils.readMap(

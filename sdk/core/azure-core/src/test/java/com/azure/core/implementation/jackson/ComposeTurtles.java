@@ -65,17 +65,14 @@ public class ComposeTurtles implements JsonSerializable<ComposeTurtles> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject()
+        return jsonWriter.writeStartObject()
             .writeStringField("description", description, false)
-            .writeJsonField("turtlesSet1Lead", turtlesSet1Lead, false);
-
-        JsonUtils.writeArray(jsonWriter, "turtlesSet1", turtlesSet1, JsonWriter::writeJson);
-
-        jsonWriter.writeJsonField("turtlesSet2Lead", turtlesSet2Lead, false);
-
-        JsonUtils.writeArray(jsonWriter, "turtlesSet2", turtlesSet2, JsonWriter::writeJson);
-
-        return jsonWriter.writeEndObject().flush();
+            .writeJsonField("turtlesSet1Lead", turtlesSet1Lead, false)
+            .writeArrayField("turtlesSet1", turtlesSet1, JsonWriter::writeJson)
+            .writeJsonField("turtlesSet2Lead", turtlesSet2Lead, false)
+            .writeArrayField("turtlesSet2", turtlesSet2, JsonWriter::writeJson)
+            .writeEndObject()
+            .flush();
     }
 
     public static ComposeTurtles fromJson(JsonReader jsonReader) {

@@ -5,6 +5,8 @@ package com.azure.json;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * Writes a JSON encoded value to a stream.
@@ -59,7 +61,7 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
-    public final JsonWriter writeStartObject(String fieldName) {
+    public JsonWriter writeStartObject(String fieldName) {
         return writeFieldName(fieldName).writeStartObject();
     }
 
@@ -88,7 +90,7 @@ public abstract class JsonWriter implements Closeable {
      * @param fieldName The field name.
      * @return The updated JsonWriter object.
      */
-    public final JsonWriter writeStartArray(String fieldName) {
+    public JsonWriter writeStartArray(String fieldName) {
         return writeFieldName(fieldName).writeStartArray();
     }
 
@@ -122,6 +124,169 @@ public abstract class JsonWriter implements Closeable {
      */
     public final JsonWriter writeJson(JsonSerializable<?> value) {
         return (value == null) ? writeNull() : value.toJson(this);
+    }
+
+    /**
+     * Writes a JSON array.
+     * <p>
+     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
+     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If the passed {@code array} is null JSON null will be written. If null shouldn't be written use
+     * {@link #writeArray(Object[], boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * <p>
+     * This API is used instead of {@link #writeArrayField(String, Object[], BiConsumer)} when the value needs to be
+     * written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArray(T[] array, BiConsumer<JsonWriter, T> elementWriterFunc) {
+        return writeArray(array, true, elementWriterFunc);
+    }
+
+    /**
+     * Writes a JSON array.
+     * <p>
+     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
+     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * {@code writeNull} determines whether JSON null should be written if {@code array} is null.
+     * <p>
+     * This API is used instead of {@link #writeArrayField(String, Object[], boolean, BiConsumer)} when the value needs
+     * to be written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param array The array being written.
+     * @param writeNull Whether JSON null should be written if {@code array} is null.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArray(T[] array, boolean writeNull, BiConsumer<JsonWriter, T> elementWriterFunc) {
+        if (array == null) {
+            return writeNull ? writeNull() : this;
+        }
+
+        writeStartArray();
+
+        for (T element : array) {
+            elementWriterFunc.accept(this, element);
+        }
+
+        return writeEndArray();
+    }
+
+    /**
+     * Writes a JSON array.
+     * <p>
+     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
+     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If the passed {@code array} is null JSON null will be written. If null shouldn't be written use
+     * {@link #writeArray(Iterable, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * <p>
+     * This API is used instead of {@link #writeArrayField(String, Iterable, BiConsumer)} when the value needs to be
+     * written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArray(Iterable<T> array, BiConsumer<JsonWriter, T> elementWriterFunc) {
+        return writeArray(array, true, elementWriterFunc);
+    }
+
+    /**
+     * Writes a JSON array.
+     * <p>
+     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
+     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * {@code writeNull} determines whether JSON null should be written if {@code map} is null.
+     * <p>
+     * This API is used instead of {@link #writeArrayField(String, Iterable, boolean, BiConsumer)} when the value needs
+     * to be written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param array The array being written.
+     * @param writeNull Whether JSON null should be written if {@code array} is null.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArray(Iterable<T> array, boolean writeNull, BiConsumer<JsonWriter, T> elementWriterFunc) {
+        if (array == null) {
+            return writeNull ? writeNull() : this;
+        }
+
+        writeStartArray();
+
+        for (T element : array) {
+            elementWriterFunc.accept(this, element);
+        }
+
+        return writeEndArray();
+    }
+
+    /**
+     * Writes a JSON map.
+     * <p>
+     * This API will begin by writing the start object ({@code &#123;}) followed by key-value fields in the map using
+     * the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * If the passed {@code map} is null JSON null will be written. If null shouldn't be written use
+     * {@link #writeMap(Map, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * <p>
+     * This API is used instead of {@link #writeMapField(String, Map, BiConsumer)} when the value needs to be written to
+     * the root of the JSON value, as an element in an array, or after a call to {@link #writeFieldName(String)}.
+     *
+     * @param map The map being written.
+     * @param valueWriterFunc The function that writes value of each key-value pair in the map.
+     * @param <T> The value element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeMap(Map<String, T> map, BiConsumer<JsonWriter, T> valueWriterFunc) {
+        return writeMap(map, true, valueWriterFunc);
+    }
+
+    /**
+     * Writes a JSON map.
+     * <p>
+     * This API will begin by writing the start object ({@code &#123;}) followed by key-value fields in the map using
+     * the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * {@code writeNull} determines whether JSON null should be written if {@code map} is null.
+     * <p>
+     * This API is used instead of {@link #writeMapField(String, Map, boolean, BiConsumer)} when the value needs to be
+     * written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param map The map being written.
+     * @param writeNull Whether JSON null should be written if {@code map} is null.
+     * @param valueWriterFunc The function that writes value of each key-value pair in the map.
+     * @param <T> The value element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeMap(Map<String, T> map, boolean writeNull,
+        BiConsumer<JsonWriter, T> valueWriterFunc) {
+        if (map == null) {
+            return writeNull ? writeNull() : this;
+        }
+
+        writeStartObject();
+
+        for (Map.Entry<String, T> entry : map.entrySet()) {
+            writeFieldName(entry.getKey());
+            valueWriterFunc.accept(this, entry.getValue());
+        }
+
+        return writeEndObject();
     }
 
     /**
@@ -521,6 +686,173 @@ public abstract class JsonWriter implements Closeable {
      */
     public final JsonWriter writeJsonField(String fieldName, JsonSerializable<?> value) {
         return writeJsonField(fieldName, value, true);
+    }
+
+    /**
+     * Writes a JSON array field.
+     * <p>
+     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
+     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If the passed {@code array} is null a JSON null field will be written. If a null field shouldn't be written use
+     * {@link #writeArrayField(String, Object[], boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], BiConsumer)} to simplify adding a
+     * key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArrayField(String fieldName, T[] array,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        return writeArrayField(fieldName, array, true, elementWriterFunc);
+    }
+
+    /**
+     * Writes a JSON array field.
+     * <p>
+     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
+     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * {@code writeNull} determines whether a JSON null field should be written if {@code array} is null.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], boolean, BiConsumer)} to simplify
+     * adding a key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param array The array being written.
+     * @param writeNull Whether JSON null should be written if {@code array} is null.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArrayField(String fieldName, T[] array, boolean writeNull,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        if (array == null) {
+            return writeNull ? writeNullField(fieldName) : this;
+        }
+
+        writeStartArray(fieldName);
+
+        for (T element : array) {
+            elementWriterFunc.accept(this, element);
+        }
+
+        return writeEndArray();
+    }
+
+    /**
+     * Writes a JSON array field.
+     * <p>
+     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
+     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If the passed {@code array} is null a JSON null field will be written. If a null field shouldn't be written use
+     * {@link #writeArrayField(String, Iterable, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, BiConsumer)} to simplify adding a
+     * key-value to a JSON object.
+     *
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        return writeArrayField(fieldName, array, true, elementWriterFunc);
+    }
+
+    /**
+     * Writes a JSON array field.
+     * <p>
+     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
+     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * {@code writeNull} determines whether a JSON null field should be written if {@code array} is null.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], boolean, BiConsumer)} to simplify
+     * adding a key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param array The array being written.
+     * @param writeNull Whether JSON null should be written if {@code array} is null.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array, boolean writeNull,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        if (array == null) {
+            return writeNull ? writeNullField(fieldName) : this;
+        }
+
+        writeStartArray(fieldName);
+
+        for (T element : array) {
+            elementWriterFunc.accept(this, element);
+        }
+
+        return writeEndArray();
+    }
+
+    /**
+     * Writes a JSON map field.
+     * <p>
+     * This API will begin by writing the field name and start object ({@code &#123;}) followed by key-value fields in
+     * the map using the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * If the passed {@code map} is null a JSON null field will be written. If a null field shouldn't be written use
+     * {@link #writeMapField(String, Map, boolean, BiConsumer)} and pass false for {@code writeNull}.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, BiConsumer)} to simplify adding a key-value to
+     * a JSON object.
+     *
+     * @param map The map being written.
+     * @param valueWriterFunc The function that writes each value of the map.
+     * @param <T> The value element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
+        BiConsumer<JsonWriter, T> valueWriterFunc) {
+        return writeMapField(fieldName, map, true, valueWriterFunc);
+    }
+
+    /**
+     * Writes a JSON map field.
+     * <p>
+     * This API will begin by writing the field name and start object ({@code &#123;}) followed by key-value fields in
+     * the map using the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * {@code writeNull} determines whether a JSON null field should be written if {@code map} is null.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, boolean, BiConsumer)} to simplify
+     * adding a key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param map The map being written.
+     * @param writeNull Whether JSON null should be written if {@code map} is null.
+     * @param valueWriterFunc The function that writes each value of the map.
+     * @param <T> The value element type.
+     * @return The updated JsonWriter object.
+     */
+    public final <T> JsonWriter writeMapField(String fieldName, Map<String, T> map, boolean writeNull,
+        BiConsumer<JsonWriter, T> valueWriterFunc) {
+        if (map == null) {
+            return writeNull ? writeNullField(fieldName) : this;
+        }
+
+        writeStartArray(fieldName);
+
+        for (Map.Entry<String, T> entry : map.entrySet()) {
+            writeFieldName(entry.getKey());
+            valueWriterFunc.accept(this, entry.getValue());
+        }
+
+        return writeEndArray();
     }
 
     /**

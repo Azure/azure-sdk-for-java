@@ -91,8 +91,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeIntegerField("maxTokenLength", this.maxTokenLength, false);
-        JsonUtils.writeArray(
-                jsonWriter, "stopwords", this.stopwords, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -124,7 +123,7 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenLength = reader.getIntegerNullableValue();
                         } else if ("stopwords".equals(fieldName)) {
                             stopwords = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                         } else {

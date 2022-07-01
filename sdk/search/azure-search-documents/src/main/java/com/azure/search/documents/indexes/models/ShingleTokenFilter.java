@@ -240,14 +240,13 @@ public final class ShingleTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxShingleSize".equals(fieldName)) {
-                            maxShingleSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxShingleSize = reader.getIntegerNullableValue();
                         } else if ("minShingleSize".equals(fieldName)) {
-                            minShingleSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            minShingleSize = reader.getIntegerNullableValue();
                         } else if ("outputUnigrams".equals(fieldName)) {
-                            outputUnigrams = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            outputUnigrams = reader.getBooleanNullableValue();
                         } else if ("outputUnigramsIfNoShingles".equals(fieldName)) {
-                            outputUnigramsIfNoShingles =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            outputUnigramsIfNoShingles = reader.getBooleanNullableValue();
                         } else if ("tokenSeparator".equals(fieldName)) {
                             tokenSeparator = reader.getStringValue();
                         } else if ("filterToken".equals(fieldName)) {

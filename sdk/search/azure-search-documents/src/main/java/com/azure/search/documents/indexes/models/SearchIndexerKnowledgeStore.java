@@ -64,8 +64,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString, false);
-        JsonUtils.writeArray(
-                jsonWriter, "projections", this.projections, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("projections", this.projections, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

@@ -233,9 +233,8 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -245,11 +244,8 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                 "maskingMode", this.maskingMode == null ? null : this.maskingMode.toString(), false);
         jsonWriter.writeStringField("maskingCharacter", this.maskingCharacter, false);
         jsonWriter.writeStringField("modelVersion", this.modelVersion, false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "piiCategories",
-                this.piiCategories,
-                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField(
+                "piiCategories", this.piiCategories, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("domain", this.domain, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -303,9 +299,12 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         } else if ("defaultLanguageCode".equals(fieldName)) {
                             defaultLanguageCode = reader.getStringValue();
                         } else if ("minimumPrecision".equals(fieldName)) {
-                            minimumPrecision = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            minimumPrecision = reader.getDoubleNullableValue();
                         } else if ("maskingMode".equals(fieldName)) {
-                            maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getStringValue());
+                            maskingMode =
+                                    JsonUtils.getNullableProperty(
+                                            reader,
+                                            r -> PiiDetectionSkillMaskingMode.fromString(reader.getStringValue()));
                         } else if ("maskingCharacter".equals(fieldName)) {
                             maskingCharacter = reader.getStringValue();
                         } else if ("modelVersion".equals(fieldName)) {

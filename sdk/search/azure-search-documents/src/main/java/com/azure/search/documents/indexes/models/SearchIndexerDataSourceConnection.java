@@ -344,7 +344,10 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
                         } else if ("type".equals(fieldName)) {
-                            type = SearchIndexerDataSourceType.fromString(reader.getStringValue());
+                            type =
+                                    JsonUtils.getNullableProperty(
+                                            reader,
+                                            r -> SearchIndexerDataSourceType.fromString(reader.getStringValue()));
                         } else if ("credentials".equals(fieldName)) {
                             credentials = DataSourceCredentials.fromJson(reader);
                         } else if ("container".equals(fieldName)) {

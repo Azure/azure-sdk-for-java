@@ -96,7 +96,7 @@ public final class LuceneStandardTokenizerV1 extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenLength = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

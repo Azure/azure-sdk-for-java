@@ -94,11 +94,8 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString(), false);
-        JsonUtils.writeArray(
-                jsonWriter,
-                "executionHistory",
-                this.executionHistory,
-                (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField(
+                "executionHistory", this.executionHistory, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("limits", this.limits, false);
         jsonWriter.writeJsonField("lastResult", this.lastResult, false);
         return jsonWriter.writeEndObject().flush();

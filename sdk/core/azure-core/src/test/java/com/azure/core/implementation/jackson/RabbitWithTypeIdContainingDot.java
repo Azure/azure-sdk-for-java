@@ -35,16 +35,12 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject()
-            .writeStringField("@odata.type", "#Favourite.Pet.RabbitWithTypeIdContainingDot");
-
-        if (tailLength != null) {
-            jsonWriter.writeIntField("tailLength", tailLength);
-        }
-
-        JsonUtils.writeArray(jsonWriter, "meals", meals, JsonWriter::writeString);
-
-        return jsonWriter.writeEndObject().flush();
+        return jsonWriter.writeStartObject()
+            .writeStringField("@odata.type", "#Favourite.Pet.RabbitWithTypeIdContainingDot")
+            .writeIntegerField("tailLength", tailLength, false)
+            .writeArrayField("meals", meals, JsonWriter::writeString)
+            .writeEndObject()
+            .flush();
     }
 
     public static RabbitWithTypeIdContainingDot fromJson(JsonReader jsonReader) {

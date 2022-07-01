@@ -112,9 +112,8 @@ public final class SplitSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -171,11 +170,15 @@ public final class SplitSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = SplitSkillLanguage.fromString(reader.getStringValue());
+                            defaultLanguageCode =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SplitSkillLanguage.fromString(reader.getStringValue()));
                         } else if ("textSplitMode".equals(fieldName)) {
-                            textSplitMode = TextSplitMode.fromString(reader.getStringValue());
+                            textSplitMode =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> TextSplitMode.fromString(reader.getStringValue()));
                         } else if ("maximumPageLength".equals(fieldName)) {
-                            maximumPageLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maximumPageLength = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

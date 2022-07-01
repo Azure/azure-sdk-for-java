@@ -46,7 +46,7 @@ public final class ListAliasesResult implements JsonSerializable<ListAliasesResu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "value", this.aliases, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("value", this.aliases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 

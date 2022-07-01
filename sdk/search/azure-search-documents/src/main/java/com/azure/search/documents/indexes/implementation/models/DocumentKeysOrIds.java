@@ -70,13 +70,9 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(
-                jsonWriter, "documentKeys", this.documentKeys, (writer, element) -> writer.writeString(element, false));
-        JsonUtils.writeArray(
-                jsonWriter,
-                "datasourceDocumentIds",
-                this.datasourceDocumentIds,
-                (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("documentKeys", this.documentKeys, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "datasourceDocumentIds", this.datasourceDocumentIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject().flush();
     }
 

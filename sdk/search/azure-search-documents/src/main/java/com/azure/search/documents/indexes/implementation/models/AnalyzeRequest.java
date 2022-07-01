@@ -179,13 +179,11 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
         jsonWriter.writeStringField("analyzer", this.analyzer == null ? null : this.analyzer.toString(), false);
         jsonWriter.writeStringField("tokenizer", this.tokenizer == null ? null : this.tokenizer.toString(), false);
         jsonWriter.writeStringField("normalizer", this.normalizer == null ? null : this.normalizer.toString(), false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "tokenFilters",
                 this.tokenFilters,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "charFilters",
                 this.charFilters,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -219,19 +217,33 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                             text = reader.getStringValue();
                             textFound = true;
                         } else if ("analyzer".equals(fieldName)) {
-                            analyzer = LexicalAnalyzerName.fromString(reader.getStringValue());
+                            analyzer =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
                         } else if ("tokenizer".equals(fieldName)) {
-                            tokenizer = LexicalTokenizerName.fromString(reader.getStringValue());
+                            tokenizer =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalTokenizerName.fromString(reader.getStringValue()));
                         } else if ("normalizer".equals(fieldName)) {
-                            normalizer = LexicalNormalizerName.fromString(reader.getStringValue());
+                            normalizer =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalNormalizerName.fromString(reader.getStringValue()));
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> TokenFilterName.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> TokenFilterName.fromString(reader1.getStringValue())));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> CharFilterName.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> CharFilterName.fromString(reader1.getStringValue())));
                         } else {
                             reader.skipChildren();
                         }

@@ -66,9 +66,8 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
@@ -120,7 +119,9 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getStringValue());
+                            defaultLanguageCode =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> SentimentSkillLanguage.fromString(reader.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

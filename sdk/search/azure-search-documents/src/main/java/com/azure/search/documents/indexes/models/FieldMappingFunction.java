@@ -74,11 +74,8 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
-        JsonUtils.writeMap(
-                jsonWriter,
-                "parameters",
-                this.parameters,
-                (writer, element) -> JsonUtils.writeUntypedField(writer, element));
+        jsonWriter.writeMapField(
+                "parameters", this.parameters, (writer, element) -> JsonUtils.writeUntypedField(writer, element));
         return jsonWriter.writeEndObject().flush();
     }
 

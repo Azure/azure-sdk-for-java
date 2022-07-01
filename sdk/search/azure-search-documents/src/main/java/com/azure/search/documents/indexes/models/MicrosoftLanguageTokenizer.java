@@ -156,9 +156,9 @@ public final class MicrosoftLanguageTokenizer extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenLength = reader.getIntegerNullableValue();
                         } else if ("isSearchTokenizer".equals(fieldName)) {
-                            isSearchTokenizer = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            isSearchTokenizer = reader.getBooleanNullableValue();
                         } else if ("language".equals(fieldName)) {
                             language = MicrosoftTokenizerLanguage.fromString(reader.getStringValue());
                         } else {

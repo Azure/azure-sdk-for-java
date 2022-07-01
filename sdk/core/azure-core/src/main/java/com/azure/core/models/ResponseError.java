@@ -112,15 +112,14 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
-        jsonWriter.writeStartObject()
+        return jsonWriter.writeStartObject()
             .writeStringField("code", code)
             .writeStringField("message", message)
             .writeStringField("target", target, false)
-            .writeJsonField("innererror", innerError, false);
-
-        JsonUtils.writeArray(jsonWriter, "details", errorDetails, JsonWriter::writeJson);
-
-        return jsonWriter.writeEndObject().flush();
+            .writeJsonField("innererror", innerError, false)
+            .writeArrayField("details", errorDetails, JsonWriter::writeJson)
+            .writeEndObject()
+            .flush();
     }
 
     /**

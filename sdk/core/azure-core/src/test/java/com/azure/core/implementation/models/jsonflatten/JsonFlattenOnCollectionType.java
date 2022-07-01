@@ -33,9 +33,8 @@ public final class JsonFlattenOnCollectionType implements JsonSerializable<JsonF
         jsonWriter.writeStartObject();
 
         if (jsonFlattenCollection != null) {
-            jsonWriter.writeStartObject("jsonflatten");
-
-            JsonUtils.writeArray(jsonWriter, "collection", jsonFlattenCollection, JsonWriter::writeString)
+            jsonWriter.writeStartObject("jsonflatten")
+                .writeArrayField("collection", jsonFlattenCollection, JsonWriter::writeString)
                 .writeEndObject();
         }
 

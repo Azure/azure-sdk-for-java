@@ -153,14 +153,12 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "categories",
                 this.categories,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -219,14 +217,20 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
                         } else if ("categories".equals(fieldName)) {
                             categories =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> EntityCategory.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> EntityCategory.fromString(reader1.getStringValue())));
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode = EntityRecognitionSkillLanguage.fromString(reader.getStringValue());
+                            defaultLanguageCode =
+                                    JsonUtils.getNullableProperty(
+                                            reader,
+                                            r -> EntityRecognitionSkillLanguage.fromString(reader.getStringValue()));
                         } else if ("includeTypelessEntities".equals(fieldName)) {
-                            includeTypelessEntities =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            includeTypelessEntities = reader.getBooleanNullableValue();
                         } else if ("minimumPrecision".equals(fieldName)) {
-                            minimumPrecision = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            minimumPrecision = reader.getDoubleNullableValue();
                         } else {
                             reader.skipChildren();
                         }

@@ -117,9 +117,9 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
                         if ("@odata.type".equals(fieldName)) {
                             odataType = reader.getStringValue();
                         } else if ("k1".equals(fieldName)) {
-                            k1 = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            k1 = reader.getDoubleNullableValue();
                         } else if ("b".equals(fieldName)) {
-                            b = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            b = reader.getDoubleNullableValue();
                         } else {
                             reader.skipChildren();
                         }

@@ -93,7 +93,7 @@ public final class TruncateTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("length".equals(fieldName)) {
-                            length = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            length = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

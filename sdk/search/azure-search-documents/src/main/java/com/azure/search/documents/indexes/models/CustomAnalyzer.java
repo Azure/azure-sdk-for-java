@@ -121,13 +121,11 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("tokenizer", this.tokenizer == null ? null : this.tokenizer.toString(), false);
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "tokenFilters",
                 this.tokenFilters,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        JsonUtils.writeArray(
-                jsonWriter,
+        jsonWriter.writeArrayField(
                 "charFilters",
                 this.charFilters,
                 (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -164,16 +162,26 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("tokenizer".equals(fieldName)) {
-                            tokenizer = LexicalTokenizerName.fromString(reader.getStringValue());
+                            tokenizer =
+                                    JsonUtils.getNullableProperty(
+                                            reader, r -> LexicalTokenizerName.fromString(reader.getStringValue()));
                             tokenizerFound = true;
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> TokenFilterName.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> TokenFilterName.fromString(reader1.getStringValue())));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
                                     JsonUtils.readArray(
-                                            reader, reader1 -> CharFilterName.fromString(reader1.getStringValue()));
+                                            reader,
+                                            reader1 ->
+                                                    JsonUtils.getNullableProperty(
+                                                            reader1,
+                                                            r -> CharFilterName.fromString(reader1.getStringValue())));
                         } else {
                             reader.skipChildren();
                         }

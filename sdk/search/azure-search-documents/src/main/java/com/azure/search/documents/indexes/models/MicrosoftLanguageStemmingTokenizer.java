@@ -156,10 +156,9 @@ public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenLength = reader.getIntegerNullableValue();
                         } else if ("isSearchTokenizer".equals(fieldName)) {
-                            isSearchTokenizerUsed =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            isSearchTokenizerUsed = reader.getBooleanNullableValue();
                         } else if ("language".equals(fieldName)) {
                             language = MicrosoftStemmingTokenizerLanguage.fromString(reader.getStringValue());
                         } else {

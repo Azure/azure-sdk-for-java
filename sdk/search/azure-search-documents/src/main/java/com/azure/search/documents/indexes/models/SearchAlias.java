@@ -90,8 +90,7 @@ public final class SearchAlias implements JsonSerializable<SearchAlias> {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
-        JsonUtils.writeArray(
-                jsonWriter, "indexes", this.indexes, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("indexes", this.indexes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("@odata.etag", this.eTag, false);
         return jsonWriter.writeEndObject().flush();
     }

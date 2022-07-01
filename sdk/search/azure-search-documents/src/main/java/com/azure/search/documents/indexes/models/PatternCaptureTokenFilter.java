@@ -83,8 +83,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
         jsonWriter.writeStringField("name", getName(), false);
-        JsonUtils.writeArray(
-                jsonWriter, "patterns", this.patterns, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeArrayField("patterns", this.patterns, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal, false);
         return jsonWriter.writeEndObject().flush();
     }
@@ -121,7 +120,7 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
                             patterns = JsonUtils.readArray(reader, reader1 -> reader1.getStringValue());
                             patternsFound = true;
                         } else if ("preserveOriginal".equals(fieldName)) {
-                            preserveOriginal = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            preserveOriginal = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

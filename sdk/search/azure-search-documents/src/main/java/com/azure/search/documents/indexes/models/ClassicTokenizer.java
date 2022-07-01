@@ -99,7 +99,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenLength = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

@@ -180,15 +180,13 @@ public final class WebApiSkill extends SearchIndexerSkill {
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", odataType);
-        JsonUtils.writeArray(jsonWriter, "inputs", getInputs(), (writer, element) -> writer.writeJson(element, false));
-        JsonUtils.writeArray(
-                jsonWriter, "outputs", getOutputs(), (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName(), false);
         jsonWriter.writeStringField("description", getDescription(), false);
         jsonWriter.writeStringField("context", getContext(), false);
         jsonWriter.writeStringField("uri", this.uri, false);
-        JsonUtils.writeMap(
-                jsonWriter, "httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element, false));
+        jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod, false);
         jsonWriter.writeStringField("timeout", this.timeout == null ? null : this.timeout.toString(), false);
         jsonWriter.writeIntegerField("batchSize", this.batchSize, false);
@@ -253,9 +251,9 @@ public final class WebApiSkill extends SearchIndexerSkill {
                             timeout =
                                     JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
                         } else if ("batchSize".equals(fieldName)) {
-                            batchSize = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            batchSize = reader.getIntegerNullableValue();
                         } else if ("degreeOfParallelism".equals(fieldName)) {
-                            degreeOfParallelism = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            degreeOfParallelism = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

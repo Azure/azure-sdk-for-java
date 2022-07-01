@@ -152,11 +152,11 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
                             text = reader.getStringValue();
                             textFound = true;
                         } else if ("caseSensitive".equals(fieldName)) {
-                            caseSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            caseSensitive = reader.getBooleanNullableValue();
                         } else if ("accentSensitive".equals(fieldName)) {
-                            accentSensitive = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            accentSensitive = reader.getBooleanNullableValue();
                         } else if ("fuzzyEditDistance".equals(fieldName)) {
-                            fuzzyEditDistance = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            fuzzyEditDistance = reader.getIntegerNullableValue();
                         } else {
                             reader.skipChildren();
                         }

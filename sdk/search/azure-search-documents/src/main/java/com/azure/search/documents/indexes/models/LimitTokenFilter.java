@@ -123,9 +123,9 @@ public final class LimitTokenFilter extends TokenFilter {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("maxTokenCount".equals(fieldName)) {
-                            maxTokenCount = JsonUtils.getNullableProperty(reader, r -> reader.getIntValue());
+                            maxTokenCount = reader.getIntegerNullableValue();
                         } else if ("consumeAllTokens".equals(fieldName)) {
-                            allTokensConsumed = JsonUtils.getNullableProperty(reader, r -> reader.getBooleanValue());
+                            allTokensConsumed = reader.getBooleanNullableValue();
                         } else {
                             reader.skipChildren();
                         }

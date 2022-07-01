@@ -153,21 +153,14 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "value", this.results, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeLongField("@odata.count", this.count, false);
         jsonWriter.writeDoubleField("@search.coverage", this.coverage, false);
-        JsonUtils.writeMap(
-                jsonWriter,
+        jsonWriter.writeMapField(
                 "@search.facets",
                 this.facets,
-                (writer, element) ->
-                        JsonUtils.writeArray(
-                                jsonWriter,
-                                "@search.facets",
-                                element,
-                                (writer1, element1) -> writer1.writeJson(element1, false)));
-        JsonUtils.writeArray(
-                jsonWriter, "@search.answers", this.answers, (writer, element) -> writer.writeJson(element, false));
+                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeArrayField("@search.answers", this.answers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("@search.nextPageParameters", this.nextPageParameters, false);
         jsonWriter.writeStringField("@odata.nextLink", this.nextLink, false);
         return jsonWriter.writeEndObject().flush();
@@ -201,9 +194,9 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                             results = JsonUtils.readArray(reader, reader1 -> SearchResult.fromJson(reader1));
                             resultsFound = true;
                         } else if ("@odata.count".equals(fieldName)) {
-                            count = JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                            count = reader.getLongNullableValue();
                         } else if ("@search.coverage".equals(fieldName)) {
-                            coverage = JsonUtils.getNullableProperty(reader, r -> reader.getDoubleValue());
+                            coverage = reader.getDoubleNullableValue();
                         } else if ("@search.facets".equals(fieldName)) {
                             facets =
                                     JsonUtils.readMap(

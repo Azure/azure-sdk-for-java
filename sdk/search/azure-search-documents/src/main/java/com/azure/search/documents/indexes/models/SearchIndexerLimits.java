@@ -93,11 +93,9 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
                             maxRunTime =
                                     JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
                         } else if ("maxDocumentExtractionSize".equals(fieldName)) {
-                            maxDocumentExtractionSize =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                            maxDocumentExtractionSize = reader.getLongNullableValue();
                         } else if ("maxDocumentContentCharactersToExtract".equals(fieldName)) {
-                            maxDocumentContentCharactersToExtract =
-                                    JsonUtils.getNullableProperty(reader, r -> reader.getLongValue());
+                            maxDocumentContentCharactersToExtract = reader.getLongNullableValue();
                         } else {
                             reader.skipChildren();
                         }

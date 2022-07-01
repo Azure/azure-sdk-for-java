@@ -46,7 +46,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
-        JsonUtils.writeArray(jsonWriter, "tokens", this.tokens, (writer, element) -> writer.writeJson(element, false));
+        jsonWriter.writeArrayField("tokens", this.tokens, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject().flush();
     }
 
