@@ -1,14 +1,18 @@
 # Release History
 
-## 11.5.0-beta.11 (Unreleased)
+## 11.5.0-beta.11 (2022-07-01)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for `LexicalNormalizer`s in `SimpleField` and `SearchableField` annotations.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.18` to version `1.2.19`.
 
 ## 11.4.11 (2022-06-07)
 
