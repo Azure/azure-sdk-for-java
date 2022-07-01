@@ -3,17 +3,17 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/devices?api-version=2022-07-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (1.8.0_332; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "13c0b95a-9205-4978-92aa-5cdf8873da12"
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "582a872b-baa8-49ca-9eef-21dacc0f90c4"
     },
     "Response" : {
-      "content-length" : "1159",
-      "traceparent" : "00-536dead4361e9a44926984858e7ef0e5-3def6ca646c2ec42-00",
-      "mise-correlation-id" : "73a49eea-4327-44d4-ac62-606808e13cc0",
+      "content-length" : "1161",
+      "traceparent" : "00-4816aed54941674f9096155e0b5ce222-74c583a5fc717e40-00",
+      "mise-correlation-id" : "2bafdd45-01af-4db6-a5e8-39cfd747d107",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"deviceId\":\"adu-sdk-test-device-1\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"testgroup\",\"onLatestUpdate\":true,\"deploymentStatus\":\"Succeeded\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"joseph-edgevm2\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"joegroup\",\"installedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"deploymentStatus\":\"Succeeded\",\"lastDeploymentId\":\"joegroup-2022-128-1751-30-0129015341\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"dpokluda-test\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"dpokluda-test\",\"onLatestUpdate\":true,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.608.554.1\"}},\"deploymentStatus\":\"Failed\",\"lastDeploymentId\":\"test0609070108\",\"lastInstallResult\":{\"resultCode\":0,\"extendedResultCode\":805306371,\"resultDetails\":\"\"}}]}",
-      "Date" : "Thu, 23 Jun 2022 22:51:09 GMT",
+      "Body" : "{\"value\":[{\"deviceId\":\"adu-sdk-test-device-1\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"testgroup\",\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"joseph-edgevm2\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"joegroup\",\"installedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.128.1751.30\"}},\"deploymentStatus\":\"Succeeded\",\"lastDeploymentId\":\"joegroup-2022-128-1751-30-0129015341\",\"lastInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"dpokluda-test\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"groupId\":\"dpokluda-test\",\"onLatestUpdate\":false,\"lastAttemptedUpdate\":{\"updateId\":{\"provider\":\"fabrikam\",\"name\":\"vacuum\",\"version\":\"2022.608.554.1\"}},\"deploymentStatus\":\"Failed\",\"lastDeploymentId\":\"test0609070108\",\"lastInstallResult\":{\"resultCode\":0,\"extendedResultCode\":805306371,\"resultDetails\":\"\"}}]}",
+      "Date" : "Fri, 01 Jul 2022 22:42:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

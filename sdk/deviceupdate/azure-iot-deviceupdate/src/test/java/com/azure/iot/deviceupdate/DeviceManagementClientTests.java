@@ -61,8 +61,7 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-    // Temporary disabled because the service doesn't properly handle this method yet
-    // @Test
+    @Test
     public void testGetGroups() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listGroups(null);
@@ -89,8 +88,7 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-    // Temporary disabled because the service doesn't properly handle this method yet
-    // @Test
+    @Test
     public void testGetDeviceClasses() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDeviceClasses(null);
@@ -110,8 +108,7 @@ public class DeviceManagementClientTests extends TestBase {
         }
     }
 
-    // Temporary disabled because the service doesn't properly handle this method yet
-    // @Test
+    @Test
     public void testGetBestUpdatesForGroup() {
         DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listBestUpdatesForGroup(TestData.DEVICE_GROUP, null);

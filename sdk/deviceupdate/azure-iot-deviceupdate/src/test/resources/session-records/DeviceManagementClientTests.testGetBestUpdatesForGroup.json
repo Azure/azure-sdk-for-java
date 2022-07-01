@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/groups/dpokluda-test/bestUpdates?api-version=2022-07-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "13093e09-bde1-4fe4-8d96-dae60da27728"
+    },
+    "Response" : {
+      "content-length" : "331",
+      "traceparent" : "00-ca8fcf1f0a6c6342a0b52e5049d9d7ba-0ac867ad0e244b47-00",
+      "mise-correlation-id" : "dabe01c4-71d6-4d18-b503-9d31e210eedd",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"groupId\": \"dpokluda-test\",\r\n      \"deviceClassId\": \"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\r\n      \"update\": {\r\n        \"updateId\": {\r\n          \"provider\": \"fabrikam\",\r\n          \"name\": \"vacuum\",\r\n          \"version\": \"2022.701.235.32\"\r\n        }\r\n      },\r\n      \"deviceCount\": 1\r\n    }\r\n  ]\r\n}",
+      "Date" : "Fri, 01 Jul 2022 22:41:48 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

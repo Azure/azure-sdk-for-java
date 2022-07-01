@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ## Generate autorest code
 ```yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5ee062ac3cc2df298ff47bdfc7792d257fd85bb8/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2022-07-01-preview/deviceupdate.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b9b91929c304f8fb44002267b6c98d9fb9dde014/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2022-07-01-preview/deviceupdate.json
 java: true
 output-folder: ../
 regenerate-pom: false
