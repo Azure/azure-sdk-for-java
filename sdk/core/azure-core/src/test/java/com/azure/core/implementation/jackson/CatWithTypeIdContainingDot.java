@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -34,7 +33,7 @@ public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     }
 
     public static CatWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String odataType = null;
             boolean hasBreed = false;
             String breed = null;

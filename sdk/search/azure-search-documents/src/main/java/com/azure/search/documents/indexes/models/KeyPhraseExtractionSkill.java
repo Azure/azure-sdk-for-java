@@ -143,8 +143,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static KeyPhraseExtractionSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill";
                     boolean inputsFound = false;

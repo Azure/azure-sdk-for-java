@@ -88,8 +88,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static SentimentSkillV1 fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.SentimentSkill";
                     boolean inputsFound = false;

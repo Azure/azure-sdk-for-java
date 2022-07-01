@@ -558,8 +558,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      *     null if it was pointing to JSON null.
      */
     public static IndexingParametersConfiguration fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     BlobIndexerParsingMode parsingMode = null;
                     String excludedFileNameExtensions = null;

@@ -260,8 +260,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static PiiDetectionSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.PIIDetectionSkill";
                     boolean inputsFound = false;

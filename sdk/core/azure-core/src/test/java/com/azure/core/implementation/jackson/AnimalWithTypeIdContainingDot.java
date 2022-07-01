@@ -20,7 +20,7 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonSerializable<
      * passed.
      */
     public static AnimalWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             JsonReader readerToUse = null;
 

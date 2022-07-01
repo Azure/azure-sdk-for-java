@@ -173,8 +173,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *     polymorphic discriminator.
      */
     public static PatternAnalyzer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
                     boolean nameFound = false;

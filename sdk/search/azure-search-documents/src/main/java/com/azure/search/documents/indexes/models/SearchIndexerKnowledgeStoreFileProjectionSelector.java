@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -49,8 +48,7 @@ public final class SearchIndexerKnowledgeStoreFileProjectionSelector
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static SearchIndexerKnowledgeStoreFileProjectionSelector fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean storageContainerFound = false;
                     String storageContainer = null;

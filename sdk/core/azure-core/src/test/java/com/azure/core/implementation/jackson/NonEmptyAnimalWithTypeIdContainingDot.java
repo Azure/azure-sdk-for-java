@@ -3,9 +3,8 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -39,7 +38,7 @@ public class NonEmptyAnimalWithTypeIdContainingDot implements JsonSerializable<N
     static NonEmptyAnimalWithTypeIdContainingDot fromJsonInternal(JsonReader jsonReader,
         String expectedODataType) {
         // Assumption time, super classes will have access to their subclasses and they'll be in the same package.
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String odataType = null;
             Integer age = null;
             Integer size = null;

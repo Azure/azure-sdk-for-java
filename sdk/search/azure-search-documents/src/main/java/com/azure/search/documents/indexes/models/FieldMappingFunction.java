@@ -91,8 +91,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static FieldMappingFunction fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean nameFound = false;
                     String name = null;
@@ -105,11 +104,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("parameters".equals(fieldName)) {
-                            parameters =
-                                    reader.readMap(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1, r -> JsonUtils.readUntypedField(reader1)));
+                            parameters = reader.readMap(reader1 -> JsonUtils.readUntypedField(reader1));
                         } else {
                             reader.skipChildren();
                         }

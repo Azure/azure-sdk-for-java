@@ -104,8 +104,7 @@ public final class CaptionResult implements JsonSerializable<CaptionResult> {
      *     pointing to JSON null.
      */
     public static CaptionResult fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String text = null;
                     String highlights = null;

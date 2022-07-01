@@ -23,39 +23,6 @@ import java.util.function.Function;
  */
 public final class JsonUtils {
     /**
-     * Handles basic logic for deserializing an object before passing it into the deserialization function.
-     * <p>
-     * This will initialize the {@link JsonReader} for object reading and then check if the current token is
-     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} or
-     * {@link JsonToken#FIELD_NAME} and throw an {@link IllegalStateException}. {@link JsonToken#FIELD_NAME} is a valid
-     * starting location to support partial object reads.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @param deserializationFunc The function that handles deserialization logic, passing the reader and current
-     * token.
-     * @param <T> The type of object that is being deserialized.
-     * @return The deserialized object, or null if the {@link JsonToken#NULL} represents the object.
-     * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_OBJECT}.
-     */
-    public static <T> T readObject(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
-        JsonToken currentToken = jsonReader.currentToken();
-        if (currentToken == null) {
-            currentToken = jsonReader.nextToken();
-        }
-
-        // If the current token is JSON NULL or current token is still null return null.
-        // The current token may be null if there was no JSON content to read.
-        if (currentToken == JsonToken.NULL || currentToken == null) {
-            return null;
-        } else if (currentToken == JsonToken.END_OBJECT || currentToken == JsonToken.FIELD_NAME) {
-            // Otherwise, this is an invalid state, throw an exception.
-            throw new IllegalStateException("Unexpected token to begin deserialization: " + jsonReader.currentToken());
-        }
-
-        return deserializationFunc.apply(jsonReader);
-    }
-
-    /**
      * Reads the {@link JsonReader} as an untyped object.
      * <p>
      * The returned object is one of the following:

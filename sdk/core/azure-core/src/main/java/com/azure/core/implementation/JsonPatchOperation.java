@@ -4,10 +4,9 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonWriter;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -151,7 +150,7 @@ public final class JsonPatchOperation implements JsonSerializable<JsonPatchOpera
      * {@link JsonToken#START_OBJECT}.
      */
     public static JsonPatchOperation fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             JsonPatchOperationKind op = null;
             String from = null;
             String path = null;

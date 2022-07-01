@@ -59,8 +59,7 @@ public abstract class CharFilter implements JsonSerializable<CharFilter> {
      *     polymorphic discriminator.
      */
     public static CharFilter fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

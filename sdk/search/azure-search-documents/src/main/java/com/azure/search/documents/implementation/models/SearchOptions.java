@@ -768,8 +768,7 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      *     pointing to JSON null.
      */
     public static SearchOptions fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     Boolean includeTotalCount = null;
                     List<String> facets = null;

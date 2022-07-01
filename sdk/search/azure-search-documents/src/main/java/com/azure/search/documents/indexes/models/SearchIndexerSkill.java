@@ -170,8 +170,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
      *     polymorphic discriminator.
      */
     public static SearchIndexerSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

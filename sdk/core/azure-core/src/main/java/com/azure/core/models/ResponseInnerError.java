@@ -4,9 +4,8 @@
 package com.azure.core.models;
 
 
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -76,7 +75,7 @@ final class ResponseInnerError implements JsonSerializable<ResponseInnerError> {
      * passed.
      */
     public static ResponseInnerError fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             ResponseInnerError innerError = new ResponseInnerError();
 
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {

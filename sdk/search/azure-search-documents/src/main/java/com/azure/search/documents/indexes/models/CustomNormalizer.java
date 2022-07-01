@@ -124,8 +124,7 @@ public final class CustomNormalizer extends LexicalNormalizer {
      *     polymorphic discriminator.
      */
     public static CustomNormalizer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.CustomNormalizer";
                     boolean nameFound = false;

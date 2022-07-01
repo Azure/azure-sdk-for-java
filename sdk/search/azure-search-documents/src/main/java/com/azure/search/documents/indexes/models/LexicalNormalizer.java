@@ -61,8 +61,7 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
      *     polymorphic discriminator.
      */
     public static LexicalNormalizer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

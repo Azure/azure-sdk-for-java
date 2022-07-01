@@ -32,8 +32,7 @@ public abstract class SearchIndexerDataIdentity implements JsonSerializable<Sear
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      */
     public static SearchIndexerDataIdentity fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

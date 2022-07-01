@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -133,8 +132,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
      *     polymorphic discriminator.
      */
     public static EdgeNGramTokenFilterV1 fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.EdgeNGramTokenFilter";
                     boolean nameFound = false;

@@ -140,8 +140,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static DocumentExtractionSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Util.DocumentExtractionSkill";
                     boolean inputsFound = false;
@@ -177,11 +176,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                         } else if ("dataToExtract".equals(fieldName)) {
                             dataToExtract = reader.getStringValue();
                         } else if ("configuration".equals(fieldName)) {
-                            configuration =
-                                    reader.readMap(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1, r -> JsonUtils.readUntypedField(reader1)));
+                            configuration = reader.readMap(reader1 -> JsonUtils.readUntypedField(reader1));
                         } else {
                             reader.skipChildren();
                         }

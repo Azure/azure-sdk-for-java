@@ -94,8 +94,7 @@ public final class SuggestResult implements JsonSerializable<SuggestResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static SuggestResult fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean textFound = false;
                     String text = null;

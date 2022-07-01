@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -92,8 +91,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      *     of it, or null if it was pointing to JSON null.
      */
     public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String applicationId = null;
                     String applicationSecret = null;

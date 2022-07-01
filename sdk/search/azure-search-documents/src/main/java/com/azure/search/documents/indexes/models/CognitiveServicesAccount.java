@@ -58,8 +58,7 @@ public abstract class CognitiveServicesAccount implements JsonSerializable<Cogni
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      */
     public static CognitiveServicesAccount fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

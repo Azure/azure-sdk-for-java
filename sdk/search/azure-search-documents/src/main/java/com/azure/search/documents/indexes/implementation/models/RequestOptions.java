@@ -60,8 +60,7 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
      *     pointing to JSON null.
      */
     public static RequestOptions fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     UUID xMsClientRequestId = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {

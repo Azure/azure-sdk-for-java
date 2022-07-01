@@ -320,8 +320,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static SearchIndexerDataSourceConnection fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean nameFound = false;
                     String name = null;

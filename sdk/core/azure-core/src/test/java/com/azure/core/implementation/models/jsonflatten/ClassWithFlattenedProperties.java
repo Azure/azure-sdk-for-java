@@ -4,9 +4,8 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -47,7 +46,7 @@ public final class ClassWithFlattenedProperties implements JsonSerializable<Clas
     }
 
     public static ClassWithFlattenedProperties fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String odataType = null;
             String odataEtag = null;
 

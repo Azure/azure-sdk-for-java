@@ -137,8 +137,7 @@ public final class SplitSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static SplitSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.SplitSkill";
                     boolean inputsFound = false;

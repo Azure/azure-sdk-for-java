@@ -4,9 +4,8 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -70,7 +69,7 @@ public final class JsonFlattenOnPrimitiveType implements JsonSerializable<JsonFl
     }
 
     public static JsonFlattenOnPrimitiveType fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             boolean jsonFlattenBoolean = false;
             double jsonFlattenDecimal = 0;
             int jsonFlattenNumber = 0;

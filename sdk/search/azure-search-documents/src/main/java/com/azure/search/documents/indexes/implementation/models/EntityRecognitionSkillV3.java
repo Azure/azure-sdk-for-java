@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -173,8 +172,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static EntityRecognitionSkillV3 fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.V3.EntityRecognitionSkill";
                     boolean inputsFound = false;

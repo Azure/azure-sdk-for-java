@@ -3,9 +3,8 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -40,7 +39,7 @@ public class FlattenDangling implements JsonSerializable<FlattenDangling> {
     }
 
     public static FlattenDangling fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             FlattenDangling dangling = new FlattenDangling();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

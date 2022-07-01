@@ -7,7 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -272,8 +271,7 @@ public final class AutocompleteOptions implements JsonSerializable<AutocompleteO
      *     pointing to JSON null.
      */
     public static AutocompleteOptions fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     AutocompleteMode autocompleteMode = null;
                     String filter = null;

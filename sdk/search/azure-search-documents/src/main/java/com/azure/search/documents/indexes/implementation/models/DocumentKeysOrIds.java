@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -88,8 +87,7 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
      *     pointing to JSON null.
      */
     public static DocumentKeysOrIds fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     List<String> documentKeys = null;
                     List<String> datasourceDocumentIds = null;

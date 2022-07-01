@@ -63,8 +63,7 @@ public abstract class TokenFilter implements JsonSerializable<TokenFilter> {
      *     polymorphic discriminator.
      */
     public static TokenFilter fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

@@ -50,7 +50,7 @@ public final class VirtualMachineIdentity implements JsonSerializable<VirtualMac
     }
 
     public static VirtualMachineIdentity fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             VirtualMachineIdentity identity = new VirtualMachineIdentity();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {

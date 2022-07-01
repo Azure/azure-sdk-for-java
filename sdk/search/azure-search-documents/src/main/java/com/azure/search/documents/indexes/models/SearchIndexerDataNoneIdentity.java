@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -36,8 +35,7 @@ public final class SearchIndexerDataNoneIdentity extends SearchIndexerDataIdenti
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      */
     public static SearchIndexerDataNoneIdentity fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity";
                     while (reader.nextToken() != JsonToken.END_OBJECT) {

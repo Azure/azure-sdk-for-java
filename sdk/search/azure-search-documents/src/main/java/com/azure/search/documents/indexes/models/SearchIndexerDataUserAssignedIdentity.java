@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -69,8 +68,7 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      *     polymorphic discriminator.
      */
     public static SearchIndexerDataUserAssignedIdentity fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity";
                     boolean userAssignedIdentityFound = false;

@@ -183,8 +183,7 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      *     polymorphic discriminator.
      */
     public static PathHierarchyTokenizer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2";
                     boolean nameFound = false;

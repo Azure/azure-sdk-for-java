@@ -85,8 +85,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      *     pointing to JSON null.
      */
     public static FacetResult fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     Long count = null;
                     Map<String, Object> additionalProperties = null;

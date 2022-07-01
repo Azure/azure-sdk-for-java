@@ -240,8 +240,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static IndexerExecutionResult fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean statusFound = false;
                     IndexerExecutionStatus status = null;

@@ -59,8 +59,7 @@ public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyze
      *     polymorphic discriminator.
      */
     public static LexicalAnalyzer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

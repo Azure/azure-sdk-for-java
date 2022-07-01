@@ -326,7 +326,6 @@ public final class TestHelpers {
         return searchAsyncClient.getHttpPipeline();
     }
 
-    @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
         JsonReader reader = DefaultJsonReader.fromBytes(loadResource(filename));
 
@@ -337,14 +336,6 @@ public final class TestHelpers {
     public static Map<String, Object> convertStreamToMap(byte[] source) {
         return (Map<String, Object>) JsonUtils.readUntypedField(DefaultJsonReader.fromBytes(source));
     }
-
-//    private static <T> T deserializeToType(InputStream stream, TypeReference<T> type) {
-//        try {
-//            return getDefaultSerializerAdapter().deserialize(stream, type.getJavaType(), SerializerEncoding.JSON);
-//        } catch (IOException e) {
-//            throw Exceptions.propagate(e);
-//        }
-//    }
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {
         return SERIALIZER.deserializeFromBytes(SERIALIZER.serializeToBytes(value), TypeReference.createInstance(clazz));

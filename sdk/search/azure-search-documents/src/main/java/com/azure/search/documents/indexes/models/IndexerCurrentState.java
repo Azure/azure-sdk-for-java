@@ -152,8 +152,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
      *     pointing to JSON null.
      */
     public static IndexerCurrentState fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     IndexingMode mode = null;
                     String allDocsInitialChangeTrackingState = null;

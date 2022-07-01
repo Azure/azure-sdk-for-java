@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -58,7 +57,7 @@ public class AnimalShelter implements JsonSerializable<AnimalShelter> {
      * passed.
      */
     public static AnimalShelter fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String description = null;
             List<FlattenableAnimalInfo> animalsInfo = null;
 

@@ -79,8 +79,7 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
      *     pointing to JSON null.
      */
     public static SearchIndexerLimits fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     Duration maxRunTime = null;
                     Long maxDocumentExtractionSize = null;

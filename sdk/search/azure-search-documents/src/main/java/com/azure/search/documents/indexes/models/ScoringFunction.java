@@ -103,8 +103,7 @@ public abstract class ScoringFunction implements JsonSerializable<ScoringFunctio
      *     polymorphic discriminator.
      */
     public static ScoringFunction fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

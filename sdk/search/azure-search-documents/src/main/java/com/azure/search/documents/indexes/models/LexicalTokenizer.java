@@ -63,8 +63,7 @@ public abstract class LexicalTokenizer implements JsonSerializable<LexicalTokeni
      *     polymorphic discriminator.
      */
     public static LexicalTokenizer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String discriminatorValue = null;
                     JsonReader readerToUse = null;

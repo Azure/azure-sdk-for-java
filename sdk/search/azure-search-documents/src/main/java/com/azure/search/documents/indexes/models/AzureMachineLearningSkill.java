@@ -238,8 +238,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static AzureMachineLearningSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Custom.AmlSkill";
                     boolean inputsFound = false;

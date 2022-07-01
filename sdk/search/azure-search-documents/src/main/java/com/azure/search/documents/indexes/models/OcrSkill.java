@@ -141,8 +141,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static OcrSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Vision.OcrSkill";
                     boolean inputsFound = false;

@@ -205,8 +205,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static WebApiSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
                     boolean inputsFound = false;

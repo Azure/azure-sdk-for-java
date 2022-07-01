@@ -152,8 +152,7 @@ public final class PatternTokenizer extends LexicalTokenizer {
      *     polymorphic discriminator.
      */
     public static PatternTokenizer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
                     boolean nameFound = false;

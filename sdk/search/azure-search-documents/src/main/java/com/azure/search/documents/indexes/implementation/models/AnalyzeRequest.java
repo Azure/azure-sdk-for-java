@@ -201,8 +201,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static AnalyzeRequest fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean textFound = false;
                     String text = null;

@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.models.jsonflatten;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -52,7 +51,7 @@ public class School implements JsonSerializable<School> {
     }
 
     public static School fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             Teacher teacher = null;
             String name = null;
             Map<String, String> tags = null;

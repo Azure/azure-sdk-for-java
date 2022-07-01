@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
 import com.azure.json.JsonToken;
@@ -70,29 +69,28 @@ public final class SearchContinuationToken {
      * @return {@link SearchRequest} The search request used for fetching next page.
      */
     public static SearchRequest deserializeToken(String apiVersion, String continuationToken) {
-        return JsonUtils.readObject(DefaultJsonReader.fromBytes(Base64.getDecoder().decode(continuationToken)),
-            reader -> {
-                String version = null;
-                SearchRequest token = null;
+        return DefaultJsonReader.fromBytes(Base64.getDecoder().decode(continuationToken)).readObject(reader -> {
+            String version = null;
+            SearchRequest token = null;
 
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader.getFieldName();
-                    reader.nextToken();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                    if (API_VERSION.equals(fieldName)) {
-                        version = reader.getStringValue();
-                    } else if (NEXT_PAGE_PARAMETERS.equals(fieldName)) {
-                        token = SearchRequest.fromJson(reader);
-                    } else {
-                        reader.skipChildren();
-                    }
+                if (API_VERSION.equals(fieldName)) {
+                    version = reader.getStringValue();
+                } else if (NEXT_PAGE_PARAMETERS.equals(fieldName)) {
+                    token = SearchRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
                 }
+            }
 
-                if (!Objects.equals(apiVersion, version)) {
-                    throw new IllegalStateException("Continuation token uses invalid apiVersion" + apiVersion);
-                }
+            if (!Objects.equals(apiVersion, version)) {
+                throw new IllegalStateException("Continuation token uses invalid apiVersion" + apiVersion);
+            }
 
-                return token;
-            });
+            return token;
+        });
     }
 }

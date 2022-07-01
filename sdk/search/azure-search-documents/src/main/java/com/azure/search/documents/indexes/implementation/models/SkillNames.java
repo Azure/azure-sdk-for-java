@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -58,8 +57,7 @@ public final class SkillNames implements JsonSerializable<SkillNames> {
      *     to JSON null.
      */
     public static SkillNames fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     List<String> skillNames = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {

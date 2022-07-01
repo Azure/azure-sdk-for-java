@@ -4,8 +4,8 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -143,7 +143,7 @@ public class NewFoo implements JsonSerializable<NewFoo> {
     }
 
     static NewFoo fromJsonInternal(JsonReader jsonReader, String expectedType) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String type = null;
             String bar = null;
             List<String> baz = null;

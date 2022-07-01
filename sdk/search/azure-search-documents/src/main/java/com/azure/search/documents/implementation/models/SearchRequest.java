@@ -802,8 +802,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      *     pointing to JSON null.
      */
     public static SearchRequest fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     Boolean includeTotalResultCount = null;
                     List<String> facets = null;

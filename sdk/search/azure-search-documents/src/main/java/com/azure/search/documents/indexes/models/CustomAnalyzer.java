@@ -144,8 +144,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      *     polymorphic discriminator.
      */
     public static CustomAnalyzer fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Azure.Search.CustomAnalyzer";
                     boolean nameFound = false;

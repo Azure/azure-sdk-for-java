@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -113,8 +112,7 @@ public final class SearchIndexerKnowledgeStoreProjection
      *     or null if it was pointing to JSON null.
      */
     public static SearchIndexerKnowledgeStoreProjection fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     List<SearchIndexerKnowledgeStoreTableProjectionSelector> tables = null;
                     List<SearchIndexerKnowledgeStoreObjectProjectionSelector> objects = null;

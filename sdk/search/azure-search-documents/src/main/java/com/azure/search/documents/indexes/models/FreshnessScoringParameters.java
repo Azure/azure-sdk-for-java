@@ -61,8 +61,7 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static FreshnessScoringParameters fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean boostingDurationFound = false;
                     Duration boostingDuration = null;

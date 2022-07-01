@@ -3,8 +3,8 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -95,7 +95,7 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
     }
 
     public static HttpBinJSON fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String url = null;
             Map<String, String> headers = null;
             Object data = null;

@@ -150,8 +150,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static SearchResult fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean scoreFound = false;
                     double score = 0.0;

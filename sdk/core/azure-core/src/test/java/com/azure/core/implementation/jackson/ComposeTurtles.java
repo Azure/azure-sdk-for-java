@@ -3,9 +3,8 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -76,7 +75,7 @@ public class ComposeTurtles implements JsonSerializable<ComposeTurtles> {
     }
 
     public static ComposeTurtles fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             String description = null;
             TurtleWithTypeIdContainingDot turtleSet1Lead = null;
             List<TurtleWithTypeIdContainingDot> turtleSet1 = null;

@@ -92,8 +92,7 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
      *     pointing to JSON null.
      */
     public static IndexAction fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     IndexActionType actionType = null;
                     Map<String, Object> additionalProperties = null;

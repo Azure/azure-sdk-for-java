@@ -8,7 +8,6 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -58,8 +57,7 @@ public final class IndexBatch implements JsonSerializable<IndexBatch> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static IndexBatch fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean actionsFound = false;
                     List<IndexAction> actions = null;

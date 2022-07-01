@@ -136,8 +136,7 @@ public final class AnswerResult implements JsonSerializable<AnswerResult> {
      *     pointing to JSON null.
      */
     public static AnswerResult fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     Double score = null;
                     String key = null;

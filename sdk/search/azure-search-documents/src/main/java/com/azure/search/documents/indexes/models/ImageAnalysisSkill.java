@@ -144,8 +144,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static ImageAnalysisSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Vision.ImageAnalysisSkill";
                     boolean inputsFound = false;

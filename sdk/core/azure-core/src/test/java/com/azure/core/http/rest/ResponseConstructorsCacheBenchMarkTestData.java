@@ -11,11 +11,10 @@ import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
@@ -54,7 +53,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         public static Foo fromJson(JsonReader jsonReader) {
-            return JsonUtils.readObject(jsonReader, reader -> {
+            return jsonReader.readObject(reader -> {
                 String name = null;
 
                 while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -85,7 +84,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         public static FooHeader fromJson(JsonReader jsonReader) {
-            return JsonUtils.readObject(jsonReader, reader -> {
+            return jsonReader.readObject(reader -> {
                 String customHdr = null;
 
                 while (jsonReader.nextToken() != JsonToken.END_OBJECT) {

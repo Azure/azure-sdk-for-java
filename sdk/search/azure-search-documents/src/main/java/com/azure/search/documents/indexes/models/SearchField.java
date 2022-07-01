@@ -527,8 +527,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static SearchField fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean nameFound = false;
                     String name = null;

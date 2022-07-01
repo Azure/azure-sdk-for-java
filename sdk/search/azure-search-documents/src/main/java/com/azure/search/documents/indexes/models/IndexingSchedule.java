@@ -86,8 +86,7 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      */
     public static IndexingSchedule fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     boolean intervalFound = false;
                     Duration interval = null;

@@ -3,9 +3,8 @@
 
 package com.azure.core.models;
 
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -132,7 +131,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
      * passed.
      */
     public static ResponseError fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             // required
             String code = null;
             String message = null;

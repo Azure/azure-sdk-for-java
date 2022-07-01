@@ -143,8 +143,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static TextTranslationSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.TranslationSkill";
                     boolean inputsFound = false;

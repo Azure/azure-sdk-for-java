@@ -182,8 +182,7 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static EntityRecognitionSkillV1 fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.EntityRecognitionSkill";
                     boolean inputsFound = false;

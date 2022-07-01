@@ -233,8 +233,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
      *     polymorphic discriminator.
      */
     public static CustomEntityLookupSkill fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(
-                jsonReader,
+        return jsonReader.readObject(
                 reader -> {
                     String odataType = "#Microsoft.Skills.Text.CustomEntityLookupSkill";
                     boolean inputsFound = false;

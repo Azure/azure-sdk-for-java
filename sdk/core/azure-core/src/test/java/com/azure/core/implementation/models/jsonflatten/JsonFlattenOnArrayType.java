@@ -5,9 +5,8 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -43,7 +42,7 @@ public final class JsonFlattenOnArrayType implements JsonSerializable<JsonFlatte
     }
 
     public static JsonFlattenOnArrayType fromJson(JsonReader jsonReader) {
-        return JsonUtils.readObject(jsonReader, reader -> {
+        return jsonReader.readObject(reader -> {
             JsonFlattenOnArrayType flatten = new JsonFlattenOnArrayType();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
