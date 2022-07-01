@@ -10,11 +10,39 @@ import com.azure.communication.jobrouter.models.RouterRule;
 import java.util.List;
 
 public abstract class ClassificationPolicyOptions {
+    /**
+     * Unique identifier of this policy.
+     */
     protected String id;
+
+    /**
+     * Friendly name of this policy.
+     */
     protected String name;
+
+    /**
+     * The fallback queue to select if the queue selector doesn't find a match.
+     */
     protected String fallbackQueueId;
+
+    /**
+     * The queue selectors to resolve a queue for a given job.
+     */
     protected List<QueueSelectorAttachment> queueSelectors;
+
+    /**
+     * A rule of one of the following types:
+     *
+     *  StaticRule:  A rule providing static rules that always return the same result, regardless of input.
+     *  DirectMapRule:  A rule that return the same labels as the input labels.
+     *  ExpressionRule: A rule providing inline expression rules.
+     *  AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     */
     protected RouterRule prioritizationRule;
+
+    /**
+     * The worker label selectors to attach to a given job.
+     */
     protected List<WorkerSelectorAttachment> workerSelectors;
 
     /**

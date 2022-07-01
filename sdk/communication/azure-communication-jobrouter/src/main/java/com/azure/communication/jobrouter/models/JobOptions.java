@@ -10,17 +10,61 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class JobOptions {
+    /**
+     * The id of the job.
+     */
     protected String id;
+
+    /**
+     * Reference to an external parent context, eg. call ID.
+     */
     protected String channelReference;
-    protected OffsetDateTime enqueueTimeUtc;
+
+    /**
+     * The channel identifier. eg. voice, chat, etc.
+     */
     protected String channelId;
+
+    /**
+     * The Id of the Classification policy used for classifying a job.
+     */
     protected String classificationPolicyId;
+
+    /**
+     * The Id of the Queue that this job is queued to.
+     */
     protected String queueId;
+
+    /**
+     * The priority of this job.
+     */
     protected Integer priority;
+
+    /**
+     * Reason code for cancelled or closed jobs.
+     */
     protected String dispositionCode;
+
+    /**
+     * A collection of manually specified label selectors, which a worker must
+     * satisfy in order to process this job.
+     */
     protected List<WorkerSelector> requestedWorkerSelectors;
+
+    /**
+     * A set of key/value pairs that are identifying attributes used by the
+     * rules engines to make decisions.
+     */
     protected Map<String, Object> labels;
+
+    /**
+     * A set of non-identifying attributes attached to this job.
+     */
     protected Map<String, Object> tags;
+
+    /**
+     * Notes attached to a job, sorted by timestamp.
+     */
     protected Map<String, String> notes;
 
     /**
@@ -37,14 +81,6 @@ public abstract class JobOptions {
      */
     public String getChannelReference() {
         return this.channelReference;
-    }
-
-    /**
-     * Returns the time a job was queued.
-     * @return enqueueTimeUtc
-     */
-    public OffsetDateTime getEnqueueTimeUtc() {
-        return this.enqueueTimeUtc;
     }
 
     /**
