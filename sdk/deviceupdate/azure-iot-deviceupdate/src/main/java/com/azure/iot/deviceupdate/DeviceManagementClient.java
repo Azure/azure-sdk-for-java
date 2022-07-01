@@ -37,43 +37,35 @@ public final class DeviceManagementClient {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -94,37 +86,29 @@ public final class DeviceManagementClient {
     /**
      * Gets the properties of a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -146,19 +130,11 @@ public final class DeviceManagementClient {
     /**
      * Update device class details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Required)
      * }
      * }</pre>
      *
@@ -166,25 +142,25 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -212,14 +188,6 @@ public final class DeviceManagementClient {
      * records from the system and to stop checking the compatibility of this device class with new updates. If a device
      * is ever reconnected for this device class it will be re-created.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -237,30 +205,22 @@ public final class DeviceManagementClient {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -288,49 +248,50 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -351,14 +312,6 @@ public final class DeviceManagementClient {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -383,46 +336,38 @@ public final class DeviceManagementClient {
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -448,46 +393,38 @@ public final class DeviceManagementClient {
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -515,22 +452,14 @@ public final class DeviceManagementClient {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -557,28 +486,29 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -598,27 +528,19 @@ public final class DeviceManagementClient {
     /**
      * Gets the device group properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     groupType: String(IoTHubTag/DefaultNoTag)
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     subgroupsWithNewUpdatesAvailableCount: Integer
-     *     subgroupsWithUpdatesInProgressCount: Integer
-     *     subgroupsWithOnLatestUpdateCount: Integer
-     *     deployments: [
-     *         String
+     *     groupId: String (Required)
+     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *     deployments (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -644,14 +566,6 @@ public final class DeviceManagementClient {
      * the history of the group and no longer need it. If a device is ever connected again for this group after the
      * group was deleted it will be automatically re-created but there will be no history.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -670,22 +584,14 @@ public final class DeviceManagementClient {
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -713,30 +619,31 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -763,44 +670,45 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -821,43 +729,35 @@ public final class DeviceManagementClient {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -880,43 +780,35 @@ public final class DeviceManagementClient {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -924,31 +816,31 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -974,14 +866,6 @@ public final class DeviceManagementClient {
     /**
      * Deletes a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1002,46 +886,38 @@ public final class DeviceManagementClient {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     subgroupStatus: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             deploymentState: String(Active/Failed/Inactive/Canceled)
-     *             error: (recursive schema, see error above)
-     *             totalDevices: Integer
-     *             devicesInProgressCount: Integer
-     *             devicesCompletedFailedCount: Integer
-     *             devicesCompletedSucceededCount: Integer
-     *             devicesCanceledCount: Integer
+     *     subgroupStatus (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *             error (Optional): (recursive schema, see error above)
+     *             totalDevices: Integer (Optional)
+     *             devicesInProgressCount: Integer (Optional)
+     *             devicesCompletedFailedCount: Integer (Optional)
+     *             devicesCompletedSucceededCount: Integer (Optional)
+     *             devicesCanceledCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -1073,23 +949,24 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1110,23 +987,15 @@ public final class DeviceManagementClient {
     /**
      * Gets device class subgroup details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     groupId: String
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     deploymentId: String
+     *     deviceClassId: String (Required)
+     *     groupId: String (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     deploymentId: String (Optional)
      * }
      * }</pre>
      *
@@ -1149,14 +1018,6 @@ public final class DeviceManagementClient {
     /**
      * Deletes a device class subgroup.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1177,22 +1038,14 @@ public final class DeviceManagementClient {
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -1219,30 +1072,22 @@ public final class DeviceManagementClient {
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deviceCount: int
+     *     deviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -1273,44 +1118,45 @@ public final class DeviceManagementClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1334,43 +1180,35 @@ public final class DeviceManagementClient {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -1396,14 +1234,6 @@ public final class DeviceManagementClient {
     /**
      * Deletes a device class subgroup deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
@@ -1427,43 +1257,35 @@ public final class DeviceManagementClient {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -1487,43 +1309,35 @@ public final class DeviceManagementClient {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -1548,41 +1362,33 @@ public final class DeviceManagementClient {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     deploymentState: String(Active/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     totalDevices: Integer
-     *     devicesInProgressCount: Integer
-     *     devicesCompletedFailedCount: Integer
-     *     devicesCompletedSucceededCount: Integer
-     *     devicesCanceledCount: Integer
+     *     totalDevices: Integer (Optional)
+     *     devicesInProgressCount: Integer (Optional)
+     *     devicesCompletedFailedCount: Integer (Optional)
+     *     devicesCompletedSucceededCount: Integer (Optional)
+     *     devicesCanceledCount: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1616,23 +1422,24 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1659,14 +1466,6 @@ public final class DeviceManagementClient {
     /**
      * Retrieve operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -1675,31 +1474,33 @@ public final class DeviceManagementClient {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
-     *     etag: String
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -1726,40 +1527,41 @@ public final class DeviceManagementClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1779,29 +1581,21 @@ public final class DeviceManagementClient {
     /**
      * Start the device diagnostics log collection on specified devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -1809,17 +1603,17 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -1842,29 +1636,21 @@ public final class DeviceManagementClient {
     /**
      * Get the device diagnostics log collection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -1885,34 +1671,26 @@ public final class DeviceManagementClient {
     /**
      * Get all device diagnostics log collections.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1932,33 +1710,25 @@ public final class DeviceManagementClient {
     /**
      * Get log collection with detailed status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     deviceStatus: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             resultCode: String
-     *             extendedResultCode: String
-     *             logLocation: String
+     *     logCollectionId: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     deviceStatus (Optional): [
+     *          (Optional){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             resultCode: String (Optional)
+     *             extendedResultCode: String (Optional)
+     *             logLocation: String (Optional)
      *         }
      *     ]
-     *     description: String
+     *     description: String (Optional)
      * }
      * }</pre>
      *
@@ -1980,37 +1750,29 @@ public final class DeviceManagementClient {
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2020,7 +1782,7 @@ public final class DeviceManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDeviceHealth(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDeviceHealth(requestOptions));
+    public PagedIterable<BinaryData> listDeviceHealth(String filter, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listDeviceHealth(filter, requestOptions));
     }
 }

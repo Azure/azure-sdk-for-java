@@ -21,8 +21,8 @@ public class DeviceManagementListDeviceHealth {
                         .buildClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("filter", "state eq 'unhealthy'");
-        PagedIterable<BinaryData> response = deviceManagementClient.listDeviceHealth(requestOptions);
+        PagedIterable<BinaryData> response =
+                deviceManagementClient.listDeviceHealth("state eq 'unhealthy'", requestOptions);
         // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdevicehealth.devicemanagementlistdevicehealth
     }
 }

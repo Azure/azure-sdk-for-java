@@ -41,57 +41,58 @@ public final class DeviceUpdateClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
-     *             isDeployable: Boolean
-     *             updateType: String
-     *             installedCriteria: String
-     *             compatibility: [
-     *                 {
-     *                     String: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
+     *             isDeployable: Boolean (Optional)
+     *             updateType: String (Optional)
+     *             installedCriteria: String (Optional)
+     *             compatibility (Required): [
+     *                  (Required){
+     *                     String: String (Required)
      *                 }
      *             ]
-     *             instructions: {
-     *                 steps: [
-     *                     {
-     *                         type: String(Inline/Reference)
-     *                         description: String
-     *                         handler: String
-     *                         handlerProperties: Object
-     *                         files: [
-     *                             String
+     *             instructions (Optional): {
+     *                 steps (Required): [
+     *                      (Required){
+     *                         type: String(Inline/Reference) (Optional)
+     *                         description: String (Optional)
+     *                         handler: String (Optional)
+     *                         handlerProperties: Object (Optional)
+     *                         files (Optional): [
+     *                             String (Optional)
      *                         ]
-     *                         updateId: (recursive schema, see updateId above)
+     *                         updateId (Optional): (recursive schema, see updateId above)
      *                     }
      *                 ]
      *             }
-     *             referencedBy: [
+     *             referencedBy (Optional): [
      *                 (recursive schema, see above)
      *             ]
-     *             scanResult: String
-     *             manifestVersion: String
-     *             importedDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             scanResult: String (Optional)
+     *             manifestVersion: String (Required)
+     *             importedDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -113,31 +114,23 @@ public final class DeviceUpdateClient {
      * Import new update version. This is a long-running-operation; use Operation-Location response header value to
      * check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     {
-     *         importManifest: {
-     *             url: String
-     *             sizeInBytes: long
-     *             hashes: {
-     *                 String: String
+     *      (Required){
+     *         importManifest (Required): {
+     *             url: String (Required)
+     *             sizeInBytes: long (Required)
+     *             hashes (Required): {
+     *                 String: String (Required)
      *             }
      *         }
-     *         friendlyName: String
-     *         files: [
-     *             {
-     *                 filename: String
-     *                 url: String
+     *         friendlyName: String (Optional)
+     *         files (Optional): [
+     *              (Optional){
+     *                 filename: String (Required)
+     *                 url: String (Required)
      *             }
      *         ]
      *     }
@@ -162,14 +155,6 @@ public final class DeviceUpdateClient {
     /**
      * Get a specific update version.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -178,47 +163,49 @@ public final class DeviceUpdateClient {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     updateId: {
-     *         provider: String
-     *         name: String
-     *         version: String
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
      *     }
-     *     description: String
-     *     friendlyName: String
-     *     isDeployable: Boolean
-     *     updateType: String
-     *     installedCriteria: String
-     *     compatibility: [
-     *         {
-     *             String: String
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     isDeployable: Boolean (Optional)
+     *     updateType: String (Optional)
+     *     installedCriteria: String (Optional)
+     *     compatibility (Required): [
+     *          (Required){
+     *             String: String (Required)
      *         }
      *     ]
-     *     instructions: {
-     *         steps: [
-     *             {
-     *                 type: String(Inline/Reference)
-     *                 description: String
-     *                 handler: String
-     *                 handlerProperties: Object
-     *                 files: [
-     *                     String
+     *     instructions (Optional): {
+     *         steps (Required): [
+     *              (Required){
+     *                 type: String(Inline/Reference) (Optional)
+     *                 description: String (Optional)
+     *                 handler: String (Optional)
+     *                 handlerProperties: Object (Optional)
+     *                 files (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 updateId: (recursive schema, see updateId above)
+     *                 updateId (Optional): (recursive schema, see updateId above)
      *             }
      *         ]
      *     }
-     *     referencedBy: [
+     *     referencedBy (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     scanResult: String
-     *     manifestVersion: String
-     *     importedDateTime: String
-     *     createdDateTime: String
-     *     etag: String
+     *     scanResult: String (Optional)
+     *     manifestVersion: String (Required)
+     *     importedDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -243,14 +230,6 @@ public final class DeviceUpdateClient {
      * Delete a specific update version. This is a long-running-operation; use Operation-Location response header value
      * to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
@@ -271,22 +250,14 @@ public final class DeviceUpdateClient {
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         String
+     *     value (Required): [
+     *         String (Required)
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -307,22 +278,14 @@ public final class DeviceUpdateClient {
     /**
      * Get a list of all update names that match the specified provider.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         String
+     *     value (Required): [
+     *         String (Required)
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -349,18 +312,19 @@ public final class DeviceUpdateClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         String
+     *     value (Required): [
+     *         String (Required)
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -383,22 +347,14 @@ public final class DeviceUpdateClient {
     /**
      * Get a list of all update file identifiers for the specified version.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         String
+     *     value (Required): [
+     *         String (Required)
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -423,14 +379,6 @@ public final class DeviceUpdateClient {
     /**
      * Get a specific update file from the version.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -439,41 +387,43 @@ public final class DeviceUpdateClient {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     fileName: String
-     *     sizeInBytes: long
-     *     hashes: {
-     *         String: String
+     *     fileName: String (Required)
+     *     sizeInBytes: long (Required)
+     *     hashes (Required): {
+     *         String: String (Required)
      *     }
-     *     mimeType: String
-     *     scanResult: String
-     *     scanDetails: String
-     *     properties: {
-     *         String: String
+     *     mimeType: String (Optional)
+     *     scanResult: String (Optional)
+     *     scanDetails: String (Optional)
+     *     properties (Optional): {
+     *         String: String (Optional)
      *     }
-     *     fileId: String
-     *     relatedFiles: [
-     *         {
-     *             fileName: String
-     *             sizeInBytes: long
-     *             hashes: {
-     *                 String: String
+     *     fileId: String (Required)
+     *     relatedFiles (Optional): [
+     *          (Optional){
+     *             fileName: String (Required)
+     *             sizeInBytes: long (Required)
+     *             hashes (Required): {
+     *                 String: String (Required)
      *             }
-     *             mimeType: String
-     *             scanResult: String
-     *             scanDetails: String
-     *             properties: {
-     *                 String: String
+     *             mimeType: String (Optional)
+     *             scanResult: String (Optional)
+     *             scanDetails: String (Optional)
+     *             properties (Optional): {
+     *                 String: String (Optional)
      *             }
      *         }
      *     ]
-     *     downloadHandler: {
-     *         id: String
+     *     downloadHandler (Optional): {
+     *         id: String (Required)
      *     }
-     *     etag: String
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -505,50 +455,51 @@ public final class DeviceUpdateClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             update (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             resourceLocation: String
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *             resourceLocation: String (Optional)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -568,14 +519,6 @@ public final class DeviceUpdateClient {
     /**
      * Retrieve operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -584,41 +527,43 @@ public final class DeviceUpdateClient {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     update (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     resourceLocation: String
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     resourceLocation: String (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
-     *     etag: String
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *

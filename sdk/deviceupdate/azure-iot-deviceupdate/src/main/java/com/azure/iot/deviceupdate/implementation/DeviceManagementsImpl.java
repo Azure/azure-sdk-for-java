@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -86,6 +87,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,6 +108,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -127,6 +130,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -147,6 +151,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -167,6 +172,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -186,6 +192,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -206,6 +213,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData importType,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -226,6 +234,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceId") String deviceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -247,6 +256,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceId") String deviceId,
                 @PathParam("moduleId") String moduleId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -266,6 +276,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -285,6 +296,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -305,6 +317,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -325,6 +338,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -345,6 +359,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -365,6 +380,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -385,6 +401,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -406,6 +423,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -428,6 +446,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData deployment,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -449,6 +468,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -470,6 +490,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -490,6 +511,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -511,6 +533,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -532,6 +555,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -554,6 +578,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -575,6 +600,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -596,6 +622,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -619,6 +646,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -642,6 +670,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -665,6 +694,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -688,6 +718,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -711,6 +742,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -734,6 +766,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -754,6 +787,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -773,6 +807,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -794,6 +829,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("operationId") String logCollectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData logCollection,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -814,6 +850,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String logCollectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -833,6 +870,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -853,6 +891,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -872,6 +911,8 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @QueryParam("filter") String filter,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -890,6 +931,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeviceClassesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -908,6 +950,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listInstallableUpdatesForDeviceClassNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -926,6 +969,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDevicesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -944,6 +988,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listGroupsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -962,6 +1007,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listBestUpdatesForGroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -980,6 +1026,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeploymentsForGroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -998,6 +1045,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1016,6 +1064,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1034,6 +1083,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1052,6 +1102,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listOperationsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1070,6 +1121,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listLogCollectionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1088,6 +1140,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeviceHealthNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -1096,43 +1149,35 @@ public final class DeviceManagementsImpl {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1147,12 +1192,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceClasses(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1170,43 +1217,35 @@ public final class DeviceManagementsImpl {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1223,10 +1262,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceClasses(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1244,43 +1285,35 @@ public final class DeviceManagementsImpl {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1308,43 +1341,35 @@ public final class DeviceManagementsImpl {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1373,43 +1398,35 @@ public final class DeviceManagementsImpl {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1429,37 +1446,29 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the properties of a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1475,6 +1484,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClass(
@@ -1482,6 +1492,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1489,37 +1500,29 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the properties of a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1536,11 +1539,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClass(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -1548,37 +1553,29 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the properties of a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1599,19 +1596,11 @@ public final class DeviceManagementsImpl {
     /**
      * Update device class details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Required)
      * }
      * }</pre>
      *
@@ -1619,25 +1608,25 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1654,6 +1643,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDeviceClassWithResponseAsync(
             String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateDeviceClass(
@@ -1662,6 +1652,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
                                 deviceClassPatch,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1669,19 +1660,11 @@ public final class DeviceManagementsImpl {
     /**
      * Update device class details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Required)
      * }
      * }</pre>
      *
@@ -1689,25 +1672,25 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1725,12 +1708,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDeviceClassWithResponseAsync(
             String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.updateDeviceClass(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
                 deviceClassPatch,
+                accept,
                 requestOptions,
                 context);
     }
@@ -1738,19 +1723,11 @@ public final class DeviceManagementsImpl {
     /**
      * Update device class details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Required)
      * }
      * }</pre>
      *
@@ -1758,25 +1735,25 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     friendlyName: String
-     *     deviceClassProperties: {
-     *         contractModel: {
-     *             id: String
-     *             name: String
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *         compatProperties: {
-     *             String: String
+     *         compatProperties (Required): {
+     *             String: String (Required)
      *         }
      *     }
-     *     bestCompatibleUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1803,14 +1780,6 @@ public final class DeviceManagementsImpl {
      * records from the system and to stop checking the compatibility of this device class with new updates. If a device
      * is ever reconnected for this device class it will be re-created.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1822,6 +1791,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeviceClass(
@@ -1829,6 +1799,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -1839,14 +1810,6 @@ public final class DeviceManagementsImpl {
      * has deleted all DeviceClassSubgroups for a device class they can also delete the device class to remove the
      * records from the system and to stop checking the compatibility of this device class with new updates. If a device
      * is ever reconnected for this device class it will be re-created.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1860,11 +1823,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeviceClass(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -1875,14 +1840,6 @@ public final class DeviceManagementsImpl {
      * has deleted all DeviceClassSubgroups for a device class they can also delete the device class to remove the
      * records from the system and to stop checking the compatibility of this device class with new updates. If a device
      * is ever reconnected for this device class it will be re-created.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1900,30 +1857,22 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1939,6 +1888,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listInstallableUpdatesForDeviceClass(
@@ -1946,6 +1896,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         deviceClassId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1962,30 +1913,22 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2002,11 +1945,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listInstallableUpdatesForDeviceClass(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         deviceClassId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -2023,30 +1968,22 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2075,30 +2012,22 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2129,30 +2058,22 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2179,49 +2100,50 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2235,12 +2157,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDevices(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -2263,49 +2187,50 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2320,10 +2245,12 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDevices(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -2346,49 +2273,50 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2420,49 +2348,50 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2495,49 +2424,50 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -2558,14 +2488,6 @@ public final class DeviceManagementsImpl {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2581,7 +2503,8 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> importDevicesWithResponseAsync(BinaryData importType, RequestOptions requestOptions) {
+    private Mono<Response<Void>> importDevicesWithResponseAsync(BinaryData importType, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importDevices(
@@ -2589,6 +2512,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 this.client.getServiceVersion().getVersion(),
                                 importType,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -2596,14 +2520,6 @@ public final class DeviceManagementsImpl {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2621,13 +2537,15 @@ public final class DeviceManagementsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> importDevicesWithResponseAsync(
+    private Mono<Response<Void>> importDevicesWithResponseAsync(
             BinaryData importType, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.importDevices(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 this.client.getServiceVersion().getVersion(),
                 importType,
+                accept,
                 requestOptions,
                 context);
     }
@@ -2635,14 +2553,6 @@ public final class DeviceManagementsImpl {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2677,14 +2587,6 @@ public final class DeviceManagementsImpl {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2721,14 +2623,6 @@ public final class DeviceManagementsImpl {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2751,46 +2645,38 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -2808,6 +2694,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceWithResponseAsync(String deviceId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDevice(
@@ -2815,6 +2702,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 deviceId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -2822,46 +2710,38 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -2881,11 +2761,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceWithResponseAsync(
             String deviceId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDevice(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -2893,46 +2775,38 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -2957,46 +2831,38 @@ public final class DeviceManagementsImpl {
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -3016,6 +2882,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceModuleWithResponseAsync(
             String deviceId, String moduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceModule(
@@ -3024,6 +2891,7 @@ public final class DeviceManagementsImpl {
                                 deviceId,
                                 moduleId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3032,46 +2900,38 @@ public final class DeviceManagementsImpl {
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -3092,12 +2952,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceModuleWithResponseAsync(
             String deviceId, String moduleId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceModule(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceId,
                 moduleId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3106,46 +2968,38 @@ public final class DeviceManagementsImpl {
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceId: String
-     *     moduleId: String
-     *     deviceClassId: String
-     *     groupId: String
-     *     lastAttemptedUpdate: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *     installedUpdate: (recursive schema, see installedUpdate above)
-     *     onLatestUpdate: boolean
-     *     lastDeploymentId: String
-     *     lastInstallResult: {
-     *         resultCode: int
-     *         extendedResultCode: int
-     *         resultDetails: String
-     *         stepResults: [
-     *             {
-     *                 update: (recursive schema, see update above)
-     *                 description: String
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
+     *                 description: String (Optional)
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
      *             }
      *         ]
      *     }
@@ -3172,22 +3026,14 @@ public final class DeviceManagementsImpl {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -3201,12 +3047,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getUpdateCompliance(
                                 this.client.getEndpoint(),
                                 this.client.getInstanceId(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3215,22 +3063,14 @@ public final class DeviceManagementsImpl {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -3246,10 +3086,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceWithResponseAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getUpdateCompliance(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3258,22 +3100,14 @@ public final class DeviceManagementsImpl {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -3299,28 +3133,29 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3333,12 +3168,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listGroups(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -3361,28 +3198,29 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3396,10 +3234,12 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listGroups(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -3422,28 +3262,29 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3475,28 +3316,29 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3529,28 +3371,29 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3569,27 +3412,19 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device group properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     groupType: String(IoTHubTag/DefaultNoTag)
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     subgroupsWithNewUpdatesAvailableCount: Integer
-     *     subgroupsWithUpdatesInProgressCount: Integer
-     *     subgroupsWithOnLatestUpdateCount: Integer
-     *     deployments: [
-     *         String
+     *     groupId: String (Required)
+     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *     deployments (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -3604,6 +3439,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupWithResponseAsync(String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getGroup(
@@ -3611,6 +3447,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3618,27 +3455,19 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device group properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     groupType: String(IoTHubTag/DefaultNoTag)
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     subgroupsWithNewUpdatesAvailableCount: Integer
-     *     subgroupsWithUpdatesInProgressCount: Integer
-     *     subgroupsWithOnLatestUpdateCount: Integer
-     *     deployments: [
-     *         String
+     *     groupId: String (Required)
+     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *     deployments (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -3655,11 +3484,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getGroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3667,27 +3498,19 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device group properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     groupType: String(IoTHubTag/DefaultNoTag)
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     subgroupsWithNewUpdatesAvailableCount: Integer
-     *     subgroupsWithUpdatesInProgressCount: Integer
-     *     subgroupsWithOnLatestUpdateCount: Integer
-     *     deployments: [
-     *         String
+     *     groupId: String (Required)
+     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *     deployments (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>
@@ -3712,14 +3535,6 @@ public final class DeviceManagementsImpl {
      * the history of the group and no longer need it. If a device is ever connected again for this group after the
      * group was deleted it will be automatically re-created but there will be no history.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3730,6 +3545,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteGroup(
@@ -3737,6 +3553,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3747,14 +3564,6 @@ public final class DeviceManagementsImpl {
      * retained for history purposes. Users can call this method to delete a group if they do not need to retain any of
      * the history of the group and no longer need it. If a device is ever connected again for this group after the
      * group was deleted it will be automatically re-created but there will be no history.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3768,11 +3577,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteGroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3783,14 +3594,6 @@ public final class DeviceManagementsImpl {
      * retained for history purposes. Users can call this method to delete a group if they do not need to retain any of
      * the history of the group and no longer need it. If a device is ever connected again for this group after the
      * group was deleted it will be automatically re-created but there will be no history.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3809,22 +3612,14 @@ public final class DeviceManagementsImpl {
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -3841,6 +3636,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceForGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getUpdateComplianceForGroup(
@@ -3848,6 +3644,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3856,22 +3653,14 @@ public final class DeviceManagementsImpl {
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -3889,11 +3678,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceForGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getUpdateComplianceForGroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3902,22 +3693,14 @@ public final class DeviceManagementsImpl {
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -3944,30 +3727,31 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -3983,6 +3767,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listBestUpdatesForGroup(
@@ -3990,6 +3775,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         groupId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -4012,30 +3798,31 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4052,11 +3839,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listBestUpdatesForGroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -4079,30 +3868,31 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4136,30 +3926,31 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4195,30 +3986,31 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property. This filter is deprecated and should not be used.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4244,44 +4036,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4297,6 +4090,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForGroup(
@@ -4304,6 +4098,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         groupId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -4325,44 +4120,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4379,11 +4175,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeploymentsForGroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -4405,44 +4203,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4474,44 +4273,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4545,44 +4345,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -4602,43 +4403,35 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4654,6 +4447,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeployment(
@@ -4662,6 +4456,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -4669,43 +4464,35 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4722,12 +4509,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -4735,43 +4524,35 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4793,43 +4574,35 @@ public final class DeviceManagementsImpl {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4837,31 +4610,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4878,6 +4651,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateDeploymentWithResponseAsync(
             String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateDeployment(
@@ -4887,6 +4661,7 @@ public final class DeviceManagementsImpl {
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
                                 deployment,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -4894,43 +4669,35 @@ public final class DeviceManagementsImpl {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4938,31 +4705,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -4984,6 +4751,7 @@ public final class DeviceManagementsImpl {
             BinaryData deployment,
             RequestOptions requestOptions,
             Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -4991,6 +4759,7 @@ public final class DeviceManagementsImpl {
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
                 deployment,
+                accept,
                 requestOptions,
                 context);
     }
@@ -4998,43 +4767,35 @@ public final class DeviceManagementsImpl {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -5042,31 +4803,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -5089,14 +4850,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5109,6 +4862,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeployment(
@@ -5117,20 +4871,13 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
@@ -5145,26 +4892,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
@@ -5185,46 +4926,38 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     subgroupStatus: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             deploymentState: String(Active/Failed/Inactive/Canceled)
-     *             error: (recursive schema, see error above)
-     *             totalDevices: Integer
-     *             devicesInProgressCount: Integer
-     *             devicesCompletedFailedCount: Integer
-     *             devicesCompletedSucceededCount: Integer
-     *             devicesCanceledCount: Integer
+     *     subgroupStatus (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *             error (Optional): (recursive schema, see error above)
+     *             totalDevices: Integer (Optional)
+     *             devicesInProgressCount: Integer (Optional)
+     *             devicesCompletedFailedCount: Integer (Optional)
+     *             devicesCompletedSucceededCount: Integer (Optional)
+     *             devicesCanceledCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -5243,6 +4976,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentStatusWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeploymentStatus(
@@ -5251,6 +4985,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5259,46 +4994,38 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     subgroupStatus: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             deploymentState: String(Active/Failed/Inactive/Canceled)
-     *             error: (recursive schema, see error above)
-     *             totalDevices: Integer
-     *             devicesInProgressCount: Integer
-     *             devicesCompletedFailedCount: Integer
-     *             devicesCompletedSucceededCount: Integer
-     *             devicesCanceledCount: Integer
+     *     subgroupStatus (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *             error (Optional): (recursive schema, see error above)
+     *             totalDevices: Integer (Optional)
+     *             devicesInProgressCount: Integer (Optional)
+     *             devicesCompletedFailedCount: Integer (Optional)
+     *             devicesCompletedSucceededCount: Integer (Optional)
+     *             devicesCanceledCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -5318,12 +5045,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentStatusWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeploymentStatus(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -5332,46 +5061,38 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deploymentState: String(Active/ActiveWithSubgroupFailures/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     subgroupStatus: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             deploymentState: String(Active/Failed/Inactive/Canceled)
-     *             error: (recursive schema, see error above)
-     *             totalDevices: Integer
-     *             devicesInProgressCount: Integer
-     *             devicesCompletedFailedCount: Integer
-     *             devicesCompletedSucceededCount: Integer
-     *             devicesCanceledCount: Integer
+     *     subgroupStatus (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *             error (Optional): (recursive schema, see error above)
+     *             totalDevices: Integer (Optional)
+     *             devicesInProgressCount: Integer (Optional)
+     *             devicesCompletedFailedCount: Integer (Optional)
+     *             devicesCompletedSucceededCount: Integer (Optional)
+     *             devicesCanceledCount: Integer (Optional)
      *         }
      *     ]
      * }
@@ -5402,23 +5123,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5434,6 +5156,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceClassSubgroupsForGroup(
@@ -5441,6 +5164,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         groupId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -5463,23 +5187,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5496,11 +5221,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceClassSubgroupsForGroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -5523,23 +5250,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5572,23 +5300,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5625,23 +5354,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -5661,23 +5391,15 @@ public final class DeviceManagementsImpl {
     /**
      * Gets device class subgroup details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     groupId: String
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     deploymentId: String
+     *     deviceClassId: String (Required)
+     *     groupId: String (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     deploymentId: String (Optional)
      * }
      * }</pre>
      *
@@ -5693,6 +5415,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClassSubgroup(
@@ -5701,6 +5424,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5708,23 +5432,15 @@ public final class DeviceManagementsImpl {
     /**
      * Gets device class subgroup details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     groupId: String
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     deploymentId: String
+     *     deviceClassId: String (Required)
+     *     groupId: String (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     deploymentId: String (Optional)
      * }
      * }</pre>
      *
@@ -5741,12 +5457,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -5754,23 +5472,15 @@ public final class DeviceManagementsImpl {
     /**
      * Gets device class subgroup details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deviceClassId: String
-     *     groupId: String
-     *     createdDateTime: String
-     *     deviceCount: Integer
-     *     deploymentId: String
+     *     deviceClassId: String (Required)
+     *     groupId: String (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     deploymentId: String (Optional)
      * }
      * }</pre>
      *
@@ -5792,14 +5502,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a device class subgroup.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5812,6 +5514,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeviceClassSubgroup(
@@ -5820,20 +5523,13 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a device class subgroup.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -5848,26 +5544,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a device class subgroup.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -5888,22 +5578,14 @@ public final class DeviceManagementsImpl {
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -5921,6 +5603,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClassSubgroupUpdateCompliance(
@@ -5929,6 +5612,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5937,22 +5621,14 @@ public final class DeviceManagementsImpl {
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -5971,12 +5647,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClassSubgroupUpdateCompliance(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -5985,22 +5663,14 @@ public final class DeviceManagementsImpl {
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     totalDeviceCount: int
-     *     onLatestUpdateDeviceCount: int
-     *     newUpdatesAvailableDeviceCount: int
-     *     updatesInProgressDeviceCount: int
+     *     totalDeviceCount: int (Required)
+     *     onLatestUpdateDeviceCount: int (Required)
+     *     newUpdatesAvailableDeviceCount: int (Required)
+     *     updatesInProgressDeviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -6024,30 +5694,22 @@ public final class DeviceManagementsImpl {
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deviceCount: int
+     *     deviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -6064,6 +5726,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getBestUpdatesForDeviceClassSubgroup(
@@ -6072,6 +5735,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -6079,30 +5743,22 @@ public final class DeviceManagementsImpl {
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deviceCount: int
+     *     deviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -6120,12 +5776,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getBestUpdatesForDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -6133,30 +5791,22 @@ public final class DeviceManagementsImpl {
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     deviceCount: int
+     *     deviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -6184,44 +5834,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6238,6 +5889,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForDeviceClassSubgroup(
@@ -6246,6 +5898,7 @@ public final class DeviceManagementsImpl {
                                         groupId,
                                         deviceClassId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -6267,44 +5920,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6322,12 +5976,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeploymentsForDeviceClassSubgroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         deviceClassId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -6349,44 +6005,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6421,44 +6078,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6497,44 +6155,45 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -6556,43 +6215,35 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -6609,6 +6260,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeploymentForDeviceClassSubgroup(
@@ -6618,6 +6270,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -6625,43 +6278,35 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -6679,6 +6324,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeploymentForDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -6686,6 +6332,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -6693,43 +6340,35 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -6754,14 +6393,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a device class subgroup deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
@@ -6775,6 +6406,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeploymentForDeviceClassSubgroup(
@@ -6784,20 +6416,13 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a device class subgroup deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -6813,6 +6438,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeploymentForDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -6820,20 +6446,13 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a device class subgroup deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -6856,43 +6475,35 @@ public final class DeviceManagementsImpl {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -6909,6 +6520,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> stopDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.stopDeployment(
@@ -6918,6 +6530,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -6925,43 +6538,35 @@ public final class DeviceManagementsImpl {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -6979,6 +6584,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> stopDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.stopDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -6986,6 +6592,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -6993,43 +6600,35 @@ public final class DeviceManagementsImpl {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -7052,43 +6651,35 @@ public final class DeviceManagementsImpl {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -7105,6 +6696,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retryDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.retryDeployment(
@@ -7114,6 +6706,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -7121,43 +6714,35 @@ public final class DeviceManagementsImpl {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -7175,6 +6760,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retryDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.retryDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -7182,6 +6768,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -7189,43 +6776,35 @@ public final class DeviceManagementsImpl {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     deploymentId: String
-     *     startDateTime: String
-     *     update: {
-     *         updateId: {
-     *             provider: String
-     *             name: String
-     *             version: String
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *         description: String
-     *         friendlyName: String
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
      *     }
-     *     groupId: String
-     *     deviceClassSubgroups: [
-     *         String
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     isCanceled: Boolean
-     *     isRetried: Boolean
-     *     rollbackPolicy: {
-     *         update: (recursive schema, see update above)
-     *         failure: {
-     *             devicesFailedPercentage: int
-     *             devicesFailedCount: int
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
      *         }
      *     }
-     *     isCloudInitiatedRollback: Boolean
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -7249,41 +6828,33 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     deploymentState: String(Active/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     totalDevices: Integer
-     *     devicesInProgressCount: Integer
-     *     devicesCompletedFailedCount: Integer
-     *     devicesCompletedSucceededCount: Integer
-     *     devicesCanceledCount: Integer
+     *     totalDevices: Integer (Optional)
+     *     devicesInProgressCount: Integer (Optional)
+     *     devicesCompletedFailedCount: Integer (Optional)
+     *     devicesCompletedSucceededCount: Integer (Optional)
+     *     devicesCanceledCount: Integer (Optional)
      * }
      * }</pre>
      *
@@ -7301,6 +6872,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClassSubgroupDeploymentStatus(
@@ -7310,6 +6882,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -7318,41 +6891,33 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     deploymentState: String(Active/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     totalDevices: Integer
-     *     devicesInProgressCount: Integer
-     *     devicesCompletedFailedCount: Integer
-     *     devicesCompletedSucceededCount: Integer
-     *     devicesCanceledCount: Integer
+     *     totalDevices: Integer (Optional)
+     *     devicesInProgressCount: Integer (Optional)
+     *     devicesCompletedFailedCount: Integer (Optional)
+     *     devicesCompletedSucceededCount: Integer (Optional)
+     *     devicesCanceledCount: Integer (Optional)
      * }
      * }</pre>
      *
@@ -7371,6 +6936,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClassSubgroupDeploymentStatus(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -7378,6 +6944,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -7386,41 +6953,33 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     groupId: String
-     *     deviceClassId: String
-     *     deploymentState: String(Active/Failed/Inactive/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     deploymentState: String(Active/Failed/Inactive/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     totalDevices: Integer
-     *     devicesInProgressCount: Integer
-     *     devicesCompletedFailedCount: Integer
-     *     devicesCompletedSucceededCount: Integer
-     *     devicesCanceledCount: Integer
+     *     totalDevices: Integer (Optional)
+     *     devicesInProgressCount: Integer (Optional)
+     *     devicesCompletedFailedCount: Integer (Optional)
+     *     devicesCompletedSucceededCount: Integer (Optional)
+     *     devicesCanceledCount: Integer (Optional)
      * }
      * }</pre>
      *
@@ -7452,23 +7011,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7486,6 +7046,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceStatesForDeviceClassSubgroupDeployment(
@@ -7495,6 +7056,7 @@ public final class DeviceManagementsImpl {
                                         deviceClassId,
                                         deploymentId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -7517,23 +7079,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7552,6 +7115,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentSinglePageAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceStatesForDeviceClassSubgroupDeployment(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
@@ -7559,6 +7123,7 @@ public final class DeviceManagementsImpl {
                         deviceClassId,
                         deploymentId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -7581,23 +7146,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7637,23 +7203,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7694,23 +7261,24 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7736,14 +7304,6 @@ public final class DeviceManagementsImpl {
     /**
      * Retrieve operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -7752,31 +7312,33 @@ public final class DeviceManagementsImpl {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
-     *     etag: String
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -7790,6 +7352,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getOperation(
@@ -7797,20 +7360,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Retrieve operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -7820,31 +7376,33 @@ public final class DeviceManagementsImpl {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
-     *     etag: String
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -7860,25 +7418,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(
             String operationId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getOperation(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Retrieve operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -7888,31 +7440,33 @@ public final class DeviceManagementsImpl {
      *     <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     operationId: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         innererror: {
-     *             code: String
-     *             message: String
-     *             errorDetail: String
-     *             innerError: (recursive schema, see innerError above)
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime (Optional)
      *     }
-     *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
-     *     etag: String
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -7938,40 +7492,41 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -7985,12 +7540,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listOperations(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -8013,40 +7570,41 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8062,10 +7620,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listOperations(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -8088,40 +7648,41 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8153,40 +7714,41 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8219,40 +7781,41 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8271,29 +7834,21 @@ public final class DeviceManagementsImpl {
     /**
      * Start the device diagnostics log collection on specified devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8301,17 +7856,17 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8327,6 +7882,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> startLogCollectionWithResponseAsync(
             String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.startLogCollection(
@@ -8335,6 +7891,7 @@ public final class DeviceManagementsImpl {
                                 logCollectionId,
                                 this.client.getServiceVersion().getVersion(),
                                 logCollection,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -8342,29 +7899,21 @@ public final class DeviceManagementsImpl {
     /**
      * Start the device diagnostics log collection on specified devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8372,17 +7921,17 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8399,12 +7948,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> startLogCollectionWithResponseAsync(
             String logCollectionId, BinaryData logCollection, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.startLogCollection(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 logCollectionId,
                 this.client.getServiceVersion().getVersion(),
                 logCollection,
+                accept,
                 requestOptions,
                 context);
     }
@@ -8412,29 +7963,21 @@ public final class DeviceManagementsImpl {
     /**
      * Start the device diagnostics log collection on specified devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8442,17 +7985,17 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8474,29 +8017,21 @@ public final class DeviceManagementsImpl {
     /**
      * Get the device diagnostics log collection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8512,6 +8047,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionWithResponseAsync(
             String logCollectionId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLogCollection(
@@ -8519,6 +8055,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 logCollectionId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -8526,29 +8063,21 @@ public final class DeviceManagementsImpl {
     /**
      * Get the device diagnostics log collection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8565,11 +8094,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionWithResponseAsync(
             String logCollectionId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getLogCollection(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 logCollectionId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -8577,29 +8108,21 @@ public final class DeviceManagementsImpl {
     /**
      * Get the device diagnostics log collection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     deviceList: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
+     *     logCollectionId: String (Optional)
+     *     deviceList (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     description: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -8619,34 +8142,26 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collections.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8660,12 +8175,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listLogCollections(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -8682,34 +8199,26 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collections.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8725,10 +8234,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionsSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listLogCollections(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -8745,34 +8256,26 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collections.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8798,34 +8301,26 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collections.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8852,34 +8347,26 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collections.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -8898,33 +8385,25 @@ public final class DeviceManagementsImpl {
     /**
      * Get log collection with detailed status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     deviceStatus: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             resultCode: String
-     *             extendedResultCode: String
-     *             logLocation: String
+     *     logCollectionId: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     deviceStatus (Optional): [
+     *          (Optional){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             resultCode: String (Optional)
+     *             extendedResultCode: String (Optional)
+     *             logLocation: String (Optional)
      *         }
      *     ]
-     *     description: String
+     *     description: String (Optional)
      * }
      * }</pre>
      *
@@ -8939,6 +8418,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponseAsync(
             String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLogCollectionDetailedStatus(
@@ -8946,6 +8426,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -8953,33 +8434,25 @@ public final class DeviceManagementsImpl {
     /**
      * Get log collection with detailed status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     deviceStatus: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             resultCode: String
-     *             extendedResultCode: String
-     *             logLocation: String
+     *     logCollectionId: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     deviceStatus (Optional): [
+     *          (Optional){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             resultCode: String (Optional)
+     *             extendedResultCode: String (Optional)
+     *             logLocation: String (Optional)
      *         }
      *     ]
-     *     description: String
+     *     description: String (Optional)
      * }
      * }</pre>
      *
@@ -8995,11 +8468,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponseAsync(
             String operationId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getLogCollectionDetailedStatus(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -9007,33 +8482,25 @@ public final class DeviceManagementsImpl {
     /**
      * Get log collection with detailed status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     logCollectionId: String
-     *     createdDateTime: String
-     *     lastActionDateTime: String
-     *     status: String(NotStarted/Running/Succeeded/Failed)
-     *     deviceStatus: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             resultCode: String
-     *             extendedResultCode: String
-     *             logLocation: String
+     *     logCollectionId: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *     deviceStatus (Optional): [
+     *          (Optional){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             resultCode: String (Optional)
+     *             extendedResultCode: String (Optional)
+     *             logLocation: String (Optional)
      *         }
      *     ]
-     *     description: String
+     *     description: String (Optional)
      * }
      * }</pre>
      *
@@ -9054,37 +8521,29 @@ public final class DeviceManagementsImpl {
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -9093,13 +8552,17 @@ public final class DeviceManagementsImpl {
      * @return list of device health along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listDeviceHealthSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listDeviceHealthSinglePageAsync(
+            String filter, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceHealth(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        filter,
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -9116,37 +8579,29 @@ public final class DeviceManagementsImpl {
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -9157,11 +8612,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceHealthSinglePageAsync(
-            RequestOptions requestOptions, Context context) {
+            String filter, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceHealth(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        filter,
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -9178,37 +8636,29 @@ public final class DeviceManagementsImpl {
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -9217,51 +8667,43 @@ public final class DeviceManagementsImpl {
      * @return list of device health as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeviceHealthAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDeviceHealthAsync(String filter, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listDeviceHealthSinglePageAsync(requestOptions),
+                () -> listDeviceHealthSinglePageAsync(filter, requestOptions),
                 nextLink -> listDeviceHealthNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -9271,51 +8713,43 @@ public final class DeviceManagementsImpl {
      * @return list of device health as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeviceHealthAsync(RequestOptions requestOptions, Context context) {
+    public PagedFlux<BinaryData> listDeviceHealthAsync(String filter, RequestOptions requestOptions, Context context) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listDeviceHealthSinglePageAsync(requestOptions, context),
+                () -> listDeviceHealthSinglePageAsync(filter, requestOptions, context),
                 nextLink -> listDeviceHealthNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -9324,8 +8758,8 @@ public final class DeviceManagementsImpl {
      * @return list of device health as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDeviceHealth(RequestOptions requestOptions) {
-        return new PagedIterable<>(listDeviceHealthAsync(requestOptions));
+    public PagedIterable<BinaryData> listDeviceHealth(String filter, RequestOptions requestOptions) {
+        return new PagedIterable<>(listDeviceHealthAsync(filter, requestOptions));
     }
 
     /**
@@ -9335,31 +8769,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9374,10 +8808,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceClassesNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9396,31 +8831,31 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             friendlyName: String
-     *             deviceClassProperties: {
-     *                 contractModel: {
-     *                     id: String
-     *                     name: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             friendlyName: String (Optional)
+     *             deviceClassProperties (Required): {
+     *                 contractModel (Optional): {
+     *                     id: String (Required)
+     *                     name: String (Required)
      *                 }
-     *                 compatProperties: {
-     *                     String: String
+     *                 compatProperties (Required): {
+     *                     String: String (Required)
      *                 }
      *             }
-     *             bestCompatibleUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *             bestCompatibleUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9436,7 +8871,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDeviceClassesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDeviceClassesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9455,18 +8891,18 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9481,10 +8917,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listInstallableUpdatesForDeviceClassNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9503,18 +8940,18 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             updateId: {
-     *                 provider: String
-     *                 name: String
-     *                 version: String
+     *     value (Required): [
+     *          (Required){
+     *             updateId (Required): {
+     *                 provider: String (Required)
+     *                 name: String (Required)
+     *                 version: String (Required)
      *             }
-     *             description: String
-     *             friendlyName: String
+     *             description: String (Optional)
+     *             friendlyName: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9530,8 +8967,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listInstallableUpdatesForDeviceClassNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9550,42 +8988,42 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9600,9 +9038,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listDevicesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                                service.listDevicesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9621,42 +9061,42 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             deviceClassId: String
-     *             groupId: String
-     *             lastAttemptedUpdate: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             deviceClassId: String (Required)
+     *             groupId: String (Optional)
+     *             lastAttemptedUpdate (Optional): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed)
-     *             installedUpdate: (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean
-     *             lastDeploymentId: String
-     *             lastInstallResult: {
-     *                 resultCode: int
-     *                 extendedResultCode: int
-     *                 resultDetails: String
-     *                 stepResults: [
-     *                     {
-     *                         update: (recursive schema, see update above)
-     *                         description: String
-     *                         resultCode: int
-     *                         extendedResultCode: int
-     *                         resultDetails: String
+     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *             onLatestUpdate: boolean (Required)
+     *             lastDeploymentId: String (Optional)
+     *             lastInstallResult (Optional): {
+     *                 resultCode: int (Required)
+     *                 extendedResultCode: int (Required)
+     *                 resultDetails: String (Optional)
+     *                 stepResults (Optional): [
+     *                      (Optional){
+     *                         update (Optional): (recursive schema, see update above)
+     *                         description: String (Optional)
+     *                         resultCode: int (Required)
+     *                         extendedResultCode: int (Required)
+     *                         resultDetails: String (Optional)
      *                     }
      *                 ]
      *             }
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9672,7 +9112,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDevicesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDevicesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9691,21 +9132,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9720,8 +9161,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listGroupsNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                        context ->
+                                service.listGroupsNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9740,21 +9184,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             groupType: String(IoTHubTag/DefaultNoTag)
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             subgroupsWithNewUpdatesAvailableCount: Integer
-     *             subgroupsWithUpdatesInProgressCount: Integer
-     *             subgroupsWithOnLatestUpdateCount: Integer
-     *             deployments: [
-     *                 String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *             deployments (Optional): [
+     *                 String (Optional)
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9770,7 +9214,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listGroupsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listGroupsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9789,23 +9234,23 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9821,10 +9266,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listBestUpdatesForGroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9843,23 +9289,23 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             groupId: String
-     *             deviceClassId: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             groupId: String (Required)
+     *             deviceClassId: String (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             deviceCount: int
+     *             deviceCount: int (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9876,7 +9322,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listBestUpdatesForGroupNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listBestUpdatesForGroupNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9895,36 +9342,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -9939,10 +9386,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForGroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9961,36 +9409,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10006,7 +9454,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDeploymentsForGroupNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDeploymentsForGroupNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10025,16 +9474,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10050,10 +9499,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceClassSubgroupsForGroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10072,16 +9522,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceClassId: String
-     *             groupId: String
-     *             createdDateTime: String
-     *             deviceCount: Integer
-     *             deploymentId: String
+     *     value (Required): [
+     *          (Required){
+     *             deviceClassId: String (Required)
+     *             groupId: String (Required)
+     *             createdDateTime: String (Required)
+     *             deviceCount: Integer (Optional)
+     *             deploymentId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10098,8 +9548,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassSubgroupsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceClassSubgroupsForGroupNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10118,36 +9569,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10162,10 +9613,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForDeviceClassSubgroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10184,36 +9636,36 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deploymentId: String
-     *             startDateTime: String
-     *             update: {
-     *                 updateId: {
-     *                     provider: String
-     *                     name: String
-     *                     version: String
+     *     value (Required): [
+     *          (Required){
+     *             deploymentId: String (Required)
+     *             startDateTime: OffsetDateTime (Required)
+     *             update (Required): {
+     *                 updateId (Required): {
+     *                     provider: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Required)
      *                 }
-     *                 description: String
-     *                 friendlyName: String
+     *                 description: String (Optional)
+     *                 friendlyName: String (Optional)
      *             }
-     *             groupId: String
-     *             deviceClassSubgroups: [
-     *                 String
+     *             groupId: String (Required)
+     *             deviceClassSubgroups (Optional): [
+     *                 String (Optional)
      *             ]
-     *             isCanceled: Boolean
-     *             isRetried: Boolean
-     *             rollbackPolicy: {
-     *                 update: (recursive schema, see update above)
-     *                 failure: {
-     *                     devicesFailedPercentage: int
-     *                     devicesFailedCount: int
+     *             isCanceled: Boolean (Optional)
+     *             isRetried: Boolean (Optional)
+     *             rollbackPolicy (Optional): {
+     *                 update (Required): (recursive schema, see update above)
+     *                 failure (Required): {
+     *                     devicesFailedPercentage: int (Required)
+     *                     devicesFailedCount: int (Required)
      *                 }
      *             }
-     *             isCloudInitiatedRollback: Boolean
+     *             isCloudInitiatedRollback: Boolean (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10229,8 +9681,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeploymentsForDeviceClassSubgroupNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10249,16 +9702,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10274,10 +9727,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceStatesForDeviceClassSubgroupDeploymentNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10296,16 +9750,16 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             retryCount: int
-     *             movedOnToNewDeployment: boolean
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             retryCount: int (Required)
+     *             movedOnToNewDeployment: boolean (Required)
+     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10322,8 +9776,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceStatesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceStatesForDeviceClassSubgroupDeploymentNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10342,32 +9797,32 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10383,10 +9838,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listOperationsNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10405,32 +9861,32 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             operationId: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
-     *             error: {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
+     *     value (Required): [
+     *          (Required){
+     *             operationId: String (Required)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *             error (Optional): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
      *                     (recursive schema, see above)
      *                 ]
-     *                 innererror: {
-     *                     code: String
-     *                     message: String
-     *                     errorDetail: String
-     *                     innerError: (recursive schema, see innerError above)
+     *                 innererror (Optional): {
+     *                     code: String (Required)
+     *                     message: String (Optional)
+     *                     errorDetail: String (Optional)
+     *                     innerError (Optional): (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime (Optional)
      *             }
-     *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
-     *             etag: String
+     *             traceId: String (Optional)
+     *             lastActionDateTime: OffsetDateTime (Required)
+     *             createdDateTime: OffsetDateTime (Required)
+     *             etag: String (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10447,7 +9903,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listOperationsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10466,22 +9923,22 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10497,10 +9954,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listLogCollectionsNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10519,22 +9977,22 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             logCollectionId: String
-     *             deviceList: [
-     *                 {
-     *                     deviceId: String
-     *                     moduleId: String
+     *     value (Required): [
+     *          (Required){
+     *             logCollectionId: String (Optional)
+     *             deviceList (Required): [
+     *                  (Required){
+     *                     deviceId: String (Required)
+     *                     moduleId: String (Optional)
      *                 }
      *             ]
-     *             description: String
-     *             createdDateTime: String
-     *             lastActionDateTime: String
-     *             status: String(NotStarted/Running/Succeeded/Failed)
+     *             description: String (Optional)
+     *             createdDateTime: String (Optional)
+     *             lastActionDateTime: String (Optional)
+     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10551,7 +10009,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listLogCollectionsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listLogCollectionsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10570,21 +10029,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10600,10 +10059,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceHealthNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceHealthNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10622,21 +10082,21 @@ public final class DeviceManagementsImpl {
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             deviceId: String
-     *             moduleId: String
-     *             state: String(healthy/unhealthy)
-     *             digitalTwinModelId: String
-     *             healthChecks: [
-     *                 {
-     *                     name: String
-     *                     result: String(success/userError)
+     *     value (Required): [
+     *          (Required){
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
+     *             state: String(healthy/unhealthy) (Required)
+     *             digitalTwinModelId: String (Optional)
+     *             healthChecks (Required): [
+     *                  (Required){
+     *                     name: String (Optional)
+     *                     result: String(success/userError) (Optional)
      *                 }
      *             ]
      *         }
      *     ]
-     *     nextLink: String
+     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -10653,7 +10113,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceHealthNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDeviceHealthNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDeviceHealthNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
