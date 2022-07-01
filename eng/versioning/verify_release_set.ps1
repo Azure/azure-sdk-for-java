@@ -94,7 +94,7 @@ if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
                                 # If the current dependency isn't on the command line to be released and the version
                                 # isn't published on Maven, then report an error
                                 if (!$mavenPublished[$releasedLibToVerify]) {
-                                    if (!$missingLibraries.ContainsKey($libraryToVerify) -and !$mavenPublished) {
+                                    if (!$missingLibraries.ContainsKey($libraryToVerify)) {
                                         $missingLibraries[$libraryToVerify] = $true
                                     }
                                     $script:FoundError = $true
