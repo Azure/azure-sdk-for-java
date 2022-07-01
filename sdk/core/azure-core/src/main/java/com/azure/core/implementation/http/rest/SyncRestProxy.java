@@ -9,7 +9,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -19,7 +18,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
