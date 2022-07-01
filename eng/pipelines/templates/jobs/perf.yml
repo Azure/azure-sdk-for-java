@@ -40,6 +40,7 @@ resources:
     type: github
     endpoint: Azure
     name: Azure/azure-sdk-tools
+    ref: refs/pull/3547/merge
 
 jobs:
 - job: Perf
