@@ -36,26 +36,40 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
             e.printStackTrace();
             Assertions.assertTrue(false);
         }
-        
+
         Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
 
         Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
-        Assertions.assertTrue(200 == transactionResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
 
-        Response<BinaryData> getLedgerResponse = confidentialLedgerClient.getLedgerEntryWithResponse(transactionId, requestOptions);
-        Assertions.assertTrue(200 == getLedgerResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
-
-        JsonNode getLedgerResponseBodyJson = null;
+        JsonNode transactionResponseBodyJson = null;
 
         try {
             
-            getLedgerResponseBodyJson = objectMapper.readTree(getLedgerResponse.getValue().toBytes());
+            transactionResponseBodyJson = objectMapper.readTree(transactionResponse.getValue().toBytes());
         } catch (IOException e) {
             e.printStackTrace();
             Assertions.assertTrue(false);
         }
 
-        System.out.println(getLedgerResponseBodyJson);
+        Assertions.assertEquals(transactionResponseBodyJson.get("transactionId").asText(), transactionId);
+        Assertions.assertTrue(200 == transactionResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
+
+        Response<BinaryData> currentResponse = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+
+        JsonNode currentResponseBodyJson = null;
+
+        try {
+            
+            currentResponseBodyJson = objectMapper.readTree(currentResponse.getValue().toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        Assertions.assertTrue(200 == currentResponse.getStatusCode());
+
+        // we assume no one else is using this test ledger
+        Assertions.assertTrue(currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
     }
 }
 

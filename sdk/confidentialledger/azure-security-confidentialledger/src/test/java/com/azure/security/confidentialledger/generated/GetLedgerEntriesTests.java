@@ -6,21 +6,78 @@ package com.azure.security.confidentialledger.generated;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class GetLedgerEntriesTests extends ConfidentialLedgerClientTestBase {
     @Test
-    @Disabled
     public void testGetLedgerEntriesTests() {
-        RequestOptions requestOptions =
+        BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
+
+        String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+
+        BinaryData parsedResponse = response.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseBodyJson = null;
+
+        try {
+            
+            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
+
+        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+
+        JsonNode transactionResponseBodyJson = null;
+
+        try {
+            
+            transactionResponseBodyJson = objectMapper.readTree(transactionResponse.getValue().toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        Assertions.assertEquals(transactionResponseBodyJson.get("transactionId").asText(), transactionId);
+        Assertions.assertTrue(200 == transactionResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
+
+        Response<BinaryData> currentResponse = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+
+        JsonNode currentResponseBodyJson = null;
+
+        try {
+            
+            currentResponseBodyJson = objectMapper.readTree(currentResponse.getValue().toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        Assertions.assertTrue(200 == currentResponse.getStatusCode());
+
+        // we assume no one else is using this test ledger
+        Assertions.assertTrue(currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
+
+        RequestOptions auditRequestOptions =
                 new RequestOptions()
                         .addQueryParam("fromTransactionId", "3.14")
                         .addQueryParam("toTransactionId", "3.42");
-        PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
-        Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
+        PagedIterable<BinaryData> auditResponse = confidentialLedgerClient.listLedgerEntries(auditRequestOptions);
+        Assertions.assertEquals(200, auditResponse.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(
                                 "{\"collectionId\":\"DEFAULT_SUBLEDGER\",\"contents\":\"Ledger entry contents at transaction id 3.14.\",\"transactionId\":\"3.14\"}")
