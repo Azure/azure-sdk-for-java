@@ -23,12 +23,10 @@ resource testContainer 'Microsoft.Storage/storageAccounts/blobServices/container
 param now string = utcNow()
 param expiryDate string = dateTimeAdd(now, 'P14D')
 param accountSasProperties object = {
-  default: {
-    signedServices: 'b'
-    signedPermission: 'rw'
-    signedExpiry: expiryDate
-    signedResourceTypes: 'sco'
-  }
+  signedServices: 'b'
+  signedPermission: 'rw'
+  signedExpiry: expiryDate
+  signedResourceTypes: 'sco'
 }
 
 var sasToken = storageAccount.listAccountSas('2021-09-01', accountSasProperties).accountSasToken
