@@ -31,6 +31,6 @@ param accountSasProperties object = {
 
 var sasToken = storageAccount.listAccountSas('2021-09-01', accountSasProperties).accountSasToken
 
-var containerUrl = '${storageAccount.properties.primaryEndpoints.blob}/${testContainer.name}?${sasToken}'
+var containerUrl = '${storageAccount.properties.primaryEndpoints.blob}${testContainer.name}?${sasToken}'
 
 output AZURE_STORAGE_CONTAINER_SAS_URL string = containerUrl
