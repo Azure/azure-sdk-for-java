@@ -104,7 +104,10 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
-            policies.add(new AddHeadersPolicy(new HttpHeaders().add("x-ms-blob-type", "BlockBlob")));
+            policies.add(new AddHeadersPolicy(
+                new HttpHeaders()
+                    .add("x-ms-blob-type", "BlockBlob")
+                    .add("x-ms-version", "2021-08-06")));
         }
 
         if (options.isIncludePipelinePolicies()) {
