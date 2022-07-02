@@ -20,16 +20,18 @@ resource testContainer 'Microsoft.Storage/storageAccounts/blobServices/container
   parent: storageAccountBlobServices
 }
 
+param now string = utcNow()
+param expiryDate string = dateTimeAdd(now, 'P14D')
 param accountSasProperties object = {
   default: {
     signedServices: 'b'
-    signedPermission: 'rwldac'
-    signedExpiry: '2020-08-20T11:00:00Z'
+    signedPermission: 'rw'
+    signedExpiry: expiryDate
     signedResourceTypes: 'sco'
   }
 }
 
-var sasToken = storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken
+var sasToken = storageAccount.listAccountSas('2021-09-01', accountSasProperties).accountSasToken
 
 var containerUrl = '${storageAccount.properties.primaryEndpoints.blob}/${testContainer.name}?${sasToken}'
 
