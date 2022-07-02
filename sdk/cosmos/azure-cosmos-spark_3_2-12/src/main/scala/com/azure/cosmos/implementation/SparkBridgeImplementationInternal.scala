@@ -3,20 +3,21 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.{CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
 import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyDefinition, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.feedranges._
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private[cosmos] object SparkBridgeImplementationInternal {
+private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTrait {
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 
@@ -186,5 +187,62 @@ private[cosmos] object SparkBridgeImplementationInternal {
 
   def setUserAgentWithSnapshotInsteadOfBeta() = {
     HttpConstants.Versions.useSnapshotInsteadOfBeta();
+  }
+
+  def createChangeFeedOffsetFromSpark2
+  (
+    client: CosmosAsyncClient,
+    changeFeedQueryName: String,
+    databaseResourceId: String,
+    containerResourceId: String,
+    userProvidedConfig: Map[String, String],
+    tokens: Map[Int, Long]
+  ): String = {
+
+    val databaseName = client
+      .getDatabase(databaseResourceId)
+      .read()
+      .block()
+      .getProperties
+      .getId
+
+    val containerName = client
+      .getDatabase(databaseResourceId)
+      .getContainer(containerResourceId)
+      .read()
+      .block()
+      .getProperties
+      .getId
+
+    val container = client
+      .getDatabase(databaseName)
+      .getContainer(containerName)
+
+    val continuations = container
+      .getFeedRanges
+      .block()
+      .asScala
+      .map(feedRange => {
+        val pkRangeFeedRange = feedRange.asInstanceOf[FeedRangePartitionKeyRangeImpl]
+        val pkRangeId = pkRangeFeedRange.getPartitionKeyRangeId.toInt
+
+        val lsn: Long = tokens.applyOrElse(pkRangeId, (ignore) => {
+          this.logInfo(
+            s"No previous LSN available for PK RangeId $pkRangeId in container $containerName " +
+            s"($containerResourceId) of database $databaseName ($databaseResourceId) - starting from beginning ")
+
+          0L
+        })
+
+        new CompositeContinuationToken(
+          s"\"$lsn\"",
+          toCosmosRange(SparkBridgeInternal.getNormalizedEffectiveRange(container, pkRangeFeedRange)))
+      }).toList
+
+    create FeedRangeContinuation form above
+
+    create changefeedstate with FeedRangeContinuation
+
+    s"$databaseName/$containerName"
   }
 }

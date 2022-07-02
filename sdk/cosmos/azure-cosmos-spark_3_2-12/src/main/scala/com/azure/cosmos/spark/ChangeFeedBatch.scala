@@ -59,10 +59,8 @@ private class ChangeFeedBatch
           assertNotNullOrEmpty(startOffsetLocation, "startOffset checkpointLocation"))
 
         if (metadataLog.get(0).isDefined) {
-          val base64EncodedJson = metadataLog.get(0).get
-          base64EncodedJson
-          //val json = new String(Base64.getUrlDecoder.decode(base64EncodedJson), StandardCharsets.UTF_8)
-          //json
+          val offsetJson = metadataLog.get(0).get
+          ChangeFeedOffset.fromJson(offsetJson).changeFeedState
         } else {
           val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
             container, changeFeedConfig, partitioningConfig, None)
@@ -93,7 +91,7 @@ private class ChangeFeedBatch
           assertNotNull(session, "session"),
           assertNotNullOrEmpty(latestOffsetLocation, "latestOffset checkpointLocation"))
 
-        metadataLog.add(0, latestOffset.changeFeedState)
+        metadataLog.add(0, latestOffset.json())
       }
 
       // Latest offset above has the EndLsn specified based on the point-in-time latest offset
