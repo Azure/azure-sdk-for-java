@@ -13,7 +13,7 @@ parameters:
     default: ''
   - name: arguments
     type: string
-    default: '' 
+    default: ''
   - name: iterations
     type: number
     default: '5'
@@ -37,7 +37,7 @@ resources:
     type: github
     endpoint: Azure
     name: Azure/azure-sdk-tools
-    ref: main
+    ref: kasobol/core-perf
 
 jobs:
 - job: Perf
@@ -62,7 +62,7 @@ jobs:
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
       displayName: Install Java 8
-    
+
     - script: |
         java -version
         mvn --version
