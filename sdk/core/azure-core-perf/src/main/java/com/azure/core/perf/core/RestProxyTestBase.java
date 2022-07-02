@@ -174,9 +174,10 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static Supplier<BinaryData> createBinaryDataSupplier(CorePerfStressOptions options) {
+        long size = options.getSize();
         switch (options.getBinaryDataSource()) {
             case BYTES:
-                byte[] bytes = new byte[(int) options.getSize()];
+                byte[] bytes = new byte[(int) size];
                 new Random().nextBytes(bytes);
                 return  () -> BinaryData.fromBytes(bytes);
             case FILE:
@@ -184,14 +185,17 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
                     Path tempFile = Files.createTempFile("binarydataforperftest", null);
                     tempFile.toFile().deleteOnExit();
                     String tempFilePath = tempFile.toString();
-                    TestDataCreationHelper.writeToFile(tempFilePath, options.getSize(), 8192);
+                    TestDataCreationHelper.writeToFile(tempFilePath, size, 8192);
                     return () -> BinaryData.fromFile(tempFile);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            case FLUX:
+                return () -> BinaryData.fromFlux(
+                    TestDataCreationHelper.createRandomByteBufferFlux(size), size, false).block();
             case STREAM:
                 RepeatingInputStream inputStream =
-                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(size);
                 inputStream.mark(Long.MAX_VALUE);
                 return () -> {
                     inputStream.reset();

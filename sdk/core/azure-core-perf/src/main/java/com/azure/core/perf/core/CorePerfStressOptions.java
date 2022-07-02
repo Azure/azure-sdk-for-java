@@ -54,7 +54,6 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     public enum BinaryDataSource {
-        // TODO (kasobol-msft) add FLUX when there's an option to provide it lazily.
-        BYTES, FILE, STREAM
+        BYTES, FILE, FLUX, STREAM
     }
 }
