@@ -110,8 +110,7 @@ class PartitionResolver {
         final ByteBuffer buffer = ByteBuffer.allocate(data.length)
             .put(data)
             .flip()
-            .order(ByteOrder.LITTLE_ENDIAN)
-            .asReadOnlyBuffer();
+            .order(ByteOrder.LITTLE_ENDIAN);
 
         int index = 0;
         int size = data.length;
