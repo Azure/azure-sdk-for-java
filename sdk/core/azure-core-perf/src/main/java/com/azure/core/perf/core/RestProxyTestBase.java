@@ -24,6 +24,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -69,9 +71,16 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
             wireMockServer = createWireMockServer(mockResponseSupplier);
             endpoint = wireMockServer.baseUrl();
+        } else if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
+            String containerSASUrl = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_CONTAINER_SAS_URL");
+            if (CoreUtils.isNullOrEmpty(containerSASUrl)) {
+                throw new IllegalStateException("Environment variable AZURE_STORAGE_CONTAINER_SAS_URL must be set");
+            }
+            wireMockServer = null;
+            endpoint= containerSASUrl;
         } else {
             wireMockServer = null;
-            endpoint = Objects.requireNonNull(options.getEndpoint(), "endpoint must not be null");
+            endpoint = "http://unused";
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
         httpPipeline = new HttpPipelineBuilder()
