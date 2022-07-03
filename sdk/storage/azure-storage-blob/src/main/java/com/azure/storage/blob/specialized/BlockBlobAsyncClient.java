@@ -584,7 +584,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData -->
      * <pre>
-     * client.stageBlock&#40;base64BlockID, data, length&#41;
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.stageBlock&#40;base64BlockID, binaryData&#41;&#41;
      *     .subscribe&#40;
      *         response -&gt; System.out.println&#40;&quot;Staging block completed&quot;&#41;,
      *         error -&gt; System.out.printf&#40;&quot;Error when calling stage Block: %s&quot;, error&#41;&#41;;
@@ -650,8 +651,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions -->
      * <pre>
-     * client.stageBlockWithResponse&#40;base64BlockID, data, length, md5, leaseId&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.stageBlockWithResponse&#40;
+     *         new BlockBlobStageBlockOptions&#40;base64BlockID, binaryData&#41;
+     *             .setContentMd5&#40;md5&#41;
+     *             .setLeaseId&#40;leaseId&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions -->
      *

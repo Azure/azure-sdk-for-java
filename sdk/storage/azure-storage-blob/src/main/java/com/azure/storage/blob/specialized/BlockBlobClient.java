@@ -576,7 +576,8 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData -->
      * <pre>
-     * client.stageBlock&#40;base64BlockId, data, length&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
+     * client.stageBlock&#40;base64BlockId, binaryData&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData -->
      *
@@ -647,8 +648,12 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context -->
      * <pre>
      * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
+     * BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions&#40;base64BlockId, binaryData&#41;
+     *     .setContentMd5&#40;md5&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
      * System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;,
-     *     client.stageBlockWithResponse&#40;base64BlockId, data, length, md5, leaseId, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     *     client.stageBlockWithResponse&#40;options, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context -->
      *
