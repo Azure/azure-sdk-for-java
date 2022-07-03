@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
@@ -47,6 +48,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.http.WireTapHttpClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -750,8 +752,34 @@ class BlockBlobAPITest extends APISpec {
         binaryData << [
             BinaryData.fromBytes(data.defaultBytes),
             BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
             BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
             BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload does not transform replayable BinaryData"() {
+        when:
+        def uploadOptions = new BlockBlobSimpleUploadOptions(binaryData)
+        def wireTap = new WireTapHttpClient(getHttpClient())
+        def wireTapClient = getSpecializedBuilder(environment.primaryAccount.credential,
+            blockBlobClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobClient()
+        def response = wireTapClient.uploadWithResponse(uploadOptions, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        // Check that replayable BinaryData contents are passed to http client unchanged.
+        wireTap.lastRequest.getBodyAsBinaryData() == binaryData
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
         ]
     }
 
