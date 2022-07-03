@@ -7,6 +7,7 @@ import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Mono;
 
@@ -14,20 +15,14 @@ import java.io.OutputStream;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
+public class DownloadBlobTest extends BlobTestBase<BlobPerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
 
-    private final BlobClient blobClient;
-    private final BlobAsyncClient blobAsyncClient;
-
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
-    public DownloadBlobTest(PerfStressOptions options) {
+    public DownloadBlobTest(BlobPerfStressOptions options) {
         super(options);
-        String blobName = "downloadTest";
-        blobClient = blobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.

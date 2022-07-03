@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The type responsible for creating individual Swagger interface method parsers from a Swagger
  * interface.
  */
-class SwaggerInterfaceParser {
+public class SwaggerInterfaceParser {
     private final String host;
     private final String serviceName;
     private final SerializerAdapter serializer;
@@ -28,7 +28,7 @@ class SwaggerInterfaceParser {
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      */
-    SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
+    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
         this(swaggerInterface, serializer, null);
     }
 
@@ -40,7 +40,7 @@ class SwaggerInterfaceParser {
      * @param host The host of URLs that this Swagger interface targets.
      * @throws MissingRequiredAnnotationException When an expected annotation on the interface is not provided.
      */
-    SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
+    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
         this.serializer = serializer;
 
         if (!CoreUtils.isNullOrEmpty(host)) {
@@ -69,7 +69,7 @@ class SwaggerInterfaceParser {
      * @param swaggerMethod the method to generate a parser for
      * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
-    SwaggerMethodParser getMethodParser(Method swaggerMethod) {
+    public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
         return METHOD_PARSERS.computeIfAbsent(swaggerMethod, sm ->
              new SwaggerMethodParser(sm, getHost(), serializer));
     }
@@ -79,11 +79,11 @@ class SwaggerInterfaceParser {
      * calls. This value is retrieved from the @Host annotation placed on the Swagger interface.
      * @return The value of the @Host annotation.
      */
-    String getHost() {
+    public String getHost() {
         return host;
     }
 
-    String getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 }
