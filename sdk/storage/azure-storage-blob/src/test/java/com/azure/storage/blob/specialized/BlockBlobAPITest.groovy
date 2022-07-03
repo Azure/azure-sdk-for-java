@@ -95,12 +95,83 @@ class BlockBlobAPITest extends APISpec {
         Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block with BinaryData"() {
+        setup:
+        def response = blockBlobClient.stageBlockWithResponse(getBlockID(), binaryData, null, null,
+            null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 201
+        headers.getValue("x-ms-content-crc64") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
     def "Stage block min"() {
         when:
         blockBlobClient.stageBlock(getBlockID(), data.defaultInputStream, data.defaultDataSize) == 201
 
         then:
         blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+    }
+
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block min with BinaryData"() {
+        when:
+        blockBlobClient.stageBlock(getBlockID(), binaryData) == 201
+
+        then:
+        blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block does not transform replayable BinaryData"() {
+        setup:
+        def wireTap = new WireTapHttpClient(getHttpClient())
+        def wireTapClient = getSpecializedBuilder(environment.primaryAccount.credential,
+            blockBlobClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobClient()
+
+        when:
+        wireTapClient.stageBlock(getBlockID(), binaryData) == 201
+
+        then:
+        blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+        binaryData == wireTap.getLastRequest().getBodyAsBinaryData()
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile)
+        ]
     }
 
     @Unroll
@@ -118,6 +189,23 @@ class BlockBlobAPITest extends APISpec {
         true       | null                    | data.defaultDataSize     | NullPointerException
         true       | data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
         true       | data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block illegal arguments with BinaryData"() {
+        when:
+        blockBlobClient.stageBlock(getBlockID(), binaryData)
+
+        then:
+        thrown(exceptionType)
+
+        where:
+        binaryData                                                               | exceptionType
+        null                                                                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, null)                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize + 1) | UnexpectedLengthException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize - 1) | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -206,6 +294,34 @@ class BlockBlobAPITest extends APISpec {
         def os = new ByteArrayOutputStream()
         blobClient.download(os)
         os.toByteArray() == data
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block retry on transient failure with retriable BinaryData"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            environment.primaryAccount.credential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getBlockBlobClient()
+
+        when:
+        def blockId = getBlockID()
+        clientWithFailure.stageBlock(blockId, binaryData)
+        blobClient.getBlockBlobClient().commitBlockList([blockId] as List<String>, true)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+        os.toByteArray() == binaryData.toBytes()
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile)
+        ]
     }
 
     def "Stage block from url"() {

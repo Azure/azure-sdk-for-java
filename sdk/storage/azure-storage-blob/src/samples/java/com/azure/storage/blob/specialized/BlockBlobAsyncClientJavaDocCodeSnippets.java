@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -188,6 +189,19 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlock(String, BinaryData)}
+     */
+    public void stageBlockBinaryData() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.stageBlock(base64BlockID, binaryData))
+            .subscribe(
+                response -> System.out.println("Staging block completed"),
+                error -> System.out.printf("Error when calling stage Block: %s", error));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, byte[], String)}
      *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
@@ -197,6 +211,20 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.stageBlockWithResponse(base64BlockID, data, length, md5, leaseId).subscribe(response ->
             System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, BinaryData, byte[], String)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void stageBlockBinaryData2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-BinaryData-byte-String
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.stageBlockWithResponse(base64BlockID, binaryData, md5, leaseId))
+            .subscribe(response ->
+                System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-BinaryData-byte-String
     }
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -571,6 +572,29 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData -->
+     * <pre>
+     * client.stageBlock&#40;base64BlockId, data, length&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData -->
+     *
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * ids for a given blob must be the same length.
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stageBlock(String base64BlockId, BinaryData data) {
+        stageBlockWithResponse(base64BlockId, data, null, null, null, Context.NONE);
+    }
+
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context -->
      * <pre>
      * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
@@ -608,6 +632,45 @@ public final class BlockBlobClient extends BlobClientBase {
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
             fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, leaseId, context);
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-BinaryData-byte-String-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;,
+     *     client.stageBlockWithResponse&#40;base64BlockId, data, length, md5, leaseId, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-BinaryData-byte-String-Duration-Context -->
+     *
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * ids for a given blob must be the same length.
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
+     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
+     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
+     * operation will fail.
+     * @param leaseId The lease ID the active lease on the blob must match.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response containing status code and HTTP headers
+     *
+     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
+     * @throws NullPointerException if the input data is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
+        String leaseId, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, data, contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
