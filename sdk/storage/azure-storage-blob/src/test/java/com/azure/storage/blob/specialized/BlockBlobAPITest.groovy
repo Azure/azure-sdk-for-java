@@ -41,6 +41,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
@@ -99,8 +100,8 @@ class BlockBlobAPITest extends APISpec {
     @Unroll("#featureName #iterationIndex")
     def "Stage block with BinaryData"() {
         setup:
-        def response = blockBlobClient.stageBlockWithResponse(getBlockID(), binaryData, null, null,
-            null, null)
+        def response = blockBlobClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), binaryData), null, null)
         def headers = response.getHeaders()
 
         expect:
@@ -110,6 +111,34 @@ class BlockBlobAPITest extends APISpec {
         headers.getValue("x-ms-version") != null
         headers.getValue("Date") != null
         Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block with BinaryData async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), binaryData)))
+
+        expect:
+        stepVerifier.assertNext({
+            def headers = it.getHeaders()
+            assert it.getStatusCode() == 201
+            assert headers.getValue("x-ms-content-crc64") != null
+            assert headers.getValue("x-ms-request-id") != null
+            assert headers.getValue("x-ms-version") != null
+            assert headers.getValue("Date") != null
+            assert Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+        }).verifyComplete()
 
         where:
         binaryData << [
@@ -235,6 +264,18 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    def "Stage block transactionalMD5 fail BinaryData"() {
+        when:
+        blockBlobClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data.defaultBytes))
+                .setContentMd5(MessageDigest.getInstance("MD5").digest("garbage".getBytes())),
+            null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     def "Stage block null body"() {
         when:
         blockBlobClient.stageBlock(getBlockID(), null, 0)
@@ -250,6 +291,17 @@ class BlockBlobAPITest extends APISpec {
         expect:
         blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, leaseID, null, null)
             .getStatusCode() == 201
+    }
+
+    def "Stage block lease BinaryData"() {
+        setup:
+        def leaseID = setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
+
+        expect:
+        blockBlobClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data.defaultBytes))
+                .setLeaseId(leaseID),
+            null, null).getStatusCode() == 201
     }
 
     def "Stage block lease fail"() {

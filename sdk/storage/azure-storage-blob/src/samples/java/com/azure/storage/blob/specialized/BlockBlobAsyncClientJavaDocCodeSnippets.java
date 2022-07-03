@@ -15,6 +15,7 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -214,17 +215,20 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, BinaryData, byte[], String)}
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(BlockBlobStageBlockOptions)}
      *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void stageBlockBinaryData2() throws NoSuchAlgorithmException {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-BinaryData-byte-String
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions
         BinaryData.fromFlux(data, length, false)
-            .flatMap(binaryData -> client.stageBlockWithResponse(base64BlockID, binaryData, md5, leaseId))
+            .flatMap(binaryData -> client.stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(base64BlockID, binaryData)
+                    .setContentMd5(md5)
+                    .setLeaseId(leaseId)))
             .subscribe(response ->
                 System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-BinaryData-byte-String
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions
     }
 
     /**

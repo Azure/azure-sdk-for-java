@@ -35,6 +35,7 @@ import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -576,8 +577,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * ids for a given blob must be the same length.
      * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
      * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the {@code Flux}.
      *
      * @return A reactive response signalling completion.
      *
@@ -594,7 +593,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlock(String base64BlockId, BinaryData data) {
-        return stageBlockWithResponse(base64BlockId, data, null, null).flatMap(FluxUtil::toMono);
+        return stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, data)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -649,31 +648,24 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-BinaryData-byte-String -->
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions -->
      * <pre>
      * client.stageBlockWithResponse&#40;base64BlockID, data, length, md5, leaseId&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-BinaryData-byte-String -->
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions -->
      *
-     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
-     * ids for a given blob must be the same length.
-     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
-     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
-     * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
-     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
-     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
-     * operation will fail.
-     * @param leaseId The lease ID the active lease on the blob must match.
+     * @param options {@link BlockBlobStageBlockOptions}
      *
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data,
-        byte[] contentMd5, String leaseId) {
+    public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
+        Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> stageBlockWithResponse(base64BlockId, data,
-                contentMd5, leaseId, context));
+            return withContext(context -> stageBlockWithResponse(
+                options.getBase64BlockId(), options.getData(),
+                options.getContentMd5(), options.getLeaseId(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

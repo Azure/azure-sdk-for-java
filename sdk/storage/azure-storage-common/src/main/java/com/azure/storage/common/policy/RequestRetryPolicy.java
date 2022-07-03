@@ -101,9 +101,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             // TODO (kasobol-msft) Remove this transformation in favor of
             // BinaryData.toReplayableBinaryData()
             // But this should be done together with removal of buffering in chunked uploads.
-            Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
-                ? null
-                : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
+            Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
             context.getHttpRequest().setBody(bufferedBody);
         }
         if (!tryingPrimary) {

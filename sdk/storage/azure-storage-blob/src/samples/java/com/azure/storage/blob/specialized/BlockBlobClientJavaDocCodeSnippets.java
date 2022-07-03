@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -15,6 +16,7 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -211,6 +213,33 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Staging block completed with status %d%n",
             client.stageBlockWithResponse(base64BlockId, data, length, md5, leaseId, timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#stageBlock(String, BinaryData)}
+     */
+    public void stageBlock3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        client.stageBlock(base64BlockId, binaryData);
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-BinaryData
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#stageBlockWithResponse(String, InputStream, long, byte[], String, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void stageBlock4() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context
+        Context context = new Context("key", "value");
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(base64BlockId, binaryData)
+            .setContentMd5(md5)
+            .setLeaseId(leaseId);
+        System.out.printf("Staging block completed with status %d%n",
+            client.stageBlockWithResponse(options, timeout, context).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context
     }
 
     /**

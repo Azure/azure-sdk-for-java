@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -45,6 +46,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -585,7 +587,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stageBlock(String base64BlockId, BinaryData data) {
-        stageBlockWithResponse(base64BlockId, data, null, null, null, Context.NONE);
+        stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, data), null, Context.NONE);
     }
 
     /**
@@ -642,35 +644,28 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-BinaryData-byte-String-Duration-Context -->
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context -->
      * <pre>
      * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
      * System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;,
      *     client.stageBlockWithResponse&#40;base64BlockId, data, length, md5, leaseId, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-BinaryData-byte-String-Duration-Context -->
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#BlockBlobStageBlockOptions-Duration-Context -->
      *
-     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
-     * ids for a given blob must be the same length.
-     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
-     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
-     * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
-     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
-     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
-     * operation will fail.
-     * @param leaseId The lease ID the active lease on the blob must match.
+     * @param options {@link BlockBlobStageBlockOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A response containing status code and HTTP headers
      *
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
-     * @throws NullPointerException if the input data is null.
+     * @throws NullPointerException if the input options is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
-        String leaseId, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId, data, contentMd5, leaseId, context);
+    public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+        Mono<Response<Void>> response = client.stageBlockWithResponse(
+            options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

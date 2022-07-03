@@ -38,7 +38,7 @@ public class BlockBlobSimpleUploadOptions {
      * data emitted by the data source.
      */
     public BlockBlobSimpleUploadOptions(BinaryData data) {
-        StorageImplUtils.assertNotNull("data", data);
+        StorageImplUtils.assertNotNull("data must not be null", data);
         StorageImplUtils.assertNotNull("data must have defined length", data.getLength());
         this.data = data;
         this.length = data.getLength();
