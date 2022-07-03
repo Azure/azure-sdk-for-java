@@ -196,6 +196,35 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
+     * Creates a new block blob. By default, this method will not overwrite an existing blob. Updating an existing block
+     * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
+     * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
+     * PutBlock and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData -->
+     * <pre>
+     * client.upload&#40;data, length&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData -->
+     *
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data) {
+        return upload(data, false);
+    }
+
+    /**
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
      * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
@@ -230,6 +259,44 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return uploadWithResponse(data, length, null, null, null, null, blobRequestConditions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.upload&#40;data, length, overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean -->
+     *
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadWithResponse(
+            new BlockBlobSimpleUploadOptions(data)
+                .setRequestConditions(blobRequestConditions))
             .flatMap(FluxUtil::toMono);
     }
 

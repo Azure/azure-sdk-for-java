@@ -34,8 +34,8 @@ public class BlockBlobSimpleUploadOptions {
     private Boolean legalHold;
 
     /**
-     * @param data The data to write to the blob. The data must have defined length.
-     * data emitted by the data source.
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
      */
     public BlockBlobSimpleUploadOptions(BinaryData data) {
         StorageImplUtils.assertNotNull("data must not be null", data);

@@ -69,6 +69,19 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobClient#upload(BinaryData)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadWithBinaryData() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.upload(binaryData).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData
+    }
+
+    /**
      * Code snippet for {@link BlockBlobClient#upload(InputStream, long, boolean)}
      *
      * @throws IOException If an I/O error occurs
@@ -79,6 +92,20 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Uploaded BlockBlob MD5 is %s%n",
             Base64.getEncoder().encodeToString(client.upload(data, length, overwrite).getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#upload(BinaryData, boolean)}
+     *
+     * @throws IOException If an I/O error occurs
+     */
+    public void uploadWithOverwriteWithBinaryData() throws IOException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean
+        boolean overwrite = false;
+        BinaryData binaryData = BinaryData.fromStream(data, length);
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.upload(binaryData, overwrite).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean
     }
 
     /**

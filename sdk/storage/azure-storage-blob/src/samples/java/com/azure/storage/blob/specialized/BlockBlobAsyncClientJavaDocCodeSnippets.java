@@ -64,6 +64,19 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#upload(BinaryData)}
+     */
+    public void uploadWithBinaryData() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.upload(binaryData))
+            .subscribe(response ->
+                System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                    Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long, boolean)}
      */
     public void uploadWithOverwrite() {
@@ -73,6 +86,20 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long, boolean)}
+     */
+    public void uploadWithOverwriteWithBinaryData() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean
+        boolean overwrite = false; // Default behavior
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.upload(binaryData, overwrite))
+            .subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean
     }
 
     /**

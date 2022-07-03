@@ -1169,6 +1169,27 @@ class BlockBlobAPITest extends APISpec {
         outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload min BinaryData"() {
+        when:
+        blockBlobClient.upload(binaryData, true)
+
+        then:
+        def outStream = new ByteArrayOutputStream()
+        blockBlobClient.download(outStream)
+        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
     @Unroll
     def "Upload illegal argument"() {
         when:
@@ -1180,8 +1201,25 @@ class BlockBlobAPITest extends APISpec {
         where:
         stream                   | dataSize                 | exceptionType
         null                     | data.defaultDataSize     | NullPointerException
-        data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
-        data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
+        data.defaultInputStream  | data.defaultDataSize + 1 | UnexpectedLengthException
+        data.defaultInputStream  | data.defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload illegal argument BinaryData"() {
+        when:
+        blockBlobClient.upload(binaryData)
+
+        then:
+        thrown(exceptionType)
+
+        where:
+        binaryData                                                               | exceptionType
+        null                                                                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, null)                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize + 1) | UnexpectedLengthException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize - 1) | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
