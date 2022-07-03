@@ -276,8 +276,9 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData -->
      * <pre>
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
      * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;data, length&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;binaryData&#41;.getContentMd5&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData -->
      *
@@ -338,8 +339,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean -->
      * <pre>
      * boolean overwrite = false;
+     * BinaryData binaryData = BinaryData.fromStream&#40;data, length&#41;;
      * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;data, length, overwrite&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;binaryData, overwrite&#41;.getContentMd5&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.upload#BinaryData-boolean -->
      *

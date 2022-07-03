@@ -209,9 +209,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData -->
      * <pre>
-     * client.upload&#40;data, length&#41;.subscribe&#40;response -&gt;
-     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
-     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.upload&#40;binaryData&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *             Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData -->
      *
@@ -277,7 +279,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean -->
      * <pre>
      * boolean overwrite = false; &#47;&#47; Default behavior
-     * client.upload&#40;data, length, overwrite&#41;.subscribe&#40;response -&gt;
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.upload&#40;binaryData, overwrite&#41;&#41;
+     *     .subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
      *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
      * </pre>
