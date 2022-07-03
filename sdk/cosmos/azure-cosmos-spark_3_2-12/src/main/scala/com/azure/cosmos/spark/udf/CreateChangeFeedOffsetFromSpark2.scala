@@ -3,14 +3,13 @@
 package com.azure.cosmos.spark.udf
 
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
-import com.azure.cosmos.spark.{CosmosAccountConfig, CosmosChangeFeedConfig, CosmosClientCache, CosmosClientConfiguration, CosmosConfig, CosmosContainerConfig, CosmosReadConfig, Loan}
-import org.apache.spark.sql.api.java.UDF5
+import com.azure.cosmos.spark.{CosmosClientCache, CosmosClientConfiguration, CosmosConfig, Loan}
+import org.apache.spark.sql.api.java.UDF4
 
 @SerialVersionUID(1L)
-class CreateChangeFeedOffsetFromSpark2 extends UDF5[String, String, String, Map[String, String], Map[Int, Long], String] {
+class CreateChangeFeedOffsetFromSpark2 extends UDF4[String, String, Map[String, String], Map[Int, Long], String] {
   override def call
   (
-    changeFeedQueryName: String,
     databaseResourceId: String,
     containerResourceId: String,
     userProvidedConfig: Map[String, String],
@@ -18,9 +17,6 @@ class CreateChangeFeedOffsetFromSpark2 extends UDF5[String, String, String, Map[
   ): String = {
 
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
-
-    val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
-    val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
       useEventualConsistency = false)
@@ -34,10 +30,8 @@ class CreateChangeFeedOffsetFromSpark2 extends UDF5[String, String, String, Map[
 
         SparkBridgeImplementationInternal.createChangeFeedOffsetFromSpark2(
           cosmosClientCacheItem.client,
-          changeFeedQueryName,
           databaseResourceId,
           containerResourceId,
-          userProvidedConfig,
           tokens
         )
       })

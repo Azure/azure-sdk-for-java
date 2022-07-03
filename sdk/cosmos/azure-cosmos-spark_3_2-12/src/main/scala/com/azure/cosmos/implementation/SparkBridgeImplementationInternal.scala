@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.{CosmosAsyncClient, CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosAsyncClient,  CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
-import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedState, ChangeFeedStateV1}
+import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyDefinition, SparkModelBridgeInternal}
-import com.azure.cosmos.spark.NormalizedRange
+import com.azure.cosmos.models.{FeedRange, PartitionKey, SparkModelBridgeInternal}
+import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 // scalastyle:off underscore.import
@@ -134,7 +134,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     new FeedRangeEpkImpl(toCosmosRange(range))
   }
 
-  private[this] def toCosmosRange(range: NormalizedRange): Range[String] = {
+  private[cosmos] def toCosmosRange(range: NormalizedRange): Range[String] = {
     new Range[String](range.min, range.max, true, false)
   }
 
@@ -185,17 +185,15 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .setIoThreadPriority(config, ioThreadPriority)
   }
 
-  def setUserAgentWithSnapshotInsteadOfBeta() = {
-    HttpConstants.Versions.useSnapshotInsteadOfBeta();
+  def setUserAgentWithSnapshotInsteadOfBeta(): Unit = {
+    HttpConstants.Versions.useSnapshotInsteadOfBeta()
   }
 
   def createChangeFeedOffsetFromSpark2
   (
     client: CosmosAsyncClient,
-    changeFeedQueryName: String,
     databaseResourceId: String,
     containerResourceId: String,
-    userProvidedConfig: Map[String, String],
     tokens: Map[Int, Long]
   ): String = {
 
@@ -226,7 +224,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
         val pkRangeFeedRange = feedRange.asInstanceOf[FeedRangePartitionKeyRangeImpl]
         val pkRangeId = pkRangeFeedRange.getPartitionKeyRangeId.toInt
 
-        val lsn: Long = tokens.applyOrElse(pkRangeId, (ignore) => {
+        val lsn: Long = tokens.applyOrElse(pkRangeId, (_: Int) => {
           this.logInfo(
             s"No previous LSN available for PK RangeId $pkRangeId in container $containerName " +
             s"($containerResourceId) of database $databaseName ($databaseResourceId) - starting from beginning ")
@@ -235,14 +233,28 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
         })
 
         new CompositeContinuationToken(
-          s"\"$lsn\"",
+          "\"" + lsn + "\"",
           toCosmosRange(SparkBridgeInternal.getNormalizedEffectiveRange(container, pkRangeFeedRange)))
       }).toList
 
-    create FeedRangeContinuation form above
+    val feedRangeContinuation: FeedRangeContinuation = FeedRangeContinuation
+      .create(
+        containerResourceId,
+        FeedRangeEpkImpl.forFullRange,
+        continuations.asJava
+      )
 
-    create changefeedstate with FeedRangeContinuation
+    val changeFeedState: ChangeFeedState = new ChangeFeedStateV1(
+      containerResourceId,
+      FeedRangeEpkImpl.forFullRange,
+      ChangeFeedMode.INCREMENTAL,
+      ChangeFeedStartFromInternal.createFromLegacyContinuation(),
+      feedRangeContinuation
+    )
 
-    s"$databaseName/$containerName"
+    new ChangeFeedOffset(
+      changeFeedState.toString,
+      Option.empty
+    ).json()
   }
 }

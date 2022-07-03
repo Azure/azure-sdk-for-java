@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private case class ChangeFeedOffset
+private[cosmos] case class ChangeFeedOffset
 (
   changeFeedState: String,
   inputPartitions: Option[Array[CosmosInputPartition]]
