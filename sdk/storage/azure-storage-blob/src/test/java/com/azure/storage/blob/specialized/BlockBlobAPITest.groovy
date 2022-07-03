@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -58,6 +59,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.stream.Stream
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -726,6 +728,31 @@ class BlockBlobAPITest extends APISpec {
         validateBasicHeaders(response.getHeaders())
         response.getHeaders().getValue("Content-MD5") != null
         Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload BinaryData"() {
+        when:
+        def uploadOptions = new BlockBlobSimpleUploadOptions(binaryData)
+        def response = blockBlobClient.uploadWithResponse(uploadOptions, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        def outStream = new ByteArrayOutputStream()
+        blockBlobClient.downloadStream(outStream)
+        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+        validateBasicHeaders(response.getHeaders())
+        response.getHeaders().getValue("Content-MD5") != null
+        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
     }
 
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
