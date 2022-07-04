@@ -1125,8 +1125,8 @@ private object CosmosChangeFeedConfig {
     parseFromStringFunction = location => location,
     helpMessage = "Location of the checkpoint file used for a change feed query via batch. In Spark streaming the " +
       "`checkpointLocation` is used (independent of which Spark connector gets used) - but for Batch this " +
-      "proprietary property needs to be used. If no file exists at the location teh StartFrom settings are applied " +
-      "instead. If this config is set and a file exists teh StartFrom settings are ignored and instead the change " +
+      "proprietary property needs to be used. If no file exists at the location the StartFrom settings are applied " +
+      "instead. If this config is set and a file exists the StartFrom settings are ignored and instead the change " +
       "feed will be processed from the previous position.")
 
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
