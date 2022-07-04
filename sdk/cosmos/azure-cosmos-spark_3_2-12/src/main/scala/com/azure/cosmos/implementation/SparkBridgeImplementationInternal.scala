@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation
 
-import com.azure.cosmos.{CosmosAsyncClient,  CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.implementation.changefeed.implementation.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
@@ -216,13 +216,12 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       .getDatabase(databaseName)
       .getContainer(containerName)
 
-    val continuations = container
-      .getFeedRanges
-      .block()
-      .asScala
-      .map(feedRange => {
-        val pkRangeFeedRange = feedRange.asInstanceOf[FeedRangePartitionKeyRangeImpl]
-        val pkRangeId = pkRangeFeedRange.getPartitionKeyRangeId.toInt
+    val pkRanges = SparkBridgeInternal
+      .getPartitionKeyRanges(container)
+
+    val continuations = pkRanges
+      .map(pkRange => {
+        val pkRangeId = pkRange.getId.toInt
 
         val lsn: Long = tokens.applyOrElse(pkRangeId, (_: Int) => {
           this.logInfo(
@@ -234,8 +233,8 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
         new CompositeContinuationToken(
           "\"" + lsn + "\"",
-          toCosmosRange(SparkBridgeInternal.getNormalizedEffectiveRange(container, pkRangeFeedRange)))
-      }).toList
+          pkRange.toRange)
+      })
 
     val feedRangeContinuation: FeedRangeContinuation = FeedRangeContinuation
       .create(
@@ -252,9 +251,10 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       feedRangeContinuation
     )
 
+    s"v1\n" +
     new ChangeFeedOffset(
       changeFeedState.toString,
-      Option.empty
+      None
     ).json()
   }
 }

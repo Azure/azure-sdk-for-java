@@ -4,10 +4,9 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl
 
 import java.util.UUID
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
+import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, GetFeedRangeForPartitionKeyValue}
@@ -15,10 +14,6 @@ import org.apache.hadoop.fs.{FileSystem, Path}
 
 import java.io.{BufferedReader, InputStreamReader}
 import java.nio.file.Paths
-
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
 
 class SparkE2EChangeFeedITest
   extends IntegrationSpec
@@ -290,6 +285,7 @@ class SparkE2EChangeFeedITest
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
     for (sequenceNumber <- 1 to 50) {
       val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
       objectNode.put("name", "Shrodigner's cat")
@@ -318,6 +314,7 @@ class SparkE2EChangeFeedITest
     // technically possible that even with 50 documents randomly distributed across 3 partitions some
     // has no documents
     // rowsArray should have size df.rdd.getNumPartitions
+    rowsArray1.length > 0 shouldEqual true
     rowsArray1.length <= df1.rdd.getNumPartitions shouldEqual true
 
     val initialCount = rowsArray1.length
@@ -350,6 +347,7 @@ class SparkE2EChangeFeedITest
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
     for (sequenceNumber <- 1 to 50) {
       val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
       objectNode.put("name", "Shrodigner's cat")
@@ -378,6 +376,7 @@ class SparkE2EChangeFeedITest
     // technically possible that even with 50 documents randomly distributed across 3 partitions some
     // has no documents
     // rowsArray should have size df.rdd.getNumPartitions
+    rowsArray1.length > 0 shouldEqual true
     rowsArray1.length <= df1.rdd.getNumPartitions shouldEqual true
 
     val initialCount = rowsArray1.length
@@ -399,7 +398,10 @@ class SparkE2EChangeFeedITest
 
     // convert ChangeFeedOffset to simulated Spark 2.4 continuation
     val fileContent = this.readFileContentAsString(hdfs, latestOffsetFileLocation)
-    val changeFeedStateEncoded = ChangeFeedOffset.fromJson(fileContent).changeFeedState
+    val indexOfNewLine = fileContent.indexOf("\n")
+    fileContent.substring(0, indexOfNewLine) shouldEqual "v1"
+    val offsetJson = fileContent.substring(indexOfNewLine + 1)
+    val changeFeedStateEncoded = ChangeFeedOffset.fromJson(offsetJson).changeFeedState
     val changeFeedState = ChangeFeedState.fromString(changeFeedStateEncoded)
     val databaseResourceIdAndTokenMap = calculateTokenMap(changeFeedState, cfg)
     // calling UDF to get migrated offset
@@ -411,8 +413,16 @@ class SparkE2EChangeFeedITest
         databaseResourceIdAndTokenMap._2
       )
 
+    if (hdfs.exists(new Path(startOffsetFileLocation))) {
+      hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileLocation + ".bak"))
+    }
+
+    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(latestOffsetFileLocation + ".bak"))
+
     val outputStream = hdfs.create(new Path(startOffsetFileLocation), true)
     outputStream.writeBytes(migratedOffset)
+    outputStream.flush()
+    outputStream.close()
     hdfs.delete(new Path(latestOffsetFileLocation), false)
 
     val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
@@ -472,26 +482,23 @@ class SparkE2EChangeFeedITest
           .getDatabase(cosmosDatabase)
           .getContainer(cosmosContainer)
 
-        container
-          .getFeedRanges
-          .block()
-          .asScala
-          .foreach(feedRange => {
-            val pkRangeFeedRange = feedRange.asInstanceOf[FeedRangePartitionKeyRangeImpl]
-            val pkRangeId: Int = pkRangeFeedRange.getPartitionKeyRangeId.toInt
+        val pkRanges = SparkBridgeInternal
+          .getPartitionKeyRanges(container)
 
-            val effectiveRange = SparkBridgeImplementationInternal.toCosmosRange(
-              SparkBridgeInternal.getNormalizedEffectiveRange(container, pkRangeFeedRange))
+        pkRanges
+          .foreach(pkRange => {
+            val pkRangeId: Int = pkRange.getId.toInt
+            val effectiveRange = pkRange.toRange
 
             val filteredCompositeContinuations = changeFeedState
-              .extractContinuationTokens()
-              .asScala
+              .getContinuation
+              .getCurrentContinuationTokens
               .filter(compositeContinuationToken => effectiveRange.equals(compositeContinuationToken.getRange))
 
             filteredCompositeContinuations should have size 1
 
             val quotedToken = filteredCompositeContinuations.head.getToken
-            val lsn: Long = quotedToken.substring(1, quotedToken.length - 2).toLong
+            val lsn: Long = quotedToken.substring(1, quotedToken.length - 1).toLong
 
             tokenMap += (pkRangeId -> lsn)
           })

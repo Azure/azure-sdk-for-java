@@ -20,7 +20,7 @@ class ChangeFeedStartFromLegacyContinuationImpl extends ChangeFeedStartFromInter
             setProperty(
                 this,
                 Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.LEASE);
+                ChangeFeedStartFromTypes.LEGACY_CHECKPOINT);
         }
     }
 
