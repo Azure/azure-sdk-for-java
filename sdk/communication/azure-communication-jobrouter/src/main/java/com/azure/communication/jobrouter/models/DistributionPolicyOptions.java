@@ -3,8 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.models.DistributionMode;
-
 /**
  * Abstract class for Create and Update DistributionPolicy Options.
  */

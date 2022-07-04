@@ -5,7 +5,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.models.JobAssignment;
-import com.azure.communication.jobrouter.implementation.models.JobStatus;
 import com.azure.communication.jobrouter.implementation.models.WorkerSelector;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;

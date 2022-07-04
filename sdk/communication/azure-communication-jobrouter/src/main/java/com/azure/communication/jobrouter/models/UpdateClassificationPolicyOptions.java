@@ -34,7 +34,7 @@ public class UpdateClassificationPolicyOptions extends ClassificationPolicyOptio
 
     /**
      * Sets fallbackQueueId.
-     * @param fallbackQueueId  The fallback queue to select if the queue selector doesn't find a match.
+     * @param fallbackQueueId The fallback queue to select if the queue selector doesn't find a match.
      * @return this
      */
     public UpdateClassificationPolicyOptions setFallbackQueueId(String fallbackQueueId) {
