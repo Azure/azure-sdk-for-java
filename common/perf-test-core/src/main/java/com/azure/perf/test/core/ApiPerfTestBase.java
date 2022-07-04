@@ -5,6 +5,7 @@ package com.azure.perf.test.core;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.apache.ApacheHttpAsyncClientProvider;
 import com.azure.core.http.apache.ApacheHttpAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
@@ -17,6 +18,11 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import okhttp3.OkHttpClient;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManager;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,6 +35,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Base Performance Test class for API based Perf Tests.
@@ -114,17 +121,21 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                         SSLContext sslContext = SSLContext.getInstance("SSL");
                         sslContext.init(
                             null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
-                        CloseableHttpAsyncClient okHttpClient = HttpAsyncClientBuilder.create()
-                                                             // TODO: set the socket
-//                                                        .sslSocketFactory(sslContext.getSocketFactory(),
-//                                                            (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
-                                                        .build();
-                        return new ApacheHttpAsyncHttpClientBuilder(okHttpClient).build();
+
+                        final PoolingAsyncClientConnectionManager connectionManager =
+                            PoolingAsyncClientConnectionManagerBuilder.create().setTlsStrategy(
+                                new DefaultClientTlsStrategy(sslContext)).build();
+
+                        CloseableHttpAsyncClient httpAsyncClient = HttpAsyncClientBuilder
+                                                                  .create()
+                                                                  .setConnectionManager(connectionManager)
+                                                                  .build();
+                        return new ApacheHttpAsyncHttpClientBuilder(httpAsyncClient).build();
                     } catch (NoSuchAlgorithmException | KeyManagementException e) {
                         throw new IllegalStateException(e);
                     }
                 } else {
-                    return new OkHttpAsyncClientProvider().createInstance();
+                    return new ApacheHttpAsyncClientProvider().createInstance();
                 }
             default:
                 throw new IllegalArgumentException("Unsupported http client " + httpClientType);
