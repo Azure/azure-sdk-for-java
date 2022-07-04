@@ -14,6 +14,11 @@ public class CompleteJobResult {
 
     private Object emptyResponse;
 
+    /**
+     * Constructor to create a place-holder result.
+     * Optionally use Fluent set and get to add more fields to the result.
+     * @param emptyResponse
+     */
     public CompleteJobResult(Object emptyResponse) {
         this.emptyResponse = emptyResponse;
     }

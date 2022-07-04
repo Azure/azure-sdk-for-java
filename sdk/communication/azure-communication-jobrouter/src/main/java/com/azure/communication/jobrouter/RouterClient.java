@@ -635,22 +635,20 @@ public final class RouterClient {
      * Reclassify a job.
      *
      * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
      * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReclassifyJobResult reclassifyJob(String id, Object reclassifyJobRequest) {
-        return this.client.reclassifyJob(id, reclassifyJobRequest).block();
+    public ReclassifyJobResult reclassifyJob(String id) {
+        return this.client.reclassifyJob(id).block();
     }
 
     /**
      * Reclassify a job.
      *
      * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
      * @param context The context to associate with this operation.
      * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,8 +656,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReclassifyJobResult> reclassifyJobWithResponse(String id, Object reclassifyJobRequest, Context context) {
-        return this.client.reclassifyJobWithResponse(id, reclassifyJobRequest, context).block();
+    public Response<ReclassifyJobResult> reclassifyJobWithResponse(String id, Context context) {
+        return this.client.reclassifyJobWithResponse(id, context).block();
     }
 
     /**

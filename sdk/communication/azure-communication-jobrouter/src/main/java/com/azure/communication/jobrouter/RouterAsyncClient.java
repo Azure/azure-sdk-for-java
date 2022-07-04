@@ -1008,16 +1008,15 @@ public final class RouterAsyncClient {
      * Reclassify a job.
      *
      * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
      * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReclassifyJobResult> reclassifyJob(String id, Object reclassifyJobRequest) {
+    public Mono<ReclassifyJobResult> reclassifyJob(String id) {
         try {
-            return withContext(context -> reclassifyJobWithResponse(id, reclassifyJobRequest, context)
+            return withContext(context -> reclassifyJobWithResponse(id, context)
                 .flatMap(
                     (Response<ReclassifyJobResult> res) -> {
                         if (res.getValue() != null) {
@@ -1035,24 +1034,23 @@ public final class RouterAsyncClient {
      * Reclassify a job.
      *
      * @param id Id of the job.
-     * @param reclassifyJobRequest Request object for reclassifying a job.
      * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReclassifyJobResult>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest) {
+    public Mono<Response<ReclassifyJobResult>> reclassifyJobWithResponse(String id) {
         try {
-            return withContext(context -> reclassifyJobWithResponse(id, reclassifyJobRequest, context));
+            return withContext(context -> reclassifyJobWithResponse(id, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ReclassifyJobResult>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest, Context context) {
+    Mono<Response<ReclassifyJobResult>> reclassifyJobWithResponse(String id, Context context) {
         try {
-            return jobRouter.reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context)
+            return jobRouter.reclassifyJobActionWithResponseAsync(id, null, context)
                 .map(result -> new SimpleResponse<ReclassifyJobResult>(
                     result.getRequest(), result.getStatusCode(), result.getHeaders(), new ReclassifyJobResult(result.getValue())));
         } catch (RuntimeException ex) {
@@ -1393,7 +1391,7 @@ public final class RouterAsyncClient {
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @return any object.
+     * @return DeclineJobOfferResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

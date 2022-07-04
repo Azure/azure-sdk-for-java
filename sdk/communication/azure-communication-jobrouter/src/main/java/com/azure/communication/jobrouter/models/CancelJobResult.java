@@ -7,12 +7,17 @@ package com.azure.communication.jobrouter.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Response object for cancel job request.
+ * Result object for cancel job request.
  */
 @Fluent
 public class CancelJobResult {
     private Object emptyResponse;
 
+    /**
+     * Constructor to create a place-holder result.
+     * Optionally use Fluent set and get to add more fields to the result.
+     * @param emptyResponse
+     */
     public CancelJobResult(Object emptyResponse) {
         this.emptyResponse = emptyResponse;
     }
