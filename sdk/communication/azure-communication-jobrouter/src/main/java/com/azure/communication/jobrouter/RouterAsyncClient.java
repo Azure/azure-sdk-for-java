@@ -8,9 +8,13 @@ import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
 import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.RouterJobAdapter;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
+import com.azure.communication.jobrouter.models.CancelJobResult;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.models.CloseJobResult;
+import com.azure.communication.jobrouter.models.CompleteJobResult;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.DeclineJobOfferResult;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
@@ -24,6 +28,7 @@ import com.azure.communication.jobrouter.implementation.models.PagedJob;
 import com.azure.communication.jobrouter.implementation.models.PagedQueue;
 import com.azure.communication.jobrouter.implementation.models.PagedWorker;
 import com.azure.communication.jobrouter.models.QueueStatistics;
+import com.azure.communication.jobrouter.models.ReclassifyJobResult;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
@@ -40,6 +45,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -1003,17 +1009,17 @@ public final class RouterAsyncClient {
      *
      * @param id Id of the job.
      * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @return any object.
+     * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> reclassifyJob(String id, Object reclassifyJobRequest) {
+    public Mono<ReclassifyJobResult> reclassifyJob(String id, Object reclassifyJobRequest) {
         try {
             return withContext(context -> reclassifyJobWithResponse(id, reclassifyJobRequest, context)
                 .flatMap(
-                    (Response<Object> res) -> {
+                    (Response<ReclassifyJobResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -1030,13 +1036,13 @@ public final class RouterAsyncClient {
      *
      * @param id Id of the job.
      * @param reclassifyJobRequest Request object for reclassifying a job.
-     * @return any object.
+     * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest) {
+    public Mono<Response<ReclassifyJobResult>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest) {
         try {
             return withContext(context -> reclassifyJobWithResponse(id, reclassifyJobRequest, context));
         } catch (RuntimeException ex) {
@@ -1044,9 +1050,11 @@ public final class RouterAsyncClient {
         }
     }
 
-    Mono<Response<Object>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest, Context context) {
+    Mono<Response<ReclassifyJobResult>> reclassifyJobWithResponse(String id, Object reclassifyJobRequest, Context context) {
         try {
-            return jobRouter.reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context);
+            return jobRouter.reclassifyJobActionWithResponseAsync(id, reclassifyJobRequest, context)
+                .map(result -> new SimpleResponse<ReclassifyJobResult>(
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new ReclassifyJobResult(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1059,17 +1067,17 @@ public final class RouterAsyncClient {
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
-     * @return any object.
+     * @return CancelJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> cancelJob(String id, String note, String dispositionCode) {
+    public Mono<CancelJobResult> cancelJob(String id, String note, String dispositionCode) {
         try {
             return withContext(context -> cancelJobWithResponse(id, note, dispositionCode, context)
                 .flatMap(
-                    (Response<Object> res) -> {
+                    (Response<CancelJobResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -1088,13 +1096,13 @@ public final class RouterAsyncClient {
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
-     * @return any object.
+     * @return CancelJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> cancelJobWithResponse(String id, String note, String dispositionCode) {
+    public Mono<Response<CancelJobResult>> cancelJobWithResponse(String id, String note, String dispositionCode) {
         try {
             return withContext(context -> cancelJobWithResponse(id, note, dispositionCode, context));
         } catch (RuntimeException ex) {
@@ -1102,9 +1110,11 @@ public final class RouterAsyncClient {
         }
     }
 
-    Mono<Response<Object>> cancelJobWithResponse(String id, String note, String dispositionCode, Context context) {
+    Mono<Response<CancelJobResult>> cancelJobWithResponse(String id, String note, String dispositionCode, Context context) {
         try {
-            return jobRouter.cancelJobActionWithResponseAsync(id, note, dispositionCode, context);
+            return jobRouter.cancelJobActionWithResponseAsync(id, note, dispositionCode, context)
+                .map(result -> new SimpleResponse<CancelJobResult>(
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CancelJobResult(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1116,17 +1126,17 @@ public final class RouterAsyncClient {
      * @param id Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @return any object.
+     * @return CompleteJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> completeJob(String id, String assignmentId, String note) {
+    public Mono<CompleteJobResult> completeJob(String id, String assignmentId, String note) {
         try {
             return withContext(context -> completeJobWithResponse(id, assignmentId, note, context)
                 .flatMap(
-                    (Response<Object> res) -> {
+                    (Response<CompleteJobResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -1144,13 +1154,13 @@ public final class RouterAsyncClient {
      * @param id Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @return any object.
+     * @return CompleteJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> completeJobWithResponse(String id, String assignmentId, String note) {
+    public Mono<Response<CompleteJobResult>> completeJobWithResponse(String id, String assignmentId, String note) {
         try {
             return withContext(context -> completeJobWithResponse(id, assignmentId, note, context));
         } catch (RuntimeException ex) {
@@ -1158,9 +1168,11 @@ public final class RouterAsyncClient {
         }
     }
 
-    Mono<Response<Object>> completeJobWithResponse(String id, String assignmentId, String note, Context context) {
+    Mono<Response<CompleteJobResult>> completeJobWithResponse(String id, String assignmentId, String note, Context context) {
         try {
-            return jobRouter.completeJobActionWithResponseAsync(id, assignmentId, note, context);
+            return jobRouter.completeJobActionWithResponseAsync(id, assignmentId, note, context)
+                .map(result -> new SimpleResponse<CompleteJobResult>(
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CompleteJobResult(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1176,17 +1188,17 @@ public final class RouterAsyncClient {
      * notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
      * time.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @return any object.
+     * @return CloseJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> closeJob(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+    public Mono<CloseJobResult> closeJob(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
         try {
             return withContext(context -> closeJobWithResponse(id, assignmentId, dispositionCode, closeTime, note, context)
                 .flatMap(
-                    (Response<Object> res) -> {
+                    (Response<CloseJobResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -1208,13 +1220,13 @@ public final class RouterAsyncClient {
      * notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
      * time.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
-     * @return any object.
+     * @return CloseJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+    public Mono<Response<CloseJobResult>> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
         try {
             return withContext(context -> closeJobWithResponse(id, assignmentId, dispositionCode, closeTime, note, context));
         } catch (RuntimeException ex) {
@@ -1222,9 +1234,12 @@ public final class RouterAsyncClient {
         }
     }
 
-    Mono<Response<Object>> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
+    Mono<Response<CloseJobResult>> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
         try {
-            return jobRouter.closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context);
+            return jobRouter.closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context)
+                .map(result -> new SimpleResponse<CloseJobResult>(
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CloseJobResult(result.getValue())
+                ));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1384,11 +1399,11 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> declineJobOffer(String workerId, String offerId) {
+    public Mono<DeclineJobOfferResult> declineJobOffer(String workerId, String offerId) {
         try {
             return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context)
                 .flatMap(
-                    (Response<Object> res) -> {
+                    (Response<DeclineJobOfferResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -1405,13 +1420,13 @@ public final class RouterAsyncClient {
      *
      * @param workerId Id of the worker.
      * @param offerId Id of the offer.
-     * @return any object.
+     * @return DeclineJobOfferResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> declineJobOfferWithResponse(String workerId, String offerId) {
+    public Mono<Response<DeclineJobOfferResult>> declineJobOfferWithResponse(String workerId, String offerId) {
         try {
             return withContext(context -> declineJobOfferWithResponse(workerId, offerId, context));
         } catch (RuntimeException ex) {
@@ -1419,9 +1434,11 @@ public final class RouterAsyncClient {
         }
     }
 
-    Mono<Response<Object>> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
+    Mono<Response<DeclineJobOfferResult>> declineJobOfferWithResponse(String workerId, String offerId, Context context) {
         try {
-            return jobRouter.declineJobActionWithResponseAsync(workerId, offerId, context);
+            return jobRouter.declineJobActionWithResponseAsync(workerId, offerId, context)
+                .map(result -> new SimpleResponse<DeclineJobOfferResult>(
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new DeclineJobOfferResult(result.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
