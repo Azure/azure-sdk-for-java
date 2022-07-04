@@ -10,7 +10,7 @@ import com.azure.resourcemanager.digitaltwins.models.ServiceBus;
 /** Samples for DigitalTwinsEndpoint CreateOrUpdate. */
 public final class DigitalTwinsEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointPut_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointPut_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsEndpoint resource.
@@ -34,7 +34,7 @@ public final class DigitalTwinsEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/DigitalTwinsEndpointPut_WithIdentity_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/DigitalTwinsEndpointPut_WithIdentity_example.json
      */
     /**
      * Sample code: Put a DigitalTwinsEndpoint resource with identity.

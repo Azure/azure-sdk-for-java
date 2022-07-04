@@ -484,7 +484,7 @@ public class ShareFileAsyncClient {
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
         ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata);
-        return beginCopy(sourceUrl, pollInterval, options);
+        return beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -545,11 +545,11 @@ public class ShareFileAsyncClient {
             .setFilePermission(filePermission)
             .setPermissionCopyModeType(filePermissionCopyMode)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setMetadata(metadata)
             .setDestinationRequestConditions(destinationRequestConditions);
 
-        return beginCopy(sourceUrl, pollInterval, options);
+        return beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -578,14 +578,14 @@ public class ShareFileAsyncClient {
      *     .setSmbProperties&#40;smbProperties&#41;
      *     .setFilePermission&#40;filePermission&#41;
      *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
-     *     .setSetArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setArchiveAttribute&#40;setArchiveAttribute&#41;
      *     .setDestinationRequestConditions&#40;requestConditions&#41;
      *     .setSmbPropertiesToCopy&#40;list&#41;
      *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * PollerFlux&lt;ShareFileCopyInfo, Void&gt; poller = shareFileAsyncClient.beginCopy&#40;
-     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, Duration.ofSeconds&#40;2&#41;, options&#41;;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options, Duration.ofSeconds&#40;2&#41;&#41;;
      *
      * poller.subscribe&#40;response -&gt; &#123;
      *     final ShareFileCopyInfo value = response.getValue&#40;&#41;;
@@ -604,7 +604,7 @@ public class ShareFileAsyncClient {
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval, ShareFileCopyOptions options) {
+    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options, Duration pollInterval) {
 
         final ShareRequestConditions finalRequestConditions =
             options.getDestinationRequestConditions() == null ? new ShareRequestConditions() : options.getDestinationRequestConditions();
@@ -657,7 +657,7 @@ public class ShareFileAsyncClient {
             .setFileLastWriteTime(fileLastWriteTime)
             .setFileChangeTime(fileChangedOnTime)
             .setIgnoreReadOnly(options.isIgnoreReadOnly())
-            .setSetArchiveAttribute(options.getSetArchiveAttribute());
+            .setSetArchiveAttribute(options.isArchiveAttributeSet());
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 

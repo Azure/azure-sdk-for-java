@@ -27,7 +27,11 @@ public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<Inb
         return fromString(name, InboundSecurityRulesProtocol.class);
     }
 
-    /** @return known InboundSecurityRulesProtocol values. */
+    /**
+     * Gets known InboundSecurityRulesProtocol values.
+     *
+     * @return known InboundSecurityRulesProtocol values.
+     */
     public static Collection<InboundSecurityRulesProtocol> values() {
         return values(InboundSecurityRulesProtocol.class);
     }

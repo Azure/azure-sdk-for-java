@@ -54,7 +54,11 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
         return fromString(name, WebApplicationFirewallOperator.class);
     }
 
-    /** @return known WebApplicationFirewallOperator values. */
+    /**
+     * Gets known WebApplicationFirewallOperator values.
+     *
+     * @return known WebApplicationFirewallOperator values.
+     */
     public static Collection<WebApplicationFirewallOperator> values() {
         return values(WebApplicationFirewallOperator.class);
     }

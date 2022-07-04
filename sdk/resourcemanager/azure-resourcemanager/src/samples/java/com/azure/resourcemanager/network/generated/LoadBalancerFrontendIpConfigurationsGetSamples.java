@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadBalancerFrontendIpConfigurations Get. */
 public final class LoadBalancerFrontendIpConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerFrontendIPConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerFrontendIPConfigurationGet.json
      */
     /**
      * Sample code: LoadBalancerFrontendIPConfigurationGet.

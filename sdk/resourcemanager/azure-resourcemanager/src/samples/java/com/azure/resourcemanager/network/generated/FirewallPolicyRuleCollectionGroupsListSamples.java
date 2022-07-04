@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallPolicyRuleCollectionGroups List. */
 public final class FirewallPolicyRuleCollectionGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroups for a given FirewallPolicy.
@@ -27,7 +27,7 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroups with IpGroups for a given FirewallPolicy.
@@ -45,7 +45,7 @@ public final class FirewallPolicyRuleCollectionGroupsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
      */
     /**
      * Sample code: List all FirewallPolicyRuleCollectionGroup With Web Categories.

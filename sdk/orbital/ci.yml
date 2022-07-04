@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/orbital/ci.yml
+      - sdk/orbital/azure-resourcemanager-orbital/
+    exclude:
+      - sdk/orbital/pom.xml
+      - sdk/orbital/azure-resourcemanager-orbital/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/orbital/ci.yml
+      - sdk/orbital/azure-resourcemanager-orbital/
+    exclude:
+      - sdk/orbital/pom.xml
+      - sdk/orbital/azure-resourcemanager-orbital/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerorbital
+    displayName: azure-resourcemanager-orbital
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: orbital
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-orbital
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerorbital
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerorbital }}

@@ -13,7 +13,7 @@
 ## 12.17.0-beta.1 (2022-06-15)
 
 ### Features Added
-- Added support for encryption protocol version 2, using AES/GCM/NoPadding.
+- Added support for encryption protocol version 2, using AES/GCM/NoPadding. 
 - Added support for 2021-08-06 service version.
 
 ## 12.16.1 (2022-06-08)

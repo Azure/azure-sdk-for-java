@@ -20,6 +20,9 @@ $StartTime = $(get-date)
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 $script:FoundError = $false
 
+Write-Host "SourcesDirectory=$SourcesDirectory"
+Write-Host "ProjectList=$ProjectList"
+
 function Build-Unreleased-List-From-File {
     param([string]$versionFile)
     $unreleasedList = @()
@@ -84,6 +87,15 @@ foreach ($project in $ProjectList) {
         $script:FoundError = $true
     }
 }
+
+# This is lame. Because resourcemanager and resourcemanagerhybrid contain the some of the same
+# artifacts and we don't know which one is actually needed, if resourcemanager is in the list
+# then add resourcemanagerhybrid.
+Write-Host "sparseCheckoutDirectories=$sparseCheckoutDirectories"
+if ($sparseCheckoutDirectories.Contains("/sdk/resourcemanager")) {
+    $sparseCheckoutDirectories += "/sdk/resourcemanagerhybrid"
+}
+
 # Unreleased_ libraries are special. They're the only case, outside of FromSource runs where
 # libraries from other service directories, outside of the one we're building, need to get built.
 # It's easier to just add any unreleased_ dependency service directories to the sparse checkout

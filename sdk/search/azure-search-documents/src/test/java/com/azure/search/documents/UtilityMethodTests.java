@@ -24,7 +24,7 @@ public class UtilityMethodTests {
         assertEquals(expected, SearchAsyncClient.createSearchRequestAnswers(searchOptions));
     }
 
-    private static Stream<Arguments> createSearchRequestAnswersTestsSupplier() {
+    static Stream<Arguments> createSearchRequestAnswersTestsSupplier() {
         return Stream.of(
             // No QueryAnswer provided returns null.
             Arguments.of(new SearchOptions(), null),
@@ -45,7 +45,7 @@ public class UtilityMethodTests {
         assertEquals(expected, SearchAsyncClient.createSearchRequestCaptions(searchOptions));
     }
 
-    private static Stream<Arguments> createSearchRequestCaptionsTestsSupplier() {
+    static Stream<Arguments> createSearchRequestCaptionsTestsSupplier() {
         return Stream.of(
             // No QueryCaption provided returns null.
             Arguments.of(new SearchOptions(), null),

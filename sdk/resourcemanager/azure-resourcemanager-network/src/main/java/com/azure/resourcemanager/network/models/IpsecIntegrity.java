@@ -39,7 +39,11 @@ public final class IpsecIntegrity extends ExpandableStringEnum<IpsecIntegrity> {
         return fromString(name, IpsecIntegrity.class);
     }
 
-    /** @return known IpsecIntegrity values. */
+    /**
+     * Gets known IpsecIntegrity values.
+     *
+     * @return known IpsecIntegrity values.
+     */
     public static Collection<IpsecIntegrity> values() {
         return values(IpsecIntegrity.class);
     }

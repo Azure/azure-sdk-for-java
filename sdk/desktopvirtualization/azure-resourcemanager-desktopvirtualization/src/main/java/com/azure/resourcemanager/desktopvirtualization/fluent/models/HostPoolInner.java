@@ -18,7 +18,6 @@ import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithA
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +25,6 @@ import java.util.Map;
 /** Represents a HostPool definition. */
 @Fluent
 public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostPoolInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -587,11 +584,13 @@ public final class HostPoolInner extends ResourceModelWithAllowedPropertySet {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model HostPoolInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HostPoolInner.class);
 }

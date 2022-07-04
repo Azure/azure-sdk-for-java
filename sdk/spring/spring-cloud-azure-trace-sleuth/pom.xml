@@ -41,18 +41,18 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-sleuth-api</artifactId>
-      <version>3.1.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-sleuth-api;external_dependency} -->
+      <version>3.1.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-sleuth-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.9.1</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.10.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -90,7 +90,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.cloud:spring-cloud-sleuth-api:[3.1.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-sleuth-api;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-sleuth-api:[3.1.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-sleuth-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
