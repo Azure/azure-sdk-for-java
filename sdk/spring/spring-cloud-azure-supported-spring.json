@@ -85,7 +85,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.5.14",
-    "spring-cloud-version" : "2020.0.5"
+    "spring-cloud-version" : "2020.0.6"
   },
   {
     "current" : false,
@@ -93,7 +93,7 @@
     "snapshot" : false,
     "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "2.4.13",
-    "spring-cloud-version" : "2020.0.5"
+    "spring-cloud-version" : "2020.0.6"
   },
   {
     "current" : false,
