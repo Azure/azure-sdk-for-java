@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Provider GetWebAppStacks. */
 public final class ProviderGetWebAppStacksSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetWebAppStacks.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebAppStacks.json
      */
     /**
      * Sample code: Get Web App Stacks.

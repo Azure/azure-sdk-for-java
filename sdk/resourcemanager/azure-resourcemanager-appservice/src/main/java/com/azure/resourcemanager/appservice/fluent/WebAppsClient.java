@@ -20,6 +20,7 @@ import com.azure.resourcemanager.appservice.fluent.models.BackupItemInner;
 import com.azure.resourcemanager.appservice.fluent.models.BackupRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.ContinuousWebJobInner;
+import com.azure.resourcemanager.appservice.fluent.models.CsmDeploymentStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
 import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameAnalysisResultInner;
@@ -3880,6 +3881,170 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> stopContinuousWebJobWithResponse(
         String resourceGroupName, String name, String webJobName, Context context);
+
+    /**
+     * List deployment statuses for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment status collection ARM resource as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CsmDeploymentStatusInner> listProductionSiteDeploymentStatusesAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * List deployment statuses for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmDeploymentStatusInner> listProductionSiteDeploymentStatuses(String resourceGroupName, String name);
+
+    /**
+     * List deployment statuses for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmDeploymentStatusInner> listProductionSiteDeploymentStatuses(
+        String resourceGroupName, String name, Context context);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified) along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getProductionSiteDeploymentStatusWithResponseAsync(
+        String resourceGroupName, String name, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the deployment status for an app (or deployment slot, if
+     *     specified).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner>
+        beginGetProductionSiteDeploymentStatusAsync(String resourceGroupName, String name, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the deployment status for an app (or deployment slot, if
+     *     specified).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetProductionSiteDeploymentStatus(
+        String resourceGroupName, String name, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the deployment status for an app (or deployment slot, if
+     *     specified).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetProductionSiteDeploymentStatus(
+        String resourceGroupName, String name, String deploymentStatusId, Context context);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified) on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CsmDeploymentStatusInner> getProductionSiteDeploymentStatusAsync(
+        String resourceGroupName, String name, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CsmDeploymentStatusInner getProductionSiteDeploymentStatus(
+        String resourceGroupName, String name, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CsmDeploymentStatusInner getProductionSiteDeploymentStatus(
+        String resourceGroupName, String name, String deploymentStatusId, Context context);
 
     /**
      * Description for List deployments for an app, or a deployment slot.
@@ -15477,6 +15642,192 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> stopContinuousWebJobSlotWithResponse(
         String resourceGroupName, String name, String webJobName, String slot, Context context);
+
+    /**
+     * List deployment statuses for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment status collection ARM resource as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CsmDeploymentStatusInner> listSlotSiteDeploymentStatusesSlotAsync(
+        String resourceGroupName, String name, String slot);
+
+    /**
+     * List deployment statuses for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmDeploymentStatusInner> listSlotSiteDeploymentStatusesSlot(
+        String resourceGroupName, String name, String slot);
+
+    /**
+     * List deployment statuses for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmDeploymentStatusInner> listSlotSiteDeploymentStatusesSlot(
+        String resourceGroupName, String name, String slot, Context context);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified) along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getSlotSiteDeploymentStatusSlotWithResponseAsync(
+        String resourceGroupName, String name, String slot, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the deployment status for an app (or deployment slot, if
+     *     specified).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner>
+        beginGetSlotSiteDeploymentStatusSlotAsync(
+            String resourceGroupName, String name, String slot, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the deployment status for an app (or deployment slot, if
+     *     specified).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetSlotSiteDeploymentStatusSlot(
+        String resourceGroupName, String name, String slot, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the deployment status for an app (or deployment slot, if
+     *     specified).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetSlotSiteDeploymentStatusSlot(
+        String resourceGroupName, String name, String slot, String deploymentStatusId, Context context);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified) on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CsmDeploymentStatusInner> getSlotSiteDeploymentStatusSlotAsync(
+        String resourceGroupName, String name, String slot, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CsmDeploymentStatusInner getSlotSiteDeploymentStatusSlot(
+        String resourceGroupName, String name, String slot, String deploymentStatusId);
+
+    /**
+     * Gets the deployment status for an app (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
+     *     the production slot.
+     * @param deploymentStatusId GUID of the deployment operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deployment status for an app (or deployment slot, if specified).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CsmDeploymentStatusInner getSlotSiteDeploymentStatusSlot(
+        String resourceGroupName, String name, String slot, String deploymentStatusId, Context context);
 
     /**
      * Description for List deployments for an app, or a deployment slot.

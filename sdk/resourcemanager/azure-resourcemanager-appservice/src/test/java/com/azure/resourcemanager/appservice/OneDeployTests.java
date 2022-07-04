@@ -101,7 +101,7 @@ public class OneDeployTests extends AppServiceTest {
 
         // poll deployment status
         String deploymentStatusUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint()
-            + "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus/{deploymentId}?api-version=2021-03-01";
+            + "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus/{deploymentId}?api-version=2022-03-01";
         deploymentStatusUrl = deploymentStatusUrl
             .replace("{subscriptionId}", appServiceManager.subscriptionId())
             .replace("{resourceGroupName}", rgName)

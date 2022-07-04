@@ -33,7 +33,11 @@ public final class LoadBalancingMode extends ExpandableStringEnum<LoadBalancingM
         return fromString(name, LoadBalancingMode.class);
     }
 
-    /** @return known LoadBalancingMode values. */
+    /**
+     * Gets known LoadBalancingMode values.
+     *
+     * @return known LoadBalancingMode values.
+     */
     public static Collection<LoadBalancingMode> values() {
         return values(LoadBalancingMode.class);
     }
