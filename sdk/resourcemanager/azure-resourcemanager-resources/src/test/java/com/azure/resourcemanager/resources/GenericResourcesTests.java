@@ -146,6 +146,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
             .withResourceType("userAssignedIdentities")
             .withProviderNamespace("Microsoft.ManagedIdentity")
             .withoutPlan()
+            .withApiVersion("2022-01-31-preview")
             .create();
 
         // validate fail as managed identity does not support move
