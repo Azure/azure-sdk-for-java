@@ -19,7 +19,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
-import com.azure.spring.cloud.config.ConnectionManager;
 import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 
 /**
@@ -175,6 +174,7 @@ public final class AppConfigurationProperties {
 
     /**
      * Validates at least one store is configured for use and they are valid.
+     * @throws IllegalArgumentException when duplicate endpoints are configured
      */
     @PostConstruct
     public void validateAndInit() {
@@ -206,7 +206,7 @@ public final class AppConfigurationProperties {
                 }
             }
         }
-        if (refreshInterval != null){
+        if (refreshInterval != null) {
             Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
         }
     }

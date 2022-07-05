@@ -12,14 +12,14 @@ import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 /**
  * Manages all client connections for all configuration stores.
  */
-public class ClientManager {
+public class ClientFactory {
 
-    private final static HashMap<String, ConnectionManager> connections = new HashMap<>();;
+    private static final HashMap<String, ConnectionManager> CONNECTIONS = new HashMap<>();;
 
-    ClientManager(AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
+    ClientFactory(AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties,
         AppConfigurationCredentialProvider tokenCredentialProvider,
         ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured) {
-        if (connections.size() == 0) {
+        if (CONNECTIONS.size() == 0) {
             for (ConfigStore store : properties.getStores()) {
                 String clientId = "";
 
@@ -29,18 +29,28 @@ public class ClientManager {
 
                 ConnectionManager manager = new ConnectionManager(store, appProperties, tokenCredentialProvider,
                     clientProvider, isDev, isKeyVaultConfigured, clientId);
-                connections.put(manager.getStoreIdentifier(), manager);
+                CONNECTIONS.put(manager.getStoreIdentifier(), manager);
             }
         }
     }
 
     /**
      * Returns the current used endpoint for a given config store.
-     * @param endpoint StoreIdentifier the endpoint for the first store listed in the config.
+     * @param storeIdentifier identifier of the store. The identifier is the primary endpoint of the store. 
      * @return ConfigurationClient for accessing App Configuration
      */
-    public ConfigurationClientWrapper getClient(String endpoint) {
-        return connections.get(endpoint).getClient();
+    public ConfigurationClientWrapper getClient(String storeIdentifier) {
+        return CONNECTIONS.get(storeIdentifier).getClient();
+    }
+
+    /**
+     * Sets backoff time for the current client that is being used, and attempts to get a new one.
+     * @param storeIdentifier identifier of the store. The identifier is the primary endpoint of the store. 
+     * @return ConfigurationClient for accessing App Configuration
+     */
+    public ConfigurationClientWrapper resetAndGetNewClient(String storeIdentifier) {
+        CONNECTIONS.get(storeIdentifier).resetCurrentClient();
+        return CONNECTIONS.get(storeIdentifier).getClient();
     }
 
 }

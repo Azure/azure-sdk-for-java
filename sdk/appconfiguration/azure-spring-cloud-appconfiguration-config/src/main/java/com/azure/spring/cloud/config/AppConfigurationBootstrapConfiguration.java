@@ -132,9 +132,9 @@ public class AppConfigurationBootstrapConfiguration {
             isKeyVaultConfigured = true;
         }
 
-        ClientManager clientManager = new ClientManager(properties, appProperties, tokenCredentialProvider,
+        ClientFactory clientManager = new ClientFactory(properties, appProperties, tokenCredentialProvider,
             clientProvider, isDev, isKeyVaultConfigured);
 
-        return new ClientStore(clientManager, appProperties);
+        return new ClientStore(clientManager);
     }
 }

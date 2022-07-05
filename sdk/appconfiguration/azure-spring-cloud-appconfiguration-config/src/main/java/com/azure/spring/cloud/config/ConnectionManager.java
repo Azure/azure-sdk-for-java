@@ -49,6 +49,8 @@ public class ConnectionManager {
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
 
+    private ConfigurationClientWrapper currentClient;
+
     private final AppConfigurationProviderProperties appProperties;
 
     private final AppConfigurationCredentialProvider tokenCredentialProvider;
@@ -115,19 +117,40 @@ public class ConnectionManager {
         if (client == null && clients == null) {
             buildClients();
         }
+        if (currentClient != null) {
+            return currentClient;
+        }
+
         if (client != null) {
+            currentClient = client;
             return client;
         }
 
         for (ConfigurationClientWrapper wrapper : clients) {
             if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
                 LOGGER.debug("Using Client: " + wrapper.getEndpoint());
+                currentClient = wrapper;
                 return wrapper;
             }
         }
 
         LOGGER.error("No client avaiable for use currently.");
         return null;
+    }
+
+    /**
+     * Call when the current client failed
+     */
+    public void resetCurrentClient() {
+        if (currentClient != null) {
+            int failedAttempt = currentClient.getFailedAttempts();
+            long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt,
+                appProperties.getDefaultMaxBackoff(),
+                appProperties.getDefaultMinBackoff());
+            currentClient.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+
+            currentClient = null;
+        }
     }
 
     /**
