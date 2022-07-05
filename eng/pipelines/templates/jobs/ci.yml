@@ -57,18 +57,15 @@ parameters:
     default: $(JavaBuildVersion)
 
 jobs:
-  - job: 'Build'
+  - job: 'Build Client Libraries'
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - name: ArtifactName
+        value: 'packages'
 
     pool:
       name: azsdk-pool-mms-ubuntu-2004-general
-
-    strategy:
-      matrix:
-        Client Libraries:
-          ArtifactName: 'packages'
 
     steps:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -242,16 +239,11 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
             - '**/*.md'
             - '.vscode/cspell.json'
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
-
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -280,6 +272,10 @@ jobs:
         parameters:
           Paths: $(SparseCheckoutDirectories)
           SkipDefaultCheckout: true
+
+      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+        parameters:
+          CspellConfigPath: .vscode/cspell.json
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
