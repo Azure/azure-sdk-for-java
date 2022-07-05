@@ -89,16 +89,17 @@ public class JedisRedisCheckpointStoreTests {
     @Test
     public void testCheckpointKeyNotStored() {
         Set<String> value = new HashSet<>();
+        List<String> nullList = Collections.singletonList(null);
         value.add(KEY);
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
         when(jedis.hmget(eq(KEY),
-            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(null);
+            eq(JedisRedisCheckpointStore.CHECKPOINT))).thenReturn(nullList);
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
-            .expectError(IllegalStateException.class)
-            .verify();
+            .verifyComplete();
+
     }
 
     @Test

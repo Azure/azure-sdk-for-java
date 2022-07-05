@@ -64,17 +64,16 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             for (String member : members) {
                 //get the associated JSON representation for each for the members
                 List<String> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
-                if (checkpointJsonList == null) {
-                    jedisPool.returnResource(jedis);
-                    return Flux.error(new IllegalStateException("No checkpoints persist in Redis for the given parameters."));
-                }
-                if (checkpointJsonList.isEmpty()) {
-                    jedisPool.returnResource(jedis);
-                    return Flux.error(new IllegalStateException("No checkpoints persist in Redis for the given parameters."));
-                } else {
+                if (!checkpointJsonList.isEmpty()) {
                     String checkpointJson = checkpointJsonList.get(0);
+                    if (checkpointJson == null) {
+                        LOGGER.verbose("No checkpoint persists yet.");
+                        continue;
+                    }
                     Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(Checkpoint.class));
                     listStoredCheckpoints.add(checkpoint);
+                } else {
+                    LOGGER.verbose("No checkpoint persists yet.");
                 }
             }
             jedisPool.returnResource(jedis);
@@ -102,14 +101,14 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 //get the associated JSON representation for each for the members
                 List<String> partitionOwnershipJsonList = jedis.hmget(member, PARTITION_OWNERSHIP);
 
-                // if PARTITION_OWNERSHIP field does not exist for member we will get a null
-                if (partitionOwnershipJsonList == null) {
-                    continue;
-                }
-
                 // if PARTITION_OWNERSHIP field exists but has no records than the list will be empty
                 if (!partitionOwnershipJsonList.isEmpty()) {
                     String partitionOwnershipJson = partitionOwnershipJsonList.get(0);
+                    // if PARTITION_OWNERSHIP field does not exist for member we will get a null
+                    if (partitionOwnershipJson == null) {
+                        LOGGER.verbose("No partition ownership records exist for this checkpoint yet.");
+                        continue;
+                    }
                     PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(PartitionOwnership.class));
                     listStoredOwnerships.add(partitionOwnership);
                 }
