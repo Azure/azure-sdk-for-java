@@ -19,11 +19,6 @@ public abstract class WorkerOptions {
     protected String workerId;
 
     /**
-     * The current state of the worker.
-     */
-    protected RouterWorkerState state;
-
-    /**
      * The queue(s) that this worker can receive work from.
      */
     protected Map<String, Object> queueAssignments;
@@ -38,7 +33,7 @@ public abstract class WorkerOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    protected Map<String, Object> labels;
+    protected Map<String, LabelValue> labels;
 
     /**
      * A set of non-identifying attributes attached to this worker.
@@ -65,14 +60,6 @@ public abstract class WorkerOptions {
     }
 
     /**
-     * Returns worker state.
-     * @return state
-     */
-    public RouterWorkerState getState() {
-        return this.state;
-    }
-
-    /**
      * Returns queue assignments.
      * @return queueAssignments
      */
@@ -92,7 +79,7 @@ public abstract class WorkerOptions {
      * Returns labels.
      * @return labels
      */
-    public Map<String, Object> getLabels() {
+    public Map<String, LabelValue> getLabels() {
         return this.labels;
     }
 

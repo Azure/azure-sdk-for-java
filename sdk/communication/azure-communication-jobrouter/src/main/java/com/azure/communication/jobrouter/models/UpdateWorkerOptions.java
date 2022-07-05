@@ -50,7 +50,7 @@ public class UpdateWorkerOptions extends WorkerOptions {
      * @param labels the labels value to set.
      * @return this
      */
-    public UpdateWorkerOptions setLabels(Map<String, Object> labels) {
+    public UpdateWorkerOptions setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }

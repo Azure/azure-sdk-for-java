@@ -4,9 +4,13 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Converts request options for create and update Worker to {@link RouterWorker}.
@@ -18,8 +22,11 @@ public class WorkerAdapter {
      * @return RouterWorker
      */
     public static RouterWorker convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
+        Map<String, LabelValue> labelValueMap = createWorkerOptions.getLabels();
+        Map<String, Object> labels = labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterWorker()
-            .setLabels(createWorkerOptions.getLabels())
+            .setLabels(labels)
             .setTags(createWorkerOptions.getTags())
             .setQueueAssignments(createWorkerOptions.getQueueAssignments())
             .setAvailableForOffers(createWorkerOptions.getAvailableForOffers())
@@ -33,8 +40,11 @@ public class WorkerAdapter {
      * @return RouterWorker
      */
     public static RouterWorker convertUpdateWorkerOptionsToRouterWorker(UpdateWorkerOptions updateWorkerOptions) {
+        Map<String, LabelValue> labelValueMap = updateWorkerOptions.getLabels();
+        Map<String, Object> labels = labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterWorker()
-            .setLabels(updateWorkerOptions.getLabels())
+            .setLabels(labels)
             .setTags(updateWorkerOptions.getTags())
             .setQueueAssignments(updateWorkerOptions.getQueueAssignments())
             .setAvailableForOffers(updateWorkerOptions.getAvailableForOffers())
