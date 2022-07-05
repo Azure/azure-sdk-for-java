@@ -38,7 +38,7 @@ resources:
     endpoint: Azure
     name: Azure/azure-sdk-tools
     ref: refs/pull/3525/merge
-    
+
 jobs:
 - job: Perf
   timeoutInMinutes: 360

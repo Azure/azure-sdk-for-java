@@ -234,11 +234,11 @@ Extract text, table structures, and selection marks like radio buttons and check
 ```java readme-sample-extractLayout
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
-byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
-InputStream fileStream = new ByteArrayInputStream(fileContent);
+Path filePath = layoutDocument.toPath();
+BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", fileStream, layoutDocument.length());
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 

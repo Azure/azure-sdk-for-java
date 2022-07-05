@@ -4,4 +4,4 @@
 /**
  * Package containing implementation of CheckpointStore that uses Azure Redis Cache, specifically Jedis.
  */
-package com.azure.messaging.eventhubs.checkpointstore.redis;
+package com.azure.messaging.eventhubs.checkpointstore.jedis;

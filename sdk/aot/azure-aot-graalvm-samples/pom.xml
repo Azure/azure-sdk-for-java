@@ -66,7 +66,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -98,12 +98,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.32.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.32.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.0.0-beta.6</version> <!-- {x-version-update;unreleased_com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
