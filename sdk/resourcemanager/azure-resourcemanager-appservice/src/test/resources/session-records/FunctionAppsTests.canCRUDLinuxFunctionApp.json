@@ -250,7 +250,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220704T084303Z:20ffb668-fa9a-4816-934a-e1ef4bb92dc0",
       "Expires" : "-1",
       "x-ms-request-id" : "c567729b-7775-44c2-9fc5-68849121fcbf",
-      "Body" : "{\"keys\":[{\"creationTime\":\"2022-07-04T08:42:16.7461625Z\",\"keyName\":\"key1\",\"value\":\"sWtntxfsvxd1zbUFe8HRuRbbLlcpO4+53QksOmb6AFqfqILm/GRuUKORay3YOnOo+yWINZvY5E1/+AStwQk3Tg==\",\"permissions\":\"FULL\"},{\"creationTime\":\"2022-07-04T08:42:16.7461625Z\",\"keyName\":\"key2\",\"value\":\"Y/u/W+vnp4LbGz/NTh7Y2Ss35ZDmSEe/P6Xe7GTFygs8LGFX+wfFwYvQOzXaEAFbPvMSoNr37obf+ASt7ch8hQ==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"creationTime\":\"2022-07-04T08:42:16.7461625Z\",\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"creationTime\":\"2022-07-04T08:42:16.7461625Z\",\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "d539300f-db41-434c-8be4-b567ac8f0512",
       "Content-Type" : "application/json"
     },
@@ -309,7 +309,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Expires" : "-1",
       "x-ms-request-id" : "aab800c8-ee10-460c-a9a5-6842ca4a50df",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-8881259/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=sWtntxfsvxd1zbUFe8HRuRbbLlcpO4+53QksOmb6AFqfqILm/GRuUKORay3YOnOo+yWINZvY5E1/+AStwQk3Tg==;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=sWtntxfsvxd1zbUFe8HRuRbbLlcpO4+53QksOmb6AFqfqILm/GRuUKORay3YOnOo+yWINZvY5E1/+AStwQk3Tg==;EndpointSuffix=core.windows.net\"}}",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-8881259/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\"}}",
       "Content-Type" : "application/json",
       "X-Powered-By" : "ASP.NET"
     },
@@ -367,7 +367,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Expires" : "-1",
       "x-ms-request-id" : "a4fcd895-7d5c-48f5-acac-c08e4b5fb349",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-8881259/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=sWtntxfsvxd1zbUFe8HRuRbbLlcpO4+53QksOmb6AFqfqILm/GRuUKORay3YOnOo+yWINZvY5E1/+AStwQk3Tg==;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=sWtntxfsvxd1zbUFe8HRuRbbLlcpO4+53QksOmb6AFqfqILm/GRuUKORay3YOnOo+yWINZvY5E1/+AStwQk3Tg==;EndpointSuffix=core.windows.net\"}}",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-8881259/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc888125958982;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\"}}",
       "Content-Type" : "application/json",
       "X-Powered-By" : "ASP.NET"
     },
@@ -627,7 +627,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220704T084357Z:805cafac-75b7-4e81-8ba9-0067b98c54fa",
       "Expires" : "-1",
       "x-ms-request-id" : "1cf5f560-036d-4e74-9112-be1b05cd6338",
-      "Body" : "{\"keys\":[{\"creationTime\":\"2022-07-04T08:43:12.4024287Z\",\"keyName\":\"key1\",\"value\":\"iQZbK6iDACT8k7CGbGTNwYnUADUOoRj/O/ERfzFO0wkJxW/pehnnB4P+T3NJNL0uOTWY3iEfdRJi+AStYz0qJg==\",\"permissions\":\"FULL\"},{\"creationTime\":\"2022-07-04T08:43:12.4024287Z\",\"keyName\":\"key2\",\"value\":\"he5TZrm628AA8D7gVk0fCBKwTXkmL3+0lYCTriXXRnsX4jYRngTC5RhHZlza0+DK/WYnnyvExuFn+AStuhhLqA==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"creationTime\":\"2022-07-04T08:43:12.4024287Z\",\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"creationTime\":\"2022-07-04T08:43:12.4024287Z\",\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "fd2c40fb-0cc1-4e52-8fa6-86c9fde523d3",
       "Content-Type" : "application/json"
     },
@@ -715,7 +715,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Expires" : "-1",
       "x-ms-request-id" : "ddba2eb3-6b58-4910-b390-ce6af1b146f0",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-37240e1/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=iQZbK6iDACT8k7CGbGTNwYnUADUOoRj/O/ERfzFO0wkJxW/pehnnB4P+T3NJNL0uOTWY3iEfdRJi+AStYz0qJg==;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=iQZbK6iDACT8k7CGbGTNwYnUADUOoRj/O/ERfzFO0wkJxW/pehnnB4P+T3NJNL0uOTWY3iEfdRJi+AStYz0qJg==;EndpointSuffix=core.windows.net\"}}",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-37240e1/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\"}}",
       "Content-Type" : "application/json",
       "X-Powered-By" : "ASP.NET"
     },
@@ -773,7 +773,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Expires" : "-1",
       "x-ms-request-id" : "41f3ffab-5df0-4b5a-9448-9cead19e277d",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-37240e1/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=iQZbK6iDACT8k7CGbGTNwYnUADUOoRj/O/ERfzFO0wkJxW/pehnnB4P+T3NJNL0uOTWY3iEfdRJi+AStYz0qJg==;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=iQZbK6iDACT8k7CGbGTNwYnUADUOoRj/O/ERfzFO0wkJxW/pehnnB4P+T3NJNL0uOTWY3iEfdRJi+AStYz0qJg==;EndpointSuffix=core.windows.net\"}}",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-37240e1/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc37240e169482;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\"}}",
       "Content-Type" : "application/json",
       "X-Powered-By" : "ASP.NET"
     },
@@ -974,7 +974,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20220704T084450Z:b861b50e-9f92-4b16-aca1-77a18e69b5d5",
       "Expires" : "-1",
       "x-ms-request-id" : "253599ba-7654-4ccb-b68a-ec19042cd319",
-      "Body" : "{\"keys\":[{\"creationTime\":\"2022-07-04T08:44:04.4962862Z\",\"keyName\":\"key1\",\"value\":\"P9KYrTwfN/2tFfUPu4fjx8G9xweJTx9Lsc9YAnbr0V0f3fWSA1bX1AKpE2ySr6iiezstpyAiQ15Z+AStyuJUqw==\",\"permissions\":\"FULL\"},{\"creationTime\":\"2022-07-04T08:44:04.4962862Z\",\"keyName\":\"key2\",\"value\":\"/Wv9vzJlTtRgr/JUuYZYkQKVV0FiHZMhsUOIzUNeMpCJAjAY4ZMGcCpdD3SRbz7BpO80/B5WPdQ0+AStL9ZpGw==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"creationTime\":\"2022-07-04T08:44:04.4962862Z\",\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"creationTime\":\"2022-07-04T08:44:04.4962862Z\",\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "c8011e70-f941-4600-93b0-ca4684fa6c03",
       "Content-Type" : "application/json"
     },
@@ -1062,7 +1062,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Expires" : "-1",
       "x-ms-request-id" : "1467b178-99ab-4d97-865a-17c41393bada",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-9987633/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=P9KYrTwfN/2tFfUPu4fjx8G9xweJTx9Lsc9YAnbr0V0f3fWSA1bX1AKpE2ySr6iiezstpyAiQ15Z+AStyuJUqw==;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=P9KYrTwfN/2tFfUPu4fjx8G9xweJTx9Lsc9YAnbr0V0f3fWSA1bX1AKpE2ySr6iiezstpyAiQ15Z+AStyuJUqw==;EndpointSuffix=core.windows.net\"}}",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-9987633/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\"}}",
       "Content-Type" : "application/json",
       "X-Powered-By" : "ASP.NET"
     },
@@ -1120,7 +1120,7 @@
       "X-AspNet-Version" : "4.0.30319",
       "Expires" : "-1",
       "x-ms-request-id" : "c5d56256-8a98-4864-9564-97b1b73094ff",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-9987633/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=P9KYrTwfN/2tFfUPu4fjx8G9xweJTx9Lsc9YAnbr0V0f3fWSA1bX1AKpE2ySr6iiezstpyAiQ15Z+AStyuJUqw==;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=P9KYrTwfN/2tFfUPu4fjx8G9xweJTx9Lsc9YAnbr0V0f3fWSA1bX1AKpE2ySr6iiezstpyAiQ15Z+AStyuJUqw==;EndpointSuffix=core.windows.net\"}}",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg63597095/providers/Microsoft.Web/sites/java-func-9987633/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"East US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~3\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\",\"WEBSITE_RUN_FROM_PACKAGE\":\"https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip\",\"FUNCTIONS_WORKER_RUNTIME\":\"java\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=javafunc998763315044;AccountKey=***REMOVED***;EndpointSuffix=core.windows.net\"}}",
       "Content-Type" : "application/json",
       "X-Powered-By" : "ASP.NET"
     },
