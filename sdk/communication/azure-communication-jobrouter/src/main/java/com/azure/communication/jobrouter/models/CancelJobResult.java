@@ -10,13 +10,7 @@ import com.azure.core.annotation.Fluent;
  * Result object for cancel job request.
  */
 @Fluent
-public class CancelJobResult {
-
-    /**
-     * Placeholder object.
-     */
-    private final Object emptyResponse;
-
+public class CancelJobResult extends EmptyPlaceHolderObject {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.

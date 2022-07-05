@@ -9,12 +9,7 @@ import com.azure.core.annotation.Fluent;
  * Response object for close job request.
  */
 @Fluent
-public class CloseJobResult {
-    /**
-     * Placeholder object.
-     */
-    private final Object emptyResponse;
-
+public class CloseJobResult extends EmptyPlaceHolderObject {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.

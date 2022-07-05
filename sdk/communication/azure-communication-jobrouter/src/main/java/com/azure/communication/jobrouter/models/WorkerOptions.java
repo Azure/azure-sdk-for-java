@@ -12,7 +12,7 @@ import java.util.Map;
  * Abstract class for Create and Update WorkerOptions.
  */
 @Fluent
-public class WorkerOptions {
+public abstract class WorkerOptions {
     /**
      * The id property.
      */
