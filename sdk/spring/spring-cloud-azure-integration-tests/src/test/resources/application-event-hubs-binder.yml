@@ -17,6 +17,7 @@ spring:
       default:
         producer:
           errorChannelEnabled: true
+      default-binder: eventhubs
 logging:
   level:
     com.azure:
