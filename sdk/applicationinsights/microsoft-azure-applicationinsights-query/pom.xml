@@ -77,6 +77,12 @@
             <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-arm-client-runtime;external_dependency} -->
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>4.10.0</version> <!-- {x-version-update;com.squareup.okhttp3:mockwebserver;external_dependency} -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -159,7 +165,6 @@
                 <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
                 <configuration>
                 <reuseForks>false</reuseForks>
-                <skip>true</skip>
                 <includes>
                     <include>**/Test*.java</include>
                     <include>**/*Test.java</include>

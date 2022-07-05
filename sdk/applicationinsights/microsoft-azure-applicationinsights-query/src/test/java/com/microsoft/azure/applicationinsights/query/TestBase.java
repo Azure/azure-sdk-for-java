@@ -13,6 +13,9 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
+import okhttp3.HttpUrl;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -154,6 +157,19 @@ public abstract class TestBase {
         final String skipMessage = shouldCancelTest(isPlaybackMode());
         Assume.assumeTrue(skipMessage, skipMessage == null);
 
+        // Create a MockWebServer. These are lean enough that you can create a new
+        // instance for every unit test.
+        MockWebServer server = new MockWebServer();
+
+        // Schedule some responses.
+        server.enqueue(new MockResponse().setBody("hello, world!"));
+
+        // Start the server.
+        server.start();
+
+        // Ask the server for its URL. You'll need this to make HTTP requests.
+        HttpUrl baseUrl = server.url("/");
+
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
         ApplicationTokenCredentials credentials;
@@ -163,7 +179,7 @@ public abstract class TestBase {
         if (isPlaybackMode()) {
             credentials = new AzureTestCredentials(playbackUri, ZERO_TENANT, true);
             restClient = buildRestClient(new RestClient.Builder()
-                    .withBaseUrl(playbackUri + "/")
+                    .withBaseUrl(baseUrl.toString())
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
