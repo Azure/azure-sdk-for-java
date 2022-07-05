@@ -12,6 +12,9 @@ import com.azure.cosmos.models.{FeedRange, PartitionKey, SparkModelBridgeInterna
 import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
+import scala.::
+import scala.collection.mutable
+
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.feedranges._
 import scala.collection.JavaConverters._
@@ -219,22 +222,56 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     val pkRanges = SparkBridgeInternal
       .getPartitionKeyRanges(container)
 
-    val continuations = pkRanges
-      .map(pkRange => {
-        val pkRangeId = pkRange.getId.toInt
+    val pkRangesByPkRangeId = mutable.Map[Int, PartitionKeyRange]()
+    val pkRangesByParentPkRangeId = mutable.Map[Int, List[PartitionKeyRange]]()
 
-        val lsn: Long = tokens.applyOrElse(pkRangeId, (_: Int) => {
-          this.logInfo(
-            s"No previous LSN available for PK RangeId $pkRangeId in container $containerName " +
-            s"($containerResourceId) of database $databaseName ($databaseResourceId) - starting from beginning ")
+    pkRanges
+      .foreach(pkRange => {
+        pkRangesByPkRangeId.put(pkRange.getId.toInt, pkRange)
+        if (pkRange.getParents != null && pkRange.getParents.size > 0) {
+          pkRange
+            .getParents
+            .forEach(parentId => {
+              if (pkRangesByParentPkRangeId.contains(parentId.toInt)) {
+                val existingChildren = pkRangesByParentPkRangeId.get(parentId.toInt).get
+                val newChildren = existingChildren :+ pkRange
+                pkRangesByParentPkRangeId.put(parentId.toInt, newChildren)
+              } else {
+                pkRangesByParentPkRangeId.put(parentId.toInt, List(pkRange))
+              }
+            })
+        }
+      })
 
-          0L
-        })
+    val continuations = tokens
+      .map(token => {
+        val pkRangeId = token._1
+        val lsn: Long = token._2
+
+        val range: Range[String] = if (pkRangesByPkRangeId.contains(pkRangeId)) {
+          pkRangesByPkRangeId.get(pkRangeId).get.toRange
+        } else if (pkRangesByParentPkRangeId.contains(pkRangeId)) {
+          val normalizedChildRanges = pkRangesByParentPkRangeId
+            .get(pkRangeId)
+            .get
+            .map(childPkRange => rangeToNormalizedRange(childPkRange.toRange))
+            .sorted
+
+          toCosmosRange(new NormalizedRange(
+                      normalizedChildRanges.head.min,
+                      normalizedChildRanges.last.max))
+        } else {
+          throw new IllegalStateException(
+            s"Can't resolve PKRangeId $pkRangeId - it is possible that this partition has been split multiple times. " +
+              "In this case the change feed continuation can not be migrated - a new change feed needs to be " +
+              "started instead."
+          )
+        }
 
         new CompositeContinuationToken(
           "\"" + lsn + "\"",
-          pkRange.toRange)
-      })
+          range)
+      }).toList
 
     val feedRangeContinuation: FeedRangeContinuation = FeedRangeContinuation
       .create(
