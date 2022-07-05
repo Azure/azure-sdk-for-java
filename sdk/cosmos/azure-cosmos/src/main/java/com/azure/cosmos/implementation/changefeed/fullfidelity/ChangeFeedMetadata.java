@@ -15,17 +15,20 @@ public class ChangeFeedMetadata {
     private final long logSequenceNumber;
     private final ChangeFeedOperationType operationType;
     private final long previousLogSequenceNumber;
+    private final boolean timeToLiveExpired;
 
     public ChangeFeedMetadata(
         Instant conflictResolutionTimestamp,
         long logSequenceNumber,
         ChangeFeedOperationType operationType,
-        long previousLogSequenceNumber
+        long previousLogSequenceNumber,
+        boolean timeToLiveExpired
     ) {
         this.conflictResolutionTimestamp = conflictResolutionTimestamp;
         this.logSequenceNumber = logSequenceNumber;
         this.operationType = operationType;
         this.previousLogSequenceNumber = previousLogSequenceNumber;
+        this.timeToLiveExpired = timeToLiveExpired;
     }
 
     /**
