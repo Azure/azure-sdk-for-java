@@ -24,7 +24,8 @@ parameters:
 - name: SkipAggregateReports
   type: boolean
   default: false
-# Unsure if this is necessary. Only keyvault uses them
+  # JRS Unsure if AdditionalLintingOptions is necessary. Only keyvault uses them and we're not going to
+  # be running spotbugs, checkstyle, revapi and javadoc in this pipeline
 - name: AdditionalLintingOptions
   type: string
   default: ''
@@ -44,7 +45,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - job: 'Build Client Libraries'
+    - job: 'Build'
 
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
@@ -180,7 +181,7 @@ stages:
 
 # JRS - At this point do we need to build/install in order to run SpotBugs, Checkstyle, RevApi, and Javadoc?
 # There's going to be a problem running that due to AdditionalLintingOptions that only exists for keyvault
-    - job: 'Analyze and Verify'
+    - job: 'AnalyzeAndVerify'
       condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
       variables:
