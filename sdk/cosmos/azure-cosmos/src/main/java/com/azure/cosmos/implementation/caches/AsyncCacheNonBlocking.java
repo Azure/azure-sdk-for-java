@@ -128,7 +128,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                     logger.debug("cache[{}] resulted in error", key, exception);
                 }
                 // Remove the failed task from the dictionary so future requests can send other calls..
-                if (initialLazyValue.shouldRemoveFromCache()) {
+                if (result.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
                 return Mono.error(exception);
