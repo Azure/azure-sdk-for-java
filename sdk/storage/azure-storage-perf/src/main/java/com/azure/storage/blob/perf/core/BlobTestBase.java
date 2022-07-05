@@ -60,8 +60,8 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
             blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
         }
 
-        blockBlobClient = blobClient.getBlockBlobClient();
-        blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient();
+        blockBlobClient = blobContainerClient.getBlobClient(blobName).getBlockBlobClient();
+        blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
     }
 
     @Override
