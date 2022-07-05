@@ -180,7 +180,7 @@ stages:
 
 # JRS - At this point do we need to build/install in order to run SpotBugs, Checkstyle, RevApi, and Javadoc?
 # There's going to be a problem running that due to AdditionalLintingOptions that only exists for keyvault
-    - job: 'Analyze/Verify'
+    - job: 'Analyze and Verify'
       condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
       variables:
