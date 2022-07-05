@@ -160,7 +160,7 @@ public final class ParallelTransferOptions {
      * @return The ParallelTransferOptions object itself.
      */
     public ParallelTransferOptions setProgressListener(ProgressListener progressListener) {
-        this.progressReceiver = progressListener::handleProgress;
+        this.progressReceiver = progressListener == null ? null : progressListener::handleProgress;
         return this;
     }
 
