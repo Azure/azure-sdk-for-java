@@ -36,7 +36,11 @@ public final class PublicIpAddressMigrationPhase extends ExpandableStringEnum<Pu
         return fromString(name, PublicIpAddressMigrationPhase.class);
     }
 
-    /** @return known PublicIpAddressMigrationPhase values. */
+    /**
+     * Gets known PublicIpAddressMigrationPhase values.
+     *
+     * @return known PublicIpAddressMigrationPhase values.
+     */
     public static Collection<PublicIpAddressMigrationPhase> values() {
         return values(PublicIpAddressMigrationPhase.class);
     }

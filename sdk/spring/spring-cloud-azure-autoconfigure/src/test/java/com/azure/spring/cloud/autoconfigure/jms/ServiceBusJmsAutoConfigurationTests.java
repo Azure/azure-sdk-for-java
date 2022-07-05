@@ -154,6 +154,29 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "basic", "standard", "premium" })
+    void autoconfigurationDisabled(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.enabled=false",
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusJmsProperties.class);
+            });
+    }
+
+    @Test
+    void autoconfigurationDisabledCase2() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.enabled=false")
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusJmsProperties.class);
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic", "standard", "premium" })
     void doesnotHaveBeanOfAzureServiceBusJmsPropertiesBeanPostProcessor(String pricingTier) {
         this.contextRunner
             .withPropertyValues(

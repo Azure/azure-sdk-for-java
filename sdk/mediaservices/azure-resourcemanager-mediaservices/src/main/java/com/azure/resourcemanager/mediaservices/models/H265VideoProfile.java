@@ -30,7 +30,11 @@ public final class H265VideoProfile extends ExpandableStringEnum<H265VideoProfil
         return fromString(name, H265VideoProfile.class);
     }
 
-    /** @return known H265VideoProfile values. */
+    /**
+     * Gets known H265VideoProfile values.
+     *
+     * @return known H265VideoProfile values.
+     */
     public static Collection<H265VideoProfile> values() {
         return values(H265VideoProfile.class);
     }

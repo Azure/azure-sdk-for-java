@@ -30,7 +30,11 @@ public final class VpnClientProtocol extends ExpandableStringEnum<VpnClientProto
         return fromString(name, VpnClientProtocol.class);
     }
 
-    /** @return known VpnClientProtocol values. */
+    /**
+     * Gets known VpnClientProtocol values.
+     *
+     * @return known VpnClientProtocol values.
+     */
     public static Collection<VpnClientProtocol> values() {
         return values(VpnClientProtocol.class);
     }

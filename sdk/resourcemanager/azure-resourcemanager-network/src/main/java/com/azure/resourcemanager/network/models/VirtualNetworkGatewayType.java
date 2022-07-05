@@ -30,7 +30,11 @@ public final class VirtualNetworkGatewayType extends ExpandableStringEnum<Virtua
         return fromString(name, VirtualNetworkGatewayType.class);
     }
 
-    /** @return known VirtualNetworkGatewayType values. */
+    /**
+     * Gets known VirtualNetworkGatewayType values.
+     *
+     * @return known VirtualNetworkGatewayType values.
+     */
     public static Collection<VirtualNetworkGatewayType> values() {
         return values(VirtualNetworkGatewayType.class);
     }

@@ -36,7 +36,11 @@ public final class PcError extends ExpandableStringEnum<PcError> {
         return fromString(name, PcError.class);
     }
 
-    /** @return known PcError values. */
+    /**
+     * Gets known PcError values.
+     *
+     * @return known PcError values.
+     */
     public static Collection<PcError> values() {
         return values(PcError.class);
     }

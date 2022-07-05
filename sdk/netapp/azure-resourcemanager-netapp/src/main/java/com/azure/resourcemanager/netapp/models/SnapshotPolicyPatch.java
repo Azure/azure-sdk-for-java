@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Snapshot policy Details for create and update. */
 @Fluent
 public final class SnapshotPolicyPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPolicyPatch.class);
-
     /*
      * Resource location
      */

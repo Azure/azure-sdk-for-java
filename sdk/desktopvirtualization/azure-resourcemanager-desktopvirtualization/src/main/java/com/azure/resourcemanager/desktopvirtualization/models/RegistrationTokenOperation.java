@@ -30,7 +30,11 @@ public final class RegistrationTokenOperation extends ExpandableStringEnum<Regis
         return fromString(name, RegistrationTokenOperation.class);
     }
 
-    /** @return known RegistrationTokenOperation values. */
+    /**
+     * Gets known RegistrationTokenOperation values.
+     *
+     * @return known RegistrationTokenOperation values.
+     */
     public static Collection<RegistrationTokenOperation> values() {
         return values(RegistrationTokenOperation.class);
     }

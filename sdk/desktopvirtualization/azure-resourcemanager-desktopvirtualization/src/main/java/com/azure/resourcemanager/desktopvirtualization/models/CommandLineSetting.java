@@ -30,7 +30,11 @@ public final class CommandLineSetting extends ExpandableStringEnum<CommandLineSe
         return fromString(name, CommandLineSetting.class);
     }
 
-    /** @return known CommandLineSetting values. */
+    /**
+     * Gets known CommandLineSetting values.
+     *
+     * @return known CommandLineSetting values.
+     */
     public static Collection<CommandLineSetting> values() {
         return values(CommandLineSetting.class);
     }
