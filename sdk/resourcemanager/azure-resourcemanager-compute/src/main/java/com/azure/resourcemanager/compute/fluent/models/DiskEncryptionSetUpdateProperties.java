@@ -32,6 +32,13 @@ public final class DiskEncryptionSetUpdateProperties {
     @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
 
+    /*
+     * Multi-tenant application client id to access key vault in a different
+     * tenant. Setting the value to 'None' will clear the property.
+     */
+    @JsonProperty(value = "federatedClientId")
+    private String federatedClientId;
+
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
      *
@@ -94,6 +101,28 @@ public final class DiskEncryptionSetUpdateProperties {
     public DiskEncryptionSetUpdateProperties withRotationToLatestKeyVersionEnabled(
         Boolean rotationToLatestKeyVersionEnabled) {
         this.rotationToLatestKeyVersionEnabled = rotationToLatestKeyVersionEnabled;
+        return this;
+    }
+
+    /**
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DiskEncryptionSetUpdateProperties object itself.
+     */
+    public DiskEncryptionSetUpdateProperties withFederatedClientId(String federatedClientId) {
+        this.federatedClientId = federatedClientId;
         return this;
     }
 

@@ -6,7 +6,7 @@ package com.azure.storage.blob.perf;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.perf.core.ContainerTest;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -24,17 +24,12 @@ import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBu
  * This test includes temporary file deletion as part of scenario. Please keep in mind that this adds
  * constant component to the results.
  */
-public class DownloadBlobToFileTest extends ContainerTest<PerfStressOptions> {
-    private final BlobClient blobClient;
-    private final BlobAsyncClient blobAsyncClient;
+public class DownloadBlobToFileTest extends BlobTestBase<BlobPerfStressOptions> {
 
     private final File tempDir;
 
-    public DownloadBlobToFileTest(PerfStressOptions options) {
+    public DownloadBlobToFileTest(BlobPerfStressOptions options) {
         super(options);
-        String blobName = "downloadToFileTest";
-        blobClient = blobContainerClient.getBlobClient(blobName);
-        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
 
         try {
             tempDir = Files.createTempDirectory("downloadToFileTest").toFile();

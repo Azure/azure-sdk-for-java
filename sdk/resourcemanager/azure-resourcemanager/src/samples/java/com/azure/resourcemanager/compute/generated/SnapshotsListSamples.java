@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Snapshots List. */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListSnapshotsInASubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/snapshotExamples/Snapshot_ListBySubscription.json
      */
     /**
      * Sample code: List all snapshots in a subscription.

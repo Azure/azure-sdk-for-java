@@ -72,7 +72,7 @@ private object RowSerializerPool extends BasicLoggingTrait {
   /**
    * A slim wrapper around ConcurrentLinkedQueue with the purpose of
    * - having a soft-limit on how many serializers can be pooled - there is no need to have an
-   *   exact limit - best effort is acceptable. When we exceed teh max size we don't offer
+   *   exact limit - best effort is acceptable. When we exceed the max size we don't offer
    *   returned serializers to the pool anymore to have a limited memory footprint.
    * - keeping track of when any serializer for a certain schema was used last to allow the owner
    *   to purge serializers for schemas not used anymore.

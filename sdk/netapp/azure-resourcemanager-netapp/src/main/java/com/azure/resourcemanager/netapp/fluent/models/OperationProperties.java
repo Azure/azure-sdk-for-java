@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.ServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of operation, include metric specifications. */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
-
     /*
      * One property of operation, include metric specifications.
      */

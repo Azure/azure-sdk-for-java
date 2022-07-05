@@ -16,7 +16,7 @@ MAVEN_URL = 'https://repo1.maven.org/maven2/{group_id}/{artifact_id}/{version}/{
 
 SDK_ROOT = '../../../'  # related to file dir
 AUTOREST_CORE_VERSION = '3.8.4'
-AUTOREST_JAVA = '@autorest/java@4.0.60'
+AUTOREST_JAVA = '@autorest/java@4.1.0'
 DEFAULT_VERSION = '1.0.0-beta.1'
 GROUP_ID = 'com.azure.resourcemanager'
 API_SPECS_FILE = 'api-specs.yaml'
@@ -66,10 +66,13 @@ pr:
       - sdk/{0}/pom.xml
       - sdk/{0}/{1}/pom.xml
 
+parameters: []
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: {0}
+    EnableBatchRelease: true
     Artifacts: []
 '''
 
@@ -85,47 +88,9 @@ POM_FORMAT = '''\
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <profiles>
-    <profile>
-      <id>coverage</id>
-      <modules>
-      </modules>
-
-      <dependencies>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {{x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency}} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${{project.reporting.outputDirectory}}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>{artifact_id}</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+    <module>{artifact_id}</module>
+  </modules>
 </project>
 '''
 

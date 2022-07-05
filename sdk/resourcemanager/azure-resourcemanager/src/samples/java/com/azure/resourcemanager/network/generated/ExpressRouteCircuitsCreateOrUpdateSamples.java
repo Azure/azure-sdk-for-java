@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for ExpressRouteCircuits CreateOrUpdate. */
 public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit.
@@ -51,7 +51,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitCreateOnExpressRoutePort.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitCreateOnExpressRoutePort.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit on ExpressRoutePort.
@@ -79,7 +79,8 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRoutePorts/portName"))
-                    .withBandwidthInGbps(10.0f),
+                    .withBandwidthInGbps(10.0f)
+                    .withAuthorizationKey("b0be57f5-1fba-463b-adec-ffe767354cdd"),
                 Context.NONE);
     }
 }

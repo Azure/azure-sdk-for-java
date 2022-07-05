@@ -3,11 +3,15 @@
 
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
+import com.azure.identity.implementation.IdentityClient;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
+import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -69,6 +73,48 @@ class AzureTokenCredentialResolverTests {
     void azurePropertiesShouldResolve() {
         AzureTestProperties properties = new AzureTestProperties();
         Assertions.assertTrue(resolver.isResolvable(properties));
+    }
+
+    @Test
+    void usGovCloudShouldResolveWithClientSecretCredential() {
+        AzureTestProperties properties = new AzureTestProperties();
+        properties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        properties.getProfile().setTenantId("test-tenant-id");
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setClientSecret("test-client-secret");
+
+        ClientSecretCredential tokenCredential = (ClientSecretCredential) resolver.resolve(properties);
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(ClientSecretCredential.class, "identityClient",
+            tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
+    }
+
+    @Test
+    void usGovCloudShouldResolveWithClientCertificateCredential() {
+        AzureTestProperties properties = new AzureTestProperties();
+        properties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        properties.getProfile().setTenantId("test-tenant-id");
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setClientCertificatePath("test-client-cert-path");
+
+        ClientCertificateCredential tokenCredential = (ClientCertificateCredential) resolver.resolve(properties);
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(ClientCertificateCredential.class, "identityClient",
+            tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
+    }
+
+    @Test
+    void usGovCloudShouldResolveWithUsernamePasswordCredential() {
+        AzureTestProperties properties = new AzureTestProperties();
+        properties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setUsername("test-username");
+        properties.getCredential().setPassword("test-password");
+
+        UsernamePasswordCredential tokenCredential = (UsernamePasswordCredential) resolver.resolve(properties);
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(UsernamePasswordCredential.class, "identityClient",
+            tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
     @Test

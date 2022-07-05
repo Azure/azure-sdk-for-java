@@ -27,7 +27,11 @@ public final class PersonalDesktopAssignmentType extends ExpandableStringEnum<Pe
         return fromString(name, PersonalDesktopAssignmentType.class);
     }
 
-    /** @return known PersonalDesktopAssignmentType values. */
+    /**
+     * Gets known PersonalDesktopAssignmentType values.
+     *
+     * @return known PersonalDesktopAssignmentType values.
+     */
     public static Collection<PersonalDesktopAssignmentType> values() {
         return values(PersonalDesktopAssignmentType.class);
     }

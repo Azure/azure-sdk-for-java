@@ -27,7 +27,11 @@ public final class DigitalTwinsIdentityType extends ExpandableStringEnum<Digital
         return fromString(name, DigitalTwinsIdentityType.class);
     }
 
-    /** @return known DigitalTwinsIdentityType values. */
+    /**
+     * Gets known DigitalTwinsIdentityType values.
+     *
+     * @return known DigitalTwinsIdentityType values.
+     */
     public static Collection<DigitalTwinsIdentityType> values() {
         return values(DigitalTwinsIdentityType.class);
     }

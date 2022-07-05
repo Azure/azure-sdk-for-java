@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
+import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
@@ -15,15 +16,12 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Volume properties. */
 @Fluent
 public final class VolumeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeProperties.class);
-
     /*
      * FileSystem ID Unique FileSystem Identifier.
      */
@@ -188,10 +186,11 @@ public final class VolumeProperties {
     private Float throughputMibps;
 
     /*
-     * Encryption Key Source. Possible values are: 'Microsoft.NetApp'
+     * Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'
      */
     @JsonProperty(value = "encryptionKeySource")
-    private String encryptionKeySource;
+    private EncryptionKeySource encryptionKeySource;
 
     /*
      * Specifies whether LDAP is enabled or not for a given NFS volume.
@@ -297,6 +296,13 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "volumeSpecName")
     private String volumeSpecName;
+
+    /*
+     * Specifies if the volume is encrypted or not. Only available on volumes
+     * created or updated after 2022-01-01.
+     */
+    @JsonProperty(value = "encrypted", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean encrypted;
 
     /*
      * Volume placement rules Application specific placement rules for the
@@ -750,21 +756,23 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'.
      *
      * @return the encryptionKeySource value.
      */
-    public String encryptionKeySource() {
+    public EncryptionKeySource encryptionKeySource() {
         return this.encryptionKeySource;
     }
 
     /**
-     * Set the encryptionKeySource property: Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
+     * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Possible values
+     * (case-insensitive) are: 'Microsoft.NetApp'.
      *
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeProperties object itself.
      */
-    public VolumeProperties withEncryptionKeySource(String encryptionKeySource) {
+    public VolumeProperties withEncryptionKeySource(EncryptionKeySource encryptionKeySource) {
         this.encryptionKeySource = encryptionKeySource;
         return this;
     }
@@ -1047,6 +1055,16 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the encrypted property: Specifies if the volume is encrypted or not. Only available on volumes created or
+     * updated after 2022-01-01.
+     *
+     * @return the encrypted value.
+     */
+    public Boolean encrypted() {
+        return this.encrypted;
+    }
+
+    /**
      * Get the placementRules property: Volume placement rules Application specific placement rules for the particular
      * volume.
      *
@@ -1095,7 +1113,7 @@ public final class VolumeProperties {
      */
     public void validate() {
         if (creationToken() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property creationToken in model VolumeProperties"));
         }
@@ -1103,7 +1121,7 @@ public final class VolumeProperties {
             exportPolicy().validate();
         }
         if (subnetId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property subnetId in model VolumeProperties"));
         }
@@ -1117,4 +1135,6 @@ public final class VolumeProperties {
             placementRules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeProperties.class);
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 /** Samples for VirtualNetworkGatewayConnections StopPacketCapture. */
 public final class VirtualNetworkGatewayConnectionsStopPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualNetworkGatewayConnectionStopPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualNetworkGatewayConnectionStopPacketCapture.json
      */
     /**
      * Sample code: Stop packet capture on virtual network gateway connection.

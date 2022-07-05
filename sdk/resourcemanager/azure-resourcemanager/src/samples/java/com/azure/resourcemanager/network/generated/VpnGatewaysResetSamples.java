@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VpnGateways Reset. */
 public final class VpnGatewaysResetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnGatewayReset.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnGatewayReset.json
      */
     /**
      * Sample code: ResetVpnGateway.

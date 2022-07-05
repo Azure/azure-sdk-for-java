@@ -37,7 +37,11 @@ public final class OwaspCrsExclusionEntrySelectorMatchOperator
         return fromString(name, OwaspCrsExclusionEntrySelectorMatchOperator.class);
     }
 
-    /** @return known OwaspCrsExclusionEntrySelectorMatchOperator values. */
+    /**
+     * Gets known OwaspCrsExclusionEntrySelectorMatchOperator values.
+     *
+     * @return known OwaspCrsExclusionEntrySelectorMatchOperator values.
+     */
     public static Collection<OwaspCrsExclusionEntrySelectorMatchOperator> values() {
         return values(OwaspCrsExclusionEntrySelectorMatchOperator.class);
     }

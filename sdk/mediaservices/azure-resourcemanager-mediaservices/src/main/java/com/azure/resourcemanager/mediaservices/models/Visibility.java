@@ -27,7 +27,11 @@ public final class Visibility extends ExpandableStringEnum<Visibility> {
         return fromString(name, Visibility.class);
     }
 
-    /** @return known Visibility values. */
+    /**
+     * Gets known Visibility values.
+     *
+     * @return known Visibility values.
+     */
     public static Collection<Visibility> values() {
         return values(Visibility.class);
     }

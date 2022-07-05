@@ -29,7 +29,11 @@ public final class ServicesListSharesSegmentResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ListSharesResponse getValue() {
         return super.getValue();

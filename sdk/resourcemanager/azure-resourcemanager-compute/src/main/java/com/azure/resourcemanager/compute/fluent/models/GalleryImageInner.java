@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
-import com.azure.resourcemanager.compute.models.GalleryImagePropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
@@ -344,12 +344,12 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image definition. The provisioning state,
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
      * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImagePropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

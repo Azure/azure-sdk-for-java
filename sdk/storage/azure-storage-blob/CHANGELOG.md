@@ -1,14 +1,25 @@
 # Release History
 
-## 12.18.0-beta.1 (Unreleased)
+## 12.18.0-beta.2 (Unreleased)
 
 ### Features Added
+- BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
 
-### Breaking Changes
+## 12.18.0-beta.1 (2022-06-15)
 
-### Bugs Fixed
+### Features Added
+- Added support for 2021-08-06 service version.
+
+## 12.17.1 (2022-06-08)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-common` from `12.16.0` to version `12.16.1`.
+- Upgraded `azure-storage-internal-avro` from `12.3.0` to version `12.4.0-beta.1`.
 
 ## 12.17.0 (2022-05-25)
 

@@ -23,8 +23,6 @@ public interface ServiceBusClientCommonProperties extends AzureProperties, Retry
      */
     String getNamespace();
 
-    String getConnectionString();
-
     String getEntityName();
 
     ServiceBusEntityType getEntityType();

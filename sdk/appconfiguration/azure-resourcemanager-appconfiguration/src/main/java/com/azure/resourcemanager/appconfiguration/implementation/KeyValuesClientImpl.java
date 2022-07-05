@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appconfiguration.fluent.KeyValuesClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in KeyValuesClient. */
 public final class KeyValuesClientImpl implements KeyValuesClient {
-    private final ClientLogger logger = new ClientLogger(KeyValuesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final KeyValuesService service;
 
@@ -490,14 +487,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KeyValueInner> getAsync(String resourceGroupName, String configStoreName, String keyValueName) {
         return getWithResponseAsync(resourceGroupName, configStoreName, keyValueName)
-            .flatMap(
-                (Response<KeyValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -677,14 +667,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
     private Mono<KeyValueInner> createOrUpdateAsync(
         String resourceGroupName, String configStoreName, String keyValueName, KeyValueInner keyValueParameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters)
-            .flatMap(
-                (Response<KeyValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -704,14 +687,7 @@ public final class KeyValuesClientImpl implements KeyValuesClient {
         String resourceGroupName, String configStoreName, String keyValueName) {
         final KeyValueInner keyValueParameters = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, configStoreName, keyValueName, keyValueParameters)
-            .flatMap(
-                (Response<KeyValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

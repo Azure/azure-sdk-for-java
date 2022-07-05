@@ -45,7 +45,11 @@ public final class FavoriteSourceType extends ExpandableStringEnum<FavoriteSourc
         return fromString(name, FavoriteSourceType.class);
     }
 
-    /** @return known FavoriteSourceType values. */
+    /**
+     * Gets known FavoriteSourceType values.
+     *
+     * @return known FavoriteSourceType values.
+     */
     public static Collection<FavoriteSourceType> values() {
         return values(FavoriteSourceType.class);
     }

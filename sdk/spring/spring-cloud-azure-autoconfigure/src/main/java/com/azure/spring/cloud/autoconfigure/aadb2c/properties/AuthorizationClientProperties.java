@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ public class AuthorizationClientProperties {
 
     private List<String> scopes;
 
-    private AadAuthorizationGrantType authorizationGrantType;
+    private AuthorizationGrantType authorizationGrantType;
 
     /**
      * Gets the authorization grant type.
      *
      * @return the authorization grant type
      */
-    public AadAuthorizationGrantType getAuthorizationGrantType() {
+    public AuthorizationGrantType getAuthorizationGrantType() {
         return authorizationGrantType;
     }
 
@@ -30,7 +30,7 @@ public class AuthorizationClientProperties {
      *
      * @param authorizationGrantType the authorization grant type
      */
-    public void setAuthorizationGrantType(AadAuthorizationGrantType authorizationGrantType) {
+    public void setAuthorizationGrantType(AuthorizationGrantType authorizationGrantType) {
         this.authorizationGrantType = authorizationGrantType;
     }
 

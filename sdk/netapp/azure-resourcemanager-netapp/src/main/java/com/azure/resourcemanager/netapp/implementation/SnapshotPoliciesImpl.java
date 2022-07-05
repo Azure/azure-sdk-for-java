@@ -15,10 +15,9 @@ import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListIn
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicy;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicyVolumeList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SnapshotPoliciesImpl implements SnapshotPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotPoliciesImpl.class);
 
     private final SnapshotPoliciesClient innerClient;
 
@@ -101,7 +100,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     public SnapshotPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String snapshotPolicyName = Utils.getValueFromIdByName(id, "snapshotPolicies");
         if (snapshotPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +129,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     public Response<SnapshotPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,7 +137,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String snapshotPolicyName = Utils.getValueFromIdByName(id, "snapshotPolicies");
         if (snapshotPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +158,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +166,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String snapshotPolicyName = Utils.getValueFromIdByName(id, "snapshotPolicies");
         if (snapshotPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,7 +187,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +195,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -204,7 +203,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
         }
         String snapshotPolicyName = Utils.getValueFromIdByName(id, "snapshotPolicies");
         if (snapshotPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

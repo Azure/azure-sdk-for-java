@@ -119,6 +119,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-eventhubs'
   type: boolean
   default: true
+- name: release_springcloudazurestarterkeyvault
+  displayName: 'spring-cloud-azure-starter-keyvault'
+  type: boolean
+  default: true
 - name: release_springcloudazurestarterkeyvaultcertificates
   displayName: 'spring-cloud-azure-starter-keyvault-certificates'
   type: boolean
@@ -133,6 +137,10 @@ parameters:
   default: true
 - name: release_springcloudazurestarterservicebusjms
   displayName: 'spring-cloud-azure-starter-servicebus-jms'
+  type: boolean
+  default: true
+- name: release_springcloudazurestarterstorage
+  displayName: 'spring-cloud-azure-starter-storage'
   type: boolean
   default: true
 - name: release_springcloudazurestarterstorageblob
@@ -345,6 +353,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartereventhubs }}
+      - name: spring-cloud-azure-starter-keyvault
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterkeyvault
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvault }}
       - name: spring-cloud-azure-starter-keyvault-certificates
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvaultcertificates
@@ -377,6 +393,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterservicebusjms }}
+      - name: spring-cloud-azure-starter-storage
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstorage
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterstorage }}
       - name: spring-cloud-azure-starter-storage-blob
         groupId: com.azure.spring
         safeName: springcloudazurestarterstorageblob

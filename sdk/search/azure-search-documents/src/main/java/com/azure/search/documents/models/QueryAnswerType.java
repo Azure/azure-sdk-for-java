@@ -30,7 +30,11 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
         return fromString(name, QueryAnswerType.class);
     }
 
-    /** @return known QueryAnswerType values. */
+    /**
+     * Gets known QueryAnswerType values.
+     *
+     * @return known QueryAnswerType values.
+     */
     public static Collection<QueryAnswerType> values() {
         return values(QueryAnswerType.class);
     }

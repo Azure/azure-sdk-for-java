@@ -13,17 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryCreateGlossary {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.glossarycreateglossary.glossarycreateglossary
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarycreateglossary.glossarycreateglossary
         BinaryData atlasGlossary =
                 BinaryData.fromString(
                         "{\"name\":\"Glossary\",\"longDescription\":\"Example Long Description\",\"shortDescription\":\"Example Short Description\",\"usage\":\"Example Glossary\",\"language\":\"en\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = glossaryClient.createGlossaryWithResponse(atlasGlossary, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.glossarycreateglossary.glossarycreateglossary
+        // END:com.azure.analytics.purview.catalog.generated.glossarycreateglossary.glossarycreateglossary
     }
 }

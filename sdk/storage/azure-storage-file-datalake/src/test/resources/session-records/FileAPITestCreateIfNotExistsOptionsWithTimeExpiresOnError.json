@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/e891ef6b0e891ef6b84e59418aa988bc4b50c4204963?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c8259fab-880d-472f-996e-cc7e669c3da4"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA383545F40B1B",
+      "Last-Modified" : "Tue, 17 May 2022 18:44:28 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "97d67b05-601e-0002-1b1e-6ae805000000",
+      "x-ms-client-request-id" : "c8259fab-880d-472f-996e-cc7e669c3da4",
+      "Date" : "Tue, 17 May 2022 18:44:28 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/e891ef6b0e891ef6b84e59418aa988bc4b50c4204963/e891ef6b1e891ef6b84e490274b90080314e042739b5?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "63e68ae6-6e19-40c5-bce7-8683e8a80b68"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA3835467BC826",
+      "Last-Modified" : "Tue, 17 May 2022 18:44:29 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "8d1a0cc9-201f-0006-481e-6a03a9000000",
+      "x-ms-client-request-id" : "63e68ae6-6e19-40c5-bce7-8683e8a80b68",
+      "Date" : "Tue, 17 May 2022 18:44:29 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e891ef6b0e891ef6b84e59418aa988bc4b50c4204963", "e891ef6b1e891ef6b84e490274b90080314e042739b5", "e891ef6b2e891ef6b84e44460866fcfd8225240dfb62" ]
+}
