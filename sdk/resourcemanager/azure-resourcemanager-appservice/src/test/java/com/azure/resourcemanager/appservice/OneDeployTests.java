@@ -25,6 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,7 +38,7 @@ import java.util.Map;
 
 public class OneDeployTests extends AppServiceTest {
 
-    private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
+    private static final String HELLOWORLD_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/helloworld.jar";
 
     @Test
     @DoNotRecord(skipInPlayback = true)
@@ -84,9 +85,9 @@ public class OneDeployTests extends AppServiceTest {
                 .create();
 
         // deploy
-        File jarFile = new File("gateway.jar");
+        File jarFile = new File("helloworld.jar");
         if (!jarFile.exists()) {
-            HttpURLConnection connection = (HttpURLConnection) new URL(GATEWAY_JAR_URL).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(HELLOWORLD_JAR_URL).openConnection();
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
                  OutputStream outputStream = new FileOutputStream(jarFile)) {
@@ -107,6 +108,9 @@ public class OneDeployTests extends AppServiceTest {
             .replace("{resourceGroupName}", rgName)
             .replace("{name}", webAppName1)
             .replace("{deploymentId}", deployResult.deploymentId());
+
+        // stream logs
+        webApp1.streamApplicationLogsAsync().subscribeOn(Schedulers.single()).subscribe(System.out::println);
 
         // wait for RuntimeSuccessful
         String buildStatus = null;
