@@ -83,14 +83,12 @@ stages:
           inputs:
             scriptPath: 'eng/versioning/set_versions.py'
             arguments: '--build-type client --pst'
-          condition: and(succeeded())
 
         - task: PythonScript@0
           displayName: 'Update versions for source build'
           inputs:
             scriptPath: 'eng/versioning/update_versions.py'
             arguments: '--update-type library --build-type client --sr'
-          condition: and(succeeded())
 
         - task: PythonScript@0
           displayName: 'Generate FromSource POM and directories for sparse checkout'
@@ -210,21 +208,19 @@ stages:
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
             AdditionalModules: ${{ parameters.AdditionalModules }}
-            JobType: 'Analyze/Verify'
+            JobType: 'AnalyzeAndVerify'
 
         - task: PythonScript@0
           displayName: 'Set versions for source build'
           inputs:
             scriptPath: 'eng/versioning/set_versions.py'
             arguments: '--build-type client --pst'
-          condition: and(succeeded())
 
         - task: PythonScript@0
           displayName: 'Update versions for source build'
           inputs:
             scriptPath: 'eng/versioning/update_versions.py'
             arguments: '--update-type library --build-type client --sr'
-          condition: and(succeeded())
 
         - task: PythonScript@0
           displayName: 'Generate FromSource POM and directories for sparse checkout'
