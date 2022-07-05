@@ -17,6 +17,7 @@ import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
@@ -55,7 +56,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             .getDocumentAnalysisClient();
         blankPdfDataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller =
-                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             assertNotNull(syncPoller.getFinalResult());

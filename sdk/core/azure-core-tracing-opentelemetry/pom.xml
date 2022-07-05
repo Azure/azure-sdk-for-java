@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.26</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+  <version>1.0.0-beta.27</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry tracing plugin</name>
   <description>This package contains the OpenTelemetry tracing plugin for Azure client libraries.</description>
@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.11.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -128,7 +128,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
