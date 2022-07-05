@@ -375,7 +375,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             .setPriority(1)
             .setChannelReference("12345")
             .setRequestedWorkerSelectors(
-                new ArrayList<>() {{
+                new ArrayList<WorkerSelector>() {{
                     new WorkerSelector()
                         .setKey("Some-skill")
                         .setLabelOperator(LabelOperator.GREATER_THAN)
