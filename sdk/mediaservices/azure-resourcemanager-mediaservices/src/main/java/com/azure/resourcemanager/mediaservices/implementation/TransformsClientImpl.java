@@ -189,7 +189,6 @@ public final class TransformsClientImpl implements TransformsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -200,7 +199,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             filter,
                             orderby,
                             accept,
@@ -253,7 +252,6 @@ public final class TransformsClientImpl implements TransformsClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -262,7 +260,7 @@ public final class TransformsClientImpl implements TransformsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 filter,
                 orderby,
                 accept,
@@ -410,7 +408,6 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -422,7 +419,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -465,7 +462,6 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -475,7 +471,7 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -494,14 +490,7 @@ public final class TransformsClientImpl implements TransformsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TransformInner> getAsync(String resourceGroupName, String accountName, String transformName) {
         return getWithResponseAsync(resourceGroupName, accountName, transformName)
-            .flatMap(
-                (Response<TransformInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -582,7 +571,6 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -594,7 +582,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -650,7 +638,6 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -660,7 +647,7 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -683,14 +670,7 @@ public final class TransformsClientImpl implements TransformsClient {
     private Mono<TransformInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String transformName, TransformInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, transformName, parameters)
-            .flatMap(
-                (Response<TransformInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -773,7 +753,6 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -785,7 +764,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -828,7 +807,6 @@ public final class TransformsClientImpl implements TransformsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -838,7 +816,7 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -856,8 +834,7 @@ public final class TransformsClientImpl implements TransformsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String transformName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, transformName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, transformName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -937,7 +914,6 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -949,7 +925,7 @@ public final class TransformsClientImpl implements TransformsClient {
                             resourceGroupName,
                             accountName,
                             transformName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1005,7 +981,6 @@ public final class TransformsClientImpl implements TransformsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1015,7 +990,7 @@ public final class TransformsClientImpl implements TransformsClient {
                 resourceGroupName,
                 accountName,
                 transformName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -1038,14 +1013,7 @@ public final class TransformsClientImpl implements TransformsClient {
     private Mono<TransformInner> updateAsync(
         String resourceGroupName, String accountName, String transformName, TransformInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, parameters)
-            .flatMap(
-                (Response<TransformInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

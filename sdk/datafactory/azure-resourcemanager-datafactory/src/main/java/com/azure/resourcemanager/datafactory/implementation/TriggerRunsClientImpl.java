@@ -233,7 +233,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> rerunAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
         return rerunWithResponseAsync(resourceGroupName, factoryName, triggerName, runId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -400,7 +400,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String factoryName, String triggerName, String runId) {
         return cancelWithResponseAsync(resourceGroupName, factoryName, triggerName, runId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -563,14 +563,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     private Mono<TriggerRunsQueryResponseInner> queryByFactoryAsync(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters)
-            .flatMap(
-                (Response<TriggerRunsQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

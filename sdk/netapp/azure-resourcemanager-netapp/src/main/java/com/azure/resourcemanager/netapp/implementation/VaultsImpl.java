@@ -11,10 +11,9 @@ import com.azure.resourcemanager.netapp.fluent.VaultsClient;
 import com.azure.resourcemanager.netapp.fluent.models.VaultInner;
 import com.azure.resourcemanager.netapp.models.Vault;
 import com.azure.resourcemanager.netapp.models.Vaults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VaultsImpl implements Vaults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VaultsImpl.class);
 
     private final VaultsClient innerClient;
 

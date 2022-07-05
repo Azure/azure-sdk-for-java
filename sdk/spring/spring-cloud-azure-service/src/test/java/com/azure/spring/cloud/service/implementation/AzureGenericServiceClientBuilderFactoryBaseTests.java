@@ -16,31 +16,34 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
         return createClientBuilderFactoryWithMockBuilder(properties);
     }
 
-    protected F factoryWithClientSecretTokenCredentialConfigured() {
-        P properties = createClientSecretTokenCredentialAwareServiceProperties();
-        return createClientBuilderFactoryWithMockBuilder(properties);
+    protected F factoryWithClientSecretTokenCredentialConfigured(P properties) {
+        P credentialProperties = createClientSecretTokenCredentialAwareServiceProperties(properties);
+        return createClientBuilderFactoryWithMockBuilder(credentialProperties);
     }
 
-    protected F factoryWithClientCertificateTokenCredentialConfigured() {
-        P properties = createClientCertificateTokenCredentialAwareServiceProperties();
-        return createClientBuilderFactoryWithMockBuilder(properties);
+    protected F factoryWithClientCertificateTokenCredentialConfigured(P properties) {
+        P credentialProperties = createClientCertificateTokenCredentialAwareServiceProperties(properties);
+        return createClientBuilderFactoryWithMockBuilder(credentialProperties);
     }
 
-    protected F factoryWithManagedIdentityTokenCredentialConfigured() {
-        P properties = createManagedIdentityCredentialAwareServiceProperties();
-        return createClientBuilderFactoryWithMockBuilder(properties);
+    protected F factoryWithUsernamePasswordTokenCredentialConfigured(P properties) {
+        P credentialProperties = createUsernamePasswordTokenCredentialAwareServiceProperties(properties);
+        return createClientBuilderFactoryWithMockBuilder(credentialProperties);
     }
 
-    private P createClientSecretTokenCredentialAwareServiceProperties() {
-        P properties = createMinimalServiceProperties();
+    protected F factoryWithManagedIdentityTokenCredentialConfigured(P properties) {
+        P credentialProperties = createManagedIdentityCredentialAwareServiceProperties(properties);
+        return createClientBuilderFactoryWithMockBuilder(credentialProperties);
+    }
+
+    private P createClientSecretTokenCredentialAwareServiceProperties(P properties) {
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientSecret("test-secret");
         properties.getProfile().setTenantId("test-tenant");
         return properties;
     }
 
-    private P createClientCertificateTokenCredentialAwareServiceProperties() {
-        P properties = createMinimalServiceProperties();
+    private P createClientCertificateTokenCredentialAwareServiceProperties(P properties) {
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientCertificatePath("test-cert-path");
         properties.getCredential().setClientCertificatePassword("test-cert-password");
@@ -48,8 +51,15 @@ public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends
         return properties;
     }
 
-    private P createManagedIdentityCredentialAwareServiceProperties() {
-        P properties = createMinimalServiceProperties();
+    private P createUsernamePasswordTokenCredentialAwareServiceProperties(P properties) {
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setUsername("test-username");
+        properties.getCredential().setPassword("test-password");
+        properties.getProfile().setTenantId("test-tenant");
+        return properties;
+    }
+
+    private P createManagedIdentityCredentialAwareServiceProperties(P properties) {
         properties.getCredential().setManagedIdentityEnabled(true);
         return properties;
     }

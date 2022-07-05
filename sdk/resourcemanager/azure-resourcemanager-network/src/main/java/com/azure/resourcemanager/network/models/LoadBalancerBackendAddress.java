@@ -168,6 +168,33 @@ public final class LoadBalancerBackendAddress {
     }
 
     /**
+     * Get the adminState property: A list of administrative states which once set can override health probe so that
+     * Load Balancer will always forward new connections to backend, or deny new connections and reset existing
+     * connections.
+     *
+     * @return the adminState value.
+     */
+    public LoadBalancerBackendAddressAdminState adminState() {
+        return this.innerProperties() == null ? null : this.innerProperties().adminState();
+    }
+
+    /**
+     * Set the adminState property: A list of administrative states which once set can override health probe so that
+     * Load Balancer will always forward new connections to backend, or deny new connections and reset existing
+     * connections.
+     *
+     * @param adminState the adminState value to set.
+     * @return the LoadBalancerBackendAddress object itself.
+     */
+    public LoadBalancerBackendAddress withAdminState(LoadBalancerBackendAddressAdminState adminState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
+        }
+        this.innerProperties().withAdminState(adminState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

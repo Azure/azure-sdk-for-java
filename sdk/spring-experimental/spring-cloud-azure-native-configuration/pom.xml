@@ -42,39 +42,39 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>2.7.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -87,21 +87,21 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.31.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.32.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.4.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -137,7 +137,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.experimental:spring-aot:[0.11.4]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
               </includes>
             </bannedDependencies>

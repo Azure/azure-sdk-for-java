@@ -33,7 +33,11 @@ public final class OfficeTrafficCategory extends ExpandableStringEnum<OfficeTraf
         return fromString(name, OfficeTrafficCategory.class);
     }
 
-    /** @return known OfficeTrafficCategory values. */
+    /**
+     * Gets known OfficeTrafficCategory values.
+     *
+     * @return known OfficeTrafficCategory values.
+     */
     public static Collection<OfficeTrafficCategory> values() {
         return values(OfficeTrafficCategory.class);
     }

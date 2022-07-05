@@ -40,7 +40,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
@@ -123,7 +122,7 @@ public final class EncryptedBlobClientBuilder implements
     private String snapshot;
     private String versionId;
     private boolean requiresEncryption;
-    private EncryptionVersion encryptionVersion;
+    private final EncryptionVersion encryptionVersion;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -155,9 +154,14 @@ public final class EncryptedBlobClientBuilder implements
     @Deprecated
     public EncryptedBlobClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
+        this.encryptionVersion = EncryptionVersion.V1;
+        LOGGER.warning("Client is being configured to use v1 of client side encryption, "
+            + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+            + "recommended the version be set to v2 using the constructor");
     }
 
     /**
+     * Creates a new instance of the EncryptedBlobClientbuilder.
      *
      * @param version The version of the client side encryption protocol to use. It is highly recommended that v2 be
      * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
@@ -167,6 +171,11 @@ public final class EncryptedBlobClientBuilder implements
         Objects.requireNonNull(version);
         logOptions = getDefaultHttpLogOptions();
         this.encryptionVersion = version;
+        if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
+            LOGGER.warning("Client is being configured to use v1 of client side encryption, "
+                + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+                + "recommended the version be set to v2 using the constructor");
+        }
     }
 
     /**
@@ -219,13 +228,6 @@ public final class EncryptedBlobClientBuilder implements
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         checkValidEncryptionParameters();
 
-        this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
-        if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
-            LOGGER.warning("Client is being configured to use v1 of client side encryption, which is no longer "
-                + "considered secure. The default is v1 for compatibility reasons, but it is highly recommended "
-                + "the version be set to v2 using the constructor");
-        }
-
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -237,7 +239,7 @@ public final class EncryptedBlobClientBuilder implements
 
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
     }
 
 
@@ -256,44 +258,6 @@ public final class EncryptedBlobClientBuilder implements
             .httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
-    }
-
-    private BlobAsyncClient getUnencryptedBlobClient() {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .containerName(containerName)
-            .blobName(blobName)
-            .snapshot(snapshot)
-            .customerProvidedKey(
-                customerProvidedKey == null ? null : new CustomerProvidedKey(customerProvidedKey.getEncryptionKey()))
-            .encryptionScope(encryptionScope == null ? null : encryptionScope.getEncryptionScope())
-            .versionId(versionId)
-            .serviceVersion(version)
-            .pipeline(this.httpPipeline)
-            .httpClient(httpClient)
-            .configuration(configuration)
-            .retryOptions(this.retryOptions)
-            .clientOptions(this.clientOptions);
-        // Is this missing some things? Refactor to use the pipeline builder code below?
-
-        if (storageSharedKeyCredential != null) {
-            builder.credential(storageSharedKeyCredential);
-        } else if (tokenCredential != null) {
-            builder.credential(tokenCredential);
-        } else if (azureSasCredential != null) {
-            builder.credential(azureSasCredential);
-        } else if (sasToken != null) {
-            builder.credential(new AzureSasCredential(sasToken));
-        }
-
-        for (HttpPipelinePolicy policy : perCallPolicies) {
-            builder.addPolicy(policy);
-        }
-        for (HttpPipelinePolicy policy : perRetryPolicies) {
-            builder.addPolicy(policy);
-        }
-
-        return builder.buildAsyncClient();
     }
 
     private HttpPipeline getHttpPipeline() {
@@ -316,8 +280,7 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption,
-                getUnencryptedBlobClient()));
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
@@ -330,7 +293,7 @@ public final class EncryptedBlobClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption, getUnencryptedBlobClient()));
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
         policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));

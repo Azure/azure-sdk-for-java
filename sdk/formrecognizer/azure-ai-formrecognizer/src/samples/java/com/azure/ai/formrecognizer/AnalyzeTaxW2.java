@@ -9,13 +9,12 @@ import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -39,11 +38,11 @@ public class AnalyzeTaxW2 {
             .buildClient();
 
         File invoice = new File("./formrecognizer/azure-ai-formrecognizer/src/samples/resources/Sample-W2.jpg");
-        byte[] fileContent = Files.readAllBytes(invoice.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        Path filePath = invoice.toPath();
+        BinaryData invoiceData = BinaryData.fromFile(filePath);
 
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeW2Poller =
-            client.beginAnalyzeDocument("prebuilt-tax.us.w2", targetStream, invoice.length());
+            client.beginAnalyzeDocument("prebuilt-tax.us.w2", invoiceData, invoice.length());
 
         AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult();
 

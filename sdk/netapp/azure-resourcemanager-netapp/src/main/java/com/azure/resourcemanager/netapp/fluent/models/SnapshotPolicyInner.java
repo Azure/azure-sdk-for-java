@@ -12,15 +12,12 @@ import com.azure.resourcemanager.netapp.models.DailySchedule;
 import com.azure.resourcemanager.netapp.models.HourlySchedule;
 import com.azure.resourcemanager.netapp.models.MonthlySchedule;
 import com.azure.resourcemanager.netapp.models.WeeklySchedule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Snapshot policy information. */
 @Fluent
 public final class SnapshotPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotPolicyInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -34,7 +31,8 @@ public final class SnapshotPolicyInner extends Resource {
     private SnapshotPolicyProperties innerProperties = new SnapshotPolicyProperties();
 
     /*
-     * The system meta data relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
@@ -58,7 +56,7 @@ public final class SnapshotPolicyInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system meta data relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -211,7 +209,7 @@ public final class SnapshotPolicyInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model SnapshotPolicyInner"));
@@ -219,4 +217,6 @@ public final class SnapshotPolicyInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotPolicyInner.class);
 }

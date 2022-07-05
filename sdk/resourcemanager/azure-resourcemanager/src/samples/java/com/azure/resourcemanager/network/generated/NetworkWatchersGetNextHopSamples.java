@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.NextHopParameters;
 /** Samples for NetworkWatchers GetNextHop. */
 public final class NetworkWatchersGetNextHopSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkWatcherNextHopGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkWatcherNextHopGet.json
      */
     /**
      * Sample code: Get next hop.

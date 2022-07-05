@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
@@ -23,13 +24,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.ON_BEHALF_OF;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.RESOURCE_SERVER;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.RESOURCE_SERVER_WITH_OBO;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.WEB_APPLICATION;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.inferApplicationTypeByDependencies;
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AZURE_DELEGATED;
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.ON_BEHALF_OF;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.JWT_BEARER;
+import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_JWT;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
@@ -134,15 +137,15 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     private AadApplicationType applicationType;
 
-    private static final Map<AadApplicationType, Set<AadAuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = initCompatibleApplicationTypeAndGrantTypes();
+    private static final Map<AadApplicationType, Set<AuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = initCompatibleApplicationTypeAndGrantTypes();
 
-    private static Map<AadApplicationType, Set<AadAuthorizationGrantType>> initCompatibleApplicationTypeAndGrantTypes() {
-        Map<AadApplicationType, Set<AadAuthorizationGrantType>> nonCompatibleApplicationTypeAndGrantTypes =
+    private static Map<AadApplicationType, Set<AuthorizationGrantType>> initCompatibleApplicationTypeAndGrantTypes() {
+        Map<AadApplicationType, Set<AuthorizationGrantType>> nonCompatibleApplicationTypeAndGrantTypes =
             new HashMap<>();
         nonCompatibleApplicationTypeAndGrantTypes.put(WEB_APPLICATION,
-            Stream.of(ON_BEHALF_OF).collect(Collectors.toSet()));
+            Stream.of(ON_BEHALF_OF, JWT_BEARER).collect(Collectors.toSet()));
         nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER,
-            Stream.of(AUTHORIZATION_CODE, ON_BEHALF_OF).collect(Collectors.toSet()));
+            Stream.of(AUTHORIZATION_CODE, ON_BEHALF_OF, JWT_BEARER).collect(Collectors.toSet()));
         nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER_WITH_OBO,
             Stream.of(AUTHORIZATION_CODE).collect(Collectors.toSet()));
 
@@ -590,22 +593,25 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     private void validateAuthorizationClientProperties(String registrationId,
                                                        AuthorizationClientProperties properties) {
-        AadAuthorizationGrantType grantType = Optional.of(properties)
-                                   .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                                   .orElse(null);
+        if (CLIENT_SECRET_JWT.equals(properties.getClientAuthenticationMethod())) {
+            throw new IllegalStateException("The client authentication method of '"
+                + registrationId + "' is not supported.");
+        }
+
+        AuthorizationGrantType grantType = properties.getAuthorizationGrantType();
         if (grantType != null) {
             validateAuthorizationGrantType(registrationId, grantType);
         } else {
             grantType = decideDefaultGrantTypeFromApplicationType(registrationId, applicationType);
             properties.setAuthorizationGrantType(grantType);
 
-            LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to '{}'.", grantType,
+            LOGGER.debug("The client '{}' sets the default value of AuthorizationGrantType to '{}'.", grantType,
                 registrationId);
         }
 
         // Extract validated scopes from properties
         List<String> scopes = extractValidatedScopes(registrationId, properties);
-        addNecessaryScopesForAuhtorizationCodeClients(properties, scopes);
+        addNecessaryScopesForAuthorizationCodeClients(registrationId, properties, scopes);
     }
 
     /**
@@ -617,11 +623,17 @@ public class AadAuthenticationProperties implements InitializingBean {
      * "openid" : allows to request an ID token.
      * "profile" : allows returning additional claims in the ID token.
      * "offline_access" : allows to request a refresh token.
+     * @param registrationId client ID
      * @param properties AuthorizationClientProperties
      * @param scopes scopes for authorization_code clients.
      */
-    private void addNecessaryScopesForAuhtorizationCodeClients(AuthorizationClientProperties properties,
+    private void addNecessaryScopesForAuthorizationCodeClients(String registrationId,
+                                                               AuthorizationClientProperties properties,
                                                                List<String> scopes) {
+        if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId) && (scopes == null || scopes.isEmpty())) {
+            return;
+        }
+
         if (properties.getAuthorizationGrantType().equals(AUTHORIZATION_CODE)) {
             String[] scopesNeeded = new String[] { "openid", "profile", "offline_access" };
             for (String scope : scopesNeeded) {
@@ -634,7 +646,7 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     private List<String> extractValidatedScopes(String registrationId, AuthorizationClientProperties properties) {
         List<String> scopes = properties.getScopes();
-        if (scopes == null || scopes.isEmpty()) {
+        if (!AZURE_CLIENT_REGISTRATION_ID.equals(registrationId) && (scopes == null || scopes.isEmpty())) {
             throw new IllegalStateException(
                 "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be "
                     + "configured");
@@ -642,11 +654,11 @@ public class AadAuthenticationProperties implements InitializingBean {
         return scopes;
     }
 
-    private void validateAuthorizationGrantType(String registrationId, AadAuthorizationGrantType grantType) {
+    private void validateAuthorizationGrantType(String registrationId, AuthorizationGrantType grantType) {
         if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.containsKey(applicationType)) {
             if (NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES.get(applicationType).contains(grantType)) {
                 throw new IllegalStateException(String.format(UNMATCHING_OAUTH_GRANT_TYPE_FROMAT,
-                    applicationType.getValue(), registrationId, grantType));
+                    applicationType.getValue(), registrationId, grantType.getValue()));
             }
             LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients.{}.authorization-grant-type'"
                 + " is valid.", registrationId);
@@ -666,9 +678,9 @@ public class AadAuthenticationProperties implements InitializingBean {
      * @param appType AadApplicationType
      * @return default grant type
      */
-    private AadAuthorizationGrantType decideDefaultGrantTypeFromApplicationType(String registrationId,
-                                                                                AadApplicationType appType) {
-        AadAuthorizationGrantType grantType;
+    private AuthorizationGrantType decideDefaultGrantTypeFromApplicationType(String registrationId,
+                                                                             AadApplicationType appType) {
+        AuthorizationGrantType grantType;
         switch (appType) {
             case WEB_APPLICATION:
                 if (registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)) {
@@ -679,7 +691,7 @@ public class AadAuthenticationProperties implements InitializingBean {
                 break;
             case RESOURCE_SERVER:
             case RESOURCE_SERVER_WITH_OBO:
-                grantType = AadAuthorizationGrantType.ON_BEHALF_OF;
+                grantType = JWT_BEARER;
                 break;
             case WEB_APPLICATION_AND_RESOURCE_SERVER:
                 throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients." + registrationId

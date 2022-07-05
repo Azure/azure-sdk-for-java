@@ -7,17 +7,13 @@ package com.azure.resourcemanager.extendedlocation.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.models.EnabledResourceTypePropertiesTypesMetadataItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** EnabledResourceType definition. */
 @Fluent
 public final class EnabledResourceTypeInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnabledResourceTypeInner.class);
-
     /*
      * The set of properties for EnabledResourceType specific to a Custom
      * Location

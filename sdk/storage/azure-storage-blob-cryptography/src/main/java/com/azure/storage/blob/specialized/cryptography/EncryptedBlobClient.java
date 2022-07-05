@@ -7,15 +7,24 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -24,6 +33,7 @@ import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -34,8 +44,14 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -333,6 +349,159 @@ public class EncryptedBlobClient extends BlobClient {
         } catch (UncheckedIOException e) {
             throw LOGGER.logExceptionAsError(e);
         }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobProperties downloadToFile(String filePath) {
+        return this.downloadToFile(filePath, false);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobProperties downloadToFile(String filePath, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+        }
+        return this.downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
+            .getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
+        return this.downloadToFileWithResponse(filePath, range, parallelTransferOptions, downloadRetryOptions,
+            requestConditions, rangeGetContentMd5, null, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
+        Duration timeout, Context context) {
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return this.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+            .setParallelTransferOptions(finalParallelTransferOptions)
+            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
+        Context context) {
+        context = context == null ? Context.NONE : context;
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        context = populateRequestConditionsAndContext(options.getRequestConditions(), timeout, context);
+        return super.downloadToFileWithResponse(options, timeout, context);
+    }
+
+    @Override
+    public final BlobInputStream openInputStream() {
+        return openInputStream((BlobRange) null, null);
+    }
+
+    @Override
+    public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    @Override
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        return openInputStream(options, null);
+    }
+
+    protected BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+        context = context == null ? Context.NONE : context;
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        context = populateRequestConditionsAndContext(options.getRequestConditions(), null, context);
+        return super.openInputStream(options, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public void download(OutputStream stream) {
+        downloadStream(stream);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public void downloadStream(OutputStream stream) {
+        downloadStreamWithResponse(stream, null, null, null, false, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BinaryData downloadContent() {
+        return this.downloadContentWithResponse(null, null, null, null).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream, range,
+            options, requestConditions, getRangeContentMd5, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        Duration timeout, Context context) {
+
+        if (isRangeRequest(range)) {
+            context = context == null ? Context.NONE : context;
+            requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+            context = populateRequestConditionsAndContext(requestConditions, timeout, context);
+        }
+
+        return super.downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5,
+            timeout, context);
+    }
+
+    static boolean isRangeRequest(BlobRange range) {
+        return range != null && (range.getOffset() != 0 || range.getCount() != null);
+    }
+
+    private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        BlobProperties initialProperties =
+            this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
+
+        requestConditions.setIfMatch(initialProperties.getETag());
+        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
+                initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY),
+                encryptedBlobAsyncClient.isEncryptionRequired()));
+        }
+
+        return context;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobDownloadContentResponse downloadContentWithResponse(
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = populateRequestConditionsAndContext(requestConditions, timeout, context);
+        return super.downloadContentWithResponse(options, requestConditions, timeout, context);
     }
 
     /**
