@@ -11,7 +11,9 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class CompleteJobResult {
-
+    /**
+     * Placeholder object.
+     */
     private Object emptyResponse;
 
     /**

@@ -11,6 +11,10 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class CancelJobResult {
+
+    /**
+     * Placeholder object.
+     */
     private Object emptyResponse;
 
     /**

@@ -26,7 +26,7 @@ public class CreateQueueOptions extends QueueOptions {
 
     /**
      * Sets name
-     * @param name
+     * @param name Human-readable name of queue.
      * @return this
      */
     public CreateQueueOptions setName(String name) {
@@ -36,7 +36,7 @@ public class CreateQueueOptions extends QueueOptions {
 
     /**
      * Sets labels
-     * @param labels
+     * @param labels A set of key/value pairs that are identifying attributes used by the rules engines to make decisions.
      * @return this
      */
     public CreateQueueOptions setLabels(Map<String, Object> labels) {
@@ -46,7 +46,7 @@ public class CreateQueueOptions extends QueueOptions {
 
     /**
      * Sets exceptionPolicyId
-     * @param exceptionPolicyId
+     * @param exceptionPolicyId (Optional) The ID of the exception policy that determines various job escalation rules.
      * @return this
      */
     public CreateQueueOptions setExceptionPolicyId(String exceptionPolicyId) {

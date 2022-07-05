@@ -7,6 +7,9 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class DeclineJobOfferResult {
+    /**
+     * Placeholder object.
+     */
     private Object emptyResponse;
 
     /**

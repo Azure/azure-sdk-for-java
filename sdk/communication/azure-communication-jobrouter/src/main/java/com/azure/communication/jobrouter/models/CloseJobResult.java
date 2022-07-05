@@ -7,6 +7,9 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class CloseJobResult {
+    /**
+     * Placeholder object.
+     */
     private Object emptyResponse;
 
     /**

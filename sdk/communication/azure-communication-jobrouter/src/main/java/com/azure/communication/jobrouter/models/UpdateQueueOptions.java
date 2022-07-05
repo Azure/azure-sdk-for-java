@@ -12,7 +12,7 @@ import java.util.Map;
 public class UpdateQueueOptions extends QueueOptions {
     /**
      * Sets queueId.
-     * @param queueId
+     * @param queueId The Id of this queue
      * @return this
      */
     public UpdateQueueOptions setQueueId(String queueId) {
@@ -21,8 +21,8 @@ public class UpdateQueueOptions extends QueueOptions {
     }
 
     /**
-     * Sets distributionPolicyId
-     * @param distributionPolicyId
+     * Sets distributionPolicyId.
+     * @param distributionPolicyId The ID of the distribution policy that will determine how a job is distributed to workers.
      * @return this
      */
     public UpdateQueueOptions setDistributionPolicyId(String distributionPolicyId) {
@@ -31,8 +31,8 @@ public class UpdateQueueOptions extends QueueOptions {
     }
 
     /**
-     * Sets name
-     * @param name
+     * Sets name.
+     * @param name The name of this queue.
      * @return this
      */
     public UpdateQueueOptions setName(String name) {
@@ -41,8 +41,8 @@ public class UpdateQueueOptions extends QueueOptions {
     }
 
     /**
-     * Sets labels
-     * @param labels
+     * Sets labels.
+     * @param labels A set of key/value pairs that are identifying attributes used by the rules engines to make decisions.
      * @return this
      */
     public UpdateQueueOptions setLabels(Map<String, Object> labels) {
@@ -51,8 +51,8 @@ public class UpdateQueueOptions extends QueueOptions {
     }
 
     /**
-     * Sets exceptionPolicyId
-     * @param exceptionPolicyId
+     * Sets exceptionPolicyId.
+     * @param exceptionPolicyId (Optional) The ID of the exception policy that determines various job escalation rules.
      * @return this
      */
     public UpdateQueueOptions setExceptionPolicyId(String exceptionPolicyId) {
