@@ -20,15 +20,14 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -89,11 +88,11 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-extractLayout
         // analyze document layout using file input stream
         File layoutDocument = new File("local/file_path/filename.png");
-        byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
-        InputStream fileStream = new ByteArrayInputStream(fileContent);
+        Path filePath = layoutDocument.toPath();
+        BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", fileStream, layoutDocument.length());
+            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
