@@ -12,29 +12,30 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressListener;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-
-import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -66,9 +67,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -524,9 +522,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     validatedUploadRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod =
-                (stream, length) -> uploadWithResponse(ProgressReporter
-                        .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    fileOffset, length, options.getHeaders(), validatedUploadRequestConditions);
+                (stream, length) -> uploadWithResponse(stream,
+                    fileOffset, length, options.getHeaders(), validatedUploadRequestConditions,
+                    validatedParallelTransferOptions.getProgressListener());
 
             Flux<ByteBuffer> data = options.getDataFlux();
             // no specified length: use azure.core's converter
@@ -556,14 +554,15 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders httpHeaders,
         DataLakeRequestConditions requestConditions) {
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong();
-        Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
+
+        ProgressListener progressListener = parallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
+            progressListener);
 
         /*
          Write to the stagingArea and upload the output.
@@ -594,13 +593,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 BufferAggregator bufferAggregator = tuple3.getT1();
                 long currentBufferLength = bufferAggregator.length();
                 long currentOffset = tuple3.getT3() + fileOffset;
-                // Report progress as necessary.
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
-                    progressLock, totalProgress);
                 final long offset = currentBufferLength + currentOffset;
-                return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
-                    requestConditions.getLeaseId())
+                Contexts appendContexts = Contexts.empty();
+                if (progressReporter != null) {
+                    appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
+                }
+                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength, null,
+                    requestConditions.getLeaseId(), appendContexts.getContext())
                     .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
@@ -609,8 +608,14 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
-        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
-        return appendWithResponse(data, fileOffset, length, null, requestConditions.getLeaseId())
+        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions, ProgressListener progressListener) {
+        Contexts appendContexts = Contexts.empty();
+        if (progressListener != null) {
+            appendContexts.setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progressListener));
+        }
+        return appendWithResponse(data, fileOffset, length, null,
+            requestConditions.getLeaseId(), appendContexts.getContext())
             .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
                 requestConditions));
     }
@@ -755,7 +760,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                             // Otherwise, we know it can be sent in a single request reducing network overhead.
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
-                                    validatedUploadRequestConditions))
+                                    validatedUploadRequestConditions,
+                                    finalParallelTransferOptions.getProgressListener()))
                                 .then();
                         }
                     } catch (IOException ex) {
@@ -773,18 +779,20 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         AsynchronousFileChannel channel) {
         // parallelTransferOptions are finalized in the calling method.
 
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong();
-        Lock progressLock = new ReentrantLock();
+        ProgressListener progressListener = parallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
+            progressListener);
 
         return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
             .flatMap(chunk -> {
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                    parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                Flux<ByteBuffer> data = FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount());
 
-                return appendWithResponse(progressData, fileOffset + chunk.getOffset(), chunk.getCount(), null,
-                    requestConditions.getLeaseId());
+                Contexts appendContexts = Contexts.empty();
+                if (progressReporter != null) {
+                    appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
+                }
+                return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(), null,
+                    requestConditions.getLeaseId(), appendContexts.getContext());
             }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();

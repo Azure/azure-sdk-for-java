@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 
 import reactor.core.publisher.Flux;
@@ -16,7 +17,7 @@ import reactor.core.publisher.Flux;
  * the {@code ProgressReceiver} specified there and will handle the logic to coordinate the reporting between parallel
  * operations.
  */
-public interface ProgressReceiver {
+public interface ProgressReceiver extends ProgressListener {
 
     /**
      * The callback function invoked as progress is reported.
@@ -24,4 +25,9 @@ public interface ProgressReceiver {
      * @param bytesTransferred The total number of bytes transferred during this transaction.
      */
     void reportProgress(long bytesTransferred);
+
+    @Override
+    default void handleProgress(long bytesTransferred) {
+        reportProgress(bytesTransferred);
+    }
 }

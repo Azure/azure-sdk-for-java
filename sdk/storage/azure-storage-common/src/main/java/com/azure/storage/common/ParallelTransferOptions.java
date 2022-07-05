@@ -4,6 +4,7 @@
 package com.azure.storage.common;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ProgressListener;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -110,7 +111,9 @@ public final class ParallelTransferOptions {
     /**
      * Gets the Progress receiver for parallel reporting
      * @return The progress reporter
+     * @deprecated Use {@link #getProgressListener()}
      */
+    @Deprecated
     public ProgressReceiver getProgressReceiver() {
         return this.progressReceiver;
     }
@@ -120,10 +123,31 @@ public final class ParallelTransferOptions {
      *
      * @param progressReceiver The {@link ProgressReceiver}.
      * @return The ParallelTransferOptions object itself.
+     * @deprecated Use {@link #setProgressListener(ProgressListener)}
      */
+    @Deprecated
     public ParallelTransferOptions setProgressReceiver(ProgressReceiver progressReceiver) {
         this.progressReceiver = progressReceiver;
         return this;
+    }
+
+    /**
+     * Sets the {@link ProgressReceiver}.
+     *
+     * @param progressListener The {@link ProgressListener}.
+     * @return The ParallelTransferOptions object itself.
+     */
+    public ParallelTransferOptions setProgressListener(ProgressListener progressListener) {
+        this.progressReceiver = progressListener::handleProgress;
+        return this;
+    }
+
+    /**
+     * Gets the Progress listener for parallel reporting
+     * @return The progress listener
+     */
+    public ProgressListener getProgressListener() {
+        return this.progressReceiver;
     }
 
     /**
