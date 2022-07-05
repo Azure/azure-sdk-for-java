@@ -359,14 +359,15 @@ stages:
 
   # This pipeline should never get kicked off outside of an internal, manual run. Put the checks here
   # so the pipeline never gets to the signing/release portions unless this is the case.
-  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release-batch.yml
-      parameters:
-        DependsOn:
-          - Build
-        SDKType: ${{ parameters.SDKType }}
-        Artifacts: ${{ parameters.Artifacts }}
-        TestPipeline: ${{ parameters.TestPipeline }}
-        ArtifactName: packages
-        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+# JRS commit this out so I can test the pipeline up to this point
+#  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+#    - template: archetype-java-release-batch.yml
+#      parameters:
+#        DependsOn:
+#          - Build
+#        SDKType: ${{ parameters.SDKType }}
+#        Artifacts: ${{ parameters.Artifacts }}
+#        TestPipeline: ${{ parameters.TestPipeline }}
+#        ArtifactName: packages
+#        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+#        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
