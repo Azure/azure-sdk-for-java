@@ -15,12 +15,10 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 2204772210172278016L;
-
-
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"HandOfCards\",\"namespace\":\"com.azure.core.serializer.avro.apache.generatedtestsources\",\"fields\":[{\"name\":\"cards\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"PlayingCard\",\"fields\":[{\"name\":\"isFaceCard\",\"type\":\"boolean\"},{\"name\":\"cardValue\",\"type\":\"int\"},{\"name\":\"playingCardSuit\",\"type\":{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}}]}}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
-  private static final SpecificData MODEL$ = new SpecificData();
+  private static SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<HandOfCards> ENCODER =
       new BinaryMessageEncoder<HandOfCards>(MODEL$, SCHEMA$);
@@ -73,7 +71,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-  private java.util.List<com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard> cards;
+   private java.util.List<com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard> cards;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -171,7 +169,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
 
     /** Creates a new Builder */
     private Builder() {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
     }
 
     /**
@@ -191,7 +189,7 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
      * @param other The existing instance to copy.
      */
     private Builder(com.azure.core.serializer.avro.apache.generatedtestsources.HandOfCards other) {
-      super(SCHEMA$, MODEL$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.cards)) {
         this.cards = data().deepCopy(fields()[0].schema(), other.cards);
         fieldSetFlags()[0] = true;
@@ -344,13 +342,3 @@ public class HandOfCards extends org.apache.avro.specific.SpecificRecordBase imp
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
