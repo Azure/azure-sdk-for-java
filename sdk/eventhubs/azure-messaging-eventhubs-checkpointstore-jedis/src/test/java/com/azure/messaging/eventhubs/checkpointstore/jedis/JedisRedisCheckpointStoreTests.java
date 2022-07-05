@@ -83,13 +83,11 @@ public class JedisRedisCheckpointStoreTests {
         when(jedis.smembers(PREFIX)).thenReturn(new HashSet<>());
 
         StepVerifier.create(store.listCheckpoints(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
-            .expectNextCount(0L)
             .verifyComplete();
     }
 
     @Test
     public void testCheckpointKeyNotStored() {
-
         Set<String> value = new HashSet<>();
         value.add(KEY);
 
@@ -139,7 +137,6 @@ public class JedisRedisCheckpointStoreTests {
         when(jedis.smembers(PREFIX)).thenReturn(new HashSet<>());
 
         StepVerifier.create(store.listOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP))
-            .expectNextCount(0L)
             .verifyComplete();
     }
 
@@ -148,7 +145,6 @@ public class JedisRedisCheckpointStoreTests {
         //Test will change when claimOwnership is fully implemented
         List<PartitionOwnership> partitionOwnershipList = new ArrayList<>();
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
-            .expectNextCount(0L)
             .verifyComplete();
     }
 
@@ -166,7 +162,6 @@ public class JedisRedisCheckpointStoreTests {
         when(jedis.exists(PREFIX)).thenReturn(true);
 
         StepVerifier.create(store.updateCheckpoint(checkpoint))
-            .expectNextCount(0L)
             .verifyComplete();
     }
 }
