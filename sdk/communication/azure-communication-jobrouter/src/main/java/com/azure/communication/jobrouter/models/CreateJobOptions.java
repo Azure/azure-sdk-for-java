@@ -16,17 +16,33 @@ public class CreateJobOptions extends JobOptions {
     /**
      * Constructor for CreateJobOptions.
      * @param id The id of the job.
-     * @param channelReference Reference to an external parent context, eg. call ID.
      * @param channelId The channel identifier. eg. voice, chat, etc.
      * @param queueId The Id of the Queue that this job is queued to.
-     * @param priority The priority of this job.
      */
-    public CreateJobOptions(String id, String channelReference, String channelId, String queueId, Integer priority) {
+    public CreateJobOptions(String id, String channelId, String queueId) {
         this.id = id;
-        this.channelReference = channelReference;
         this.channelId = channelId;
         this.queueId = queueId;
+    }
+
+    /**
+     * Sets job priority.
+     * @param priority The priority of this job.
+     * @return this
+     */
+    public CreateJobOptions setPriority(Integer priority) {
         this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Sets channelReference.
+     * @param channelReference Reference to an external parent context, eg. call ID.
+     * @return this
+     */
+    public CreateJobOptions setChannelReference(String channelReference) {
+        this.channelReference = channelReference;
+        return this;
     }
 
     /**

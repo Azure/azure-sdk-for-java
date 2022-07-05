@@ -1,0 +1,119 @@
+package com.azure.communication.jobrouter.models;
+
+import com.azure.communication.jobrouter.implementation.models.ChannelConfiguration;
+import com.azure.core.annotation.Fluent;
+
+import java.util.Map;
+
+/**
+ * Abstract class for Create and Update WorkerOptions.
+ */
+@Fluent
+public class WorkerOptions {
+    /**
+     * The id property.
+     */
+    protected String workerId;
+
+    /**
+     * The current state of the worker.
+     */
+    protected RouterWorkerState state;
+
+    /**
+     * The queue(s) that this worker can receive work from.
+     */
+    protected Map<String, Object> queueAssignments;
+
+    /**
+     * The total capacity score this worker has to manage multiple concurrent
+     * jobs.
+     */
+    protected Integer totalCapacity;
+
+    /**
+     * A set of key/value pairs that are identifying attributes used by the
+     * rules engines to make decisions.
+     */
+    protected Map<String, Object> labels;
+
+    /**
+     * A set of non-identifying attributes attached to this worker.
+     */
+    protected Map<String, Object> tags;
+
+    /**
+     * The channel(s) this worker can handle and their impact on the workers
+     * capacity.
+     */
+    protected Map<String, ChannelConfiguration> channelConfigurations;
+
+    /**
+     * A flag indicating this worker is open to receive offers or not.
+     */
+    protected Boolean availableForOffers;
+
+    /**
+     * Returns id.
+     * @return id
+     */
+    public String getWorkerId() {
+        return this.workerId;
+    }
+
+    /**
+     * Returns worker state.
+     * @return state
+     */
+    public RouterWorkerState getState() {
+        return this.state;
+    }
+
+    /**
+     * Returns queue assignments.
+     * @return queueAssignments
+     */
+    public Map<String, Object> getQueueAssignments() {
+        return this.queueAssignments;
+    }
+
+    /**
+     * Returns totalCapacity.
+     * @return totalCapacity
+     */
+    public Integer getTotalCapacity() {
+        return this.totalCapacity;
+    }
+
+    /**
+     * Returns labels.
+     * @return labels
+     */
+    public Map<String, Object> getLabels() {
+        return this.labels;
+    }
+
+    /**
+     * Returns tags.
+     * @return tags
+     */
+    public Map<String, Object> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Returns channelConfigurations.
+     * @return channelConfigurations
+     */
+    public Map<String, ChannelConfiguration> getChannelConfigurations() {
+        return this.channelConfigurations;
+    }
+
+    /**
+     * Returns availableForOffers.
+     * @return availableForOffers
+     */
+    public Boolean getAvailableForOffers() {
+        return this.availableForOffers;
+    }
+}

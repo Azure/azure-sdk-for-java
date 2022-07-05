@@ -4,7 +4,9 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.RouterJobAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.CancelJobResult;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
@@ -13,6 +15,8 @@ import com.azure.communication.jobrouter.models.CloseJobResult;
 import com.azure.communication.jobrouter.models.CompleteJobResult;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferResult;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
@@ -29,6 +33,8 @@ import com.azure.communication.jobrouter.models.QueueStatistics;
 import com.azure.communication.jobrouter.models.ReclassifyJobResult;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.UpdateQueueOptions;
+import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.communication.jobrouter.implementation.convertors.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
@@ -892,23 +898,21 @@ public final class RouterClient {
     /**
      * Create a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @param createQueueOptions Container for inputs to create a queue.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue createQueue(String id, JobQueue jobQueue) {
-        return this.client.createQueue(id, jobQueue).block();
+    public JobQueue createQueue(CreateQueueOptions createQueueOptions) {
+        return this.client.createQueue(createQueueOptions).block();
     }
 
     /**
      * Create a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @param createQueueOptions Container for inputs to create a queue.
      * @param context The context to associate with this operation.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -916,30 +920,29 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> createQueueWithResponse(String id, JobQueue jobQueue, Context context) {
-        return this.client.upsertQueueWithResponse(id, jobQueue, context).block();
+    public Response<JobQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, Context context) {
+        JobQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
+        return this.client.upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context).block();
     }
 
     /**
      * Update a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @param updateQueueOptions Container for inputs to update a queue.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue updateQueue(String id, JobQueue jobQueue) {
-        return this.client.createQueue(id, jobQueue).block();
+    public JobQueue updateQueue(UpdateQueueOptions updateQueueOptions) {
+        return this.client.updateQueue(updateQueueOptions).block();
     }
 
     /**
      * Update a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @param updateQueueOptions Container for inputs to update a queue.
      * @param context The context to associate with this operation.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -947,8 +950,9 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> updateQueueWithResponse(String id, JobQueue jobQueue, Context context) {
-        return this.client.upsertQueueWithResponse(id, jobQueue, context).block();
+    public Response<JobQueue> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions, Context context) {
+        JobQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
+        return this.client.upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context).block();
     }
 
     /**
@@ -1067,23 +1071,21 @@ public final class RouterClient {
     /**
      * Create a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param createWorkerOptions Container for inputs to create a worker.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker createWorker(String id, RouterWorker routerWorker) {
-        return this.client.createWorker(id, routerWorker).block();
+    public RouterWorker createWorker(CreateWorkerOptions createWorkerOptions) {
+        return this.client.createWorker(createWorkerOptions).block();
     }
 
     /**
      * Create a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param createWorkerOptions Container for inputs to create a worker.
      * @param context The context to associate with this operation.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1091,30 +1093,29 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> createWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
-        return this.client.upsertWorkerWithResponse(id, routerWorker, context).block();
+    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, Context context) {
+        RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+        return this.client.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context).block();
     }
 
     /**
      * Update a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker updateWorker(String id, RouterWorker routerWorker) {
-        return this.client.createWorker(id, routerWorker).block();
+    public RouterWorker updateWorkerOptions(UpdateWorkerOptions updateWorkerOptions) {
+        return this.client.updateWorker(updateWorkerOptions).block();
     }
 
     /**
      * Update a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param updateWorkerOptions Container for inputs to update a worker.
      * @param context The context to associate with this operation.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1122,8 +1123,9 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> updateWorkerWithResponse(String id, RouterWorker routerWorker, Context context) {
-        return this.client.upsertWorkerWithResponse(id, routerWorker, context).block();
+    public Response<RouterWorker> updateWorkerWithResponse(UpdateWorkerOptions updateWorkerOptions, Context context) {
+        RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+        return this.client.upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context).block();
     }
 
     /**

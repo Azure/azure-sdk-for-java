@@ -8,12 +8,12 @@ import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 
 /**
- * Converts request options for create and update Classification Policy to {@link RouterJob}.
+ * Converts request options for create and update Job to {@link RouterJob}.
  */
 public class RouterJobAdapter {
 
     /**
-     * Constructor for CreateJobOptions.
+     * Converts {@link CreateJobOptions} to {@link RouterJob}.
      * @param createJobOptions Container with options to create {@link RouterJob}
      * @return RouterJob
      */
@@ -32,8 +32,8 @@ public class RouterJobAdapter {
     }
 
     /**
-     * Constructor for UpdateJobOptions.
-     * @param updateJobOptions Container with options to create {@link RouterJob}
+     * Converts {@link UpdateJobOptions} to {@link RouterJob}.
+     * @param updateJobOptions Container with options to update {@link RouterJob}
      * @return RouterJob
      */
     public static RouterJob convertUpdateJobOptionsToRouterJob(UpdateJobOptions updateJobOptions) {

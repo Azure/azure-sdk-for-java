@@ -140,111 +140,80 @@ RouterClient routerClient = new RouterClientBuilder()
     .buildClient();
 ```
 
-### Create or update exception policy
+Using `RouterClient` created from builder, create Job Router entities as described below.
 
-Upsert an exception policy using `RouterClient` created from builder.
+### Create a Distribution Policy
 
 ```java 
-String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-RouterClient routerClient = new RouterClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
-
-/**
- * Define an exception trigger.
- * This sets off exception when there are at least 10 jobs in a queue.
- */
-QueueLengthExceptionTrigger exceptionTrigger = new QueueLengthExceptionTrigger();
-exceptionTrigger.setThreshold(10);
-
-/**
- * Define an exception action.
- * This sets up what action to take when an exception trigger condition is fulfilled.
- */
-ExceptionAction exceptionAction = new CancelExceptionAction();
-
-/**
- * Defining exception rule combining the trigger and action.
- */
-ExceptionRule exceptionRule = new ExceptionRule();
-exceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenQueueIsFull", exceptionAction));
-exceptionRule.setTrigger(exceptionTrigger);
-
-/**
- * Create the exception policy.
- */
-ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
-exceptionPolicy.setExceptionRules(Collections.singletonMap("TriggerJobCancellationWhenQueueLenIs10", exceptionRule));
-routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
-
-System.out.printf("Successfully created exception policy with id: %s %n", exceptionPolicyId);
-
-/**
- * Add additional exception rule to policy.
- */
-WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger();
-waitTimeExceptionTrigger.setThreshold("PT1H");
-
-ExceptionRule waitTimeExceptionRule = new ExceptionRule();
-waitTimeExceptionRule.setTrigger(waitTimeExceptionTrigger);
-waitTimeExceptionRule.setActions(Collections.singletonMap("CancelJobActionWhenJobInQFor1Hr", exceptionAction));
-
-exceptionPolicy.setExceptionRules(Collections.singletonMap("CancelJobWhenInQueueFor1Hr", waitTimeExceptionRule));
-
-/**
- * Upsert policy using routerClient.
- */
-routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
-
-System.out.println("Exception policy has been successfully updated.");
+CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
+    "distribution-policy-id",
+    10.0,
+    new LongestIdleMode()
+        .setMinConcurrentOffers(1)
+        .setMaxConcurrentOffers(10)
+);
+DistributionPolicy distributionPolicy = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
 ```
 
-### Get an exception policy
-
-Using `RouterClient` retrieve an existing exception policy.
+### Create a Queue
 
 ```java 
-String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-RouterClient routerClient = new RouterClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
-
-Response<ExceptionPolicy> exceptionPolicyResponse = routerClient.getExceptionPolicy(exceptionPolicyId);
-System.out.printf("Response headers are %s. Url %s  and status code %d %n", exceptionPolicyResponse.getHeaders(),
-    exceptionPolicyResponse.getRequest().getUrl(), exceptionPolicyResponse.getStatusCode());
-System.out.printf("Successfully fetched exception policy with id: %s %n", exceptionPolicyResponse.getValue().getId());
+CreateQueueOptions createQueueOptions = new CreateQueueOptions("queue-id", distributionPolicy.getId());
+JobQueue jobQueue = routerClient.createQueue(createQueueOptions);
 ```
 
-### List exception policies
-
-Using `RouterClient` to retrieve a list of exception policies that have been already created.
+### Create a Job
 
 ```java 
-String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-RouterClient routerClient = new RouterClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
-
-PagedIterable<PagedExceptionPolicy> exceptionPolicyPagedIterable = routerClient.listExceptionPolicies();
-exceptionPolicyPagedIterable.iterableByPage().forEach(resp -> {
-    System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-        resp.getRequest().getUrl(), resp.getStatusCode());
-    resp.getElements().forEach(exceptionPolicy -> {
-        System.out.printf("Retrieved exception policy with id %s %n.", exceptionPolicy.getId());
-    });
-});
+CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
+            .setPriority(1)
+            .setChannelReference("12345")
+            .setRequestedWorkerSelectors(
+                new ArrayList<>() {{
+                    new WorkerSelector()
+                        .setKey("Some-skill")
+                        .setLabelOperator(LabelOperator.GREATER_THAN)
+                        .setValue(10);
+                }}
+            );
+RouterJob routerJob = routerClient.createJob(createJobOptions);
 ```
 
-### Delete an exception policy
-
-Using `RouterClient` delete an exception policy.
+### Create a Worker
 
 ```java 
-String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
-RouterClient routerClient = new RouterClientBuilder()
-    .connectionString(connectionString)
-    .buildClient();
-routerClient.deleteExceptionPolicy(exceptionPolicyId);
+Map<String, Object> labels = new HashMap<String, Object>() {
+    {
+        put("Label", "Value");
+    }
+};
+
+Map<String, Object> tags = new HashMap<String, Object>() {
+    {
+        put("Tag", "Value");
+    }
+};
+
+Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+    {
+        put("channel1", new ChannelConfiguration().setCapacityCostPerJob(1));
+    }
+};
+
+Map<String, Object> queueAssignments = new HashMap<String, Object>() {
+    {
+        put(jobQueue.getId(), new Object());
+    }
+};
+
+CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
+    .setLabels(labels)
+    .setTags(tags)
+    .setAvailableForOffers(false)
+    .setChannelConfigurations(channelConfigurations)
+    .setQueueAssignments(queueAssignments);
+
+RouterWorker routerWorker = routerClient.createWorker(createWorkerOptions);
 ```
 
 ## Troubleshooting

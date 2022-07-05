@@ -10,6 +10,9 @@ import com.azure.communication.jobrouter.implementation.models.CancelExceptionAc
 import com.azure.communication.jobrouter.implementation.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
@@ -21,6 +24,7 @@ import com.azure.communication.jobrouter.implementation.models.QueueLengthExcept
 import com.azure.communication.jobrouter.implementation.models.QueueSelector;
 import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.implementation.models.RoundRobinMode;
+import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.StaticQueueSelector;
 import com.azure.communication.jobrouter.implementation.models.StaticRule;
@@ -61,12 +65,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             bestWorkerModeDistributionPolicyId,
-            bestWorkerModeDistributionPolicyName,
             10.0,
             new BestWorkerMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        );
+        )
+            .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -93,13 +97,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             bestWorkerModeDistributionPolicyId,
-            bestWorkerModeDistributionPolicyName,
             10.0,
             new BestWorkerMode()
                 .setScoringRule(azureFunctionRule)
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        );
+        )
+            .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -120,12 +124,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             longestIdleModeDistributionPolicyId,
-            longestIdleModeDistributionPolicyName,
             10.0,
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        );
+        )
+            .setName(longestIdleModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -146,12 +150,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             roundRobinModeDistributionPolicyId,
-            roundRobinModeDistributionPolicyName,
             10.0,
             new RoundRobinMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        );
+        )
+            .setName(roundRobinModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -317,16 +321,15 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        RouterWorker routerWorker = new RouterWorker()
-            .setAvailableForOffers(false)
+        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
             .setLabels(labels)
             .setTags(tags)
-            .setTotalCapacity(10)
+            .setAvailableForOffers(false)
             .setChannelConfigurations(channelConfigurations)
             .setQueueAssignments(queueAssignments);
 
         // Action
-        RouterWorker result = routerClient.createWorker(workerId, routerWorker);
+        RouterWorker result = routerClient.createWorker(createWorkerOptions);
 
         // Verify
         assertEquals(workerId, result.getId());
@@ -342,12 +345,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             id,
-            distributionPolicyName,
             10.0,
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        );
+        )
+            .setName(distributionPolicyName);
 
         return routerClient.createDistributionPolicy(createDistributionPolicyOptions);
     }
@@ -360,11 +363,25 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        JobQueue jobQueue = new JobQueue()
-            .setDistributionPolicyId(distributionPolicyId)
+        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
             .setName(queueName);
 
-        return routerClient.createQueue(queueId, jobQueue);
+        return routerClient.createQueue(createQueueOptions);
+    }
+
+    private RouterJob createJob(String queueId) {
+        CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
+            .setPriority(1)
+            .setChannelReference("12345")
+            .setRequestedWorkerSelectors(
+                new ArrayList<>() {{
+                    new WorkerSelector()
+                        .setKey("Some-skill")
+                        .setLabelOperator(LabelOperator.GREATER_THAN)
+                        .setValue(10);
+                }}
+            );
+        return routerClient.createJob(createJobOptions);
     }
 }

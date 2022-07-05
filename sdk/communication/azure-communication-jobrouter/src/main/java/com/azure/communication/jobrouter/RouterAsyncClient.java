@@ -6,7 +6,9 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
 import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.RouterJobAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.CancelJobResult;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
@@ -14,6 +16,8 @@ import com.azure.communication.jobrouter.implementation.models.CommunicationErro
 import com.azure.communication.jobrouter.models.CloseJobResult;
 import com.azure.communication.jobrouter.models.CompleteJobResult;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferResult;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -31,6 +35,8 @@ import com.azure.communication.jobrouter.models.QueueStatistics;
 import com.azure.communication.jobrouter.models.ReclassifyJobResult;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.UpdateQueueOptions;
+import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
 import com.azure.communication.jobrouter.implementation.convertors.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
@@ -1445,17 +1451,17 @@ public final class RouterAsyncClient {
     /**
      * Create a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched.
+     * @param createQueueOptions Container for inputs to create a queue.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> createQueue(String id, JobQueue jobQueue) {
+    public Mono<JobQueue> createQueue(CreateQueueOptions createQueueOptions) {
         try {
-            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context)
+            JobQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context)
                 .flatMap(
                     (Response<JobQueue> res) -> {
                         if (res.getValue() != null) {
@@ -1472,17 +1478,17 @@ public final class RouterAsyncClient {
     /**
      * Create a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched.
+     * @param createQueueOptions Container for inputs to create a queue.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> createQueueWithResponse(String id, JobQueue jobQueue) {
+    public Mono<Response<JobQueue>> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
         try {
-            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context));
+            JobQueue jobQueue = QueueAdapter.convertCreateQueueOptionsToJobQueue(createQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(createQueueOptions.getQueueId(), jobQueue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1491,17 +1497,17 @@ public final class RouterAsyncClient {
     /**
      * Update a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched.
+     * @param updateQueueOptions Container for inputs to update a queue.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> updateQueue(String id, JobQueue jobQueue) {
+    public Mono<JobQueue> updateQueue(UpdateQueueOptions updateQueueOptions) {
         try {
-            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context)
+            JobQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context)
                 .flatMap(
                     (Response<JobQueue> res) -> {
                         if (res.getValue() != null) {
@@ -1518,17 +1524,17 @@ public final class RouterAsyncClient {
     /**
      * Update a queue.
      *
-     * @param id Id of the queue.
-     * @param jobQueue Model of queue properties to be patched.
+     * @param updateQueueOptions Container for inputs to update a queue.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> updateQueueWithResponse(String id, JobQueue jobQueue) {
+    public Mono<Response<JobQueue>> updateQueueWithResponse(UpdateQueueOptions updateQueueOptions) {
         try {
-            return withContext(context -> upsertQueueWithResponse(id, jobQueue, context));
+            JobQueue jobQueue = QueueAdapter.convertUpdateQueueOptionsToJobQueue(updateQueueOptions);
+            return withContext(context -> upsertQueueWithResponse(updateQueueOptions.getQueueId(), jobQueue, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1735,17 +1741,17 @@ public final class RouterAsyncClient {
     /**
      * Create a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param createWorkerOptions Container for inputs to create a worker.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> createWorker(String id, RouterWorker routerWorker) {
+    public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
         try {
-            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context)
+            RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+            return withContext(context -> upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context)
                 .flatMap(
                     (Response<RouterWorker> res) -> {
                         if (res.getValue() != null) {
@@ -1762,17 +1768,17 @@ public final class RouterAsyncClient {
     /**
      * Create a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param createWorkerOptions Container for inputs to create a worker.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> createWorkerWithResponse(String id, RouterWorker routerWorker) {
+    public Mono<Response<RouterWorker>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions) {
         try {
-            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context));
+            RouterWorker routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
+            return withContext(context -> upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), routerWorker, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1781,17 +1787,17 @@ public final class RouterAsyncClient {
     /**
      * Update a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> updateWorker(String id, RouterWorker routerWorker) {
+    public Mono<RouterWorker> updateWorker(UpdateWorkerOptions updateWorkerOptions) {
         try {
-            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context)
+            RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+            return withContext(context -> upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context)
                 .flatMap(
                     (Response<RouterWorker> res) -> {
                         if (res.getValue() != null) {
@@ -1808,17 +1814,17 @@ public final class RouterAsyncClient {
     /**
      * Update a worker.
      *
-     * @param id Id of the worker.
-     * @param routerWorker Model of worker properties to be patched.
+     * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> updateWorkerWithResponse(String id, RouterWorker routerWorker) {
+    public Mono<Response<RouterWorker>> updateWorkerWithResponse(UpdateWorkerOptions updateWorkerOptions) {
         try {
-            return withContext(context -> upsertWorkerWithResponse(id, routerWorker, context));
+            RouterWorker routerWorker = WorkerAdapter.convertUpdateWorkerOptionsToRouterWorker(updateWorkerOptions);
+            return withContext(context -> upsertWorkerWithResponse(updateWorkerOptions.getWorkerId(), routerWorker, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
