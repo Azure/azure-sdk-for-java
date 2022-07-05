@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Random;
-import java.util.UUID;
 
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -19,8 +18,6 @@ import com.azure.storage.blob.specialized.cryptography.EncryptedBlobClientBuilde
 import com.azure.storage.blob.specialized.cryptography.EncryptionVersion;
 import reactor.core.publisher.Mono;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
-
 public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> extends ContainerTest<TOptions> {
 
     public static final int DEFAULT_BUFFER_SIZE = 8192;
@@ -29,7 +26,14 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
+    private static final FakeKey kek;
 
+    static {
+        Random rand = new Random(System.currentTimeMillis());
+        byte[] data = new byte[256];
+        rand.nextBytes(data);
+        kek = new FakeKey("keyId", data);
+    }
 
     public BlobTestBase(TOptions options, String blobName) {
         super(options);
@@ -44,14 +48,10 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
                 throw new IllegalArgumentException("Encryption version not recognized");
             }
 
-            Random rand = new Random(System.currentTimeMillis());
-            byte[] data = new byte[256];
-            rand.nextBytes(data);
-            FakeKey key = new FakeKey("keyId", data);
 
             EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
                 .blobClient(blobContainerClient.getBlobClient(blobName))
-                .key(key, KeyWrapAlgorithm.A256KW.toString());
+                .key(kek, KeyWrapAlgorithm.A256KW.toString());
 
             blobClient = builder.buildEncryptedBlobClient();
             blobAsyncClient = builder.buildEncryptedBlobAsyncClient();
