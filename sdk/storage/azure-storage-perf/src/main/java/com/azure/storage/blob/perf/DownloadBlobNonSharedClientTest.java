@@ -4,19 +4,15 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.perf.core.BlobTestBase;
-import com.azure.storage.blob.perf.core.ContainerTest;
+import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
-
-public class DownloadBlobNonSharedClientTest extends BlobTestBase<BlobPerfStressOptions> {
+public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
     String blobName = "downloadTest";
@@ -24,7 +20,7 @@ public class DownloadBlobNonSharedClientTest extends BlobTestBase<BlobPerfStress
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
     public DownloadBlobNonSharedClientTest(BlobPerfStressOptions options) {
-        super(options, true, true);
+        super(options);
     }
 
     // Perform the API call to be tested here

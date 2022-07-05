@@ -3,16 +3,15 @@
 
 package com.azure.storage.blob.perf;
 
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.azure.storage.blob.perf.core.BlobTestBase;
+import com.azure.storage.blob.perf.core.AbstractUploadTest;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class UploadFromFileTest extends BlobTestBase<BlobPerfStressOptions> {
+public class UploadFromFileTest extends AbstractUploadTest<BlobPerfStressOptions> {
 
     private static final Path TEMP_FILE;
     private static final String TEMP_FILE_PATH;
@@ -27,7 +26,7 @@ public class UploadFromFileTest extends BlobTestBase<BlobPerfStressOptions> {
     }
 
     public UploadFromFileTest(BlobPerfStressOptions options) {
-        super(options, false, false);
+        super(options);
     }
 
     @Override

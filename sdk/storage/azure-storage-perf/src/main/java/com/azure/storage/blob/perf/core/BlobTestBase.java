@@ -24,17 +24,15 @@ import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBu
 public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> extends ContainerTest<TOptions> {
 
     public static final int DEFAULT_BUFFER_SIZE = 8192;
+    protected static  final String BLOB_NAME_PREFIX = "randomblobtest-";
     protected final BlobClient blobClient;
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
-    private final boolean createBlob;
-    private final boolean singletonBlob;
 
-    public BlobTestBase(TOptions options, boolean createBlob, boolean singletonBlob) {
+
+    public BlobTestBase(TOptions options, String blobName) {
         super(options);
-
-        String blobName = "randomblobtest-" + (singletonBlob ? "" : UUID.randomUUID().toString());
 
         if (options.getClientEncryption() != null) {
             EncryptionVersion version;
@@ -64,38 +62,17 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
 
         blockBlobClient = blobClient.getBlockBlobClient();
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient();
-
-        this.createBlob = createBlob;
-        this.singletonBlob = singletonBlob;
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        Mono<Void> uploadMono;
-        if (this.createBlob && this.singletonBlob) {
-            uploadMono = blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null)
-                .doFinally(x -> System.out.println("upload finished")).then();
-        } else {
-            uploadMono = Mono.empty();
-        }
-
         return super.globalSetupAsync()
-            .then(uploadMono)
             .then();
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        Mono<Void> uploadMono;
-        if (this.createBlob && !this.singletonBlob) {
-            uploadMono = blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null)
-                .doFinally(x -> System.out.println("upload finished")).then();
-        } else {
-            uploadMono = Mono.empty();
-        }
-
         return super.setupAsync()
-            .then(uploadMono)
             .then();
     }
 
