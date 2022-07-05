@@ -15,7 +15,7 @@ public class DeclineJobOfferResult {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
-     * @param emptyResponse
+     * @param emptyResponse Placeholder object.
      */
     public DeclineJobOfferResult(Object emptyResponse) {
         this.emptyResponse = emptyResponse;
