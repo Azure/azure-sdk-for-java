@@ -15,7 +15,7 @@ public class CancelJobResult {
     /**
      * Placeholder object.
      */
-    private Object emptyResponse;
+    private final Object emptyResponse;
 
     /**
      * Constructor to create a place-holder result.

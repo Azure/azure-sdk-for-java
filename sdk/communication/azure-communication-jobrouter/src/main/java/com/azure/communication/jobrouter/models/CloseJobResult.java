@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
@@ -10,7 +13,7 @@ public class CloseJobResult {
     /**
      * Placeholder object.
      */
-    private Object emptyResponse;
+    private final Object emptyResponse;
 
     /**
      * Constructor to create a place-holder result.
