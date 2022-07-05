@@ -285,7 +285,7 @@ stages:
             $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
             python --version
             foreach($artifact in $ArtifactsList) {
-              $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{artifact.ServiceDirectory}}
+              $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/$($artifact.ServiceDirectory)
             }
           displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
