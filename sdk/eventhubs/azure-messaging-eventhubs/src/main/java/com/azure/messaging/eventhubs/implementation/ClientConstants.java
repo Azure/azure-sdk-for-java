@@ -30,6 +30,7 @@ public final class ClientConstants {
     public static final String TRACKING_ID_KEY = "trackingId";
     public static final String WORK_ID_KEY = "workId";
     public static final String CREDITS_KEY = "credits";
+    public static final String SUBSCRIBER_ID_KEY = "subscriberId";
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.

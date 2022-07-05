@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.message.Message;
@@ -22,8 +23,11 @@ import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.context.Context;
 
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,13 +40,14 @@ import java.util.function.Supplier;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CREDITS_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SUBSCRIBER_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.TRACKING_ID_KEY;
 
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
  */
 public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
-    private static final ClientLogger LOGGER = new ClientLogger(AmqpReceiveLinkProcessor.class);
+    private final ClientLogger logger;
     private final Object lock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
@@ -57,12 +62,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final String entityPath;
     private final Disposable connectionProcessor;
     private final int maxQueueSize;
+    private final Context context;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
     private volatile AmqpReceiveLink currentLink;
     private volatile String currentLinkName;
     private volatile Disposable currentLinkSubscriptions;
+
 
     // Opting to use AtomicReferenceFieldUpdater because Project Reactor provides utility methods that calculates
     // backpressure requests, sets the upstream correctly, and reports its state.
@@ -94,12 +101,24 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
 
+        String subscriberId = StringUtil.getRandomString("rlp");
+        Map<String, Object> loggingContext = new HashMap<>(1);
+        loggingContext.put(SUBSCRIBER_ID_KEY, subscriberId);
+
+        this.logger = new ClientLogger(AmqpReceiveLinkProcessor.class, loggingContext);
+
         if (prefetch < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
         }
 
         this.prefetch = prefetch;
         this.maxQueueSize = prefetch * 2;
+        this.context = super.currentContext().put(SUBSCRIBER_ID_KEY, subscriberId);
+    }
+
+    @Override
+    public Context currentContext() {
+        return context;
     }
 
     /**
@@ -130,10 +149,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void onSubscribe(Subscription subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null");
-        LOGGER.info("Setting new subscription for receive link processor");
+        logger.info("Setting new subscription for receive link processor");
 
         if (!Operators.setOnce(UPSTREAM, this, subscription)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Cannot set upstream twice."));
+            throw logger.logThrowableAsError(new IllegalStateException("Cannot set upstream twice."));
         }
 
         requestUpstream();
@@ -154,7 +173,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(next, "'next' cannot be null.");
 
         if (isTerminated()) {
-            LOGGER.atWarning()
+            logger.atWarning()
+                .addKeyValue("oldLinkName", currentLink == null ? null : currentLink.getLinkName())
                 .addKeyValue(LINK_NAME_KEY, next.getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
                 .log("Got another link when we have already terminated processor.");
@@ -164,7 +184,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         final String linkName = next.getLinkName();
 
-        LOGGER.atInfo()
+        logger.atInfo()
+            .addKeyValue("oldLinkName", currentLink == null ? null : currentLink.getLinkName())
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
             .log("Setting next AMQP receive link.");
@@ -191,7 +212,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     if (credits < 1) {
                         linkHasNoCredits.compareAndSet(false, true);
                     } else {
-                        LOGGER.atInfo()
+                        logger.atInfo()
                             .addKeyValue(LINK_NAME_KEY, linkName)
                             .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
                             .addKeyValue(CREDITS_KEY, credits)
@@ -214,7 +235,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             final int creditsToAdd = getCreditsToAdd();
                             final int total = Math.max(prefetch, creditsToAdd);
 
-                            LOGGER.atVerbose()
+                            logger.atVerbose()
                                 .addKeyValue(LINK_NAME_KEY, linkName)
                                 .addKeyValue("prefetch", prefetch)
                                 .addKeyValue(CREDITS_KEY, creditsToAdd)
@@ -226,12 +247,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         return operation;
                     })
                     .subscribe(noop -> {
-                    }, error -> LOGGER.atInfo().addKeyValue(LINK_NAME_KEY, linkName).log("Link was already closed. Could not add credits.")),
+                    }, error -> logger.atInfo().addKeyValue(LINK_NAME_KEY, linkName).log("Link was already closed. Could not add credits.")),
                 next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
-                            LOGGER.atInfo()
+                            logger.atInfo()
                                 .addKeyValue(LINK_NAME_KEY, linkName)
                                 .addKeyValue(CREDITS_KEY, next.getCredits())
                                 .log("Link is active.");
@@ -247,7 +268,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                                 LinkErrorContext errorContext = (LinkErrorContext) amqpException.getContext();
                                 if (currentLink != null
                                     && !currentLink.getLinkName().equals(errorContext.getTrackingId())) {
-                                    LOGGER.atInfo()
+                                    logger.atInfo()
                                         .addKeyValue(LINK_NAME_KEY, linkName)
                                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                                         .addKeyValue(TRACKING_ID_KEY, errorContext.getTrackingId())
@@ -264,14 +285,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         if (connectionProcessor.isDisposed() || isTerminated()
                             || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
 
-                            LOGGER.atInfo()
+                            logger.atInfo()
                                 .addKeyValue(LINK_NAME_KEY, linkName)
                                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                                 .log("Terminal state reached. Disposing of link processor.");
 
                             dispose();
                         } else {
-                            LOGGER.atInfo()
+                            logger.atInfo()
                                 .addKeyValue(LINK_NAME_KEY, linkName)
                                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                                 .log("Receive link endpoint states are closed. Requesting another.");
@@ -289,6 +310,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     .subscribe(
                         message -> {
                             messageQueue.add(message);
+
+                            if (currentLinkName != null && !currentLinkName.equals(linkName)) {
+                                logger.atWarning()
+                                    .addKeyValue("currentLinkName", currentLinkName)
+                                    .addKeyValue(LINK_NAME_KEY, linkName)
+                                    .log("Current link is not the same as one being notified.");
+                            }
+
                             drain();
                         },
                         error -> {
@@ -301,7 +330,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             // continues to be served using later ReactorReceiver rather than terminating from
                             // intermediate errors.
                             //
-                            LOGGER.atVerbose()
+                            logger.atVerbose()
                                 .addKeyValue(LINK_NAME_KEY, linkName)
                                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                                 .log("Receiver is terminated.", error);
@@ -329,12 +358,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final boolean terminateSubscriber = isTerminated()
             || (currentLink == null && upstream == Operators.cancelledSubscription());
         if (isTerminated()) {
-            LOGGER.atInfo()
+            logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, currentLinkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("AmqpReceiveLink is already terminated.");
         } else if (currentLink == null && upstream == Operators.cancelledSubscription()) {
-            LOGGER.info("There is no current link and upstream is terminated.");
+            logger.info("There is no current link and upstream is terminated.");
         }
 
         if (terminateSubscriber) {
@@ -352,8 +381,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             actual.onSubscribe(this);
             drain();
         } else {
-            Operators.error(actual, LOGGER.logExceptionAsError(new IllegalStateException(
-                "There is already one downstream subscriber.'")));
+            Operators.error(actual, logger.logThrowableAsError(new IllegalStateException("There is already one downstream subscriber.'")));
         }
     }
 
@@ -367,12 +395,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
-        LOGGER.atInfo()
+        logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, currentLinkName)
             .log("Error on receive link.", throwable);
 
         if (isTerminated() || isCancelled) {
-            LOGGER.atInfo()
+            logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, currentLinkName)
                 .log("AmqpReceiveLinkProcessor is terminated. Cannot process another error.", throwable);
             Operators.onErrorDropped(throwable, currentContext());
@@ -380,7 +408,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         if (connectionProcessor.isDisposed()) {
-            LOGGER.atInfo()
+            logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, currentLinkName)
                 .log("Parent connection is disposed. Not reopening on error.");
         }
@@ -401,7 +429,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public void onComplete() {
-        LOGGER.atInfo()
+        logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, currentLinkName)
             .log("Receive link completed from upstream.");
 
@@ -414,7 +442,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        LOGGER.atInfo()
+        logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, currentLinkName)
             .log("Disposing receive link.");
 
@@ -428,7 +456,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     @Override
     public void request(long request) {
         if (!Operators.validate(request)) {
-            LOGGER.warning("Invalid request: {}", request);
+            logger.warning("Invalid request: {}", request);
             return;
         }
 
@@ -456,24 +484,24 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     private void requestUpstream() {
         if (isTerminated()) {
-            LOGGER.info("Processor is terminated. Not requesting another link.");
+            logger.info("Processor is terminated. Not requesting another link.");
             return;
         } else if (UPSTREAM.get(this) == null) {
-            LOGGER.info("There is no upstream. Not requesting another link.");
+            logger.info("There is no upstream. Not requesting another link.");
             return;
         } else if (UPSTREAM.get(this) == Operators.cancelledSubscription()) {
-            LOGGER.info("Upstream is cancelled or complete. Not requesting another link.");
+            logger.info("Upstream is cancelled or complete. Not requesting another link.");
             return;
         }
 
         synchronized (lock) {
             if (currentLink != null) {
-                LOGGER.info("Current link exists. Not requesting another link.");
+                logger.info("Current link exists. Not requesting another link.");
                 return;
             }
         }
 
-        LOGGER.info("Requesting a new AmqpReceiveLink from upstream.");
+        logger.info("Requesting a new AmqpReceiveLink from upstream.");
         UPSTREAM.get(this).request(1L);
     }
 
@@ -541,12 +569,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 try {
                     subscriber.onNext(message);
                 } catch (Exception e) {
-                    LOGGER.atError()
+                    logger.atError()
                         .addKeyValue(LINK_NAME_KEY, currentLinkName)
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .log("Exception occurred while handling downstream onNext operation.", e);
 
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(
+                    throw logger.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 }
 
@@ -606,7 +634,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             if (link == null) {
 
-                LOGGER.atVerbose()
+                logger.atVerbose()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(CREDITS_KEY, credits)
                     .log("There is no link to add credits to.");
@@ -617,7 +645,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             final String linkName = link.getLinkName();
 
             if (credits < 1) {
-                LOGGER.atVerbose()
+                logger.atVerbose()
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(CREDITS_KEY, credits)
@@ -631,7 +659,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // many events to buffer on the client and also control the throughput. If users need higher throughput,
             // they can set a higher prefetch number and allocate larger heap size accordingly.
             if (currentLinkCredits < prefetch) {
-                LOGGER.atInfo()
+                logger.atInfo()
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(CREDITS_KEY, credits)
@@ -639,7 +667,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     .log("Link running low on credits. Adding more.");
                 link.addCredits(credits).subscribe(noop -> {
                 }, error -> {
-                    LOGGER.atInfo()
+                    logger.atInfo()
                         .addKeyValue(LINK_NAME_KEY, linkName)
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .log("Link was already closed. Could not add credits.");
@@ -682,7 +710,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         try {
             ((AsyncCloseable) link).closeAsync().subscribe();
         } catch (Exception error) {
-            LOGGER.atWarning()
+            logger.atWarning()
                 .addKeyValue(LINK_NAME_KEY, link.getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Unable to dispose of link.", error);

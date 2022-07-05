@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,6 +30,7 @@ import java.util.function.Function;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.SUBSCRIBER_ID_KEY;
 
 public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>, CoreSubscriber<T>, Disposable {
     @SuppressWarnings("rawtypes")
@@ -67,7 +67,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-
         Map<String, Object> loggingContext = new HashMap<>(1);
         loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
         this.logger = new ClientLogger(getClass(), loggingContext);
@@ -78,6 +77,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+
         this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
@@ -377,10 +377,16 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
 
         void onAdd() {
+            Object subscriberIdObj = actual.currentContext().getOrDefault(SUBSCRIBER_ID_KEY, null);
+            if (subscriberIdObj != null) {
+                subscriberId = subscriberIdObj.toString();
+            } else {
+                subscriberId = StringUtil.getRandomString("un");
+            }
+
             // most subscribers never get here and will be completed immediately after they are created.
-            subscriberId = UUID.randomUUID().toString().substring(0, 6);
             processor.logger.atVerbose()
-                .addKeyValue("subscriberId", subscriberId)
+                .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                 .log("Added subscriber.");
         }
 
@@ -389,7 +395,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             processor.subscribers.remove(this);
             super.cancel();
             processor.logger.atVerbose()
-                .addKeyValue("subscriberId", subscriberId)
+                .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                 .log("Canceled subscriber");
         }
 
@@ -400,7 +406,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 processor.subscribers.remove(this);
                 actual.onComplete();
                 processor.logger.atInfo()
-                    .addKeyValue("subscriberId", subscriberId)
+                    .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                     .log("AMQP channel processor completed.");
             }
         }
@@ -412,7 +418,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 super.complete(channel);
 
                 processor.logger.atInfo()
-                    .addKeyValue("subscriberId", subscriberId)
+                    .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                     .log("Next AMQP channel received.");
             }
         }
@@ -423,7 +429,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 processor.subscribers.remove(this);
                 actual.onError(throwable);
                 processor.logger.atInfo()
-                    .addKeyValue("subscriberId", subscriberId)
+                    .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
                     .log("Error in AMQP channel processor.");
             } else {
                 Operators.onErrorDropped(throwable, currentContext());
