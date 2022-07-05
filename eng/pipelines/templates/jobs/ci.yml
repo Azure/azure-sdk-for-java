@@ -57,7 +57,7 @@ parameters:
     default: $(JavaBuildVersion)
 
 jobs:
-  - job: 'Build Client Libraries'
+  - job: 'Build'
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
