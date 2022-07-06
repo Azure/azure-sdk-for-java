@@ -12,6 +12,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -137,6 +138,8 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                 } else {
                     return new ApacheHttpAsyncClientProvider().createInstance();
                 }
+            case VERTX:
+                return new VertxAsyncHttpClientProvider().createInstance();
             default:
                 throw new IllegalArgumentException("Unsupported http client " + httpClientType);
         }

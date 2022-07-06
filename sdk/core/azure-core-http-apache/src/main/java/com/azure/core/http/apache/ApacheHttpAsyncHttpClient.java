@@ -87,7 +87,7 @@ class ApacheHttpAsyncHttpClient implements HttpClient {
         }));
     }
 
-    private static class ApacheHttpFutureCallback implements
+    private static final class ApacheHttpFutureCallback implements
         FutureCallback<Message<org.apache.hc.core5.http.HttpResponse, Publisher<ByteBuffer>>> {
 
         private final MonoSink<HttpResponse> sink;

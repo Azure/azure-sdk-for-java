@@ -3,7 +3,9 @@
 
 module com.azure.core.test.perf {
     requires com.azure.core;
+    requires com.azure.core.http.apache;
     requires com.azure.core.http.okhttp;
+    requires com.azure.core.http.vertx;
     requires com.azure.http.netty;
     requires reactor.core;
     requires org.reactivestreams;
@@ -12,11 +14,12 @@ module com.azure.core.test.perf {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires reactor.netty.http;
-    requires io.netty.handler;
-    requires reactor.netty.core;
+    requires io.netty.buffer;
     requires io.netty.codec.http;
+    requires io.netty.handler;
+    requires io.vertx.core;
+    requires reactor.netty.core;
     requires okhttp3;
     requires org.apache.httpcomponents.client5.httpclient5;
     requires org.apache.httpcomponents.core5.httpcore5.reactive;
-    requires azure.core.http.apache;
 }

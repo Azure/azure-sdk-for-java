@@ -73,6 +73,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-apache</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-apache;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
@@ -81,10 +86,11 @@
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
     </dependency>
+
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-apache</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-apache;dependency} -->
+      <artifactId>azure-core-http-vertx</artifactId>
+      <version>1.0.0-beta.1</version>
     </dependency>
   </dependencies>
 </project>

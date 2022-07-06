@@ -144,6 +144,6 @@ public class PerfStressOptions {
     }
 
     public enum HttpClientType {
-        NETTY, OKHTTP, APACHE
+        APACHE, NETTY, OKHTTP, VERTX
     }
 }
