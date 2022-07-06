@@ -15,6 +15,7 @@
       <module>azure-core-amqp-experimental</module>
       <module>azure-core-experimental</module>
       <module>azure-core-http-jdk-httpclient</module>
+      <module>azure-core-http-apache</module>
       <module>azure-core-http-netty</module>
       <module>azure-core-http-okhttp</module>
       <module>azure-core-http-vertx</module>
