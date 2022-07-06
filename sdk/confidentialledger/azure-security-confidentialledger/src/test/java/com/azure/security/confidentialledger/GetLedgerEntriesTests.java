@@ -23,51 +23,57 @@ public final class GetLedgerEntriesTests extends ConfidentialLedgerClientTestBas
         int numEntries = 2;
         int modulus = 5;
 
-        BinaryData entry = BinaryData.fromString("{\"contents\":\"" + numEntries + "\"}");
-        RequestOptions requestOptions = new RequestOptions().addQueryParam("collectionId", "" + 0);
-        Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
-
-        String startTransactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+        String startTransactionId = null;
         String endTransactionId = null;
 
-        Assertions.assertEquals(200, response.getStatusCode());
+        for (int i = 0; i < numEntries; i++) {
+            BinaryData entry = BinaryData.fromString("{\"contents\":\"" + numEntries + "\"}");
+            RequestOptions requestOptions = new RequestOptions().addQueryParam("collectionId", "" + numEntries % i);
+            Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
 
-        for (int i = 1; i < numEntries; i++) {
-            entry = BinaryData.fromString("{\"contents\":\"" + numEntries + "\"}");
-            requestOptions = new RequestOptions().addQueryParam("collectionId", "" + i % modulus);
-            response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
-    
-            endTransactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
-    
+            startTransactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+            endTransactionId = null;
+
             Assertions.assertEquals(200, response.getStatusCode());
+
+            for (int j = 1; j < numEntries; j++) {
+                entry = BinaryData.fromString("{\"contents\":\"" + numEntries + "\"}");
+                requestOptions = new RequestOptions().addQueryParam("collectionId", "" + j % modulus);
+                response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
+        
+                endTransactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+        
+                Assertions.assertEquals(200, response.getStatusCode());
+            }
         }
+        
 
-        System.out.println("Start txn = " + startTransactionId);
-        System.out.println("End txn = " + endTransactionId);
-        RequestOptions auditRequestOptions =
-                new RequestOptions()
-                       .addQueryParam("fromTransactionId", startTransactionId)
-                       .addQueryParam("toTransactionId", endTransactionId);
-        PagedIterable<BinaryData> auditResponse = confidentialLedgerClient.listLedgerEntries(auditRequestOptions);
+        for (int i = 0; i < modulus; i++) {
+            System.out.println("Start txn = " + startTransactionId);
+            System.out.println("End txn = " + endTransactionId);
+            RequestOptions auditRequestOptions =
+                    new RequestOptions()
+                        .addQueryParam("fromTransactionId", startTransactionId)
+                        .addQueryParam("toTransactionId", endTransactionId)
+                        .addQueryParam("collectionId", "" + i);
+            PagedIterable<BinaryData> auditResponse = confidentialLedgerClient.listLedgerEntries(auditRequestOptions);
 
-        System.out.println("auditResponse = " + auditResponse.toString());
+            Iterator<BinaryData> iterator = auditResponse.iterator();
 
-        Iterator<BinaryData> iterator = auditResponse.iterator();
-        System.out.println("Has next " + iterator.hasNext());
+            while (iterator.hasNext()) {
+                BinaryData nextEntry = iterator.next();
+                
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseBodyJson = null;
 
-        String lastEntry = null;
-        while (iterator.hasNext()) {
-            BinaryData nextEntry = iterator.next();
-            lastEntry =  nextEntry.toString();
-            
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseBodyJson = null;
+                try {
+                    responseBodyJson = objectMapper.readTree(nextEntry.toBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Assertions.assertTrue(false);
+                }
 
-            try {
-                responseBodyJson = objectMapper.readTree(nextEntry.toBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-                Assertions.assertTrue(false);
+                System.out.println(responseBodyJson);
             }
         }
     }

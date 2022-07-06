@@ -55,44 +55,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
-## Example Setup
-```java readme-sample-createClient
-// for example, https://identity.confidential-ledger.core.azure.com
-String identityServiceUri = null;
-
-// for example, https://my-ledger.confidential-ledger.azure.com
-String ledgerUri = null;
-
-ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-    .identityServiceUri(identityServiceUri)
-    .httpClient(HttpClient.createDefault());
-
-ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder
-        .buildClient();
-String ledgerId = ledgerUri
-        .replaceAll("\\w+://", "")
-        .replaceAll("\\..*", "");
-
-Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
-        .getLedgerIdentityWithResponse(ledgerId, null);
-BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
-ObjectMapper mapper = new ObjectMapper();
-JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
-String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
-
-SslContext sslContext = SslContextBuilder.forClient()
-        .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
-reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
-        .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
-HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
-
-ConfidentialLedgerClientBuilder confidentialLedgerClientbuilder = new ConfidentialLedgerClientBuilder()
-        .ledgerUri(ledgerUri)
-        .httpClient(httpClient);
-
-ConfidentialLedgerClient confidentialLedgerClient = confidentialLedgerClientbuilder.buildClient();
-```
-
 ## Key concepts
 
 ### Ledger entries and transactions
