@@ -5,7 +5,6 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -207,6 +206,11 @@ class DeploymentSlotImpl
 
     @Override
     public DeploymentBuildStatus getDeploymentStatus(String deploymentId) {
+        return getDeploymentStatusAsync(deploymentId).block();
+    }
+
+    @Override
+    public Mono<DeploymentBuildStatus> getDeploymentStatusAsync(String deploymentId) {
         // "GET" LRO is not supported in azure-core
         String deploymentStatusUrl = String.format(
             "%s/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Web/sites/%s/deploymentStatus/%s?api-version=%s",
@@ -217,29 +221,32 @@ class DeploymentSlotImpl
             deploymentId,
             this.manager().serviceClient().getApiVersion());
         HttpRequest request = new HttpRequest(HttpMethod.GET, deploymentStatusUrl);
-        HttpResponse response = this.manager().httpPipeline().send(request).block();
-        if (response == null || response.getStatusCode() / 100 != 2) {
-            throw new ManagementException("Service responds with a non-20x response.", response);
-        }
-        String bodyString = response.getBodyAsString().block();
-        if (bodyString == null) {
-            return null;
-        }
-        SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        CsmDeploymentStatus inner;
-        try {
-            inner = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new ManagementException("Deserialize failed for response body.", response);
-        }
-        if (inner == null) {
-            return null;
-        }
-        return inner.status();
-    }
-
-    @Override
-    public Mono<DeploymentBuildStatus> getDeploymentStatusAsync(String deploymentId) {
-        return Mono.fromCallable(() -> getDeploymentStatus(deploymentId));
+        return this.manager().httpPipeline().send(request)
+            .flatMap(response -> {
+                if (response.getStatusCode() / 100 != 2) {
+                    return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
+                }
+                return response.getBodyAsString()
+                    .flatMap(bodyString -> {
+                        if (bodyString == null) {
+                            return Mono.empty();
+                        }
+                        SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+                        CsmDeploymentStatus inner;
+                        try {
+                            inner = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
+                        } catch (IOException e) {
+                            return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                        }
+                        if (inner == null) {
+                            return Mono.empty();
+                        }
+                        DeploymentBuildStatus status = inner.status();
+                        if (status == null) {
+                            return Mono.empty();
+                        }
+                        return Mono.just(status);
+                    });
+            });
     }
 }
