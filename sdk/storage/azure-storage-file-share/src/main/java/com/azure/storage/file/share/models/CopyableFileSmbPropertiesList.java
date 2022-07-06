@@ -91,6 +91,20 @@ public final class CopyableFileSmbPropertiesList {
     }
 
     /**
+     * @return whether all properties should be copied from the source file.
+     */
+    public Boolean isAll() {
+        return isSetFileAttributes && isSetCreatedOn && isSetLastWrittenOn && isSetChangedOn;
+    }
+
+    /**
+     * @return whether no properties should be copied from the source file.
+     */
+    public Boolean isNone() {
+        return !isSetFileAttributes && !isSetCreatedOn && !isSetLastWrittenOn && !isSetChangedOn;
+    }
+
+    /**
      * @return a list of the flag set to true
      */
     public List<CopyableFileSmbProperties> toList() {
