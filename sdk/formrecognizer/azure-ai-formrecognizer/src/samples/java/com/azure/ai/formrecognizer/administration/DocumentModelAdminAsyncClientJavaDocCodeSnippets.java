@@ -3,15 +3,15 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -386,13 +386,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String operationId = "{operation_Id}";
         documentModelAdministrationAsyncClient.getOperationWithResponse(operationId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            ModelOperation modelOperation = response.getValue();
-            System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-            System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-            System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-            System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-            if (ModelOperationStatus.FAILED.equals(modelOperation.getStatus())) {
-                System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
+            DocumentModelOperationInfo modelOperationInfo = response.getValue();
+            System.out.printf("Operation ID: %s%n", modelOperationInfo.getOperationId());
+            System.out.printf("Operation Kind: %s%n", modelOperationInfo.getKind());
+            System.out.printf("Operation Status: %s%n", modelOperationInfo.getStatus());
+            System.out.printf("Model ID created with this operation: %s%n", modelOperationInfo.getModelId());
+            if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {
+                System.out.printf("Operation fail error: %s%n", modelOperationInfo.getError().getMessage());
             }
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperationWithResponse#string

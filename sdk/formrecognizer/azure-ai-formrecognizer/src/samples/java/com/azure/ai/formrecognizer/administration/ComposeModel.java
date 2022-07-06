@@ -54,7 +54,7 @@ public class ComposeModel {
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
         String composedModelId = "my-composed-model";
         final DocumentModelInfo documentModelInfo =
-            client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
+            client.beginComposeModel(Arrays.asList(labeledModelId1, labeledModelId2),
                     new ComposeModelOptions().setDescription("my composed model description"),
                     Context.NONE)
                 .setPollInterval(Duration.ofSeconds(5))

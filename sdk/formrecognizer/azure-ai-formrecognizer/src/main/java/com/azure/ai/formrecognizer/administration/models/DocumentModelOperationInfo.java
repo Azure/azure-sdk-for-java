@@ -10,9 +10,9 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The ModelOperation model.
+ * The DocumentModelOperationInfo model.
  */
-public final class ModelOperation extends ModelOperationInfo {
+public final class DocumentModelOperationInfo extends DocumentModelOperationSummary {
 
     /*
      * Unique model identifier.
@@ -23,11 +23,6 @@ public final class ModelOperation extends ModelOperationInfo {
      * Model description.
      */
     private String description;
-
-    /*
-     * Date and time (UTC) when the model was created.
-     */
-    private OffsetDateTime createdOn;
 
     private Map<String, DocTypeInfo> docTypes;
 
@@ -57,19 +52,6 @@ public final class ModelOperation extends ModelOperationInfo {
 
     void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * Get the Date and time (UTC) when the analyze operation was submitted.
-     *
-     * @return the createdDateTime value.
-     */
-    public OffsetDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    void setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
     }
 
     /**
@@ -162,58 +144,58 @@ public final class ModelOperation extends ModelOperationInfo {
     static {
         ModelOperationHelper.setAccessor(new ModelOperationHelper.ModelOperationAccessor() {
             @Override
-            public void setModelId(ModelOperation modelOperation, String modelId) {
-                modelOperation.setModelId(modelId);
+            public void setModelId(DocumentModelOperationInfo modelOperationInfo, String modelId) {
+                modelOperationInfo.setModelId(modelId);
             }
 
             @Override
-            public void setDescription(ModelOperation modelOperation, String description) {
-                modelOperation.setDescription(description);
+            public void setDescription(DocumentModelOperationInfo modelOperationInfo, String description) {
+                modelOperationInfo.setDescription(description);
             }
 
             @Override
-            public void setCreatedOn(ModelOperation modelOperation, OffsetDateTime createdOn) {
-                modelOperation.setCreatedOn(createdOn);
+            public void setCreatedOn(DocumentModelOperationInfo modelOperationInfo, OffsetDateTime createdOn) {
+                modelOperationInfo.setCreatedOn(createdOn);
             }
 
             @Override
-            public void setDocTypes(ModelOperation modelOperation, Map<String, DocTypeInfo> docTypes) {
-                modelOperation.setDocTypes(docTypes);
+            public void setDocTypes(DocumentModelOperationInfo modelOperationInfo, Map<String, DocTypeInfo> docTypes) {
+                modelOperationInfo.setDocTypes(docTypes);
             }
 
             @Override
-            public void setError(ModelOperation modelOperation, DocumentModelOperationError error) {
-                modelOperation.setError(error);
+            public void setError(DocumentModelOperationInfo modelOperationInfo, DocumentModelOperationError error) {
+                modelOperationInfo.setError(error);
             }
 
             @Override
-            public void setOperationId(ModelOperation modelOperation, String operationId) {
-                modelOperation.setOperationId(operationId);
+            public void setOperationId(DocumentModelOperationInfo modelOperationInfo, String operationId) {
+                modelOperationInfo.setOperationId(operationId);
             }
 
             @Override
-            public void setStatus(ModelOperation modelOperation, ModelOperationStatus status) {
-                modelOperation.setStatus(status);
+            public void setStatus(DocumentModelOperationInfo modelOperationInfo, ModelOperationStatus status) {
+                modelOperationInfo.setStatus(status);
             }
 
             @Override
-            public void setPercentCompleted(ModelOperation modelOperation, Integer percentCompleted) {
-                modelOperation.setPercentCompleted(percentCompleted);
+            public void setPercentCompleted(DocumentModelOperationInfo modelOperationInfo, Integer percentCompleted) {
+                modelOperationInfo.setPercentCompleted(percentCompleted);
             }
 
             @Override
-            public void setLastUpdatedOn(ModelOperation modelOperation, OffsetDateTime lastUpdatedOn) {
-                modelOperation.setLastUpdatedOn(lastUpdatedOn);
+            public void setLastUpdatedOn(DocumentModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn) {
+                modelOperationInfo.setLastUpdatedOn(lastUpdatedOn);
             }
 
             @Override
-            public void setKind(ModelOperation modelOperation, ModelOperationKind kind) {
-                modelOperation.setKind(kind);
+            public void setKind(DocumentModelOperationInfo modelOperationInfo, ModelOperationKind kind) {
+                modelOperationInfo.setKind(kind);
             }
 
             @Override
-            public void setResourceLocation(ModelOperation modelOperation, String resourceLocation) {
-                modelOperation.setResourceLocation(resourceLocation);
+            public void setResourceLocation(DocumentModelOperationInfo modelOperationInfo, String resourceLocation) {
+                modelOperationInfo.setResourceLocation(resourceLocation);
             }
         });
     }

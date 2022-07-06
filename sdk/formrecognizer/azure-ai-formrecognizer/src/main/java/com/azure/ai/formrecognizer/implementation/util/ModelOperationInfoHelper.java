@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 
 import java.time.OffsetDateTime;
 
 /**
- * The helper class to set the non-public properties of an {@link ModelOperationInfo} instance.
+ * The helper class to set the non-public properties of an {@link DocumentModelOperationSummary} instance.
  */
 public final class ModelOperationInfoHelper {
     private static ModelOperationInfoAccessor accessor;
@@ -19,27 +19,27 @@ public final class ModelOperationInfoHelper {
     }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ModelOperationInfo} instance.
+     * Type defining the methods to set the non-public properties of an {@link DocumentModelOperationSummary} instance.
      */
     public interface ModelOperationInfoAccessor {
 
-        void setOperationId(ModelOperationInfo modelOperationInfo, String operationId);
+        void setOperationId(DocumentModelOperationSummary documentModelOperationSummary, String operationId);
 
-        void setStatus(ModelOperationInfo modelOperationInfo, ModelOperationStatus status);
+        void setStatus(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationStatus status);
 
-        void setPercentCompleted(ModelOperationInfo modelOperationInfo, Integer percentCompleted);
+        void setPercentCompleted(DocumentModelOperationSummary documentModelOperationSummary, Integer percentCompleted);
 
-        void setCreatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime createdOn);
+        void setCreatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime createdOn);
 
-        void setLastUpdatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn);
+        void setLastUpdatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime lastUpdatedOn);
 
-        void setKind(ModelOperationInfo modelOperationInfo, ModelOperationKind kind);
+        void setKind(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationKind kind);
 
-        void setResourceLocation(ModelOperationInfo modelOperationInfo, String resourceLocation);
+        void setResourceLocation(DocumentModelOperationSummary documentModelOperationSummary, String resourceLocation);
     }
 
     /**
-     * The method called from {@link ModelOperationInfo} to set it's accessor.
+     * The method called from {@link DocumentModelOperationSummary} to set it's accessor.
      *
      * @param modelOperationInfoAccessor The accessor.
      */
@@ -48,31 +48,31 @@ public final class ModelOperationInfoHelper {
         accessor = modelOperationInfoAccessor;
     }
 
-    static void setOperationId(ModelOperationInfo modelOperationInfo, String operationId) {
-        accessor.setOperationId(modelOperationInfo, operationId);
+    static void setOperationId(DocumentModelOperationSummary documentModelOperationSummary, String operationId) {
+        accessor.setOperationId(documentModelOperationSummary, operationId);
     }
 
-    static void setStatus(ModelOperationInfo modelOperationInfo, ModelOperationStatus status) {
-        accessor.setStatus(modelOperationInfo, status);
+    static void setStatus(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationStatus status) {
+        accessor.setStatus(documentModelOperationSummary, status);
     }
 
-    static void setPercentCompleted(ModelOperationInfo modelOperationInfo, Integer percentCompleted) {
-        accessor.setPercentCompleted(modelOperationInfo, percentCompleted);
+    static void setPercentCompleted(DocumentModelOperationSummary documentModelOperationSummary, Integer percentCompleted) {
+        accessor.setPercentCompleted(documentModelOperationSummary, percentCompleted);
     }
 
-    static void setCreatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime createdOn) {
-        accessor.setCreatedOn(modelOperationInfo, createdOn);
+    static void setCreatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime createdOn) {
+        accessor.setCreatedOn(documentModelOperationSummary, createdOn);
     }
 
-    static void setLastUpdatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn) {
-        accessor.setLastUpdatedOn(modelOperationInfo, lastUpdatedOn);
+    static void setLastUpdatedOn(DocumentModelOperationSummary documentModelOperationSummary, OffsetDateTime lastUpdatedOn) {
+        accessor.setLastUpdatedOn(documentModelOperationSummary, lastUpdatedOn);
     }
 
-    static void setKind(ModelOperationInfo modelOperationInfo, ModelOperationKind kind) {
-        accessor.setKind(modelOperationInfo, kind);
+    static void setKind(DocumentModelOperationSummary documentModelOperationSummary, ModelOperationKind kind) {
+        accessor.setKind(documentModelOperationSummary, kind);
     }
 
-    static void setResourceLocation(ModelOperationInfo modelOperationInfo, String resourceLocation) {
-        accessor.setResourceLocation(modelOperationInfo, resourceLocation);
+    static void setResourceLocation(DocumentModelOperationSummary documentModelOperationSummary, String resourceLocation) {
+        accessor.setResourceLocation(documentModelOperationSummary, resourceLocation);
     }
 }

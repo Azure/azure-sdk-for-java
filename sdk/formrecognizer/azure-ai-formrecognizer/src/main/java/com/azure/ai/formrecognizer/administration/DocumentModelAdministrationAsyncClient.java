@@ -6,16 +6,16 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
-import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSource;
@@ -810,7 +810,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ModelOperation> getOperation(String operationId) {
+    public Mono<DocumentModelOperationInfo> getOperation(String operationId) {
         return getOperationWithResponse(operationId).flatMap(FluxUtil::toMono);
     }
 
@@ -824,24 +824,24 @@ public final class DocumentModelAdministrationAsyncClient {
      * String operationId = &quot;&#123;operation_Id&#125;&quot;;
      * documentModelAdministrationAsyncClient.getOperationWithResponse&#40;operationId&#41;.subscribe&#40;response -&gt; &#123;
      *     System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     *     ModelOperation modelOperation = response.getValue&#40;&#41;;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperation.getStatus&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperation.getModelId&#40;&#41;&#41;;
-     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperation.getStatus&#40;&#41;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
+     *     DocumentModelOperationInfo modelOperationInfo = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationInfo.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationInfo.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationInfo.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model ID created with this operation: %s%n&quot;, modelOperationInfo.getModelId&#40;&#41;&#41;;
+     *     if &#40;ModelOperationStatus.FAILED.equals&#40;modelOperationInfo.getStatus&#40;&#41;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Operation fail error: %s%n&quot;, modelOperationInfo.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
      *     &#125;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperationWithResponse#string -->
      *
      * @param operationId Unique operation ID.
-     * @return A {@link Response} containing the requested {@link ModelOperation}.
+     * @return A {@link Response} containing the requested {@link DocumentModelOperationInfo}.
      * @throws IllegalArgumentException If {@code operationId} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ModelOperation>> getOperationWithResponse(String operationId) {
+    public Mono<Response<DocumentModelOperationInfo>> getOperationWithResponse(String operationId) {
         try {
             return withContext(context -> getOperationWithResponse(operationId, context));
         } catch (RuntimeException ex) {
@@ -849,7 +849,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<ModelOperation>> getOperationWithResponse(String operationId, Context context) {
+    Mono<Response<DocumentModelOperationInfo>> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
@@ -878,10 +878,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.listOperations -->
      *
-     * @return {@link PagedFlux} of {@link ModelOperationInfo}.
+     * @return {@link PagedFlux} of {@link DocumentModelOperationSummary}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ModelOperationInfo> listOperations() {
+    public PagedFlux<DocumentModelOperationSummary> listOperations() {
         try {
             return new PagedFlux<>(() -> withContext(this::listFirstPageOperationInfo),
                 continuationToken -> withContext(context -> listNextPageOperationInfo(continuationToken, context)));
@@ -890,7 +890,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<ModelOperationInfo> listOperations(Context context) {
+    PagedFlux<DocumentModelOperationSummary> listOperations(Context context) {
         return new PagedFlux<>(() -> listFirstPageOperationInfo(context),
             continuationToken -> listNextPageOperationInfo(continuationToken, context));
     }
@@ -1039,7 +1039,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<ModelOperationInfo>> listFirstPageOperationInfo(Context context) {
+    private Mono<PagedResponse<DocumentModelOperationSummary>> listFirstPageOperationInfo(Context context) {
         return service.getOperationsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all operations"))
             .doOnSuccess(response -> logger.info("Listed all operations"))
@@ -1054,7 +1054,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<ModelOperationInfo>> listNextPageOperationInfo(String nextPageLink, Context context) {
+    private Mono<PagedResponse<DocumentModelOperationSummary>> listNextPageOperationInfo(String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }

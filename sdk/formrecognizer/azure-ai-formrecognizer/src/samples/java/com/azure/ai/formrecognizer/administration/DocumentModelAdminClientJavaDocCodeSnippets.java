@@ -10,8 +10,8 @@ import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
-import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -198,14 +198,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginComposeModel(List)}
      */
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list
         String modelId1 = "{custom-model-id_1}";
         String modelId2 = "{custom-model-id_2}";
         final DocumentModelInfo documentModelInfo
-            = documentModelAdministrationClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2))
+            = documentModelAdministrationClient.beginComposeModel(Arrays.asList(modelId1, modelId2))
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
@@ -222,7 +222,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List, ComposeModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginComposeModel(List, ComposeModelOptions, Context)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
@@ -234,7 +234,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         attrs.put("createdBy", "sample");
 
         final DocumentModelInfo documentModelInfo =
-            documentModelAdministrationClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2),
+            documentModelAdministrationClient.beginComposeModel(Arrays.asList(modelId1, modelId2),
                     new ComposeModelOptions()
                         .setModelId(modelId)
                         .setDescription("my composed model desc")
@@ -369,13 +369,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getOperation() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getOperation#string
         String operationId = "{operation-id}";
-        ModelOperation modelOperation = documentModelAdministrationClient.getOperation(operationId);
-        System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-        System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-        System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-        System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-        if (ModelOperationStatus.FAILED.equals(modelOperation.getStatus())) {
-            System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
+        DocumentModelOperationInfo modelOperationInfo = documentModelAdministrationClient.getOperation(operationId);
+        System.out.printf("Operation ID: %s%n", modelOperationInfo.getOperationId());
+        System.out.printf("Operation Kind: %s%n", modelOperationInfo.getKind());
+        System.out.printf("Operation Status: %s%n", modelOperationInfo.getStatus());
+        System.out.printf("Model ID created with this operation: %s%n", modelOperationInfo.getModelId());
+        if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {
+            System.out.printf("Operation fail error: %s%n", modelOperationInfo.getError().getMessage());
         }
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getOperation#string
     }
@@ -386,16 +386,16 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getOperationWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context
         String operationId = "{operation-id}";
-        Response<ModelOperation> response =
+        Response<DocumentModelOperationInfo> response =
             documentModelAdministrationClient.getOperationWithResponse(operationId, Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        ModelOperation modelOperation = response.getValue();
-        System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-        System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-        System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-        System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-        if (ModelOperationStatus.FAILED.equals(modelOperation.getStatus())) {
-            System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
+        DocumentModelOperationInfo modelOperationInfo = response.getValue();
+        System.out.printf("Operation ID: %s%n", modelOperationInfo.getOperationId());
+        System.out.printf("Operation Kind: %s%n", modelOperationInfo.getKind());
+        System.out.printf("Operation Status: %s%n", modelOperationInfo.getStatus());
+        System.out.printf("Model ID created with this operation: %s%n", modelOperationInfo.getModelId());
+        if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {
+            System.out.printf("Operation fail error: %s%n", modelOperationInfo.getError().getMessage());
         }
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getOperationWithResponse#string-Context
     }
@@ -405,7 +405,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void listOperations() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations
-        PagedIterable<ModelOperationInfo>
+        PagedIterable<DocumentModelOperationSummary>
             modelOperationInfo = documentModelAdministrationClient.listOperations();
         modelOperationInfo.forEach(modelOperation -> {
             System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
@@ -424,7 +424,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void listOperationsWithContext() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations#Context
-        PagedIterable<ModelOperationInfo>
+        PagedIterable<DocumentModelOperationSummary>
             modelOperationInfo = documentModelAdministrationClient.listOperations(Context.NONE);
         modelOperationInfo.forEach(modelOperation -> {
             System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());

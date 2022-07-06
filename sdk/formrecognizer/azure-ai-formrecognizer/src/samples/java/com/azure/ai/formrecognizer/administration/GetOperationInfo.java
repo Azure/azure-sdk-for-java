@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -35,7 +35,7 @@ public class GetOperationInfo {
             System.out.printf("Operation percent completion status: %d%n", modelOperationInfo.getPercentCompleted());
 
             // get the specific operation info
-            ModelOperation modelOperation =
+            DocumentModelOperationInfo modelOperation =
                 client.getOperation(modelOperationInfo.getOperationId());
             System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
             if (ModelOperationStatus.FAILED.equals(modelOperationInfo.getStatus())) {

@@ -9,11 +9,11 @@ import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
-import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.Error;
@@ -551,49 +551,49 @@ public class Transforms {
             }).collect(Collectors.toList());
     }
 
-    public static ModelOperation toModelOperation(GetOperationResponse getOperationResponse) {
-        ModelOperation modelOperation = new ModelOperation();
+    public static DocumentModelOperationInfo toModelOperation(GetOperationResponse getOperationResponse) {
+        DocumentModelOperationInfo modelOperationInfo = new DocumentModelOperationInfo();
         ModelInfo modelInfo = getOperationResponse.getResult();
         if (modelInfo != null) {
-            ModelOperationHelper.setModelId(modelOperation, modelInfo.getModelId());
-            ModelOperationHelper.setDescription(modelOperation, modelInfo.getDescription());
-            ModelOperationHelper.setCreatedOn(modelOperation, modelInfo.getCreatedDateTime());
+            ModelOperationHelper.setModelId(modelOperationInfo, modelInfo.getModelId());
+            ModelOperationHelper.setDescription(modelOperationInfo, modelInfo.getDescription());
+            ModelOperationHelper.setCreatedOn(modelOperationInfo, modelInfo.getCreatedDateTime());
             Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-            ModelOperationHelper.setDocTypes(modelOperation, docTypeMap);
+            ModelOperationHelper.setDocTypes(modelOperationInfo, docTypeMap);
         }
-        ModelOperationHelper.setOperationId(modelOperation, getOperationResponse.getOperationId());
-        ModelOperationHelper.setCreatedOn(modelOperation, getOperationResponse.getCreatedDateTime());
-        ModelOperationHelper.setKind(modelOperation,
+        ModelOperationHelper.setOperationId(modelOperationInfo, getOperationResponse.getOperationId());
+        ModelOperationHelper.setCreatedOn(modelOperationInfo, getOperationResponse.getCreatedDateTime());
+        ModelOperationHelper.setKind(modelOperationInfo,
             ModelOperationKind.fromString(getOperationResponse.getKind().toString()));
-        ModelOperationHelper.setLastUpdatedOn(modelOperation, getOperationResponse.getLastUpdatedDateTime());
-        ModelOperationHelper.setPercentCompleted(modelOperation,
+        ModelOperationHelper.setLastUpdatedOn(modelOperationInfo, getOperationResponse.getLastUpdatedDateTime());
+        ModelOperationHelper.setPercentCompleted(modelOperationInfo,
             getOperationResponse.getPercentCompleted() == null ? Integer.valueOf(0)
                 : getOperationResponse.getPercentCompleted());
-        ModelOperationHelper.setStatus(modelOperation,
+        ModelOperationHelper.setStatus(modelOperationInfo,
             ModelOperationStatus.fromString(getOperationResponse.getStatus().toString()));
-        ModelOperationHelper.setResourceLocation(modelOperation, getOperationResponse.getResourceLocation());
+        ModelOperationHelper.setResourceLocation(modelOperationInfo, getOperationResponse.getResourceLocation());
         DocumentModelOperationError error = toDocumentModelOperationError(getOperationResponse.getError());
-        ModelOperationHelper.setError(modelOperation, error);
-        return modelOperation;
+        ModelOperationHelper.setError(modelOperationInfo, error);
+        return modelOperationInfo;
     }
 
-    public static List<ModelOperationInfo> toModelOperationInfo(List<OperationInfo> operationInfoList) {
+    public static List<DocumentModelOperationSummary> toModelOperationInfo(List<OperationInfo> operationInfoList) {
         return operationInfoList
             .stream()
             .map(operationInfo -> {
-                ModelOperationInfo modelOperationInfo = new ModelOperationInfo();
-                ModelOperationInfoHelper.setOperationId(modelOperationInfo, operationInfo.getOperationId());
-                ModelOperationInfoHelper.setCreatedOn(modelOperationInfo, operationInfo.getCreatedDateTime());
-                ModelOperationInfoHelper.setKind(modelOperationInfo, operationInfo.getKind() == null
+                DocumentModelOperationSummary documentModelOperationSummary = new DocumentModelOperationSummary();
+                ModelOperationInfoHelper.setOperationId(documentModelOperationSummary, operationInfo.getOperationId());
+                ModelOperationInfoHelper.setCreatedOn(documentModelOperationSummary, operationInfo.getCreatedDateTime());
+                ModelOperationInfoHelper.setKind(documentModelOperationSummary, operationInfo.getKind() == null
                     ? null : ModelOperationKind.fromString(operationInfo.getKind().toString()));
-                ModelOperationInfoHelper.setLastUpdatedOn(modelOperationInfo, operationInfo.getLastUpdatedDateTime());
-                ModelOperationInfoHelper.setPercentCompleted(modelOperationInfo,
+                ModelOperationInfoHelper.setLastUpdatedOn(documentModelOperationSummary, operationInfo.getLastUpdatedDateTime());
+                ModelOperationInfoHelper.setPercentCompleted(documentModelOperationSummary,
                     operationInfo.getPercentCompleted() == null ? Integer.valueOf(0)
                         : operationInfo.getPercentCompleted());
-                ModelOperationInfoHelper.setStatus(modelOperationInfo,
+                ModelOperationInfoHelper.setStatus(documentModelOperationSummary,
                     ModelOperationStatus.fromString(operationInfo.getStatus().toString()));
-                ModelOperationInfoHelper.setResourceLocation(modelOperationInfo, operationInfo.getResourceLocation());
-                return modelOperationInfo;
+                ModelOperationInfoHelper.setResourceLocation(documentModelOperationSummary, operationInfo.getResourceLocation());
+                return documentModelOperationSummary;
             }).collect(Collectors.toList());
     }
 

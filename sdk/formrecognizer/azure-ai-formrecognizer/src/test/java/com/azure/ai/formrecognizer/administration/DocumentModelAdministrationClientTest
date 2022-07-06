@@ -175,8 +175,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         int pageCount = 0;
         for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse : client.listModels().iterableByPage()) {
-            List<DocumentModelSummary> modelInfoList = documentModelSummaryPagedResponse.getValue();
-            modelInfoList.forEach(documentModelSummary -> {
+            List<DocumentModelSummary> modelSummaryList = documentModelSummaryPagedResponse.getValue();
+            modelSummaryList.forEach(documentModelSummary -> {
                 assertNotNull(documentModelSummary.getModelId());
                 assertNotNull(documentModelSummary.getCreatedOn());
             });
@@ -198,8 +198,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         int pageCount = 0;
         for (PagedResponse<DocumentModelSummary> documentModelSummaryPagedResponse
             : client.listModels(Context.NONE).iterableByPage()) {
-            List<DocumentModelSummary> modelInfoList = documentModelSummaryPagedResponse.getValue();
-            modelInfoList.forEach(documentModelSummary -> {
+            List<DocumentModelSummary> modelSummaryList = documentModelSummaryPagedResponse.getValue();
+            modelSummaryList.forEach(documentModelSummary -> {
                 assertNotNull(documentModelSummary.getModelId());
                 assertNotNull(documentModelSummary.getCreatedOn());
             });
