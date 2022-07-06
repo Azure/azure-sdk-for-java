@@ -36,6 +36,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -510,7 +511,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void append(InputStream data, long fileOffset, long length) {
-        appendWithResponse(data, fileOffset, length, null, null, null, Context.NONE);
+        appendWithResponse(data, fileOffset, length, null, null, Context.NONE);
     }
 
     /**
@@ -550,11 +551,55 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<Void> appendWithResponse(InputStream data, long fileOffset, long length,
         byte[] contentMd5, String leaseId, Duration timeout, Context context) {
 
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseId(leaseId)
+            .setContentHash(contentMd5)
+            .setFlush(false);
+
+        return appendWithResponse(data, fileOffset, length, appendOptions, timeout, context);
+    }
+
+    /**
+     * Appends data to the specified resource to later be flushed (written) by a call to flush
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-DataLakeFileAppendOptions-Duration-Context -->
+     * <pre>
+     * FileRange range = new FileRange&#40;1024, 2048L&#41;;
+     * byte[] contentMd5 = new byte[0]; &#47;&#47; Replace with valid md5
+     * DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setContentHash&#40;contentMd5&#41;
+     *     .setFlush&#40;true&#41;;
+     * Response&lt;Void&gt; response = client.appendWithResponse&#40;data, offset, length, appendOptions, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Append data completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.appendWithResponse#InputStream-long-long-DataLakeFileAppendOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure
+     * Docs</a></p>
+     *
+     * @param data The data to write to the file.
+     * @param fileOffset The position where the data is to be appended.
+     * @param length The exact length of the data.
+     * @param appendOptions {@link DataLakeFileAppendOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendWithResponse(InputStream data, long fileOffset, long length,
+        DataLakeFileAppendOptions appendOptions, Duration timeout, Context context) {
+
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, contentMd5, leaseId, context);
+            fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, appendOptions, context);
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

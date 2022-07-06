@@ -10,6 +10,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -291,7 +292,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileAsyncClient#append(Flux, long, long)} and
-     * {@link DataLakeFileAsyncClient#appendWithResponse(Flux, long, long, byte[], String, Context)}
+     * {@link DataLakeFileAsyncClient#appendWithResponse(Flux, long, long, byte[], String)}
      */
     public void appendCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.append#Flux-long-long
@@ -309,6 +310,23 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         client.appendWithResponse(data, offset, length, contentMd5, leaseId).subscribe(response ->
             System.out.printf("Append data completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-byte-String
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileAsyncClient#appendWithResponse(Flux, long, long, DataLakeFileAppendOptions)}
+     */
+    public void appendWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-DataLakeFileAppendOptions
+        FileRange range = new FileRange(1024, 2048L);
+        byte[] contentMd5 = new byte[0]; // Replace with valid md5
+        DataLakeFileAppendOptions appendOptions = new DataLakeFileAppendOptions()
+            .setLeaseId(leaseId)
+            .setContentHash(contentMd5)
+            .setFlush(true);
+
+        client.appendWithResponse(data, offset, length, appendOptions).subscribe(response ->
+            System.out.printf("Append data completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.appendWithResponse#Flux-long-long-DataLakeFileAppendOptions
     }
 
     /**

@@ -25,6 +25,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
@@ -164,6 +165,45 @@ public final class PathsImpl {
                 @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
                 @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse>> update(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @PathParam("path") String path,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @QueryParam("action") PathUpdateAction action,
+                @QueryParam("maxRecords") Integer maxRecords,
+                @QueryParam("continuation") String continuation,
+                @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
+                @QueryParam("forceFlag") Boolean forceFlag,
+                @QueryParam("position") Long position,
+                @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
+                @QueryParam("close") Boolean close,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("x-ms-content-md5") String contentMd5,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-cache-control") String cacheControl,
+                @HeaderParam("x-ms-content-type") String contentType,
+                @HeaderParam("x-ms-content-disposition") String contentDisposition,
+                @HeaderParam("x-ms-content-encoding") String contentEncoding,
+                @HeaderParam("x-ms-content-language") String contentLanguage,
+                @HeaderParam("x-ms-properties") String properties,
+                @HeaderParam("x-ms-owner") String owner,
+                @HeaderParam("x-ms-group") String group,
+                @HeaderParam("x-ms-permissions") String permissions,
+                @HeaderParam("x-ms-acl") String acl,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -346,7 +386,32 @@ public final class PathsImpl {
                 @HeaderParam("x-ms-encryption-key") String encryptionKey,
                 @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
                 @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @QueryParam("flush") Boolean flush,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendData(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @PathParam("path") String path,
+                @QueryParam("action") String action,
+                @QueryParam("position") Long position,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Content-MD5") String transactionalContentHash,
+                @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @QueryParam("flush") Boolean flush,
+                @BodyParam("application/octet-stream") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -692,6 +757,206 @@ public final class PathsImpl {
             PathUpdateAction action,
             PathSetAccessControlRecursiveMode mode,
             Flux<ByteBuffer> body,
+            String requestId,
+            Integer timeout,
+            Integer maxRecords,
+            String continuation,
+            Boolean forceFlag,
+            Long position,
+            Boolean retainUncommittedData,
+            Boolean close,
+            Long contentLength,
+            String properties,
+            String owner,
+            String group,
+            String permissions,
+            String acl,
+            PathHttpHeaders pathHttpHeaders,
+            LeaseAccessConditions leaseAccessConditions,
+            ModifiedAccessConditions modifiedAccessConditions,
+            Context context) {
+        final String accept = "application/json";
+        byte[] contentMd5Internal = null;
+        if (pathHttpHeaders != null) {
+            contentMd5Internal = pathHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.update(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getPath(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                action,
+                maxRecords,
+                continuation,
+                mode,
+                forceFlag,
+                position,
+                retainUncommittedData,
+                close,
+                contentLength,
+                contentMd5Converted,
+                leaseId,
+                cacheControl,
+                contentType,
+                contentDisposition,
+                contentEncoding,
+                contentLanguage,
+                properties,
+                owner,
+                group,
+                permissions,
+                acl,
+                ifMatch,
+                ifNoneMatch,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a
+     * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
+     * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
+     *     uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to
+     *     set the owner, group, permissions, or access control list for a file or directory, or
+     *     "setAccessControlRecursive" to set the access control list for a directory recursively. Note that
+     *     Hierarchical Namespace must be enabled for the account in order to use access control. Also note that the
+     *     Access Control List (ACL) includes permissions for the owner, owning group, and others, so the
+     *     x-ms-permissions and x-ms-acl request headers are mutually exclusive.
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     *     POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX
+     *     access control rights that were present earlier on files and directories.
+     * @param body Initial data.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
+     *     files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request
+     *     will process up to 2,000 items.
+     * @param continuation Optional. The number of paths processed with each invocation is limited. If the number of
+     *     paths to be processed exceeds this limit, a continuation token is returned in the response header
+     *     x-ms-continuation. When a continuation token is returned in the response, it must be percent-encoded and
+     *     specified in a subsequent invocation of setAccessControlRecursive operation.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     *     terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and
+     *     proceed with the operation on other sub-entities of the directory. Continuation token will only be returned
+     *     when forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     *     appended to the file. It is required when uploading data to be appended to the file and when flushing
+     *     previously uploaded data to the file. The value must be the position where the data is to be appended.
+     *     Uploaded data is not immediately flushed, or written, to the file. To flush, the previously uploaded data
+     *     must be contiguous, the position parameter must be specified and equal to the length of the file after all
+     *     data has been written, and there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     *     flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default
+     *     is false. Data at offsets less than the specified position are written to the file when flush succeeds, but
+     *     this optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     *     Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this
+     *     is the final change to distinguish the difference between an intermediate flush to a file stream and the
+     *     final close of a file stream. The close query parameter is valid only when the action is "flush" and change
+     *     notifications are enabled. If the value of close is "true" and the flush operation completes successfully,
+     *     the service raises a file change notification with a property indicating that this is the final update (the
+     *     file stream has been closed). If "false" a change notification is raised indicating the file has changed. The
+     *     default is false. This query parameter is set to true by the Hadoop ABFS driver to indicate that the file
+     *     stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     *     of the request content in bytes for "Append Data".
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     *     access permissions for the file owner, the file owning group, and others. Each class may be granted read,
+     *     write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal
+     *     notation (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     *     access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group
+     *     identifier, and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse>> updateWithResponseAsync(
+            PathUpdateAction action,
+            PathSetAccessControlRecursiveMode mode,
+            BinaryData body,
             String requestId,
             Integer timeout,
             Integer maxRecords,
@@ -1490,6 +1755,7 @@ public final class PathsImpl {
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
      * @param pathHttpHeaders Parameter group.
      * @param leaseAccessConditions Parameter group.
      * @param cpkInfo Parameter group.
@@ -1507,6 +1773,7 @@ public final class PathsImpl {
             Long contentLength,
             byte[] transactionalContentCrc64,
             String requestId,
+            Boolean flush,
             PathHttpHeaders pathHttpHeaders,
             LeaseAccessConditions leaseAccessConditions,
             CpkInfo cpkInfo,
@@ -1556,6 +1823,99 @@ public final class PathsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
+                flush,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Append data to the file.
+     *
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     *     appended to the file. It is required when uploading data to be appended to the file and when flushing
+     *     previously uploaded data to the file. The value must be the position where the data is to be appended.
+     *     Uploaded data is not immediately flushed, or written, to the file. To flush, the previously uploaded data
+     *     must be contiguous, the position parameter must be specified and equal to the length of the file after all
+     *     data has been written, and there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     *     of the request content in bytes for "Append Data".
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendDataWithResponseAsync(
+            BinaryData body,
+            Long position,
+            Integer timeout,
+            Long contentLength,
+            byte[] transactionalContentCrc64,
+            String requestId,
+            Boolean flush,
+            PathHttpHeaders pathHttpHeaders,
+            LeaseAccessConditions leaseAccessConditions,
+            CpkInfo cpkInfo,
+            Context context) {
+        final String action = "append";
+        final String accept = "application/json";
+        byte[] transactionalContentHashInternal = null;
+        if (pathHttpHeaders != null) {
+            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
+        }
+        byte[] transactionalContentHash = transactionalContentHashInternal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
+        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+        return service.appendData(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getPath(),
+                action,
+                position,
+                timeout,
+                contentLength,
+                transactionalContentHashConverted,
+                transactionalContentCrc64Converted,
+                leaseId,
+                requestId,
+                this.client.getVersion(),
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                flush,
                 body,
                 accept,
                 context);
