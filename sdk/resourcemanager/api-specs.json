@@ -9,7 +9,7 @@
     "dir": "azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2022-03 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "args": "--tag=package-2022-03 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider",
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "appservice-hybrid": {
