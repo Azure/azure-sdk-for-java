@@ -2175,17 +2175,17 @@ class FileAPITest extends APISpec {
          * Should receive at least one notification indicating completed progress, multiple notifications may be
          * received if there are empty buffers in the stream.
          */
-        (1.._) * mockReceiver.reportProgress(fileSize)
+        (1.._) * mockReceiver.handleProgress(fileSize)
 
         // There should be NO notification with a larger than expected size.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
         notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
-        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
+        (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
             if (!(bytesTransferred >= prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
@@ -2194,7 +2194,7 @@ class FileAPITest extends APISpec {
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
 
         cleanup:
         file.delete()
