@@ -110,7 +110,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [ccf]: https://github.com/Microsoft/CCF
 [azure_confidential_computing]: https://azure.microsoft.com/solutions/confidential-compute
 [confidential_ledger_docs]: https://aka.ms/confidentialledger-servicedocs
-[samples]: src/samples/java/com/azure/security/confidentialledger
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/generated
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
