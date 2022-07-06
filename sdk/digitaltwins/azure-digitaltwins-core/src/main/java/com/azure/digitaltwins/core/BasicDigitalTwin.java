@@ -142,8 +142,8 @@ public final class BasicDigitalTwin {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         
-        String lastUpdatedOnString;
-        if ((lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)) != null) {
+        String lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        if (lastUpdatedOnString != null) {
             this.lastUpdatedOn = OffsetDateTime.parse(lastUpdatedOnString);
             metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         }
