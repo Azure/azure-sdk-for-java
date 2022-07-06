@@ -81,7 +81,7 @@ public final class CallConnectionsImpl {
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:terminate")
-        @ExpectedResponses({202})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> terminateCall(
                 @HostParam("endpoint") String endpoint,

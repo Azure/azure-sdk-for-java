@@ -14,7 +14,7 @@ public final class StartCallRecordingRequest {
      * The call locator.
      */
     @JsonProperty(value = "callLocator", required = true)
-    private CallLocator callLocator;
+    private CallLocatorInternal callLocator;
 
     /*
      * The uri to send notifications to.
@@ -26,26 +26,26 @@ public final class StartCallRecordingRequest {
      * The content type of call recording.
      */
     @JsonProperty(value = "recordingContentType")
-    private RecordingContent recordingContentType;
+    private RecordingContentInternal recordingContentType;
 
     /*
      * The channel type of call recording.
      */
     @JsonProperty(value = "recordingChannelType")
-    private RecordingChannel recordingChannelType;
+    private RecordingChannelInternal recordingChannelType;
 
     /*
      * The format type of call recording.
      */
     @JsonProperty(value = "recordingFormatType")
-    private RecordingFormat recordingFormatType;
+    private RecordingFormatInternal recordingFormatType;
 
     /**
      * Get the callLocator property: The call locator.
      *
      * @return the callLocator value.
      */
-    public CallLocator getCallLocator() {
+    public CallLocatorInternal getCallLocator() {
         return this.callLocator;
     }
 
@@ -55,7 +55,7 @@ public final class StartCallRecordingRequest {
      * @param callLocator the callLocator value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setCallLocator(CallLocator callLocator) {
+    public StartCallRecordingRequest setCallLocator(CallLocatorInternal callLocator) {
         this.callLocator = callLocator;
         return this;
     }
@@ -85,7 +85,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the recordingContentType value.
      */
-    public RecordingContent getRecordingContentType() {
+    public RecordingContentInternal getRecordingContentType() {
         return this.recordingContentType;
     }
 
@@ -95,7 +95,7 @@ public final class StartCallRecordingRequest {
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setRecordingContentType(RecordingContent recordingContentType) {
+    public StartCallRecordingRequest setRecordingContentType(RecordingContentInternal recordingContentType) {
         this.recordingContentType = recordingContentType;
         return this;
     }
@@ -105,7 +105,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the recordingChannelType value.
      */
-    public RecordingChannel getRecordingChannelType() {
+    public RecordingChannelInternal getRecordingChannelType() {
         return this.recordingChannelType;
     }
 
@@ -115,7 +115,7 @@ public final class StartCallRecordingRequest {
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setRecordingChannelType(RecordingChannel recordingChannelType) {
+    public StartCallRecordingRequest setRecordingChannelType(RecordingChannelInternal recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
         return this;
     }
@@ -125,7 +125,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the recordingFormatType value.
      */
-    public RecordingFormat getRecordingFormatType() {
+    public RecordingFormatInternal getRecordingFormatType() {
         return this.recordingFormatType;
     }
 
@@ -135,7 +135,7 @@ public final class StartCallRecordingRequest {
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setRecordingFormatType(RecordingFormat recordingFormatType) {
+    public StartCallRecordingRequest setRecordingFormatType(RecordingFormatInternal recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
         return this;
     }

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The locator used for joining or taking action on a call. */
 @Fluent
-public final class CallLocator {
+public final class CallLocatorInternal {
     /*
      * The group call id
      */
@@ -26,7 +26,7 @@ public final class CallLocator {
      * The call locator kind.
      */
     @JsonProperty(value = "kind")
-    private CallLocatorKind kind;
+    private CallLocatorKindInternal kind;
 
     /**
      * Get the groupCallId property: The group call id.
@@ -41,9 +41,9 @@ public final class CallLocator {
      * Set the groupCallId property: The group call id.
      *
      * @param groupCallId the groupCallId value to set.
-     * @return the CallLocator object itself.
+     * @return the CallLocatorInternal object itself.
      */
-    public CallLocator setGroupCallId(String groupCallId) {
+    public CallLocatorInternal setGroupCallId(String groupCallId) {
         this.groupCallId = groupCallId;
         return this;
     }
@@ -61,9 +61,9 @@ public final class CallLocator {
      * Set the serverCallId property: The server call id.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the CallLocator object itself.
+     * @return the CallLocatorInternal object itself.
      */
-    public CallLocator setServerCallId(String serverCallId) {
+    public CallLocatorInternal setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
@@ -73,7 +73,7 @@ public final class CallLocator {
      *
      * @return the kind value.
      */
-    public CallLocatorKind getKind() {
+    public CallLocatorKindInternal getKind() {
         return this.kind;
     }
 
@@ -81,9 +81,9 @@ public final class CallLocator {
      * Set the kind property: The call locator kind.
      *
      * @param kind the kind value to set.
-     * @return the CallLocator object itself.
+     * @return the CallLocatorInternal object itself.
      */
-    public CallLocator setKind(CallLocatorKind kind) {
+    public CallLocatorInternal setKind(CallLocatorKindInternal kind) {
         this.kind = kind;
         return this;
     }

@@ -7,14 +7,14 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PlaySource model. */
+/** The PlaySourceInternal model. */
 @Fluent
-public final class PlaySource {
+public final class PlaySourceInternal {
     /*
      * Defines the type of the play source
      */
     @JsonProperty(value = "sourceType", required = true)
-    private PlaySourceType sourceType;
+    private PlaySourceTypeInternal sourceType;
 
     /*
      * Defines the identifier to be used for caching related media
@@ -27,7 +27,7 @@ public final class PlaySource {
      *
      * @return the sourceType value.
      */
-    public PlaySourceType getSourceType() {
+    public PlaySourceTypeInternal getSourceType() {
         return this.sourceType;
     }
 
@@ -35,9 +35,9 @@ public final class PlaySource {
      * Set the sourceType property: Defines the type of the play source.
      *
      * @param sourceType the sourceType value to set.
-     * @return the PlaySource object itself.
+     * @return the PlaySourceInternal object itself.
      */
-    public PlaySource setSourceType(PlaySourceType sourceType) {
+    public PlaySourceInternal setSourceType(PlaySourceTypeInternal sourceType) {
         this.sourceType = sourceType;
         return this;
     }
@@ -55,9 +55,9 @@ public final class PlaySource {
      * Set the playSourceId property: Defines the identifier to be used for caching related media.
      *
      * @param playSourceId the playSourceId value to set.
-     * @return the PlaySource object itself.
+     * @return the PlaySourceInternal object itself.
      */
-    public PlaySource setPlaySourceId(String playSourceId) {
+    public PlaySourceInternal setPlaySourceId(String playSourceId) {
         this.playSourceId = playSourceId;
         return this;
     }

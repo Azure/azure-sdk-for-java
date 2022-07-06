@@ -3,15 +3,20 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.models.PlayResponse;
-import com.azure.communication.callingserver.implementation.models.PlaySource;
+import com.azure.communication.callingserver.models.PlayResponse;
+import com.azure.communication.callingserver.models.PlaySourceType;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * ContentCapabilities.
+ */
 public class ContentCapabilities {
     private final ContentCapabilitiesAsync contentCapabilitiesAsync;
 
@@ -19,24 +24,59 @@ public class ContentCapabilities {
         this.contentCapabilitiesAsync = contentCapabilitiesAsync;
     }
 
-    public PlayResponse Play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return contentCapabilitiesAsync.PlayAsync(playSource, playTo).block();
+    /**
+     * Play
+     *
+     * @param playSourceType type of the play source
+     * @param playTo the targets to be played
+     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @return PlayResponse
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayResponse play(PlaySourceType playSourceType, List<CommunicationIdentifier> playTo, String playSourceId) {
+        return contentCapabilitiesAsync.play(playSourceType, playTo, playSourceId).block();
     }
 
-    public PlayResponse PlayAll(PlaySource playSource) {
-        return contentCapabilitiesAsync.PlayAllAsync(playSource).block();
+    /**
+     * Play to all participants
+     *
+     * @param playSourceType type of the play source
+     * @param playSourceId the identifier to be used for caching related media
+     * @return PlayResponse
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayResponse playAll(PlaySourceType playSourceType, String playSourceId) {
+        return contentCapabilitiesAsync.playAll(playSourceType, playSourceId).block();
     }
 
-    public Response<PlayResponse> PlayWithResponse(
-        PlaySource playSource,
-        List<CommunicationIdentifier> playTo,
-        Context context) {
-        return contentCapabilitiesAsync.playAsyncWithResponseInternal(playSource, playTo, context).block();
+    /**
+     * PlayWithResponse
+     *
+     * @param playSourceType type of the play source
+     * @param playTo the targets to be played
+     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @param context Place_holder
+     *
+     * @return PlayResponse
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayResponse> playWithResponse(PlaySourceType playSourceType, List<CommunicationIdentifier> playTo,
+                                                   String playSourceId, Context context) {
+        return contentCapabilitiesAsync.playWithResponseInternal(playSourceType, playTo, playSourceId, context).block();
     }
 
-    public Response<PlayResponse> PlayAllWithResponse(PlaySource playSource, Context context) {
+    /**
+     * PlayAllWithResponse
+     *
+     * @param playSourceType type of the play source
+     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @param context Place_holder
+     * @return PlayResponse
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayResponse> playAllWithResponse(PlaySourceType playSourceType, String playSourceId, Context context) {
         return contentCapabilitiesAsync
-            .playAsyncWithResponseInternal(playSource, Collections.emptyList(), context)
+            .playWithResponseInternal(playSourceType, Collections.emptyList(), playSourceId, context)
             .block();
     }
 }

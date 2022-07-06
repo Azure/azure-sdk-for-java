@@ -3,15 +3,14 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.models.CallLocator;
-import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
-import com.azure.communication.callingserver.implementation.models.RecordingChannel;
-import com.azure.communication.callingserver.implementation.models.RecordingContent;
-import com.azure.communication.callingserver.implementation.models.RecordingFormat;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.RecordingChannel;
+import com.azure.communication.callingserver.models.RecordingContent;
+import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
+import com.azure.communication.callingserver.models.RecordingIdResponse;
+import com.azure.communication.callingserver.models.RecordingStateResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -430,7 +429,7 @@ public final class CallingServerClient {
     /**
      * Start recording of the call.     *
      *
-     * @param callLocator the call locator.
+     * @param serverCallId the server call id.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
 //     * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -438,14 +437,14 @@ public final class CallingServerClient {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
-        return callingServerAsyncClient.startRecording(callLocator, recordingStateCallbackUri).block();
+    public RecordingIdResponse startRecording(String serverCallId, URI recordingStateCallbackUri) {
+        return callingServerAsyncClient.startRecording(serverCallId, recordingStateCallbackUri).block();
     }
 
     /**
      * Start recording of the call.     *
      *
-     * @param callLocator the call locator.
+     * @param serverCallId the server call id.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @param content Content Type.
      * @param format Format Type.
@@ -457,15 +456,15 @@ public final class CallingServerClient {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResponse> startRecordingWithResponse(
-        CallLocator callLocator,
+    public Response<RecordingIdResponse> startRecordingWithResponse(
+        String serverCallId,
         URI recordingStateCallbackUri,
         RecordingContent content,
         RecordingFormat format,
         RecordingChannel channel,
         Context context) {
         return callingServerAsyncClient.startRecordingWithResponse(
-            callLocator,
+            serverCallId,
             recordingStateCallbackUri,
             content,
             format,
@@ -560,7 +559,7 @@ public final class CallingServerClient {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCallRecordingStateResponse getRecordingState(String recordingId) {
+    public RecordingStateResponse getRecordingState(String recordingId) {
         return callingServerAsyncClient.getRecordingState(recordingId).block();
     }
 
@@ -574,7 +573,7 @@ public final class CallingServerClient {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetCallRecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<RecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
         return callingServerAsyncClient.getRecordingStateWithResponse(recordingId, context).block();
     }
 
@@ -678,9 +677,11 @@ public final class CallingServerClient {
 
     /***
      * Returns an object of ContentCapabilities
-     * @param callConnectionId
-     * @return
-     */ @ServiceMethod(returns = ReturnType.SINGLE)
+     *
+     * @param callConnectionId the id of the call connection
+     * @return a ContentCapabilitiesAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ContentCapabilities getContentCapabilities(String callConnectionId) {
         return new ContentCapabilities(callingServerAsyncClient.getContentCapabilities(callConnectionId));
     }

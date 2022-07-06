@@ -12,27 +12,32 @@ import com.azure.communication.callingserver.implementation.converters.AcsCallPa
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CallLocator;
+import com.azure.communication.callingserver.implementation.models.CallLocatorInternal;
+import com.azure.communication.callingserver.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
 import com.azure.communication.callingserver.implementation.models.GetParticipantRequestInternal;
-import com.azure.communication.callingserver.implementation.models.RecordingChannel;
-import com.azure.communication.callingserver.implementation.models.RecordingContent;
-import com.azure.communication.callingserver.implementation.models.RecordingFormat;
+import com.azure.communication.callingserver.implementation.models.RecordingChannelInternal;
+import com.azure.communication.callingserver.implementation.models.RecordingContentInternal;
+import com.azure.communication.callingserver.implementation.models.RecordingFormatInternal;
+import com.azure.communication.callingserver.models.RecordingChannel;
+import com.azure.communication.callingserver.models.RecordingContent;
+import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.implementation.models.CallSourceDto;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.TransferToParticipantRequestInternal;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
+import com.azure.communication.callingserver.models.RecordingIdResponse;
+import com.azure.communication.callingserver.models.RecordingStateResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -670,7 +675,7 @@ public final class CallingServerAsyncClient {
     /**
      * Start recording of the call.     *
      *
-     * @param callLocator the call locator.
+     * @param serverCallId the server call Id
      * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
 //     * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -678,17 +683,18 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResponse> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+    public Mono<RecordingIdResponse> startRecording(String serverCallId, URI recordingStateCallbackUri) {
         try {
             if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
+            CallLocator callLocator = CallLocator.createServerCallLocator(serverCallId);
             StartCallRecordingRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
                 recordingStateCallbackUri, null, null, null);
 
-            return contentsInternal.recordingAsync(requestWithCallLocator, null);
+            return contentsInternal.recordingAsync(requestWithCallLocator, null)
 //                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-//                .flatMap(result -> Mono.just(new StartCallRecordingResponse(result.getRecordingId())));
+                .flatMap(result -> Mono.just(new RecordingIdResponse(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -697,7 +703,7 @@ public final class CallingServerAsyncClient {
     /**
      * Start recording of the call.
      *
-     * @param callLocator the call locator.
+     * @param serverCallId the server call Id.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @param content Content Type
      * @param format format Type
@@ -709,8 +715,8 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResponse>> startRecordingWithResponse(
-        CallLocator callLocator,
+    public Mono<Response<RecordingIdResponse>> startRecordingWithResponse(
+        String serverCallId,
         URI recordingStateCallbackUri,
         RecordingContent content,
         RecordingFormat format,
@@ -720,16 +726,16 @@ public final class CallingServerAsyncClient {
             if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
+            CallLocator callLocator = CallLocator.createServerCallLocator(serverCallId);
             StartCallRecordingRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
                 recordingStateCallbackUri, content, format, channel);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
-                    .recordingWithResponseAsync(requestWithCallLocator, contextValue);
+                    .recordingWithResponseAsync(requestWithCallLocator, contextValue)
 //                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-//                    .map(response ->
-//                        new SimpleResponse<>(response, new StartCallRecordingResult(response.getValue().getRecordingId())));
+                    .map(response -> new SimpleResponse<>(response, new RecordingIdResponse(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -741,16 +747,24 @@ public final class CallingServerAsyncClient {
                                                                                   RecordingContent content,
                                                                                   RecordingFormat format,
                                                                                   RecordingChannel channel) {
+        CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+            .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()))
+            .setServerCallId(callLocator.getServerCallId())
+            .setGroupCallId(callLocator.getGroupCallId());
+
         StartCallRecordingRequest request = new StartCallRecordingRequest()
-            .setCallLocator(callLocator)
+            .setCallLocator(callLocatorInternal)
             .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
 
-        if (content != null)
-            request.setRecordingContentType(content);
-        if (format != null)
-            request.setRecordingFormatType(format);
-        if (format != null)
-            request.setRecordingChannelType(channel);
+        if (content != null) {
+            request.setRecordingContentType(RecordingContentInternal.fromString(content.toString()));
+        }
+        if (format != null) {
+            request.setRecordingFormatType(RecordingFormatInternal.fromString(format.toString()));
+        }
+        if (channel != null) {
+            request.setRecordingChannelType(RecordingChannelInternal.fromString(channel.toString()));
+        }
 
         return request;
     }
@@ -899,11 +913,11 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallRecordingStateResponse> getRecordingState(String recordingId) {
+    public Mono<RecordingStateResponse> getRecordingState(String recordingId) {
         try {
-            return serverCallsInternal.getRecordingPropertiesAsync(recordingId);
+            return serverCallsInternal.getRecordingPropertiesAsync(recordingId)
 //                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-//                .flatMap(result -> Mono.just(new CallRecordingProperties(result.getRecordingState())));
+                .flatMap(result -> Mono.just(new RecordingStateResponse(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -918,19 +932,19 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallRecordingStateResponse>> getRecordingStateWithResponse(String recordingId) {
+    public Mono<Response<RecordingStateResponse>> getRecordingStateWithResponse(String recordingId) {
         return getRecordingStateWithResponse(recordingId, Context.NONE);
     }
 
-    Mono<Response<GetCallRecordingStateResponse>> getRecordingStateWithResponse(String recordingId, Context context) {
+    Mono<Response<RecordingStateResponse>> getRecordingStateWithResponse(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallsInternal
-                    .getRecordingPropertiesWithResponseAsync(recordingId, contextValue);
+                    .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
 //                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-//                    .map(response ->
-//                        new SimpleResponse<>(response, new CallRecordingProperties(response.getValue().getRecordingState())));
+                    .map(response ->
+                        new SimpleResponse<>(response, new RecordingStateResponse(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1131,8 +1145,9 @@ public final class CallingServerAsyncClient {
 
     /***
      * Returns an object of ContentCapabilities
-     * @param callConnectionId
-     * @return
+     *
+     * @param callConnectionId the id of the call connection
+     * @return a ContentCapabilitiesAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContentCapabilitiesAsync getContentCapabilities(String callConnectionId) {

@@ -74,7 +74,7 @@ public final class ServerCallingsImpl {
                 Context context);
 
         @Post("/calling/callConnections:redirect")
-        @ExpectedResponses({202})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> redirectCall(
                 @HostParam("endpoint") String endpoint,
@@ -83,7 +83,7 @@ public final class ServerCallingsImpl {
                 Context context);
 
         @Post("/calling/callConnections:reject")
-        @ExpectedResponses({202})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> rejectCall(
                 @HostParam("endpoint") String endpoint,

@@ -7,9 +7,15 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PlayResponse model. */
+/** The response payload of start call recording operation. */
 @Fluent
-public final class PlayResponse {
+public final class RecordingIdResponseInternal {
+    /*
+     * The recording id of the started recording
+     */
+    @JsonProperty(value = "recordingId")
+    private String recordingId;
+
     /*
      * The operation id.
      */
@@ -35,6 +41,26 @@ public final class PlayResponse {
     private CallingOperationResultDetailsDto resultDetails;
 
     /**
+     * Get the recordingId property: The recording id of the started recording.
+     *
+     * @return the recordingId value.
+     */
+    public String getRecordingId() {
+        return this.recordingId;
+    }
+
+    /**
+     * Set the recordingId property: The recording id of the started recording.
+     *
+     * @param recordingId the recordingId value to set.
+     * @return the RecordingIdResponseInternal object itself.
+     */
+    public RecordingIdResponseInternal setRecordingId(String recordingId) {
+        this.recordingId = recordingId;
+        return this;
+    }
+
+    /**
      * Get the operationId property: The operation id.
      *
      * @return the operationId value.
@@ -47,9 +73,9 @@ public final class PlayResponse {
      * Set the operationId property: The operation id.
      *
      * @param operationId the operationId value to set.
-     * @return the PlayResponse object itself.
+     * @return the RecordingIdResponseInternal object itself.
      */
-    public PlayResponse setOperationId(String operationId) {
+    public RecordingIdResponseInternal setOperationId(String operationId) {
         this.operationId = operationId;
         return this;
     }
@@ -67,9 +93,9 @@ public final class PlayResponse {
      * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the PlayResponse object itself.
+     * @return the RecordingIdResponseInternal object itself.
      */
-    public PlayResponse setStatus(CallingOperationStatusDto status) {
+    public RecordingIdResponseInternal setStatus(CallingOperationStatusDto status) {
         this.status = status;
         return this;
     }
@@ -87,9 +113,9 @@ public final class PlayResponse {
      * Set the operationContext property: The operation context provided by client.
      *
      * @param operationContext the operationContext value to set.
-     * @return the PlayResponse object itself.
+     * @return the RecordingIdResponseInternal object itself.
      */
-    public PlayResponse setOperationContext(String operationContext) {
+    public RecordingIdResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -107,9 +133,9 @@ public final class PlayResponse {
      * Set the resultDetails property: The result info for the operation.
      *
      * @param resultDetails the resultDetails value to set.
-     * @return the PlayResponse object itself.
+     * @return the RecordingIdResponseInternal object itself.
      */
-    public PlayResponse setResultDetails(CallingOperationResultDetailsDto resultDetails) {
+    public RecordingIdResponseInternal setResultDetails(CallingOperationResultDetailsDto resultDetails) {
         this.resultDetails = resultDetails;
         return this;
     }

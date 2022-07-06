@@ -5,9 +5,9 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
-import com.azure.communication.callingserver.implementation.models.PlayResponse;
+import com.azure.communication.callingserver.implementation.models.PlayResponseInternal;
+import com.azure.communication.callingserver.implementation.models.RecordingIdResponseInternal;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -55,7 +55,7 @@ public final class ContentsImpl {
         @Post("/calling/callConnections/{callConnectionId}/content:play")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PlayResponse>> play(
+        Mono<Response<PlayResponseInternal>> play(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -66,7 +66,7 @@ public final class ContentsImpl {
         @Post("/calling/recordings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<StartCallRecordingResponse>> recording(
+        Mono<Response<RecordingIdResponseInternal>> recording(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StartCallRecordingRequest startCallRecording,
@@ -77,7 +77,7 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The call connection ID.
+     * @param callConnectionId The callConnectionId parameter.
      * @param playRequest The playRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -85,7 +85,8 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayResponse>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest) {
+    public Mono<Response<PlayResponseInternal>> playWithResponseAsync(
+            String callConnectionId, PlayRequest playRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -101,7 +102,7 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The call connection ID.
+     * @param callConnectionId The callConnectionId parameter.
      * @param playRequest The playRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +111,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayResponse>> playWithResponseAsync(
+    public Mono<Response<PlayResponseInternal>> playWithResponseAsync(
             String callConnectionId, PlayRequest playRequest, Context context) {
         final String accept = "application/json";
         return service.play(
@@ -120,7 +121,7 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The call connection ID.
+     * @param callConnectionId The callConnectionId parameter.
      * @param playRequest The playRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -128,10 +129,10 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResponse> playAsync(String callConnectionId, PlayRequest playRequest) {
+    public Mono<PlayResponseInternal> playAsync(String callConnectionId, PlayRequest playRequest) {
         return playWithResponseAsync(callConnectionId, playRequest)
                 .flatMap(
-                        (Response<PlayResponse> res) -> {
+                        (Response<PlayResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -143,7 +144,7 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The call connection ID.
+     * @param callConnectionId The callConnectionId parameter.
      * @param playRequest The playRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,10 +153,10 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResponse> playAsync(String callConnectionId, PlayRequest playRequest, Context context) {
+    public Mono<PlayResponseInternal> playAsync(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context)
                 .flatMap(
-                        (Response<PlayResponse> res) -> {
+                        (Response<PlayResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -167,7 +168,7 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The call connection ID.
+     * @param callConnectionId The callConnectionId parameter.
      * @param playRequest The playRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -175,14 +176,14 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayResponse play(String callConnectionId, PlayRequest playRequest) {
+    public PlayResponseInternal play(String callConnectionId, PlayRequest playRequest) {
         return playAsync(callConnectionId, playRequest).block();
     }
 
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The call connection ID.
+     * @param callConnectionId The callConnectionId parameter.
      * @param playRequest The playRequest parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +192,8 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayResponse> playWithResponse(String callConnectionId, PlayRequest playRequest, Context context) {
+    public Response<PlayResponseInternal> playWithResponse(
+            String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context).block();
     }
 
@@ -205,7 +207,7 @@ public final class ContentsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResponse>> recordingWithResponseAsync(
+    public Mono<Response<RecordingIdResponseInternal>> recordingWithResponseAsync(
             StartCallRecordingRequest startCallRecording) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -229,7 +231,7 @@ public final class ContentsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResponse>> recordingWithResponseAsync(
+    public Mono<Response<RecordingIdResponseInternal>> recordingWithResponseAsync(
             StartCallRecordingRequest startCallRecording, Context context) {
         final String accept = "application/json";
         return service.recording(
@@ -246,10 +248,10 @@ public final class ContentsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResponse> recordingAsync(StartCallRecordingRequest startCallRecording) {
+    public Mono<RecordingIdResponseInternal> recordingAsync(StartCallRecordingRequest startCallRecording) {
         return recordingWithResponseAsync(startCallRecording)
                 .flatMap(
-                        (Response<StartCallRecordingResponse> res) -> {
+                        (Response<RecordingIdResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -269,11 +271,11 @@ public final class ContentsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResponse> recordingAsync(
+    public Mono<RecordingIdResponseInternal> recordingAsync(
             StartCallRecordingRequest startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context)
                 .flatMap(
-                        (Response<StartCallRecordingResponse> res) -> {
+                        (Response<RecordingIdResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -292,7 +294,7 @@ public final class ContentsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse recording(StartCallRecordingRequest startCallRecording) {
+    public RecordingIdResponseInternal recording(StartCallRecordingRequest startCallRecording) {
         return recordingAsync(startCallRecording).block();
     }
 
@@ -307,7 +309,7 @@ public final class ContentsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResponse> recordingWithResponse(
+    public Response<RecordingIdResponseInternal> recordingWithResponse(
             StartCallRecordingRequest startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context).block();
     }

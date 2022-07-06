@@ -93,31 +93,73 @@ directive:
 - rename-model:
     from: RejectCallRequest
     to: RejectCallRequestInternal
+- rename-model:
+    from: CallLocator
+    to: CallLocatorInternal
+- rename-model:
+    from: RecordingIdResponse
+    to: RecordingIdResponseInternal
+- rename-model:
+    from: RecordingStateResponse
+    to: RecordingStateResponseInternal
+- rename-model:
+    from: PlayResponse
+    to: PlayResponseInternal
+- rename-model:
+    from: PlaySource
+    to: PlaySourceInternal
 ```
 
-### Rename RecordingChannelType to RecordingChannel
+### Rename RecordingChannelType to RecordingChannelInternal
 ``` yaml
 directive:
   - from: swagger-document
     where: $.definitions.RecordingChannelType
     transform: >
-      $["x-ms-enum"].name = "RecordingChannel";
+      $["x-ms-enum"].name = "RecordingChannelInternal";
 ```
 
-### Rename RecordingContentType to RecordingContent
+### Rename RecordingContentType to RecordingContentInternal
 ``` yaml
 directive:
   - from: swagger-document
     where: $.definitions.RecordingContentType
     transform: >
-      $["x-ms-enum"].name = "RecordingContent";
+      $["x-ms-enum"].name = "RecordingContentInternal";
 ```
 
-### Rename RecordingFormatType to RecordingFormat
+### Rename RecordingFormatType to RecordingFormatInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions.RecordingFormatType["x-ms-enum"]
   transform: >
-    $.name = "RecordingFormat";
+    $.name = "RecordingFormatInternal";
+```
+
+### Rename RecordingState to RecordingStateInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingState["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStateInternal";
+```
+
+### Rename PlaySourceType to PlaySourceTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.PlaySourceType["x-ms-enum"]
+  transform: >
+    $.name = "PlaySourceTypeInternal";
+```
+
+### Rename CallLocatorKind to CallLocatorKindInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallLocatorKind["x-ms-enum"]
+  transform: >
+    $.name = "CallLocatorKindInternal";
 ```

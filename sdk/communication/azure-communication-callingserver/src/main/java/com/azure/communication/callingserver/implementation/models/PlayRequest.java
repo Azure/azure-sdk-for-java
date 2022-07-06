@@ -15,13 +15,13 @@ public final class PlayRequest {
      * The source of the audio to be played.
      */
     @JsonProperty(value = "playSourceInfo", required = true)
-    private PlaySource playSourceInfo;
+    private PlaySourceInternal playSourceInfo;
 
     /*
      * The list of call participants play provided audio to.
      * Plays to everyone in the call when not provided.
      */
-    @JsonProperty(value = "playTo", required = true)
+    @JsonProperty(value = "playTo")
     private List<CommunicationIdentifierModel> playTo;
 
     /*
@@ -35,7 +35,7 @@ public final class PlayRequest {
      *
      * @return the playSourceInfo value.
      */
-    public PlaySource getPlaySourceInfo() {
+    public PlaySourceInternal getPlaySourceInfo() {
         return this.playSourceInfo;
     }
 
@@ -45,7 +45,7 @@ public final class PlayRequest {
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlaySourceInfo(PlaySource playSourceInfo) {
+    public PlayRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
         this.playSourceInfo = playSourceInfo;
         return this;
     }
