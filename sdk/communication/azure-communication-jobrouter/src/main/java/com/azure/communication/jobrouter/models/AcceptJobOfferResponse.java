@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response containing Id's for the worker, job, and assignment from an accepted offer. */
 @Fluent
-public final class AcceptJobOfferResult {
+public final class AcceptJobOfferResponse {
     /*
      * The assignment Id that assigns a worker that has accepted an offer to a
      * job.
@@ -44,7 +44,7 @@ public final class AcceptJobOfferResult {
      * @param assignmentId the assignmentId value to set.
      * @return the AcceptJobOfferResponse object itself.
      */
-    public AcceptJobOfferResult setAssignmentId(String assignmentId) {
+    public AcceptJobOfferResponse setAssignmentId(String assignmentId) {
         this.assignmentId = assignmentId;
         return this;
     }
@@ -64,7 +64,7 @@ public final class AcceptJobOfferResult {
      * @param jobId the jobId value to set.
      * @return the AcceptJobOfferResponse object itself.
      */
-    public AcceptJobOfferResult setJobId(String jobId) {
+    public AcceptJobOfferResponse setJobId(String jobId) {
         this.jobId = jobId;
         return this;
     }
@@ -84,7 +84,7 @@ public final class AcceptJobOfferResult {
      * @param workerId the workerId value to set.
      * @return the AcceptJobOfferResponse object itself.
      */
-    public AcceptJobOfferResult setWorkerId(String workerId) {
+    public AcceptJobOfferResponse setWorkerId(String workerId) {
         this.workerId = workerId;
         return this;
     }

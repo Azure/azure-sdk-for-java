@@ -38,7 +38,7 @@ public class UpdateWorkerOptions extends WorkerOptions {
      * @param queueAssignments the queueAssignments value to set.
      * @return this
      */
-    public UpdateWorkerOptions setQueueAssignments(Map<String, Object> queueAssignments) {
+    public UpdateWorkerOptions setQueueAssignments(Map<String, QueueAssignment> queueAssignments) {
         this.queueAssignments = queueAssignments;
         return this;
     }

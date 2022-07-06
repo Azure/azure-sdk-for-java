@@ -31,7 +31,7 @@ public final class RouterWorker {
      * The queue(s) that this worker can receive work from.
      */
     @JsonProperty(value = "queueAssignments")
-    private Map<String, Object> queueAssignments;
+    private Map<String, QueueAssignment> queueAssignments;
 
     /*
      * The total capacity score this worker has to manage multiple concurrent
@@ -109,7 +109,7 @@ public final class RouterWorker {
      *
      * @return the queueAssignments value.
      */
-    public Map<String, Object> getQueueAssignments() {
+    public Map<String, QueueAssignment> getQueueAssignments() {
         return this.queueAssignments;
     }
 
@@ -119,7 +119,7 @@ public final class RouterWorker {
      * @param queueAssignments the queueAssignments value to set.
      * @return the RouterWorker object itself.
      */
-    public RouterWorker setQueueAssignments(Map<String, Object> queueAssignments) {
+    public RouterWorker setQueueAssignments(Map<String, QueueAssignment> queueAssignments) {
         this.queueAssignments = queueAssignments;
         return this;
     }

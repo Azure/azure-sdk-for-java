@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
+import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
@@ -24,6 +25,10 @@ public class WorkerAdapter {
     public static RouterWorker convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
         Map<String, LabelValue> labelValueMap = createWorkerOptions.getLabels();
         Map<String, Object> labels = labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+
+        Map<String, QueueAssignment> queueAssignmentsMap = createWorkerOptions.getQueueAssignments();
+        Map<String, QueueAssignment> queueAssignments = queueAssignmentsMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterWorker()
             .setLabels(labels)

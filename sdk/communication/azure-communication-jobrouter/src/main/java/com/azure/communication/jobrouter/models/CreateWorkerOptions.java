@@ -29,7 +29,7 @@ public class CreateWorkerOptions extends WorkerOptions {
      * @param queueAssignments the queueAssignments value to set.
      * @return this
      */
-    public CreateWorkerOptions setQueueAssignments(Map<String, Object> queueAssignments) {
+    public CreateWorkerOptions setQueueAssignments(Map<String, QueueAssignment> queueAssignments) {
         this.queueAssignments = queueAssignments;
         return this;
     }

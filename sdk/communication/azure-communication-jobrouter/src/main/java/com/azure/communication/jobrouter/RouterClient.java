@@ -7,7 +7,7 @@ import com.azure.communication.jobrouter.implementation.convertors.DistributionP
 import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
-import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.CancelJobResult;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
@@ -844,7 +844,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResult acceptJobOffer(String workerId, String offerId) {
+    public AcceptJobOfferResponse acceptJobOffer(String workerId, String offerId) {
         return this.client.acceptJobOffer(workerId, offerId).block();
     }
 
@@ -860,7 +860,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResult> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
+    public Response<AcceptJobOfferResponse> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
         return this.client.acceptJobOfferWithResponse(workerId, offerId, context).block();
     }
 

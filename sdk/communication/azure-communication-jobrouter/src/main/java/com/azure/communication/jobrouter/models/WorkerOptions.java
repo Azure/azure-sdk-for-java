@@ -21,7 +21,7 @@ public abstract class WorkerOptions {
     /**
      * The queue(s) that this worker can receive work from.
      */
-    protected Map<String, Object> queueAssignments;
+    protected Map<String, QueueAssignment> queueAssignments;
 
     /**
      * The total capacity score this worker has to manage multiple concurrent
@@ -63,7 +63,7 @@ public abstract class WorkerOptions {
      * Returns queue assignments.
      * @return queueAssignments
      */
-    public Map<String, Object> getQueueAssignments() {
+    public Map<String, QueueAssignment> getQueueAssignments() {
         return this.queueAssignments;
     }
 

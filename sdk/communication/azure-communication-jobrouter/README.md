@@ -182,9 +182,9 @@ RouterJob routerJob = routerClient.createJob(createJobOptions);
 ### Create a Worker
 
 ```java 
-Map<String, Object> labels = new HashMap<String, Object>() {
+Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
     {
-        put("Label", "Value");
+        put("Label", new LabelValue("Value"));
     }
 };
 
@@ -200,7 +200,7 @@ Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, Ch
     }
 };
 
-Map<String, Object> queueAssignments = new HashMap<String, Object>() {
+Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
     {
         put(jobQueue.getId(), new Object());
     }
