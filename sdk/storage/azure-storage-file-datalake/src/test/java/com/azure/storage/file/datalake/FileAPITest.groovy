@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
+import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -2207,6 +2208,62 @@ class FileAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _
     }
 
+    @LiveOnly
+    @Unroll
+    def "Download file progress listener"() {
+        def file = getRandomFile(fileSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(namer.getResourcePrefix())
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockListener = Mock(ProgressListener)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = new AtomicLong()
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressListener(mockListener),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null, null)
+
+        then:
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockListener.handleProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockListener.handleProgress({ it > fileSize })
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockListener.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount.set(bytesTransferred)
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockListener.handleProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
+    }
+
     def "Rename min"() {
         expect:
         fc.renameWithResponse(null, generatePathName(), null, null, null, null).getStatusCode() == 201
@@ -2848,6 +2905,19 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class FileUploadListener implements ProgressListener {
+        private long reportedByteCount
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            this.reportedByteCount = bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Upload from file reporter"() {
@@ -2867,6 +2937,37 @@ class FileAPITest extends APISpec {
             .verifyComplete()
 
         uploadReporter.getReportedByteCount() == size
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Upload from file listener"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadListener = new FileUploadListener()
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(blockSize - 1)
+
+        then:
+        StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null))
+            .verifyComplete()
+
+        uploadListener.getReportedByteCount() == size
 
         cleanup:
         file.delete()
@@ -3005,6 +3106,25 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class Listener implements ProgressListener {
+        private final long blockSize
+        private long reportingCount
+
+        Listener(long blockSize) {
+            this.blockSize = blockSize
+        }
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Buffered upload with reporter"() {
@@ -3028,6 +3148,39 @@ class FileAPITest extends APISpec {
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
                 assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
+            }).verifyComplete()
+
+        where:
+        size              | blockSize          | bufferCount
+        10 * Constants.MB | 10 * Constants.MB  | 8
+        20 * Constants.MB | 1 * Constants.MB   | 5
+        10 * Constants.MB | 5 * Constants.MB   | 2
+        10 * Constants.MB | 512 * Constants.KB | 20
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with listener"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadListener = new Listener(blockSize)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(4 * Constants.MB)
+
+        then:
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(size)),
+            parallelTransferOptions, null, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 200
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadListener.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
         where:

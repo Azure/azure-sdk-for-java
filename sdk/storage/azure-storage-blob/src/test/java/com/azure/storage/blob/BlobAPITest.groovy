@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
+import com.azure.core.util.ProgressListener
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
@@ -1305,6 +1306,62 @@ class BlobAPITest extends APISpec {
 
         // We should receive no notifications that report more progress than the size of the file.
         0 * mockReceiver.handleProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
+    }
+
+    @LiveOnly
+    @Unroll
+    def "Download file progress listener"() {
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(namer.getResourcePrefix())
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockListener = Mock(ProgressListener)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = new AtomicLong()
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressListener(mockListener),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
+
+        then:
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockListener.handleProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockListener.handleProgress({ it > fileSize })
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockListener.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount.set(bytesTransferred)
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockListener.handleProgress({ it > fileSize })
 
         cleanup:
         file.delete()

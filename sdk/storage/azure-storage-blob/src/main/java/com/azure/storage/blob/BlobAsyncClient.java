@@ -521,7 +521,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
      *     .setBlockSizeLong&#40;blockSize&#41;
      *     .setMaxConcurrency&#40;maxConcurrency&#41;
-     *     .setProgressReceiver&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
+     *     .setProgressListener&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;data, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
@@ -593,7 +593,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressReceiver&#40;bytesTransferred -&gt;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressListener&#40;bytesTransferred -&gt;
      *         System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;new BlobParallelUploadOptions&#40;data&#41;
@@ -620,7 +620,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressReceiver&#40;bytesTransferred -&gt;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressListener&#40;bytesTransferred -&gt;
      *         System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;new BlobParallelUploadOptions&#40;data&#41;

@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
@@ -143,7 +142,7 @@ public final class ModelHelper {
         return new com.azure.storage.common.ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
-            .setProgressReceiver(other.getProgressReceiver())
+            .setProgressListener(other.getProgressListener())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }
 
@@ -156,27 +155,13 @@ public final class ModelHelper {
         ParallelTransferOptions blobOptions) {
         Long blockSize = blobOptions.getBlockSizeLong();
         Integer maxConcurrency = blobOptions.getMaxConcurrency();
-        com.azure.storage.common.ProgressReceiver wrappedReceiver = blobOptions.getProgressListener() == null
-            ? null
-            : blobOptions.getProgressListener()::handleProgress;
         Long maxSingleUploadSize = blobOptions.getMaxSingleUploadSizeLong();
 
         return new com.azure.storage.common.ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency)
-            .setProgressReceiver(wrappedReceiver)
+            .setProgressListener(blobOptions.getProgressListener())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
-    }
-
-
-    /**
-     * Transforms a common type into a blob type.
-     * @param commonProgressReceiver {@link com.azure.storage.common.ProgressReceiver}
-     * @return {@link ProgressReceiver}
-     */
-    public static ProgressReceiver wrapCommonReceiver(
-        com.azure.storage.common.ProgressReceiver commonProgressReceiver) {
-        return commonProgressReceiver == null ? null : commonProgressReceiver::reportProgress;
     }
 
     /**
