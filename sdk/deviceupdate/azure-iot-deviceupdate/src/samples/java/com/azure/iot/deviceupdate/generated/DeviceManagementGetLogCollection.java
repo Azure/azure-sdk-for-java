@@ -11,20 +11,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceManagementClient;
 import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
-public class DeviceManagementGetLogCollectionOperation {
+public class DeviceManagementGetLogCollection {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollectionoperation.devicemanagementgetlogcollectionoperation
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollection.devicemanagementgetlogcollection
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                deviceManagementClient.getLogCollectionOperationWithResponse("SampleOperationId", requestOptions);
-        // END:
-        // com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollectionoperation.devicemanagementgetlogcollectionoperation
+                deviceManagementClient.getLogCollectionWithResponse("LogCollectionId", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollection.devicemanagementgetlogcollection
     }
 }

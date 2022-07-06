@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ## Generate autorest code
 ```yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2021-06-01-preview/deviceupdate.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b9b91929c304f8fb44002267b6c98d9fb9dde014/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2022-07-01-preview/deviceupdate.json
 java: true
 output-folder: ../
 regenerate-pom: false
@@ -42,5 +42,5 @@ azure-arm: false
 credential-types: tokencredential
 credential-scopes: https://api.adu.microsoft.com/.default
 service-versions:
-  - '2021-06-01-preview'
+  - '2022-07-01-preview'
 ```
