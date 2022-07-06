@@ -3,24 +3,9 @@
 
 package com.azure.resourcemanager.appservice;
 
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.TypeReference;
-import com.azure.resourcemanager.appservice.models.DeployOptions;
-import com.azure.resourcemanager.appservice.models.DeployType;
-import com.azure.resourcemanager.appservice.models.JavaVersion;
-import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
-import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.models.RuntimeStack;
-import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.appservice.models.WebContainer;
+import com.azure.resourcemanager.appservice.models.*;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +19,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Map;
 
 public class OneDeployTests extends AppServiceTest {
 
@@ -98,49 +82,25 @@ public class OneDeployTests extends AppServiceTest {
         KuduDeploymentResult deployResult =
             webApp1.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
 
-        Assertions.assertNotNull(deployResult.deploymentId());
-
-        // poll deployment status
-        String deploymentStatusUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint()
-            + "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus/{deploymentId}?api-version=2022-03-01";
-        deploymentStatusUrl = deploymentStatusUrl
-            .replace("{subscriptionId}", appServiceManager.subscriptionId())
-            .replace("{resourceGroupName}", rgName)
-            .replace("{name}", webAppName1)
-            .replace("{deploymentId}", deployResult.deploymentId());
+        String deploymentId = deployResult.deploymentId();
+        Assertions.assertNotNull(deploymentId);
 
         // stream logs
         webApp1.streamApplicationLogsAsync().subscribeOn(Schedulers.single()).subscribe(System.out::println);
 
         // wait for RuntimeSuccessful
-        String buildStatus = null;
-        SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        while (!"RuntimeSuccessful".equals(buildStatus)) {
+        DeploymentBuildStatus buildStatus = null;
+        while (!DeploymentBuildStatus.RUNTIME_SUCCESSFUL.equals(buildStatus)) {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
-            HttpRequest request = new HttpRequest(HttpMethod.GET, deploymentStatusUrl);
-            HttpResponse response = appServiceManager.httpPipeline().send(request).block();
-            Assertions.assertTrue(response.getStatusCode() / 100 == 2);
+            buildStatus = webApp1.getDeploymentStatusAsync(deploymentId).block();
+            Assertions.assertNotNull(buildStatus);
 
-            String body = response.getBodyAsString().block();
-            Assertions.assertNotNull(body);
-            Map<String, Object> bodyJson = serializerAdapter.deserialize(body,
-                new TypeReference<Map<String, Object>>() {
-                }.getJavaType(),
-                SerializerEncoding.JSON);
-            Assertions.assertNotNull(bodyJson);
-            if (bodyJson.containsKey("properties")) {
-                Map<String, Object> propertiesJson = (Map<String, Object>) bodyJson.get("properties");
-                if (propertiesJson.containsKey("status")) {
-                    buildStatus = (String) propertiesJson.get("status");
-                }
-            }
-
-            if (buildStatus != null && buildStatus.contains("Failed")) {
+            if (buildStatus.toString().contains("Failed")) {
                 // failed
                 break;
             }
         }
-        Assertions.assertEquals("RuntimeSuccessful", buildStatus);
+        Assertions.assertEquals(DeploymentBuildStatus.RUNTIME_SUCCESSFUL, buildStatus);
     }
 }
