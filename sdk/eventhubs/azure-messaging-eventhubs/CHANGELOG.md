@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Introducing ReactorShim to proxy certain reactive operations to appropriate Reactor operators, these are the operations for which recent Reactor versions have more optimized operators compared to an older version, or same operators with breaking change across Reactor versions
+- When available, using the backpressure aware windowTimeout operator through ReactorShim. ([23950](https://github.com/Azure/azure-sdk-for-java/issues/23950))
+
 ### Other Changes
 
 ## 5.12.1 (2022-06-10)
