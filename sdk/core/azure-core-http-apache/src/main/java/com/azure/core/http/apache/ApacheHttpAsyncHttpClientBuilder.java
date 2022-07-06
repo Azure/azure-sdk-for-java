@@ -7,63 +7,31 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
-import org.apache.hc.client5.http.impl.async.HttpAsyncClients;
-import org.apache.hc.client5.http.impl.async.MinimalHttpAsyncClient;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.nio.AsyncClientConnectionManager;
 import org.apache.hc.core5.http.EntityDetails;
-import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.HttpRequest;
 import org.apache.hc.core5.http.HttpRequestInterceptor;
 import org.apache.hc.core5.http.config.Http1Config;
 import org.apache.hc.core5.http.protocol.HttpContext;
-import org.apache.hc.core5.http2.HttpVersionPolicy;
-import org.apache.hc.core5.http2.config.H2Config;
 import org.apache.hc.core5.reactor.IOReactorConfig;
 import org.apache.hc.core5.util.Timeout;
 
-import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Objects;
-
 
 /**
  * Builder class responsible for creating instance of {@link com.azure.core.http.HttpClient} backed by
  * Apache Http Client.
  */
 public class ApacheHttpAsyncHttpClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(ApacheHttpAsyncHttpClientBuilder.class);
-
-//    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
-//    private static final long DEFAULT_CONNECT_TIMEOUT;
-//    private static final long DEFAULT_WRITE_TIMEOUT;
-//    private static final long DEFAULT_RESPONSE_TIMEOUT;
-//    private static final long DEFAULT_READ_TIMEOUT;
-
     private final CloseableHttpAsyncClient apacheHttpClient;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-//        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-//            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
-//        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-//            Duration.ofSeconds(60), LOGGER).toMillis();
-//
-//        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-//            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
-//
-//        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-//            Duration.ofSeconds(60), LOGGER).toMillis();
-    }
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;
@@ -81,7 +49,8 @@ public class ApacheHttpAsyncHttpClientBuilder {
 
     /**
      * Creates ApacheHttpAsyncHttpClientBuilder from the builder of an existing Apache HttpClient.
-     * @param apacheHttpClient
+     *
+     * @param apacheHttpClient The base implementation of Apache HttpAsyncClient that also implements ModalCloseable.
      */
     public ApacheHttpAsyncHttpClientBuilder(CloseableHttpAsyncClient apacheHttpClient) {
         this.apacheHttpClient = Objects.requireNonNull(apacheHttpClient, "'apacheHttpClient' cannot be null.");
@@ -113,21 +82,48 @@ public class ApacheHttpAsyncHttpClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the client connection manager that is used during construction of the HTTP client.
+     *
+     * @param connectionManager The manager of persistent non-blocking client connections.
+     * @return The updated ApacheHttpAsyncHttpClientBuilder object.
+     */
     public ApacheHttpAsyncHttpClientBuilder connectionManager(AsyncClientConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
         return this;
     }
 
+    /**
+     * Sets the connection manager is to be shared by multiple client instances.
+     * If the connection manager is shared its life-cycle is expected to be managed by the caller and it will
+     * not be shut down if the client is closed.
+     *
+     * @param connectionManagerShared Whether or not the connection manager can be shared by multiple clients.
+     * @return The updated ApacheHttpAsyncHttpClientBuilder object.
+     */
     public ApacheHttpAsyncHttpClientBuilder connectionManagerShared(Boolean connectionManagerShared) {
         this.connectionManagerShared = connectionManagerShared;
         return this;
     }
 
+    /**
+     * Sets the HTTP/1.1 protocol parameters.
+     *
+     * @param h1Config The object contains all HTTP/1.1 protocol parameters that apache HTTP client supports.
+     * @return The updated ApacheHttpAsyncHttpClientBuilder object.
+     */
     public ApacheHttpAsyncHttpClientBuilder h1Config(Http1Config h1Config) {
         this.h1Config = h1Config;
         return this;
     }
 
+    /**
+     * Sets the I/O reactor configuration parameters.
+     *
+     * @param ioReactorConfig The object contains all I/O reactor configuration parameters that apache HTTP client
+     *  supports.
+     * @return The updated ApacheHttpAsyncHttpClientBuilder object.
+     */
     public ApacheHttpAsyncHttpClientBuilder ioReactorConfig(IOReactorConfig ioReactorConfig) {
         this.ioReactorConfig = ioReactorConfig;
         return this;
@@ -146,6 +142,7 @@ public class ApacheHttpAsyncHttpClientBuilder {
 
         HttpAsyncClientBuilder httpClientBuilder = HttpAsyncClientBuilder.create();
 
+        // By default, to disable the automatic retries, and redirect handling.
         httpClientBuilder
             .disableAutomaticRetries()
             .disableRedirectHandling();
@@ -165,10 +162,10 @@ public class ApacheHttpAsyncHttpClientBuilder {
         httpClientBuilder.setHttp1Config(h1Config != null ? h1Config : Http1Config.DEFAULT);
 
         // I/O reactor configuration parameters.
-        httpClientBuilder.setIOReactorConfig(ioReactorConfig != null ? ioReactorConfig :
-                                                 IOReactorConfig.custom()
-                                                     .setSoTimeout(Timeout.ofSeconds(5))
-                                                     .build());
+        httpClientBuilder.setIOReactorConfig(ioReactorConfig != null ? ioReactorConfig
+                                                 : IOReactorConfig.custom()
+                                                       .setSoTimeout(Timeout.ofSeconds(5))
+                                                       .build());
 
         Configuration buildConfiguration = (configuration == null)
                                                ? Configuration.getGlobalConfiguration()
@@ -192,30 +189,15 @@ public class ApacheHttpAsyncHttpClientBuilder {
                 httpClientBuilder.setDefaultCredentialsProvider(basicCredentialsProvider);
             }
 
-            final InetAddress inetAddress = proxyAddress.getAddress();
-            if (proxyAddress != null && inetAddress != null) {
-                httpClientBuilder.setProxy(new HttpHost(inetAddress));
+            if (proxyAddress != null) {
+                httpClientBuilder.setProxy(new HttpHost(proxyAddress.getAddress()));
             }
         }
 
         // Add the interceptor to remove "Content-Length" header. In the Apache RequestContent class, if the request
         // already has HttpHeaders.CONTENT_LENGTH header, it will throw "Content-Length header already present".
-        httpClientBuilder.addRequestInterceptorFirst(new HttpRequestInterceptor() {
-            /**
-             * Processes a request.
-             * On the client side, this step is performed before the request is
-             * sent to the server. On the server side, this step is performed
-             * on incoming messages before the message body is evaluated.
-             *
-             * @param request the request to process
-             * @param entity the request entity details or {@code null} if not available
-             * @param context the context for the request
-             */
-            @Override
-            public void process(HttpRequest request, EntityDetails entity, HttpContext context) {
-                request.removeHeaders("Content-Length");
-            }
-        });
+        // Same reason applies to "Transfer-Encoding" as well.
+        httpClientBuilder.addRequestInterceptorFirst(new RemovedHeadersHttpRequestInterceptor());
 
         // Create an instance of CloseableHttpAsyncClient
         final CloseableHttpAsyncClient closeableHttpAsyncClient = httpClientBuilder.build();
@@ -224,5 +206,23 @@ public class ApacheHttpAsyncHttpClientBuilder {
         closeableHttpAsyncClient.start();
 
         return new ApacheHttpAsyncHttpClient(closeableHttpAsyncClient);
+    }
+
+    private static class RemovedHeadersHttpRequestInterceptor implements HttpRequestInterceptor {
+        /**
+         * Processes a request.
+         * On the client side, this step is performed before the request is
+         * sent to the server. On the server side, this step is performed
+         * on incoming messages before the message body is evaluated.
+         *
+         * @param request the request to process
+         * @param entity the request entity details or {@code null} if not available
+         * @param context the context for the request
+         */
+        @Override
+        public void process(HttpRequest request, EntityDetails entity, HttpContext context) {
+            request.removeHeaders("Content-Length");
+            request.removeHeaders("Transfer-Encoding");
+        }
     }
 }

@@ -8,8 +8,6 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Apache Http.
  */
@@ -45,6 +43,9 @@ public final class ApacheHttpAsyncClientProvider implements HttpClientProvider {
         enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpClient createInstance() {
         if (enableHttpClientSharing) {
@@ -53,6 +54,9 @@ public final class ApacheHttpAsyncClientProvider implements HttpClientProvider {
         return new ApacheHttpAsyncHttpClientBuilder().build();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpClient createInstance(HttpClientOptions clientOptions) {
         if (clientOptions == null) {

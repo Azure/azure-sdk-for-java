@@ -33,16 +33,7 @@ public final class ApacheHttpAsyncResponse extends ApacheHttpAsyncResponseBase {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.from(getBody().map(bf -> {
-            byte[] bytes = bf.array();
-            // Consistent with GAed behaviour.
-            if (bytes == null || bytes.length == 0) {
-                return null;
-            }
-            return bytes;
-        }));
-
-//        return FluxUtil.collectBytesInByteBufferStream(getBody());
+        return FluxUtil.collectBytesInByteBufferStream(getBody());
     }
 
     @Override

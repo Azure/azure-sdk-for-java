@@ -31,26 +31,20 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create a Vert.x HttpClient.
+Create an Apache HttpClient.
 
 ```java readme-sample-createBasicClient
-HttpClient client = new VertxAsyncHttpClientBuilder().build();
-```
-
-Create a Vert.x HttpClient using a connection timeout of 60 seconds.
-
-```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
+HttpClient client = new ApacheHttpAsyncHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy
 
-Create an Vert.x client that is using a proxy.
+Create an Apache client that is using a proxy.
 
 ```java readme-sample-createProxyClient
-HttpClient client = new VertxAsyncHttpClientBuilder()
-    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
-    .build();
+HttpClient client = new ApacheHttpAsyncHttpClientBuilder()
+                        .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+                        .build();
 ```
 
 ## Next steps

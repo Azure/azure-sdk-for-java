@@ -397,6 +397,10 @@
                     <packages>com.azure.core.http.okhttp*</packages>
                   </group>
                   <group>
+                    <title>Azure Core - HTTP - Apache</title>
+                    <packages>com.azure.core.http.apache*</packages>
+                  </group>
+                  <group>
                     <title>Azure Core - Management</title>
                     <packages>com.azure.core.management*</packages>
                   </group>

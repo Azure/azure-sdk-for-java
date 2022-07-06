@@ -9,7 +9,10 @@ module azure.core.http.apache {
     requires org.apache.httpcomponents.core5.httpcore5.reactive;
     requires org.apache.httpcomponents.core5.httpcore5.h2;
 
+    provides com.azure.core.http.HttpClientProvider
+        with com.azure.core.http.apache.ApacheHttpAsyncClientProvider;
+
+    uses com.azure.core.http.HttpClientProvider;
+
     exports com.azure.core.http.apache;
-
-
 }
