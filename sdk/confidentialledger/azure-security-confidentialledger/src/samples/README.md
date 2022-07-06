@@ -27,7 +27,20 @@ All of these samples need the endpoint to your Confidential Ledger resource, and
 
 |**File Name**|**Description**|
 |----------------|-------------|
+[CreateOrUpdateUser.java][create_or_update_user]|Add a user to a ledger or update an existing user|
+[DeleteUser.java][delete_user]|Delete a user from a ledger|
+[GetCollectionIds.java][get_collection_ids]|Get a list of all collection ids for a ledger|
+[GetConsortiumMembers.java][get_consortium_members]|Get all consortium members for a ledger|
+[GetConstitution.java][get_constitution]|Get the constitution for a ledger|
+[GetCurrentLedgerEntry.java][get_current_ledger_entry]|Get the most recent ledger entry|
+[GetEnclaveQuotes.java][get_enclave_quotes]|Get the enclave quotes for a ledger|
 |[GetLedgerEntries.java][get_ledger_entries]|List ledger entries in the confidential ledger|
+[GetLedgerEntry.java][get_ledger_entry]|Get a specific ledger entry|
+[GetLedgerIdentity.java][get_ledger_identity]|Get the identity of a ledger|
+[GetReceipt.java][get_receipt]|Get a receipt from a transaction|
+[GetTransactionStatus.java][get_transaction_status]|Get the status of a ledger entry|
+[GetUser.java][get_user]|Get specific user data from a ledger|
+[PostLedgerEntry.java][post_ledger_entry]|Add a ledger entry|
 
 ## Troubleshooting
 
