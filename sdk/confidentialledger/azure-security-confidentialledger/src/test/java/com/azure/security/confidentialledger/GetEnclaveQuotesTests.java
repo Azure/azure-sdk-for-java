@@ -4,10 +4,19 @@
 
 package com.azure.security.confidentialledger;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +25,26 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
 
     @Test
     public void testGetEnclaveQuotes() throws Exception {
-        Response<BinaryData> enclaveQuotesWithResponse = confidentialLedgerClient.getEnclaveQuotesWithResponse(null);
+       
+        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "lyshi-python-sdk");
+        // this is a built in test of getLedgerIdentity
+        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+                .getLedgerIdentityWithResponse(ledgerId, null);
+        BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+        String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+
+
+        SslContext sslContext = SslContextBuilder.forClient()
+                .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
+        reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+        System.out.println("Creating Confidential Ledger client with the certificate..." + ledgerTslCertificate);
+
+        System.out.println("GetEnclaveQuotes client = " + confidentialLedgerClient);
+        Response<BinaryData> enclaveQuotesWithResponse = confidentialLedgerClientBuilder.httpClient(httpClient).buildClient().getEnclaveQuotesWithResponse(null);
         Assertions.assertEquals(enclaveQuotesWithResponse.getStatusCode(), 200);
         BinaryData parsedResponse = enclaveQuotesWithResponse.getValue();
 

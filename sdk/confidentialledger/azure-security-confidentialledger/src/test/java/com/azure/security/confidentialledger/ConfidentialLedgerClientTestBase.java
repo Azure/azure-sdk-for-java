@@ -27,6 +27,8 @@ import java.time.OffsetDateTime;
 
 class ConfidentialLedgerClientTestBase extends TestBase {
     protected ConfidentialLedgerClient confidentialLedgerClient;
+    protected ConfidentialLedgerClientBuilder confidentialLedgerClientBuilder;
+    protected ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient;
 
     @Override
     protected void beforeTest() {
@@ -47,48 +49,33 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             } else if (getTestMode() == TestMode.LIVE) {
                 confidentialLedgerIdentityClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
             }
-            ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder
+            confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder
                     .buildClient();
             
-            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-test");
+            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "lyshi-python-sdk");
 
             System.out.println(ledgerId);
 
-            // this is a built in test of getLedgerIdentity
-            Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
-                    .getLedgerIdentityWithResponse(ledgerId, null);
-            BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
-            String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
-
-            SslContext sslContext = SslContextBuilder.forClient()
-                    .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
-            reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
-                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
-            HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
-            System.out.println("Creating Confidential Ledger client with the certificate...");
-
-            ConfidentialLedgerClientBuilder confidentialLedgerClientbuilder = new ConfidentialLedgerClientBuilder()
-                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://emily-java-sdk-test.confidential-ledger.azure.com"))
-                    .httpClient(httpClient)
+            confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
+                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://lyshi-python-sdk.confidential-ledger.azure.com"))
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
-                confidentialLedgerClientbuilder
+                confidentialLedgerClientBuilder
                         .httpClient(interceptorManager.getPlaybackClient())
                         .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
             } else if (getTestMode() == TestMode.RECORD) {
-                confidentialLedgerClientbuilder
+                confidentialLedgerClientBuilder
                         .addPolicy(interceptorManager.getRecordPolicy())
                         .credential(new DefaultAzureCredentialBuilder().build());
             } else if (getTestMode() == TestMode.LIVE) {
-                confidentialLedgerClientbuilder.credential(new AzureCliCredentialBuilder().build());
+                confidentialLedgerClientBuilder.credential(new AzureCliCredentialBuilder().build());
             }
 
-            confidentialLedgerClient = confidentialLedgerClientbuilder.buildClient();
+            confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
             System.out.println("confidentialLedgerClient = " + confidentialLedgerClient);
         } catch (Exception ex) {
             System.out.println("Error thrown from ConfidentialLedgerClientTestBase:" + ex);
         }
     }
+
 }
