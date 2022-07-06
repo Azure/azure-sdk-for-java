@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `getDeploymentStatus` in `SupportsOneDeploy`.
+
 ### Breaking Changes
 
 - Merged multiple classes `AppServiceCertificateOrderPatchResourcePropertiesAppServiceCertificateNotRenewableReasonsItem`,

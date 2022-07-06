@@ -3,10 +3,24 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.DeployOptions;
 import com.azure.resourcemanager.appservice.models.DeployType;
+import com.azure.resourcemanager.appservice.models.DeploymentBuildStatus;
 import com.azure.resourcemanager.appservice.models.DeploymentSlots;
 import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -14,19 +28,15 @@ import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
-import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import reactor.core.publisher.Mono;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Objects;
-
-import reactor.core.publisher.Mono;
 
 /** The implementation for WebApp. */
 class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
@@ -359,5 +369,44 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         } catch (IOException e) {
             return Mono.error(e);
         }
+    }
+
+    @Override
+    public DeploymentBuildStatus getDeploymentStatus(String deploymentId) {
+        // "GET" LRO is not supported in azure-core
+        String deploymentStatusUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint()
+            + "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}" +
+            "/deploymentStatus/{deploymentId}?api-version="
+            + this.manager().serviceClient().getApiVersion();
+        deploymentStatusUrl = deploymentStatusUrl
+            .replace("{subscriptionId}", this.manager().subscriptionId())
+            .replace("{resourceGroupName}", this.resourceGroupName())
+            .replace("{name}", this.name())
+            .replace("{deploymentId}", deploymentId);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, deploymentStatusUrl);
+        HttpResponse response = this.manager().httpPipeline().send(request).block();
+        if (response.getStatusCode() / 100 != 2) {
+            throw new ManagementException("Service responds with a non-20x response.", response);
+        }
+        String bodyString = response.getBodyAsString().block();
+        if (bodyString == null) {
+            return null;
+        }
+        SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        CsmDeploymentStatus inner;
+        try {
+            inner = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new ManagementException("Deserialize failed for response body.", response);
+        }
+        if (inner == null) {
+            return null;
+        }
+        return inner.status();
+    }
+
+    @Override
+    public Mono<DeploymentBuildStatus> getDeploymentStatusAsync(String deploymentId) {
+        return Mono.fromCallable(() -> getDeploymentStatus(deploymentId));
     }
 }
