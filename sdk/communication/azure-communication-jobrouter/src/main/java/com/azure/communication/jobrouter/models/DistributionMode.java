@@ -4,9 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.BestWorkerMode;
-import com.azure.communication.jobrouter.implementation.models.LongestIdleMode;
-import com.azure.communication.jobrouter.implementation.models.RoundRobinMode;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;

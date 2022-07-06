@@ -4,10 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.AzureFunctionRule;
-import com.azure.communication.jobrouter.implementation.models.DirectMapRule;
-import com.azure.communication.jobrouter.implementation.models.ExpressionRule;
-import com.azure.communication.jobrouter.implementation.models.StaticRule;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

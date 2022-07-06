@@ -3,8 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.ExceptionRule;
-
 import java.util.Map;
 
 /**

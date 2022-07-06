@@ -15,7 +15,7 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.implementation.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.implementation.models.ExceptionRule;
+import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.implementation.models.PagedExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.implementation.models.WaitTimeExceptionTrigger;

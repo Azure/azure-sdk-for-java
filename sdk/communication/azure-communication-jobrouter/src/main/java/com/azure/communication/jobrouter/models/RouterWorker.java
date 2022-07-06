@@ -4,9 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.ChannelConfiguration;
-import com.azure.communication.jobrouter.implementation.models.JobOffer;
-import com.azure.communication.jobrouter.implementation.models.WorkerAssignment;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
