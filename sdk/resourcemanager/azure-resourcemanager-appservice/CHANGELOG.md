@@ -10,7 +10,6 @@
   `AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem`, 
   `DomainPatchResourcePropertiesDomainNotRenewableReasonsItem` and `DomainPropertiesDomainNotRenewableReasonsItem` 
   into one class `ResourceNotRenewableReason`.
--  was removed.
 - `AppServiceEnvironmentPatchResource` was removed.
 - `ValidateRequest` was removed.
 
