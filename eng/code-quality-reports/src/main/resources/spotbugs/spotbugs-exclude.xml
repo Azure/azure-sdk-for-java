@@ -606,6 +606,14 @@
 
   <Match>
     <Or>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
