@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.RouterRule;
+import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;

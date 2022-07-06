@@ -5,7 +5,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
-import com.azure.communication.jobrouter.implementation.models.JobExceptionTrigger;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;

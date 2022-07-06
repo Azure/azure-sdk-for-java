@@ -31,7 +31,7 @@ import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.StaticQueueSelector;
 import com.azure.communication.jobrouter.models.StaticRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelector;
-import com.azure.communication.jobrouter.implementation.models.WorkerSelector;
+import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
