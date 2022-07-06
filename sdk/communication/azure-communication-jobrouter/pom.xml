@@ -16,11 +16,9 @@
   <artifactId>azure-communication-jobrouter</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-jobrouter;current} -->
 
-  <name>Microsoft Azure client library for JobRouter application</name>
+  <name>Microsoft Azure client library for Azure Communication Services JobRouter application</name>
   <description>
     This package contains a Java SDK for JobRouter Azure Communication Service.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-jobrouter/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-jobrouter/CHANGELOG.md.
-    Microsoft Azure Communication JobRouter quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/jobrouter/get-started?pivots=programming-language-java
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -38,9 +36,9 @@
   </scm>
 
   <properties>
-    <jacoco.min.linecoverage>0.1</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
-    <jacoco.skip>false</jacoco.skip>
+    <jacoco.min.linecoverage>0.9</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.9</jacoco.min.branchcoverage>
+    <jacoco.skip>true</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
   </properties>
 

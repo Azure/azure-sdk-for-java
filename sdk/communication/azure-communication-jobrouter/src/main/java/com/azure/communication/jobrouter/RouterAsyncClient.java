@@ -9,7 +9,7 @@ import com.azure.communication.jobrouter.implementation.convertors.DistributionP
 import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
-import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
+import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CancelJobResult;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
@@ -598,17 +598,17 @@ public final class RouterAsyncClient {
     /**
      * Creates an exception policy.
      *
-     * @param id Id of the exception policy.
-     * @param exceptionPolicy Model of exception policy properties to be patched.
+     * @param createExceptionPolicyOptions Create options for Exception Policy.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> createExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy) {
+    public Mono<Response<ExceptionPolicy>> createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         try {
-            return withContext(context -> upsertExceptionPolicyWithResponse(id, exceptionPolicy, context));
+            ExceptionPolicy exceptionPolicy = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+            return withContext(context -> upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getId(), exceptionPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1349,11 +1349,11 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResponse> acceptJobOffer(String workerId, String offerId) {
+    public Mono<AcceptJobOfferResult> acceptJobOffer(String workerId, String offerId) {
         try {
             return withContext(context -> acceptJobOfferWithResponse(workerId, offerId, context)
                 .flatMap(
-                    (Response<AcceptJobOfferResponse> res) -> {
+                    (Response<AcceptJobOfferResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -1376,7 +1376,7 @@ public final class RouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String workerId, String offerId) {
+    public Mono<Response<AcceptJobOfferResult>> acceptJobOfferWithResponse(String workerId, String offerId) {
         try {
             return withContext(context -> acceptJobOfferWithResponse(workerId, offerId, context));
         } catch (RuntimeException ex) {
@@ -1384,7 +1384,7 @@ public final class RouterAsyncClient {
         }
     }
 
-    Mono<Response<AcceptJobOfferResponse>> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
+    Mono<Response<AcceptJobOfferResult>> acceptJobOfferWithResponse(String workerId, String offerId, Context context) {
         try {
             return jobRouter.acceptJobActionWithResponseAsync(workerId, offerId, context);
         } catch (RuntimeException ex) {
