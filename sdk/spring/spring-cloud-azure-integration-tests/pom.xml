@@ -27,18 +27,24 @@
 
   <properties>
     <skipSpringITs>true</skipSpringITs>
+    <spring-cloud-azure-dependencies>4.3.0-beta.1</spring-cloud-azure-dependencies> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
+      <version>${spring-cloud-azure-dependencies}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
+      <version>${spring-cloud-azure-dependencies}</version>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
-      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
+      <version>${spring-cloud-azure-dependencies}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

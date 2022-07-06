@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    azure:
+      cosmos:
+        credential:
+          client-id: ${COSMOS_CLIENT_ID}
+          client-secret: ${COSMOS_CLIENT_SECRET}
+
