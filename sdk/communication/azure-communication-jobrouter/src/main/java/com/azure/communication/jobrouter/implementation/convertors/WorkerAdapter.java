@@ -28,12 +28,12 @@ public class WorkerAdapter {
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
 
         Map<String, QueueAssignment> queueAssignmentsMap = createWorkerOptions.getQueueAssignments();
-        Map<String, QueueAssignment> queueAssignments = queueAssignmentsMap.entrySet().stream()
+        Map<String, Object> queueAssignments = queueAssignmentsMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterWorker()
             .setLabels(labels)
             .setTags(createWorkerOptions.getTags())
-            .setQueueAssignments(createWorkerOptions.getQueueAssignments())
+            .setQueueAssignments(queueAssignments)
             .setAvailableForOffers(createWorkerOptions.getAvailableForOffers())
             .setChannelConfigurations(createWorkerOptions.getChannelConfigurations())
             .setTotalCapacity(createWorkerOptions.getTotalCapacity());
@@ -48,10 +48,14 @@ public class WorkerAdapter {
         Map<String, LabelValue> labelValueMap = updateWorkerOptions.getLabels();
         Map<String, Object> labels = labelValueMap.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
+
+        Map<String, QueueAssignment> queueAssignmentsMap = updateWorkerOptions.getQueueAssignments();
+        Map<String, Object> queueAssignments = queueAssignmentsMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterWorker()
             .setLabels(labels)
             .setTags(updateWorkerOptions.getTags())
-            .setQueueAssignments(updateWorkerOptions.getQueueAssignments())
+            .setQueueAssignments(queueAssignments)
             .setAvailableForOffers(updateWorkerOptions.getAvailableForOffers())
             .setChannelConfigurations(updateWorkerOptions.getChannelConfigurations())
             .setTotalCapacity(updateWorkerOptions.getTotalCapacity());

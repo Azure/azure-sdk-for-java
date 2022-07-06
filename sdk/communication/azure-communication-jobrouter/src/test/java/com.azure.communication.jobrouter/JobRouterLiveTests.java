@@ -25,6 +25,7 @@ import com.azure.communication.jobrouter.implementation.models.QueueSelector;
 import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.implementation.models.RoundRobinMode;
 import com.azure.communication.jobrouter.models.LabelValue;
+import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.StaticQueueSelector;
@@ -316,9 +317,9 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        Map<String, Object> queueAssignments = new HashMap<String, Object>() {
+        Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
             {
-                put(jobQueue.getId(), new Object());
+                put(jobQueue.getId(), new QueueAssignment(new Object()));
             }
         };
 
