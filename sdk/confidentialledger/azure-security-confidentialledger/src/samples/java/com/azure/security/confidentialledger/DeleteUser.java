@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.confidentialledger.ConfidentialLedgerClient;
-import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
 
 public class DeleteUser {
     public static void main(String[] args) {

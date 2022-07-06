@@ -8,8 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.confidentialledger.ConfidentialLedgerClient;
-import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
 
 public class GetLedgerEntries {
     public static void main(String[] args) {
