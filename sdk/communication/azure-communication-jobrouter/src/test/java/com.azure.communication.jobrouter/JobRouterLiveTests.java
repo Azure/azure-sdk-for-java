@@ -18,7 +18,7 @@ import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.implementation.models.LabelOperator;
+import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.implementation.models.QueueSelector;
