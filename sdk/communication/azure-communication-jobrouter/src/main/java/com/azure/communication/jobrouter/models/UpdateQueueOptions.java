@@ -48,7 +48,7 @@ public class UpdateQueueOptions extends QueueOptions {
      * @param labels A set of key/value pairs that are identifying attributes used by the rules engines to make decisions.
      * @return this
      */
-    public UpdateQueueOptions setLabels(Map<String, Object> labels) {
+    public UpdateQueueOptions setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }

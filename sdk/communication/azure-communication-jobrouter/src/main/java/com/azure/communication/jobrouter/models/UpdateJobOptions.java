@@ -99,7 +99,7 @@ public class UpdateJobOptions extends JobOptions {
      *   rules engines to make decisions.
      * @return this
      */
-    public UpdateJobOptions setLabels(Map<String, Object> labels) {
+    public UpdateJobOptions setLabels(Map<String, LabelValue> labels) {
         this.labels = labels;
         return this;
     }

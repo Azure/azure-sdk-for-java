@@ -29,7 +29,7 @@ public abstract class QueueOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    protected Map<String, Object> labels;
+    protected Map<String, LabelValue> labels;
 
     /**
      * (Optional) The ID of the exception policy that determines various job
@@ -65,7 +65,7 @@ public abstract class QueueOptions {
      * Returns labels of Queue.
      * @return labels
      */
-    public Map<String, Object> getLabels() {
+    public Map<String, LabelValue> getLabels() {
         return this.labels;
     }
 

@@ -7,7 +7,7 @@ import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutin
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
 import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.QueueAdapter;
-import com.azure.communication.jobrouter.implementation.convertors.RouterJobAdapter;
+import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.CancelJobResult;
@@ -23,7 +23,7 @@ import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.JobPositionDetails;
-import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.implementation.models.JobQueue;
 import com.azure.communication.jobrouter.models.JobStateSelector;
 import com.azure.communication.jobrouter.implementation.models.PagedClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.PagedDistributionPolicy;
@@ -33,8 +33,8 @@ import com.azure.communication.jobrouter.implementation.models.PagedQueue;
 import com.azure.communication.jobrouter.implementation.models.PagedWorker;
 import com.azure.communication.jobrouter.models.QueueStatistics;
 import com.azure.communication.jobrouter.models.ReclassifyJobResult;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.implementation.models.RouterJob;
+import com.azure.communication.jobrouter.implementation.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UpdateQueueOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 import com.azure.communication.jobrouter.models.WorkerStateSelector;
@@ -818,7 +818,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         try {
-            RouterJob routerJob = RouterJobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
             return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -845,7 +845,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
         try {
-            RouterJob routerJob = RouterJobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
+            RouterJob routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
             return withContext(context -> upsertJobWithResponse(createJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -864,7 +864,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> updateJob(UpdateJobOptions updateJobOptions) {
         try {
-            RouterJob routerJob = RouterJobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
             return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context)
                 .flatMap(
                     (Response<RouterJob> res) -> {
@@ -891,7 +891,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouterJob>> updateJobWithResponse(UpdateJobOptions updateJobOptions) {
         try {
-            RouterJob routerJob = RouterJobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
+            RouterJob routerJob = JobAdapter.convertUpdateJobOptionsToRouterJob(updateJobOptions);
             return withContext(context -> upsertJobWithResponse(updateJobOptions.getId(), routerJob, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

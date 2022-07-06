@@ -3,14 +3,18 @@
 
 package com.azure.communication.jobrouter.implementation.convertors;
 
-import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.LabelValue;
+import com.azure.communication.jobrouter.implementation.models.RouterJob;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Converts request options for create and update Job to {@link RouterJob}.
  */
-public class RouterJobAdapter {
+public class JobAdapter {
 
     /**
      * Converts {@link CreateJobOptions} to {@link RouterJob}.
@@ -18,10 +22,13 @@ public class RouterJobAdapter {
      * @return RouterJob
      */
     public static RouterJob convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
+        Map<String, LabelValue> labelValueMap = createJobOptions.getLabels();
+        Map<String, Object> labels = labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterJob()
             .setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
-            .setLabels(createJobOptions.getLabels())
+            .setLabels(labels)
             .setNotes(createJobOptions.getNotes())
             .setPriority(createJobOptions.getPriority())
             .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
@@ -37,10 +44,13 @@ public class RouterJobAdapter {
      * @return RouterJob
      */
     public static RouterJob convertUpdateJobOptionsToRouterJob(UpdateJobOptions updateJobOptions) {
+        Map<String, LabelValue> labelValueMap = updateJobOptions.getLabels();
+        Map<String, Object> labels = labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()));
         return new RouterJob()
             .setChannelId(updateJobOptions.getChannelId())
             .setChannelReference(updateJobOptions.getChannelReference())
-            .setLabels(updateJobOptions.getLabels())
+            .setLabels(labels)
             .setNotes(updateJobOptions.getNotes())
             .setPriority(updateJobOptions.getPriority())
             .setClassificationPolicyId(updateJobOptions.getClassificationPolicyId())

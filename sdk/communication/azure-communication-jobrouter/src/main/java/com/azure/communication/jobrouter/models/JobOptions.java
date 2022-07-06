@@ -57,7 +57,7 @@ public abstract class JobOptions {
      * A set of key/value pairs that are identifying attributes used by the
      * rules engines to make decisions.
      */
-    protected Map<String, Object> labels;
+    protected Map<String, LabelValue> labels;
 
     /**
      * A set of non-identifying attributes attached to this job.
@@ -139,7 +139,7 @@ public abstract class JobOptions {
      * rules engines to make decisions.
      * @return labels
      */
-    public Map<String, Object> getLabels() {
+    public Map<String, LabelValue> getLabels() {
         return this.labels;
     }
 

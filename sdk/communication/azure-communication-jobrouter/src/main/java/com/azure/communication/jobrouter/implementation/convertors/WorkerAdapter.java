@@ -5,7 +5,7 @@ package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
-import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.implementation.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UpdateJobOptions;
 import com.azure.communication.jobrouter.models.UpdateWorkerOptions;
 

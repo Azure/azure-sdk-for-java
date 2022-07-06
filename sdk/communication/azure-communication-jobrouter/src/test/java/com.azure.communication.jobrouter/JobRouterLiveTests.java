@@ -17,15 +17,16 @@ import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.implementation.models.ExceptionRule;
-import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.implementation.models.JobQueue;
 import com.azure.communication.jobrouter.implementation.models.LabelOperator;
 import com.azure.communication.jobrouter.implementation.models.LongestIdleMode;
 import com.azure.communication.jobrouter.implementation.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.implementation.models.QueueSelector;
 import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.implementation.models.RoundRobinMode;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterWorker;
+import com.azure.communication.jobrouter.models.LabelValue;
+import com.azure.communication.jobrouter.implementation.models.RouterJob;
+import com.azure.communication.jobrouter.implementation.models.RouterWorker;
 import com.azure.communication.jobrouter.implementation.models.StaticQueueSelector;
 import com.azure.communication.jobrouter.implementation.models.StaticRule;
 import com.azure.communication.jobrouter.implementation.models.StaticWorkerSelector;
@@ -295,9 +296,9 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
          */
         String workerId = String.format("%s-Worker", JAVA_LIVE_TEST);
 
-        Map<String, Object> labels = new HashMap<String, Object>() {
+        Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
             {
-                put("Label", "Value");
+                put("Label", new LabelValue("Value"));
             }
         };
 
