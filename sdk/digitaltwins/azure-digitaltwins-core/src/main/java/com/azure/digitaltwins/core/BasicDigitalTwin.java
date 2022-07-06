@@ -4,16 +4,14 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinDeserializer;
-import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinSerializer;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -32,8 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
-@JsonDeserialize(using = BasicDigitalTwinDeserializer.class)
-@JsonSerialize(using = BasicDigitalTwinSerializer.class)
 public final class BasicDigitalTwin {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ID, required = true)
@@ -42,7 +38,7 @@ public final class BasicDigitalTwin {
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_ETAG, required = true)
     private String etag;
 
-    @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)
+    @JsonIgnore
     private OffsetDateTime lastUpdatedOn;
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA, required = true)
@@ -146,5 +142,23 @@ public final class BasicDigitalTwin {
     public BasicDigitalTwin addToContents(String key, Object value) {
         this.contents.put(key, value);
         return this;
+    }
+    
+    /**
+     * Unwraps the raw metadata received from the service and extracts the "$lastUpdateTime" property.
+     * @param metadata The metadata of the digital twin.
+     */
+    @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA)
+    private void unwrapMetadata(Map<String, Object> metadata) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        
+        String lastUpdatedOnString;
+        if ((lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)) != null) {
+            this.lastUpdatedOn = OffsetDateTime.parse(lastUpdatedOnString);
+            metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        }
+        
+        this.metadata = mapper.convertValue(metadata, BasicDigitalTwinMetadata.class);
     }
 }

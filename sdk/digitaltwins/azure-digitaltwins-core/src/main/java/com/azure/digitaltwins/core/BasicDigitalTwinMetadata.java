@@ -4,16 +4,12 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinMetadataDeserializer;
-import com.azure.digitaltwins.core.implementation.serializer.BasicDigitalTwinMetadataSerializer;
 import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +21,6 @@ import java.util.Map;
  */
 @Fluent
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonDeserialize(using = BasicDigitalTwinMetadataDeserializer.class)
-@JsonSerialize(using = BasicDigitalTwinMetadataSerializer.class)
 public final class BasicDigitalTwinMetadata {
     
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
