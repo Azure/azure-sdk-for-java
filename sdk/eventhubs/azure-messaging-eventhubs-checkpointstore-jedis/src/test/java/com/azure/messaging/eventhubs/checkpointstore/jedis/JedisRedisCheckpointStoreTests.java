@@ -47,12 +47,9 @@ public class JedisRedisCheckpointStoreTests {
 
     @Test
     public void testListCheckpoints() {
-        //arrange
         Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
-
         Set<String> value = new HashSet<>();
         value.add(KEY);
-
         byte[] bytes = jsonSerializer.serializeToBytes(checkpoint);
         List<String> list = Collections.singletonList(new String(bytes, StandardCharsets.UTF_8));
 
@@ -148,7 +145,6 @@ public class JedisRedisCheckpointStoreTests {
     public void testUpdateCheckpoint() {
         Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
 
-        //Test will change when claimOwnership is fully implemented
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.exists(PREFIX)).thenReturn(true);
 

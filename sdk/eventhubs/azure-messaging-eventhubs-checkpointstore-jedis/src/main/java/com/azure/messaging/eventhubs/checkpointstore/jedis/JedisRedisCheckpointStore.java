@@ -37,7 +37,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * This method returns the list of partitions that were owned successfully.
      *
      * @param requestedPartitionOwnerships List of partition ownerships from the current instance
-     * @return Null
+     * @return Flux of PartitionOwnership objects
      */
     @Override
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
@@ -69,7 +69,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
      * @param consumerGroup The consumer group name associated with the checkpoint
-     * @return Null
+     * @return Flux of Checkpoint objects
      */
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
@@ -101,11 +101,12 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
     }
 
-    /**
+    /** This method returns the list of ownership records from the underlying data store, and if no ownership records are available, then it returns empty results.
+     *
      * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
      * @param consumerGroup The consumer group name associated with the checkpoint
-     * @return Null
+     * @return Flux of PartitionOwnership objects
      */
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
@@ -142,7 +143,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * This method updates the checkpoint in the Jedis resource for a given partition.
      *
      * @param checkpoint Checkpoint information for this partition
-     * @return Null
+     * @return Mono that completes if no errors take place
      */
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
