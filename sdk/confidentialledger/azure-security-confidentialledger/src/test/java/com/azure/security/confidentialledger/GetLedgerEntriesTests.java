@@ -59,7 +59,6 @@ public final class GetLedgerEntriesTests extends ConfidentialLedgerClientTestBas
         while (iterator.hasNext()) {
             BinaryData nextEntry = iterator.next();
             lastEntry =  nextEntry.toString();
-            // System.out.println(nextEntry.toString());
             
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseBodyJson = null;
@@ -70,9 +69,6 @@ public final class GetLedgerEntriesTests extends ConfidentialLedgerClientTestBas
                 e.printStackTrace();
                 Assertions.assertTrue(false);
             }
-
-            //System.out.println(responseBodyJson);
         }
-        System.out.println(lastEntry);
     }
 }

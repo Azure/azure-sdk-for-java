@@ -27,6 +27,7 @@ All of these samples need the endpoint to your Confidential Ledger resource, and
 
 |**File Name**|**Description**|
 |----------------|-------------|
+[ConfidentialLedgerClientBase.java][confidential_ledger_client_base]|Sample code to configure your client base with|
 [CreateOrUpdateUser.java][create_or_update_user]|Add a user to a ledger or update an existing user|
 [DeleteUser.java][delete_user]|Delete a user from a ledger|
 [GetCollectionIds.java][get_collection_ids]|Get a list of all collection ids for a ledger|
@@ -61,4 +62,19 @@ If you would like to become an active contributor to this project please refer t
 <!-- [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/README.md#key-concepts -->
 <!-- [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/README.md#include-the-package -->
 <!-- [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/README.md#next-steps -->
+
 <!-- [get_ledger_entries]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetLedgerEntries.java -->
+<!-- [delete_user]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/DeleteUser.java -->
+<!-- [confidential_ledger_client_base]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/ConfidentialLedgerClientBase.java -->
+<!-- [post_ledger_entry]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/PostLedgerEntry.java -->
+<!-- [get_user]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetUser.java -->
+<!-- [create_or_update_user]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/CreateOrUpdateUser.java -->
+<!-- [get_collection_ids]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetCollectionIds.java -->
+<!-- [get_consortium_members]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetConsortiumMembers.java -->
+<!-- [get_constitution]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetConstitution.java -->
+<!-- [get_current_ledger_entry]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetCurrentLedgerEntry.java -->
+<!-- [get_enclave_quotes]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetEnclaveQuotes.java -->
+<!-- [get_ledger_entry]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetLedgerEntry.java -->
+<!-- [get_ledger_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetLedgerIdentity.java -->
+<!-- [get_receipt]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetReceipt.java -->
+<!-- [get_transaction_status]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java/com/azure/data/confidentialledger/GetTransactionStatus.java -->
