@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions Delete. */
 public final class EventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_DeleteForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForCustomTopic.
@@ -27,7 +27,7 @@ public final class EventSubscriptionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_DeleteForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForResourceGroup.
@@ -45,7 +45,7 @@ public final class EventSubscriptionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_DeleteForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForSubscription.
@@ -60,7 +60,7 @@ public final class EventSubscriptionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_DeleteForResource.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForResource.

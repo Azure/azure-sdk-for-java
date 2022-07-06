@@ -78,6 +78,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
   val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
   val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
+  val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
@@ -135,6 +136,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedStartFrom,
     ChangeFeedMode,
     ChangeFeedItemCountPerTriggerHint,
+    ChangeFeedBatchCheckpointLocation,
     ThroughputControlEnabled,
     ThroughputControlName,
     ThroughputControlTargetThroughput,
@@ -242,8 +244,7 @@ private object CosmosConfig {
 private case class CosmosAccountConfig(endpoint: String,
                                        key: String,
                                        accountName: String,
-                                       applicationName:
-                                       Option[String],
+                                       applicationName: Option[String],
                                        useGatewayMode: Boolean,
                                        disableTcpConnectionEndpointRediscovery: Boolean,
                                        preferredRegionsList: Option[Array[String]])
@@ -1055,7 +1056,8 @@ private case class CosmosChangeFeedConfig
   changeFeedMode: ChangeFeedMode,
   startFrom: ChangeFeedStartFromMode,
   startFromPointInTime: Option[Instant],
-  maxItemCountPerTrigger: Option[Long]
+  maxItemCountPerTrigger: Option[Long],
+  batchCheckpointLocation: Option[String]
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -1117,6 +1119,16 @@ private object CosmosChangeFeedConfig {
     parseFromStringFunction = maxItemCount => maxItemCount.toInt,
     helpMessage = "Approximate maximum number of items read from change feed for each trigger")
 
+  private val batchCheckpointLocation = CosmosConfigEntry[String](
+    key = CosmosConfigNames.ChangeFeedBatchCheckpointLocation,
+    mandatory = false,
+    parseFromStringFunction = location => location,
+    helpMessage = "Location of the checkpoint file used for a change feed query via batch. In Spark streaming the " +
+      "`checkpointLocation` is used (independent of which Spark connector gets used) - but for Batch this " +
+      "proprietary property needs to be used. If no file exists at the location the StartFrom settings are applied " +
+      "instead. If this config is set and a file exists the StartFrom settings are ignored and instead the change " +
+      "feed will be processed from the previous position.")
+
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
       val trimmed = sf.trim
@@ -1139,12 +1151,14 @@ private object CosmosChangeFeedConfig {
       case Some(PointInTime) => CosmosConfigEntry.parse(cfg, startFromPointInTime)
       case _ => None
     }
+    val batchCheckpointLocationParsed = CosmosConfigEntry.parse(cfg, batchCheckpointLocation)
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
       startFromModeParsed.getOrElse(DefaultStartFromMode),
       startFromPointInTimeParsed,
-      maxItemCountPerTriggerHintParsed)
+      maxItemCountPerTriggerHintParsed,
+      batchCheckpointLocationParsed)
   }
 }
 

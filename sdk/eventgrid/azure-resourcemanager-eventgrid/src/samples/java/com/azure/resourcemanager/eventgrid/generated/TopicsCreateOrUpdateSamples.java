@@ -4,12 +4,9 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
-import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.ResourceKind;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +14,7 @@ import java.util.Map;
 /** Samples for Topics CreateOrUpdate. */
 public final class TopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_CreateOrUpdate.json
      */
     /**
      * Sample code: Topics_CreateOrUpdate.
@@ -37,31 +34,6 @@ public final class TopicsCreateOrUpdateSamples {
                     .asList(
                         new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),
                         new InboundIpRule().withIpMask("12.18.176.1").withAction(IpActionType.ALLOW)))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_CreateOrUpdateForAzureArc.json
-     */
-    /**
-     * Sample code: Topics_CreateOrUpdateForAzureArc.
-     *
-     * @param manager Entry point to EventGridManager.
-     */
-    public static void topicsCreateOrUpdateForAzureArc(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .topics()
-            .define("exampletopic1")
-            .withRegion("westus2")
-            .withExistingResourceGroup("examplerg")
-            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withKind(ResourceKind.AZURE_ARC)
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.ExtendedLocation/CustomLocations/exampleCustomLocation")
-                    .withType("CustomLocation"))
-            .withInputSchema(InputSchema.CLOUD_EVENT_SCHEMA_V1_0)
             .create();
     }
 

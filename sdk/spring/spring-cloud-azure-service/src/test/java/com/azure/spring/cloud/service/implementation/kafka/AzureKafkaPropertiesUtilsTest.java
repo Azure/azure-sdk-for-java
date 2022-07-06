@@ -37,7 +37,7 @@ class AzureKafkaPropertiesUtilsTest {
                 assertTrue(Boolean.valueOf(mapping.getter().apply(properties)));
             } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
                 assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA,
-                    AzureProfileOptionsProvider.CloudType.get(mapping.getter().apply(properties)));
+                    AzureProfileOptionsProvider.CloudType.fromString(mapping.getter().apply(properties)));
             } else {
                 assertEquals(mapping.propertyKey() + ".test", mapping.getter().apply(properties));
             }
@@ -61,7 +61,7 @@ class AzureKafkaPropertiesUtilsTest {
                 assertFalse(Boolean.valueOf(customKafkaConfigs.get(mapping.propertyKey())));
             } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
                 assertEquals(AzureProfileOptionsProvider.CloudType.AZURE,
-                    AzureProfileOptionsProvider.CloudType.get(customKafkaConfigs.get(mapping.propertyKey())));
+                    AzureProfileOptionsProvider.CloudType.fromString(customKafkaConfigs.get(mapping.propertyKey())));
             } else {
                 assertEquals(mapping.propertyKey() + ".override", customKafkaConfigs.get(mapping.propertyKey()));
             }
@@ -81,7 +81,7 @@ class AzureKafkaPropertiesUtilsTest {
                 assertTrue(Boolean.valueOf(customKafkaConfigs.get(mapping.propertyKey())));
             } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
                 assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA,
-                    AzureProfileOptionsProvider.CloudType.get(customKafkaConfigs.get(mapping.propertyKey())));
+                    AzureProfileOptionsProvider.CloudType.fromString(customKafkaConfigs.get(mapping.propertyKey())));
             } else {
                 assertEquals(mapping.propertyKey() + ".test", customKafkaConfigs.get(mapping.propertyKey()));
             }
