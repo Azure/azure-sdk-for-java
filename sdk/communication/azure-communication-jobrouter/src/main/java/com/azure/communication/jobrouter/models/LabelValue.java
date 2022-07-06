@@ -11,7 +11,7 @@ public class LabelValue {
     /**
      * Value to pass to server.
      */
-    private Object value;
+    private final Object value;
 
     /**
      * Constructor for numerical value.

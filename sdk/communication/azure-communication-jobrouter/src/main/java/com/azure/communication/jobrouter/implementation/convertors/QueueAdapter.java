@@ -4,7 +4,7 @@
 package com.azure.communication.jobrouter.implementation.convertors;
 
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.implementation.models.JobQueue;
+import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.UpdateQueueOptions;
 
