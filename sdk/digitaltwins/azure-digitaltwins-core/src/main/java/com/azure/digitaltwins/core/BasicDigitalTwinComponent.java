@@ -16,6 +16,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Properties on a component that adhere to a specific model.
@@ -94,7 +95,6 @@ public final class BasicDigitalTwinComponent {
      * Unwraps the raw metadata received from the service and extracts the "$lastUpdateTime" property.
      * @param metadata The metadata of the component.
      */
-    @SuppressWarnings("unchecked")
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA)
     private void unwrapMetadata(Map<String, Object> metadata) {
         ObjectMapper mapper = new ObjectMapper();
@@ -106,6 +106,8 @@ public final class BasicDigitalTwinComponent {
             metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         }
         
-        this.metadata = mapper.convertValue(metadata, (Class<? extends Map<String, DigitalTwinPropertyMetadata>>) Map.class);
+        for (Entry<String, Object> metadataEntry : metadata.entrySet()) {
+            this.metadata.put(metadataEntry.getKey(), mapper.convertValue(metadataEntry.getValue(), DigitalTwinPropertyMetadata.class));
+        }
     }
 }
