@@ -6,8 +6,6 @@ package com.azure.storage.file.datalake.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 
-import java.util.Arrays;
-
 /**
  * Optional parameters for appending data to a file.
  */
