@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces Update. */
 public final class PartnerNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Update.json
      */
     /**
      * Sample code: PartnerNamespaces_Update.

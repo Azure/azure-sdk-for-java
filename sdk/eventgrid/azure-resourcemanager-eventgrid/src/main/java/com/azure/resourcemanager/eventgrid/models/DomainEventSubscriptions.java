@@ -12,6 +12,35 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 /** Resource collection API of DomainEventSubscriptions. */
 public interface DomainEventSubscriptions {
     /**
+     * Get all delivery attributes for an event subscription for domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain.
+     */
+    DeliveryAttributeListResult getDeliveryAttributes(
+        String resourceGroupName, String domainName, String eventSubscriptionName);
+
+    /**
+     * Get all delivery attributes for an event subscription for domain.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription for domain along with {@link Response}.
+     */
+    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
+        String resourceGroupName, String domainName, String eventSubscriptionName, Context context);
+
+    /**
      * Get properties of an event subscription of a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
@@ -207,33 +236,4 @@ public interface DomainEventSubscriptions {
      */
     PagedIterable<EventSubscription> list(
         String resourceGroupName, String domainName, String filter, Integer top, Context context);
-
-    /**
-     * Get all delivery attributes for an event subscription for domain.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain.
-     */
-    DeliveryAttributeListResult getDeliveryAttributes(
-        String resourceGroupName, String domainName, String eventSubscriptionName);
-
-    /**
-     * Get all delivery attributes for an event subscription for domain.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain along with {@link Response}.
-     */
-    Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String domainName, String eventSubscriptionName, Context context);
 }
