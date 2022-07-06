@@ -7,12 +7,10 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
-import com.azure.core.util.UrlBuilder
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
@@ -60,9 +58,9 @@ import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
-import spock.lang.Ignore
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -74,6 +72,7 @@ import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -1274,7 +1273,7 @@ class BlobAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = 0
+        def prevCount = new AtomicLong()
 
         when:
         bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1297,10 +1296,10 @@ class BlobAPITest extends APISpec {
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
         (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount)) {
+            if (!(bytesTransferred >= prevCount.get())) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount = bytesTransferred
+                prevCount.set(bytesTransferred)
             }
         }
 

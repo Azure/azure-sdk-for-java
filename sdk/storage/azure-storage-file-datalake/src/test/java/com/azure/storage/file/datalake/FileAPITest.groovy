@@ -75,6 +75,7 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -2163,7 +2164,7 @@ class FileAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = 0
+        def prevCount = new AtomicLong()
 
         when:
         fc.readToFileWithResponse(outFile.toPath().toString(), null,
@@ -2186,10 +2187,10 @@ class FileAPITest extends APISpec {
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
         (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount)) {
+            if (!(bytesTransferred >= prevCount.get())) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount = bytesTransferred
+                prevCount.set(bytesTransferred)
             }
         }
 

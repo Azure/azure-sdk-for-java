@@ -58,6 +58,7 @@ import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH
@@ -1692,7 +1693,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = 0
+        def prevCount = new AtomicLong()
 
         when:
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1715,10 +1716,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
         (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount)) {
+            if (!(bytesTransferred >= prevCount.get())) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount = bytesTransferred
+                prevCount.set(bytesTransferred)
             }
         }
 
