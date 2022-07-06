@@ -3,12 +3,17 @@
 
 package com.azure.resourcemanager.appservice;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.appservice.fluent.models.TldLegalAgreementInner;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.stream.Collectors;
 
 public class DomainsTests extends AppServiceTest {
     private final String domainName = "javatest720.com";
@@ -46,5 +51,13 @@ public class DomainsTests extends AppServiceTest {
         //        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
         Assertions.assertNotNull(domain);
         domain.update().withAutoRenewEnabled(false).apply();
+    }
+
+    @Test
+    @Disabled("Service didn't deploy topLevelDomains to 2022-03-01, need them to fix it.")
+    public void canListTopLevelDomainsAgreements() {
+        PagedIterable<TldLegalAgreementInner> iterable = appServiceManager.serviceClient().getTopLevelDomains()
+            .listAgreements("foo", new TopLevelDomainAgreementOption());
+        Assertions.assertNotNull(iterable.stream().collect(Collectors.toList()));
     }
 }
