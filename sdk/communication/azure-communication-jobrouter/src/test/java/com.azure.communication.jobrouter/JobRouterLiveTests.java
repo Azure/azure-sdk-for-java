@@ -319,7 +319,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
             {
-                put(jobQueue.getId(), new QueueAssignment(new Object()));
+                put(jobQueue.getId(), new QueueAssignment());
             }
         };
 
