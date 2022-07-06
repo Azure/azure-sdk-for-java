@@ -10,10 +10,12 @@ import com.azure.communication.callingserver.implementation.ServerCallingsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
 import com.azure.communication.callingserver.implementation.converters.AcsCallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.ErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CallLocatorInternal;
 import com.azure.communication.callingserver.implementation.models.CallLocatorKindInternal;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
@@ -45,6 +47,7 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -100,16 +103,16 @@ public final class CallingServerAsyncClient {
     private final String resourceEndpoint;
 
     CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
-        callConnectionInternal = callServiceClient.getCallConnections();
-        serverCallingInternal = callServiceClient.getServerCallings();
-        serverCallsInternal = callServiceClient.getServerCalls();
-        contentsInternal = callServiceClient.getContents();
-        logger = new ClientLogger(CallingServerAsyncClient.class);
-        contentDownloader = new ContentDownloader(
+        this.callConnectionInternal = callServiceClient.getCallConnections();
+        this.serverCallingInternal = callServiceClient.getServerCallings();
+        this.serverCallsInternal = callServiceClient.getServerCalls();
+        this.contentsInternal = callServiceClient.getContents();
+        this.logger = new ClientLogger(CallingServerAsyncClient.class);
+        this.contentDownloader = new ContentDownloader(
             callServiceClient.getEndpoint(),
             callServiceClient.getHttpPipeline());
-        httpPipelineInternal = callServiceClient.getHttpPipeline();
-        resourceEndpoint = callServiceClient.getEndpoint();
+        this.httpPipelineInternal = callServiceClient.getHttpPipeline();
+        this.resourceEndpoint = callServiceClient.getEndpoint();
     }
 
     //region Pre-call Actions
@@ -122,6 +125,7 @@ public final class CallingServerAsyncClient {
      * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
      *                       Required only when inviting a PSTN participant. Optional
      * @param subject The subject. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -140,6 +144,7 @@ public final class CallingServerAsyncClient {
      * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
      *                       Required only when inviting a PSTN participant. Optional
      * @param subject The subject. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -173,8 +178,9 @@ public final class CallingServerAsyncClient {
                 .setCallbackUri(callbackUri)
                 .setSubject(subject);
 
-            return serverCallingInternal.createCallWithResponseAsync(request, context).map(
-                response -> new SimpleResponse<>(response, new CallConnection(response.getValue())));
+            return serverCallingInternal.createCallWithResponseAsync(request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -185,6 +191,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUri The call back uri. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -198,6 +205,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUri The call back uri. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -217,6 +225,7 @@ public final class CallingServerAsyncClient {
                 .setCallbackUri(callbackUri);
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -228,6 +237,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -241,6 +251,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -258,7 +269,8 @@ public final class CallingServerAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setTarget(CommunicationIdentifierConverter.convert(target));
 
-            return serverCallingInternal.redirectCallWithResponseAsync(request, context);
+            return serverCallingInternal.redirectCallWithResponseAsync(request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -269,6 +281,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callRejectReason The reason why call is rejected. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -282,6 +295,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callRejectReason The reason why call is rejected. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -299,7 +313,8 @@ public final class CallingServerAsyncClient {
                 .setIncomingCallContext(incomingCallContext)
                 .setCallRejectReason(CallRejectReason.fromString(callRejectReason));
 
-            return serverCallingInternal.rejectCallWithResponseAsync(request, context);
+            return serverCallingInternal.rejectCallWithResponseAsync(request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -311,6 +326,7 @@ public final class CallingServerAsyncClient {
      * Get call connection properties.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -323,6 +339,7 @@ public final class CallingServerAsyncClient {
      * Get call connection properties.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -335,8 +352,9 @@ public final class CallingServerAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
 
-            return callConnectionInternal.getCallWithResponseAsync(callConnectionId, context).map(response ->
-                new SimpleResponse<>(response, new CallConnection(response.getValue())));
+            return callConnectionInternal.getCallWithResponseAsync(callConnectionId, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -346,6 +364,7 @@ public final class CallingServerAsyncClient {
      * Hangup a call.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
@@ -358,6 +377,7 @@ public final class CallingServerAsyncClient {
      * Hangup a call.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
@@ -370,7 +390,8 @@ public final class CallingServerAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
 
-            return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context);
+            return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -380,6 +401,7 @@ public final class CallingServerAsyncClient {
      * Terminates the conversation for all participants in the call.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
@@ -392,6 +414,7 @@ public final class CallingServerAsyncClient {
      * Terminates the conversation for all participants in the call.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
@@ -404,7 +427,8 @@ public final class CallingServerAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
 
-            return callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context);
+            return callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -415,6 +439,7 @@ public final class CallingServerAsyncClient {
      *
      * @param callConnectionId The connection id of the call
      * @param participant The participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -428,6 +453,7 @@ public final class CallingServerAsyncClient {
      *
      * @param callConnectionId The connection id of the call
      * @param participant The participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -447,7 +473,9 @@ public final class CallingServerAsyncClient {
                 .setParticipant(CommunicationIdentifierConverter.convert(participant));
 
             return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId,
-                getParticipantRequestInternal, context).map(response ->
+                getParticipantRequestInternal, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .map(response ->
                 new SimpleResponse<>(response, AcsCallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -458,6 +486,7 @@ public final class CallingServerAsyncClient {
      * Get all participants.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -470,6 +499,7 @@ public final class CallingServerAsyncClient {
      * Get all participants.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -482,8 +512,9 @@ public final class CallingServerAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
 
-            return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, context).map(response ->
-                new SimpleResponse<>(response,
+            return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .map(response -> new SimpleResponse<>(response,
                     response.getValue().stream().map(AcsCallParticipantConverter::convert).collect(Collectors.toList())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -499,6 +530,7 @@ public final class CallingServerAsyncClient {
      *                           if transferring to a pstn number. Optional
      * @param userToUserInformation The user to user information. Optional
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
@@ -520,6 +552,7 @@ public final class CallingServerAsyncClient {
      *                           if transferring to a pstn number. Optional
      * @param userToUserInformation The user to user information. Optional
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
@@ -544,6 +577,7 @@ public final class CallingServerAsyncClient {
                 .setOperationContext(operationContext);
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .map(response ->
                     new SimpleResponse<>(response, new TransferCallResponse(response.getValue())));
         } catch (RuntimeException ex) {
@@ -561,6 +595,7 @@ public final class CallingServerAsyncClient {
      * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
      *                                   The maximum value of this is 180 seconds. Optional
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -584,6 +619,7 @@ public final class CallingServerAsyncClient {
      * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
      *                                   The maximum value of this is 180 seconds. Optional
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -612,8 +648,9 @@ public final class CallingServerAsyncClient {
                 .setInvitationTimeoutInSeconds(invitationTimeoutInSeconds)
                 .setOperationContext(operationContext);
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context).map(
-                response -> new SimpleResponse<>(response, new AddParticipantsResponse(response.getValue())));
+            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .map(response -> new SimpleResponse<>(response, new AddParticipantsResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -625,6 +662,7 @@ public final class CallingServerAsyncClient {
      * @param callConnectionId The connection id of the call
      * @param participantsToRemove The identifier list of the participant to be removed.
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -640,6 +678,7 @@ public final class CallingServerAsyncClient {
      * @param callConnectionId The connection id of the call
      * @param participantsToRemove The identifier list of the participant to be removed.
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -662,8 +701,9 @@ public final class CallingServerAsyncClient {
                 .setParticipantsToRemove(participantModels)
                 .setOperationContext(operationContext);
 
-            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context).map(
-                response -> new SimpleResponse<>(response, new RemoveParticipantsResponse(response.getValue())));
+            return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .map(response -> new SimpleResponse<>(response, new RemoveParticipantsResponse(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -678,7 +718,7 @@ public final class CallingServerAsyncClient {
      * @param serverCallId the server call Id
      * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
@@ -693,7 +733,7 @@ public final class CallingServerAsyncClient {
                 recordingStateCallbackUri, null, null, null);
 
             return contentsInternal.recordingAsync(requestWithCallLocator, null)
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .flatMap(result -> Mono.just(new RecordingIdResponse(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -710,7 +750,7 @@ public final class CallingServerAsyncClient {
      * @param channel Channel Type
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
@@ -734,7 +774,7 @@ public final class CallingServerAsyncClient {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
                     .recordingWithResponseAsync(requestWithCallLocator, contextValue)
-//                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                     .map(response -> new SimpleResponse<>(response, new RecordingIdResponse(response.getValue())));
             });
         } catch (RuntimeException ex) {
@@ -773,7 +813,7 @@ public final class CallingServerAsyncClient {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
@@ -781,7 +821,7 @@ public final class CallingServerAsyncClient {
     public Mono<Void> stopRecording(String recordingId) {
         try {
             return serverCallsInternal.stopRecordingAsync(recordingId)
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -792,7 +832,7 @@ public final class CallingServerAsyncClient {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
@@ -806,8 +846,8 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallsInternal
-                    .stopRecordingWithResponseAsync(recordingId, contextValue);
-//                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                    .stopRecordingWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -818,7 +858,7 @@ public final class CallingServerAsyncClient {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
@@ -826,7 +866,7 @@ public final class CallingServerAsyncClient {
     public Mono<Void> pauseRecording(String recordingId) {
         try {
             return serverCallsInternal.pauseRecordingAsync(recordingId)
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -837,7 +877,7 @@ public final class CallingServerAsyncClient {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
@@ -851,8 +891,8 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallsInternal
-                    .pauseRecordingWithResponseAsync(recordingId, contextValue);
-//                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                    .pauseRecordingWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -863,7 +903,7 @@ public final class CallingServerAsyncClient {
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
@@ -871,7 +911,7 @@ public final class CallingServerAsyncClient {
     public Mono<Void> resumeRecording(String recordingId) {
         try {
             return serverCallsInternal.resumeRecordingAsync(recordingId)
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -882,7 +922,7 @@ public final class CallingServerAsyncClient {
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
@@ -896,8 +936,8 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallsInternal
-                    .resumeRecordingWithResponseAsync(recordingId, contextValue);
-//                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                    .resumeRecordingWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -908,7 +948,7 @@ public final class CallingServerAsyncClient {
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
@@ -916,7 +956,7 @@ public final class CallingServerAsyncClient {
     public Mono<RecordingStateResponse> getRecordingState(String recordingId) {
         try {
             return serverCallsInternal.getRecordingPropertiesAsync(recordingId)
-//                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                 .flatMap(result -> Mono.just(new RecordingStateResponse(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -927,7 +967,7 @@ public final class CallingServerAsyncClient {
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
@@ -942,7 +982,7 @@ public final class CallingServerAsyncClient {
                 contextValue = context == null ? contextValue : context;
                 return serverCallsInternal
                     .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
-//                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, new RecordingStateResponse(response.getValue())));
             });
@@ -1101,18 +1141,22 @@ public final class CallingServerAsyncClient {
 
         return Mono.just(fileChannel).flatMap(
                 c -> contentDownloader.downloadToFileWithResponse(sourceEndpoint, c, finalParallelDownloadOptions, context))
+            .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
             .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType));
     }
     /**
      * Delete the content located at the deleteEndpoint
      * @param deleteEndpoint - ACS URL where the content is located.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRecording(String deleteEndpoint) {
         try {
-            return deleteRecordingWithResponse(deleteEndpoint, null).then();
+            return deleteRecordingWithResponse(deleteEndpoint, null)
+                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1123,6 +1167,7 @@ public final class CallingServerAsyncClient {
      * Recording deletion will be done using parallel workers.
      * @param deleteEndpoint - ACS URL where the content is located.
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1135,7 +1180,9 @@ public final class CallingServerAsyncClient {
         } else {
             finalContext = context.addData("hmacSignatureURL", urlToSignWith);
         }
-        Mono<HttpResponse> httpResponse = httpPipelineInternal.send(request, finalContext);
+        Mono<HttpResponse> httpResponse = httpPipelineInternal
+            .send(request, finalContext)
+            .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
         try {
             return httpResponse.map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
         } catch (RuntimeException ex) {

@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.PlayResponse;
 import com.azure.communication.callingserver.models.PlaySourceType;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -30,6 +31,8 @@ public class ContentCapabilities {
      * @param playSourceType type of the play source
      * @param playTo the targets to be played
      * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -42,6 +45,8 @@ public class ContentCapabilities {
      *
      * @param playSourceType type of the play source
      * @param playSourceId the identifier to be used for caching related media
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -56,7 +61,8 @@ public class ContentCapabilities {
      * @param playTo the targets to be played
      * @param playSourceId the identifier to be used for caching related media, Optional.
      * @param context Place_holder
-     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -71,6 +77,8 @@ public class ContentCapabilities {
      * @param playSourceType type of the play source
      * @param playSourceId the identifier to be used for caching related media, Optional.
      * @param context Place_holder
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

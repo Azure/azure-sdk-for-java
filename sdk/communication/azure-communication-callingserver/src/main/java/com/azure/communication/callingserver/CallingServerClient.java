@@ -13,6 +13,7 @@ import com.azure.communication.callingserver.models.RecordingIdResponse;
 import com.azure.communication.callingserver.models.RecordingStateResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -57,6 +58,7 @@ public final class CallingServerClient {
      * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
      *                       Required only when inviting a PSTN participant. Optional
      * @param subject The subject. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A CallConnectionDelete object.
      */
@@ -76,6 +78,7 @@ public final class CallingServerClient {
      *                       Required only when inviting a PSTN participant. Optional
      * @param subject The subject. Optional
      * @param context The context to associate with this operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -92,6 +95,7 @@ public final class CallingServerClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUri The call back uri. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -106,6 +110,7 @@ public final class CallingServerClient {
      * @param incomingCallContext The incoming call context.
      * @param callbackUri The call back uri. Optional
      * @param context The context to associate with this operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -120,6 +125,7 @@ public final class CallingServerClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -134,6 +140,7 @@ public final class CallingServerClient {
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
      * @param context The context to associate with this operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -147,6 +154,7 @@ public final class CallingServerClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callRejectReason The reason why call is rejected. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -161,6 +169,7 @@ public final class CallingServerClient {
      * @param incomingCallContext The incoming call context.
      * @param callRejectReason The reason why call is rejected. Optional
      * @param context The context to associate with this operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -176,6 +185,7 @@ public final class CallingServerClient {
      * Get call connection properties.
      *
      * @param callConnectionId the call connection Id
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -189,6 +199,7 @@ public final class CallingServerClient {
      *
      * @param callConnectionId the call connection Id
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -201,6 +212,7 @@ public final class CallingServerClient {
      * Hangup a call.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
@@ -214,6 +226,7 @@ public final class CallingServerClient {
      *
      * @param callConnectionId The connection id of the call
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful hangup request.
      */
@@ -227,6 +240,7 @@ public final class CallingServerClient {
      * Terminates the conversation for all participants in the call.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
@@ -240,6 +254,7 @@ public final class CallingServerClient {
      *
      * @param callConnectionId The connection id of the call
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
@@ -253,6 +268,7 @@ public final class CallingServerClient {
      *
      * @param callConnectionId The connection id of the call
      * @param participant The participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -267,6 +283,7 @@ public final class CallingServerClient {
      * @param callConnectionId The connection id of the call
      * @param participant The participant.
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -281,6 +298,7 @@ public final class CallingServerClient {
      * Get all participants.
      *
      * @param callConnectionId The connection id of the call
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -294,6 +312,7 @@ public final class CallingServerClient {
      *
      * @param callConnectionId The connection id of the call
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -311,6 +330,7 @@ public final class CallingServerClient {
      *                           if transferring to a pstn number. Optional
      * @param userToUserInformation The user to user information. Optional
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
@@ -333,6 +353,7 @@ public final class CallingServerClient {
      * @param userToUserInformation The user to user information. Optional
      * @param operationContext The operation context. Optional
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
@@ -354,6 +375,7 @@ public final class CallingServerClient {
      * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
      *                                   The maximum value of this is 180 seconds. Optional
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -376,6 +398,7 @@ public final class CallingServerClient {
      *                                   The maximum value of this is 180 seconds. Optional
      * @param operationContext The operation context. Optional
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -396,6 +419,7 @@ public final class CallingServerClient {
      * @param callConnectionId The connection id of the call
      * @param participantsToRemove The identifier list of the participant to be removed.
      * @param operationContext The operation context. Optional
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -413,6 +437,7 @@ public final class CallingServerClient {
      * @param participantsToRemove The identifier list of the participant to be removed.
      * @param operationContext The operation context. Optional
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
@@ -427,12 +452,12 @@ public final class CallingServerClient {
 
     //region Recording Management actions
     /**
-     * Start recording of the call.     *
+     * Start recording of the call.
      *
      * @param serverCallId the server call id.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result for a successful start recording request.
      */
@@ -451,7 +476,7 @@ public final class CallingServerClient {
      * @param channel Channel Type
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result for a successful start recording request.
      */
@@ -476,7 +501,7 @@ public final class CallingServerClient {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -489,7 +514,7 @@ public final class CallingServerClient {
      *
      * @param recordingId Recording id to stop.
      * @param context A {@link Context} representing the request context.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
@@ -502,7 +527,7 @@ public final class CallingServerClient {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -515,7 +540,7 @@ public final class CallingServerClient {
      *
      * @param recordingId Recording id to stop.
      * @param context A {@link Context} representing the request context.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
@@ -528,7 +553,7 @@ public final class CallingServerClient {
      * Resume recording of the call.
      *
      * @param recordingId The recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -541,7 +566,7 @@ public final class CallingServerClient {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful resume recording request.
      */
@@ -554,7 +579,7 @@ public final class CallingServerClient {
      * Get the current recording state by recording id.
      *
      * @param recordingId The recording id to stop.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
@@ -568,7 +593,7 @@ public final class CallingServerClient {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-//     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */

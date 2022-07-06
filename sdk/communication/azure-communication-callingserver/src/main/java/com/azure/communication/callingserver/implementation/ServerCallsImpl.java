@@ -70,21 +70,21 @@ public final class ServerCallsImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/calling/recordings/{recordingId}/:pause")
+        @Post("/calling/recordings:pause")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> pauseRecording(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("recordingId") String recordingId,
+                @QueryParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/calling/recordings/{recordingId}/:resume")
+        @Post("/calling/recordings:resume")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resumeRecording(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("recordingId") String recordingId,
+                @QueryParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
     }
