@@ -374,18 +374,17 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     @Override
     public DeploymentBuildStatus getDeploymentStatus(String deploymentId) {
         // "GET" LRO is not supported in azure-core
-        String deploymentStatusUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint()
-            + "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}" +
-            "/deploymentStatus/{deploymentId}?api-version="
-            + this.manager().serviceClient().getApiVersion();
-        deploymentStatusUrl = deploymentStatusUrl
-            .replace("{subscriptionId}", this.manager().subscriptionId())
-            .replace("{resourceGroupName}", this.resourceGroupName())
-            .replace("{name}", this.name())
-            .replace("{deploymentId}", deploymentId);
+        String deploymentStatusUrl = String.format(
+            "%s/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Web/sites/%s/deploymentStatus/%s?api-version=%s",
+            AzureEnvironment.AZURE.getResourceManagerEndpoint(),
+            this.manager().subscriptionId(),
+            this.resourceGroupName(),
+            this.name(),
+            deploymentId,
+            this.manager().serviceClient().getApiVersion());
         HttpRequest request = new HttpRequest(HttpMethod.GET, deploymentStatusUrl);
         HttpResponse response = this.manager().httpPipeline().send(request).block();
-        if (response.getStatusCode() / 100 != 2) {
+        if (response == null || response.getStatusCode() / 100 != 2) {
             throw new ManagementException("Service responds with a non-20x response.", response);
         }
         String bodyString = response.getBodyAsString().block();
