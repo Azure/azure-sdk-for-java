@@ -115,7 +115,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
 
         if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TestUtils.TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
+            testRunner.accept(new ByteArrayInputStream(TestUtils.TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
+                fileLength);
         } else {
             try {
                 testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);

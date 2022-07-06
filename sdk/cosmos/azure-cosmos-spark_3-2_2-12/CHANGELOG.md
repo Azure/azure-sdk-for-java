@@ -3,12 +3,25 @@
 ### 4.12.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added a new config option `spark.cosmos.changeFeed.batchCheckpointLocation` that allows to also proceed a change feed batch query from a checkpoint/offset - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+* Added an option to also restrict the memory consumption for batch change feed queries (via the `spark.cosmos.changeFeed.itemCountPerTriggerHint` config option) - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+* Added a UDF `CreateChangeFeedOffsetFromSpark2` that allows creating a Spark 3.* offset/checkpoint from a Spark 2.4 checkpoint - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.11.2 (2022-06-17)
+
+#### Bugs Fixed
+* Fixed a regression introduced in [PR 29152](https://github.com/Azure/azure-sdk-for-java/pull/29152) that can lead to `IllegalStateException: Latest LSN xxx must not be smaller than start LSN yyy`. - See [PR 29485](https://github.com/Azure/azure-sdk-for-java/pull/29485)
+
+### 4.11.1 (2022-06-09)
+
+#### Bugs Fixed
+* Fixed a bug preventing usage of feedRangeFilter with change feed. - See [PR 29338](https://github.com/Azure/azure-sdk-for-java/pull/29338)
 
 ### 4.11.0 (2022-06-08)
 #### Other Changes
@@ -17,7 +30,7 @@
 ### 4.10.1 (2022-06-01)
 
 #### Features Added
-* Added ability to disable endpoint rediscovery when using custom domain names in combination with private endpoints from a custom (on-premise) Spark environment (neither Databricks nor Synapse). - See [PR 29027](https://github.com/Azure/azure-sdk-for-java/pull/29027)
+* Added ability to disable endpoint rediscovery when using custom domain names in combination with private endpoints from a custom (on-premise) Spark environment (neither Databricks nor Synapse). - See [PR 29078](https://github.com/Azure/azure-sdk-for-java/pull/29078)
 * Added a config option `spark.cosmos.serialization.dateTimeConversionMode` to allow changing date/time conversion to fall back to converting `java.sql.Date` and `java.sql.Tiemstamp` into Epoch Milliseconds like in the Cosmos DB Connector for Spark 2.4 - See [PR 29081](https://github.com/Azure/azure-sdk-for-java/pull/29081)
 
 #### Bugs Fixed

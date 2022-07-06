@@ -30,7 +30,11 @@ public final class PreferredRoutingGateway extends ExpandableStringEnum<Preferre
         return fromString(name, PreferredRoutingGateway.class);
     }
 
-    /** @return known PreferredRoutingGateway values. */
+    /**
+     * Gets known PreferredRoutingGateway values.
+     *
+     * @return known PreferredRoutingGateway values.
+     */
     public static Collection<PreferredRoutingGateway> values() {
         return values(PreferredRoutingGateway.class);
     }

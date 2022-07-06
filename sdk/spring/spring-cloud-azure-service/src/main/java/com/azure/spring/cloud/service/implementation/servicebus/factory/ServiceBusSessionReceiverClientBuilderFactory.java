@@ -51,6 +51,7 @@ public class ServiceBusSessionReceiverClientBuilderFactory
     protected void configureService(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder) {
         Assert.notNull(receiverClientProperties.getEntityType(), "Entity type cannot be null.");
         Assert.notNull(receiverClientProperties.getEntityName(), "Entity name cannot be null.");
+        super.configureService(builder);
         if (ServiceBusEntityType.TOPIC == receiverClientProperties.getEntityType()) {
             Assert.notNull(receiverClientProperties.getSubscriptionName(), "Subscription cannot be null.");
         }

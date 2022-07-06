@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerNamespaces ListSharedAccessKeys. */
 public final class PartnerNamespacesListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListSharedAccessKeys.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_ListSharedAccessKeys.json
      */
     /**
      * Sample code: PartnerNamespaces_ListSharedAccessKeys.

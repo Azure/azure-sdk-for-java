@@ -6,20 +6,15 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpoint;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Private Endpoint Connection resource. */
 @Fluent
 public final class PrivateEndpointConnectionWithSystemDataInner extends PrivateEndpointConnection {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionWithSystemDataInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */

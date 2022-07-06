@@ -2,13 +2,16 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
+import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
+import com.azure.core.util.BinaryData
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.BlobUrlParts
@@ -28,6 +31,8 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.policy.MockDownloadHttpResponse
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
 import com.microsoft.azure.storage.blob.BlobRequestOptions
@@ -39,9 +44,13 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
+import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.SecretKeySpec
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
@@ -49,6 +58,10 @@ import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.util.concurrent.atomic.AtomicInteger
+
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -72,15 +85,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient())
+        beac = getEncryptionAsyncClient(null)
 
-        bec = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            cc.getBlobContainerUrl().toString())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient()))
+        bec = getEncryptionClient(null)
 
         def blobName = generateBlobName()
 
@@ -93,8 +100,57 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
     }
 
+    def getEncryptionAsyncClient(EncryptionVersion version) {
+        return mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl(), version)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobAsyncClient())
+    }
+
+    def getEncryptionClient(EncryptionVersion version) {
+        return getEncryptionClient(version, null)
+    }
+
+    def getEncryptionClient(EncryptionVersion version, String blobName) {
+        blobName = blobName == null ? generateBlobName() : blobName
+        return new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl().toString(), version)
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()))
+    }
+
     def cleanup() {
         cc.delete()
+    }
+
+    @LiveOnly
+    def "v2 Download test"() {
+        setup:
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobAsyncClient())
+        def encryptedBlobClient = new EncryptedBlobClient(beac)
+
+        def data = getRandomData(dataSize)
+
+        when:
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block()
+
+        def plaintextOut = new ByteArrayOutputStream()
+        encryptedBlobClient.downloadStream(plaintextOut)
+
+        then:
+        data == ByteBuffer.wrap(plaintextOut.toByteArray())
+
+        where:
+        dataSize              | _
+        3000                  | _
+        5 * 1024 * 1024 - 10  | _
+        20 * 1024 * 1024 - 10 | _
+        4 * 1024 * 1024       | _
+        4 * 1024 * 1024 - 10  | _
+        8 * 1024 * 1024       | _
     }
 
     // Key and key resolver null
@@ -159,8 +215,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     // This test checks that encryption is not just a no-op
+    @Unroll
     def "Encryption not a no-op"() {
         setup:
+        beac = getEncryptionAsyncClient(version)
         ByteBuffer byteBuffer = getRandomData(Constants.KB)
         def os = new ByteArrayOutputStream()
 
@@ -172,26 +230,31 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         outputByteBuffer.array() != byteBuffer.array()
+
+        where:
+        version              | _
+        EncryptionVersion.V1 | _
+        EncryptionVersion.V2 | _
     }
 
     // This test uses an encrypted client to encrypt and decrypt data
-    // Tests upload and buffered upload with different bytebuffer sizes
+    // Tests buffered upload with different bytebuffer sizes
     @Unroll
     def "Encryption"() {
         expect:
         encryptionTestHelper(size, byteBufferCount)
 
         where:
-        size              | byteBufferCount
-        5                 | 2                 // 0 Two buffers smaller than an encryption block.
-        8                 | 2                 // 1 Two buffers that equal an encryption block.
-        10                | 1                 // 2 One buffer smaller than an encryption block.
-        10                | 2                 // 3 A buffer that spans an encryption block.
-        16                | 1                 // 4 A buffer exactly the same size as an encryption block.
-        16                | 2                 // 5 Two buffers the same size as an encryption block.
-        20                | 1                 // 6 One buffer larger than an encryption block.
-        20                | 2                 // 7 Two buffers larger than an encryption block.
-        100               | 1                 // 8 One buffer containing multiple encryption blocks
+        size | byteBufferCount
+        5    | 2                 // 0 Two buffers smaller than an encryption block.
+        8    | 2                 // 1 Two buffers that equal an encryption block.
+        10   | 1                 // 2 One buffer smaller than an encryption block.
+        10   | 2                 // 3 A buffer that spans an encryption block.
+        16   | 1                 // 4 A buffer exactly the same size as an encryption block.
+        16   | 2                 // 5 Two buffers the same size as an encryption block.
+        20   | 1                 // 6 One buffer larger than an encryption block.
+        20   | 2                 // 7 Two buffers larger than an encryption block.
+        100  | 1                 // 8 One buffer containing multiple encryption blocks
     }
 
     @Unroll
@@ -204,6 +267,95 @@ class EncyptedBlockBlobAPITest extends APISpec {
         size              | byteBufferCount
         5 * Constants.KB  | Constants.KB      // 9 Large number of small buffers.
         10 * Constants.MB | 2                 // 10 Small number of large buffers.
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Encryption v2"() {
+        setup:
+        beac = getEncryptionAsyncClient(EncryptionVersion.V2)
+
+        expect:
+        encryptionTestHelper(size, byteBufferCount)
+
+        where:
+        size                                     | byteBufferCount
+        5                                        | 2                 // 0 Two buffers smaller than an encryption block.
+        (int) (GCM_ENCRYPTION_REGION_LENGTH / 2) | 2                 // 1 Two buffers that equal an encryption block.
+        1024                                     | 1                 // 2 One buffer smaller than an encryption block.
+        GCM_ENCRYPTION_REGION_LENGTH - 1024      | 2                 // 3 A buffer that spans an encryption block.
+        GCM_ENCRYPTION_REGION_LENGTH             | 1                 // 4 A buffer exactly the same size as an encryption block.
+        GCM_ENCRYPTION_REGION_LENGTH             | 2                 // 5 Two buffers the same size as an encryption block.
+        GCM_ENCRYPTION_REGION_LENGTH + 10        | 1                 // 6 One buffer larger than an encryption block.
+        GCM_ENCRYPTION_REGION_LENGTH + 10        | 2                 // 7 Two buffers larger than an encryption block.
+        GCM_ENCRYPTION_REGION_LENGTH + 10 * 3    | 1                 // 8 One buffer containing multiple encryption blocks
+        5 * Constants.KB                         | 4 * Constants.KB  // 9 Large number of small buffers.
+        20 * Constants.MB                        | 2                 // 10 Small number of large buffers.
+    }
+
+    @LiveOnly
+    def "Encryption v2 manual decryption"() {
+        setup:
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            .blobName(generateBlobName())
+            .buildEncryptedBlobAsyncClient())
+        def data = getRandomData(dataSize)
+
+        when:
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
+
+        and:
+        def outStream = new ByteArrayOutputStream()
+        def downloadResponse = cc.getBlobClient(beac.getBlobName())
+            .downloadStreamWithResponse(outStream, null, null, null, false, null, null)
+        def ciphertextRawBites = outStream.toByteArray()
+        def ciphertextInputStream = new ByteArrayInputStream(ciphertextRawBites)
+        def plaintextOriginal = data.array()
+        def plaintextOutputStream = new ByteArrayOutputStream()
+
+        def encryptionData = new ObjectMapper()
+            .readValue(downloadResponse.getDeserializedHeaders().getMetadata()
+                .get(CryptographyConstants.ENCRYPTION_DATA_KEY),
+                EncryptionData.class)
+        def cek = fakeKey.unwrapKey(
+            encryptionData.getWrappedContentKey().getAlgorithm(),
+            encryptionData.getWrappedContentKey().getEncryptedKey()).block()
+        ByteArrayInputStream keyStream = new ByteArrayInputStream(cek)
+        byte[] protocolBytes = new byte[3]
+        keyStream.read(protocolBytes)
+        for (int i = 0; i < 5; i++) {
+            keyStream.read()
+        }
+        byte[] strippedKeyBytes = new byte[256 / 8]
+        keyStream.read(strippedKeyBytes)
+        def keySpec = new SecretKeySpec(strippedKeyBytes, CryptographyConstants.AES)
+
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding")
+
+        int numChunks = (int) Math.ceil(data.array().length / (4 * 1024 * 1024.0));
+
+        for (int i = 0; i < numChunks; i++) {
+            def IV = new byte[12]
+            ciphertextInputStream.read(IV)
+            GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, IV)
+
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec)
+
+            def bufferSize = Math.min(ciphertextInputStream.available(), (4 * 1024 * 1024) + 16)
+            byte[] buffer = new byte[bufferSize]
+            ciphertextInputStream.read(buffer)
+            plaintextOutputStream.write(cipher.doFinal(buffer))
+        }
+
+        then:
+        ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
+
+        where:
+        dataSize              | _
+        3000                  | _ // small
+//        5 * 1024 * 1024 - 10  | _ // medium
+//        20 * 1024 * 1024 - 10 | _ // large
     }
 
     boolean encryptionTestHelper(int size, int byteBufferCount) {
@@ -229,10 +381,90 @@ class EncyptedBlockBlobAPITest extends APISpec {
         return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
+    // Requires specific container set up coordinated between languages. Should only be run manually.
+    @Ignore
+    def "Test for cross plat"() {
+        setup:
+        def kek = new NoOpKey()
+
+        def downloadClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
+            .blobName("python_plaintext_1")
+            .key(kek, "None")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient()
+
+        def decryptionClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
+            .blobName("python_encrypted_1")
+            .key(kek, "None")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient()
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        downloadClient.downloadStream(outStream)
+        def decryptStream = new ByteArrayOutputStream()
+        decryptionClient.downloadStream(decryptStream)
+
+        then:
+        outStream.toByteArray() == decryptStream.toByteArray()
+
+        and:
+        def data = getRandomByteArray(20 * Constants.MB)
+        def uploadClient = new BlobClientBuilder()
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
+            .blobName("java_plaintext_1")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildClient()
+        def encryptClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
+            .blobName("java_encrypted_1")
+            .key(kek, "None")
+            .credential(environment.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient()
+
+        when:
+        uploadClient.upload(BinaryData.fromBytes(data), true)
+        encryptClient.upload(BinaryData.fromBytes(data), true)
+
+        then:
+        notThrown(Exception)
+    }
+
+    class NoOpKey implements AsyncKeyEncryptionKey {
+        @Override
+        Mono<String> getKeyId() {
+            return Mono.just("local:key1")
+        }
+
+        @Override
+        Mono<byte[]> wrapKey(String algorithm, byte[] key) {
+            if (algorithm != "None") {
+                throw new IllegalArgumentException()
+            }
+            return Mono.just(key)
+        }
+
+        @Override
+        Mono<byte[]> unwrapKey(String algorithm, byte[] encryptedKey) {
+            if (algorithm != "None") {
+                throw new IllegalArgumentException()
+            }
+            return Mono.just(encryptedKey)
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Encryption computeMd5"() {
         setup:
+        beac = getEncryptionAsyncClient(version)
+
         def byteBufferList = []
         for (def i = 0; i < byteBufferCount; i++) {
             byteBufferList.add(getRandomData(size))
@@ -246,10 +478,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
         beac.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
 
         where:
-        size           | maxSingleUploadSize | blockSize               | byteBufferCount
-        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
-        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
-        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
+        size         | maxSingleUploadSize | blockSize          | byteBufferCount | version
+        Constants.KB | null                | null               | 1               | EncryptionVersion.V1                  // Simple case where uploadFull is called.
+        Constants.KB | Constants.KB        | 500 * Constants.KB | 1000            | EncryptionVersion.V1             // uploadChunked 2 blocks staged
+        Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000            | EncryptionVersion.V1            // uploadChunked 100 blocks staged
+        Constants.KB | null                | null               | 1               | EncryptionVersion.V2               // Simple case where uploadFull is called.
+        Constants.KB | Constants.KB        | 500 * Constants.KB | 1000            | EncryptionVersion.V2              // uploadChunked 2 blocks staged
+        Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000            | EncryptionVersion.V2              // uploadChunked 100 blocks staged
     }
 
     // This test checks that HTTP headers are successfully set on the encrypted client
@@ -389,8 +624,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
     // This test checks the upload to file method on an encrypted client
     @LiveOnly
+    @Unroll
     def "Encrypted upload file"() {
         setup:
+        beac = getEncryptionAsyncClient(version)
         def file = getRandomFile(Constants.MB)
 
         when:
@@ -398,13 +635,20 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         compareDataToFile(beac.download(), file)
+
+        where:
+        version              | _
+        EncryptionVersion.V1 | _
+        EncryptionVersion.V2 | _
     }
 
     // This test checks the download to file method on an encrypted client
+    @Unroll
     def "Encrypted download file"() {
         setup:
         def path = UUID.randomUUID().toString() + ".txt"
         //def dataFlux = Flux.just(defaultData).map{buf -> buf.duplicate()}
+        beac = getEncryptionAsyncClient(version)
 
         when:
         beac.upload(data.defaultFlux, null).block()
@@ -415,6 +659,30 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         cleanup:
         new File(path).delete()
+
+        where:
+        version              | _
+        EncryptionVersion.V1 | _
+        EncryptionVersion.V2 | _
+    }
+
+    def "Encryption v2 downgrade attack"() {
+        setup:
+        def blobName = generateBlobName()
+        bec = getEncryptionClient(EncryptionVersion.V2, blobName)
+        bec.upload(data.defaultInputStream, data.defaultDataSize)
+
+        def metadata = bec.getProperties().getMetadata()
+        def encryptionDataStr = metadata.get(CryptographyConstants.ENCRYPTION_DATA_KEY)
+        encryptionDataStr = encryptionDataStr.replace("2.0", "1.0")
+        metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionDataStr)
+        bec.setMetadata(metadata)
+
+        when:
+        bec.downloadStream(new ByteArrayOutputStream())
+
+        then:
+        thrown(Exception)
     }
 
     def "Download unencrypted data"() {
@@ -453,6 +721,42 @@ class EncyptedBlockBlobAPITest extends APISpec {
         cac.delete()
     }
 
+    def "Download unencrypted data range"() {
+        setup:
+        // Create an async client
+        BlobContainerClient cac = getServiceClientBuilder(environment.primaryAccount)
+            .buildClient()
+            .getBlobContainerClient(generateContainerName())
+
+        cac.create()
+        def blobName = generateBlobName()
+
+        BlockBlobClient normalClient = cac.getBlobClient(blobName).getBlockBlobClient()
+
+        // Uses builder method that takes in regular blob clients
+        EncryptedBlobClient client = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey as AsyncKeyEncryptionKey, null,
+            environment.primaryAccount.credential, cac.getBlobContainerUrl())
+            .blobName(blobName)
+            .buildEncryptedBlobAsyncClient()))
+
+        when:
+
+        // Upload encrypted data with regular client
+        normalClient.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
+            null, null, null, null, null)
+
+        // Download data with encrypted client - command should fail
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        client.downloadWithResponse(os, new BlobRange(3, 2), null, null, false, null, null)
+
+        then:
+        notThrown(IllegalStateException)
+        ByteBuffer.wrap(os.toByteArray()) == data.defaultData.duplicate().position(3).limit(5)
+
+        cleanup:
+        cac.delete()
+    }
+
     // Tests key resolver
     @Unroll
     def "Key resolver used to decrypt data"() {
@@ -460,16 +764,16 @@ class EncyptedBlockBlobAPITest extends APISpec {
         keyResolverTestHelper(size, byteBufferCount)
 
         where:
-        size              | byteBufferCount
-        5                 | 2                 // 0 Two buffers smaller than an encryption block.
-        8                 | 2                 // 1 Two buffers that equal an encryption block.
-        10                | 1                 // 2 One buffer smaller than an encryption block.
-        10                | 2                 // 3 A buffer that spans an encryption block.
-        16                | 1                 // 4 A buffer exactly the same size as an encryption block.
-        16                | 2                 // 5 Two buffers the same size as an encryption block.
-        20                | 1                 // 6 One buffer larger than an encryption block.
-        20                | 2                 // 7 Two buffers larger than an encryption block.
-        100               | 1                 // 8 One buffer containing multiple encryption blocks
+        size | byteBufferCount
+        5    | 2                 // 0 Two buffers smaller than an encryption block.
+        8    | 2                 // 1 Two buffers that equal an encryption block.
+        10   | 1                 // 2 One buffer smaller than an encryption block.
+        10   | 2                 // 3 A buffer that spans an encryption block.
+        16   | 1                 // 4 A buffer exactly the same size as an encryption block.
+        16   | 2                 // 5 Two buffers the same size as an encryption block.
+        20   | 1                 // 6 One buffer larger than an encryption block.
+        20   | 2                 // 7 Two buffers larger than an encryption block.
+        100  | 1                 // 8 One buffer containing multiple encryption blocks
     }
 
     // Tests key resolver
@@ -518,6 +822,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
+    // TODO:
     // Upload with old SDK download with new SDK.
     @LiveOnly
     def "Cross platform test upload old download new"() {
@@ -586,6 +891,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         stream.toByteArray() == data.defaultBytes
     }
+
+    // TODO: cross platform v2 tests
 
     def "encrypted client file upload overwrite false"() {
         setup:
@@ -706,6 +1013,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     HttpGetterInfo.
      */
 
+    @Unroll
     def "Download with retry range"() {
         /*
         We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
@@ -716,10 +1024,13 @@ class EncyptedBlockBlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
+        def mockPolicy = new MockRetryRangeResponsePolicy(version)
         def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            ebc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+            ebc.getBlobUrl(), version, mockPolicy)
 
         ebc = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
+
+        ebc.upload(data.defaultBinaryData, true)
 
         when:
         def range = new BlobRange(2, 5L)
@@ -733,9 +1044,19 @@ class EncyptedBlockBlobAPITest extends APISpec {
          */
         def e = thrown(RuntimeException)
         e.getCause() instanceof IOException
+
+        where:
+        version              | _
+        EncryptionVersion.V1 | _
+        EncryptionVersion.V2 | _
     }
 
+    @Unroll
     def "Download min"() {
+        setup:
+        ebc = getEncryptionClient(version, ebc.getBlobName())
+        ebc.upload(data.defaultBinaryData, true)
+
         when:
         def outStream = new ByteArrayOutputStream()
         ebc.download(outStream)
@@ -743,6 +1064,11 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         then:
         result == data.defaultBytes
+
+        where:
+        version              | _
+        EncryptionVersion.V1 | _
+        EncryptionVersion.V2 | _
     }
 
     @Unroll
@@ -763,6 +1089,34 @@ class EncyptedBlockBlobAPITest extends APISpec {
         0      | null  || data.defaultText
         0      | 5L    || data.defaultText.substring(0, 5)
         3      | 2L    || data.defaultText.substring(3, 3 + 2)
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Download range v2"() {
+        setup:
+        ebc = getEncryptionClient(EncryptionVersion.V2)
+        def data = getRandomByteArray(20 * Constants.MB)
+        def expectedData = ByteBuffer.wrap(data).position(offset).limit(offset + count)
+        ebc.upload(BinaryData.fromBytes(data))
+        def range = (count == null) ? new BlobRange(offset) : new BlobRange(offset, (long) count)
+
+        when:
+        def outStream = new ByteArrayOutputStream()
+        ebc.downloadWithResponse(outStream, range, null, null, false, null, null)
+        def outBuffer = ByteBuffer.wrap(outStream.toByteArray())
+
+        then:
+        outBuffer == expectedData
+
+        where:
+        offset           | count
+        0                | 20 * Constants.MB // whole blob
+        4 * Constants.MB | 4 * Constants.MB // Exact region boundary
+        3000000          | 15000000 // Bounds are in the middle of the regions. Expands to whole blob
+        5000000          | 5000000 // Expands to adjacent regions in middle of blob
+        5000000          | 10000000 // Expands to regions in middle of the blob with one region in between
+        500300           | 600000 // All in one region
     }
 
     @Unroll
@@ -967,18 +1321,24 @@ class EncyptedBlockBlobAPITest extends APISpec {
         file.delete()
 
         where:
-        fileSize             | _
-        0                    | _ // empty file
-        20                   | _ // small file
-        16 * 1024 * 1024     | _ // medium file in several chunks
-        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
-        50 * Constants.MB    | _ // large file requiring multiple requests
+        fileSize             | version
+//        0                    | EncryptionVersion.V1 // empty file
+//        20                   | EncryptionVersion.V1 // small file
+//        16 * 1024 * 1024     | EncryptionVersion.V1 // medium file in several chunks
+//        8 * 1026 * 1024 + 10 | EncryptionVersion.V1 // medium file not aligned to block
+        50 * Constants.MB    | EncryptionVersion.V1 // large file requiring multiple requests
+//        0                    | EncryptionVersion.V2 // empty file
+//        20                   | EncryptionVersion.V2 // small file
+//        16 * 1024 * 1024     | EncryptionVersion.V2 // medium file in several chunks
+//        8 * 1026 * 1024 + 10 | EncryptionVersion.V2 // medium file not aligned to block
+//        50 * Constants.MB    | EncryptionVersion.V2 // large file requiring multiple requests
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
+
     @LiveOnly
     @Unroll
     def "Download file sync buffer copy"() {
@@ -1026,6 +1386,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
     /*
      * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
      */
+
     @LiveOnly
     @Unroll
     def "Download file async buffer copy"() {
@@ -1100,12 +1461,17 @@ class EncyptedBlockBlobAPITest extends APISpec {
         send off parallel requests with invalid ranges.
          */
         where:
-        range                                              | _
-        new BlobRange(0, data.defaultDataSize)             | _ // Exact count
-        new BlobRange(1, data.defaultDataSize - 1 as Long) | _ // Offset and exact count
-        new BlobRange(3, 2)                                | _ // Narrow range in middle
-        new BlobRange(0, data.defaultDataSize - 1 as Long) | _ // Count that is less than total
-        new BlobRange(0, 10 * 1024)                        | _ // Count much larger than remaining data
+        range                                              | version
+        new BlobRange(0, data.defaultDataSize)             | EncryptionVersion.V1 // Exact count
+        new BlobRange(1, data.defaultDataSize - 1 as Long) | EncryptionVersion.V1 // Offset and exact count
+        new BlobRange(3, 2)                                | EncryptionVersion.V1 // Narrow range in middle
+        new BlobRange(0, data.defaultDataSize - 1 as Long) | EncryptionVersion.V1 // Count that is less than total
+        new BlobRange(0, 10 * 1024)                        | EncryptionVersion.V1 // Count much larger than remaining data
+        new BlobRange(0, data.defaultDataSize)             | EncryptionVersion.V2 // Exact count
+        new BlobRange(1, data.defaultDataSize - 1 as Long) | EncryptionVersion.V2 // Offset and exact count
+        new BlobRange(3, 2)                                | EncryptionVersion.V2 // Narrow range in middle
+        new BlobRange(0, data.defaultDataSize - 1 as Long) | EncryptionVersion.V2 // Count that is less than total
+        new BlobRange(0, 10 * 1024)                        | EncryptionVersion.V2 // Count much larger than remaining data
     }
 
     /*
@@ -1252,7 +1618,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
                     .flatMap({ r ->
-                        if (counter.incrementAndGet() == 1) {
+                        if (counter.incrementAndGet() == 2) {
                             /*
                              * When the download begins trigger an upload to overwrite the downloading blob
                              * so that the download is able to get an ETag before it is changed.
@@ -1488,20 +1854,21 @@ class EncyptedBlockBlobAPITest extends APISpec {
         blocksUploaded.size() == (int) numBlocks
 
         where:
-        size            | maxUploadSize || numBlocks
-        0               | null          || 0
-        Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
-        Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
-        3 * Constants.MB| Constants.MB  || 4 // Encryption padding will add an extra block
+        size             | maxUploadSize || numBlocks
+        0                | null          || 0
+        Constants.KB     | null          || 0 // default is MAX_UPLOAD_BYTES
+        Constants.MB     | null          || 0 // default is MAX_UPLOAD_BYTES
+        3 * Constants.MB | Constants.MB  || 4 // Encryption padding will add an extra block
     }
 
     def getPerCallVersionPolicy() {
         return new HttpPipelinePolicy() {
             @Override
             Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                context.getHttpRequest().setHeader("x-ms-version", "2017-11-09")
                 return next.process()
             }
+
             @Override
             HttpPipelinePosition getPipelinePosition() {
                 return HttpPipelinePosition.PER_CALL
@@ -1509,7 +1876,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
     }
 
-    @IgnoreIf( { getEnvironment().serviceVersion != null } )
+    @IgnoreIf({ getEnvironment().serviceVersion != null })
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         def client = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, fakeKeyResolver, environment.primaryAccount.credential, bec.getBlobUrl(), getPerCallVersionPolicy())
@@ -1537,4 +1904,30 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
         return result.remaining() == 0
     }
+
+    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
+        private String expectedRangeHeader
+
+        MockRetryRangeResponsePolicy(EncryptionVersion version) {
+            this.expectedRangeHeader = version == EncryptionVersion.V1 ?
+                "bytes=0-15" : "bytes=0-" + (GCM_ENCRYPTION_REGION_LENGTH + NONCE_LENGTH + TAG_LENGTH - 1)
+        }
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().flatMap { HttpResponse response ->
+                if (response.getRequest().getHttpMethod() == HttpMethod.GET
+                    && response.getRequest().getHeaders().getValue("x-ms-range") != expectedRangeHeader) {
+                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                } else if (response.getRequest().getHttpMethod() == HttpMethod.GET) {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
+                } else {
+                    return Mono.<HttpResponse> just(response)
+                }
+            }
+        }
+    }
 }
+
+

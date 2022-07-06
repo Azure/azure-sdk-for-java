@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.P2SVpnProfileParameters;
 /** Samples for P2SVpnGateways GenerateVpnProfile. */
 public final class P2SVpnGatewaysGenerateVpnProfileSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/P2SVpnGatewayGenerateVpnProfile.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/P2SVpnGatewayGenerateVpnProfile.json
      */
     /**
      * Sample code: GenerateP2SVpnGatewayVPNProfile.

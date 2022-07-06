@@ -345,9 +345,10 @@
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                 <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-                <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
-                  for more Java documentation, including quick starts, tutorials, and code samples.
-                </footer>
+                <!-- footer is deprecated and throws warning in Java 17 and fails the aggregate javadoc build -->
+<!--                <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site-->
+<!--                  for more Java documentation, including quick starts, tutorials, and code samples.-->
+<!--                </footer>-->
                 <linksource>false</linksource>
                 <excludePackageNames>
                   *.impl*:
@@ -943,6 +944,7 @@
         <module>sdk/notificationhubs</module>
         <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
+        <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>

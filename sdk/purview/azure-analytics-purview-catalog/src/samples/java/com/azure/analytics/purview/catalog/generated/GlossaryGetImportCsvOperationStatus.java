@@ -13,18 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryGetImportCsvOperationStatus {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.glossarygetimportcsvoperationstatus.glossarygetimportcsvoperationstatus
         GlossaryClient glossaryClient =
                 new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarygetimportcsvoperationstatus.glossarygetimportcsvoperationstatus
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 glossaryClient.getImportCsvOperationStatusWithResponse(
                         "3ffca165-75a7-4987-ba71-cfc0a273d6b7", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.glossarygetimportcsvoperationstatus.glossarygetimportcsvoperationstatus
+        // END:com.azure.analytics.purview.catalog.generated.glossarygetimportcsvoperationstatus.glossarygetimportcsvoperationstatus
     }
 }

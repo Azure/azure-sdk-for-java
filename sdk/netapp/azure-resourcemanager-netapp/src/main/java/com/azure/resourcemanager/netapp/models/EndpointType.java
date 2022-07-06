@@ -27,7 +27,11 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
         return fromString(name, EndpointType.class);
     }
 
-    /** @return known EndpointType values. */
+    /**
+     * Gets known EndpointType values.
+     *
+     * @return known EndpointType values.
+     */
     public static Collection<EndpointType> values() {
         return values(EndpointType.class);
     }

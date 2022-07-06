@@ -13,6 +13,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.file.share.ShareServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
@@ -98,6 +99,19 @@ class AzureStorageFileShareClientBuilderFactoryTests extends
     @Override
     protected void buildClient(ShareServiceClientBuilder builder) {
         builder.buildClient();
+    }
+
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureStorageFileShareTestProperties properties = new AzureStorageFileShareTestProperties();
+        properties.setEndpoint(ENDPOINT);
+        properties.setServiceVersion(ShareServiceVersion.V2019_02_02);
+
+        final ShareServiceClientBuilder builder = new ShareServiceClientBuilderFactoryExt(properties).build();
+        final ShareServiceClient client = builder.buildClient();
+
+        verify(builder, times(1)).endpoint(ENDPOINT);
+        verify(builder, times(1)).serviceVersion(ShareServiceVersion.V2019_02_02);
     }
 
     @Override

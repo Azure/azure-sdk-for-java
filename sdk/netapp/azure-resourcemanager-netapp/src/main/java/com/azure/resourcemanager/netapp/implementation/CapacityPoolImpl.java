@@ -98,6 +98,10 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CapacityPoolInner innerModel() {
         return this.innerObject;
     }

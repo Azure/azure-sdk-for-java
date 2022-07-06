@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServiceTags List. */
 public final class ServiceTagsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceTagsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceTagsList.json
      */
     /**
      * Sample code: Get list of service tags.

@@ -8,6 +8,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -16,6 +17,7 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
+import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -26,8 +28,9 @@ import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
+import java.time.Duration
+import java.time.OffsetDateTime
 import java.util.function.Consumer
-import java.util.logging.FileHandler
 import java.util.stream.Collectors
 
 class DirectoryAPITest extends APISpec {
@@ -70,6 +73,36 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def createResponse = dc.createWithResponse(null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
+    def "Create defaults with options"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        options.setMetadata(metadata)
+            .setAccessControlList(pathAccessControlEntries)
+
+        when:
+        def createResponse = dc.createWithResponse(options, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+        compareACL(dc.getAccessControl().getAccessControlList(), pathAccessControlEntries)
+    }
+
+    def "Create defaults with null options"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        def createResponse = dc.createWithResponse(null, null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -230,6 +263,146 @@ class DirectoryAPITest extends APISpec {
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
+    def "Create options with ACL"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setAccessControlList(pathAccessControlEntries)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = dc.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
+    def "Create options with owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions()
+            .setOwner(ownerName)
+            .setGroup(groupName)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == ownerName
+        dc.getAccessControl().getGroup() == groupName
+    }
+
+    def "Create options with null owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setOwner(owner)
+            .setGroup(group)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == "\$superuser"
+        dc.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create options with path http headers"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        dc.createWithResponse(options, null, null)
+
+        expect:
+        validatePathProperties(
+            dc.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create options with metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        expect:
+        dc.createWithResponse(options, null, null).getStatusCode() == statusCode
+        def properties = dc.getProperties()
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+        dc.createWithResponse(options, null, null)
+
+        when:
+        def acl = dc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create options with error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(leaseDuration)
+
+
+        when:
+        dc.createWithResponse(options, null, null)
+
+        then:
+        // assert not supported for directory
+        thrown(IllegalArgumentException)
+
+        where:
+        leaseId                         | leaseDuration | deletionOptions
+        UUID.randomUUID().toString()    | null          | null
+        UUID.randomUUID().toString()    | 15            | null
+        UUID.randomUUID().toString()    | null          | new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())
+        UUID.randomUUID().toString()    | null          | new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
+    }
+
     def "Create if not exists min"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -340,7 +513,9 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
 
         expect:
         client.createIfNotExistsWithResponse(options, null, Context.NONE).getStatusCode() == 201
@@ -2784,7 +2959,9 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
 
         expect:
         client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
@@ -3244,7 +3421,9 @@ class DirectoryAPITest extends APISpec {
         def client = fsc.getDirectoryClient(generatePathName())
         def permissions = "0777"
         def umask = "0057"
-        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
 
         expect:
         client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
@@ -3740,5 +3919,29 @@ class DirectoryAPITest extends APISpec {
         then:
         renamedDir.getObjectPath() == renamedName
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
+    }
+
+    def "create file system with small timeouts fail for service client"() {
+        setup:
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new DataLakeServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        serviceClient.createFileSystem(generateFileSystemName())
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
     }
 }

@@ -45,7 +45,11 @@ public final class ChannelMapping extends ExpandableStringEnum<ChannelMapping> {
         return fromString(name, ChannelMapping.class);
     }
 
-    /** @return known ChannelMapping values. */
+    /**
+     * Gets known ChannelMapping values.
+     *
+     * @return known ChannelMapping values.
+     */
     public static Collection<ChannelMapping> values() {
         return values(ChannelMapping.class);
     }
