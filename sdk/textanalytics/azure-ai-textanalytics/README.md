@@ -27,7 +27,7 @@ and includes six main functions:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.1.10</version>
+    <version>5.1.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -126,7 +126,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
