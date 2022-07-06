@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+  <version>1.0.5</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
 
   <name>Microsoft Azure SDK for Container Registry</name>
   <description>This package contains Microsoft Azure SDK for Container Registry.</description>
@@ -28,6 +28,9 @@
   </scm>
 
   <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
@@ -46,13 +49,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
      <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -74,37 +78,37 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.16.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
+      <version>2.15.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

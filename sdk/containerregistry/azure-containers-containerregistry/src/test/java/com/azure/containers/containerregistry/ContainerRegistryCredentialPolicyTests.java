@@ -3,19 +3,15 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenRequestContext;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.SyncAsyncExtension;
-import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,14 +21,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class ContainerRegistryCredentialPolicyTests {
 
@@ -53,8 +43,6 @@ public class ContainerRegistryCredentialPolicyTests {
     private HttpPipelineCallContext callContext;
     private HttpResponse successResponse;
     private HttpPipelineNextPolicy nextPolicy;
-
-    private HttpPipelineNextSyncPolicy nextSyncPolicy;
     private HttpPipelineNextPolicy nextClonePolicy;
 
     @BeforeEach
@@ -63,7 +51,6 @@ public class ContainerRegistryCredentialPolicyTests {
 
         ContainerRegistryTokenService mockService = mock(ContainerRegistryTokenService.class);
         when(mockService.getToken(any(ContainerRegistryTokenRequestContext.class))).thenReturn(Mono.just(accessToken));
-        when(mockService.getTokenSync(any(ContainerRegistryTokenRequestContext.class))).thenReturn(accessToken);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://mytest.azurecr.io");
 
@@ -91,12 +78,6 @@ public class ContainerRegistryCredentialPolicyTests {
         when(mockNext.clone()).thenReturn(mockNextClone);
         when(mockNext.process()).thenReturn(Mono.just(unauthorizedResponseWithHeader));
 
-        HttpPipelineNextSyncPolicy mockNextSyncClone = mock(HttpPipelineNextSyncPolicy.class);
-        when(mockNextSyncClone.processSync()).thenReturn(successResponse);
-        HttpPipelineNextSyncPolicy mockNextSync = mock(HttpPipelineNextSyncPolicy.class);
-        when(mockNextSync.clone()).thenReturn(mockNextSyncClone);
-        when(mockNextSync.processSync()).thenReturn(unauthorizedResponseWithHeader);
-
         this.service = mockService;
         this.unauthorizedHttpResponse = unauthorizedResponseWithHeader;
         this.unauthorizedHttpResponseWithoutHeader = unauthorizedResponseWithoutHeader;
@@ -105,45 +86,30 @@ public class ContainerRegistryCredentialPolicyTests {
         this.successResponse = successResponse;
         this.nextClonePolicy = mockNextClone;
         this.nextPolicy = mockNext;
-        this.nextSyncPolicy = mockNextSync;
-
     }
 
-    @SyncAsyncTest
+    @Test
     public void requestNoRetryOnOtherErrorCodes() {
         ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
         when(nextPolicy.process()).thenReturn(Mono.just(successResponse));
-        when(nextSyncPolicy.processSync()).thenReturn(successResponse);
-
-        SyncAsyncExtension.execute(
-            () -> policy.processSync(this.callContext, this.nextSyncPolicy),
-            () -> policy.process(this.callContext, this.nextPolicy)
-        );
+        policy.process(this.callContext, this.nextPolicy).block();
 
         // Make sure no call being done to the authorize request.
         verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
-        verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
 
         when(nextPolicy.process()).thenReturn(Mono.just(unauthorizedHttpResponseWithoutHeader));
-        when(nextSyncPolicy.processSync()).thenReturn(unauthorizedHttpResponseWithoutHeader);
-
-        SyncAsyncExtension.execute(
-            () -> policy.processSync(this.callContext, this.nextSyncPolicy),
-            () -> policy.process(this.callContext, this.nextPolicy)
-        );
+        policy.process(this.callContext, this.nextPolicy).block();
 
         // Make sure no call being done to the authorize request.
         verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
-        verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
     }
 
     @Test
     public void requestAddBearerTokenToRequest() {
         ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
-
         Boolean onChallenge = spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse).block();
 
         // Validate that the onChallenge ran successfully.
@@ -157,30 +123,6 @@ public class ContainerRegistryCredentialPolicyTests {
         // Validate that the token creation was called with the correct arguments.
         ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
         verify(spyPolicy).setAuthorizationHeader(any(HttpPipelineCallContext.class), argument.capture());
-
-        ContainerRegistryTokenRequestContext requestContext = argument.getValue();
-        assertEquals(SERVICENAME, requestContext.getServiceName());
-        assertEquals(SCOPENAME, requestContext.getScope());
-    }
-
-    @Test
-    public void requestAddBearerTokenToRequestSync() {
-        ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service);
-        ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
-
-        Boolean onChallenge = spyPolicy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponse);
-
-        // Validate that the onChallenge ran successfully.
-        assertTrue(onChallenge);
-
-        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
-        assertFalse(tokenValue.isEmpty());
-        assertTrue(tokenValue.startsWith(BEARER));
-        assertTrue(tokenValue.endsWith(tokenValue));
-
-        // Validate that the token creation was called with the correct arguments.
-        ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
-        verify(spyPolicy).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
         assertEquals(SERVICENAME, requestContext.getServiceName());
