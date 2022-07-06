@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Transaction;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -40,7 +41,26 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      */
     @Override
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
-        return Flux.fromIterable(new ArrayList<>());
+        return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
+            String partitionId = partitionOwnership.getPartitionId();
+            String key = keyBuilder(prefixBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup()), partitionId);
+            try (Jedis jedis = jedisPool.getResource()) {
+                List<String> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
+                String currentPartitionOwnership = keyInformation.get(0);
+                if (currentPartitionOwnership == null) {
+                        // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
+                    jedis.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
+                } else {
+                    // otherwise we have to change the ownership and "watch" the transaction
+                    jedis.watch(key);
+                    Transaction transaction = jedis.multi();
+                    jedis.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
+                    transaction.exec();
+                }
+                jedisPool.returnResource(jedis);
+            }
+            return Flux.just(partitionOwnership);
+        });
     }
 
     /**
@@ -134,12 +154,15 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(prefix, checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
-            //Case 1: new checkpoint
             if (!jedis.exists(prefix) || !jedis.exists(key)) {
+                //Case 1: new checkpoint
                 jedis.sadd(prefix, key);
                 jedis.hset(key, CHECKPOINT, new String(DEFAULT_SERIALIZER.serializeToBytes(checkpoint), StandardCharsets.UTF_8));
+            } else {
+                //Case 2: checkpoint already exists in Redis cache
+                jedis.hset(key, CHECKPOINT, new String(DEFAULT_SERIALIZER.serializeToBytes(checkpoint), StandardCharsets.UTF_8));
             }
-            //TO DO: Case 2: checkpoint already exists in Redis cache
+
             jedisPool.returnResource(jedis);
         }
         return Mono.empty();
