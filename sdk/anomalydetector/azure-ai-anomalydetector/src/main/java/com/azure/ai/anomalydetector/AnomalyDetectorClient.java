@@ -80,7 +80,7 @@ public final class AnomalyDetectorClient {
 
     /**
      * This operation generates a model using the data points that you sent to the API, and based on all data 
-     * to determine whether the last point is an anomalous. The latest point detecting operation matches the
+     * to determine whether the last point is anomalous. The latest point detecting operation matches the
      * scenario of real-time monitoring of business metrics.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
