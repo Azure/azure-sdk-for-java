@@ -17,5 +17,6 @@ module com.azure.communication.common {
         com.azure.communication.phonenumbers,
         com.azure.communication.chat,
         com.azure.communication.callingserver,
-        com.azure.communication.networktraversal, com.azure.communication.jobrouter;
+        com.azure.communication.networktraversal,
+        com.azure.communication.jobrouter;
 }
