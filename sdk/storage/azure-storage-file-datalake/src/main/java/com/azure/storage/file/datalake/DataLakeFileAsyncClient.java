@@ -416,7 +416,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      * ParallelTransferOptions pto = new ParallelTransferOptions&#40;&#41;
      *     .setBlockSizeLong&#40;blockSize&#41;
-     *     .setProgressReceiver&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
+     *     .setProgressListener&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;data, pto, httpHeaders, metadataMap, conditions&#41;
      *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Uploaded file %n&quot;&#41;&#41;;
@@ -490,7 +490,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      * ParallelTransferOptions pto = new ParallelTransferOptions&#40;&#41;
      *     .setBlockSizeLong&#40;blockSize&#41;
-     *     .setProgressReceiver&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
+     *     .setProgressListener&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;new FileParallelUploadOptions&#40;data&#41;
      *     .setParallelTransferOptions&#40;parallelTransferOptions&#41;.setHeaders&#40;headers&#41;
