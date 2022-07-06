@@ -20,7 +20,6 @@ import com.azure.resourcemanager.appservice.fluent.models.BackupItemInner;
 import com.azure.resourcemanager.appservice.fluent.models.BackupRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.ContinuousWebJobInner;
-import com.azure.resourcemanager.appservice.fluent.models.CsmDeploymentStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
 import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameAnalysisResultInner;
@@ -74,6 +73,7 @@ import com.azure.resourcemanager.appservice.fluent.models.VnetGatewayInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetInfoResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.WebJobInner;
 import com.azure.resourcemanager.appservice.fluent.models.WebSiteInstanceStatusInner;
+import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
 import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
 import com.azure.resourcemanager.appservice.models.DeletedAppRestoreRequest;
@@ -3894,8 +3894,7 @@ public interface WebAppsClient
      * @return deployment status collection ARM resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CsmDeploymentStatusInner> listProductionSiteDeploymentStatusesAsync(
-        String resourceGroupName, String name);
+    PagedFlux<CsmDeploymentStatus> listProductionSiteDeploymentStatusesAsync(String resourceGroupName, String name);
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
@@ -3909,7 +3908,7 @@ public interface WebAppsClient
      * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CsmDeploymentStatusInner> listProductionSiteDeploymentStatuses(String resourceGroupName, String name);
+    PagedIterable<CsmDeploymentStatus> listProductionSiteDeploymentStatuses(String resourceGroupName, String name);
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
@@ -3924,7 +3923,7 @@ public interface WebAppsClient
      * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CsmDeploymentStatusInner> listProductionSiteDeploymentStatuses(
+    PagedIterable<CsmDeploymentStatus> listProductionSiteDeploymentStatuses(
         String resourceGroupName, String name, Context context);
 
     /**
@@ -3958,8 +3957,8 @@ public interface WebAppsClient
      *     specified).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner>
-        beginGetProductionSiteDeploymentStatusAsync(String resourceGroupName, String name, String deploymentStatusId);
+    PollerFlux<PollResult<CsmDeploymentStatus>, CsmDeploymentStatus> beginGetProductionSiteDeploymentStatusAsync(
+        String resourceGroupName, String name, String deploymentStatusId);
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
@@ -3975,7 +3974,7 @@ public interface WebAppsClient
      *     specified).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetProductionSiteDeploymentStatus(
+    SyncPoller<PollResult<CsmDeploymentStatus>, CsmDeploymentStatus> beginGetProductionSiteDeploymentStatus(
         String resourceGroupName, String name, String deploymentStatusId);
 
     /**
@@ -3993,7 +3992,7 @@ public interface WebAppsClient
      *     specified).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetProductionSiteDeploymentStatus(
+    SyncPoller<PollResult<CsmDeploymentStatus>, CsmDeploymentStatus> beginGetProductionSiteDeploymentStatus(
         String resourceGroupName, String name, String deploymentStatusId, Context context);
 
     /**
@@ -4010,7 +4009,7 @@ public interface WebAppsClient
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CsmDeploymentStatusInner> getProductionSiteDeploymentStatusAsync(
+    Mono<CsmDeploymentStatus> getProductionSiteDeploymentStatusAsync(
         String resourceGroupName, String name, String deploymentStatusId);
 
     /**
@@ -4026,7 +4025,7 @@ public interface WebAppsClient
      * @return the deployment status for an app (or deployment slot, if specified).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CsmDeploymentStatusInner getProductionSiteDeploymentStatus(
+    CsmDeploymentStatus getProductionSiteDeploymentStatus(
         String resourceGroupName, String name, String deploymentStatusId);
 
     /**
@@ -4043,7 +4042,7 @@ public interface WebAppsClient
      * @return the deployment status for an app (or deployment slot, if specified).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CsmDeploymentStatusInner getProductionSiteDeploymentStatus(
+    CsmDeploymentStatus getProductionSiteDeploymentStatus(
         String resourceGroupName, String name, String deploymentStatusId, Context context);
 
     /**
@@ -15657,7 +15656,7 @@ public interface WebAppsClient
      * @return deployment status collection ARM resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CsmDeploymentStatusInner> listSlotSiteDeploymentStatusesSlotAsync(
+    PagedFlux<CsmDeploymentStatus> listSlotSiteDeploymentStatusesSlotAsync(
         String resourceGroupName, String name, String slot);
 
     /**
@@ -15674,7 +15673,7 @@ public interface WebAppsClient
      * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CsmDeploymentStatusInner> listSlotSiteDeploymentStatusesSlot(
+    PagedIterable<CsmDeploymentStatus> listSlotSiteDeploymentStatusesSlot(
         String resourceGroupName, String name, String slot);
 
     /**
@@ -15692,7 +15691,7 @@ public interface WebAppsClient
      * @return deployment status collection ARM resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CsmDeploymentStatusInner> listSlotSiteDeploymentStatusesSlot(
+    PagedIterable<CsmDeploymentStatus> listSlotSiteDeploymentStatusesSlot(
         String resourceGroupName, String name, String slot, Context context);
 
     /**
@@ -15730,9 +15729,8 @@ public interface WebAppsClient
      *     specified).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner>
-        beginGetSlotSiteDeploymentStatusSlotAsync(
-            String resourceGroupName, String name, String slot, String deploymentStatusId);
+    PollerFlux<PollResult<CsmDeploymentStatus>, CsmDeploymentStatus> beginGetSlotSiteDeploymentStatusSlotAsync(
+        String resourceGroupName, String name, String slot, String deploymentStatusId);
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
@@ -15750,7 +15748,7 @@ public interface WebAppsClient
      *     specified).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetSlotSiteDeploymentStatusSlot(
+    SyncPoller<PollResult<CsmDeploymentStatus>, CsmDeploymentStatus> beginGetSlotSiteDeploymentStatusSlot(
         String resourceGroupName, String name, String slot, String deploymentStatusId);
 
     /**
@@ -15770,7 +15768,7 @@ public interface WebAppsClient
      *     specified).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CsmDeploymentStatusInner>, CsmDeploymentStatusInner> beginGetSlotSiteDeploymentStatusSlot(
+    SyncPoller<PollResult<CsmDeploymentStatus>, CsmDeploymentStatus> beginGetSlotSiteDeploymentStatusSlot(
         String resourceGroupName, String name, String slot, String deploymentStatusId, Context context);
 
     /**
@@ -15789,7 +15787,7 @@ public interface WebAppsClient
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CsmDeploymentStatusInner> getSlotSiteDeploymentStatusSlotAsync(
+    Mono<CsmDeploymentStatus> getSlotSiteDeploymentStatusSlotAsync(
         String resourceGroupName, String name, String slot, String deploymentStatusId);
 
     /**
@@ -15807,7 +15805,7 @@ public interface WebAppsClient
      * @return the deployment status for an app (or deployment slot, if specified).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CsmDeploymentStatusInner getSlotSiteDeploymentStatusSlot(
+    CsmDeploymentStatus getSlotSiteDeploymentStatusSlot(
         String resourceGroupName, String name, String slot, String deploymentStatusId);
 
     /**
@@ -15826,7 +15824,7 @@ public interface WebAppsClient
      * @return the deployment status for an app (or deployment slot, if specified).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CsmDeploymentStatusInner getSlotSiteDeploymentStatusSlot(
+    CsmDeploymentStatus getSlotSiteDeploymentStatusSlot(
         String resourceGroupName, String name, String slot, String deploymentStatusId, Context context);
 
     /**

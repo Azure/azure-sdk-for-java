@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.CsmDeploymentStatusInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public final class CsmDeploymentStatusCollection {
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<CsmDeploymentStatusInner> value;
+    private List<CsmDeploymentStatus> value;
 
     /*
      * Link to next page of resources.
@@ -30,7 +29,7 @@ public final class CsmDeploymentStatusCollection {
      *
      * @return the value value.
      */
-    public List<CsmDeploymentStatusInner> value() {
+    public List<CsmDeploymentStatus> value() {
         return this.value;
     }
 
@@ -40,7 +39,7 @@ public final class CsmDeploymentStatusCollection {
      * @param value the value value to set.
      * @return the CsmDeploymentStatusCollection object itself.
      */
-    public CsmDeploymentStatusCollection withValue(List<CsmDeploymentStatusInner> value) {
+    public CsmDeploymentStatusCollection withValue(List<CsmDeploymentStatus> value) {
         this.value = value;
         return this;
     }
