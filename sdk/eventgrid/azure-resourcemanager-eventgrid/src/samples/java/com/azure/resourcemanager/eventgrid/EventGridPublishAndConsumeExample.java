@@ -46,7 +46,7 @@ public class EventGridPublishAndConsumeExample {
 
     private static final Random RANDOM = new Random();
     private static final int NUMBER_OF_EVENTS = 10;
-    private static final Region REGION = Region.US_WEST2;
+    private static final Region REGION = Region.US_CENTRAL;
     private static final String RESOURCE_GROUP_NAME = "rg" + randomPadding();
     private static final String EVENT_HUB_NAME = "eh" + randomPadding();
     private static final String EVENT_HUB_NAMESPACE = "ehNamespace" + randomPadding();
