@@ -16,7 +16,9 @@ import reactor.core.publisher.Flux;
  * enable reporting on sequential transfers. Note that any method accepting a {@link ParallelTransferOptions} will use
  * the {@code ProgressReceiver} specified there and will handle the logic to coordinate the reporting between parallel
  * operations.
+ * @deprecated Use {@link ProgressListener}.
  */
+@Deprecated
 public interface ProgressReceiver extends ProgressListener {
 
     /**
