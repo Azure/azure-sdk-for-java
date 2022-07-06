@@ -58,17 +58,6 @@ public final class BasicDigitalTwin {
     // Empty constructor for json deserialization purposes
     private BasicDigitalTwin() {
     }
-    
-    /**
-     * Construct a BasicDigitalTwin wit an ID and a last updated timestamp.
-     * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
-     * @param lastUpdatedOn The date and time the digital twin was last updated.
-     */
-    public BasicDigitalTwin(String digitalTwinId, OffsetDateTime lastUpdatedOn) {
-        this(digitalTwinId);
-        
-        this.lastUpdatedOn = lastUpdatedOn;
-    }
 
     /**
      * Gets the unique Id of the digital twin in a digital twins instance. This field is present on every digital twin.

@@ -41,21 +41,6 @@ public final class BasicDigitalTwinComponent {
      */
     @JsonIgnore
     private final Map<String, Object> contents = new HashMap<>();
-    
-    /**
-     * Construct an empty digital twin component.
-     */
-    public BasicDigitalTwinComponent() {
-    }
-    
-    /**
-     * Construct a digital twin component, specifying the time the component was last updated. This is primarily
-     * added to aid in deserialization.
-     * @param lastUpdatedOn The date and time the digital twin was last updated.
-     */
-    public BasicDigitalTwinComponent(OffsetDateTime lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-    }
 
     /**
      * Gets the metadata about the model.
