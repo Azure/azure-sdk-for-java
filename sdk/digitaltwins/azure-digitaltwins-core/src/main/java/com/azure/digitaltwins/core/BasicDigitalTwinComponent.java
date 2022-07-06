@@ -94,6 +94,7 @@ public final class BasicDigitalTwinComponent {
      * Unwraps the raw metadata received from the service and extracts the "$lastUpdateTime" property.
      * @param metadata The metadata of the component.
      */
+    @SuppressWarnings("unchecked")
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA)
     private void unwrapMetadata(Map<String, Object> metadata) {
         ObjectMapper mapper = new ObjectMapper();
