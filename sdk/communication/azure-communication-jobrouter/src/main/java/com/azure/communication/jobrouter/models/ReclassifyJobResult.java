@@ -9,13 +9,11 @@ import com.azure.core.annotation.Fluent;
  * Result object for reclassify job.
  */
 @Fluent
-public class ReclassifyJobResult extends EmptyPlaceHolderObject {
+public class ReclassifyJobResult {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
-     * @param emptyResponse Placeholder object.
      */
-    public ReclassifyJobResult(Object emptyResponse) {
-        this.emptyResponse = emptyResponse;
+    public ReclassifyJobResult() {
     }
 }

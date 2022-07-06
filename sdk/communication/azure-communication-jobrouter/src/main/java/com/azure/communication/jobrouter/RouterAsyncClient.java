@@ -1058,7 +1058,7 @@ public final class RouterAsyncClient {
         try {
             return jobRouter.reclassifyJobActionWithResponseAsync(id, null, context)
                 .map(result -> new SimpleResponse<ReclassifyJobResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new ReclassifyJobResult(result.getValue())));
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new ReclassifyJobResult()));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1118,7 +1118,7 @@ public final class RouterAsyncClient {
         try {
             return jobRouter.cancelJobActionWithResponseAsync(id, note, dispositionCode, context)
                 .map(result -> new SimpleResponse<CancelJobResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CancelJobResult(result.getValue())));
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CancelJobResult()));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1176,7 +1176,7 @@ public final class RouterAsyncClient {
         try {
             return jobRouter.completeJobActionWithResponseAsync(id, assignmentId, note, context)
                 .map(result -> new SimpleResponse<CompleteJobResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CompleteJobResult(result.getValue())));
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CompleteJobResult()));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1242,7 +1242,7 @@ public final class RouterAsyncClient {
         try {
             return jobRouter.closeJobActionWithResponseAsync(id, assignmentId, dispositionCode, closeTime, note, context)
                 .map(result -> new SimpleResponse<CloseJobResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CloseJobResult(result.getValue())
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new CloseJobResult()
                 ));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1442,7 +1442,7 @@ public final class RouterAsyncClient {
         try {
             return jobRouter.declineJobActionWithResponseAsync(workerId, offerId, context)
                 .map(result -> new SimpleResponse<DeclineJobOfferResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new DeclineJobOfferResult(result.getValue())));
+                    result.getRequest(), result.getStatusCode(), result.getHeaders(), new DeclineJobOfferResult()));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

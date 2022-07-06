@@ -9,13 +9,11 @@ import com.azure.core.annotation.Fluent;
  * Response object for decline job offer request.
  */
 @Fluent
-public class DeclineJobOfferResult extends EmptyPlaceHolderObject {
+public class DeclineJobOfferResult {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
-     * @param emptyResponse Placeholder object.
      */
-    public DeclineJobOfferResult(Object emptyResponse) {
-        this.emptyResponse = emptyResponse;
+    public DeclineJobOfferResult() {
     }
 }

@@ -10,13 +10,11 @@ import com.azure.core.annotation.Fluent;
  * Response object for complete job request.
  */
 @Fluent
-public class CompleteJobResult extends EmptyPlaceHolderObject {
+public class CompleteJobResult {
     /**
      * Constructor to create a place-holder result.
      * Optionally use Fluent set and get to add more fields to the result.
-     * @param emptyResponse Placeholder object.
      */
-    public CompleteJobResult(Object emptyResponse) {
-        this.emptyResponse = emptyResponse;
+    public CompleteJobResult() {
     }
 }
