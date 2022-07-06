@@ -9,7 +9,9 @@ import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutin
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImplBuilder;
 import com.azure.communication.jobrouter.implementation.utils.BuilderHelper;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -37,7 +39,9 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {RouterAsyncClient.class, RouterClient.class})
 public class RouterClientBuilder implements ConfigurationTrait<RouterClientBuilder>,
     EndpointTrait<RouterClientBuilder>,
-    HttpTrait<RouterClientBuilder> {
+    HttpTrait<RouterClientBuilder>,
+    ConnectionStringTrait<RouterClientBuilder>,
+    AzureKeyCredentialTrait<RouterClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(RouterClientBuilder.class);
 
     private String endpoint;
