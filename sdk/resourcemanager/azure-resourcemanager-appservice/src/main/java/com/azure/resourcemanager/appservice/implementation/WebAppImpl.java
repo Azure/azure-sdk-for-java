@@ -394,9 +394,6 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
                 }
                 return response.getBodyAsString()
                     .flatMap(bodyString -> {
-                        if (bodyString == null) {
-                            return Mono.empty();
-                        }
                         SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
                         CsmDeploymentStatus inner;
                         try {
