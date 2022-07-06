@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
@@ -46,13 +46,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void beginBuildModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        DocumentModel documentModel
+        DocumentModelInfo documentModelInfo
             = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
             .getFinalResult();
 
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -74,7 +74,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+        DocumentModelInfo documentModelInfo = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
                 DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
@@ -83,11 +83,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                     .setTags(attrs), Context.NONE)
             .getFinalResult();
 
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Description: %s%n", documentModel.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-        System.out.printf("Model assigned tags: %s%n", documentModel.getTags());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+        System.out.printf("Model assigned tags: %s%n", documentModelInfo.getTags());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -101,13 +101,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#getAccountProperties()}
      */
     public void getAccountProperties() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountProperties
-        AccountProperties accountProperties = documentModelAdministrationClient.getAccountProperties();
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo
+        ResourceInfo resourceInfo = documentModelAdministrationClient.getAccountProperties();
         System.out.printf("Max number of models that can be build for this account: %d%n",
-            accountProperties.getDocumentModelLimit());
+            resourceInfo.getDocumentModelLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
-            accountProperties.getDocumentModelCount());
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountProperties
+            resourceInfo.getDocumentModelCount());
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo
     }
 
     /**
@@ -115,14 +115,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void getAccountPropertiesWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountPropertiesWithResponse#Context
-        Response<AccountProperties> response =
+        Response<ResourceInfo> response =
             documentModelAdministrationClient.getAccountPropertiesWithResponse(Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        AccountProperties accountProperties = response.getValue();
+        ResourceInfo resourceInfo = response.getValue();
         System.out.printf("Max number of models that can be build for this account: %d%n",
-            accountProperties.getDocumentModelLimit());
+            resourceInfo.getDocumentModelLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
-            accountProperties.getDocumentModelCount());
+            resourceInfo.getDocumentModelCount());
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountPropertiesWithResponse#Context
     }
 
@@ -201,41 +201,41 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List)}
      */
     public void beginCreateComposedModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list
         String modelId1 = "{custom-model-id_1}";
         String modelId2 = "{custom-model-id_2}";
-        final DocumentModel documentModel
+        final DocumentModelInfo documentModelInfo
             = documentModelAdministrationClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2))
             .getFinalResult();
 
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Description: %s%n", documentModel.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List, CreateComposedModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List, ComposeModelOptions, Context)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list-ComposeModelOptions-Context
         String modelId1 = "{custom-model-id_1}";
         String modelId2 = "{custom-model-id_2}";
         String modelId = "my-composed-model";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        final DocumentModel documentModel =
+        final DocumentModelInfo documentModelInfo =
             documentModelAdministrationClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2),
-                    new CreateComposedModelOptions()
+                    new ComposeModelOptions()
                         .setModelId(modelId)
                         .setDescription("my composed model desc")
                         .setTags(attrs),
@@ -243,18 +243,18 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();
 
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Description: %s%n", documentModel.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-        System.out.printf("Model assigned tags: %s%n", documentModel.getTags());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+        System.out.printf("Model assigned tags: %s%n", documentModelInfo.getTags());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-CreateComposedModelOptions-Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list-ComposeModelOptions-Context
     }
 
     /**
@@ -266,11 +266,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // Get authorization to copy the model to target resource
         CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization();
         // Start copy operation from the source client
-        DocumentModel documentModel =
+        DocumentModelInfo documentModelInfo =
             documentModelAdministrationClient.beginCopyModelTo(copyModelId, copyAuthorization).getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
-            documentModel.getModelId(),
-            documentModel.getCreatedOn());
+            documentModelInfo.getModelId(),
+            documentModelInfo.getCreatedOn());
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization
     }
 
@@ -283,11 +283,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // Get authorization to copy the model to target resource
         CopyAuthorization copyAuthorization = documentModelAdministrationClient.getCopyAuthorization();
         // Start copy operation from the source client
-        DocumentModel documentModel =
+        DocumentModelInfo documentModelInfo =
             documentModelAdministrationClient.beginCopyModelTo(copyModelId, copyAuthorization, Context.NONE).getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
-            documentModel.getModelId(),
-            documentModel.getCreatedOn());
+            documentModelInfo.getModelId(),
+            documentModelInfo.getCreatedOn());
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context
     }
 
@@ -327,11 +327,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getModel#string
         String modelId = "{custom-model-id}";
-        DocumentModel documentModel = documentModelAdministrationClient.getModel(modelId);
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Description: %s%n", documentModel.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        DocumentModelInfo documentModelInfo = documentModelAdministrationClient.getModel(modelId);
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -347,13 +347,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void getModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getModelWithResponse#string-Context
         String modelId = "{custom-model-id}";
-        Response<DocumentModel> response = documentModelAdministrationClient.getModelWithResponse(modelId, Context.NONE);
+        Response<DocumentModelInfo> response = documentModelAdministrationClient.getModelWithResponse(modelId, Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        DocumentModel documentModel = response.getValue();
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Description: %s%n", documentModel.getDescription());
-        System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        DocumentModelInfo documentModelInfo = response.getValue();
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());

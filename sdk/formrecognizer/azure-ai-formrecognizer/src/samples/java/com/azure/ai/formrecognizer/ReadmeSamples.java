@@ -5,11 +5,11 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentField;
@@ -214,18 +214,18 @@ public class ReadmeSamples {
         // Build custom document analysis model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
+        SyncPoller<DocumentOperationResult, DocumentModelInfo> buildOperationPoller =
             documentModelAdminClient.beginBuildModel(trainingFilesUrl,
                 DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
-        DocumentModel documentModel = buildOperationPoller.getFinalResult();
+        DocumentModelInfo documentModelInfo = buildOperationPoller.getFinalResult();
 
         // Model Info
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model Description: %s%n", documentModel.getDescription());
-        System.out.printf("Model created on: %s%n%n", documentModel.getCreatedOn());
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Model created on: %s%n%n", documentModelInfo.getCreatedOn());
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             System.out.printf("Document type: %s%n", key);
             docTypeInfo.getFieldSchema().forEach((name, documentFieldSchema) -> {
                 System.out.printf("Document field: %s%n", name);
@@ -369,19 +369,19 @@ public class ReadmeSamples {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        AccountProperties accountProperties = documentModelAdminClient.getAccountProperties();
-        System.out.printf("The account has %s models, and we can have at most %s models",
-            accountProperties.getDocumentModelCount(), accountProperties.getDocumentModelLimit());
+        ResourceInfo resourceInfo = documentModelAdminClient.getAccountProperties();
+        System.out.printf("The resource account has %s models, and we can have at most %s models",
+            resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
-        PagedIterable<DocumentModelInfo> customDocumentModels = documentModelAdminClient.listModels();
+        PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
         System.out.println("We have following models in the account:");
         customDocumentModels.forEach(documentModelInfo -> {
             System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
             modelId.set(documentModelInfo.getModelId());
 
             // get custom document analysis model info
-            DocumentModel documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
+            DocumentModelInfo documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());

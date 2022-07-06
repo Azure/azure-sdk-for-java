@@ -11,7 +11,7 @@ import java.util.Map;
  * The configurable options to pass when creating a composed model.
  */
 @Fluent
-public final class CreateComposedModelOptions {
+public final class ComposeModelOptions {
     private String description;
     private Map<String, String> tags;
     private String modelId;
@@ -30,9 +30,9 @@ public final class CreateComposedModelOptions {
      *
      * @param description the user defined model description to set.
      *
-     * @return the updated {@code CreateComposedModelOptions} value.
+     * @return the updated {@code ComposeModelOptions} value.
      */
-    public CreateComposedModelOptions setDescription(final String description) {
+    public ComposeModelOptions setDescription(final String description) {
         this.description = description;
         return this;
     }
@@ -50,9 +50,9 @@ public final class CreateComposedModelOptions {
      * Set the user defined attributes associated with the model.
      *
      * @param tags the tags value to set.
-     * @return the CreateComposedModelOptions object itself.
+     * @return the ComposeModelOptions object itself.
      */
-    public CreateComposedModelOptions setTags(Map<String, String> tags) {
+    public ComposeModelOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -70,9 +70,9 @@ public final class CreateComposedModelOptions {
      * Set the unique model identifier for the model. If not specified, a model ID will be created for you.
      *
      * @param modelId a unique model identifier
-     * @return the CreateComposedModelOptions object itself.
+     * @return the ComposeModelOptions object itself.
      */
-    public CreateComposedModelOptions setModelId(String modelId) {
+    public ComposeModelOptions setModelId(String modelId) {
         this.modelId = modelId;
         return this;
     }

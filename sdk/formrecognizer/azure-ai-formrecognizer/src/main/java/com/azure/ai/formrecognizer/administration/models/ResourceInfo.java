@@ -3,12 +3,12 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.AccountPropertiesHelper;
+import com.azure.ai.formrecognizer.implementation.util.ResourceInfoHelper;
 
 /**
- * The AccountProperties model.
+ * The ResourceInfo model.
  */
-public final class AccountProperties {
+public final class ResourceInfo {
 
     /*
      * The current count of built document analysis models.
@@ -47,17 +47,17 @@ public final class AccountProperties {
     }
 
     static {
-        AccountPropertiesHelper.setAccessor(new AccountPropertiesHelper.AccountPropertiesAccessor() {
+        ResourceInfoHelper.setAccessor(new ResourceInfoHelper.ResourceInfoAccessor() {
             @Override
             public void setDocumentModelCount(
-                AccountProperties accountProperties, int documentModelCount) {
-                accountProperties.setDocumentModelCount(documentModelCount);
+                ResourceInfo resourceInfo, int documentModelCount) {
+                resourceInfo.setDocumentModelCount(documentModelCount);
             }
 
             @Override
             public void setDocumentModelLimit(
-                AccountProperties accountProperties, int documentModelLimit) {
-                accountProperties.setDocumentModelLimit(documentModelLimit);
+                ResourceInfo resourceInfo, int documentModelLimit) {
+                resourceInfo.setDocumentModelLimit(documentModelLimit);
             }
         });
     }

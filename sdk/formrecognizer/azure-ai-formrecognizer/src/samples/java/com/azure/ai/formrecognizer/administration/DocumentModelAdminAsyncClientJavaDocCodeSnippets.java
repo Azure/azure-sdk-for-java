@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
-import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
+import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
@@ -189,18 +189,18 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getAccountProperties()}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getResourceInfo()}
      */
     public void getAccountProperties() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountProperties
-        documentModelAdministrationAsyncClient.getAccountProperties()
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo
+        documentModelAdministrationAsyncClient.getResourceInfo()
             .subscribe(accountProperties -> {
                 System.out.printf("Max number of models that can be build for this account: %d%n",
                     accountProperties.getDocumentModelLimit());
                 System.out.printf("Current count of built document analysis models: %d%n",
                     accountProperties.getDocumentModelCount());
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountProperties
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo
     }
 
     /**
@@ -211,23 +211,23 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         documentModelAdministrationAsyncClient.getAccountPropertiesWithResponse()
             .subscribe(response -> {
                 System.out.printf("Response Status Code: %d.", response.getStatusCode());
-                AccountProperties accountProperties = response.getValue();
+                ResourceInfo resourceInfo = response.getValue();
                 System.out.printf("Max number of models that can be build for this account: %d%n",
-                    accountProperties.getDocumentModelLimit());
+                    resourceInfo.getDocumentModelLimit());
                 System.out.printf("Current count of built document analysis models: %d%n",
-                    accountProperties.getDocumentModelCount());
+                    resourceInfo.getDocumentModelCount());
             });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountPropertiesWithResponse
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCreateComposedModel(List)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeModel(List)}
      */
     public void beginCreateComposedModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
-        documentModelAdministrationAsyncClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2)
+        documentModelAdministrationAsyncClient.beginComposeModel(Arrays.asList(modelId1, modelId2)
             )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -242,23 +242,23 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginCreateComposedModel(List, CreateComposedModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginComposeModel(List, ComposeModelOptions)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list-composeModelOptions
         String modelId1 = "{model_Id_1}";
         String modelId2 = "{model_Id_2}";
         String modelId = "my-composed-model";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        documentModelAdministrationAsyncClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2),
-                new CreateComposedModelOptions()
+        documentModelAdministrationAsyncClient.beginComposeModel(Arrays.asList(modelId1, modelId2),
+                new ComposeModelOptions()
                     .setModelId(modelId)
                     .setDescription("model-desc")
                     .setTags(attrs))
@@ -277,7 +277,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-createComposedModelOptions
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginComposeModel#list-composeModelOptions
     }
 
     /**
@@ -345,11 +345,11 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         documentModelAdministrationAsyncClient.getModelWithResponse(modelId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            DocumentModel documentModel = response.getValue();
-            System.out.printf("Model ID: %s%n", documentModel.getModelId());
-            System.out.printf("Model Description: %s%n", documentModel.getDescription());
-            System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
-            documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+            DocumentModelInfo documentModelInfo = response.getValue();
+            System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+            System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+            System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
+            documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
                 docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());

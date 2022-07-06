@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
+import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
@@ -24,7 +24,7 @@ import java.util.Arrays;
  * the most accurate one.
  * </p>
  */
-public class CreateComposedModel {
+public class ComposeModel {
 
     /**
      * Main method to invoke this demo.
@@ -41,31 +41,31 @@ public class CreateComposedModel {
         // Build custom document analysis model
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentOperationResult, DocumentModel> model1Poller =
+        SyncPoller<DocumentOperationResult, DocumentModelInfo> model1Poller =
             client.beginBuildModel(model1TrainingFiles, DocumentBuildMode.TEMPLATE);
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<DocumentOperationResult, DocumentModel> model2Poller =
+        SyncPoller<DocumentOperationResult, DocumentModelInfo> model2Poller =
             client.beginBuildModel(model2TrainingFiles, DocumentBuildMode.TEMPLATE);
 
         String labeledModelId1 = model1Poller.getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
         String composedModelId = "my-composed-model";
-        final DocumentModel documentModel =
+        final DocumentModelInfo documentModelInfo =
             client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
-                    new CreateComposedModelOptions().setDescription("my composed model description"),
+                    new ComposeModelOptions().setDescription("my composed model description"),
                     Context.NONE)
                 .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();
 
-        System.out.printf("Model ID: %s%n", documentModel.getModelId());
-        System.out.printf("Model description: %s%n", documentModel.getDescription());
-        System.out.printf("Composed model created on: %s%n", documentModel.getCreatedOn());
+        System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+        System.out.printf("Model description: %s%n", documentModelInfo.getDescription());
+        System.out.printf("Composed model created on: %s%n", documentModelInfo.getCreatedOn());
 
         System.out.println("Document Fields:");
-        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+        documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
             docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                 System.out.printf("Field: %s", field);
                 System.out.printf("Field type: %s", documentFieldSchema.getType());

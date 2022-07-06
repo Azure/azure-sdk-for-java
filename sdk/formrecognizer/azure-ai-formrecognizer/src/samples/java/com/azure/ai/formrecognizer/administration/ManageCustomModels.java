@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -33,19 +33,19 @@ public class ManageCustomModels {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        AccountProperties accountProperties = client.getAccountProperties();
-        System.out.printf("The account has %s models, and we can have at most %s models",
-            accountProperties.getDocumentModelCount(), accountProperties.getDocumentModelLimit());
+        ResourceInfo resourceInfo = client.getAccountProperties();
+        System.out.printf("The resource account has %s models, and we can have at most %s models",
+            resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
-        PagedIterable<DocumentModelInfo> customDocumentModels = client.listModels();
+        PagedIterable<DocumentModelSummary> customDocumentModels = client.listModels();
         System.out.println("We have following models in the account:");
         customDocumentModels.forEach(documentModelInfo -> {
             System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
 
             // get custom document analysis model info
             modelId.set(documentModelInfo.getModelId());
-            DocumentModel documentModel = client.getModel(documentModelInfo.getModelId());
+            DocumentModelInfo documentModel = client.getModel(documentModelInfo.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
