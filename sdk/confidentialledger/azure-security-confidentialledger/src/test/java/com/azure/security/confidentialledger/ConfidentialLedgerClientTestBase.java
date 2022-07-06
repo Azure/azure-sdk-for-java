@@ -33,7 +33,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
         try {
             ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
                 .identityServiceUri(
-                        Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI", "identityserviceuri"))
+                        Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI", "https://identity.confidential-ledger.core.azure.com"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
@@ -49,9 +49,10 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             }
             ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder
                     .buildClient();
-            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERURI")
-                    .replaceAll("\\w+://", "")
-                    .replaceAll("\\..*", "");
+            
+            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-test");
+
+            System.out.println(ledgerId);
 
             // this is a built in test of getLedgerIdentity
             Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
@@ -69,7 +70,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             System.out.println("Creating Confidential Ledger client with the certificate...");
 
             ConfidentialLedgerClientBuilder confidentialLedgerClientbuilder = new ConfidentialLedgerClientBuilder()
-                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "ledgeruri"))
+                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://emily-java-sdk-test.confidential-ledger.azure.com"))
                     .httpClient(httpClient)
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
@@ -85,6 +86,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             }
 
             confidentialLedgerClient = confidentialLedgerClientbuilder.buildClient();
+            System.out.println("confidentialLedgerClient = " + confidentialLedgerClient);
         } catch (Exception ex) {
             System.out.println("Error thrown from ConfidentialLedgerClientTestBase:" + ex);
         }
