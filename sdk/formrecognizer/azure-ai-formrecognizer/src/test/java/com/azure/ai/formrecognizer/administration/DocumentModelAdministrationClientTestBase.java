@@ -99,7 +99,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         assertNotNull(actualResult.getTargetResourceId());
     }
 
-    static void validateAccountProperties(ResourceInfo actualResourceInfo) {
+    static void validateResourceInfo(ResourceInfo actualResourceInfo) {
         assertNotNull(actualResourceInfo.getDocumentModelLimit());
         assertNotNull(actualResourceInfo.getDocumentModelCount());
     }

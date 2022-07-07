@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DocumentModelInfoAdministrationAsyncClientTest extends DocumentModelAdministrationClientTestBase {
+public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdministrationClientTestBase {
     private DocumentModelAdministrationAsyncClient client;
     @BeforeAll
     static void beforeAll() {
@@ -86,10 +86,10 @@ public class DocumentModelInfoAdministrationAsyncClientTest extends DocumentMode
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void validGetAccountProperties(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+    public void validGetResourceInfo(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getResourceInfo())
-            .assertNext(DocumentModelAdministrationClientTestBase::validateAccountProperties)
+            .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
             .verifyComplete();
     }
 
@@ -98,11 +98,11 @@ public class DocumentModelInfoAdministrationAsyncClientTest extends DocumentMode
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void validGetAccountPropertiesWithResponse(HttpClient httpClient,
+    public void validGetResourceInfoWithResponse(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getResourceInfo())
-            .assertNext(DocumentModelAdministrationClientTestBase::validateAccountProperties)
+            .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
             .verifyComplete();
     }
 
