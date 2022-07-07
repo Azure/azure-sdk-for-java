@@ -30,6 +30,7 @@ public class CosmosIT {
 
     @Test
     public void testCosmosOperation() {
+        LOGGER.info("CosmosIT begin.");
         LOGGER.info("Start creating cosmos client");
         CosmosClient client = new CosmosClientBuilder()
             .endpoint(endpoint)
@@ -59,6 +60,7 @@ public class CosmosIT {
             User user = users.stream().iterator().next();
             Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line one");
         }
+        LOGGER.info("CosmosIT end.");
     }
 
 }
