@@ -37,7 +37,6 @@ resources:
     type: github
     endpoint: Azure
     name: Azure/azure-sdk-tools
-    ref: main
 
 jobs:
 - job: Perf
