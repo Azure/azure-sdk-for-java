@@ -124,12 +124,12 @@ com.azure:azure-search-documents;11.4.12;11.5.0-beta.12
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.3;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-security-keyvault-administration;4.1.3;4.1.4
-com.azure:azure-security-keyvault-certificates;4.3.3;4.3.4
+com.azure:azure-security-keyvault-administration;4.1.4;4.2.0-beta.1
+com.azure:azure-security-keyvault-certificates;4.3.4;4.4.0-beta.1
 com.azure:azure-security-keyvault-jca;2.7.0;2.8.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
-com.azure:azure-security-keyvault-keys;4.4.3;4.4.4
-com.azure:azure-security-keyvault-secrets;4.4.3;4.4.4
+com.azure:azure-security-keyvault-keys;4.4.4;4.5.0-beta.1
+com.azure:azure-security-keyvault-secrets;4.4.4;4.5.0-beta.1
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
