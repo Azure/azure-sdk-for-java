@@ -332,10 +332,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             // This is a very important step
             // Releasing the channel back to the pool so other requests can use it
             this.releaseToPool(channel);
-            requestRecord.getAddressUri().setHealthy();
+            requestRecord.getAddressUri().setConnected();
             openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), true);
         } else {
-            requestRecord.getAddressUri().setUnhealthy();
             openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), false, openChannelFuture.cause());
         }
 
@@ -446,8 +445,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
 
-            //mark address healthy
-            requestRecord.args().physicalAddressUri().setHealthy();
+            // mark address connected
+            requestRecord.args().physicalAddressUri().setConnected();
             return requestRecord;
         }
 
@@ -480,7 +479,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             requestRecord.completeExceptionally(goneException);
         }
 
-        requestRecord.args().physicalAddressUri().setUnhealthy();
         return requestRecord;
     }
 

@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -43,7 +44,12 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,10 +58,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.Connected;
+import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.UnhealthyPending;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GatewayAddressCacheTest extends TestSuiteBase {
     private Database createdDatabase;
@@ -89,6 +98,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         return new Object[][]{
                 { Protocol.HTTPS},
                 { Protocol.TCP},
+        };
+    }
+
+
+    @DataProvider(name = "replicaValidationArgsProvider")
+    public Object[][] replicaValidationArgsProvider() {
+        return new Object[][]{
+                // replica validation is enabled
+                { false },
+                { true },
         };
     }
 
@@ -905,6 +924,292 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null, "/dbs/", false, false, null).block();
 
         assertSameAs(ImmutableList.copyOf(actualAddresses),  fetchedAddresses);
+    }
+
+    @Test(groups = { "direct" }, dataProvider = "replicaValidationArgsProvider", timeOut = TIMEOUT)
+    public void tryGetAddress_replicaValidationTests(boolean replicaValidationEnabled) throws Exception {
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+
+        if (replicaValidationEnabled) {
+            System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "true");
+            assertThat(Configs.isReplicaAddressValidationEnabled()).isTrue();
+        } else {
+            System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
+            assertThat(Configs.isReplicaAddressValidationEnabled()).isFalse();
+        }
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+                mockDiagnosticsClientContext(),
+                serviceEndpoint,
+                Protocol.TCP,
+                authorizationTokenProvider,
+                null,
+                httpClientWrapper.getSpyHttpClient(),
+                true,
+                null,
+                null,
+                ConnectionPolicy.getDefaultPolicy(),
+                openConnectionsHandlerMock);
+
+        RxDocumentServiceRequest req =
+                RxDocumentServiceRequest.create(
+                        mockDiagnosticsClientContext(),
+                        OperationType.Create,
+                        ResourceType.Document,
+                        getCollectionSelfLink(),
+                        new Database(),
+                        new HashMap<>());
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
+        boolean forceRefreshPartitionAddresses = false;
+
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
+                cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+
+        ArrayList<AddressInformation> addressInfosFromCache =
+                Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
+
+        assertThat(httpClientWrapper.capturedRequests)
+                .describedAs("getAddress will read addresses from gateway")
+                .asList().hasSize(1);
+
+        if (replicaValidationEnabled) {
+            ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
+            Mockito.verify(openConnectionsHandlerMock, Mockito.times(1)).openConnections(openConnectionArguments.capture());
+
+            assertThat(openConnectionArguments.getValue())
+                    .hasSize(addressInfosFromCache.size())
+                    .containsExactlyElementsOf(
+                            addressInfosFromCache
+                                .stream()
+                                .map(addressInformation -> addressInformation.getPhysicalUri())
+                                .collect(Collectors.toList()));
+        } else {
+            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any());
+        }
+
+        // Mark one of the uri as unhealthy, others as connected
+        // and then force refresh the addresses again, make sure the health status of the uri is reserved
+        httpClientWrapper.capturedRequests.clear();
+        Mockito.clearInvocations(openConnectionsHandlerMock);
+        for (AddressInformation address : addressInfosFromCache) {
+            address.getPhysicalUri().setConnected();
+        }
+        Uri unhealthyAddressUri = addressInfosFromCache.get(0).getPhysicalUri();
+        unhealthyAddressUri.setUnhealthy();
+
+        ArrayList<AddressInformation> refreshedAddresses =
+                Lists.newArrayList(getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, true), TIMEOUT).v);
+        assertThat(httpClientWrapper.capturedRequests)
+                .describedAs("getAddress will read addresses from gateway")
+                .asList().hasSize(1);
+        assertThat(refreshedAddresses).hasSize(addressInfosFromCache.size()).containsAll(addressInfosFromCache);
+
+        // validate connected status will be reserved
+        // validate unhealthy status will change into unhealthyPending status
+        // validate openConnection will only be called for addresses not in connected status
+        for (AddressInformation addressInformation : refreshedAddresses) {
+            if (addressInformation.getPhysicalUri().equals(unhealthyAddressUri)) {
+                assertThat(addressInformation.getPhysicalUri().getHealthStatus()).isEqualTo(UnhealthyPending);
+            } else {
+                assertThat(addressInformation.getPhysicalUri().getHealthStatus()).isEqualTo(Connected);
+            }
+        }
+
+        if (replicaValidationEnabled) {
+            ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
+            Mockito.verify(openConnectionsHandlerMock, Mockito.times(1)).openConnections(openConnectionArguments.capture());
+
+            assertThat(openConnectionArguments.getValue()).hasSize(1).containsExactly(unhealthyAddressUri);
+        } else {
+            Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any());
+        }
+
+        System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void tryGetAddress_unhealthyStatus_forceRefresh() throws Exception {
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+                mockDiagnosticsClientContext(),
+                serviceEndpoint,
+                Protocol.TCP,
+                authorizationTokenProvider,
+                null,
+                httpClientWrapper.getSpyHttpClient(),
+                true,
+                null,
+                null,
+                ConnectionPolicy.getDefaultPolicy(),
+                openConnectionsHandlerMock);
+
+        RxDocumentServiceRequest req =
+                RxDocumentServiceRequest.create(
+                        mockDiagnosticsClientContext(),
+                        OperationType.Create,
+                        ResourceType.Document,
+                        getCollectionSelfLink(),
+                        new Database(),
+                        new HashMap<>());
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
+        boolean forceRefreshPartitionAddresses = false;
+
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
+                cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
+
+        ArrayList<AddressInformation> addressInfosFromCache =
+                Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
+
+        assertThat(httpClientWrapper.capturedRequests)
+                .describedAs("getAddress will read addresses from gateway")
+                .asList().hasSize(1);
+
+        httpClientWrapper.capturedRequests.clear();
+        Mockito.clearInvocations(openConnectionsHandlerMock);
+
+        // mark one of the uri as unhealthy, and validate the address cache will be refreshed after 1 min
+        Uri unhealthyAddressUri = addressInfosFromCache.get(0).getPhysicalUri();
+        unhealthyAddressUri.setUnhealthy();
+        Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
+        lastUnhealthyTimestampField.setAccessible(true);
+        lastUnhealthyTimestampField.set(unhealthyAddressUri, Instant.now().minusMillis(Duration.ofMinutes(1).toMillis()));
+
+        // using forceRefresh false
+        // but as there is one address has been stuck in unhealthy status for more than 1 min,
+        // so after getting the addresses, it will refresh the cache
+        ArrayList<AddressInformation> cachedAddresses =
+                Lists.newArrayList(getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, false), TIMEOUT).v);
+
+        // since the refresh happens in background, wait some time to let it happen
+        Thread.sleep(200);
+        assertThat(httpClientWrapper.capturedRequests)
+                .describedAs("getAddress will read addresses from gateway")
+                .asList().hasSize(1);
+        assertThat(cachedAddresses).hasSize(addressInfosFromCache.size()).containsAll(addressInfosFromCache);
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void validateReplicaAddressesTests() throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+                mockDiagnosticsClientContext(),
+                serviceEndpoint,
+                Protocol.TCP,
+                authorizationTokenProvider,
+                null,
+                httpClientWrapper.getSpyHttpClient(),
+                true,
+                null,
+                null,
+                ConnectionPolicy.getDefaultPolicy(),
+                openConnectionsHandlerMock);
+
+        Method validateReplicaAddressesMethod =
+                GatewayAddressCache.class.getDeclaredMethod("validateReplicaAddresses", new Class[] { AddressInformation[].class });
+        validateReplicaAddressesMethod.setAccessible(true);
+
+        // connected status
+        AddressInformation address1 = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);
+        address1.getPhysicalUri().setConnected();
+
+        // remain in unknwon status
+        AddressInformation address2 = new AddressInformation(true, false, "rntbd://127.0.0.1:2", Protocol.TCP);
+
+        // unhealthy status
+        AddressInformation address3 = new AddressInformation(true, false, "rntbd://127.0.0.1:3", Protocol.TCP);
+        address3.getPhysicalUri().setUnhealthy();
+
+        // unhealthy pending status
+        AddressInformation address4 = new AddressInformation(true, false, "rntbd://127.0.0.1:4", Protocol.TCP);
+        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(address4.getPhysicalUri());
+        healthStatus.set(UnhealthyPending);
+
+        validateReplicaAddressesMethod.invoke(cache, new Object[]{ new AddressInformation[]{ address1, address2, address3, address4 }}) ;
+
+        // Validate openConnection will not be called for addresses in connected status
+        ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
+        Mockito.verify(openConnectionsHandlerMock, Mockito.times(1)).openConnections(openConnectionArguments.capture());
+
+        assertThat(openConnectionArguments.getValue()).hasSize(3).containsExactlyElementsOf(
+                Arrays.asList(address2, address3, address4)
+                        .stream()
+                        .map(addressInformation -> addressInformation.getPhysicalUri())
+                        .collect(Collectors.toList()));
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void mergeAddressesTests() throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        IOpenConnectionsHandler openConnectionsHandlerMock = Mockito.mock(IOpenConnectionsHandler.class);
+        Mockito.when(openConnectionsHandlerMock.openConnections(Mockito.any())).thenReturn(Flux.empty()); // what returned here does not really matter
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+                mockDiagnosticsClientContext(),
+                serviceEndpoint,
+                Protocol.TCP,
+                authorizationTokenProvider,
+                null,
+                httpClientWrapper.getSpyHttpClient(),
+                true,
+                null,
+                null,
+                ConnectionPolicy.getDefaultPolicy(),
+                openConnectionsHandlerMock);
+
+        // connected status
+        AddressInformation address1 = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);
+        address1.getPhysicalUri().setConnected();
+
+        // unhealthyStatus
+        AddressInformation address2 = new AddressInformation(true, false, "rntbd://127.0.0.1:2", Protocol.TCP);
+        address2.getPhysicalUri().setUnhealthy();
+
+        AddressInformation address3 = new AddressInformation(true, false, "rntbd://127.0.0.1:3", Protocol.TCP);
+        AddressInformation address4 = new AddressInformation(true, false, "rntbd://127.0.0.1:4", Protocol.TCP);
+        AddressInformation address5 = new AddressInformation(true, false, "rntbd://127.0.0.1:5", Protocol.TCP);
+        AddressInformation address6 = new AddressInformation(true, false, "rntbd://127.0.0.1:6", Protocol.TCP);
+
+
+        AddressInformation[] cachedAddresses = new AddressInformation[] { address1, address2, address3, address4 };
+        AddressInformation[] newAddresses = new AddressInformation[] {
+                new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP),
+                new AddressInformation(true, true, "rntbd://127.0.0.1:2", Protocol.TCP),
+                address5,
+                address6 };
+
+
+        Method mergeAddressesMethod =
+                GatewayAddressCache.class.getDeclaredMethod(
+                        "mergeAddresses",
+                        new Class[] { AddressInformation[].class, AddressInformation[].class });
+        mergeAddressesMethod.setAccessible(true);
+        AddressInformation[] mergedAddresses =
+                (AddressInformation[]) mergeAddressesMethod.invoke(cache, new Object[]{ newAddresses, cachedAddresses });
+
+        assertThat(mergedAddresses).hasSize(newAddresses.length)
+                .containsExactly(address1, address2, address5, address6);
     }
 
     public static void assertSameAs(List<AddressInformation> actual, List<Address> expected) {

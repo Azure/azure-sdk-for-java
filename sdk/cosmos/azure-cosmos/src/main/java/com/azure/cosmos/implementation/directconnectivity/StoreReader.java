@@ -145,6 +145,8 @@ public class StoreReader {
 
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
+
+                    System.out.println("Get result back");
                             try {
                                 StoreResult storeResult = this.createAndRecordStoreResult(
                                         request,
@@ -225,6 +227,7 @@ public class StoreReader {
 
             readStoreTasks.add(Pair.of(res.getLeft().flux(), res.getRight()));
             startIndex++;
+            resolveApiResults.remove(addressUri);
 
             if (!forceReadAll && readStoreTasks.size() == replicasToRead.get()) {
                 break;

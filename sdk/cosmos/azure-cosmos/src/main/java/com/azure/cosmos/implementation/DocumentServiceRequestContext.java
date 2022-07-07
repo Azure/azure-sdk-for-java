@@ -42,10 +42,10 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled;
-    private final Set<Uri> failedAddresses;
+    private final Set<Uri> failedEndpoints;
 
     public DocumentServiceRequestContext() {
-        this.failedAddresses = ConcurrentHashMap.newKeySet();
+        this.failedEndpoints = ConcurrentHashMap.newKeySet();
     }
 
     /**
@@ -83,16 +83,20 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public Set<Uri> getFailedEndpoints() {
-        return this.failedAddresses;
+        return this.failedEndpoints;
     }
 
     public void addToFailedEndpoints(Exception exception, Uri address) {
+
         if (exception instanceof CosmosException) {
             CosmosException cosmosException = (CosmosException) exception;
-            if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.GONE
-                    || cosmosException.getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT
-                    || cosmosException.getStatusCode() >= 500) {
-                this.failedAddresses.add(address);
+
+            // Tracking the failed endpoints, so during retry, we can prioritize other replicas (replicas have not been tried on)
+            // If the exception eventually cause a forceRefresh gateway addresses, during that time, we are going to officially mark
+            // the replica as unhealthy.
+            // We started by only track 410 exceptions, but can add other exceptions based on the feedback and observations
+            if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.GONE) {
+                this.failedEndpoints.add(address);
             }
         }
     }

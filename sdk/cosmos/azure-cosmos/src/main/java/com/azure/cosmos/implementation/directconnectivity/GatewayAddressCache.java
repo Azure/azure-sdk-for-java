@@ -50,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -276,7 +277,7 @@ public class GatewayAddressCache implements IAddressCache {
         if (forceRefreshPartitionAddressesModified) {
             logger.debug("refresh serverPartitionAddressCache for {}", partitionKeyRangeIdentity);
 
-            // 410, 408, 5xx -> should all of them become the reason to mark an endpoint unhealthy?
+            // Mark the addresses as unhealthy
             for (Uri uri : request.requestContext.getFailedEndpoints()) {
                 uri.setUnhealthy();
             }
@@ -324,13 +325,23 @@ public class GatewayAddressCache implements IAddressCache {
                         if (Arrays
                                 .stream(addressesValueHolder.v)
                                 .anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus())) {
-                            this.serverPartitionAddressCache.refresh(
-                                    partitionKeyRangeIdentity,
-                                    cachedAddresses -> this.getAddressesForRangeId(
-                                            request,
-                                            partitionKeyRangeIdentity,
-                                            true,
-                                            cachedAddresses));
+
+                            logger.debug("Start background refresh task due to address uri in unhealthy status");
+
+                            // Start a background task
+                            Mono.defer(() -> {
+                                this.serverPartitionAddressCache.refresh(
+                                        partitionKeyRangeIdentity,
+                                        cachedAddresses -> this.getAddressesForRangeId(
+                                                request,
+                                                partitionKeyRangeIdentity,
+                                                true,
+                                                cachedAddresses));
+
+                                return Mono.empty();
+                            })
+                            .subscribeOn(Schedulers.boundedElastic())
+                            .subscribe();
                         }
 
                         return addressesValueHolder;
@@ -645,10 +656,10 @@ public class GatewayAddressCache implements IAddressCache {
         PartitionKeyRangeIdentity pkRangeIdentity,
         boolean forceRefresh,
         AddressInformation[] cachedAddresses) {
-
         Utils.checkNotNullOrThrow(request, "request", "");
         validatePkRangeIdentity(pkRangeIdentity);
 
+        logger.info("Get addresses for rangeId");
         String collectionRid = pkRangeIdentity.getCollectionRid();
         String partitionKeyRangeId = pkRangeIdentity.getPartitionKeyRangeId();
 
@@ -689,6 +700,8 @@ public class GatewayAddressCache implements IAddressCache {
                         if (logger.isDebugEnabled()) {
                             logger.debug("getAddressesForRangeId flatMap got result {}", JavaStreamUtils.info(list));
                         }
+
+                        logger.info("Get results back");
                         if (list.isEmpty()) {
                             String errorMessage = String.format(
                                 RMResources.PartitionKeyRangeNotFound,
@@ -712,7 +725,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 this.validateReplicaAddresses(mergedAddresses);
                             }
 
-                            return Mono.just(list.get(0).getRight());
+                            return Mono.just(mergedAddresses);
                         }
                     })
                 .doOnError(e -> logger.debug("getAddressesForRangeId", e));
@@ -871,7 +884,7 @@ public class GatewayAddressCache implements IAddressCache {
         List<AddressInformation> mergedAddresses = new ArrayList<>();
         Map<Uri, AddressInformation> cachedAddressMap =
                 Arrays
-                    .stream(newAddresses)
+                    .stream(cachedAddresses)
                     .collect(Collectors.toMap(address -> address.getPhysicalUri(), address -> address));
 
         for (AddressInformation addressInformation : newAddresses) {
@@ -894,7 +907,7 @@ public class GatewayAddressCache implements IAddressCache {
                 Arrays
                     .stream(addresses)
                     .map(address -> address.getPhysicalUri())
-                    .filter(addressUri -> addressUri.getHealthStatus() != Uri.HealthStatus.Healthy)
+                    .filter(addressUri -> addressUri.getHealthStatus() != Uri.HealthStatus.Connected)
                     .collect(Collectors.toList());
 
         this.openConnectionsHandler

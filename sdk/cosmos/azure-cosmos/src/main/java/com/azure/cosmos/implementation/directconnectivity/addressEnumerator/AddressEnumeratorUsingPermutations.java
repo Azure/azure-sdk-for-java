@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,7 +18,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class AddressEnumeratorUsingPermutations {
 
     private static AtomicReference<List<List<List<Integer>>>> allPermutations = new AtomicReference<>(null);
-    private static Random random = new Random();
 
     static {
         if (allPermutations.compareAndSet(null, new ArrayList<>())) {
@@ -35,7 +34,7 @@ public class AddressEnumeratorUsingPermutations {
         checkNotNull(addresses, "Argument 'addresses' should not be null");
 
         List<List<Integer>> allPermutationsForSpecificSize = allPermutations.get().get(addresses.size());
-        int permutation = random.nextInt(allPermutationsForSpecificSize.size());
+        int permutation = generateNextRandom(allPermutationsForSpecificSize.size());
 
         List<Uri> addressList = new ArrayList<>();
         for (int index : allPermutationsForSpecificSize.get(permutation)) {
@@ -72,5 +71,11 @@ public class AddressEnumeratorUsingPermutations {
 
         array[leftIndex] = array[rightIndex];
         array[rightIndex] = tmp;
+    }
+
+    private static int generateNextRandom(int maxValue) {
+        // The benefit of using ThreadLocalRandom.current() over Random is
+        // avoiding the synchronization contention due to multi-threading.
+        return ThreadLocalRandom.current().nextInt(maxValue);
     }
 }

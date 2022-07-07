@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -360,5 +361,9 @@ public class ReflectionUtils {
 
     public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager) {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
+    }
+
+    public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
+        return get(AtomicReference.class, uri, "healthStatus");
     }
 }

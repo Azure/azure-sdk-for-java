@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +54,8 @@ public class Uri {
     /***
      * This method will be called if a connection can be established successfully to the backend.
      */
-    public void setHealthy() {
-        this.setHealthStatus(HealthStatus.Healthy);
+    public void setConnected() {
+        this.setHealthStatus(HealthStatus.Connected);
     }
 
     /***
@@ -79,13 +80,13 @@ public class Uri {
         }
     }
 
-    private void setHealthStatus(HealthStatus status) {
+    public void setHealthStatus(HealthStatus status) {
         this.healthStatus.updateAndGet(previousStatus -> {
 
             HealthStatus newStatus = previousStatus;
             switch (status) {
                 case Unhealthy:
-                    this.lastUnknownTimestamp = Instant.now();
+                    this.lastUnhealthyTimestamp = Instant.now();
                     newStatus = status;
                     break;
 
@@ -95,7 +96,7 @@ public class Uri {
                         newStatus = status;
                     }
                     break;
-                case Healthy:
+                case Connected:
                     if (previousStatus != HealthStatus.Unhealthy
                         || (previousStatus == HealthStatus.Unhealthy &&
                             Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0)) {
@@ -126,17 +127,19 @@ public class Uri {
     public HealthStatus getEffectiveHealthStatus() {
         HealthStatus snapshot = this.healthStatus.get();
         switch (snapshot) {
-            case Healthy:
+            case Connected:
             case Unhealthy:
                 return snapshot;
             case Unknown:
-                if (Instant.now().compareTo(this.lastUnknownTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0) {
-                    return HealthStatus.Healthy;
+                if (Instant.now()
+                        .compareTo(this.lastUnknownTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0) {
+                    return HealthStatus.Connected;
                 }
                 return snapshot;
             case UnhealthyPending:
-                if (Instant.now().compareTo(this.lastUnhealthyPendingTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0) {
-                    return HealthStatus.Healthy;
+                if (Instant.now()
+                        .compareTo(this.lastUnhealthyPendingTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0) {
+                    return HealthStatus.Connected;
                 }
                 return snapshot;
             default:
@@ -167,8 +170,17 @@ public class Uri {
         return this.uriAsString;
     }
 
+
+    /***
+     * <p>
+     * NOTE: Please DO NOT change the order of the enum values,
+     * as it is used in {@link AddressEnumerator} for correct sorting purpose
+     *
+     * if you are going to change the order of this, please reexamine the sorting logic as well.
+     * </p>
+     */
     public enum HealthStatus {
-        Healthy(0),
+        Connected(0),
         Unknown(1),
         UnhealthyPending(2),
         Unhealthy(3);
