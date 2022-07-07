@@ -3,9 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.DeployOptions;
 import com.azure.resourcemanager.appservice.models.DeployType;
-import com.azure.resourcemanager.appservice.models.DeploymentBuildStatus;
 import com.azure.resourcemanager.appservice.models.DeploymentSlots;
 import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -29,13 +26,16 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 /** The implementation for WebApp. */
 class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
@@ -46,6 +46,7 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         WebApp.Update,
         WebApp.UpdateStages.WithCredentials,
         WebApp.UpdateStages.WithStartUpCommand {
+    private static final Duration MAX_DEPLOYMENT_STATUS_TIMEOUT = Duration.ofMinutes(5);
 
     private DeploymentSlots deploymentSlots;
     private WebAppRuntimeStack runtimeStackOnWindowsOSToUpdate;
@@ -371,45 +372,47 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     }
 
     @Override
-    public DeploymentBuildStatus getDeploymentStatus(String deploymentId) {
+    public CsmDeploymentStatus getDeploymentStatus(String deploymentId) {
         return getDeploymentStatusAsync(deploymentId).block();
     }
 
     @Override
-    public Mono<DeploymentBuildStatus> getDeploymentStatusAsync(String deploymentId) {
+    public Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId) {
         // "GET" LRO is not supported in azure-core
-        String deploymentStatusUrl = String.format(
-            "%s/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Web/sites/%s/deploymentStatus/%s?api-version=%s",
-            AzureEnvironment.AZURE.getResourceManagerEndpoint(),
-            this.manager().subscriptionId(),
-            this.resourceGroupName(),
-            this.name(),
-            deploymentId,
-            this.manager().serviceClient().getApiVersion());
-        HttpRequest request = new HttpRequest(HttpMethod.GET, deploymentStatusUrl);
-        return this.manager().httpPipeline().send(request)
-            .flatMap(response -> {
-                if (response.getStatusCode() / 100 != 2) {
-                    return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
+        AtomicLong pollCount = new AtomicLong();
+        Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
+        return this.manager().serviceClient().getWebApps()
+            .getProductionSiteDeploymentStatusWithResponseAsync(this.resourceGroupName(), this.name(), deploymentId)
+            .flatMap(fluxResponse -> {
+                if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_DEPLOYMENT_STATUS_TIMEOUT) < 0) {
+                    HttpResponse response = new HttpFluxBBResponse(fluxResponse);
+                    if (fluxResponse.getStatusCode() / 100 != 2) {
+                        return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
+                    }
+                    return response.getBodyAsString()
+                        .flatMap(bodyString -> {
+                            SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+                            CsmDeploymentStatus status;
+                            try {
+                                status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
+                            } catch (IOException e) {
+                                return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                            }
+                            if (status == null) {
+                                return Mono.empty();
+                            }
+                            return Mono.just(status);
+                        });
+                } else {
+                    return Mono.error(new ManagementException("Timeout getting deployment status for deploymentId: " + deploymentId, null));
                 }
-                return response.getBodyAsString()
-                    .flatMap(bodyString -> {
-                        SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-                        CsmDeploymentStatus inner;
-                        try {
-                            inner = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
-                        } catch (IOException e) {
-                            return Mono.error(new ManagementException("Deserialize failed for response body.", response));
-                        }
-                        if (inner == null) {
-                            return Mono.empty();
-                        }
-                        DeploymentBuildStatus status = inner.status();
-                        if (status == null) {
-                            return Mono.empty();
-                        }
-                        return Mono.just(status);
-                    });
-            });
+            }).repeatWhenEmpty(
+                longFlux ->
+                    longFlux
+                        .flatMap(
+                            index -> {
+                                pollCount.set(index);
+                                return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
+                            }));
     }
 }

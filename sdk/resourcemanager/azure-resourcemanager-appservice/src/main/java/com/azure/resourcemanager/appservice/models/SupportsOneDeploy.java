@@ -117,7 +117,7 @@ public interface SupportsOneDeploy {
      * @param deploymentId GUID of the deployment operation
      * @return the production deployment status for Azure Site
      */
-    DeploymentBuildStatus getDeploymentStatus(String deploymentId);
+    CsmDeploymentStatus getDeploymentStatus(String deploymentId);
 
     /**
      * Gets the production deployment status for Azure Site.
@@ -125,5 +125,5 @@ public interface SupportsOneDeploy {
      * @param deploymentId GUID of the deployment operation
      * @return the production deployment status for Azure Site
      */
-    Mono<DeploymentBuildStatus> getDeploymentStatusAsync(String deploymentId);
+    Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId);
 }
