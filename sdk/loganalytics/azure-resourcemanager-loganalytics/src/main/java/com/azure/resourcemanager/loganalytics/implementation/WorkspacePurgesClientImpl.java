@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.WorkspacePurgesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeStatusResponseInner;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkspacePurgesClient. */
 public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
-    private final ClientLogger logger = new ClientLogger(WorkspacePurgesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspacePurgesService service;
 
@@ -98,7 +95,10 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
+     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
+     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
+     * ticket.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -106,7 +106,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
+     * @return response containing operationId for a specific purge action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspacePurgesPurgeResponse> purgeWithResponseAsync(
@@ -135,6 +135,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         } else {
             body.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -143,7 +144,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                         .purge(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             workspaceName,
                             body,
@@ -158,7 +159,10 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
+     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
+     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
+     * ticket.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -167,7 +171,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
+     * @return response containing operationId for a specific purge action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspacePurgesPurgeResponse> purgeWithResponseAsync(
@@ -196,13 +200,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         } else {
             body.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .purge(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 workspaceName,
                 body,
@@ -216,7 +221,10 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
+     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
+     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
+     * ticket.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -224,20 +232,13 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
+     * @return response containing operationId for a specific purge action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspacePurgeResponseInner> purgeAsync(
         String resourceGroupName, String workspaceName, WorkspacePurgeBody body) {
         return purgeWithResponseAsync(resourceGroupName, workspaceName, body)
-            .flatMap(
-                (WorkspacePurgesPurgeResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -246,7 +247,10 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
+     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
+     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
+     * ticket.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -267,7 +271,10 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Log Analytics only supports purge operations required
+     * for compliance with GDPR. The Log Analytics product team reserves the right to reject requests for purge
+     * operations that are not for the purpose of GDPR compliance. In the event of a dispute, please create a support
+     * ticket.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -293,7 +300,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
+     * @return status of an ongoing purge operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(
@@ -320,6 +328,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         if (purgeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter purgeId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -328,7 +337,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
                         .getPurgeStatus(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             workspaceName,
                             purgeId,
@@ -347,7 +356,8 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
+     * @return status of an ongoing purge operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspacePurgeStatusResponseInner>> getPurgeStatusWithResponseAsync(
@@ -374,13 +384,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
         if (purgeId == null) {
             return Mono.error(new IllegalArgumentException("Parameter purgeId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getPurgeStatus(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 workspaceName,
                 purgeId,
@@ -397,20 +408,13 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
+     * @return status of an ongoing purge operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspacePurgeStatusResponseInner> getPurgeStatusAsync(
         String resourceGroupName, String workspaceName, String purgeId) {
         return getPurgeStatusWithResponseAsync(resourceGroupName, workspaceName, purgeId)
-            .flatMap(
-                (Response<WorkspacePurgeStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -440,7 +444,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of an ongoing purge operation.
+     * @return status of an ongoing purge operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspacePurgeStatusResponseInner> getPurgeStatusWithResponse(

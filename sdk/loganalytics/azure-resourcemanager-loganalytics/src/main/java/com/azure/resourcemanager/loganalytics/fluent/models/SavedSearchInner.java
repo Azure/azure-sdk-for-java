@@ -5,76 +5,31 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.Tag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Value object for saved search results. */
-@JsonFlatten
 @Fluent
-public class SavedSearchInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SavedSearchInner.class);
-
+public final class SavedSearchInner extends ProxyResource {
     /*
-     * The ETag of the saved search.
+     * The ETag of the saved search. To override an existing saved search, use
+     * "*" or specify the current Etag
      */
     @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * The category of the saved search. This helps the user to find a saved
-     * search faster.
+     * The properties of the saved search.
      */
-    @JsonProperty(value = "properties.category", required = true)
-    private String category;
-
-    /*
-     * Saved search display name.
-     */
-    @JsonProperty(value = "properties.displayName", required = true)
-    private String displayName;
-
-    /*
-     * The query expression for the saved search.
-     */
-    @JsonProperty(value = "properties.query", required = true)
-    private String query;
-
-    /*
-     * The function alias if query serves as a function.
-     */
-    @JsonProperty(value = "properties.functionAlias")
-    private String functionAlias;
-
-    /*
-     * The optional function parameters if query serves as a function. Value
-     * should be in the following format: 'param-name1:type1 = default_value1,
-     * param-name2:type2 = default_value2'. For more examples and proper syntax
-     * please refer to
-     * https://docs.microsoft.com/en-us/azure/kusto/query/functions/user-defined-functions.
-     */
-    @JsonProperty(value = "properties.functionParameters")
-    private String functionParameters;
-
-    /*
-     * The version number of the query language. The current version is 2 and
-     * is the default.
-     */
-    @JsonProperty(value = "properties.version")
-    private Long version;
-
-    /*
-     * The tags attached to the saved search.
-     */
-    @JsonProperty(value = "properties.tags")
-    private List<Tag> tags;
+    @JsonProperty(value = "properties", required = true)
+    private SavedSearchProperties innerProperties = new SavedSearchProperties();
 
     /**
-     * Get the etag property: The ETag of the saved search.
+     * Get the etag property: The ETag of the saved search. To override an existing saved search, use "*" or specify the
+     * current Etag.
      *
      * @return the etag value.
      */
@@ -83,7 +38,8 @@ public class SavedSearchInner extends ProxyResource {
     }
 
     /**
-     * Set the etag property: The ETag of the saved search.
+     * Set the etag property: The ETag of the saved search. To override an existing saved search, use "*" or specify the
+     * current Etag.
      *
      * @param etag the etag value to set.
      * @return the SavedSearchInner object itself.
@@ -94,12 +50,21 @@ public class SavedSearchInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the saved search.
+     *
+     * @return the innerProperties value.
+     */
+    private SavedSearchProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the category property: The category of the saved search. This helps the user to find a saved search faster.
      *
      * @return the category value.
      */
     public String category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -109,7 +74,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withCategory(String category) {
-        this.category = category;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withCategory(category);
         return this;
     }
 
@@ -119,7 +87,7 @@ public class SavedSearchInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -129,7 +97,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -139,7 +110,7 @@ public class SavedSearchInner extends ProxyResource {
      * @return the query value.
      */
     public String query() {
-        return this.query;
+        return this.innerProperties() == null ? null : this.innerProperties().query();
     }
 
     /**
@@ -149,7 +120,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withQuery(String query) {
-        this.query = query;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withQuery(query);
         return this;
     }
 
@@ -159,7 +133,7 @@ public class SavedSearchInner extends ProxyResource {
      * @return the functionAlias value.
      */
     public String functionAlias() {
-        return this.functionAlias;
+        return this.innerProperties() == null ? null : this.innerProperties().functionAlias();
     }
 
     /**
@@ -169,7 +143,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withFunctionAlias(String functionAlias) {
-        this.functionAlias = functionAlias;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withFunctionAlias(functionAlias);
         return this;
     }
 
@@ -182,7 +159,7 @@ public class SavedSearchInner extends ProxyResource {
      * @return the functionParameters value.
      */
     public String functionParameters() {
-        return this.functionParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().functionParameters();
     }
 
     /**
@@ -195,7 +172,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withFunctionParameters(String functionParameters) {
-        this.functionParameters = functionParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withFunctionParameters(functionParameters);
         return this;
     }
 
@@ -205,7 +185,7 @@ public class SavedSearchInner extends ProxyResource {
      * @return the version value.
      */
     public Long version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -215,7 +195,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withVersion(Long version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -225,7 +208,7 @@ public class SavedSearchInner extends ProxyResource {
      * @return the tags value.
      */
     public List<Tag> tags() {
-        return this.tags;
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
     }
 
     /**
@@ -235,7 +218,10 @@ public class SavedSearchInner extends ProxyResource {
      * @return the SavedSearchInner object itself.
      */
     public SavedSearchInner withTags(List<Tag> tags) {
-        this.tags = tags;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SavedSearchProperties();
+        }
+        this.innerProperties().withTags(tags);
         return this;
     }
 
@@ -245,23 +231,15 @@ public class SavedSearchInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (category() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property category in model SavedSearchInner"));
-        }
-        if (displayName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property displayName in model SavedSearchInner"));
-        }
-        if (query() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property query in model SavedSearchInner"));
-        }
-        if (tags() != null) {
-            tags().forEach(e -> e.validate());
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model SavedSearchInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SavedSearchInner.class);
 }
