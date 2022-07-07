@@ -142,6 +142,9 @@ public class CosmosException extends AzureException {
      */
     private boolean sendingRequestHasStarted;
 
+    /***
+     * All selectable replica status.
+     */
     private final List<String> replicaStatusList;
 
     /**
