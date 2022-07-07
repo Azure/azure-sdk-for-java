@@ -30,7 +30,11 @@ public final class ExpressRoutePeeringType extends ExpandableStringEnum<ExpressR
         return fromString(name, ExpressRoutePeeringType.class);
     }
 
-    /** @return known ExpressRoutePeeringType values. */
+    /**
+     * Gets known ExpressRoutePeeringType values.
+     *
+     * @return known ExpressRoutePeeringType values.
+     */
     public static Collection<ExpressRoutePeeringType> values() {
         return values(ExpressRoutePeeringType.class);
     }

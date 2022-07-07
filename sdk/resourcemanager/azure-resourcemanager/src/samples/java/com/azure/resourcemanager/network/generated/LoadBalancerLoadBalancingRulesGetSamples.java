@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LoadBalancerLoadBalancingRules Get. */
 public final class LoadBalancerLoadBalancingRulesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerLoadBalancingRuleGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerLoadBalancingRuleGet.json
      */
     /**
      * Sample code: LoadBalancerLoadBalancingRuleGet.

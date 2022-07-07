@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailablePrivateEndpointTypes List. */
 public final class AvailablePrivateEndpointTypesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AvailablePrivateEndpointTypesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AvailablePrivateEndpointTypesGet.json
      */
     /**
      * Sample code: Get available PrivateEndpoint types.

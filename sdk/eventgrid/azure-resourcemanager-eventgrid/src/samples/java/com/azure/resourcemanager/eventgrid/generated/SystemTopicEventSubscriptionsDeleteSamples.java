@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions Delete. */
 public final class SystemTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_Delete.

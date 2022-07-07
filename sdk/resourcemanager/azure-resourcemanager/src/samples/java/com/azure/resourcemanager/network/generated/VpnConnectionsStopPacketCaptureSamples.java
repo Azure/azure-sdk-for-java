@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VpnConnections StopPacketCapture. */
 public final class VpnConnectionsStopPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStopPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VpnConnectionStopPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn connection without filter.

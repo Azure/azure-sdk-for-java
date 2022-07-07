@@ -101,6 +101,10 @@
           {
             "matcher": "java-package",
             "match": "/org\\.(junit|slf4j|springframework)(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.google\\.gson(\\..*)?/"
           }
         ]
       }
@@ -221,6 +225,12 @@
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
         },
         {
+          "regex": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "new": "field com.google.gson.FieldNamingPolicy.(LOWER_CASE_WITH_DASHES|LOWER_CASE_WITH_DOTS|LOWER_CASE_WITH_UNDERSCORES)",
+          "justification": "Fix core-ci pipeline"
+        },
+        {
           "code": "java.method.added",
           "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
           "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
@@ -245,27 +255,59 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.added",
+          "code": "java\\.annotation\\.(added|removed|attributeValueChanged|attributeAdded|attributeRemoved)",
           "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
           "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.attributeRemoved",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
-          "justification": "To support for storage services and keyvault services to share values of common properties."
+          "code": "java.method.removed",
+          "old": "method org.springframework.boot.autoconfigure.kafka.KafkaProperties com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration::azureKafkaProperties(com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.EventHubs>)",
+          "justification": "To move kafka properties customization to bean post processor."
+        },
+        {
+          "code": "java.annotation.attributeValueChanged",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.attributeAdded",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
-          "justification": "To support for storage services and keyvault services to share values of common properties."
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.aad\\.configuration\\.AadOAuth2ClientConfiguration\\..*",
+          "justification": "The use of AadOboOAuth2AuthorizedClientProvider is not recommended, and there is no need to retain consideration of the different situations brought by this OBO provider."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.keyvault\\..*",
-          "justification": "To support for keyvault services to share values of common properties."
+          "code": "java.method.returnTypeChanged",
+          "old:": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "new": "method org.springframework.security.oauth2.core.AuthorizationGrantType com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::getAuthorizationGrantType()",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType===)",
+          "new": "parameter void com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties::setAuthorizationGrantType(===org.springframework.security.oauth2.core.AuthorizationGrantType===)",
+          "justification": "To support authorization grant type JWT_BEARER, we should use the default AuthorizationGrantType instead of AadAuthorizationGrantType."
+        },
+        {
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX",
+          "justification": "Unused constant."
         },
         {
           "code": "java.method.visibilityReduced",
@@ -280,6 +322,11 @@
         {
           "code": "java.annotation.added",
           "new": "class com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration",
+          "justification": "Fixes a bug."
+        },
+        {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
           "justification": "Fixes a bug."
         },
         {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption settings. */
 @Fluent
 public final class AccountEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountEncryption.class);
-
     /*
      * Encryption Key Source. Possible values are: 'Microsoft.NetApp'.
      */

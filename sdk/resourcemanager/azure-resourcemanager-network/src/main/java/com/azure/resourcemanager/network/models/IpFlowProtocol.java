@@ -27,7 +27,11 @@ public final class IpFlowProtocol extends ExpandableStringEnum<IpFlowProtocol> {
         return fromString(name, IpFlowProtocol.class);
     }
 
-    /** @return known IpFlowProtocol values. */
+    /**
+     * Gets known IpFlowProtocol values.
+     *
+     * @return known IpFlowProtocol values.
+     */
     public static Collection<IpFlowProtocol> values() {
         return values(IpFlowProtocol.class);
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Mount target properties. */
 @Fluent
 public final class MountTargetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MountTargetProperties.class);
-
     /*
      * mountTargetId UUID v4 used to identify the MountTarget
      */
@@ -103,10 +100,12 @@ public final class MountTargetProperties {
      */
     public void validate() {
         if (fileSystemId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fileSystemId in model MountTargetProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MountTargetProperties.class);
 }

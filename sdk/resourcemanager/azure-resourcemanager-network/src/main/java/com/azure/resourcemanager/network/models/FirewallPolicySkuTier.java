@@ -30,7 +30,11 @@ public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPo
         return fromString(name, FirewallPolicySkuTier.class);
     }
 
-    /** @return known FirewallPolicySkuTier values. */
+    /**
+     * Gets known FirewallPolicySkuTier values.
+     *
+     * @return known FirewallPolicySkuTier values.
+     */
     public static Collection<FirewallPolicySkuTier> values() {
         return values(FirewallPolicySkuTier.class);
     }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.SessionHost
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHost;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHosts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SessionHostsImpl implements SessionHosts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SessionHostsImpl.class);
 
     private final SessionHostsClient innerClient;
 

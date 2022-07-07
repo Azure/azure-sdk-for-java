@@ -14,8 +14,8 @@ import java.io.IOException;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.writeBytesToOutputStream;
 
-public class UploadOutputStreamTest extends BlobTestBase<StoragePerfStressOptions> {
-    public UploadOutputStreamTest(StoragePerfStressOptions options) {
+public class UploadOutputStreamTest extends BlobTestBase<BlobPerfStressOptions> {
+    public UploadOutputStreamTest(BlobPerfStressOptions options) {
         super(options);
     }
 

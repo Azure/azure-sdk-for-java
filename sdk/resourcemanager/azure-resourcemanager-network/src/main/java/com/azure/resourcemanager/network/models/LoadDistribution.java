@@ -30,7 +30,11 @@ public final class LoadDistribution extends ExpandableStringEnum<LoadDistributio
         return fromString(name, LoadDistribution.class);
     }
 
-    /** @return known LoadDistribution values. */
+    /**
+     * Gets known LoadDistribution values.
+     *
+     * @return known LoadDistribution values.
+     */
     public static Collection<LoadDistribution> values() {
         return values(LoadDistribution.class);
     }
