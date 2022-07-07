@@ -4,7 +4,7 @@
 
 ### Features Added
 - BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
-- GA release for STG 83
+- GA release for 2021-08-06 service version.
 
 ## 12.18.0-beta.1 (2022-06-15)
 

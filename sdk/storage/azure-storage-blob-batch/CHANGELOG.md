@@ -3,7 +3,7 @@
 ## 12.14.0 (2022-07-07)
 
 ### Features Added
-- GA release for STG 83
+- 2021-08-06 service version.
 
 ## 12.14.0-beta.1 (2022-06-15)
 

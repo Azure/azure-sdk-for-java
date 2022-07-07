@@ -423,7 +423,7 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     @Override
-    protected BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+    public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions());

@@ -3,7 +3,8 @@
 ## 12.17.0 (2022-07-07)
 
 ### Features Added
-- GA release for STG 83
+- GA release for 2021-08-06 service version.
+- GA release for encryption protocol version 2.
 
 ## 12.17.0-beta.1 (2022-06-15)
 
