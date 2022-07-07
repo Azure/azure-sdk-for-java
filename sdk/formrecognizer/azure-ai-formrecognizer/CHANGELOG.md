@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Added BinaryData support to synchronous document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
 
 ### Bugs Fixed
 

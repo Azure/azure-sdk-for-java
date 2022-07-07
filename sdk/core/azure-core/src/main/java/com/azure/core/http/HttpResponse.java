@@ -4,6 +4,9 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -60,6 +63,22 @@ public abstract class HttpResponse implements Closeable {
      * @return The response's content as a stream of {@link ByteBuffer}.
      */
     public abstract Flux<ByteBuffer> getBody();
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * Subclasses should override this method.
+     *
+     * @return The {@link BinaryData} response body.
+     */
+    public BinaryData getBodyAsBinaryData() {
+        Flux<ByteBuffer> body = getBody();
+        if (body != null) {
+            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Gets the response content as a {@code byte[]}.

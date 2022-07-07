@@ -12,14 +12,12 @@ import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Flux;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
-
-import static com.azure.ai.formrecognizer.implementation.util.Utility.toFluxByteBuffer;
 
 /**
  * This class provides a synchronous client that contains the operations that apply to Azure Form Recognizer.
@@ -147,14 +145,13 @@ public final class DocumentAnalysisClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long -->
+     * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long -->
      * <pre>
-     * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
-     * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
-     * byte[] fileContent = Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;;
-     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
+     *     File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     *     String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
+     *     byte[] fileContent = Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;;
      *
-     *     documentAnalysisClient.beginAnalyzeDocument&#40;modelId, targetStream, document.length&#40;&#41;&#41;
+     *     documentAnalysisClient.beginAnalyzeDocument&#40;modelId, BinaryData.fromBytes&#40;fileContent&#41;, document.length&#40;&#41;&#41;
      *         .getFinalResult&#40;&#41;
      *         .getDocuments&#40;&#41;.stream&#40;&#41;
      *         .map&#40;AnalyzedDocument::getFields&#41;
@@ -165,7 +162,7 @@ public final class DocumentAnalysisClient {
      *         &#125;&#41;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long -->
+     * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
@@ -180,7 +177,7 @@ public final class DocumentAnalysisClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, AnalyzeResult>
-        beginAnalyzeDocument(String modelId, InputStream document, long length) {
+        beginAnalyzeDocument(String modelId, BinaryData document, long length) {
         return beginAnalyzeDocument(modelId, document, length, null, Context.NONE);
     }
 
@@ -192,26 +189,24 @@ public final class DocumentAnalysisClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document with configurable options. </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long-AnalyzeDocumentOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
      * byte[] fileContent = Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;;
      *
-     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
-     *     documentAnalysisClient.beginAnalyzeDocument&#40;modelId, targetStream, document.length&#40;&#41;,
-     *             new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;, Context.NONE&#41;
-     *         .getFinalResult&#40;&#41;
-     *         .getDocuments&#40;&#41;.stream&#40;&#41;
-     *         .map&#40;AnalyzedDocument::getFields&#41;
-     *         .forEach&#40;documentFieldMap -&gt; documentFieldMap.forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
-     *             System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
-     *             System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
-     *             System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
-     *         &#125;&#41;&#41;;
-     * &#125;
+     * documentAnalysisClient.beginAnalyzeDocument&#40;modelId, BinaryData.fromBytes&#40;fileContent&#41;, document.length&#40;&#41;,
+     *         new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;, Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .getDocuments&#40;&#41;.stream&#40;&#41;
+     *     .map&#40;AnalyzedDocument::getFields&#41;
+     *     .forEach&#40;documentFieldMap -&gt; documentFieldMap.forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
+     *         System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
+     *     &#125;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long-AnalyzeDocumentOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-BinaryData-long-AnalyzeDocumentOptions-Context -->
      *
      * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
      * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
@@ -229,9 +224,9 @@ public final class DocumentAnalysisClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, AnalyzeResult>
-        beginAnalyzeDocument(String modelId, InputStream document, long length,
+        beginAnalyzeDocument(String modelId, BinaryData document, long length,
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(document);
+        Flux<ByteBuffer> buffer = document.toFluxByteBuffer();
         return client.beginAnalyzeDocument(modelId, buffer, length,
             analyzeDocumentOptions, context).getSyncPoller();
     }
