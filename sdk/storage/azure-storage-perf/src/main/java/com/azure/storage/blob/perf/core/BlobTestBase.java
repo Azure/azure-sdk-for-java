@@ -26,13 +26,13 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
-    private static final FakeKey kek;
+    private static final FakeKey fakeKeyEncryptionKey;
 
     static {
         Random rand = new Random(System.currentTimeMillis());
         byte[] data = new byte[256];
         rand.nextBytes(data);
-        kek = new FakeKey("keyId", data);
+        fakeKeyEncryptionKey = new FakeKey("keyId", data);
     }
 
     public BlobTestBase(TOptions options, String blobName) {
@@ -51,7 +51,7 @@ public abstract class BlobTestBase<TOptions extends BlobPerfStressOptions> exten
 
             EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
                 .blobClient(blobContainerClient.getBlobClient(blobName))
-                .key(kek, KeyWrapAlgorithm.A256KW.toString());
+                .key(fakeKeyEncryptionKey, KeyWrapAlgorithm.A256KW.toString());
 
             blobClient = builder.buildEncryptedBlobClient();
             blobAsyncClient = builder.buildEncryptedBlobAsyncClient();
