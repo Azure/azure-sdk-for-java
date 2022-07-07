@@ -25,7 +25,7 @@ import redis.clients.jedis.Transaction;
  */
 public class JedisRedisCheckpointStore implements CheckpointStore {
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
-    private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
+    static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
     static final String CHECKPOINT = "checkpoint";
     static final String  PARTITION_OWNERSHIP = "partitionOwnership";
     private final JedisPool jedisPool;
@@ -41,32 +41,36 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      */
     @Override
     public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
-        return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
+
+        return Flux.fromIterable(requestedPartitionOwnerships).handle(((partitionOwnership, sink) -> {
             String partitionId = partitionOwnership.getPartitionId();
             String key = keyBuilder(prefixBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup()), partitionId);
             try (Jedis jedis = jedisPool.getResource()) {
                 List<String> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
                 String currentPartitionOwnership = keyInformation.get(0);
                 if (currentPartitionOwnership == null) {
-                        // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
+                    // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
                     jedis.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
                 } else {
                     // otherwise we have to change the ownership and "watch" the transaction
                     jedis.watch(key);
                     Transaction transaction = jedis.multi();
-                    jedis.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
-                    transaction.exec();
+                    transaction.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
+                    List<Object> executionResponse = transaction.exec();
+                    if (executionResponse == null) {
+                        //This means that the transaction did not execute, which implies that another client has changed the ownership during this transaction
+                        sink.error(new RuntimeException());
+                    }
                 }
                 jedisPool.returnResource(jedis);
             }
-            return Flux.just(partitionOwnership);
-        });
+            sink.next(partitionOwnership);
+        }));
     }
-
     /**
      * This method returns the list of checkpoints from the underlying data store, and if no checkpoints are available, then it returns empty results.
-     *
-     * @param fullyQualifiedNamespace The fully qualified namespace of the current instance of Event Hub
+     *of
+     * @param fullyQualifiedNamespace The fully qualified namespace of the current instance  Event Hub
      * @param eventHubName The Event Hub name from which checkpoint information is acquired
      * @param consumerGroup The consumer group name associated with the checkpoint
      * @return Flux of Checkpoint objects
