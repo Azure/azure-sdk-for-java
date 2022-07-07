@@ -204,11 +204,11 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getAccountPropertiesWithResponse()}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getResourceInfoWithResponse()}
      */
     public void getAccountPropertiesWithResponse() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountPropertiesWithResponse
-        documentModelAdministrationAsyncClient.getAccountPropertiesWithResponse()
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse
+        documentModelAdministrationAsyncClient.getResourceInfoWithResponse()
             .subscribe(response -> {
                 System.out.printf("Response Status Code: %d.", response.getStatusCode());
                 ResourceInfo resourceInfo = response.getValue();
@@ -217,7 +217,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Current count of built document analysis models: %d%n",
                     resourceInfo.getDocumentModelCount());
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountPropertiesWithResponse
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse
     }
 
     /**

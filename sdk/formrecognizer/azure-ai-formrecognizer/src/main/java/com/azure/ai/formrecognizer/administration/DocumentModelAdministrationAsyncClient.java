@@ -270,7 +270,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     /**
-     * Get account information of the Form Recognizer account.
+     * Get the basic information about the current resource.
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo -->
@@ -289,16 +289,16 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceInfo> getResourceInfo() {
-        return getAccountPropertiesWithResponse().flatMap(FluxUtil::toMono);
+        return getResourceInfoWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Get account information of the Form Recognizer account with a Http response.
+     * Get the basic information about the current resource with a Http response.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountPropertiesWithResponse -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse -->
      * <pre>
-     * documentModelAdministrationAsyncClient.getAccountPropertiesWithResponse&#40;&#41;
+     * documentModelAdministrationAsyncClient.getResourceInfoWithResponse&#40;&#41;
      *     .subscribe&#40;response -&gt; &#123;
      *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      *         ResourceInfo resourceInfo = response.getValue&#40;&#41;;
@@ -308,20 +308,20 @@ public final class DocumentModelAdministrationAsyncClient {
      *             resourceInfo.getDocumentModelCount&#40;&#41;&#41;;
      *     &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getAccountPropertiesWithResponse -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse -->
      *
-     * @return A {@link Response} containing the requested account information details.
+     * @return A {@link Response} containing the requested resource information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourceInfo>> getAccountPropertiesWithResponse() {
+    public Mono<Response<ResourceInfo>> getResourceInfoWithResponse() {
         try {
-            return withContext(this::getAccountPropertiesWithResponse);
+            return withContext(this::getResourceInfoWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<ResourceInfo>> getAccountPropertiesWithResponse(Context context) {
+    Mono<Response<ResourceInfo>> getResourceInfoWithResponse(Context context) {
         return service.getInfoWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue())));

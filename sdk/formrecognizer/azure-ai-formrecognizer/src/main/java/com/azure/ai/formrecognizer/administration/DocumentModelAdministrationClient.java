@@ -185,12 +185,12 @@ public final class DocumentModelAdministrationClient {
     }
 
     /**
-     * Get account information of the Form Recognizer account.
+     * Get the basic information about the current resource.
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo -->
      * <pre>
-     * ResourceInfo resourceInfo = documentModelAdministrationClient.getAccountProperties&#40;&#41;;
+     * ResourceInfo resourceInfo = documentModelAdministrationClient.getResourceInfo&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
      *     resourceInfo.getDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
@@ -198,22 +198,22 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo -->
      *
-     * @return The requested account information of the Form Recognizer account.
+     * @return The requested resource information of the Form Recognizer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceInfo getAccountProperties() {
-        return getAccountPropertiesWithResponse(Context.NONE).getValue();
+    public ResourceInfo getResourceInfo() {
+        return getResourceInfoWithResponse(Context.NONE).getValue();
     }
 
     /**
-     * Get account information of the Form Recognizer account with an Http response and a
+     * Get the basic information about the current resource with a Http response and a
      * specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountPropertiesWithResponse#Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context -->
      * <pre>
      * Response&lt;ResourceInfo&gt; response =
-     *     documentModelAdministrationClient.getAccountPropertiesWithResponse&#40;Context.NONE&#41;;
+     *     documentModelAdministrationClient.getResourceInfoWithResponse&#40;Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * ResourceInfo resourceInfo = response.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
@@ -221,15 +221,15 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
      *     resourceInfo.getDocumentModelCount&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountPropertiesWithResponse#Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The requested account information of the Form Recognizer account.
+     * @return The requested resource information of the Form Recognizer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceInfo> getAccountPropertiesWithResponse(Context context) {
-        return client.getAccountPropertiesWithResponse(context).block();
+    public Response<ResourceInfo> getResourceInfoWithResponse(Context context) {
+        return client.getResourceInfoWithResponse(context).block();
     }
 
     /**

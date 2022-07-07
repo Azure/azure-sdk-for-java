@@ -98,11 +98,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getAccountProperties()}
+     * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfo()}
      */
     public void getAccountProperties() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo
-        ResourceInfo resourceInfo = documentModelAdministrationClient.getAccountProperties();
+        ResourceInfo resourceInfo = documentModelAdministrationClient.getResourceInfo();
         System.out.printf("Max number of models that can be build for this account: %d%n",
             resourceInfo.getDocumentModelLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
@@ -111,19 +111,19 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getAccountPropertiesWithResponse(Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfoWithResponse(Context)}
      */
     public void getAccountPropertiesWithResponse() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountPropertiesWithResponse#Context
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context
         Response<ResourceInfo> response =
-            documentModelAdministrationClient.getAccountPropertiesWithResponse(Context.NONE);
+            documentModelAdministrationClient.getResourceInfoWithResponse(Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
         ResourceInfo resourceInfo = response.getValue();
         System.out.printf("Max number of models that can be build for this account: %d%n",
             resourceInfo.getDocumentModelLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
             resourceInfo.getDocumentModelCount());
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getAccountPropertiesWithResponse#Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context
     }
 
     /**

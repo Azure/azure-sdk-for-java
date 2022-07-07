@@ -33,7 +33,7 @@ public class ManageCustomModels {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        ResourceInfo resourceInfo = client.getAccountProperties();
+        ResourceInfo resourceInfo = client.getResourceInfo();
         System.out.printf("The resource account has %s models, and we can have at most %s models",
             resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
 

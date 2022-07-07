@@ -125,9 +125,9 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     public void validGetResourceInfoWithResponse(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
-        Response<ResourceInfo> accountPropertiesResponse = client.getResourceInfoWithResponse(Context.NONE);
-        assertEquals(accountPropertiesResponse.getStatusCode(), HttpResponseStatus.OK.code());
-        validateResourceInfo(accountPropertiesResponse.getValue());
+        Response<ResourceInfo> resourceInfoResponse = client.getResourceInfoWithResponse(Context.NONE);
+        assertEquals(resourceInfoResponse.getStatusCode(), HttpResponseStatus.OK.code());
+        validateResourceInfo(resourceInfoResponse.getValue());
     }
 
     /**
