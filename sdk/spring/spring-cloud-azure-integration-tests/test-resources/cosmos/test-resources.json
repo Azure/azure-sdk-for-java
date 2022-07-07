@@ -41,22 +41,6 @@
           "defaultConsistencyLevel": "Session"
         }
       }
-    },
-    {
-      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
-      "name": "[concat(variables('accountName'), '/', variables('databaseName'))]",
-      "apiVersion": "[variables('apiVersion')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
-      ],
-      "properties": {
-        "resource": {
-          "id": "[variables('databaseName')]"
-        },
-        "options": {
-          "throughput": "400"
-        }
-      }
     }
   ],
   "outputs": {
@@ -75,10 +59,6 @@
     "AZURE_COSMOS_ACCOUNT_KEY": {
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
-    },
-    "AZURE_COSMOS_DATABASE_NAME": {
-      "type": "string",
-      "value": "[variables('databaseName')]"
     }
   }
 }

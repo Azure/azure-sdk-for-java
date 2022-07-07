@@ -2,7 +2,8 @@ spring:
   cloud:
     azure:
       cosmos:
+        endpoint1: ${AZURE_COSMOS_ENDPOINT}
+        key1: ${AZURE_COSMOS_ACCOUNT_KEY}
         credential:
           client-id: ${COSMOS_CLIENT_ID}
           client-secret: ${COSMOS_CLIENT_SECRET}
-
