@@ -6,23 +6,14 @@ package com.azure.security.confidentialledger;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 import reactor.core.publisher.Mono;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 
 class ConfidentialLedgerClientTestBase extends TestBase {
@@ -52,12 +43,10 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder
                     .buildClient();
             
-            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "lyshi-python-sdk");
-
-            System.out.println(ledgerId);
+            String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
 
             confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://lyshi-python-sdk.confidential-ledger.azure.com"))
+                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
                 confidentialLedgerClientBuilder
@@ -70,9 +59,6 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             } else if (getTestMode() == TestMode.LIVE) {
                 confidentialLedgerClientBuilder.credential(new AzureCliCredentialBuilder().build());
             }
-
-            confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
-            System.out.println("confidentialLedgerClient = " + confidentialLedgerClient);
         } catch (Exception ex) {
             System.out.println("Error thrown from ConfidentialLedgerClientTestBase:" + ex);
         }

@@ -4,20 +4,46 @@
 
 package com.azure.security.confidentialledger;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testGetConsortiumMembersTests() {
+    public void testGetConsortiumMembersTests() throws Exception {
+        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
+        // this is a built in test of getLedgerIdentity
+        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+                .getLedgerIdentityWithResponse(ledgerId, null);
+        BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+        String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+
+
+        SslContext sslContext = SslContextBuilder.forClient()
+                .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
+        reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+        
+        ConfidentialLedgerClient confidentialLedgerClient = confidentialLedgerClientBuilder.httpClient(httpClient).buildClient();
+        
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getConsortiumMembersWithResponse(requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
@@ -34,7 +60,6 @@ public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTes
             Assertions.assertTrue(false);
         }
         JsonNode enclaveQuotes = responseBodyJson.get("members");
-
         Assertions.assertNotNull(enclaveQuotes.get(0).get("id"));
     }
 }

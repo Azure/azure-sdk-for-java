@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/emily-java-sdk-tests?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "93a9077a-6953-42aa-ae9c-30c0f6e945a9"
+      "x-ms-client-request-id" : "6c82a31b-73ed-4db6-a3b4-901e7e440cc9"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -15,28 +15,28 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBejCCASCgAwIBAgIQMNwF270tS2Ex6jsW6jP46TAKBggqhkjOPQQDAjAWMRQw\\nEgYDVQQDDAtDQ0YgTmV0d29yazAeFw0yMjA3MDYyMTA0NDBaFw0yMjEwMDQyMTA0\\nMzlaMBYxFDASBgNVBAMMC0NDRiBOZXR3b3JrMFkwEwYHKoZIzj0CAQYIKoZIzj0D\\nAQcDQgAEDUWr/JYiEUnNS+4Ndfcci6yGRXhVWSnabgvShqrdxW4RBmsKZ+qsAWJP\\nnavsVjf8Zgd8gghMm1y4Zl4PoHzTxKNQME4wDAYDVR0TBAUwAwEB/zAdBgNVHQ4E\\nFgQUiIlVb/2YkHp4mXRhBuLaadG82zYwHwYDVR0jBBgwFoAUiIlVb/2YkHp4mXRh\\nBuLaadG82zYwCgYIKoZIzj0EAwIDSAAwRQIgfYFw63rQ8RrH0BBs6yWbYbm+OWCq\\nwyWR8oAT90gwHtACIQDNJ3eIewMJNDtUSJaRYhOIOu10evuW63wBLP/kftLAmw==\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"emily-java-sdk-tests\"}",
-      "Date" : "Thu, 07 Jul 2022 01:09:03 GMT",
-      "x-ms-correlation-request-id" : "e4c9dcb1-53fb-4094-8e0f-701beaf90dce",
-      "x-ms-client-request-id" : "93a9077a-6953-42aa-ae9c-30c0f6e945a9",
+      "Date" : "Thu, 07 Jul 2022 01:09:07 GMT",
+      "x-ms-correlation-request-id" : "a3481a82-a42f-43be-8d9f-f269f2962e38",
+      "x-ms-client-request-id" : "6c82a31b-73ed-4db6-a3b4-901e7e440cc9",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/governance/members?api-version=2022-05-13",
+    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/collections?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "3050f52a-75fe-47a4-b1cf-fbc6c7c698aa"
+      "x-ms-client-request-id" : "ba02f1ef-ce8a-44f9-90fd-24631698ebe3"
     },
     "Response" : {
-      "content-length" : "856",
+      "content-length" : "48",
       "content-type" : "application/json",
       "retry-after" : "0",
       "x-ms-ccf-transaction-id" : "2.63",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1429635418",
-      "Body" : "{\"members\":[{\"certificate\":\"-----BEGIN CERTIFICATE-----\\nMIIB9jCCAX2gAwIBAgIQNZFo2yl5QayDo8eUrcHTPTAKBggqhkjOPQQDAzAgMR4w\\nHAYDVQQDExVDQ0YgR292ZXJub3IgSWRlbnRpdHkwHhcNMjIwNzA2MjA1MDM4WhcN\\nMjIxMDA2MjEwMDM4WjAgMR4wHAYDVQQDExVDQ0YgR292ZXJub3IgSWRlbnRpdHkw\\ndjAQBgcqhkjOPQIBBgUrgQQAIgNiAATPkVSLEU1pwFhqhIMdiLrcS6OO6DQrH8cE\\n38YmPttml3JxhaQdHgQOcrK3VoQTIb4TpfgzKpkra/OuGvCIaWuQElaObOzbRA8c\\nBp9TgsOVFc7CNmtKwNgBV9WBDTr2IUajfDB6MA4GA1UdDwEB/wQEAwIHgDAJBgNV\\nHRMEAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAfBgNVHSMEGDAW\\ngBRtHOfyGu6BbNhT+xhFXCyccFQB7TAdBgNVHQ4EFgQUbRzn8hrugWzYU/sYRVws\\nnHBUAe0wCgYIKoZIzj0EAwMDZwAwZAIwLWJfzfqsV5w7lJvYW/MYf+THAzPhSy2S\\nGYccyNu4eSaNeFKb9kxiCN1z78zBRQZDAjBa3fSRPY2TmmzkMcPSQFTrloM7+SIz\\nhUc+SldmEPm9Pyjr4hlrJo2AGiQB4LX9cj8=\\n-----END CERTIFICATE-----\",\"id\":\"8f342f65f88282c78a0aafd075f97286add83fb0111bd3e929203ec87f57f0f8\"}]}",
-      "x-ms-client-request-id" : "3050f52a-75fe-47a4-b1cf-fbc6c7c698aa"
+      "x-ms-request-id" : "445350721",
+      "Body" : "{\"collections\":[{\"collectionId\":\"subledger:0\"}]}",
+      "x-ms-client-request-id" : "ba02f1ef-ce8a-44f9-90fd-24631698ebe3"
     },
     "Exception" : null
   } ],

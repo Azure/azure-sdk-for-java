@@ -26,7 +26,7 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
     @Test
     public void testGetEnclaveQuotes() throws Exception {
        
-        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "lyshi-python-sdk");
+        String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
         // this is a built in test of getLedgerIdentity
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
@@ -41,9 +41,7 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
-        System.out.println("Creating Confidential Ledger client with the certificate..." + ledgerTslCertificate);
-
-        System.out.println("GetEnclaveQuotes client = " + confidentialLedgerClient);
+        
         Response<BinaryData> enclaveQuotesWithResponse = confidentialLedgerClientBuilder.httpClient(httpClient).buildClient().getEnclaveQuotesWithResponse(null);
         Assertions.assertEquals(enclaveQuotesWithResponse.getStatusCode(), 200);
         BinaryData parsedResponse = enclaveQuotesWithResponse.getValue();
