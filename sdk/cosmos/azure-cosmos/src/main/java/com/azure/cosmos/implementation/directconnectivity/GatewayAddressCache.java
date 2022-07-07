@@ -659,7 +659,6 @@ public class GatewayAddressCache implements IAddressCache {
         Utils.checkNotNullOrThrow(request, "request", "");
         validatePkRangeIdentity(pkRangeIdentity);
 
-        logger.info("Get addresses for rangeId");
         String collectionRid = pkRangeIdentity.getCollectionRid();
         String partitionKeyRangeId = pkRangeIdentity.getPartitionKeyRangeId();
 
@@ -701,7 +700,6 @@ public class GatewayAddressCache implements IAddressCache {
                             logger.debug("getAddressesForRangeId flatMap got result {}", JavaStreamUtils.info(list));
                         }
 
-                        logger.info("Get results back");
                         if (list.isEmpty()) {
                             String errorMessage = String.format(
                                 RMResources.PartitionKeyRangeNotFound,

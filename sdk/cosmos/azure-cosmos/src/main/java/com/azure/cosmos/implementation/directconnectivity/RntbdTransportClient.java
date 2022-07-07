@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -231,6 +232,7 @@ public class RntbdTransportClient extends TransportClient {
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
+        final Uri.HealthStatus uriHealthSnapshot = addressUri.getHealthStatus();
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
 
@@ -250,6 +252,7 @@ public class RntbdTransportClient extends TransportClient {
                 response.setRequestPayloadLength(request.getContentLength());
                 response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
                 response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
+                response.setUriHealthStatus(uriHealthSnapshot);
                 if(this.channelAcquisitionContextEnabled) {
                     response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
                 }
@@ -286,6 +289,10 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
+            ImplementationBridgeHelpers
+                    .CosmosExceptionHelper
+                    .getCosmosExceptionAccessor()
+                    .setUriHealthStatus(cosmosException, uriHealthSnapshot);
             if(this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }

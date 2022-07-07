@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
@@ -140,6 +141,8 @@ public class CosmosException extends AzureException {
      * Sending request has started
      */
     private boolean sendingRequestHasStarted;
+
+    private final AtomicReference<Uri.HealthStatus> uriHealthStatus = new AtomicReference<>(null);
 
     /**
      * Creates a new instance of the CosmosException class.
@@ -542,12 +545,35 @@ public class CosmosException extends AzureException {
         this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
 
+    void setUriHealthStatus(Uri.HealthStatus healthStatus) {
+        this.uriHealthStatus.set(healthStatus);
+    }
+
+    Uri.HealthStatus getUriHealthStatus() {
+        return this.uriHealthStatus.get();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
-            (statusCode, innerException) -> new CosmosException(statusCode, innerException));
+                new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+                    @Override
+                    public CosmosException createCosmosException(int statusCode, Exception innerException) {
+                        return new CosmosException(statusCode, innerException);
+                    }
+
+                    @Override
+                    public Uri.HealthStatus getUriHealthStatus(CosmosException cosmosException) {
+                        return cosmosException.getUriHealthStatus();
+                    }
+
+                    @Override
+                    public void setUriHealthStatus(CosmosException cosmosException, Uri.HealthStatus healthStatus) {
+                        cosmosException.setUriHealthStatus(healthStatus);
+                    }
+                });
     }
 
     static { initialize(); }

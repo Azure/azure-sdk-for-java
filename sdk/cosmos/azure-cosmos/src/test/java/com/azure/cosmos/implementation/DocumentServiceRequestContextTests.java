@@ -37,7 +37,7 @@ public class DocumentServiceRequestContextTests {
     public void addFailedEndpointsTests(Exception exception, boolean shouldAdded) {
         DocumentServiceRequestContext documentServiceRequestContext = new DocumentServiceRequestContext();
 
-        Uri testUri = new Uri("http:127.0.0.1:1");
+        Uri testUri = new Uri("http://127.0.0.1:1");
         documentServiceRequestContext.addToFailedEndpoints(exception, testUri);
 
         if (shouldAdded) {

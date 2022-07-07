@@ -169,6 +169,7 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeObjectField("backendLatencyInMs", storeResultDiagnostics.backendLatencyInMs);
             this.writeNonNullStringField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
             this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
+            this.writeNonNullStringField(jsonGenerator, "uriHealthStatus", storeResponseDiagnostics.getUriHealthStatus());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 
             this.writeNonNullObjectField(jsonGenerator,"transportRequestChannelAcquisitionContext", storeResponseDiagnostics.getChannelAcquisitionTimeline());

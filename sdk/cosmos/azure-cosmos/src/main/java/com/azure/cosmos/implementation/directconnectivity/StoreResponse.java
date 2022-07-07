@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import com.azure.cosmos.implementation.Utils;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Used internally to represents a response from the store.
@@ -33,6 +33,7 @@ public class StoreResponse {
     private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
+    private final AtomicReference<Uri.HealthStatus> uriHealthStatus;
 
     public StoreResponse(
             int status,
@@ -48,6 +49,8 @@ public class StoreResponse {
         if (this.content != null) {
             this.responsePayloadLength = this.content.length;
         }
+
+        uriHealthStatus = new AtomicReference<>(null);
     }
 
     public int getStatus() {
@@ -179,4 +182,13 @@ public class StoreResponse {
         }
         return subStatusCode;
     }
+
+    public Uri.HealthStatus getUriHealthStatus() {
+        return this.uriHealthStatus.get();
+    }
+
+    public void setUriHealthStatus(Uri.HealthStatus healthStatus) {
+        this.uriHealthStatus.set(healthStatus);
+    }
+
 }
