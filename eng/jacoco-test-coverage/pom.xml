@@ -258,7 +258,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-query</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+      <version>1.0.8</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
