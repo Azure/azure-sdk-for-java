@@ -25,8 +25,10 @@ public final class CopyableFileSmbPropertiesList {
         isSetChangedOn = false;
     }
 
-    /***
-     * @return a flag indicating whether file attributes should be copied from source file.
+    /**
+     * Specifies whether file attributes should be copied from source file.
+     *
+     * @return {@code true} if file attributes should be copied.
      */
     public Boolean isFileAttributes() {
         return isSetFileAttributes;
@@ -34,6 +36,8 @@ public final class CopyableFileSmbPropertiesList {
     }
 
     /**
+     * Specify whether file attributes should be copied from source file.
+     *
      * @param fileAttributes Flag indicating whether to copy file attributes from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
@@ -43,13 +47,17 @@ public final class CopyableFileSmbPropertiesList {
     }
 
     /**
-     * @return a flag indicating whether created on timestamp should be copied from source file.
+     * Specifies whether created on timestamp should be copied from source file.
+     *
+     * @return {@code true} if created on timestamp should be copied.
      */
     public Boolean isCreatedOn() {
         return isSetCreatedOn;
     }
 
     /**
+     * Specify whether created on timestamp should be copied from source file.
+     *
      * @param createdOn Flag indicating whether to copy created on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
@@ -59,13 +67,17 @@ public final class CopyableFileSmbPropertiesList {
     }
 
     /**
-     * @return a flag indicating whether last written on timestamp should be copied from source file.
+     * Specifies whether last written on timestamp should be copied from source file.
+     *
+     * @return {@code true} if last written on timestamp should be copied.
      */
     public Boolean isLastWrittenOn() {
         return isSetLastWrittenOn;
     }
 
     /**
+     * Specify whether last written on timestamp should be copied from source file.
+     *
      * @param lastWrittenOn Flag indicating whether to copy last written on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
@@ -75,13 +87,17 @@ public final class CopyableFileSmbPropertiesList {
     }
 
     /**
-     * @return a flag indicating whether changed on timestamp should be copied from source file.
+     * Specifies whether changed on timestamp should be copied from source file.
+     *
+     * @return {@code true} if changed on timestamp should be copied.
      */
     public Boolean isChangedOn() {
         return isSetChangedOn;
     }
 
     /**
+     * Specify whether changed on timestamp should be copied from source file.
+     *
      * @param changedOn Flag indicating whether to copy changed on timestamp from source file
      * @return the updated {@link CopyableFileSmbPropertiesList}
      */
@@ -91,7 +107,33 @@ public final class CopyableFileSmbPropertiesList {
     }
 
     /**
-     * @return a list of the flag set to true
+     * Specifies whether all properties should be copied from source file.
+     *
+     * @return whether all properties should be copied from the source file.
+     */
+    public Boolean isAll() {
+        return (isSetFileAttributes != null && isSetFileAttributes)
+            && (isSetCreatedOn != null && isSetCreatedOn)
+            && (isSetLastWrittenOn != null && isSetLastWrittenOn)
+            && (isSetChangedOn != null && isSetChangedOn);
+    }
+
+    /**
+     * Specifies whether no properties should be copied from source file.
+     *
+     * @return whether no properties should be copied from the source file.
+     */
+    public Boolean isNone() {
+        return (isSetFileAttributes == null || !isSetFileAttributes)
+            && (isSetCreatedOn == null || !isSetCreatedOn)
+            && (isSetLastWrittenOn == null || !isSetLastWrittenOn)
+            && (isSetChangedOn == null || !isSetChangedOn);
+    }
+
+    /**
+     * Gets list of properties that are set to true.
+     *
+     * @return a list of the flag set to true.
      */
     public List<CopyableFileSmbProperties> toList() {
         List<CopyableFileSmbProperties> details = new ArrayList<>();
