@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -69,6 +70,54 @@ public class AsyncCache<TKey, TValue> {
      * @return Cached value or value returned by initialization function.
      */
     public Mono<TValue> getAsync(
+            TKey key,
+            TValue obsoleteValue,
+            Callable<Mono<TValue>> singleValueInitFunc) {
+
+        AsyncLazy<TValue> initialLazyValue = values.get(key);
+        if (initialLazyValue != null) {
+
+            logger.debug("cache[{}] exists", key);
+            return initialLazyValue.single().flux().flatMap(value -> {
+
+                if (!equalityComparer.areEqual(value, obsoleteValue)) {
+                    logger.debug("Returning cache[{}] as it is different from obsoleteValue", key);
+                    return Flux.just(value);
+                }
+
+                logger.debug("cache[{}] result value is obsolete ({}), computing new value", key, obsoleteValue);
+                AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc);
+                AsyncLazy<TValue> actualValue = values.merge(key, asyncLazy,
+                        (lazyValue1, lazyValue2) -> lazyValue1 == initialLazyValue ? lazyValue2 : lazyValue1);
+                return actualValue.single().flux();
+
+            }, err -> {
+
+                logger.debug("cache[{}] resulted in error, computing new value", key, err);
+                AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc);
+                AsyncLazy<TValue> resultAsyncLazy = values.merge(key, asyncLazy,
+                        (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);
+                return resultAsyncLazy.single().flux();
+
+            }, Flux::empty).single();
+        }
+
+        logger.debug("cache[{}] doesn't exist, computing new value", key);
+        AsyncLazy<TValue> asyncLazy = new AsyncLazy<>(singleValueInitFunc);
+        AsyncLazy<TValue> resultAsyncLazy = values.merge(key, asyncLazy,
+                (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);
+        return resultAsyncLazy.single();
+    }
+
+    /***
+     * Same logic as the above getAsync with callable init func.
+     * The main difference is instead of callable, this method gives the caller an opportunity to get the cached value.
+     *
+     * <p>
+     * Note: it is a temporary change until nonblocking cache merged in.
+     * </p>
+     */
+    public Mono<TValue> getAsyncWithInitFunction(
             TKey key,
             TValue obsoleteValue,
             Function<TValue, Mono<TValue>> singleValueInitFunc) {
@@ -134,8 +183,31 @@ public class AsyncCache<TKey, TValue> {
      */
     public void refresh(
             TKey key,
-            Function<TValue, Mono<TValue>> singleValueInitFunc) {
+            Callable<Mono<TValue>> singleValueInitFunc) {
         logger.debug("refreshing cache[{}]", key);
+        AsyncLazy<TValue> initialLazyValue = values.get(key);
+        if (initialLazyValue != null && (initialLazyValue.isSucceeded() || initialLazyValue.isFaulted())) {
+            AsyncLazy<TValue> newLazyValue = new AsyncLazy<>(singleValueInitFunc);
+
+            // UPDATE the new task in the cache,
+            values.merge(key, newLazyValue,
+                    (lazyValue1, lazyValu2) -> lazyValue1 == initialLazyValue ? lazyValu2 : lazyValue1);
+        }
+    }
+
+
+    /***
+     * Same logic as the above refresh with callable init func.
+     * The main difference is instead of callable, this method gives the caller an opportunity to get the cached value.
+     *
+     * <p>
+     * Note: it is a temporary change until nonblocking cache merged in.
+     * </p>
+     */
+    public void refreshWithInitFunction(
+            TKey key,
+            Function<TValue, Mono<TValue>> singleValueInitFunc) {
+        logger.info("refreshing cache[{}]", key);
         AsyncLazy<TValue> initialLazyValue = values.get(key);
         if (initialLazyValue != null && (initialLazyValue.isSucceeded() || initialLazyValue.isFaulted())) {
             AsyncLazy<TValue> newLazyValue = new AsyncLazy<>(singleValueInitFunc.apply(initialLazyValue.tryGet().get()));

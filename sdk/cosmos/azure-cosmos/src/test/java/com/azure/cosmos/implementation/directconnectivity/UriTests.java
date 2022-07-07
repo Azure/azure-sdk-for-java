@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UriTests {
     @Test(groups = "unit")
-    public void setHealthyStatusTests() throws NoSuchFieldException, IllegalAccessException {
+    public void setHealthyStatusTests() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
         Uri testUri = new Uri("https://127.0.0.1:8080");
 
         List<Uri.HealthStatus> statusCanBeOverwritten =
@@ -34,7 +35,7 @@ public class UriTests {
             assertThat(testUri.getHealthStatus()).isEqualTo(Connected);
         }
 
-        // if the status is unhealthy, it can only be overwritten to healthy after some extended time
+        // if the status is unhealthy, it can only be overwritten to connected after some extended time
         Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
         healthStatus.set(Unhealthy);

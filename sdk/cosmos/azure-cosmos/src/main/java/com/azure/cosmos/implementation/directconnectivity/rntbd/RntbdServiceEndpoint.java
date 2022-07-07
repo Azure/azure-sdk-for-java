@@ -332,7 +332,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             // This is a very important step
             // Releasing the channel back to the pool so other requests can use it
             this.releaseToPool(channel);
+
             requestRecord.getAddressUri().setConnected();
+
             openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), true);
         } else {
             openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), false, openChannelFuture.cause());

@@ -220,14 +220,14 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         return this.requestControllerAsyncCache.getAsync(
                     this.group.getGroupName(),
                     null,
-                    cachedValue -> this.createAndInitializeRequestController())
+                    () -> this.createAndInitializeRequestController())
                 .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 
     private void refreshRequestController() {
         this.requestControllerAsyncCache.refresh(
             this.group.getGroupName(),
-            cachedValue -> this.createAndInitializeRequestController());
+            () -> this.createAndInitializeRequestController());
     }
 
     private void handleException(Throwable throwable) {

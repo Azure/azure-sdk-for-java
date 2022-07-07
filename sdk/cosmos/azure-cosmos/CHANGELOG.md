@@ -3,6 +3,7 @@
 ### 4.33.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added system property to turn on replica validation - See [PR 29767](https://github.com/Azure/azure-sdk-for-java/pull/29767)
 
 #### Breaking Changes
 

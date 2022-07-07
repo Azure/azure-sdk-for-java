@@ -24,6 +24,7 @@ import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatu
 import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.Unknown;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("unchecked")
 public class AddressEnumeratorTests {
     private final AddressEnumerator addressEnumerator;
 

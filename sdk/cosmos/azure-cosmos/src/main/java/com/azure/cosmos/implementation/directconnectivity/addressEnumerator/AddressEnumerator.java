@@ -27,8 +27,8 @@ public class AddressEnumerator {
 
     private List<Uri> sortAddresses(List<Uri> addressesPermutation, RxDocumentServiceRequest request) {
         if (!request.requestContext.replicaAddressValidationEnabled) {
-            // When replica address validation is disabled, we will rely on RxDocumentServiceRequest to move away from unknown/unhealthyPending
-            // so we prefer healthy/unknown/unhealthyPending to unhealthy
+            // When replica address validation is disabled, we will rely on RxDocumentServiceRequest to transition away unknown/unhealthyPending
+            // so we prefer connected/unknown/unhealthyPending to unhealthy
             addressesPermutation.sort(new Comparator<Uri>() {
                 @Override
                 public int compare(Uri o1, Uri o2) {
@@ -47,8 +47,8 @@ public class AddressEnumerator {
             });
         } else {
 
-            // When replica address validation is enabled, we will prefer healthy/unknown > unhealthyPending > unhealthy.
-            // We depend on open connection request to move away from unknown/unhealthyPending status,
+            // When replica address validation is enabled, we will prefer connected/unknown > unhealthyPending > unhealthy.
+            // We will prefer to use open connection request to transit away unknown/unhealthyPending status,
             // but in case open connection request can not happen due to any reason,
             // then after some extended time, we are going to rolling unknown/unhealthyPending into Healthy category (please check details of getEffectiveHealthStatus)
             addressesPermutation.sort(new Comparator<Uri>() {

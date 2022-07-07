@@ -59,8 +59,7 @@ public class Uri {
     }
 
     /***
-     * This method will be called if a connection can not be established successfully to the backend
-     * or a request failed with 410/408/5XX.
+     * This method will be called if a request failed with 410 and will cause forceRefresh behavior.
      */
     public void setUnhealthy() {
         this.setHealthStatus(HealthStatus.Unhealthy);
@@ -70,7 +69,7 @@ public class Uri {
      * This method will be called if the same address being returned from gateway.
      *
      * Unknown will remain Unknown.
-     * Healthy will remain Healthy.
+     * Connected will remain Connected.
      * UnhealthyPending will remain UnhealthyPending.
      * Unhealthy will change into UnhealthyPending.
      */
@@ -80,6 +79,11 @@ public class Uri {
         }
     }
 
+    /***
+     * Please reference the /docs/replicaValidation/ReplicaClientSideStatus.png for valid status transition.
+     *
+     * @param status the health status.
+     */
     public void setHealthStatus(HealthStatus status) {
         this.healthStatus.updateAndGet(previousStatus -> {
 
@@ -124,6 +128,13 @@ public class Uri {
         return this.healthStatus.get();
     }
 
+    /***
+     * In {@link AddressEnumerator}, it could de-prioritize uri in unhealthyPending/unhealthy health status (depending on whether replica validation is enabled)
+     * If the replica stuck in those statuses for too long, in order to avoid replica usage skew,
+     * we are going to rolling them into healthy category, so it is status can be validated by requests again
+     *
+     * @return
+     */
     public HealthStatus getEffectiveHealthStatus() {
         HealthStatus snapshot = this.healthStatus.get();
         switch (snapshot) {
@@ -177,10 +188,10 @@ public class Uri {
 
     /***
      * <p>
-     * NOTE: Please DO NOT change the order of the enum values,
+     * NOTE: Please DO NOT change the priority of the enums,
      * as it is used in {@link AddressEnumerator} for correct sorting purpose
      *
-     * if you are going to change the order of this, please reexamine the sorting logic as well.
+     * if you are going to change the priority of this, please reexamine the sorting logic as well.
      * </p>
      */
     public enum HealthStatus {

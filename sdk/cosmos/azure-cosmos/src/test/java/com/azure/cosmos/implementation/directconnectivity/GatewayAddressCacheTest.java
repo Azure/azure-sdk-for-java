@@ -926,6 +926,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertSameAs(ImmutableList.copyOf(actualAddresses),  fetchedAddresses);
     }
 
+    @SuppressWarnings("unchecked")
     @Test(groups = { "direct" }, dataProvider = "replicaValidationArgsProvider", timeOut = TIMEOUT)
     public void tryGetAddress_replicaValidationTests(boolean replicaValidationEnabled) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
@@ -980,15 +981,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         if (replicaValidationEnabled) {
             ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
-            Mockito.verify(openConnectionsHandlerMock, Mockito.times(1)).openConnections(openConnectionArguments.capture());
 
-            assertThat(openConnectionArguments.getValue())
-                    .hasSize(addressInfosFromCache.size())
-                    .containsExactlyElementsOf(
-                            addressInfosFromCache
-                                .stream()
-                                .map(addressInformation -> addressInformation.getPhysicalUri())
-                                .collect(Collectors.toList()));
+            // Open connection will only be called for unhealthyPending status address
+            Mockito.verify(openConnectionsHandlerMock, Mockito.times(0)).openConnections(openConnectionArguments.capture());
         } else {
             Mockito.verify(openConnectionsHandlerMock, Mockito.never()).openConnections(Mockito.any());
         }
@@ -1093,14 +1088,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArrayList<AddressInformation> cachedAddresses =
                 Lists.newArrayList(getSuccessResult(cache.tryGetAddresses(req, partitionKeyRangeIdentity, false), TIMEOUT).v);
 
-        // since the refresh happens in background, wait some time to let it happen
-        Thread.sleep(200);
+        // validate the cache will be refreshed
         assertThat(httpClientWrapper.capturedRequests)
                 .describedAs("getAddress will read addresses from gateway")
                 .asList().hasSize(1);
         assertThat(cachedAddresses).hasSize(addressInfosFromCache.size()).containsAll(addressInfosFromCache);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void validateReplicaAddressesTests() throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
@@ -1123,8 +1118,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 ConnectionPolicy.getDefaultPolicy(),
                 openConnectionsHandlerMock);
 
-        Method validateReplicaAddressesMethod =
-                GatewayAddressCache.class.getDeclaredMethod("validateReplicaAddresses", new Class[] { AddressInformation[].class });
+        Method validateReplicaAddressesMethod = GatewayAddressCache.class.getDeclaredMethod("validateReplicaAddresses", new Class[] { AddressInformation[].class });
         validateReplicaAddressesMethod.setAccessible(true);
 
         // connected status
@@ -1145,17 +1139,18 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         validateReplicaAddressesMethod.invoke(cache, new Object[]{ new AddressInformation[]{ address1, address2, address3, address4 }}) ;
 
-        // Validate openConnection will not be called for addresses in connected status
+        // Validate openConnection will only be called for address in unhealthyPending status
         ArgumentCaptor<List<Uri>> openConnectionArguments = ArgumentCaptor.forClass(List.class);
         Mockito.verify(openConnectionsHandlerMock, Mockito.times(1)).openConnections(openConnectionArguments.capture());
 
-        assertThat(openConnectionArguments.getValue()).hasSize(3).containsExactlyElementsOf(
-                Arrays.asList(address2, address3, address4)
+        assertThat(openConnectionArguments.getValue()).hasSize(1).containsExactlyElementsOf(
+                Arrays.asList(address4)
                         .stream()
                         .map(addressInformation -> addressInformation.getPhysicalUri())
                         .collect(Collectors.toList()));
     }
 
+    @SuppressWarnings("rawtypes")
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void mergeAddressesTests() throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
@@ -1198,7 +1193,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 new AddressInformation(true, true, "rntbd://127.0.0.1:2", Protocol.TCP),
                 address5,
                 address6 };
-
 
         Method mergeAddressesMethod =
                 GatewayAddressCache.class.getDeclaredMethod(

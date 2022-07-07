@@ -319,7 +319,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         return this.groupControllerCache.getAsync(
                     group.getGroupName(),
                     null,
-                    cachedValue -> this.createAndInitializeGroupController(group))
+                    () -> this.createAndInitializeGroupController(group))
                 .onErrorResume(throwable -> Mono.error(new ThroughputControlInitializationException(throwable)));
     }
 

@@ -67,7 +67,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -282,7 +281,7 @@ public class GatewayAddressCache implements IAddressCache {
                 uri.setUnhealthy();
             }
 
-            this.serverPartitionAddressCache.refresh(
+            this.serverPartitionAddressCache.refreshWithInitFunction(
                 partitionKeyRangeIdentity,
                 cachedAddresses -> this.getAddressesForRangeId(
                     request,
@@ -295,14 +294,14 @@ public class GatewayAddressCache implements IAddressCache {
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs =
                 this.serverPartitionAddressCache
-                    .getAsync(
+                    .getAsyncWithInitFunction(
                         partitionKeyRangeIdentity,
                         null,
                         cachedAddresses -> this.getAddressesForRangeId(
                             request,
                             partitionKeyRangeIdentity,
                             false,
-                             cachedAddresses)) // TODO: change to use unblocking cache
+                            cachedAddresses)) // TODO: change to use unblocking cache
                     .map(Utils.ValueHolder::new);
 
         return addressesObs
@@ -316,7 +315,6 @@ public class GatewayAddressCache implements IAddressCache {
                         }
 
                         // Refresh the cache if there was an address has been marked as unhealthy long enough and need to revalidate its status
-
                         // If you are curious about why we do not depend on 410 to force refresh the addresses, the reason being:
                         // When an address is marked as unhealthy, then the address enumerator will move it to the end of the list
                         // So it could happen that no request will use the unhealthy address for an extended period of time
@@ -326,22 +324,14 @@ public class GatewayAddressCache implements IAddressCache {
                                 .stream(addressesValueHolder.v)
                                 .anyMatch(addressInformation -> addressInformation.getPhysicalUri().shouldRefreshHealthStatus())) {
 
-                            logger.debug("Start background refresh task due to address uri in unhealthy status");
-
-                            // Start a background task
-                            Mono.defer(() -> {
-                                this.serverPartitionAddressCache.refresh(
-                                        partitionKeyRangeIdentity,
-                                        cachedAddresses -> this.getAddressesForRangeId(
-                                                request,
-                                                partitionKeyRangeIdentity,
-                                                true,
-                                                cachedAddresses));
-
-                                return Mono.empty();
-                            })
-                            .subscribeOn(Schedulers.boundedElastic())
-                            .subscribe();
+                            logger.info("refresh cache due to address uri in unhealthy status");
+                            this.serverPartitionAddressCache.refreshWithInitFunction(
+                                    partitionKeyRangeIdentity,
+                                    cachedAddresses -> this.getAddressesForRangeId(
+                                            request,
+                                            partitionKeyRangeIdentity,
+                                            true,
+                                            cachedAddresses));
                         }
 
                         return addressesValueHolder;
@@ -656,6 +646,7 @@ public class GatewayAddressCache implements IAddressCache {
         PartitionKeyRangeIdentity pkRangeIdentity,
         boolean forceRefresh,
         AddressInformation[] cachedAddresses) {
+
         Utils.checkNotNullOrThrow(request, "request", "");
         validatePkRangeIdentity(pkRangeIdentity);
 
@@ -716,6 +707,7 @@ public class GatewayAddressCache implements IAddressCache {
                             // for new addresses, use the new addressInformation object
                             AddressInformation[] mergedAddresses = this.mergeAddresses(list.get(0).getRight(), cachedAddresses);
                             for (AddressInformation address : mergedAddresses) {
+                                // The main purpose for this step is to move address health status from unhealthy -> unhealthyPending
                                 address.getPhysicalUri().setRefreshed();
                             }
 
@@ -899,19 +891,22 @@ public class GatewayAddressCache implements IAddressCache {
     private void validateReplicaAddresses(AddressInformation[] addresses) {
         checkNotNull(addresses, "Argument 'addresses' can not be null");
 
-        // By theory, when we reach here, the status of the address should be in one of the three status: Unknown, Healthy, UnhealthyPending
-        // Only open connections for address uri not in healthy status
+        // By theory, when we reach here, the status of the address should be in one of the three status: Unknown, Connected, UnhealthyPending
+        // using open connection to validate addresses in UnhealthyPending status
+        // Could extend to also open connection for unknown in the future
         List<Uri> addressesNeedToValidation =
                 Arrays
                     .stream(addresses)
                     .map(address -> address.getPhysicalUri())
-                    .filter(addressUri -> addressUri.getHealthStatus() != Uri.HealthStatus.Connected)
+                    .filter(addressUri -> addressUri.getHealthStatus() == Uri.HealthStatus.UnhealthyPending)
                     .collect(Collectors.toList());
 
-        this.openConnectionsHandler
-                .openConnections(addressesNeedToValidation)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
+        if (addressesNeedToValidation.size() > 0) {
+            this.openConnectionsHandler
+                    .openConnections(addressesNeedToValidation)
+                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                    .subscribe();
+        }
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {

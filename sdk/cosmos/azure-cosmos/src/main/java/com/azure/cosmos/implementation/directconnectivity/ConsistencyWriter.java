@@ -243,7 +243,8 @@ public class ConsistencyWriter {
                         response,
                         null,
                         false,
-                        false, primaryURI.get(),
+                        false,
+                        primaryURI.get(),
                         replicaStatusList.get());
                 return barrierForGlobalStrong(request, response);
             });

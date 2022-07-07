@@ -363,6 +363,7 @@ public class ReflectionUtils {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
     }
 
+    @SuppressWarnings("unchecked")
     public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
         return get(AtomicReference.class, uri, "healthStatus");
     }

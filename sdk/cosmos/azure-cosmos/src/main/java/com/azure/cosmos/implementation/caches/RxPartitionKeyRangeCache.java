@@ -63,7 +63,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         return routingMapCache.getAsync(
                 collectionRid,
                 previousValue,
-                cachedValue -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue, properties))
+                () -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue, properties))
                               .map(Utils.ValueHolder::new)
                               .onErrorResume(err -> {
                                   logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
@@ -152,7 +152,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
                 collectionRid,
                 null,
-                cachedValue -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties)).map(Utils.ValueHolder::new);
+                () -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties)).map(Utils.ValueHolder::new);
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {

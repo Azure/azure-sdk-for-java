@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
@@ -143,7 +142,7 @@ public class CosmosException extends AzureException {
      */
     private boolean sendingRequestHasStarted;
 
-    private final List<String> uriHealthList;
+    private final List<String> replicaStatusList;
 
     /**
      * Creates a new instance of the CosmosException class.
@@ -167,7 +166,7 @@ public class CosmosException extends AzureException {
             }
         }
 
-        this.uriHealthList = new ArrayList<>();
+        this.replicaStatusList = new ArrayList<>();
     }
 
     /**
@@ -548,8 +547,8 @@ public class CosmosException extends AzureException {
         this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
 
-    List<String> getUriHealthList() {
-        return this.uriHealthList;
+    List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -565,7 +564,7 @@ public class CosmosException extends AzureException {
 
                     @Override
                     public List<String> getReplicaStatusList(CosmosException cosmosException) {
-                        return cosmosException.getUriHealthList();
+                        return cosmosException.getReplicaStatusList();
                     }
 
                 });

@@ -219,6 +219,9 @@ public class StoreReader {
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
 
         List<Uri> addressRandomPermutation = this.addressEnumerator.getTransportAddresses(entity, resolveApiResults);
+
+        // The health status of the Uri will change as the time goes by
+        // what we really want to track is the health status snapshot at this moment
         List<String> replicaStatusList =
                 addressRandomPermutation
                         .stream()

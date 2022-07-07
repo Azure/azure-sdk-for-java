@@ -933,8 +933,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                                          Instant beforeOperation3,
                                          Instant afterOperation3,
                                          boolean connectionStateListenerEnabled) throws Exception {
-
-        System.out.println(cosmosDiagnostics.toString());
         ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
         JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
