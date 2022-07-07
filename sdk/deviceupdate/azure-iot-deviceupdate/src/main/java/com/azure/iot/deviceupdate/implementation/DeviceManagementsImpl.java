@@ -34,7 +34,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
@@ -2574,8 +2573,10 @@ public final class DeviceManagementsImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importDevicesWithResponseAsync(importType, requestOptions),
-                new DefaultPollingStrategy<>(
+                new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
+                        this.client.getEndpoint(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
@@ -2609,8 +2610,10 @@ public final class DeviceManagementsImpl {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importDevicesWithResponseAsync(importType, requestOptions, context),
-                new DefaultPollingStrategy<>(
+                new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
+                        this.client.getEndpoint(),
+                        null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
                                 ? requestOptions.getContext()
