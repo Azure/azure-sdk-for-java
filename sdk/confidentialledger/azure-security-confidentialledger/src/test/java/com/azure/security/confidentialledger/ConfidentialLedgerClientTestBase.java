@@ -24,6 +24,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         try {
+            System.out.println("TEST MODE = " + getTestMode());
             ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
                 .identityServiceUri(
                         Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI", "https://identity.confidential-ledger.core.azure.com"))

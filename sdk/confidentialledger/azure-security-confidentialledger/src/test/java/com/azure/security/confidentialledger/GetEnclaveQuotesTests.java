@@ -4,19 +4,24 @@
 
 package com.azure.security.confidentialledger;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,6 +35,7 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         // this is a built in test of getLedgerIdentity
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
+
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
@@ -41,8 +47,23 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+                confidentialLedgerClientBuilder
+                .httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+                confidentialLedgerClientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .httpClient(httpClient)
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+                confidentialLedgerClientBuilder.credential(new DefaultAzureCredentialBuilder().build())
+                .httpClient(httpClient);
+        }
         
-        Response<BinaryData> enclaveQuotesWithResponse = confidentialLedgerClientBuilder.httpClient(httpClient).buildClient().getEnclaveQuotesWithResponse(null);
+        ConfidentialLedgerClient client = confidentialLedgerClientBuilder.buildClient();
+        Response<BinaryData> enclaveQuotesWithResponse = client.getEnclaveQuotesWithResponse(null);
         Assertions.assertEquals(enclaveQuotesWithResponse.getStatusCode(), 200);
         BinaryData parsedResponse = enclaveQuotesWithResponse.getValue();
 

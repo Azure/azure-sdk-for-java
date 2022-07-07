@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
     @Test
     public void testPostLedgerEntryTests() throws Exception {
+        System.out.println("in ledger entries");
         String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
         // this is a built in test of getLedgerIdentity
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
