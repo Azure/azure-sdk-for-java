@@ -3,19 +3,17 @@ package com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 
@@ -24,23 +22,23 @@ import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
  */
 public class AzurePostgresqlMSIAuthenticationPlugin implements AuthenticationPlugin {
 
-    DefaultAzureCredential azureCredential;
-    Logger logger = LoggerFactory.getLogger(AzurePostgresqlMSIAuthenticationPlugin.class);
+    private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
+
     /**
      * Stores the access token.
      */
     private AccessToken accessToken;
+
+    private TokenCredential credential;
 
     /**
      * Stores the properties.
      */
     private Properties properties;
 
-    /**
-     * Constructor.
-     */
-    public AzurePostgresqlMSIAuthenticationPlugin() {
-    }
+    private final AzureJDBCProperties azureJDBCProperties;
+
+    private final AzureTokenCredentialResolver tokenCredentialResolver;
 
     /**
      * Constructor with properties.
@@ -49,6 +47,8 @@ public class AzurePostgresqlMSIAuthenticationPlugin implements AuthenticationPlu
      */
     public AzurePostgresqlMSIAuthenticationPlugin(Properties properties) {
         this.properties = properties;
+        this.azureJDBCProperties = new AzureJDBCProperties();
+        this.tokenCredentialResolver =  new AzureTokenCredentialResolver();
     }
 
     /**
@@ -73,23 +73,14 @@ public class AzurePostgresqlMSIAuthenticationPlugin implements AuthenticationPlu
         return password;
     }
 
-    private String getClientId() {
-        String clientId = null;
-        if (properties != null && properties.containsKey("clientid")) {
-            clientId = properties.getProperty("clientid");
-        }
-        return clientId;
-    }
-
-    private TokenCredential credential;
-
     private TokenCredential getTokenCredential() {
         if (credential == null) {
-            String clientId = getClientId();
-            if (clientId != null && !clientId.isEmpty()) {
-                credential = new DefaultAzureCredentialBuilder().managedIdentityClientId(clientId).build();
-            } else {
-                credential = new DefaultAzureCredentialBuilder().build();
+            // Resolve the token credential when there is no credential passed from configs.
+            AzureJDBCPropertiesUtils.convertPropertiesToAzureProperties(properties, azureJDBCProperties);
+            credential = tokenCredentialResolver.resolve(azureJDBCProperties);
+            if (credential == null) {
+                // Create DefaultAzureCredential when no credential can be resolved from configs.
+                credential = new DefaultAzureCredentialBuilderFactory(azureJDBCProperties).build().build();
             }
         }
         return credential;
@@ -100,7 +91,7 @@ public class AzurePostgresqlMSIAuthenticationPlugin implements AuthenticationPlu
             TokenCredential credential = getTokenCredential();
             TokenRequestContext request = new TokenRequestContext();
             ArrayList<String> scopes = new ArrayList<>();
-            scopes.add("https://ossrdbms-aad.database.windows.net");
+            scopes.add(OSSRDBMS_SCOPE);
             request.setScopes(scopes);
             accessToken = credential.getToken(request).block(Duration.ofSeconds(30));
         }

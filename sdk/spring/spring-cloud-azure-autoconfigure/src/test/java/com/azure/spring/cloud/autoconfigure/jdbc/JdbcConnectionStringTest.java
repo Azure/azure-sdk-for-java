@@ -3,6 +3,8 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import static com.azure.spring.cloud.autoconfigure.jdbc.AzureJdbcEnvironmentPostProcessor.ENHANCED_PROPERTIES;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionString.INVALID_CONNECTION_STRING_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
@@ -16,6 +18,7 @@ import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringProp
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 
@@ -58,6 +61,24 @@ class JdbcConnectionStringTest {
     void connectionStringWittInvalidProperties() {
         String connectionString = "jdbc:mysql://host/database?=";
         assertThrowsExactly(IllegalArgumentException.class, () -> new JdbcConnectionString(connectionString), String.format(INVALID_PROPERTY_PAIR_FORMAT, connectionString));
+    }
+
+    @Test
+    void inconsistentPropertiesTest() {
+        String connectionString = "jdbc:mysql://mockpostgresqlurl:3306/db?useSSL=false";
+        JdbcConnectionString jdbcConnectionString = new JdbcConnectionString(connectionString);
+        Map<String, String> configMap = new HashMap<>();
+        configMap.putAll(ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
+        assertThrowsExactly(IllegalArgumentException.class, () -> jdbcConnectionString.enhanceConnectionString(configMap));
+    }
+
+    @Test
+    void consistentPropertiesTest() {
+        String connectionString = "jdbc:mysql://mockpostgresqlurl:3306/db?useSSL=true";
+        JdbcConnectionString jdbcConnectionString = new JdbcConnectionString(connectionString);
+        Map<String, String> configMap = new HashMap<>();
+        configMap.putAll(ENHANCED_PROPERTIES.get(DatabaseType.MYSQL));
+        assertNotNull(jdbcConnectionString.enhanceConnectionString(configMap));
     }
 
     @Test

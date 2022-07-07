@@ -1,11 +1,14 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -48,8 +51,13 @@ public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcess
     }
 
     private final Log logger;
+
     public AzureJdbcEnvironmentPostProcessor(Log logger) {
         this.logger = logger;
+    }
+
+    public AzureJdbcEnvironmentPostProcessor() {
+        this.logger = new DeferredLog();
     }
 
     @Override
@@ -58,11 +66,7 @@ public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcess
     }
 
     @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        DatabaseType databaseType = getDatabaseType();
-        if (databaseType == null) {
-            return;
-        }
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application){
 
         DataSourceProperties dataSourceProperties = Binder.get(environment).bindOrCreate("spring.datasource", DataSourceProperties.class);
         boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
@@ -79,13 +83,18 @@ public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcess
         }
 
         JdbcConnectionString connectionString = new JdbcConnectionString(url);
-        if (databaseType != connectionString.getDatabaseType()) {
-            logger.info("The provided jdbc schema doesn't match the jdbc plugin, skip AzureJdbcEnvironmentPostProcessor");
+        DatabaseType databaseType = connectionString.getDatabaseType();
+        if (!isDatabasePluginEnabled(databaseType)) {
+            logger.info("The jdbc plugin with provided jdbc schema is not on the classpath , skip AzureJdbcEnvironmentPostProcessor");
         }
-        try {
 
+        try {
             if (ENHANCED_PROPERTIES.containsKey(databaseType)) {
-                String enhancedUrl = connectionString.enhanceConnectionString(ENHANCED_PROPERTIES.get(databaseType));
+                AzureJDBCProperties azureJDBCProperties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJDBCProperties.class);
+                Map<String, String> configMap = new HashMap<>();
+                AzureJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
+                configMap.putAll(ENHANCED_PROPERTIES.get(databaseType));
+                String enhancedUrl = connectionString.enhanceConnectionString(configMap);
                 logger.info("Enhanced url is " + enhancedUrl);
 
                 Map<String, Object> propertyMap = new HashMap<>();
@@ -98,13 +107,13 @@ public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcess
         }
     }
 
-    private DatabaseType getDatabaseType() {
-        if (isPostgresqlPluginEnabled()) {
-            return DatabaseType.POSTGRESQL;
-        } else if (isMySqlPluginEnabled()) {
-            return DatabaseType.MYSQL;
+    private boolean isDatabasePluginEnabled(DatabaseType databaseType){
+        if (DatabaseType.POSTGRESQL.equals(databaseType)) {
+            return isPostgresqlPluginEnabled();
+        }else if (DatabaseType.MYSQL.equals(databaseType)){
+            return isMySqlPluginEnabled();
         }
-        return null;
+        return false;
     }
 
     private boolean isPostgresqlPluginEnabled() {
