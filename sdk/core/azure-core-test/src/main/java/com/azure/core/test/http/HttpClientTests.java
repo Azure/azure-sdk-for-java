@@ -261,7 +261,6 @@ public abstract class HttpClientTests {
             () -> createHttpClient().send(request)
         );
 
-        // Read response twice using all accessors.
         assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
 
         assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
