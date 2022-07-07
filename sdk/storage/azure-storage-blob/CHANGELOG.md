@@ -1,9 +1,10 @@
 # Release History
 
-## 12.18.0-beta.2 (Unreleased)
+## 12.18.0 (2022-07-07)
 
 ### Features Added
 - BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
+- GA release for 2021-08-06 service version.
 
 ## 12.18.0-beta.1 (2022-06-15)
 
@@ -313,6 +314,36 @@ and
 - Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
 
 
+## 11.1.1 (2019.04.30)
+- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unkown host errors.
+
+## 11.0.0 (2019.03.22)
+- Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.
+- Support for 2018-11-09 REST version. Please see our REST API documentation and blogs for information about the related added features.
+- Added appendBlockFromURL method. A block may be created with another blob as its source.
+- Added uploadPagesFromURL method. Pages may be written to with another blob as their source.
+- Fixed a bug that would set an invalid range header when downloading an empty blob.
+- Modified the LoggingFactory to redact SAS signatures on outgoing requests.
+- HTTPGetterInfo was made an internal type as it is an internal implementation detail.
+- Removed DEFAULT and NONE static variables. Empty constructors should be used instead. DEFAULT static values were error prone and unsafe to use because although the field was final, the objects were mutable, so it was possible the value could be changed accidentally and alter the behavior of the program.
+- Optimized the TransferManager download to file method to skip the initial HEAD request.
+- Added an option to configure that maximum size data that will be uploaded in a single shot via the TransferManager.
+- Added request Http Method, URL, and headers to logging messages.
+- Changed *ListingDetails to *ListDetails. These name changes are to mitigate conflicts with v8, allowing for side-by-side loading of different versions, which may help with upgrading.
+- Removed the extra quotes around etags in some responses so they are consistently now consistently formatted.
+- Moved the Generated*** types into the blob package to avoid conflicts with generated types from other services (i.e. queues and files)
+- Changed the logger name to be the name of class that uses it, which is a more conventional practice
+- Support added for SAS tokens to scope to blob snapshot.
+- Added getUserDelegationKey to ServiceURL, the result of which can be used to generate a user-delegation SAS.
+- Made the max results field on listing responses Integer instead of int as it is an optional field only returned when specified in the request.
+
+## 10.5.0 (2019.02.15)
+- Added uploadFromNonReplayableFlowable to support uploading arbitrary data sources (like network streams) to a block blob.
+
+## 10.4.0 (2019.01.11)
+- Fixed a bug that caused errors when java.io.tempdir has no trailing separator.
+- Upgrade autorest-clientruntime dependency to include some bug fixes.
+
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.
 - Fixed a bug where Account SAS would not work when set on clients.
@@ -449,36 +480,6 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 - New underlying REST pipeline implementation, based on the new `azure-core` library.
 - Client and pipeline configuration is now available via keyword arguments at both the client level.
 - Authentication using `azure-identity` credentials.
-
-## 11.1.1 (2019.04.30)
-- Upgraded to version 2.1.1 of the autorest-clientime which upgrades to a more secure version of jackson and fixes a NPE on unkown host errors.
-
-## 11.0.0 (2019.03.22)
-- Upgraded to version 2.1.0 of the autorest-clientruntime which includes several important fixes to mitigate a commonly-seen "Connection reset by peer" error and other similar bugs.
-- Support for 2018-11-09 REST version. Please see our REST API documentation and blogs for information about the related added features.
-- Added appendBlockFromURL method. A block may be created with another blob as its source.
-- Added uploadPagesFromURL method. Pages may be written to with another blob as their source.
-- Fixed a bug that would set an invalid range header when downloading an empty blob.
-- Modified the LoggingFactory to redact SAS signatures on outgoing requests.
-- HTTPGetterInfo was made an internal type as it is an internal implementation detail.
-- Removed DEFAULT and NONE static variables. Empty constructors should be used instead. DEFAULT static values were error prone and unsafe to use because although the field was final, the objects were mutable, so it was possible the value could be changed accidentally and alter the behavior of the program.
-- Optimized the TransferManager download to file method to skip the initial HEAD request.
-- Added an option to configure that maximum size data that will be uploaded in a single shot via the TransferManager.
-- Added request Http Method, URL, and headers to logging messages.
-- Changed *ListingDetails to *ListDetails. These name changes are to mitigate conflicts with v8, allowing for side-by-side loading of different versions, which may help with upgrading.
-- Removed the extra quotes around etags in some responses so they are consistently now consistently formatted.
-- Moved the Generated*** types into the blob package to avoid conflicts with generated types from other services (i.e. queues and files)
-- Changed the logger name to be the name of class that uses it, which is a more conventional practice
-- Support added for SAS tokens to scope to blob snapshot.
-- Added getUserDelegationKey to ServiceURL, the result of which can be used to generate a user-delegation SAS.
-- Made the max results field on listing responses Integer instead of int as it is an optional field only returned when specified in the request.
-
-## 10.5.0 (2019.02.15)
-- Added uploadFromNonReplayableFlowable to support uploading arbitrary data sources (like network streams) to a block blob.
-
-## 10.4.0 (2019.01.11)
-- Fixed a bug that caused errors when java.io.tempdir has no trailing separator.
-- Upgrade autorest-clientruntime dependency to include some bug fixes.
 
 ## 10.3.0 (2018.11.19)
 - Added support for SLF4J.

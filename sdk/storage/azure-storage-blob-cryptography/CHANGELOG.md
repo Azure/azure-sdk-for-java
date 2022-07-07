@@ -1,14 +1,10 @@
 # Release History
 
-## 12.17.0-beta.2 (Unreleased)
+## 12.17.0 (2022-07-07)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- GA release for 2021-08-06 service version.
+- GA release for encryption protocol version 2.
 
 ## 12.17.0-beta.1 (2022-06-15)
 
