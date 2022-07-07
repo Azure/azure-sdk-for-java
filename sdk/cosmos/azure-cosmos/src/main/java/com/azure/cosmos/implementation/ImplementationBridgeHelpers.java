@@ -16,7 +16,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -1019,8 +1018,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
-            Uri.HealthStatus getUriHealthStatus(CosmosException cosmosException);
-            void setUriHealthStatus(CosmosException cosmosException, Uri.HealthStatus healthStatus);
+            List<String> getReplicaStatusList(CosmosException cosmosException);
         }
     }
 }

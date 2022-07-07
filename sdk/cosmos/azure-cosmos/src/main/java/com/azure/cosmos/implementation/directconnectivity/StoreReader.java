@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.MutableVolatile;
@@ -33,9 +34,11 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Exceptions.isSubStatusCode;
@@ -138,22 +141,24 @@ public class StoreReader {
         }
     }
 
-    private Flux<StoreResult> toStoreResult(RxDocumentServiceRequest request,
-                                                  Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
-                                                  ReadMode readMode,
-                                                  boolean requiresValidLsn) {
+    private Flux<StoreResult> toStoreResult(
+        RxDocumentServiceRequest request,
+        Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
+        ReadMode readMode,
+        boolean requiresValidLsn,
+        List<String> replicaStatusList) {
 
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
-
-                    System.out.println("Get result back");
                             try {
                                 StoreResult storeResult = this.createAndRecordStoreResult(
                                         request,
                                         storeResponse,
-                                        null, requiresValidLsn,
+                                        null,
+                                        requiresValidLsn,
                                         readMode != ReadMode.Strong,
-                                        storeRespAndURI.getRight());
+                                        storeRespAndURI.getRight(),
+                                        replicaStatusList);
 
                                 BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
@@ -177,9 +182,11 @@ public class StoreReader {
                         StoreResult storeResult = this.createAndRecordStoreResult(
                                 request,
                                 null,
-                                storeException, requiresValidLsn,
+                                storeException,
+                                requiresValidLsn,
                                 readMode != ReadMode.Strong,
-                                storeRespAndURI.getRight());
+                                storeRespAndURI.getRight(),
+                                replicaStatusList);
                         if (storeException instanceof TransportException) {
                             BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
@@ -212,6 +219,11 @@ public class StoreReader {
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
 
         List<Uri> addressRandomPermutation = this.addressEnumerator.getTransportAddresses(entity, resolveApiResults);
+        List<String> replicaStatusList =
+                addressRandomPermutation
+                        .stream()
+                        .map(uri -> uri.getHealthStatusDiagnosticString())
+                        .collect(Collectors.toList());
 
         int startIndex = 0;
 
@@ -239,7 +251,7 @@ public class StoreReader {
 
         List<Flux<StoreResult>> storeResult = readStoreTasks
                 .stream()
-                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn))
+                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList))
                 .collect(Collectors.toList());
         Flux<StoreResult> allStoreResults = Flux.merge(storeResult);
 
@@ -512,6 +524,8 @@ public class StoreReader {
                 entity,
                 entity.requestContext.forceRefreshAddressCache);
 
+        AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
+
         Mono<StoreResult> storeResultObs = primaryUriObs.flatMap(
                 primaryUri -> {
                     try {
@@ -519,13 +533,13 @@ public class StoreReader {
                             SessionTokenHelper.setPartitionLocalSessionToken(entity, this.sessionContainer);
                         } else {
                             // Remove whatever session token can be there in headers.
-                            // We don't need it. If it is global - backend will not undersand it.
-                            // But there's no point in producing partition local sesison token.
+                            // We don't need it. If it is global - backend will not understand it.
+                            // But there's no point in producing partition local session token.
                             entity.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
                         }
 
-
                         Pair<Mono<StoreResponse>, Uri> storeResponseObsAndUri = this.readFromStoreAsync(primaryUri, entity);
+                        replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
                                 storeResponse -> {
@@ -537,7 +551,8 @@ public class StoreReader {
                                             null,
                                             requiresValidLsn,
                                             true,
-                                            storeResponse != null ? storeResponseObsAndUri.getRight() : null);
+                                            storeResponse != null ? storeResponseObsAndUri.getRight() : null,
+                                            replicaStatusList.get());
 
                                         return Mono.just(storeResult);
                                     } catch (CosmosException e) {
@@ -569,7 +584,8 @@ public class StoreReader {
                         storeTaskException,
                         requiresValidLsn,
                         true,
-                        null);
+                        null,
+                        replicaStatusList.get());
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -669,9 +685,17 @@ public class StoreReader {
         Exception responseException,
         boolean requiresValidLsn,
         boolean useLocalLSNBasedHeaders,
-        Uri storePhysicalAddress) {
+        Uri storePhysicalAddress,
+        List<String> replicaStatusList) {
 
-        StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
+        StoreResult storeResult =
+                this.createStoreResult(
+                        storeResponse,
+                        responseException,
+                        requiresValidLsn,
+                        useLocalLSNBasedHeaders,
+                        storePhysicalAddress,
+                        replicaStatusList);
 
         try {
             BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult, transportClient.getGlobalEndpointManager());
@@ -693,7 +717,8 @@ public class StoreReader {
                                   Exception responseException,
                                   boolean requiresValidLsn,
                                   boolean useLocalLSNBasedHeaders,
-                                  Uri storePhysicalAddress) {
+                                  Uri storePhysicalAddress,
+                                  List<String> replicaStatusList) {
 
         if (responseException == null) {
             String headerValue = null;
@@ -704,6 +729,11 @@ public class StoreReader {
             int numberOfReadRegions = -1;
             Double backendLatencyInMs = null;
             long itemLSN = -1;
+
+            if (replicaStatusList != null) {
+                storeResponse.getReplicaStatusList().addAll(replicaStatusList);
+            }
+
             if ((headerValue = storeResponse.getHeaderValue(
                     useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN)) != null) {
                     quorumAckedLSN = Long.parseLong(headerValue);
@@ -798,6 +828,14 @@ public class StoreReader {
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
+
+                if (replicaStatusList != null) {
+                    ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .getReplicaStatusList(cosmosException)
+                            .addAll(replicaStatusList);
+                }
 
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {

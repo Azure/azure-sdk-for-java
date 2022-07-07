@@ -690,7 +690,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(responseStatisticsList.size()).isGreaterThan(0);
             JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             assertThat(storeResult).isNotNull();
-            assertThat(storeResult.get("uriHealthStatus").asText()).isNotEmpty();
+            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+            assertThat(replicaStatusList.isArray()).isTrue();
+            assertThat(replicaStatusList.size()).isGreaterThan(0);
         } finally {
             if (client != null) {
                 client.close();
@@ -931,6 +933,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                                          Instant beforeOperation3,
                                          Instant afterOperation3,
                                          boolean connectionStateListenerEnabled) throws Exception {
+
+        System.out.println(cosmosDiagnostics.toString());
         ObjectNode diagnostics = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
         JsonNode responseStatisticsList = diagnostics.get("responseStatisticsList");
         assertThat(responseStatisticsList.isArray()).isTrue();
@@ -940,7 +944,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
         assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
-        assertThat(storeResult.get("uriHealthStatus").asText()).isNotEmpty();
+        JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+        assertThat(replicaStatusList.isArray()).isTrue();
+        assertThat(replicaStatusList.size()).isGreaterThan(0);
 
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();

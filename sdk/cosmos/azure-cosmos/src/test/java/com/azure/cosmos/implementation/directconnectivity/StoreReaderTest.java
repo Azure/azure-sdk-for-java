@@ -636,7 +636,13 @@ public class StoreReaderTest {
                 .withGlobalCommittedLsn(bigLsn)
                 .build();
 
-        StoreResult result = storeReader.createStoreResult(storeResponse, null, false, false, null);
+        StoreResult result = storeReader.createStoreResult(
+                storeResponse,
+                null,
+                false,
+                false,
+                null,
+                Arrays.asList(primaryURI.getHealthStatusDiagnosticString()));
         assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
         assertThat(result.lsn).isEqualTo(bigLsn);
     }
@@ -926,7 +932,14 @@ public class StoreReaderTest {
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
-        StoreResult storeResult = storeReader.createStoreResult(null, new IllegalStateException("Test"), false, false, null);
+        StoreResult storeResult =
+                storeReader.createStoreResult(
+                        null,
+                        new IllegalStateException("Test"),
+                        false,
+                        false,
+                        null,
+                        null);
         assertThat(storeResult.getException().toString()).contains("\"causeInfo\":\"[class: class java.lang.IllegalStateException, message:" +
             " Test]\"");
     }

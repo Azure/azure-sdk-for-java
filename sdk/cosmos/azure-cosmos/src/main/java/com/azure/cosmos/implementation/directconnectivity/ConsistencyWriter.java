@@ -34,6 +34,7 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -158,6 +159,7 @@ public class ConsistencyWriter {
 
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
+            AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
 
             return replicaAddressesObs.flatMap(replicaAddresses -> {
                 try {
@@ -188,6 +190,8 @@ public class ConsistencyWriter {
                     return Mono.error(e);
                 }
 
+                replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
+
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
                                            .doOnError(
                                                t -> {
@@ -208,7 +212,8 @@ public class ConsistencyWriter {
                                                            null, ex != null ? ex: rawException,
                                                            false,
                                                            false,
-                                                           primaryUri);
+                                                           primaryUri,
+                                                           replicaStatusList.get());
                                                        String value = ex != null ?
                                                            ex
                                                                .getResponseHeaders()
@@ -233,7 +238,13 @@ public class ConsistencyWriter {
                                            );
 
             }).flatMap(response -> {
-                storeReader.createAndRecordStoreResult(request, response, null, false, false, primaryURI.get());
+                storeReader.createAndRecordStoreResult(
+                        request,
+                        response,
+                        null,
+                        false,
+                        false, primaryURI.get(),
+                        replicaStatusList.get());
                 return barrierForGlobalStrong(request, response);
             });
         } else {

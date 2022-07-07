@@ -152,6 +152,10 @@ public class Uri {
                 && Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0;
     }
 
+    public String getHealthStatusDiagnosticString() {
+        return this.uri.getPort() + ":" + this.healthStatus.get().toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -11,9 +11,10 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Used internally to represents a response from the store.
@@ -33,7 +34,7 @@ public class StoreResponse {
     private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
-    private final AtomicReference<Uri.HealthStatus> uriHealthStatus;
+    private final List<String> replicaStatusList;
 
     public StoreResponse(
             int status,
@@ -50,7 +51,7 @@ public class StoreResponse {
             this.responsePayloadLength = this.content.length;
         }
 
-        uriHealthStatus = new AtomicReference<>(null);
+        replicaStatusList = new ArrayList<>();
     }
 
     public int getStatus() {
@@ -183,12 +184,7 @@ public class StoreResponse {
         return subStatusCode;
     }
 
-    public Uri.HealthStatus getUriHealthStatus() {
-        return this.uriHealthStatus.get();
+    public List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
-
-    public void setUriHealthStatus(Uri.HealthStatus healthStatus) {
-        this.uriHealthStatus.set(healthStatus);
-    }
-
 }

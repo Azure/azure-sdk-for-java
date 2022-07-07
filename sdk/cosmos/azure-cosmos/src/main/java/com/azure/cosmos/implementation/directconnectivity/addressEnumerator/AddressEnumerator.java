@@ -10,10 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.Connected;
 import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.Unhealthy;
 import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.UnhealthyPending;
-import static com.azure.cosmos.implementation.directconnectivity.Uri.HealthStatus.Unknown;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class AddressEnumerator {

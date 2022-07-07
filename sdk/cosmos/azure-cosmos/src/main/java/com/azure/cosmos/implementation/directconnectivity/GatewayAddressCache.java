@@ -106,7 +106,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final GlobalEndpointManager globalEndpointManager;
     private IOpenConnectionsHandler openConnectionsHandler;
     private final ConnectionPolicy connectionPolicy;
-    private final AtomicBoolean replicaAddressValidationEnabled;
+    private final boolean replicaAddressValidationEnabled;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -164,7 +164,7 @@ public class GatewayAddressCache implements IAddressCache {
         this.globalEndpointManager = globalEndpointManager;
         this.openConnectionsHandler = openConnectionsHandler;
         this.connectionPolicy = connectionPolicy;
-        this.replicaAddressValidationEnabled = new AtomicBoolean(Configs.isReplicaAddressValidationEnabled());
+        this.replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     }
 
     public GatewayAddressCache(
@@ -719,7 +719,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 address.getPhysicalUri().setRefreshed();
                             }
 
-                            if (this.replicaAddressValidationEnabled.get()) {
+                            if (this.replicaAddressValidationEnabled) {
                                 this.validateReplicaAddresses(mergedAddresses);
                             }
 
@@ -969,10 +969,6 @@ public class GatewayAddressCache implements IAddressCache {
                     collection.getResourceId(),
                     JavaStreamUtils.toString(partitionKeyRangeIdentities, ","));
         }
-
-        // If customer calls openAsyncAndInitCaches,
-        // then it will automatically enable the replica address validation - more aggressive connection management
-        this.replicaAddressValidationEnabled.set(true);
 
         List<Flux<List<Address>>> tasks = new ArrayList<>();
         int batchSize = GatewayAddressCache.DefaultBatchSize;

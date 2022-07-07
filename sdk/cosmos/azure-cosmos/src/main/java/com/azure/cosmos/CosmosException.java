@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -142,7 +143,7 @@ public class CosmosException extends AzureException {
      */
     private boolean sendingRequestHasStarted;
 
-    private final AtomicReference<Uri.HealthStatus> uriHealthStatus = new AtomicReference<>(null);
+    private final List<String> uriHealthList;
 
     /**
      * Creates a new instance of the CosmosException class.
@@ -165,6 +166,8 @@ public class CosmosException extends AzureException {
                 }
             }
         }
+
+        this.uriHealthList = new ArrayList<>();
     }
 
     /**
@@ -545,12 +548,8 @@ public class CosmosException extends AzureException {
         this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
 
-    void setUriHealthStatus(Uri.HealthStatus healthStatus) {
-        this.uriHealthStatus.set(healthStatus);
-    }
-
-    Uri.HealthStatus getUriHealthStatus() {
-        return this.uriHealthStatus.get();
+    List<String> getUriHealthList() {
+        return this.uriHealthList;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -565,14 +564,10 @@ public class CosmosException extends AzureException {
                     }
 
                     @Override
-                    public Uri.HealthStatus getUriHealthStatus(CosmosException cosmosException) {
-                        return cosmosException.getUriHealthStatus();
+                    public List<String> getReplicaStatusList(CosmosException cosmosException) {
+                        return cosmosException.getUriHealthList();
                     }
 
-                    @Override
-                    public void setUriHealthStatus(CosmosException cosmosException, Uri.HealthStatus healthStatus) {
-                        cosmosException.setUriHealthStatus(healthStatus);
-                    }
                 });
     }
 
