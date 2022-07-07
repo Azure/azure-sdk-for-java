@@ -5,7 +5,16 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.resourcemanager.appservice.models.*;
+import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
+import com.azure.resourcemanager.appservice.models.DeployOptions;
+import com.azure.resourcemanager.appservice.models.DeployType;
+import com.azure.resourcemanager.appservice.models.DeploymentBuildStatus;
+import com.azure.resourcemanager.appservice.models.JavaVersion;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.RuntimeStack;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
@@ -93,7 +102,10 @@ public class OneDeployTests extends AppServiceTest {
         while (!DeploymentBuildStatus.RUNTIME_SUCCESSFUL.equals(buildStatus)) {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
-            buildStatus = webApp1.getDeploymentStatus(deploymentId);
+            CsmDeploymentStatus deploymentStatus = webApp1.getDeploymentStatus(deploymentId);
+            Assertions.assertNotNull(deploymentStatus);
+
+            buildStatus = deploymentStatus.status();
             Assertions.assertNotNull(buildStatus);
 
             if (buildStatus.toString().contains("Failed")) {
