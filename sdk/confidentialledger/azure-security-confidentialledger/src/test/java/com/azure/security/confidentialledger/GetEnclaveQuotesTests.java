@@ -49,16 +49,17 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
 
         if (getTestMode() == TestMode.PLAYBACK) {
-                confidentialLedgerClientBuilder
+            confidentialLedgerClientBuilder
                 .httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-                confidentialLedgerClientBuilder
+            confidentialLedgerClientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(httpClient)
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-                confidentialLedgerClientBuilder.credential(new DefaultAzureCredentialBuilder().build())
+            confidentialLedgerClientBuilder
+                .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(httpClient);
         }
         
