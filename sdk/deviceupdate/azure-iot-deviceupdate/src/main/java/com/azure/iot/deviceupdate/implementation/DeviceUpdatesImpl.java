@@ -994,7 +994,7 @@ public final class DeviceUpdatesImpl {
                 () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions),
                 new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
-                        this.client.getEndpoint(),
+                        "https://" + this.client.getEndpoint(),
                         null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
@@ -1048,7 +1048,7 @@ public final class DeviceUpdatesImpl {
                 () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions, context),
                 new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
-                        this.client.getEndpoint(),
+                        "https://" + this.client.getEndpoint(),
                         null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
@@ -1426,7 +1426,7 @@ public final class DeviceUpdatesImpl {
                 () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions),
                 new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
-                        this.client.getEndpoint(),
+                        "https://" + this.client.getEndpoint(),
                         null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
@@ -1459,7 +1459,7 @@ public final class DeviceUpdatesImpl {
                 () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions, context),
                 new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
-                        this.client.getEndpoint(),
+                        "https://" + this.client.getEndpoint(),
                         null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null

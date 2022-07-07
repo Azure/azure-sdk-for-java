@@ -2575,7 +2575,7 @@ public final class DeviceManagementsImpl {
                 () -> this.importDevicesWithResponseAsync(importType, requestOptions),
                 new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
-                        this.client.getEndpoint(),
+                        "https://" + this.client.getEndpoint(),
                         null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null
@@ -2612,7 +2612,7 @@ public final class DeviceManagementsImpl {
                 () -> this.importDevicesWithResponseAsync(importType, requestOptions, context),
                 new OperationResourcePollingStrategyWithEndpoint<>(
                         this.client.getHttpPipeline(),
-                        this.client.getEndpoint(),
+                        "https://" + this.client.getEndpoint(),
                         null,
                         null,
                         requestOptions != null && requestOptions.getContext() != null

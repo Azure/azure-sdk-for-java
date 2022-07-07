@@ -45,7 +45,7 @@ public final class PollingUtils {
     @SuppressWarnings("unchecked")
     public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
                                                   TypeReference<T> typeReference) {
-        if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
+        if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
             return Mono.just((T) binaryData);
         } else {
             return binaryData.toObjectAsync(typeReference, serializer);
@@ -71,7 +71,7 @@ public final class PollingUtils {
                                               TypeReference<T> typeReference) {
         if (response == null) {
             return Mono.empty();
-        } else if (TypeUtil.isTypeOrSubTypeOf(response.getClass(), typeReference.getJavaType())) {
+        } else if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
             return Mono.just((T) response);
         } else {
             return serializeResponse(response, serializer)
