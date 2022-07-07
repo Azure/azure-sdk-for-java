@@ -53,8 +53,8 @@ public class OperationResourcePollingStrategyWithEndpoint<T, U> extends Operatio
         super(httpPipeline, serializer, operationLocationHeaderName, context);
         this.operationLocationHeaderName = operationLocationHeaderName != null ? operationLocationHeaderName : "Operation-Location";
         this.endpoint = endpoint;
-        this.serializer = (ObjectSerializer)(serializer != null ? serializer : new DefaultJsonSerializer());
-        this.httpPipeline = (HttpPipeline) Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
+        this.serializer = serializer != null ? serializer : new DefaultJsonSerializer();
+        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.context = context == null ? Context.NONE : context;
     }
 
