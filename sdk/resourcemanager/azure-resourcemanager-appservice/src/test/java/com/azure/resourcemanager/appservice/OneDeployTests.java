@@ -93,7 +93,7 @@ public class OneDeployTests extends AppServiceTest {
         while (!DeploymentBuildStatus.RUNTIME_SUCCESSFUL.equals(buildStatus)) {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
-            buildStatus = webApp1.getDeploymentStatusAsync(deploymentId).block();
+            buildStatus = webApp1.getDeploymentStatus(deploymentId);
             Assertions.assertNotNull(buildStatus);
 
             if (buildStatus.toString().contains("Failed")) {
