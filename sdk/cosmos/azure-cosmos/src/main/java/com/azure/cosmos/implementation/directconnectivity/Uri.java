@@ -39,7 +39,7 @@ public class Uri {
         this.uri = uriValue;
         this.healthStatus = new AtomicReference<>(HealthStatus.Unknown);
         this.lastUnknownTimestamp = Instant.now();
-        this.lastUnhealthyTimestamp = null;
+        this.lastUnhealthyPendingTimestamp = null;
         this.lastUnhealthyTimestamp = null;
     }
 

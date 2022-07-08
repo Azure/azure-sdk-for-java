@@ -77,7 +77,7 @@ public class AddressEnumeratorTests {
         }
 
         System.out.println("Test scenario: comparing when unhealthyPending roll into healthy status after 1 min");
-        setTimestamp(testUri3, Instant.now().minusMillis(Duration.ofMinutes(1).toMillis()));
+        setTimestamp(testUri3, Instant.now().minusMillis(Duration.ofMinutes(2).toMillis()));
         List<Uri> sortedAddresses = (List<Uri>) sortAddressesMethod.invoke(this.addressEnumerator, Arrays.asList(testUri3, testUri2), requestMock);
         assertThat(sortedAddresses).containsExactlyElementsOf(Arrays.asList(testUri3, testUri2));
 

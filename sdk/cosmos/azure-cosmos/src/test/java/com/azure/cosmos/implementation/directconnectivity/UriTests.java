@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -44,20 +43,22 @@ public class UriTests {
         testUri.setHealthStatus(Connected);
         assertThat(testUri.getHealthStatus()).isEqualTo(Unhealthy);
 
-        lastUnhealthyTimestampField.set(testUri, Instant.now().minusMillis(Duration.ofMinutes(1).toMillis()));
+        lastUnhealthyTimestampField.set(testUri, Instant.now().minusMillis(Duration.ofMinutes(2).toMillis()));
         testUri.setHealthStatus(Connected);
         assertThat(testUri.getHealthStatus()).isEqualTo(Connected);
     }
 
     @Test(groups = "unit")
     public void setUnhealthyStatusTests() throws NoSuchFieldException, IllegalAccessException {
-        Uri testUri = new Uri("https://127.0.0.1:8080");
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+
         Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
 
         // Unhealthy status can override any other status
         for (Uri.HealthStatus initialStatus : Uri.HealthStatus.values()) {
+
+            Uri testUri = new Uri("https://127.0.0.1:8080");
+            AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
             healthStatus.set(initialStatus);
             Instant lastUnhealthyTimestampBefore = (Instant) lastUnhealthyTimestampField.get(testUri);
 
@@ -71,9 +72,6 @@ public class UriTests {
 
     @Test(groups = "unit")
     public void setUnhealthyPendingStatusTests() throws NoSuchFieldException, IllegalAccessException {
-        Uri testUri = new Uri("https://127.0.0.1:8080");
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
-
         List<Uri.HealthStatus> statusCanBeOverwritten = Arrays.asList(UnhealthyPending, Unhealthy);
         List<Uri.HealthStatus> statusSkipped = Arrays.asList(Unknown, Connected);
 
@@ -81,6 +79,9 @@ public class UriTests {
         lastUnhealthyPendingTimestampField.setAccessible(true);
 
         for (Uri.HealthStatus initialHealthStatus : Uri.HealthStatus.values()) {
+            Uri testUri = new Uri("https://127.0.0.1:8080");
+            AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+
             healthStatus.set(initialHealthStatus);
             Instant lastUnhealthyPendingTimestampBefore = (Instant) lastUnhealthyPendingTimestampField.get(testUri);
 
@@ -130,27 +131,28 @@ public class UriTests {
 
     @Test(groups = "unit")
     public void setRefreshTests() throws NoSuchFieldException, IllegalAccessException {
-        Uri testUri = new Uri("https://127.0.0.1:8080");
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
 
         Field lastUnknownTimestampField = Uri.class.getDeclaredField("lastUnknownTimestamp");
         lastUnknownTimestampField.setAccessible(true);
-        lastUnknownTimestampField.set(testUri, Instant.now());
-        Instant lastUnknownTimestampBefore = (Instant) lastUnknownTimestampField.get(testUri);
 
         Field lastUnhealthyPendingTimestampField = Uri.class.getDeclaredField("lastUnhealthyPendingTimestamp");
         lastUnhealthyPendingTimestampField.setAccessible(true);
-        lastUnhealthyPendingTimestampField.set(testUri, Instant.now());
-        Instant lastUnhealthyPendingTimestampBefore = (Instant) lastUnhealthyPendingTimestampField.get(testUri);
 
         Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
-        lastUnhealthyTimestampField.set(testUri, Instant.now());
-        Instant lastUnhealthyTimestampBefore = (Instant) lastUnhealthyTimestampField.get(testUri);
 
         for (Uri.HealthStatus initialHealthStatus : Uri.HealthStatus.values()) {
+            Uri testUri = new Uri("https://127.0.0.1:8080");
+            AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
             healthStatus.set(initialHealthStatus);
+            Instant time = Instant.now();
+
+            lastUnknownTimestampField.set(testUri, time);
+            lastUnhealthyPendingTimestampField.set(testUri, time);
+            lastUnhealthyTimestampField.set(testUri, time);
+
             testUri.setRefreshed();
+
             Instant lastUnknownTimestampAfter = (Instant) lastUnknownTimestampField.get(testUri);
             Instant lastUnhealthyPendingTimestampAfter = (Instant) lastUnhealthyPendingTimestampField.get(testUri);
             Instant lastUnhealthyTimestampAfter = (Instant) lastUnhealthyTimestampField.get(testUri);
@@ -160,15 +162,15 @@ public class UriTests {
                 case Connected:
                 case UnhealthyPending:
                     assertThat(testUri.getHealthStatus()).isEqualTo(initialHealthStatus);
-                    assertThat(lastUnknownTimestampAfter).isEqualTo(lastUnknownTimestampBefore);
-                    assertThat(lastUnhealthyPendingTimestampAfter).isEqualTo(lastUnhealthyPendingTimestampBefore);
-                    assertThat(lastUnhealthyTimestampAfter).isEqualTo(lastUnhealthyTimestampBefore);
+                    assertThat(lastUnknownTimestampAfter).isEqualTo(time);
+                    assertThat(lastUnhealthyPendingTimestampAfter).isEqualTo(time);
+                    assertThat(lastUnhealthyTimestampAfter).isEqualTo(time);
                     break;
                 case Unhealthy:
                     assertThat(testUri.getHealthStatus()).isEqualTo(UnhealthyPending);
-                    assertThat(lastUnknownTimestampAfter).isEqualTo(lastUnknownTimestampBefore);
-                    assertThat(lastUnhealthyPendingTimestampAfter).isNotEqualTo(lastUnhealthyPendingTimestampBefore);
-                    assertThat(lastUnhealthyTimestampAfter).isEqualTo(lastUnhealthyTimestampBefore);
+                    assertThat(lastUnknownTimestampAfter).isEqualTo(time);
+                    assertThat(lastUnhealthyPendingTimestampAfter).isAfter(time);
+                    assertThat(lastUnhealthyTimestampAfter).isEqualTo(time);
                     break;
             }
         }
