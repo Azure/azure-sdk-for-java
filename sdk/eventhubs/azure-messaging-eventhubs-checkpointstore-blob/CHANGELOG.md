@@ -2,13 +2,12 @@
 
 ## 1.13.1 (2022-07-07)
 
-
 ### Other Changes
 
 #### Dependency Updates
 
 - Update `azure-messaging-eventhubs` dependency to `5.12.2`.
-- Update `azure-storage-blob` dependency to `12.17.1`.
+- Update `azure-storage-blob` dependency to `12.18.0`.
 
 ## 1.13.0 (2022-06-10)
 
