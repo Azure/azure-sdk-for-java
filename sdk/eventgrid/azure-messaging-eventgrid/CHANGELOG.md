@@ -3,7 +3,7 @@
 ## 4.12.0 (2022-07-08)
 
 ### Features Added
-- General availability of supporting publish CloudEvents to partner topics.
+- Added support to publish CloudEvents to partner topics by setting the channel name.
 
 ### Other Changes
 
