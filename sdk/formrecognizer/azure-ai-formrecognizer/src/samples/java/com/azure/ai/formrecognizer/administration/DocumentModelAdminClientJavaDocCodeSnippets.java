@@ -41,7 +41,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(com.azure.ai.formrecognizer.administration.models.ContentSource, DocumentBuildMode)}
      */
     public void beginBuildModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode
@@ -63,7 +63,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentBuildMode, BuildModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(com.azure.ai.formrecognizer.administration.models.ContentSource, DocumentBuildMode, BuildModelOptions, Context)}
      * with options
      */
     public void beginBuildModelWithOptions() {

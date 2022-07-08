@@ -82,7 +82,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode, BuildModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(com.azure.ai.formrecognizer.implementation.models.ContentSource, DocumentBuildMode, BuildModelOptions)}
      * with options
      */
     public void beginBuildModelWithOptions() {

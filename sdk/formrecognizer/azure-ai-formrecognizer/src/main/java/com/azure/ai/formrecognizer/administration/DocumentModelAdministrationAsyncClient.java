@@ -6,19 +6,23 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.Base64ContentSourceT;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
+import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
+import com.azure.ai.formrecognizer.administration.models.LocalContentSourceT;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.WebContentSourceT;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AuthorizeCopyRequest;
-import com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.implementation.models.BuildDocumentModelRequest;
 import com.azure.ai.formrecognizer.implementation.models.ComponentModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ComposeDocumentModelRequest;
@@ -91,10 +95,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      * @param audience ARM management audience associated with the given form recognizer resource.
-     *
      */
-    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion,
-        FormRecognizerAudience audience) {
+    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service,
+                                           DocumentAnalysisServiceVersion serviceVersion,
+                                           FormRecognizerAudience audience) {
         this.service = service;
         this.serviceVersion = serviceVersion;
         this.audience = audience;
@@ -171,9 +175,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
-     * can be used if the container is public or has a managed identity configured. For more information on
-     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
+     * @param contentSource Content data or location specification.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
@@ -183,9 +185,9 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(String trainingFilesUrl,
+    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(ContentSource contentSource,
                                                                                   DocumentBuildMode buildMode) {
-        return beginBuildModel(trainingFilesUrl, buildMode, null);
+        return beginBuildModel(contentSource, buildMode, null);
     }
 
     /**
@@ -231,9 +233,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
-     * can be used if the container is public or has a managed identity configured. For more information on
-     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
+     * @param contentSource Content data or location specification.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
@@ -245,25 +245,25 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(String trainingFilesUrl,
+    public PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(ContentSource contentSource,
                                                                                   DocumentBuildMode buildMode,
                                                                                   BuildModelOptions buildModelOptions) {
-        return beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, Context.NONE);
+        return beginBuildModel(contentSource, buildMode, buildModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(String trainingFilesUrl,
+    PollerFlux<DocumentOperationResult, DocumentModelInfo> beginBuildModel(ContentSource contentSource,
                                                                            DocumentBuildMode buildMode,
                                                                            BuildModelOptions buildModelOptions,
                                                                            Context context) {
 
-        buildModelOptions =  buildModelOptions == null ? new BuildModelOptions() : buildModelOptions;
+        buildModelOptions = buildModelOptions == null ? new BuildModelOptions() : buildModelOptions;
         String modelId = buildModelOptions.getModelId();
         if (modelId == null) {
             modelId = Utility.generateRandomModelID();
         }
         return new PollerFlux<DocumentOperationResult, DocumentModelInfo>(
             DEFAULT_POLL_INTERVAL,
-            buildModelActivationOperation(trainingFilesUrl, buildMode, modelId, buildModelOptions, context),
+            buildModelActivationOperation(contentSource, buildMode, modelId, buildModelOptions, context),
             createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
@@ -514,7 +514,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * <p>This operations fails if the list consists of an invalid, non-existing model Id or duplicate IDs.
      * </p>
      *
-     *  <p>The service does not support cancellation of the long running operation and returns with an
+     * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
@@ -565,12 +565,14 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     PollerFlux<DocumentOperationResult, DocumentModelInfo> beginComposeModel(List<String> componentModelIds,
-                                                                             ComposeModelOptions composeModelOptions, Context context) {
+                                                                             ComposeModelOptions composeModelOptions,
+                                                                             Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(componentModelIds)) {
-                throw logger.logExceptionAsError(new NullPointerException("'componentModelIds' cannot be null or empty"));
+                throw logger.logExceptionAsError(
+                    new NullPointerException("'componentModelIds' cannot be null or empty"));
             }
-            composeModelOptions =  composeModelOptions == null
+            composeModelOptions = composeModelOptions == null
                 ? new ComposeModelOptions() : composeModelOptions;
 
             String modelId = composeModelOptions.getModelId();
@@ -699,7 +701,6 @@ public final class DocumentModelAdministrationAsyncClient {
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.listModels -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
      * @return {@link PagedFlux} of {@link DocumentModelSummary}.
      */
     PagedFlux<DocumentModelSummary> listModels(Context context) {
@@ -920,7 +921,7 @@ public final class DocumentModelAdministrationAsyncClient {
                     .flatMap(modelSimpleResponse ->
                         processBuildingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
-            }  catch (HttpResponseException ex) {
+            } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
             }
         };
@@ -928,18 +929,16 @@ public final class DocumentModelAdministrationAsyncClient {
 
     private Function<PollingContext<DocumentOperationResult>, Mono<DocumentOperationResult>>
         buildModelActivationOperation(
-        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId,
+        ContentSource contentSource, DocumentBuildMode buildMode, String modelId,
         BuildModelOptions buildModelOptions, Context context) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(trainingFilesUrl, "'trainingFilesUrl' cannot be null.");
-                BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest()
+                Objects.requireNonNull(contentSource, "'contentSource' cannot be null.");
+                final BuildDocumentModelRequest buildDocumentModelRequest = setContentSourceType(contentSource);
+                buildDocumentModelRequest
                     .setModelId(modelId)
                     .setBuildMode(com.azure.ai.formrecognizer.implementation.models.DocumentBuildMode
                         .fromString(buildMode.toString()))
-                    .setAzureBlobSource(new AzureBlobContentSource()
-                        .setContainerUrl(trainingFilesUrl)
-                        .setPrefix(buildModelOptions.getPrefix()))
                     .setDescription(buildModelOptions.getDescription())
                     .setTags(buildModelOptions.getTags());
 
@@ -952,6 +951,32 @@ public final class DocumentModelAdministrationAsyncClient {
                 return monoError(logger, ex);
             }
         };
+    }
+
+    private BuildDocumentModelRequest setContentSourceType(ContentSource contentSource) {
+        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest();
+        if (contentSource instanceof AzureBlobContentSourceT) {
+            final AzureBlobContentSourceT azureBlobContentSourceT =
+                ((AzureBlobContentSourceT) contentSource);
+            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSourceT()
+                .setContainerUrl(azureBlobContentSourceT.getContainerUrl())
+                .setPrefix(azureBlobContentSourceT.getPrefix()));
+        } else if (contentSource instanceof Base64ContentSourceT) {
+            final Base64ContentSourceT base64ContentSourceT =
+                ((Base64ContentSourceT) contentSource);
+            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.Base64ContentSourceT()
+                .setData(base64ContentSourceT.getData()));
+        } else if (contentSource instanceof LocalContentSourceT) {
+            final LocalContentSourceT localContentSourceT =
+                ((LocalContentSourceT) contentSource);
+            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.LocalContentSourceT()
+                .setPath(localContentSourceT.getPath()));
+        } else if (contentSource instanceof WebContentSourceT) {
+            final WebContentSourceT webContentSourceT = ((WebContentSourceT) contentSource);
+            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.WebContentSourceT()
+                .setUrl(webContentSourceT.getUrl()));
+        }
+        return buildDocumentModelRequest;
     }
 
     private Mono<PollResponse<DocumentOperationResult>> processBuildingModelResponse(

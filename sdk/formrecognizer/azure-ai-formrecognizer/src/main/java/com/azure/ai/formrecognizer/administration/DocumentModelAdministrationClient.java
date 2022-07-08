@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
@@ -102,21 +103,19 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
-     * can be used if the container is public or has a managed identity configured. For more information on
-     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
+     * @param contentSource Content data or location specification
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelInfo custom document analysis model}.
      * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws NullPointerException            If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelInfo> beginBuildModel(
-        String trainingFilesUrl, DocumentBuildMode buildMode) {
-        return beginBuildModel(trainingFilesUrl, buildMode, null, Context.NONE);
+        ContentSource contentSource, DocumentBuildMode buildMode) {
+        return beginBuildModel(contentSource, buildMode, null, Context.NONE);
     }
 
     /**
@@ -160,27 +159,24 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context -->
      *
-     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
-     * can be used if the container is public or has a managed identity configured. For more information on
-     * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
+     * @param contentSource Content data or location specification.
      * @param buildMode the preferred technique for creating models. For faster training of models use
      * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
      * for more information on building mode for custom documents.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelInfo custom document analysis model}.
      * @throws DocumentModelOperationException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If {@code trainingFilesUrl} is null.
+     * @throws NullPointerException            If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelInfo> beginBuildModel(
-        String trainingFilesUrl, DocumentBuildMode buildMode,
+        ContentSource contentSource, DocumentBuildMode buildMode,
         BuildModelOptions buildModelOptions,
         Context context) {
-        return client.beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, context)
+        return client.beginBuildModel(contentSource, buildMode, buildModelOptions, context)
             .getSyncPoller();
     }
 
