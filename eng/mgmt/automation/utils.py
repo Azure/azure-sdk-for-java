@@ -129,30 +129,38 @@ def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: s
                 break
         else:
             safe_name = module.replace('-', '')
-            # release_parameter_name = 'release_{}'.format(safe_name)
-            # release_in_batch_parameter_ref = '${{{{ parameters.{} }}}}'.format(release_parameter_name)
-            artifacts.append({
-                'name': module,
-                'groupId': group,
-                'safeName': safe_name,
-                # 'releaseInBatch': release_in_batch_parameter_ref
-            })
+            if 'parameters' not in ci_yml or not (type(ci_yml.get('parameters')) == list):
+                # add artifact without "release_" parameter
 
-            # if 'parameters' not in ci_yml:
-            #     ci_yml['parameters'] = []
-            #
-            # if not (type(ci_yml.get('parameters')) == list):
-            #     logging.error('[CI][Skip] Unexpected ci.yml format')
-            #
-            # # True for data-plane, False for management-plane
-            # release_in_batch_default = '-resourcemanager-' not in module
-            # parameters: list = ci_yml['parameters']
-            # parameters.append({
-            #     'name': release_parameter_name,
-            #     'displayName': module,
-            #     'type': 'boolean',
-            #     'default': release_in_batch_default
-            # })
+                artifacts.append({
+                    'name': module,
+                    'groupId': group,
+                    'safeName': safe_name
+                })
+            else:
+                # add artifact with "release_" parameter
+
+                release_parameter_name = 'release_{}'.format(safe_name)
+                release_in_batch_parameter_ref = '${{{{ parameters.{} }}}}'.format(release_parameter_name)
+                artifacts.append({
+                    'name': module,
+                    'groupId': group,
+                    'safeName': safe_name,
+                    'releaseInBatch': release_in_batch_parameter_ref
+                })
+
+                if 'parameters' not in ci_yml:
+                    ci_yml['parameters'] = []
+
+                # True for data-plane, False for management-plane
+                release_in_batch_default = '-resourcemanager-' not in module
+                parameters: list = ci_yml['parameters']
+                parameters.append({
+                    'name': release_parameter_name,
+                    'displayName': module,
+                    'type': 'boolean',
+                    'default': release_in_batch_default
+                })
 
             ci_yml_str = yaml.dump(ci_yml,
                                    width=sys.maxsize,
