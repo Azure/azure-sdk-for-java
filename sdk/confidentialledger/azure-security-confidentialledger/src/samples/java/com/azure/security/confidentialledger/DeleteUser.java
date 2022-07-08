@@ -16,7 +16,6 @@ public class DeleteUser {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.deleteuser.deleteuser
         RequestOptions requestOptions = new RequestOptions();
         
         // you can retrieve your object id by going to Azure Active Directory and finding your profile
@@ -25,6 +24,5 @@ public class DeleteUser {
 
         // make sure the delete was successful
         Assertions.assertEquals(response.getStatusCode(), 204);
-        // END:com.azure.security.confidentialledger.generated.deleteuser.deleteuser
     }
 }

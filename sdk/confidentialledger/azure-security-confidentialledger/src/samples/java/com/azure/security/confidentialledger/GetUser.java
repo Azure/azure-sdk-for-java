@@ -19,7 +19,6 @@ public class GetUser {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getuser.getuser
         RequestOptions requestOptions = new RequestOptions();
 
         String aadObjectId = "AAD OBJECT ID";
@@ -37,6 +36,5 @@ public class GetUser {
         }
 
         System.out.println("Assigned role for user is " + responseBodyJson.get("assignedRole"));
-        // END:com.azure.security.confidentialledger.generated.getuser.getuser
     }
 }

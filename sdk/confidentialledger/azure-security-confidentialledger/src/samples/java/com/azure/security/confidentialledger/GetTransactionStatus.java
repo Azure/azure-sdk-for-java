@@ -15,11 +15,9 @@ public class GetTransactionStatus {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.gettransactionstatus.gettransactionstatus
         RequestOptions requestOptions = new RequestOptions();
         // the transactionId can be retrieved after posting to a ledger (see PostLedgerEntry.java)
         Response<BinaryData> response =
                 confidentialLedgerClient.getTransactionStatusWithResponse("4.2", requestOptions);
-        // END:com.azure.security.confidentialledger.generated.gettransactionstatus.gettransactionstatus
     }
 }

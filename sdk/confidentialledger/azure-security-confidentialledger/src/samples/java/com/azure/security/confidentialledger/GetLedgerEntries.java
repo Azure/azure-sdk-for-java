@@ -15,7 +15,6 @@ public class GetLedgerEntries {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.listledgerentries.getledgerentries
 
         // If you can't find a transaction, make sure you are adding a query parameter for the collection the transaction
         // will be a part of:
@@ -25,6 +24,5 @@ public class GetLedgerEntries {
                         .addQueryParam("fromTransactionId", "3.14")
                         .addQueryParam("toTransactionId", "3.42");
         PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.listledgerentries.getledgerentries
     }
 }

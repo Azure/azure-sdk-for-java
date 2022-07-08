@@ -15,9 +15,7 @@ public class GetEnclaveQuotes {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getenclavequotes.getenclavequotes
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getEnclaveQuotesWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.getenclavequotes.getenclavequotes
     }
 }

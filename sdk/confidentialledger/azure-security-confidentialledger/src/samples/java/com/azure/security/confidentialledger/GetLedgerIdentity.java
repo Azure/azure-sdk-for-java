@@ -15,11 +15,9 @@ public class GetLedgerIdentity {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .identityServiceUri("identity.accledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getledgeridentity.getledgeridentity
         RequestOptions requestOptions = new RequestOptions();
         String ledgerId = "your_ledger_name";
         Response<BinaryData> response =
                 confidentialLedgerIdentityClient.getLedgerIdentityWithResponse(ledgerId, requestOptions);
-        // END:com.azure.security.confidentialledger.generated.getledgeridentity.getledgeridentity
     }
 }

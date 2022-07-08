@@ -15,9 +15,7 @@ public class GetCurrentLedgerEntry {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getcurrentledgerentry.getcurrentledgerentry
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.getcurrentledgerentry.getcurrentledgerentry
     }
 }

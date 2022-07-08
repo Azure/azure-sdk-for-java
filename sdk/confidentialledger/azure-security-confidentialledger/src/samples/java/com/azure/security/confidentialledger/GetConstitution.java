@@ -15,9 +15,7 @@ public class GetConstitution {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getconstitution.getconstitution
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getConstitutionWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.getconstitution.getconstitution
     }
 }

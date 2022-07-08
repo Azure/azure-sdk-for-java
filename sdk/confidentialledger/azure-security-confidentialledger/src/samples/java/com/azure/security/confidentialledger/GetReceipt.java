@@ -15,10 +15,8 @@ public class GetReceipt {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getreceipt.getreceipt
         RequestOptions requestOptions = new RequestOptions();
         // the transactionId can be retrieved after posting to a ledger (see PostLedgerEntry.java)
         Response<BinaryData> response = confidentialLedgerClient.getReceiptWithResponse("3.14", requestOptions);
-        // END:com.azure.security.confidentialledger.generated.getreceipt.getreceipt
     }
 }

@@ -15,9 +15,7 @@ public class GetConsortiumMembers {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.getconsortiummembers.getconsortiummembers
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getConsortiumMembersWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.getconsortiummembers.getconsortiummembers
     }
 }

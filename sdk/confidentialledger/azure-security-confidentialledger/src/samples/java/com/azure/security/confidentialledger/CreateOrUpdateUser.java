@@ -15,12 +15,10 @@ public class CreateOrUpdateUser {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.createorupdateuser.createorupdateuser
         BinaryData userDetails = BinaryData.fromString("{\"assignedRole\":\"Reader\"}");
         RequestOptions requestOptions = new RequestOptions();
         String aadObjectId = "AAD OBJECT ID";
         Response<BinaryData> response =
                 confidentialLedgerClient.createOrUpdateUserWithResponse(aadObjectId, userDetails, requestOptions);
-        // END:com.azure.security.confidentialledger.generated.createorupdateuser.createorupdateuser
     }
 }

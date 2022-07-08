@@ -15,7 +15,6 @@ public class PostLedgerEntry {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.postledgerentry.postledgerentry
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
 
         // optionally, you can define a collection id (here, the collectionId is 2):
@@ -25,6 +24,5 @@ public class PostLedgerEntry {
 
         // you can use the transaction id to get the transaction status
         String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
-        // END:com.azure.security.confidentialledger.generated.postledgerentry.postledgerentry
     }
 }

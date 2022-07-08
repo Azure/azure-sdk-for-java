@@ -15,9 +15,7 @@ public class GetCollectionIds {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.listcollections.getcollectionids
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.listCollectionsWithResponse(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.listcollections.getcollectionids
     }
 }
