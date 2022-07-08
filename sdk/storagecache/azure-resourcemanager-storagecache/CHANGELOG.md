@@ -1,14 +1,85 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2022-07-08)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.StorageTargetSpaceAllocation` was added
 
-### Bugs Fixed
+* `models.PrimingJobIdParameter` was added
 
-### Other Changes
+* `models.CacheUpgradeSettings` was added
+
+* `models.PrimingJobState` was added
+
+* `models.LogSpecification` was added
+
+* `models.PrimingJob` was added
+
+#### `models.StorageTarget` was modified
+
+* `allocationPercentage()` was added
+* `resourceGroupName()` was added
+
+#### `StorageCacheManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.Caches` was modified
+
+* `startPrimingJob(java.lang.String,java.lang.String,models.PrimingJob,com.azure.core.util.Context)` was added
+* `resumePrimingJob(java.lang.String,java.lang.String)` was added
+* `pausePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was added
+* `resumePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was added
+* `spaceAllocation(java.lang.String,java.lang.String,java.util.List)` was added
+* `pausePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter,com.azure.core.util.Context)` was added
+* `stopPrimingJob(java.lang.String,java.lang.String)` was added
+* `stopPrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter,com.azure.core.util.Context)` was added
+* `spaceAllocation(java.lang.String,java.lang.String,java.util.List,com.azure.core.util.Context)` was added
+* `resumePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter,com.azure.core.util.Context)` was added
+* `pausePrimingJob(java.lang.String,java.lang.String)` was added
+* `startPrimingJob(java.lang.String,java.lang.String)` was added
+* `startPrimingJob(java.lang.String,java.lang.String,models.PrimingJob)` was added
+* `stopPrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was added
+* `spaceAllocation(java.lang.String,java.lang.String)` was added
+
+#### `models.ApiOperationPropertiesServiceSpecification` was modified
+
+* `withLogSpecifications(java.util.List)` was added
+* `logSpecifications()` was added
+
+#### `models.Cache` was modified
+
+* `spaceAllocation()` was added
+* `startPrimingJob(models.PrimingJob)` was added
+* `upgradeSettings()` was added
+* `resumePrimingJob()` was added
+* `resourceGroupName()` was added
+* `primingJobs()` was added
+* `pausePrimingJob(models.PrimingJobIdParameter)` was added
+* `pausePrimingJob()` was added
+* `stopPrimingJob(models.PrimingJobIdParameter)` was added
+* `stopPrimingJob()` was added
+* `stopPrimingJob(models.PrimingJobIdParameter,com.azure.core.util.Context)` was added
+* `pausePrimingJob(models.PrimingJobIdParameter,com.azure.core.util.Context)` was added
+* `startPrimingJob(models.PrimingJob,com.azure.core.util.Context)` was added
+* `startPrimingJob()` was added
+* `resumePrimingJob(models.PrimingJobIdParameter)` was added
+* `resumePrimingJob(models.PrimingJobIdParameter,com.azure.core.util.Context)` was added
+
+#### `models.Cache$Definition` was modified
+
+* `withUpgradeSettings(models.CacheUpgradeSettings)` was added
+
+#### `StorageCacheManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.Cache$Update` was modified
+
+* `withUpgradeSettings(models.CacheUpgradeSettings)` was added
 
 ## 1.0.0-beta.5 (2022-03-22)
 

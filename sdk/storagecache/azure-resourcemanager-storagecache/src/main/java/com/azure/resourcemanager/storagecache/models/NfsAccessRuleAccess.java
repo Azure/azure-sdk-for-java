@@ -30,7 +30,11 @@ public final class NfsAccessRuleAccess extends ExpandableStringEnum<NfsAccessRul
         return fromString(name, NfsAccessRuleAccess.class);
     }
 
-    /** @return known NfsAccessRuleAccess values. */
+    /**
+     * Gets known NfsAccessRuleAccess values.
+     *
+     * @return known NfsAccessRuleAccess values.
+     */
     public static Collection<NfsAccessRuleAccess> values() {
         return values(NfsAccessRuleAccess.class);
     }
