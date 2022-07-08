@@ -29,12 +29,6 @@ pr:
       - sdk/networkfunction/pom.xml
       - sdk/networkfunction/azure-resourcemanager-networkfunction/pom.xml
 
-parameters:
-  - name: release_azureresourcemanagernetworkfunction
-    displayName: azure-resourcemanager-networkfunction
-    type: boolean
-    default: false
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -44,4 +38,3 @@ extends:
       - name: azure-resourcemanager-networkfunction
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagernetworkfunction
-        releaseInBatch: ${{ parameters.release_azureresourcemanagernetworkfunction }}
