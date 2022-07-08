@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
 import java.util.Objects;
 
 /** The implementation for DeploymentSlot. */
@@ -35,7 +34,6 @@ class DeploymentSlotImpl
         DeploymentSlot.DefinitionStages.WithCreate,
         DeploymentSlotBase.Update<DeploymentSlot>>
     implements DeploymentSlot, DeploymentSlot.Definition {
-    private static final Duration MAX_DEPLOYMENT_STATUS_TIMEOUT = Duration.ofMinutes(5);
 
     DeploymentSlotImpl(
         String name,
@@ -213,12 +211,9 @@ class DeploymentSlotImpl
         // "GET" LRO is not supported in azure-core
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         return this.manager().serviceClient().getWebApps()
-            .getProductionSiteDeploymentStatusWithResponseAsync(this.resourceGroupName(), this.name(), deploymentId)
+            .getSlotSiteDeploymentStatusSlotWithResponseAsync(this.resourceGroupName(), this.parent().name(), this.name(), deploymentId)
             .flatMap(fluxResponse -> {
                 HttpResponse response = new HttpFluxBBResponse(fluxResponse);
-                if (fluxResponse.getStatusCode() / 100 != 2) {
-                    return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
-                }
                 return response.getBodyAsString()
                     .flatMap(bodyString -> {
                         CsmDeploymentStatus status;
