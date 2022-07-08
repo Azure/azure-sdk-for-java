@@ -2,31 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.*;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.TestUtils;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.ChangeFeedPolicy;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.*;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -42,10 +28,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -473,6 +456,86 @@ public class ChangeFeedTest extends TestSuiteBase {
             Flux.fromIterable(result),
             100)
                    .map(ResourceResponse::getResource).collectList().block();
+    }
+
+    @Test(groups = { "simple" })
+    @Tag(name = "GoFullFidelity")
+    public void changeFeed_ffcf() throws Exception {
+        CosmosContainer cosmosContainer = initializeFFCFContainer();
+        List<FeedRange> feedRanges = cosmosContainer.getFeedRanges();
+
+        String id = UUID.randomUUID().toString();
+        String otherId = UUID.randomUUID().toString();
+
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
+//        options.fullFidelity();
+
+        for (int i = 0; i < 10; i++) {
+            String itemId = UUID.randomUUID().toString();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer
+                .createItem(new InternalObjectNode().setId(itemId));
+            System.out.println(createResponse.getItem());
+        }
+
+        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+            .queryChangeFeed(options, JsonNode.class)
+            .iterableByPage()
+            .iterator();
+
+        while (results.hasNext()) {
+            FeedResponse<JsonNode> response = results.next();
+            System.out.println(response);
+        }
+
+        List<String> idList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            String itemId = UUID.randomUUID().toString();
+            idList.add(itemId);
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer
+                .createItem(new InternalObjectNode().setId(itemId));
+            System.out.println(createResponse.getItem());
+        }
+
+        cosmosContainer.deleteItem(idList.get(0), new PartitionKey(idList.get(0)), new CosmosItemRequestOptions());
+
+        Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
+            .queryChangeFeed(options, JsonNode.class)
+            .iterableByPage()
+            .iterator();
+
+        while (results2.hasNext()) {
+            FeedResponse<JsonNode> response = results2.next();
+            System.out.println(response);
+        }
+
+
+    }
+
+    public CosmosContainer initializeFFCFContainer() {
+        CosmosClient FFCF_client = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .buildClient();
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/id");
+        partitionKeyDef.setPaths(paths);
+
+        String dbid = UUID.randomUUID().toString();
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties("FFCF_"+dbid);
+        CosmosContainerProperties containerProperties =
+            new CosmosContainerProperties("FFCF_Container", partitionKeyDef);
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+
+        CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabase(databaseProperties);
+        CosmosDatabase database = FFCF_client.getDatabase(databaseResponse.getProperties().getId());
+        CosmosContainerResponse containerResponse = database.createContainer(containerProperties);
+
+        return database.getContainer(containerResponse.getProperties().getId());
     }
 
     @AfterMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
