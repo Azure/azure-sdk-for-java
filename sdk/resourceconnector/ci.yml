@@ -29,12 +29,6 @@ pr:
       - sdk/resourceconnector/pom.xml
       - sdk/resourceconnector/azure-resourcemanager-resourceconnector/pom.xml
 
-parameters:
-  - name: release_azureresourcemanagerresourceconnector
-    displayName: azure-resourcemanager-resourceconnector
-    type: boolean
-    default: false
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -44,4 +38,3 @@ extends:
       - name: azure-resourcemanager-resourceconnector
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourceconnector
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourceconnector }}
