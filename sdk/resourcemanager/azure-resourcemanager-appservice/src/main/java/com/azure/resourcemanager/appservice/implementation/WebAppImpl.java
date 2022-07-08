@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.AppServiceManager;
@@ -26,7 +26,6 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -35,7 +34,6 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 /** The implementation for WebApp. */
 class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.DefinitionStages.WithCreate, WebApp.Update>
@@ -379,40 +377,24 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     @Override
     public Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId) {
         // "GET" LRO is not supported in azure-core
-        AtomicLong pollCount = new AtomicLong();
-        Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         return this.manager().serviceClient().getWebApps()
             .getProductionSiteDeploymentStatusWithResponseAsync(this.resourceGroupName(), this.name(), deploymentId)
             .flatMap(fluxResponse -> {
-                if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_DEPLOYMENT_STATUS_TIMEOUT) < 0) {
-                    HttpResponse response = new HttpFluxBBResponse(fluxResponse);
-                    if (fluxResponse.getStatusCode() / 100 != 2) {
-                        return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
-                    }
-                    return response.getBodyAsString()
-                        .flatMap(bodyString -> {
-                            SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-                            CsmDeploymentStatus status;
-                            try {
-                                status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
-                            } catch (IOException e) {
-                                return Mono.error(new ManagementException("Deserialize failed for response body.", response));
-                            }
-                            if (status == null) {
-                                return Mono.empty();
-                            }
-                            return Mono.just(status);
-                        });
-                } else {
-                    return Mono.error(new ManagementException("Timeout getting deployment status for deploymentId: " + deploymentId, null));
+                HttpResponse response = new HttpFluxBBResponse(fluxResponse);
+                if (fluxResponse.getStatusCode() / 100 != 2) {
+                    return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
                 }
-            }).repeatWhenEmpty(
-                longFlux ->
-                    longFlux
-                        .flatMap(
-                            index -> {
-                                pollCount.set(index);
-                                return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
-                            }));
+                return response.getBodyAsString()
+                    .flatMap(bodyString -> {
+                        CsmDeploymentStatus status;
+                        try {
+                            status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class, SerializerEncoding.JSON);
+                        } catch (IOException e) {
+                            return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                        }
+                        return Mono.justOrEmpty(status);
+                    });
+            });
     }
 }
