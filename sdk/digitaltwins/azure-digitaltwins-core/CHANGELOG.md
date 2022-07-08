@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0 (2022-06-30)
+## 1.3.0 (2022-07-11)
 
 ### Features Added
 - Updated service API version to use API version 2022-05-31 by default.
