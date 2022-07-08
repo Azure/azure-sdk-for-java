@@ -24,10 +24,11 @@ public final class DocumentImage {
     private DocumentSpan span;
 
     /*
-     * 1-based page number of page containing the content of the image.
+     * 0-based index of the global pages array that containing the content of
+     * the image.
      */
-    @JsonProperty(value = "pageNumber", required = true)
-    private int pageNumber;
+    @JsonProperty(value = "pageRef", required = true)
+    private int pageRef;
 
     /*
      * Confidence of correctly identifying the image.
@@ -76,22 +77,22 @@ public final class DocumentImage {
     }
 
     /**
-     * Get the pageNumber property: 1-based page number of page containing the content of the image.
+     * Get the pageRef property: 0-based index of the global pages array that containing the content of the image.
      *
-     * @return the pageNumber value.
+     * @return the pageRef value.
      */
-    public int getPageNumber() {
-        return this.pageNumber;
+    public int getPageRef() {
+        return this.pageRef;
     }
 
     /**
-     * Set the pageNumber property: 1-based page number of page containing the content of the image.
+     * Set the pageRef property: 0-based index of the global pages array that containing the content of the image.
      *
-     * @param pageNumber the pageNumber value to set.
+     * @param pageRef the pageRef value to set.
      * @return the DocumentImage object itself.
      */
-    public DocumentImage setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
+    public DocumentImage setPageRef(int pageRef) {
+        this.pageRef = pageRef;
         return this;
     }
 

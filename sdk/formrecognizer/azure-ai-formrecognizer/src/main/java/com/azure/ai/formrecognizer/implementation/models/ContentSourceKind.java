@@ -33,7 +33,11 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
         return fromString(name, ContentSourceKind.class);
     }
 
-    /** @return known ContentSourceKind values. */
+    /**
+     * Gets known ContentSourceKind values.
+     *
+     * @return known ContentSourceKind values.
+     */
     public static Collection<ContentSourceKind> values() {
         return values(ContentSourceKind.class);
     }

@@ -30,10 +30,10 @@ public final class BuildDocumentModelRequest {
     private DocumentBuildMode buildMode;
 
     /*
-     * Azure Blob Storage location containing the training data.
+     * Content data or location specification.
      */
-    @JsonProperty(value = "azureBlobSource")
-    private AzureBlobContentSource azureBlobSource;
+    @JsonProperty(value = "source", required = true)
+    private ContentSource source;
 
     /*
      * List of key-value tag attributes associated with the model.
@@ -102,22 +102,22 @@ public final class BuildDocumentModelRequest {
     }
 
     /**
-     * Get the azureBlobSource property: Azure Blob Storage location containing the training data.
+     * Get the source property: Content data or location specification.
      *
-     * @return the azureBlobSource value.
+     * @return the source value.
      */
-    public AzureBlobContentSource getAzureBlobSource() {
-        return this.azureBlobSource;
+    public ContentSource getSource() {
+        return this.source;
     }
 
     /**
-     * Set the azureBlobSource property: Azure Blob Storage location containing the training data.
+     * Set the source property: Content data or location specification.
      *
-     * @param azureBlobSource the azureBlobSource value to set.
+     * @param source the source value to set.
      * @return the BuildDocumentModelRequest object itself.
      */
-    public BuildDocumentModelRequest setAzureBlobSource(AzureBlobContentSource azureBlobSource) {
-        this.azureBlobSource = azureBlobSource;
+    public BuildDocumentModelRequest setSource(ContentSource source) {
+        this.source = source;
         return this;
     }
 

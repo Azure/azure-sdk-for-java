@@ -17,12 +17,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = ContentSource.class)
 @JsonTypeName("ContentSource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "base64", value = Base64ContentSource.class),
-    @JsonSubTypes.Type(name = "azure.blob", value = AzureBlobContentSource.class),
-    @JsonSubTypes.Type(name = "local", value = LocalContentSource.class),
-    @JsonSubTypes.Type(name = "web", value = WebContentSource.class)
+    @JsonSubTypes.Type(name = "base64", value = Base64ContentSourceT.class),
+    @JsonSubTypes.Type(name = "azure.blob", value = AzureBlobContentSourceT.class),
+    @JsonSubTypes.Type(name = "local", value = LocalContentSourceT.class),
+    @JsonSubTypes.Type(name = "web", value = WebContentSourceT.class)
 })
 @Immutable
-public class ContentSource {
-
-}
+public class ContentSource {}
