@@ -324,4 +324,13 @@ public class EventHubProducerClient implements Closeable {
     public void close() {
         producer.close();
     }
+
+    /**
+     * Gets the client identifier.
+     *
+     * @return The unique identifier string for current client.
+     */
+    public String getIdentifier() {
+        return producer.getIdentifier();
+    }
 }
