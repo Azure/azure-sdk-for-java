@@ -3,8 +3,6 @@
 
 package com.azure.security.confidentialledger;
 
-import org.junit.jupiter.api.Assertions;
-
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.identity.DefaultAzureCredentialBuilder;
