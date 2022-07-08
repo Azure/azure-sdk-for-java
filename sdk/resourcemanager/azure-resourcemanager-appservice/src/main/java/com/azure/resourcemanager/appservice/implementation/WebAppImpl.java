@@ -31,7 +31,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -44,7 +43,6 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         WebApp.Update,
         WebApp.UpdateStages.WithCredentials,
         WebApp.UpdateStages.WithStartUpCommand {
-    private static final Duration MAX_DEPLOYMENT_STATUS_TIMEOUT = Duration.ofMinutes(5);
 
     private DeploymentSlots deploymentSlots;
     private WebAppRuntimeStack runtimeStackOnWindowsOSToUpdate;
@@ -382,9 +380,6 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
             .getProductionSiteDeploymentStatusWithResponseAsync(this.resourceGroupName(), this.name(), deploymentId)
             .flatMap(fluxResponse -> {
                 HttpResponse response = new HttpFluxBBResponse(fluxResponse);
-                if (fluxResponse.getStatusCode() / 100 != 2) {
-                    return Mono.error(new ManagementException("Service responds with a non-20x response.", response));
-                }
                 return response.getBodyAsString()
                     .flatMap(bodyString -> {
                         CsmDeploymentStatus status;

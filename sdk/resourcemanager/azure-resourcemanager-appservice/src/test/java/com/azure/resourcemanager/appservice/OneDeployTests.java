@@ -9,10 +9,12 @@ import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.DeployOptions;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.DeploymentBuildStatus;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
+import com.azure.resourcemanager.appservice.models.SupportsOneDeploy;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -97,12 +99,30 @@ public class OneDeployTests extends AppServiceTest {
         // stream logs
         webApp1.streamApplicationLogsAsync().subscribeOn(Schedulers.single()).subscribe(System.out::println);
 
-        // wait for RuntimeSuccessful
+        waitForRuntimeSuccess(webApp1, deploymentId);
+
+        // deploy another slot
+        String slotName = generateRandomResourceName("slot", 10);
+        DeploymentSlot slot2 = webApp1.deploymentSlots()
+            .define(slotName)
+            .withConfigurationFromParent()
+            .create();
+
+        KuduDeploymentResult slotDeployResult =
+            slot2.pushDeploy(DeployType.JAR, jarFile, new DeployOptions().withTrackDeployment(true));
+
+        String slotDeploymentId = slotDeployResult.deploymentId();
+        Assertions.assertNotNull(slotDeploymentId);
+
+        waitForRuntimeSuccess(slot2, slotDeploymentId);
+    }
+
+    private void waitForRuntimeSuccess(SupportsOneDeploy webapp, String deploymentId) {
         DeploymentBuildStatus buildStatus = null;
         while (!DeploymentBuildStatus.RUNTIME_SUCCESSFUL.equals(buildStatus)) {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
-            CsmDeploymentStatus deploymentStatus = webApp1.getDeploymentStatus(deploymentId);
+            CsmDeploymentStatus deploymentStatus = webapp.getDeploymentStatus(deploymentId);
             Assertions.assertNotNull(deploymentStatus);
 
             buildStatus = deploymentStatus.status();
