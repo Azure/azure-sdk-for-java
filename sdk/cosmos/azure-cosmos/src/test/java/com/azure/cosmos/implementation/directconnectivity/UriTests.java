@@ -145,7 +145,7 @@ public class UriTests {
             Uri testUri = new Uri("https://127.0.0.1:8080");
             AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
             healthStatus.set(initialHealthStatus);
-            Instant time = Instant.now();
+            Instant time = Instant.now().minusSeconds(2);
 
             lastUnknownTimestampField.set(testUri, time);
             lastUnhealthyPendingTimestampField.set(testUri, time);
