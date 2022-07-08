@@ -22,6 +22,11 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 ## Examples
 
 ```java readme-sample-createClient
+ConfidentialLedgerClient confidentialLedgerClient =
+        new ConfidentialLedgerClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                .buildClient();
 ```
 
 The following sections provide code samples covering common scenario operations with the Azure Confidential Ledger client library.
