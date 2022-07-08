@@ -19,14 +19,14 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 @Configuration
 @EnableAsync
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
-public class AppConfigurationAutoConfiguration {
+class AppConfigurationAutoConfiguration {
 
     @Configuration
     @ConditionalOnClass(RefreshEndpoint.class)
     static class AppConfigurationWatchAutoConfiguration {
 
         @Bean
-        public AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
+        AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
                 AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
             return new AppConfigurationRefresh(properties, appProperties, clientStore);
         }

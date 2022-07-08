@@ -25,7 +25,7 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 @EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
-public class AppConfigurationBootstrapConfiguration {
+class AppConfigurationBootstrapConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBootstrapConfiguration.class);
 
@@ -41,7 +41,7 @@ public class AppConfigurationBootstrapConfiguration {
      * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
      */
     @Bean
-    public AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
+    AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
@@ -92,7 +92,7 @@ public class AppConfigurationBootstrapConfiguration {
      * @return ClientStore
      */
     @Bean
-    public ClientStore buildClientStores(AppConfigurationProperties properties,
+    ClientStore buildClientStores(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
