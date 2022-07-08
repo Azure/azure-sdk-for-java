@@ -5,99 +5,36 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The top level Workspace resource container. */
-@JsonFlatten
 @Fluent
-public class WorkspacePatch extends AzureEntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePatch.class);
+public final class WorkspacePatch extends AzureEntityResource {
+    /*
+     * Workspace properties.
+     */
+    @JsonProperty(value = "properties")
+    private WorkspaceProperties innerProperties;
 
     /*
      * Resource tags. Optional.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The provisioning state of the workspace.
+    /**
+     * Get the innerProperties property: Workspace properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState")
-    private WorkspaceEntityStatus provisioningState;
-
-    /*
-     * This is a read-only property. Represents the ID associated with the
-     * workspace.
-     */
-    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerId;
-
-    /*
-     * The SKU of the workspace.
-     */
-    @JsonProperty(value = "properties.sku")
-    private WorkspaceSku sku;
-
-    /*
-     * The workspace data retention in days. Allowed values are per pricing
-     * plan. See pricing tiers documentation for details.
-     */
-    @JsonProperty(value = "properties.retentionInDays")
-    private Integer retentionInDays;
-
-    /*
-     * The daily volume cap for ingestion.
-     */
-    @JsonProperty(value = "properties.workspaceCapping")
-    private WorkspaceCapping workspaceCapping;
-
-    /*
-     * Workspace creation date.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdDate;
-
-    /*
-     * Workspace modification date.
-     */
-    @JsonProperty(value = "properties.modifiedDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String modifiedDate;
-
-    /*
-     * The network access type for accessing Log Analytics ingestion.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccessForIngestion")
-    private PublicNetworkAccessType publicNetworkAccessForIngestion;
-
-    /*
-     * The network access type for accessing Log Analytics query.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccessForQuery")
-    private PublicNetworkAccessType publicNetworkAccessForQuery;
-
-    /*
-     * Indicates whether customer managed storage is mandatory for query
-     * management.
-     */
-    @JsonProperty(value = "properties.forceCmkForQuery")
-    private Boolean forceCmkForQuery;
-
-    /*
-     * List of linked private link scope resources.
-     */
-    @JsonProperty(value = "properties.privateLinkScopedResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateLinkScopedResource> privateLinkScopedResources;
-
-    /*
-     * Workspace features.
-     */
-    @JsonProperty(value = "properties.features")
-    private Map<String, Object> features;
+    private WorkspaceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags. Optional.
@@ -125,18 +62,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the provisioningState value.
      */
     public WorkspaceEntityStatus provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the workspace.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the WorkspacePatch object itself.
-     */
-    public WorkspacePatch withProvisioningState(WorkspaceEntityStatus provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -145,7 +71,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the customerId value.
      */
     public String customerId() {
-        return this.customerId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerId();
     }
 
     /**
@@ -154,7 +80,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the sku value.
      */
     public WorkspaceSku sku() {
-        return this.sku;
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
     /**
@@ -164,7 +90,10 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the WorkspacePatch object itself.
      */
     public WorkspacePatch withSku(WorkspaceSku sku) {
-        this.sku = sku;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withSku(sku);
         return this;
     }
 
@@ -175,7 +104,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the retentionInDays value.
      */
     public Integer retentionInDays() {
-        return this.retentionInDays;
+        return this.innerProperties() == null ? null : this.innerProperties().retentionInDays();
     }
 
     /**
@@ -186,7 +115,10 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the WorkspacePatch object itself.
      */
     public WorkspacePatch withRetentionInDays(Integer retentionInDays) {
-        this.retentionInDays = retentionInDays;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withRetentionInDays(retentionInDays);
         return this;
     }
 
@@ -196,7 +128,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the workspaceCapping value.
      */
     public WorkspaceCapping workspaceCapping() {
-        return this.workspaceCapping;
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceCapping();
     }
 
     /**
@@ -206,7 +138,10 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the WorkspacePatch object itself.
      */
     public WorkspacePatch withWorkspaceCapping(WorkspaceCapping workspaceCapping) {
-        this.workspaceCapping = workspaceCapping;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withWorkspaceCapping(workspaceCapping);
         return this;
     }
 
@@ -216,7 +151,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the createdDate value.
      */
     public String createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -225,7 +160,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the modifiedDate value.
      */
     public String modifiedDate() {
-        return this.modifiedDate;
+        return this.innerProperties() == null ? null : this.innerProperties().modifiedDate();
     }
 
     /**
@@ -234,7 +169,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the publicNetworkAccessForIngestion value.
      */
     public PublicNetworkAccessType publicNetworkAccessForIngestion() {
-        return this.publicNetworkAccessForIngestion;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccessForIngestion();
     }
 
     /**
@@ -244,7 +179,10 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the WorkspacePatch object itself.
      */
     public WorkspacePatch withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion) {
-        this.publicNetworkAccessForIngestion = publicNetworkAccessForIngestion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccessForIngestion(publicNetworkAccessForIngestion);
         return this;
     }
 
@@ -254,7 +192,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the publicNetworkAccessForQuery value.
      */
     public PublicNetworkAccessType publicNetworkAccessForQuery() {
-        return this.publicNetworkAccessForQuery;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccessForQuery();
     }
 
     /**
@@ -264,7 +202,10 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the WorkspacePatch object itself.
      */
     public WorkspacePatch withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery) {
-        this.publicNetworkAccessForQuery = publicNetworkAccessForQuery;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccessForQuery(publicNetworkAccessForQuery);
         return this;
     }
 
@@ -274,7 +215,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the forceCmkForQuery value.
      */
     public Boolean forceCmkForQuery() {
-        return this.forceCmkForQuery;
+        return this.innerProperties() == null ? null : this.innerProperties().forceCmkForQuery();
     }
 
     /**
@@ -284,7 +225,10 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the WorkspacePatch object itself.
      */
     public WorkspacePatch withForceCmkForQuery(Boolean forceCmkForQuery) {
-        this.forceCmkForQuery = forceCmkForQuery;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withForceCmkForQuery(forceCmkForQuery);
         return this;
     }
 
@@ -294,7 +238,7 @@ public class WorkspacePatch extends AzureEntityResource {
      * @return the privateLinkScopedResources value.
      */
     public List<PrivateLinkScopedResource> privateLinkScopedResources() {
-        return this.privateLinkScopedResources;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkScopedResources();
     }
 
     /**
@@ -302,8 +246,8 @@ public class WorkspacePatch extends AzureEntityResource {
      *
      * @return the features value.
      */
-    public Map<String, Object> features() {
-        return this.features;
+    public WorkspaceFeatures features() {
+        return this.innerProperties() == null ? null : this.innerProperties().features();
     }
 
     /**
@@ -312,8 +256,38 @@ public class WorkspacePatch extends AzureEntityResource {
      * @param features the features value to set.
      * @return the WorkspacePatch object itself.
      */
-    public WorkspacePatch withFeatures(Map<String, Object> features) {
-        this.features = features;
+    public WorkspacePatch withFeatures(WorkspaceFeatures features) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withFeatures(features);
+        return this;
+    }
+
+    /**
+     * Get the defaultDataCollectionRuleResourceId property: The resource ID of the default Data Collection Rule to use
+     * for this workspace. Expected format is -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
+     *
+     * @return the defaultDataCollectionRuleResourceId value.
+     */
+    public String defaultDataCollectionRuleResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultDataCollectionRuleResourceId();
+    }
+
+    /**
+     * Set the defaultDataCollectionRuleResourceId property: The resource ID of the default Data Collection Rule to use
+     * for this workspace. Expected format is -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
+     *
+     * @param defaultDataCollectionRuleResourceId the defaultDataCollectionRuleResourceId value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withDefaultDataCollectionRuleResourceId(String defaultDataCollectionRuleResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withDefaultDataCollectionRuleResourceId(defaultDataCollectionRuleResourceId);
         return this;
     }
 
@@ -325,14 +299,8 @@ public class WorkspacePatch extends AzureEntityResource {
     @Override
     public void validate() {
         super.validate();
-        if (sku() != null) {
-            sku().validate();
-        }
-        if (workspaceCapping() != null) {
-            workspaceCapping().validate();
-        }
-        if (privateLinkScopedResources() != null) {
-            privateLinkScopedResources().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

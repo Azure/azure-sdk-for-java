@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
@@ -17,9 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeviceUpdateClientTests extends TestBase {
 
@@ -43,23 +42,95 @@ public class DeviceUpdateClientTests extends TestBase {
     }
 
     @Test
-    public void testGetUpdateNotFound() {
+    public void testGetProviders() {
         DeviceUpdateAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listProviders(null);
+
+        assertNotNull(response);
+        assertTrue(response.toStream().count() > 0);
+    }
+
+    @Test
+    public void testGetNames() {
+        DeviceUpdateAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listNames(TestData.PROVIDER, null);
+
+        assertNotNull(response);
+        assertTrue(response.toStream().count() > 0);
+    }
+
+    @Test
+    public void testGetNamesNotFound() {
+        DeviceUpdateAsyncClient client = createClient();
+
         try {
-            client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
-            fail("Expected NotFound response");
+            PagedFlux<BinaryData> response = client.listNames("foo", null);
+            long count = response.toStream().count();
+            fail("NotFound response expected");
         } catch (HttpResponseException e) {
             assertEquals(404, e.getResponse().getStatusCode());
         }
     }
 
     @Test
-    public void testGetProviders() {
+    public void testGetVersions() {
         DeviceUpdateAsyncClient client = createClient();
-        PagedFlux<BinaryData> response = client.listProviders(null);
+        PagedFlux<BinaryData> response = client.listVersions(TestData.PROVIDER, TestData.NAME, null);
 
         assertNotNull(response);
-        assertEquals(1, response.toStream().count());
+        assertTrue(response.toStream().count() > 0);
     }
 
+    @Test
+    public void testGetVersionsNotFound() {
+        DeviceUpdateAsyncClient client = createClient();
+
+        try {
+            PagedFlux<BinaryData> response = client.listVersions("foo", "bar", null);
+            long count = response.toStream().count();
+            fail("NotFound response expected");
+        } catch (HttpResponseException e) {
+            assertEquals(404, e.getResponse().getStatusCode());
+        }
+    }
+
+    @Test
+    public void testGetUpdate() {
+        DeviceUpdateAsyncClient client = createClient();
+        Response<BinaryData> response = client.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null).block();
+        assertNotNull(response.getValue());
+    }
+
+    @Test
+    public void testGetUpdateNotFound() {
+        DeviceUpdateAsyncClient client = createClient();
+        try {
+            client.getUpdateWithResponse("foo", "bar", "1.2", null).block();
+            fail("NotFound response expected");
+        } catch (HttpResponseException e) {
+            assertEquals(404, e.getResponse().getStatusCode());
+        }
+    }
+
+    @Test
+    public void testGetFiles() {
+        DeviceUpdateAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listFiles(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null);
+
+        assertNotNull(response);
+        assertTrue(response.toStream().count() > 0);
+    }
+
+    @Test
+    public void testGetFilesNotFound() {
+        DeviceUpdateAsyncClient client = createClient();
+
+        try {
+            PagedFlux<BinaryData> response = client.listFiles("foo", "bar", "1.2", null);
+            long count = response.toStream().count();
+            fail("NotFound response expected");
+        } catch (HttpResponseException e) {
+            assertEquals(404, e.getResponse().getStatusCode());
+        }
+    }
 }

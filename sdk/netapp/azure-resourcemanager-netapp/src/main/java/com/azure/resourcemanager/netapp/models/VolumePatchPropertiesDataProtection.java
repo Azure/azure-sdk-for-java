@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** DataProtection DataProtection type volumes include an object containing details of the replication. */
 @Fluent
 public final class VolumePatchPropertiesDataProtection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePatchPropertiesDataProtection.class);
-
     /*
      * Backup Properties
      */

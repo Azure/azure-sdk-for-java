@@ -36,7 +36,11 @@ public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
         return fromString(name, ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.class);
     }
 
-    /** @return known ExpressRouteCircuitPeeringAdvertisedPublicPrefixState values. */
+    /**
+     * Gets known ExpressRouteCircuitPeeringAdvertisedPublicPrefixState values.
+     *
+     * @return known ExpressRouteCircuitPeeringAdvertisedPublicPrefixState values.
+     */
     public static Collection<ExpressRouteCircuitPeeringAdvertisedPublicPrefixState> values() {
         return values(ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.class);
     }

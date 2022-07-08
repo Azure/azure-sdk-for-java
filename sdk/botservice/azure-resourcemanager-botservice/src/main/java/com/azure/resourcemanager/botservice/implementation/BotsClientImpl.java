@@ -303,14 +303,7 @@ public final class BotsClientImpl implements BotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BotInner> createAsync(String resourceGroupName, String resourceName, BotInner parameters) {
         return createWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<BotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -469,14 +462,7 @@ public final class BotsClientImpl implements BotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BotInner> updateAsync(String resourceGroupName, String resourceName, BotInner parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<BotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -618,7 +604,7 @@ public final class BotsClientImpl implements BotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -758,14 +744,7 @@ public final class BotsClientImpl implements BotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BotInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<BotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1186,15 +1165,7 @@ public final class BotsClientImpl implements BotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResponseBodyInner> getCheckNameAvailabilityAsync(
         CheckNameAvailabilityRequestBody parameters) {
-        return getCheckNameAvailabilityWithResponseAsync(parameters)
-            .flatMap(
-                (Response<CheckNameAvailabilityResponseBodyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getCheckNameAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

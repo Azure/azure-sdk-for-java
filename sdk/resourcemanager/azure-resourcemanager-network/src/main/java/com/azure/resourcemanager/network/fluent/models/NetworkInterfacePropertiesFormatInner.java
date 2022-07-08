@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
@@ -131,6 +132,12 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     @JsonProperty(value = "migrationPhase")
     private NetworkInterfaceMigrationPhase migrationPhase;
+
+    /*
+     * Auxiliary mode of Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliaryMode")
+    private NetworkInterfaceAuxiliaryMode auxiliaryMode;
 
     /**
      * Get the virtualMachine property: The reference to a virtual machine.
@@ -403,6 +410,26 @@ public final class NetworkInterfacePropertiesFormatInner {
      */
     public NetworkInterfacePropertiesFormatInner withMigrationPhase(NetworkInterfaceMigrationPhase migrationPhase) {
         this.migrationPhase = migrationPhase;
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.auxiliaryMode;
+    }
+
+    /**
+     * Set the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        this.auxiliaryMode = auxiliaryMode;
         return this;
     }
 

@@ -1,0 +1,24 @@
+trigger: none
+
+pr: none
+
+stages:
+  - stage: AnalyzeAndGeneratePatches
+
+    jobs:
+      - job: PatchGeneration
+        timeoutInMinutes: 180
+
+        pool:
+          vmImage: 'windows-2019'
+
+        steps:
+        - pwsh: |
+            $(Build.SourcesDirectory)/eng/scripts/patchreleases.ps1
+            Copy-Item eng/scripts/patchreport.html $(Build.ArtifactStagingDirectory)/staging
+            Copy-Item eng/scripts/bompom.html $(Build.ArtifactStagingDirectory)/staging
+          displayName: 'Analyze and generate patches'
+
+        - publish: $(Build.ArtifactStagingDirectory)
+          displayName: 'Publish Report Artifacts'
+          artifact: patchreport

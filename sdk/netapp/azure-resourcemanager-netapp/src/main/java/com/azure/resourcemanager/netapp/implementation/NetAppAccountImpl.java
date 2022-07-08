@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
@@ -50,10 +49,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this.innerModel().etag();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -77,6 +72,10 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public NetAppAccountInner innerModel() {

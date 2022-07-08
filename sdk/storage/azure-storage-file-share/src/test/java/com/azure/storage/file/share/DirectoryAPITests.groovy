@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.util.HttpClientOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -20,6 +21,7 @@ import com.azure.storage.file.share.options.ShareFileRenameOptions
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -1408,6 +1410,30 @@ class DirectoryAPITests extends APISpec {
         _ | rootDirPath
         _ | ""
         _ | "/"
+    }
+
+    def "create share with small timeouts fail for service client"() {
+        setup:
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new ShareServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        serviceClient.createShareWithResponse(generateShareName(), null, Duration.ofSeconds(10), null)
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
     }
 
 }

@@ -52,6 +52,10 @@ public final class AccountFilterImpl implements AccountFilter, AccountFilter.Def
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AccountFilterInner innerModel() {
         return this.innerObject;
     }

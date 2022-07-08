@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts GetByResourceGroup. */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_Get.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.

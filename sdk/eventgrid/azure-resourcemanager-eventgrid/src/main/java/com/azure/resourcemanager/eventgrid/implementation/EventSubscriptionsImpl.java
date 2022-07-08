@@ -16,6 +16,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
 
 public final class EventSubscriptionsImpl implements EventSubscriptions {
@@ -54,12 +55,61 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
         }
     }
 
+    public EventSubscription createOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
+        EventSubscriptionInner inner =
+            this.serviceClient().createOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscription createOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        EventSubscriptionInner inner =
+            this.serviceClient().createOrUpdate(scope, eventSubscriptionName, eventSubscriptionInfo, context);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String scope, String eventSubscriptionName) {
         this.serviceClient().delete(scope, eventSubscriptionName);
     }
 
     public void delete(String scope, String eventSubscriptionName, Context context) {
         this.serviceClient().delete(scope, eventSubscriptionName, context);
+    }
+
+    public EventSubscription update(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        EventSubscriptionInner inner =
+            this.serviceClient().update(scope, eventSubscriptionName, eventSubscriptionUpdateParameters);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public EventSubscription update(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+        Context context) {
+        EventSubscriptionInner inner =
+            this.serviceClient().update(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        if (inner != null) {
+            return new EventSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public EventSubscriptionFullUrl getFullUrl(String scope, String eventSubscriptionName) {
@@ -255,127 +305,11 @@ public final class EventSubscriptionsImpl implements EventSubscriptions {
         }
     }
 
-    public EventSubscription getById(String id) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
-        if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String eventSubscriptionName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
-                    "eventSubscriptionName");
-        if (eventSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'eventSubscriptions'.", id)));
-        }
-        return this.getWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
-    }
-
-    public Response<EventSubscription> getByIdWithResponse(String id, Context context) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
-        if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String eventSubscriptionName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
-                    "eventSubscriptionName");
-        if (eventSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'eventSubscriptions'.", id)));
-        }
-        return this.getWithResponse(scope, eventSubscriptionName, context);
-    }
-
-    public void deleteById(String id) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
-        if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String eventSubscriptionName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
-                    "eventSubscriptionName");
-        if (eventSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'eventSubscriptions'.", id)));
-        }
-        this.delete(scope, eventSubscriptionName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}", "scope");
-        if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
-        }
-        String eventSubscriptionName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}",
-                    "eventSubscriptionName");
-        if (eventSubscriptionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'eventSubscriptions'.", id)));
-        }
-        this.delete(scope, eventSubscriptionName, context);
-    }
-
     private EventSubscriptionsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
-    }
-
-    public EventSubscriptionImpl define(String name) {
-        return new EventSubscriptionImpl(name, this.manager());
     }
 }

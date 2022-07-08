@@ -5,10 +5,35 @@
 ### Features Added
 
 ### Breaking Changes
+- Added BinaryData support to synchronous document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
+- Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
+- Renamed `DocumentModelInfo` model to `DocumentModelSummary`
+- Renamed `DocumentModel` model to `DocumentModelInfo`
+- Renamed `getAccountProperties` method to `getResourceInfo`
+- Renamed `AccountProperties` model to `ResourceInfo`
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 3.1.13 (2022-07-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.30.0`.
+- Upgraded `azure-core-http-netty` to `1.12.3`.
+
+## 3.1.12 (2022-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.29.1`.
+- Upgraded `azure-core-http-netty` to `1.12.2`.
 
 ## 4.0.0-beta.5 (2022-06-07)
 

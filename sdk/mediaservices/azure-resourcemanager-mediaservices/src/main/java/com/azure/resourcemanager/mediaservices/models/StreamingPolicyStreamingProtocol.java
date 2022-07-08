@@ -33,7 +33,11 @@ public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum
         return fromString(name, StreamingPolicyStreamingProtocol.class);
     }
 
-    /** @return known StreamingPolicyStreamingProtocol values. */
+    /**
+     * Gets known StreamingPolicyStreamingProtocol values.
+     *
+     * @return known StreamingPolicyStreamingProtocol values.
+     */
     public static Collection<StreamingPolicyStreamingProtocol> values() {
         return values(StreamingPolicyStreamingProtocol.class);
     }
