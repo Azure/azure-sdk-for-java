@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 
 /** Resource collection API of EventSubscriptions. */
 public interface EventSubscriptions {
@@ -50,6 +51,53 @@ public interface EventSubscriptions {
     Response<EventSubscription> getWithResponse(String scope, String eventSubscriptionName, Context context);
 
     /**
+     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
+     * scope.
+     *
+     * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
+     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
+     *     characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription.
+     */
+    EventSubscription createOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo);
+
+    /**
+     * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
+     * scope.
+     *
+     * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
+     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
+     *     characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription.
+     */
+    EventSubscription createOrUpdate(
+        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context);
+
+    /**
      * Delete an existing event subscription.
      *
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
@@ -85,6 +133,54 @@ public interface EventSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String scope, String eventSubscriptionName, Context context);
+
+    /**
+     * Asynchronously updates an existing event subscription.
+     *
+     * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
+     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
+     * @param eventSubscriptionUpdateParameters Updated event subscription information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription.
+     */
+    EventSubscription update(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
+
+    /**
+     * Asynchronously updates an existing event subscription.
+     *
+     * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
+     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     *     '/subscriptions/{subscriptionId}/' for a subscription,
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     *     for a resource, and
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     *     for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
+     * @param eventSubscriptionUpdateParameters Updated event subscription information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription.
+     */
+    EventSubscription update(
+        String scope,
+        String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+        Context context);
 
     /**
      * Get the full endpoint URL for an event subscription.
@@ -512,56 +608,4 @@ public interface EventSubscriptions {
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
         String scope, String eventSubscriptionName, Context context);
-
-    /**
-     * Get properties of an event subscription.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription along with {@link Response}.
-     */
-    EventSubscription getById(String id);
-
-    /**
-     * Get properties of an event subscription.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription along with {@link Response}.
-     */
-    Response<EventSubscription> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete an existing event subscription.
-     *
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete an existing event subscription.
-     *
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new EventSubscription resource.
-     *
-     * @param name resource name.
-     * @return the first stage of the new EventSubscription definition.
-     */
-    EventSubscription.DefinitionStages.Blank define(String name);
 }

@@ -1,18 +1,18 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 2.7.1 and Spring Cloud dependencies version to 2021.0.3
+## 4.3.0 (2022-06-29)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.5, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>5) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
 
 ### Features Added
 - GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
 - GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
 - Support Jwt Client authentication for Azure AD Starter.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+### Spring Cloud Azure Dependencies (BOM)
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.3.
+- Upgrade `azure-spring-data-cosmos` to 3.23.0.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -29,13 +29,15 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+- Upgrade `azure-spring-data-cosmos` to 3.23.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
+- Upgrade `azure-cosmos` to 4.32.0. [#29679](https://github.com/Azure/azure-sdk-for-java/pull/29679)
 
 #### Features Added
 - Add `enabled` option in `AzureServiceBusJmsProperties` [#29232](https://github.com/Azure/azure-sdk-for-java/issues/29232).
 
 #### Bugs Fixed
 - Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
-- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398). 
+- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398).
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.

@@ -9,9 +9,10 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Model summary for the built and prebuilt models.
+ * Information about the document model.
  */
 public final class DocumentModelInfo {
+
     /*
      * Unique model identifier.
      */
@@ -27,66 +28,64 @@ public final class DocumentModelInfo {
      */
     private OffsetDateTime createdOn;
 
+    private Map<String, DocTypeInfo> docTypes;
+
     /*
      * List of key-value tag attributes associated with the model.
      */
     private Map<String, String> tags;
 
     /**
-     * Get the unique model identifier.
+     * Get the Unique model identifier.
      *
      * @return the modelId value.
      */
     public String getModelId() {
-        return this.modelId;
+        return modelId;
     }
 
-    /**
-     * Set the modelId property: Unique model identifier.
-     *
-     * @param modelId the modelId value to set.
-     * @return the ModelSummary object itself.
-     */
     void setModelId(String modelId) {
         this.modelId = modelId;
     }
 
     /**
-     * Get the description property: Model description.
+     * Get the model description.
      *
      * @return the description value.
      */
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
-    /**
-     * Set the description property: Model description.
-     *
-     * @param description the description value to set.
-     * @return the ModelSummary object itself.
-     */
     void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * Get the createdDateTime property: Date and time (UTC) when the model was created.
+     * Get the Date and time (UTC) when the analyze operation was submitted.
      *
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedOn() {
-        return this.createdOn;
+        return createdOn;
+    }
+
+    void setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 
     /**
-     * Set the createdDateTime property: Date and time (UTC) when the model was created.
+     * Get the supported document types.
      *
-     * @param createdOn the createdDateTime value to set.
-     * @return the ModelSummary object itself.
+     * @return the docTypes value.
      */
-    void setCreatedOn(OffsetDateTime createdOn) {
-        this.createdOn = createdOn;
+    public Map<String, DocTypeInfo> getDocTypes() {
+        return docTypes;
+    }
+
+    void setDocTypes(
+        Map<String, DocTypeInfo> docTypes) {
+        this.docTypes = docTypes;
     }
 
     /**
@@ -115,8 +114,13 @@ public final class DocumentModelInfo {
             }
 
             @Override
-            public void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdDateTime) {
-                documentModelInfo.setCreatedOn(createdDateTime);
+            public void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdOn) {
+                documentModelInfo.setCreatedOn(createdOn);
+            }
+
+            @Override
+            public void setDocTypes(DocumentModelInfo documentModelInfo, Map<String, DocTypeInfo> docTypes) {
+                documentModelInfo.setDocTypes(docTypes);
             }
 
             @Override

@@ -17,6 +17,12 @@ public final class ApiOperationPropertiesServiceSpecification {
     @JsonProperty(value = "metricSpecifications")
     private List<MetricSpecification> metricSpecifications;
 
+    /*
+     * Details about operations related to logs.
+     */
+    @JsonProperty(value = "logSpecifications")
+    private List<LogSpecification> logSpecifications;
+
     /**
      * Get the metricSpecifications property: Details about operations related to metrics.
      *
@@ -39,6 +45,26 @@ public final class ApiOperationPropertiesServiceSpecification {
     }
 
     /**
+     * Get the logSpecifications property: Details about operations related to logs.
+     *
+     * @return the logSpecifications value.
+     */
+    public List<LogSpecification> logSpecifications() {
+        return this.logSpecifications;
+    }
+
+    /**
+     * Set the logSpecifications property: Details about operations related to logs.
+     *
+     * @param logSpecifications the logSpecifications value to set.
+     * @return the ApiOperationPropertiesServiceSpecification object itself.
+     */
+    public ApiOperationPropertiesServiceSpecification withLogSpecifications(List<LogSpecification> logSpecifications) {
+        this.logSpecifications = logSpecifications;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -46,6 +72,9 @@ public final class ApiOperationPropertiesServiceSpecification {
     public void validate() {
         if (metricSpecifications() != null) {
             metricSpecifications().forEach(e -> e.validate());
+        }
+        if (logSpecifications() != null) {
+            logSpecifications().forEach(e -> e.validate());
         }
     }
 }

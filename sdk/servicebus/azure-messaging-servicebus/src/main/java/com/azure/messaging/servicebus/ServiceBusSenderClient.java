@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
@@ -103,6 +102,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code sequenceNumber} is negative.
      * @throws ServiceBusException If the message could not be cancelled.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void cancelScheduledMessage(long sequenceNumber) {
         asyncClient.cancelScheduledMessage(sequenceNumber).block(tryTimeout);
@@ -115,6 +115,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code sequenceNumbers} is null.
      * @throws ServiceBusException If the messages could not be cancelled.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
         asyncClient.cancelScheduledMessages(sequenceNumbers).block(tryTimeout);
@@ -126,6 +127,7 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
      *
      * @throws ServiceBusException if the message batch could not be created.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public ServiceBusMessageBatch createMessageBatch() {
         return asyncClient.createMessageBatch().block(tryTimeout);
@@ -139,6 +141,9 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code options} is null.
      * @throws ServiceBusException if the message batch could not be created.
+     * @throws IllegalStateException if sender is already disposed.
+     * @throws IllegalArgumentException if {@link CreateMessageBatchOptions#getMaximumSizeInBytes()} is larger than
+     *      maximum allowed size.
      */
     public ServiceBusMessageBatch createMessageBatch(CreateMessageBatchOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -169,8 +174,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @param message Message to be sent to Service Bus queue or topic.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
-     * @throws ServiceBusException if the message could not be sent.
+     * @throws ServiceBusException if {@code message} is larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessage(ServiceBusMessage message) {
@@ -186,8 +191,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
-     * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single batch.
-     * @throws ServiceBusException if the messages could not be sent.
+     * @throws ServiceBusException if the message could not be sent or {@code message} is larger than the maximum size of the {@link
+     *     ServiceBusMessageBatch}.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(Iterable<ServiceBusMessage> messages) {
@@ -216,8 +221,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
-     * @throws ServiceBusException if the message could not be sent.
+     * @throws ServiceBusException if {@code message} is larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
@@ -234,8 +239,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code messages}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single batch.
-     * @throws ServiceBusException if messages could not be sent.
+     * @throws ServiceBusException if the message could not be sent or {@code message} is larger than the maximum size of the {@link
+     *     ServiceBusMessageBatch}.
      * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
@@ -324,7 +329,8 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException If {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws ServiceBusException If the messages could not be scheduled.
+     * @throws ServiceBusException If the messages could not be scheduled or the {@code message} is larger than
+     *      the maximum size of the {@link ServiceBusMessageBatch}.
      */
     public Iterable<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
@@ -338,7 +344,6 @@ public final class ServiceBusSenderClient implements AutoCloseable {
      * @return A new {@link ServiceBusTransactionContext}.
      *
      * @throws IllegalStateException if sender is already disposed.
-     * @throws IllegalStateException if the sender is disposed.
      * @throws ServiceBusException if a transaction cannot be created.
      *
      * @see ServiceBusReceiverClient#createTransaction()

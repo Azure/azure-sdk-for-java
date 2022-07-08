@@ -18,22 +18,12 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProtocolPolicyTests {
-    static final HttpRequest HTTP_REQUEST;
-
-    static {
-        try {
-            HTTP_REQUEST = createHttpRequest("https://www.bing.com");
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @SyncAsyncTest
     public void withOverwrite() throws Exception {
         final HttpPipeline pipeline = createPipeline("ftp", "ftp://www.bing.com");
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
-            () -> pipeline.send(HTTP_REQUEST)
+            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
+            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
         );
     }
 
@@ -41,8 +31,8 @@ public class ProtocolPolicyTests {
     public void withNoOverwrite() throws Exception {
         final HttpPipeline pipeline = createPipeline("ftp", false, "https://www.bing.com");
         SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(HTTP_REQUEST, Context.NONE),
-            () -> pipeline.send(HTTP_REQUEST)
+            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
+            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
         );
     }
 

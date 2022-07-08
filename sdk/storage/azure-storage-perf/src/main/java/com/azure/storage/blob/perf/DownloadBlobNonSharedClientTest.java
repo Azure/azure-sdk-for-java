@@ -4,35 +4,23 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.NullOutputStream;
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.perf.core.ContainerTest;
+import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
-
-public class DownloadBlobNonSharedClientTest extends ContainerTest<PerfStressOptions> {
+public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
-    private final BlobAsyncClient blobAsyncClient;
     String blobName = "downloadTest";
 
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
-    public DownloadBlobNonSharedClientTest(PerfStressOptions options) {
+    public DownloadBlobNonSharedClientTest(BlobPerfStressOptions options) {
         super(options);
-        blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
-    }
-
-    // Required resource setup goes here, upload the file to be downloaded during tests.
-    public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-                   .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
-                   .then();
     }
 
     // Perform the API call to be tested here

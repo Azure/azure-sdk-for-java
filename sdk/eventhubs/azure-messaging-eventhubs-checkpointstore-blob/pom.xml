@@ -54,14 +54,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.17.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.18.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -2759,4 +2759,9 @@
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+ <Match>
+    <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+    <Method name="locateExceptionConstructor"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
 </FindBugsFilter>
