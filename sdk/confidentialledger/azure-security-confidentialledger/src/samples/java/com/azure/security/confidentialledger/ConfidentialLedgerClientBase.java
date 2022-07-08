@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ConfidentialLedgerClientBase {
     public ConfidentialLedgerClientBase() {
+        // BEGIN:readme-sample-createClient
         // for example, https://identity.confidential-ledger.core.azure.com
         String identityServiceUri = null;
 
@@ -59,5 +60,6 @@ public class ConfidentialLedgerClientBase {
         } catch (Exception ex) {
             System.out.println("Error thrown from ConfidentialLedgerClientBase:" + ex);
         }
+        // END:readme-sample-createClient
     }
 }
