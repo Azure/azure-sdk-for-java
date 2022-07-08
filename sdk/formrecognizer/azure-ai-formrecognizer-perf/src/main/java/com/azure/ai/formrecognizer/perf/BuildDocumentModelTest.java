@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.perf;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.perf.core.ServiceTest;
 import com.azure.core.util.polling.SyncPoller;
@@ -31,7 +31,7 @@ public class BuildDocumentModelTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        SyncPoller<DocumentOperationResult, DocumentModel>
+        SyncPoller<DocumentOperationResult, DocumentModelInfo>
             syncPoller = documentModelAdministrationAsyncClient
             .beginBuildModel(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL,
                 DocumentBuildMode.TEMPLATE,

@@ -6,6 +6,12 @@
 
 ### Breaking Changes
 - Added BinaryData support to synchronous document analysis client using `beginAnalyzeDocument(String modelId, BinaryData document, long length)`
+- Renamed `beginCreateComposedModel` method to `beginComposeModel` on DocumentModelAdministrationClient and DocumentModelAdministrationAsyncClient.
+- Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
+- Renamed `DocumentModelInfo` model to `DocumentModelSummary`
+- Renamed `DocumentModel` model to `DocumentModelInfo`
+- Renamed `getAccountProperties` method to `getResourceInfo`
+- Renamed `AccountProperties` model to `ResourceInfo`
 
 ### Bugs Fixed
 
