@@ -250,6 +250,34 @@ Or
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ```
 
+Create a Feature Flag configuration setting or Secrete Reference configuration setting to be stored in the
+configuration store. 
+
+```java readme-sample-addFeatureFlagConfigurationSetting
+String key = "some_key";
+String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+String filterParameterKey = "{filter_parameter_key}"; // "Value"
+Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                         .addParameter(filterParameterKey, filterParameterValue);
+FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+    new FeatureFlagConfigurationSetting(key, true)
+        .setClientFilters(Arrays.asList(percentageFilter));
+
+FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+    configurationClient.addConfigurationSetting(featureFlagConfigurationSetting);
+```
+```java readme-sample-addSecretReferenceConfigurationSetting
+String key = "{some_key}";
+String secretIdValue = "{the-keyVault-secret-id-uri}";
+
+SecretReferenceConfigurationSetting referenceConfigurationSetting =
+    new SecretReferenceConfigurationSetting(key, secretIdValue);
+
+SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+    configurationClient.addConfigurationSetting(referenceConfigurationSetting);
+```
+
 ### Retrieve a Configuration Setting
 
 Retrieve a previously stored configuration setting by calling `getConfigurationSetting`.
@@ -267,6 +295,17 @@ If the ETags are not the same, it means the configuration setting is different, 
 ```java readme-sample-getConfigurationSettingConditionally
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 Response<ConfigurationSetting> settingResponse = configurationClient.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
+```
+
+Retrieve a Feature Flag configuration setting or Secrete Reference configuration setting in the configuration store.
+
+```java readme-sample-getFeatureFlagConfigurationSetting
+FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+    configurationClient.getConfigurationSetting(featureFlagConfigurationSetting);
+```
+```java readme-sample-getSecretReferenceConfigurationSetting
+SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+    configurationClient.getConfigurationSetting(referenceConfigurationSetting);
 ```
 
 ### Update an existing Configuration Setting
@@ -288,6 +327,17 @@ ConfigurationSetting setting = configurationClient.setConfigurationSetting("some
 Response<ConfigurationSetting> settingResponse = configurationClient.setConfigurationSettingWithResponse(setting, true, Context.NONE);
 ```
 
+Update a Feature Flag configuration setting or Secrete Reference configuration setting in the configuration store.
+
+```java readme-sample-updateFeatureFlagConfigurationSetting
+FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+    configurationClient.setConfigurationSetting(featureFlagConfigurationSetting);
+```
+```java readme-sample-updateSecretReferenceConfigurationSetting
+SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+    configurationClient.setConfigurationSetting(referenceConfigurationSetting);
+```
+
 ### Delete a Configuration Setting
 
 Delete an existing configuration setting by calling `deleteConfigurationSetting`.
@@ -304,6 +354,17 @@ to see if they are the same or not. If the ETag are same, it means the configura
 ```java readme-sample-deleteConfigurationSettingConditionally
 ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 Response<ConfigurationSetting> settingResponse = configurationClient.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
+```
+
+Delete a Feature Flag configuration setting or Secrete Reference configuration setting in the configuration store.
+
+```java readme-sample-deleteFeatureFlagConfigurationSetting
+FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+    configurationClient.deleteConfigurationSetting(featureFlagConfigurationSetting);
+```
+```java readme-sample-deleteSecretReferenceConfigurationSetting
+SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+    configurationClient.deleteConfigurationSetting(referenceConfigurationSetting);
 ```
 
 ### List Configuration Settings with multiple keys
