@@ -160,10 +160,6 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/resourcemanagerhybrid
-        if 'resourcemanagerhybrid' in root:
-            continue
-
         # Also ignore sdk/e2e as this only creates noise during checkout as it uses many current dependencies but isn't an actual project we want to build.
         if 'e2e' in root:
             continue

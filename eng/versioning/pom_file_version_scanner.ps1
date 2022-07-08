@@ -408,12 +408,6 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
-    # Packages under sdk/resourcemanagerhybrid has duplicate artifactId with that under sdk/resourcemanager
-    if ($_.FullName -like "*resourcemanagerhybrid*")
-    {
-        return
-    }
-
     if ($PomFilesIgnoreParent -contains $pomFile)
     {
         $xmlPomFile = New-Object xml
