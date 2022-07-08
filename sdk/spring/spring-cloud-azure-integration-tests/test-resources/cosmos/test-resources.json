@@ -55,10 +55,6 @@
     "AZURE_COSMOS_ENDPOINT": {
       "type": "string",
       "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
-    },
-    "AZURE_COSMOS_ACCOUNT_KEY": {
-      "type": "string",
-      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
     }
   }
 }
