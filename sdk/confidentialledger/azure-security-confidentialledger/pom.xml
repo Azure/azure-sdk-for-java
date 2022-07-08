@@ -30,7 +30,6 @@
   </scm>
 
   <properties>
-    <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
     <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
