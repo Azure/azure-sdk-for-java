@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
-import com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -60,7 +60,7 @@ public final class TopicTypeProperties {
      * Supported source scopes.
      */
     @JsonProperty(value = "supportedScopesForSource")
-    private List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource;
+    private List<TopicTypeSourceScope> supportedScopesForSource;
 
     /**
      * Get the provider property: Namespace of the provider of the topic type.
@@ -207,7 +207,7 @@ public final class TopicTypeProperties {
      *
      * @return the supportedScopesForSource value.
      */
-    public List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource() {
+    public List<TopicTypeSourceScope> supportedScopesForSource() {
         return this.supportedScopesForSource;
     }
 
@@ -217,8 +217,7 @@ public final class TopicTypeProperties {
      * @param supportedScopesForSource the supportedScopesForSource value to set.
      * @return the TopicTypeProperties object itself.
      */
-    public TopicTypeProperties withSupportedScopesForSource(
-        List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource) {
+    public TopicTypeProperties withSupportedScopesForSource(List<TopicTypeSourceScope> supportedScopesForSource) {
         this.supportedScopesForSource = supportedScopesForSource;
         return this;
     }

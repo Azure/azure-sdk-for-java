@@ -97,6 +97,9 @@ stages:
             Copy-Item sdk/storage/azure-storage-queue/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-queue-test.log -ErrorAction SilentlyContinue
           displayName: 'Copy test logs to artifact staging'
           condition: always()
+        - template: ../steps/retain-heap-dump-hprofs.yml
+          parameters:
+            OomArtifactName: 'perf-hprofs'
         - publish: $(Build.ArtifactStagingDirectory)/test-logs
           displayName: 'Publish test logs'
           artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)

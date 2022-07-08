@@ -3,10 +3,9 @@
 
 package com.azure.storage.blob.perf;
 
-import com.azure.storage.StoragePerfStressOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.perf.core.BlobTestBase;
+import com.azure.storage.blob.perf.core.AbstractUploadTest;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import reactor.core.publisher.Mono;
 
@@ -14,7 +13,7 @@ import java.io.IOException;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.writeBytesToOutputStream;
 
-public class UploadOutputStreamTest extends BlobTestBase<BlobPerfStressOptions> {
+public class UploadOutputStreamTest extends AbstractUploadTest<BlobPerfStressOptions> {
     public UploadOutputStreamTest(BlobPerfStressOptions options) {
         super(options);
     }

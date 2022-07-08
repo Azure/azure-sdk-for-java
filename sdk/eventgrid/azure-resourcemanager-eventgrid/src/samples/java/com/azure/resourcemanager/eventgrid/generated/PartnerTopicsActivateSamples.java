@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics Activate. */
 public final class PartnerTopicsActivateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Activate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopics_Activate.json
      */
     /**
      * Sample code: PartnerTopics_Activate.
