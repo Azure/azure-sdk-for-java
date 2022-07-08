@@ -467,9 +467,9 @@ public class ChangeFeedTest extends TestSuiteBase {
         String id = UUID.randomUUID().toString();
         String otherId = UUID.randomUUID().toString();
 
-
-        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
-//        options.fullFidelity();
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(feedRanges.get(0));
+        options.fullFidelity();
 
         for (int i = 0; i < 10; i++) {
             String itemId = UUID.randomUUID().toString();
@@ -483,8 +483,10 @@ public class ChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
+        String continuation = "";
         while (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
+            continuation = response.getContinuationToken();
             System.out.println(response);
         }
 
@@ -498,6 +500,10 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
 
         cosmosContainer.deleteItem(idList.get(0), new PartitionKey(idList.get(0)), new CosmosItemRequestOptions());
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation);
+        options.fullFidelity();
 
         Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
