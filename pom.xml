@@ -941,6 +941,7 @@
         <module>sdk/mysql</module>
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
+        <module>sdk/networkfunction</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
