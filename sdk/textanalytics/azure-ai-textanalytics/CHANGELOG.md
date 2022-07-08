@@ -1,4 +1,5 @@
 # Release History
+
 ## 5.2.0-beta.4 (Unreleased)
 
 ### Features Added
