@@ -21,6 +21,47 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
 
+```java readme-sample-createClient
+// for example, https://identity.confidential-ledger.core.azure.com
+String identityServiceUri = null;
+
+// for example, my-ledger-name
+String ledgerId = null;
+
+try {
+    ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
+        .identityServiceUri(identityServiceUri)
+        .httpClient(HttpClient.createDefault())
+        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+    ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder
+            .buildClient();
+
+    // this is a built in test of getLedgerIdentity
+    Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+            .getLedgerIdentityWithResponse(ledgerId, null);
+    BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+    String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+
+    SslContext sslContext = SslContextBuilder.forClient()
+            .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
+    reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
+            .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+    HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+
+    ConfidentialLedgerClientBuilder confidentialLedgerClientbuilder = new ConfidentialLedgerClientBuilder()
+            .ledgerUri(ledgerUri)
+            .httpClient(httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
+    ConfidentialLedgerClient confidentialLedgerClient = confidentialLedgerClientbuilder.buildClient();
+} catch (Exception ex) {
+    System.out.println("Error thrown from ConfidentialLedgerClientBase:" + ex);
+}
+```
+
 The following sections provide code samples covering common scenario operations with the Azure Confidential Ledger client library.
 
 All of these samples need the endpoint to your Confidential Ledger resource, and your Confidential Ledger API key.
