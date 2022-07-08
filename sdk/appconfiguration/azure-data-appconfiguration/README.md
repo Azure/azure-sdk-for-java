@@ -220,6 +220,7 @@ configurationClient.listConfigurationSettings(new SettingSelector().setLabelFilt
 ## Examples
 
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
+For "Feature Flag" and "Secret Reference" configuration settings, see [samples][samples_readme] for more detail.
 
 ### Create a Configuration Client
 
