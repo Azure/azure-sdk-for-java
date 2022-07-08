@@ -1,14 +1,23 @@
 # Release History
 
-## 4.12.0-beta.3 (Unreleased)
+## 4.12.0 (2022-07-08)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- General availability of supporting publish CloudEvents to partner topics.
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 4.11.2 (2022-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
 
 ## 4.12.0-beta.2 (2022-05-17)
 
