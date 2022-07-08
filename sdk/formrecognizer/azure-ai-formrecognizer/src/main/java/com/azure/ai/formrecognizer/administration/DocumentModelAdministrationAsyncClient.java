@@ -270,7 +270,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     /**
-     * Get the basic information about the current resource.
+     * Get information about the current Form Recognizer resource.
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfo -->
@@ -293,7 +293,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     /**
-     * Get the basic information about the current resource with a Http response.
+     * Get the information about the current Form Recognizer resource with a Http response.
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getResourceInfoWithResponse -->

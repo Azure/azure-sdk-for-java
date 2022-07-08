@@ -370,7 +370,7 @@ public class ReadmeSamples {
 
         // First, we see how many models we have, and what our limit is
         ResourceInfo resourceInfo = documentModelAdminClient.getResourceInfo();
-        System.out.printf("The resource account has %s models, and we can have at most %s models",
+        System.out.printf("The resource has %s models, and we can have at most %s models",
             resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
 
         // Next, we get a paged list of all of our models

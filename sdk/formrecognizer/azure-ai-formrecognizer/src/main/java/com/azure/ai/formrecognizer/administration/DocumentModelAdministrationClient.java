@@ -185,7 +185,7 @@ public final class DocumentModelAdministrationClient {
     }
 
     /**
-     * Get the basic information about the current resource.
+     * Get information about the current Form Recognizer resource.
      *
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo -->
@@ -198,7 +198,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo -->
      *
-     * @return The requested resource information of the Form Recognizer account.
+     * @return The requested resource information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceInfo getResourceInfo() {
@@ -206,7 +206,7 @@ public final class DocumentModelAdministrationClient {
     }
 
     /**
-     * Get the basic information about the current resource with a Http response and a
+     * Get information about the current Form recognizer resource with a Http response and a
      * specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
@@ -225,7 +225,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The requested resource information of the Form Recognizer account.
+     * @return The requested resource information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceInfo> getResourceInfoWithResponse(Context context) {

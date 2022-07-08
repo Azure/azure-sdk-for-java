@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The DocumentModelInfo model.
+ * Information about the document model.
  */
 public final class DocumentModelInfo {
 
