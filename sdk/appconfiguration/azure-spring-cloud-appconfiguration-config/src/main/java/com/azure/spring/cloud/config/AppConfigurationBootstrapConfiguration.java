@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -92,6 +93,7 @@ class AppConfigurationBootstrapConfiguration {
      * @return ClientStore
      */
     @Bean
+    @ConditionalOnMissingBean
     ClientStore buildClientStores(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
@@ -128,9 +130,9 @@ class AppConfigurationBootstrapConfiguration {
             isKeyVaultConfigured = true;
         }
 
-        ClientManager clientManager = new ClientManager(properties, appProperties, tokenCredentialProvider,
+        ClientFactory clientManager = new ClientFactory(properties, appProperties, tokenCredentialProvider,
             clientProvider, isDev, isKeyVaultConfigured);
 
-        return new ClientStore(clientManager, appProperties);
+        return new ClientStore(clientManager);
     }
 }

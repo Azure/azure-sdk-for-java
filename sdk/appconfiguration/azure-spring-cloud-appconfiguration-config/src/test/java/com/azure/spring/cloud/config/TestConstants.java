@@ -32,8 +32,11 @@ public final class TestConstants {
         "Endpoint=https://fake.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     public static final String TEST_CONN_STRING_2 =
         "Endpoint=https://fake2.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    public static final String TEST_CONN_STRING_GEO =
+        "Endpoint=https://fake.test.geo.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     public static final String LABEL_PARAM = "label";
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
+    public static final String TEST_ENDPOINT_GEO = "https://fake.test.geo.config.io";
     public static final String TEST_KV_API = TEST_ENDPOINT + "/kv?key=fake-key*&label=fake-label";
     public static final String TEST_ID = "fake-conn-id";
     public static final String TEST_ACCESS_TOKEN = "fake_token";

@@ -2,16 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.stores;
 
-import java.time.Instant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.config.BackoffTimeCalculator;
-import com.azure.spring.cloud.config.ClientManager;
+import com.azure.spring.cloud.config.ClientFactory;
 import com.azure.spring.cloud.config.NormalizeNull;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
@@ -19,19 +18,16 @@ import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
  */
 public final class ClientStore {
 
-    private final ClientManager clientManager;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
 
-    private final AppConfigurationProviderProperties properties;
+    private final ClientFactory clientManager;
 
     /**
      * Creates Client store for connecting to App Configuration
      * @param clientManager Manages connections to each config store
-     * @param properties client configurations
      */
-    public ClientStore(ClientManager clientManager, AppConfigurationProviderProperties properties) {
+    public ClientStore(ClientFactory clientManager) {
         this.clientManager = clientManager;
-        this.properties = properties;
-
     }
 
     /**
@@ -108,12 +104,14 @@ public final class ClientStore {
 
     private PagedIterable<ConfigurationSetting> dealWithError(String storeName, SettingSelector settingSelector,
         ConfigurationClientWrapper client, HttpResponseException e) {
-        Long backoffTime = BackoffTimeCalculator.calculateBackoff(client.getFailedAttempts(),
-            properties.getDefaultMaxBackoff(), properties.getDefaultMinBackoff());
 
-        client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+        ConfigurationClientWrapper newClient = clientManager.resetAndGetNewClient(storeName);
 
-        ConfigurationClientWrapper newClient = clientManager.getClient(storeName);
+        if (newClient == null) {
+            LOGGER.debug("No valid client found.");
+            return null;
+        }
+
         try {
             return client.getClient().listConfigurationSettings(settingSelector);
         } catch (HttpResponseException e2) {

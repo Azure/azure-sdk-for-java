@@ -19,19 +19,19 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 public class AppConfigurationBootstrapConfigurationTest {
 
     private static final ApplicationContextRunner CONTEXT_RUNNER = new ApplicationContextRunner()
-        .withPropertyValues(propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME))
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
 
     @Test
     public void iniConnectionStringSystemAssigned() throws Exception {
-        CONTEXT_RUNNER.withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
+        CONTEXT_RUNNER
+            .withPropertyValues(propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME), propPair(FAIL_FAST_PROP, "false"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
 
     @Test
     public void iniConnectionStringUserAssigned() throws Exception {
         CONTEXT_RUNNER
-            .withPropertyValues(propPair(FAIL_FAST_PROP, "false"),
+            .withPropertyValues(propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME), propPair(FAIL_FAST_PROP, "false"),
                 propPair("spring.cloud.azure.appconfiguration.managed-identity.client-id", "client-id"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
@@ -46,8 +46,7 @@ public class AppConfigurationBootstrapConfigurationTest {
     @Test
     public void clientsBeanCreated() throws Exception {
         CONTEXT_RUNNER
-            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
-            .run(context -> {
+            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING)).run(context -> {
                 assertThat(context).hasSingleBean(ClientStore.class);
             });
     }

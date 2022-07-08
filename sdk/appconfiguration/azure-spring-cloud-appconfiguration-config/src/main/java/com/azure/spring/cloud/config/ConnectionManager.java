@@ -49,6 +49,8 @@ public class ConnectionManager {
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
 
+    private ConfigurationClientWrapper currentClient;
+
     private final AppConfigurationProviderProperties appProperties;
 
     private final AppConfigurationCredentialProvider tokenCredentialProvider;
@@ -96,16 +98,7 @@ public class ConnectionManager {
     }
 
     private String makeStoreIdentifier() {
-        if (configStore.getEndpoint() != null) {
-            return configStore.getEndpoint();
-        } else if (configStore.getConnectionString() != null) {
-            return getEndpointFromConnectionString(configStore.getConnectionString());
-        } else if (configStore.getConnectionStrings().size() > 0) {
-            return getEndpointFromConnectionString(configStore.getConnectionStrings().get(0));
-        } else if (configStore.getEndpoints().size() > 0) {
-            return configStore.getEndpoints().get(0);
-        }
-        return storeIdentifier;
+        return configStore.getEndpoint();
     }
 
     /**
@@ -124,26 +117,47 @@ public class ConnectionManager {
         if (client == null && clients == null) {
             buildClients();
         }
+        if (currentClient != null) {
+            return currentClient;
+        }
+
         if (client != null) {
+            currentClient = client;
             return client;
         }
-        
-        for (ConfigurationClientWrapper wrapper: clients) {
+
+        for (ConfigurationClientWrapper wrapper : clients) {
             if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
-                LOGGER.info("Using Client: " + wrapper.getEndpoint());
+                LOGGER.debug("Using Client: " + wrapper.getEndpoint());
+                currentClient = wrapper;
                 return wrapper;
             }
         }
-        
-        //TODO (mametcal) need to figure out what the correct action is when no endpoint is ready.
+
+        LOGGER.error("No client avaiable for use currently.");
         return null;
+    }
+
+    /**
+     * Call when the current client failed
+     */
+    public void resetCurrentClient() {
+        if (currentClient != null) {
+            int failedAttempt = currentClient.getFailedAttempts();
+            long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt,
+                appProperties.getDefaultMaxBackoff(),
+                appProperties.getDefaultMinBackoff());
+            currentClient.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+
+            currentClient = null;
+        }
     }
 
     /**
      * Builds all the clients for a connection.
      * @throws IllegalArgumentException when more than 1 connection method is given.
      */
-    public void buildClients() {
+    private void buildClients() {
         // Single client or Multiple?
         // If single call buildClient
         int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
@@ -185,23 +199,16 @@ public class ConnectionManager {
             }
         } else if (configStore.getEndpoints().size() > 0) {
             for (String endpoint : configStore.getEndpoints()) {
-                clients.add(buildClientEndpoint(endpoint, builder, clientIdIsPresent));
+                clients.add(buildClientEndpoint(tokenCredential, endpoint, builder, clientIdIsPresent));
             }
         } else if (configStore.getEndpoint() != null) {
-            client = buildClientEndpoint(configStore.getEndpoint(), builder, clientIdIsPresent);
+            client = buildClientEndpoint(tokenCredential, configStore.getEndpoint(), builder, clientIdIsPresent);
         }
     }
 
-    private ConfigurationClientWrapper buildClientEndpoint(String endpoint, ConfigurationClientBuilder builder,
-        boolean clientIdIsPresent)
+    private ConfigurationClientWrapper buildClientEndpoint(TokenCredential tokenCredential,
+        String endpoint, ConfigurationClientBuilder builder, boolean clientIdIsPresent)
         throws IllegalArgumentException {
-
-        TokenCredential tokenCredential = null;
-
-        if (tokenCredentialProvider != null) {
-            tokenCredential = tokenCredentialProvider.getAppConfigCredential(endpoint);
-        }
-
         if (tokenCredential != null) {
             // User Provided Token Credential
             LOGGER.debug("Connecting to " + endpoint + " using AppConfigurationCredentialProvider.");
@@ -225,7 +232,8 @@ public class ConnectionManager {
         return modifyAndBuildClient(builder, endpoint);
     }
 
-    private ConfigurationClientWrapper buildClientConnectionString(String connectionString, ConfigurationClientBuilder builder)
+    private ConfigurationClientWrapper buildClientConnectionString(String connectionString,
+        ConfigurationClientBuilder builder)
         throws IllegalArgumentException {
         String endpoint = getEndpointFromConnectionString(connectionString);
         LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
@@ -273,7 +281,7 @@ public class ConnectionManager {
     /**
      * @return creates an instance of ConfigurationClientBuilder
      */
-    private ConfigurationClientBuilder getBuilder() {
+    ConfigurationClientBuilder getBuilder() {
         return new ConfigurationClientBuilder();
     }
 
