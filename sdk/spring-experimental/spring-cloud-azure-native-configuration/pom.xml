@@ -56,25 +56,25 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;dependency} -->
+      <version>4.3.0</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -94,35 +94,35 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.4.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.4.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.3.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.17.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.18.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <scope>provided</scope>
     </dependency>
   </dependencies>

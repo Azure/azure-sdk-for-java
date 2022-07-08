@@ -325,7 +325,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    protected BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+    public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null

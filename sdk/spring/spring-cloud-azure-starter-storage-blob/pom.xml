@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
-  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
+  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-blob;current} -->
 
   <name>Spring Cloud Azure Starter Storage Blob</name>
   <description>Spring Cloud Azure Starter Storage Blob</description>
@@ -88,13 +88,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter</artifactId>
-      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.17.1</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.18.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
   </dependencies>
 

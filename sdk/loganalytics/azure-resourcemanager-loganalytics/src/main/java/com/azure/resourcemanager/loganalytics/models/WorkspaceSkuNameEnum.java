@@ -45,7 +45,11 @@ public final class WorkspaceSkuNameEnum extends ExpandableStringEnum<WorkspaceSk
         return fromString(name, WorkspaceSkuNameEnum.class);
     }
 
-    /** @return known WorkspaceSkuNameEnum values. */
+    /**
+     * Gets known WorkspaceSkuNameEnum values.
+     *
+     * @return known WorkspaceSkuNameEnum values.
+     */
     public static Collection<WorkspaceSkuNameEnum> values() {
         return values(WorkspaceSkuNameEnum.class);
     }

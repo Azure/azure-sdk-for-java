@@ -207,6 +207,15 @@ public final class StorageTargetInner extends StorageTargetResource {
     }
 
     /**
+     * Get the allocationPercentage property: The percentage of cache space allocated for this storage target.
+     *
+     * @return the allocationPercentage value.
+     */
+    public Integer allocationPercentage() {
+        return this.innerProperties() == null ? null : this.innerProperties().allocationPercentage();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

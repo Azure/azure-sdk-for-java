@@ -69,7 +69,7 @@ public final class AzureKafkaPropertiesUtils {
             (p, s) -> p.getCredential().setUsername(s)),
 
         cloudType(PROFILE_PREFIX + "cloud-type", p -> p.getProfile().getCloudType().name(),
-            (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.get(s))),
+            (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.fromString(s))),
 
         activeDirectoryEndpoint(ENVIRONMENT_PREFIX + "active-directory-endpoint",
             p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),

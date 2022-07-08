@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
+import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 
 import java.time.OffsetDateTime;
@@ -21,9 +22,15 @@ public final class DocumentModelInfoHelper {
      * Type defining the methods to set the non-public properties of an {@link DocumentModelInfo} instance.
      */
     public interface DocumentModelInfoAccessor {
+
         void setModelId(DocumentModelInfo documentModelInfo, String modelId);
+
         void setDescription(DocumentModelInfo documentModelInfo, String description);
-        void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdDateTime);
+
+        void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdOn);
+
+        void setDocTypes(DocumentModelInfo documentModelInfo, Map<String, DocTypeInfo> docTypes);
+
         void setTags(DocumentModelInfo documentModelInfo, Map<String, String> tags);
     }
 
@@ -32,7 +39,7 @@ public final class DocumentModelInfoHelper {
      *
      * @param documentModelInfoAccessor The accessor.
      */
-    public static void setAccessor(final DocumentModelInfoHelper.DocumentModelInfoAccessor documentModelInfoAccessor) {
+    public static void setAccessor(final DocumentModelInfoAccessor documentModelInfoAccessor) {
         accessor = documentModelInfoAccessor;
     }
 
@@ -44,8 +51,12 @@ public final class DocumentModelInfoHelper {
         accessor.setDescription(documentModelInfo, description);
     }
 
-    static void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdDateTime) {
-        accessor.setCreatedOn(documentModelInfo, createdDateTime);
+    static void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdOn) {
+        accessor.setCreatedOn(documentModelInfo, createdOn);
+    }
+
+    static void setDocTypes(DocumentModelInfo documentModelInfo, Map<String, DocTypeInfo> docTypes) {
+        accessor.setDocTypes(documentModelInfo, docTypes);
     }
 
     static void setTags(DocumentModelInfo documentModelInfo, Map<String, String> tags) {

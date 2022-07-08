@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.models.UsageMetricInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list workspace usages operation response. */
 @Fluent
 public final class WorkspaceListUsagesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceListUsagesResult.class);
-
     /*
      * Gets or sets a list of usage metrics for a workspace.
      */

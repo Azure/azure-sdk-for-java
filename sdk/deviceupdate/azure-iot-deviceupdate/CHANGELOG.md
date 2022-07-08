@@ -4,6 +4,15 @@
 
 ### Features Added
 
+- Added `relatedFiles` and `downloadHandler` to `Update`
+- Updated various model that reference update to include not only `updateId` but also update `description` and `friendlyName`
+- Removed device tag concept
+- Allow to filter by deployment status in the `listDevices` method
+- Added ability to update device class friendly name
+- Added ability to delete device class
+- Added device class subgroups to groups
+- Added new method to retrieve devices health information
+
 ### Breaking Changes
 
 - Added `DeviceManagementClientBuilder` to create `DeviceManagementClient` instance via `DeviceManagementClientBuilder.buildClient()`.

@@ -30,7 +30,11 @@ public final class UsernameDownloadedType extends ExpandableStringEnum<UsernameD
         return fromString(name, UsernameDownloadedType.class);
     }
 
-    /** @return known UsernameDownloadedType values. */
+    /**
+     * Gets known UsernameDownloadedType values.
+     *
+     * @return known UsernameDownloadedType values.
+     */
     public static Collection<UsernameDownloadedType> values() {
         return values(UsernameDownloadedType.class);
     }
