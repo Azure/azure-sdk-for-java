@@ -464,18 +464,13 @@ public class ChangeFeedTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = initializeFFCFContainer();
         List<FeedRange> feedRanges = cosmosContainer.getFeedRanges();
 
-        String id = UUID.randomUUID().toString();
-        String otherId = UUID.randomUUID().toString();
-
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(feedRanges.get(0));
         options.fullFidelity();
 
         for (int i = 0; i < 10; i++) {
             String itemId = UUID.randomUUID().toString();
-            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer
-                .createItem(new InternalObjectNode().setId(itemId));
-            System.out.println(createResponse.getItem());
+            cosmosContainer.createItem(new InternalObjectNode().setId(itemId));
         }
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
@@ -483,39 +478,35 @@ public class ChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        String continuation = "";
+        String continuationToken = null;
         while (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
-            continuation = response.getContinuationToken();
-            System.out.println(response);
+            continuationToken = response.getContinuationToken();
+            logger.info("Initial results with continuation token {} are {}", continuationToken, response.getResults());
         }
 
         List<String> idList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             String itemId = UUID.randomUUID().toString();
             idList.add(itemId);
-            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer
-                .createItem(new InternalObjectNode().setId(itemId));
-            System.out.println(createResponse.getItem());
+            cosmosContainer.createItem(new InternalObjectNode().setId(itemId));
         }
 
         cosmosContainer.deleteItem(idList.get(0), new PartitionKey(idList.get(0)), new CosmosItemRequestOptions());
 
         options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuation);
+            .createForProcessingFromContinuation(continuationToken);
         options.fullFidelity();
 
-        Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
+        results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
             .iterableByPage()
             .iterator();
 
-        while (results2.hasNext()) {
-            FeedResponse<JsonNode> response = results2.next();
-            System.out.println(response);
+        while (results.hasNext()) {
+            FeedResponse<JsonNode> response = results.next();
+            logger.info("Final results with continuation token {} are {}", response.getContinuationToken(), response.getResults());
         }
-
-
     }
 
     public CosmosContainer initializeFFCFContainer() {
@@ -531,15 +522,15 @@ public class ChangeFeedTest extends TestSuiteBase {
         paths.add("/id");
         partitionKeyDef.setPaths(paths);
 
-        String dbid = UUID.randomUUID().toString();
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties("FFCF_"+dbid);
+        String dbId = "ffcf_testdb";
+        String containerId = "FFCF_Container";
         CosmosContainerProperties containerProperties =
-            new CosmosContainerProperties("FFCF_Container", partitionKeyDef);
+            new CosmosContainerProperties(containerId, partitionKeyDef);
         containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
 
-        CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabase(databaseProperties);
+        CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabaseIfNotExists(dbId);
         CosmosDatabase database = FFCF_client.getDatabase(databaseResponse.getProperties().getId());
-        CosmosContainerResponse containerResponse = database.createContainer(containerProperties);
+        CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerProperties);
 
         return database.getContainer(containerResponse.getProperties().getId());
     }
