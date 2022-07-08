@@ -1,17 +1,16 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.UUID;
 
 public class ChangeFeedProcessorFullFidelityTest {
@@ -39,7 +37,8 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     public static void main(String[] args) {
         setup();
-        runChangeFeedProcessor();
+        //  runFullFidelityChangeFeedProcessorFromBeginning();
+        runFullFidelityChangeFeedProcessorFromNow();
         createItems();
         updateItems();
         deleteItems();
@@ -119,23 +118,42 @@ public class ChangeFeedProcessorFullFidelityTest {
         logger.info("Lease container created if not existed");
     }
 
-    private static void runChangeFeedProcessor() {
+    private static void runFullFidelityChangeFeedProcessorFromBeginning() {
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
         changeFeedProcessorOptions.setStartFromBeginning(true);
-        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+        ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .options(changeFeedProcessorOptions)
             .hostName("example-host")
             .handleChanges(jsonNodes -> {
                 for (JsonNode item : jsonNodes) {
-                    logger.info("Object received in handle : {}", item);
-//                    try {
-//                        Family family = objectMapper.treeToValue(item, Family.class);
-//                        logger.info("Object received in handle : {}", family);
-//                    } catch (JsonProcessingException e) {
-//                        logger.error("Caught exception while processing json node: ", e);
-//                    }
+                    logger.info("BEGINNING : Received : {}", item);
+                }
+            }).buildChangeFeedProcessor();
+
+        logger.info("Starting change feed processor");
+        changeFeedProcessor.start().subscribe();
+        try {
+            logger.info("{} going to sleep for 10 seconds", Thread.currentThread().getName());
+            Thread.sleep(10 * 1000);
+        } catch (InterruptedException e) {
+            logger.error("Error occurred while sleeping", e);
+        }
+        logger.info("Finished starting change feed processor");
+    }
+
+    private static void runFullFidelityChangeFeedProcessorFromNow() {
+        ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+        //  changeFeedProcessorOptions.setStartTime(Instant.now());
+        ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .options(changeFeedProcessorOptions)
+            .hostName("example-host")
+            .handleChanges(jsonNodes -> {
+                for (JsonNode item : jsonNodes) {
+                    logger.info("NOW : Received : {}", item);
                 }
             }).buildChangeFeedProcessor();
 
