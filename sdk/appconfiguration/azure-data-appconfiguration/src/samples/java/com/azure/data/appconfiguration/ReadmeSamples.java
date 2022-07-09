@@ -294,10 +294,10 @@ public class ReadmeSamples {
     public void addSecretReferenceConfigurationSetting() {
         // BEGIN: readme-sample-addSecretReferenceConfigurationSetting
         String key = "{some_key}";
-        String secretIdValue = "{the-keyVault-secret-id-uri}";
+        String keyVaultReference= "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
-            new SecretReferenceConfigurationSetting(key, secretIdValue);
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
 
         SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
             configurationClient.addConfigurationSetting(referenceConfigurationSetting);
@@ -306,10 +306,10 @@ public class ReadmeSamples {
 
     public void updateSecretReferenceConfigurationSetting() {
         String key = "{some_key}";
-        String secretIdValue = "{the-keyVault-secret-id-uri}";
+        String keyVaultReference= "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
-            new SecretReferenceConfigurationSetting(key, secretIdValue);
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
 
         // BEGIN: readme-sample-updateSecretReferenceConfigurationSetting
         SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
@@ -319,10 +319,10 @@ public class ReadmeSamples {
 
     public void getSecretReferenceConfigurationSetting() {
         String key = "{some_key}";
-        String secretIdValue = "{the-keyVault-secret-id-uri}";
+        String keyVaultReference= "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
-            new SecretReferenceConfigurationSetting(key, secretIdValue);
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
 
         // BEGIN: readme-sample-getSecretReferenceConfigurationSetting
         SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
@@ -332,10 +332,10 @@ public class ReadmeSamples {
 
     public void deleteSecretReferenceConfigurationSetting() {
         String key = "{some_key}";
-        String secretIdValue = "{the-keyVault-secret-id-uri}";
+        String keyVaultReference= "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
-            new SecretReferenceConfigurationSetting(key, secretIdValue);
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
 
         // BEGIN: readme-sample-deleteSecretReferenceConfigurationSetting
         SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
