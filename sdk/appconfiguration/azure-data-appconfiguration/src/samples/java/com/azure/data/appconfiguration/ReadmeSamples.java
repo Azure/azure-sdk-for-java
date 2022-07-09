@@ -294,7 +294,7 @@ public class ReadmeSamples {
     public void addSecretReferenceConfigurationSetting() {
         // BEGIN: readme-sample-addSecretReferenceConfigurationSetting
         String key = "{some_key}";
-        String keyVaultReference= "{key_vault_reference}";
+        String keyVaultReference = "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
             new SecretReferenceConfigurationSetting(key, keyVaultReference);
@@ -306,7 +306,7 @@ public class ReadmeSamples {
 
     public void updateSecretReferenceConfigurationSetting() {
         String key = "{some_key}";
-        String keyVaultReference= "{key_vault_reference}";
+        String keyVaultReference = "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
             new SecretReferenceConfigurationSetting(key, keyVaultReference);
@@ -319,7 +319,7 @@ public class ReadmeSamples {
 
     public void getSecretReferenceConfigurationSetting() {
         String key = "{some_key}";
-        String keyVaultReference= "{key_vault_reference}";
+        String keyVaultReference = "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
             new SecretReferenceConfigurationSetting(key, keyVaultReference);
@@ -332,7 +332,7 @@ public class ReadmeSamples {
 
     public void deleteSecretReferenceConfigurationSetting() {
         String key = "{some_key}";
-        String keyVaultReference= "{key_vault_reference}";
+        String keyVaultReference = "{key_vault_reference}";
 
         SecretReferenceConfigurationSetting referenceConfigurationSetting =
             new SecretReferenceConfigurationSetting(key, keyVaultReference);

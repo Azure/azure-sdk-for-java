@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.3.4</version>
+  <version>1.3.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -269,10 +269,10 @@ FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
 ```
 ```java readme-sample-addSecretReferenceConfigurationSetting
 String key = "{some_key}";
-String secretIdValue = "{the-keyVault-secret-id-uri}";
+String keyVaultReference = "{key_vault_reference}";
 
 SecretReferenceConfigurationSetting referenceConfigurationSetting =
-    new SecretReferenceConfigurationSetting(key, secretIdValue);
+    new SecretReferenceConfigurationSetting(key, keyVaultReference);
 
 SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
     configurationClient.addConfigurationSetting(referenceConfigurationSetting);
