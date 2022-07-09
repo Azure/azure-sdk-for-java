@@ -33,18 +33,19 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgerClientImpl;
+import com.azure.security.confidentialledger.implementation.ConfidentialLedgerIdentityClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the ConfidentialLedgerClient type. */
-@ServiceClientBuilder(serviceClients = {ConfidentialLedgerClient.class, ConfidentialLedgerAsyncClient.class})
-public final class ConfidentialLedgerClientBuilder
-        implements HttpTrait<ConfidentialLedgerClientBuilder>,
-                ConfigurationTrait<ConfidentialLedgerClientBuilder>,
-                TokenCredentialTrait<ConfidentialLedgerClientBuilder> {
+/** A builder for creating a new instance of the ConfidentialLedgerIdentityClient type. */
+@ServiceClientBuilder(
+        serviceClients = {ConfidentialLedgerIdentityClient.class, ConfidentialLedgerIdentityAsyncClient.class})
+public final class ConfidentialLedgerIdentityClientBuilder
+        implements HttpTrait<ConfidentialLedgerIdentityClientBuilder>,
+                ConfigurationTrait<ConfidentialLedgerIdentityClientBuilder>,
+                TokenCredentialTrait<ConfidentialLedgerIdentityClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -58,9 +59,9 @@ public final class ConfidentialLedgerClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the ConfidentialLedgerClientBuilder. */
+    /** Create an instance of the ConfidentialLedgerIdentityClientBuilder. */
     @Generated
-    public ConfidentialLedgerClientBuilder() {
+    public ConfidentialLedgerIdentityClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -72,7 +73,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder pipeline(HttpPipeline pipeline) {
+    public ConfidentialLedgerIdentityClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -85,7 +86,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder httpClient(HttpClient httpClient) {
+    public ConfidentialLedgerIdentityClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -98,7 +99,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public ConfidentialLedgerIdentityClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -112,7 +113,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder clientOptions(ClientOptions clientOptions) {
+    public ConfidentialLedgerIdentityClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -125,7 +126,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder retryOptions(RetryOptions retryOptions) {
+    public ConfidentialLedgerIdentityClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -133,7 +134,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public ConfidentialLedgerIdentityClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -147,7 +148,7 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder configuration(Configuration configuration) {
+    public ConfidentialLedgerIdentityClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -160,42 +161,43 @@ public final class ConfidentialLedgerClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public ConfidentialLedgerClientBuilder credential(TokenCredential tokenCredential) {
+    public ConfidentialLedgerIdentityClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
 
     /*
-     * The Confidential Ledger URL, for example
-     * https://contoso.confidentialledger.azure.com
+     * The Identity Service URL, for example
+     * https://identity.accledger.azure.com
      */
-    @Generated private String ledgerUri;
+    @Generated private String identityServiceUri;
 
     /**
-     * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * Sets The Identity Service URL, for example https://identity.accledger.azure.com.
      *
-     * @param ledgerUri the ledgerUri value.
-     * @return the ConfidentialLedgerClientBuilder.
+     * @param identityServiceUri the identityServiceUri value.
+     * @return the ConfidentialLedgerIdentityClientBuilder.
      */
     @Generated
-    public ConfidentialLedgerClientBuilder ledgerUri(String ledgerUri) {
-        this.ledgerUri = ledgerUri;
+    public ConfidentialLedgerIdentityClientBuilder identityServiceUri(String identityServiceUri) {
+        this.identityServiceUri = identityServiceUri;
         return this;
     }
 
     /*
      * Service version
      */
-    @Generated private ConfidentialLedgerServiceVersion serviceVersion;
+    @Generated private ConfidentialLedgerIdentityServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the ConfidentialLedgerClientBuilder.
+     * @return the ConfidentialLedgerIdentityClientBuilder.
      */
     @Generated
-    public ConfidentialLedgerClientBuilder serviceVersion(ConfidentialLedgerServiceVersion serviceVersion) {
+    public ConfidentialLedgerIdentityClientBuilder serviceVersion(
+            ConfidentialLedgerIdentityServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -210,30 +212,30 @@ public final class ConfidentialLedgerClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the ConfidentialLedgerClientBuilder.
+     * @return the ConfidentialLedgerIdentityClientBuilder.
      */
     @Generated
-    public ConfidentialLedgerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public ConfidentialLedgerIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of ConfidentialLedgerClientImpl with the provided parameters.
+     * Builds an instance of ConfidentialLedgerIdentityClientImpl with the provided parameters.
      *
-     * @return an instance of ConfidentialLedgerClientImpl.
+     * @return an instance of ConfidentialLedgerIdentityClientImpl.
      */
     @Generated
-    private ConfidentialLedgerClientImpl buildInnerClient() {
+    private ConfidentialLedgerIdentityClientImpl buildInnerClient() {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serviceVersion == null) {
-            this.serviceVersion = ConfidentialLedgerServiceVersion.getLatest();
+            this.serviceVersion = ConfidentialLedgerIdentityServiceVersion.getLatest();
         }
-        ConfidentialLedgerClientImpl client =
-                new ConfidentialLedgerClientImpl(
-                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerUri, serviceVersion);
+        ConfidentialLedgerIdentityClientImpl client =
+                new ConfidentialLedgerIdentityClientImpl(
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), identityServiceUri, serviceVersion);
         return client;
     }
 
@@ -286,22 +288,22 @@ public final class ConfidentialLedgerClientBuilder
     }
 
     /**
-     * Builds an instance of ConfidentialLedgerAsyncClient class.
+     * Builds an instance of ConfidentialLedgerIdentityAsyncClient class.
      *
-     * @return an instance of ConfidentialLedgerAsyncClient.
+     * @return an instance of ConfidentialLedgerIdentityAsyncClient.
      */
     @Generated
-    public ConfidentialLedgerAsyncClient buildAsyncClient() {
-        return new ConfidentialLedgerAsyncClient(buildInnerClient());
+    public ConfidentialLedgerIdentityAsyncClient buildAsyncClient() {
+        return new ConfidentialLedgerIdentityAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of ConfidentialLedgerClient class.
+     * Builds an instance of ConfidentialLedgerIdentityClient class.
      *
-     * @return an instance of ConfidentialLedgerClient.
+     * @return an instance of ConfidentialLedgerIdentityClient.
      */
     @Generated
-    public ConfidentialLedgerClient buildClient() {
-        return new ConfidentialLedgerClient(new ConfidentialLedgerAsyncClient(buildInnerClient()));
+    public ConfidentialLedgerIdentityClient buildClient() {
+        return new ConfidentialLedgerIdentityClient(new ConfidentialLedgerIdentityAsyncClient(buildInnerClient()));
     }
 }
