@@ -8,6 +8,12 @@
     "testApplicationSecret": {
       "type": "string"
     },
+    "subscriptionId": {
+      "type": "string"
+    },
+    "tenantId": {
+      "type": "string"
+    },
     "baseName": {
       "type": "string",
       "defaultValue": "[resourceGroup().name]",
@@ -27,6 +33,7 @@
     "apiVersion": "2020-03-01",
     "accountName": "[toLower(parameters('baseName'))]",
     "databaseName": "TestDB",
+    "containerName": "Users",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
   },
   "resources": [
@@ -41,14 +48,107 @@
           "defaultConsistencyLevel": "Session"
         }
       }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+      "apiVersion": "2021-10-15",
+      "name": "sqlRoleDefinitionsName",
+      "properties": {
+        "assignableScopes": [ "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[variables('accountName')]" ],
+        "permissions": [
+          {
+            "dataActions": [
+              "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*",
+              "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*"
+            ]
+          }
+        ],
+        "type": "BuiltInRole"
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments",
+      "apiVersion": "2021-10-15",
+      "name": "sqlRoleAssignmentsName",
+      "properties": {
+        "principalId": "[parameters('tenantId')]",
+        "roleDefinitionId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/5bd9cd88-fe45-4216-938b-f97437e15450",
+        "scope": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[variables('accountName')]"
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+      "name": "[variables('databaseName')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
+      ],
+      "properties": {
+        "resource": {
+          "id": "[variables('databaseName')]"
+        },
+        "options": {
+          "throughput": "400"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+      "apiVersion": "2020-03-01",
+      "name": "[variables('containerName')]",
+      "location": "string",
+      "properties": {
+        "options": {
+          "throughput": "400"
+        },
+        "resource": {
+          "defaultTtl": 86400,
+          "id": "[variables('containerName')]",
+          "indexingPolicy": {
+            "compositeIndexes": [
+              {
+                "order": "ascending",
+                "path": "/id"
+              }
+            ],
+            "excludedPaths": [
+              {
+                "path": "/myPathToNotIndex/*"
+              }
+            ],
+            "includedPaths": [
+              {
+                "path": "/*"
+              }
+            ],
+            "indexingMode": "consistent",
+            "spatialIndexes": [
+              {
+                "path": "/location/*",
+                "types": [
+                  "Point",
+                  "Polygon",
+                  "MultiPolygon",
+                  "LineString"
+                ]
+              }
+            ]
+          },
+          "partitionKey": {
+            "kind": "Hash",
+            "paths": [ "/myPartitionKey" ]
+          }
+        }
+      }
     }
   ],
   "outputs": {
-    "COSMOS_CLIENT_ID": {
+    "AZURE_SPRING_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationID')]"
     },
-    "COSMOS_CLIENT_SECRET": {
+    "AZURE_SPRING_CLIENT_SECRET": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },

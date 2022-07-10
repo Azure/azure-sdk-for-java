@@ -3,7 +3,6 @@ package com.azure.spring.cloud.integration.tests.cosmos;
 
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.junit.jupiter.api.Assertions;
@@ -19,9 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("cosmos")
 public class CosmosIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosIT.class);
-    private final String databaseName = "products";
-    private final String containerName = "users";
-    private final String partitionKeyPath = "/country";
+    private final String databaseName = "TestDB";
+    private final String containerName = "Users";
 
     @Autowired
     private CosmosClient client;
@@ -29,22 +27,13 @@ public class CosmosIT {
     @Test
     public void testCosmosOperation() {
         LOGGER.info("CosmosIT begin.");
-        LOGGER.info("Start creating cosmos database");
-        client.createDatabaseIfNotExists(databaseName);
-        CosmosDatabase database = client.getDatabase(databaseName);
-        Assertions.assertNotNull(database);
-        LOGGER.info("Finish creating cosmos database");
-        LOGGER.info("Start creating cosmos container");
-        database.createContainerIfNotExists(containerName, partitionKeyPath);
-        CosmosContainer container = database.getContainer(containerName);
-        Assertions.assertNotNull(container);
-        LOGGER.info("Finish creating cosmos container");
-        final User testUser = new User(
+        User testUser = new User(
             "testId",
             "testFirstName",
             "testLastName",
             "test address line one"
         );
+        CosmosContainer container = client.getDatabase(databaseName).getContainer(containerName);
         container.createItem(testUser);
         CosmosPagedIterable<User> users = container.queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(),
             User.class);

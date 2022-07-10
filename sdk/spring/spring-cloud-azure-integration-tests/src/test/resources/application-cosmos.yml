@@ -4,5 +4,5 @@ spring:
       cosmos:
         endpoint: ${AZURE_COSMOS_ENDPOINT}
         credential:
-          client-id: ${COSMOS_CLIENT_ID}
-          client-secret: ${COSMOS_CLIENT_SECRET}
+          client-id: ${AZURE_SPRING_CLIENT_ID}
+          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
