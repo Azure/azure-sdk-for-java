@@ -13,13 +13,11 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
 
-
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Answers.RETURNS_SMART_NULLS;
@@ -146,6 +144,7 @@ public class JedisRedisCheckpointStoreTests {
             })
             .verifyComplete();
     }
+
     @Test
     public void testClaimOwnershipNonEmptyField() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
@@ -167,6 +166,7 @@ public class JedisRedisCheckpointStoreTests {
             })
             .verifyComplete();
     }
+
     @Test
     public void transactionFailsClaimOwnership() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
@@ -180,6 +180,7 @@ public class JedisRedisCheckpointStoreTests {
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
             .expectError(RuntimeException.class);
     }
+
     @Test
     public void testUpdateCheckpoint() {
         Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
@@ -190,7 +191,8 @@ public class JedisRedisCheckpointStoreTests {
         StepVerifier.create(store.updateCheckpoint(checkpoint))
             .verifyComplete();
     }
-    private PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
+
+    private static PartitionOwnership createPartitionOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
         return new PartitionOwnership()
             .setFullyQualifiedNamespace(fullyQualifiedNamespace)
             .setEventHubName(eventHubName)
@@ -199,7 +201,8 @@ public class JedisRedisCheckpointStoreTests {
             .setOwnerId("ownerOne")
             .setETag("eTag");
     }
-    private Checkpoint createCheckpoint(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
+
+    private static Checkpoint createCheckpoint(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
         return new Checkpoint()
             .setFullyQualifiedNamespace(fullyQualifiedNamespace)
             .setEventHubName(eventHubName)
