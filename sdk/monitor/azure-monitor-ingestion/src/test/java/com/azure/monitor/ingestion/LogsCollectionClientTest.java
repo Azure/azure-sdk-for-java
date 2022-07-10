@@ -48,6 +48,9 @@ public class LogsCollectionClientTest extends TestBase {
         dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-adec84661d05465f8532f32a04af6f98");
         streamName = "Custom-MyTableRawData";
 
+        System.out.println("DCE " + dataCollectionEndpoint);
+        System.out.println("DCR " + dataCollectionRuleId);
+
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
@@ -114,6 +117,11 @@ public class LogsCollectionClientTest extends TestBase {
         UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(UploadLogsStatus.SUCCESS, result.getStatus());
         assertEquals(2, count.get());
+
+        if (result.getErrors() != null) {
+            result.getErrors()
+                    .forEach(error -> System.out.println("ERROR " + error.getResponseError().getMessage()));
+        }
     }
 
     @Test

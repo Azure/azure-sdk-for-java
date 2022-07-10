@@ -205,7 +205,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "[variables('authorizationApiVersion')]",
-      "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
+      "name": "[guid(concat('dcrRoleId', parameters('dataCollectionRuleName')))]",
       "dependsOn": [
         "[resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleName'))]"
       ],
