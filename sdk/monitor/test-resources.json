@@ -66,6 +66,7 @@
     },
     "dataCollectionEndpointName": {
       "type": "string",
+      "defaultValue": "azmonitordce",
       "metadata": {
         "description": "Specifies the name of the Data Collection Endpoint to create."
       }
@@ -84,12 +85,14 @@
     },
     "dataCollectionRuleName": {
       "type": "string",
+      "defaultValue": "azmonitordcr",
       "metadata": {
         "description": "Specifies the name of the Data Collection Rule to create."
       }
     },
     "workspaceName": {
       "type": "String",
+      "defaultValue": "azmonitorlogsws",
       "metadata": {
         "description": "Specifies the Log Analytics workspace name to use."
       }
