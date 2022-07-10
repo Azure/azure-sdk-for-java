@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
@@ -70,6 +72,7 @@ public class LogsCollectionClientTest extends TestBase {
             clientBuilder.credential(getCredential());
         }
         this.clientBuilder = clientBuilder
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .endpoint(dataCollectionEndpoint);
     }
 
