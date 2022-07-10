@@ -111,6 +111,7 @@
     "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
     "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
     "dcrRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/3913510d-42f4-4e42-8a64-420c390055eb')]",
+    "dcrRoleName": "[concat('dcrrole', parameters('baseName'))]"
   },
   "resources": [
     {
@@ -205,7 +206,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "[variables('authorizationApiVersion')]",
-      "name": "[guid(concat('dcrRoleId', parameters('dataCollectionRuleName')))]",
+      "name": "[guid(concat('dcrRoleId', variables('dcrRoleName')))]",
       "dependsOn": [
         "[resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleName'))]"
       ],
