@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -34,6 +35,7 @@ import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -46,6 +48,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -193,6 +196,37 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
+     * Creates a new block blob. By default, this method will not overwrite an existing blob. Updating an existing block
+     * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
+     * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
+     * PutBlock and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData -->
+     * <pre>
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.upload&#40;binaryData&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *             Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData -->
+     *
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data) {
+        return upload(data, false);
+    }
+
+    /**
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
      * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
      * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
@@ -227,6 +261,46 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return uploadWithResponse(data, length, null, null, null, null, blobRequestConditions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use PutBlock
+     * and PutBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.upload&#40;binaryData, overwrite&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean -->
+     *
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlockBlobItem> upload(BinaryData data, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return uploadWithResponse(
+            new BlockBlobSimpleUploadOptions(data)
+                .setRequestConditions(blobRequestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -341,31 +415,39 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-            options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-            .subscribeOn(Schedulers.boundedElastic())
-            : options.getDataFlux();
+        Mono<BinaryData> dataMono;
+        BinaryData binaryData = options.getData();
+        if (binaryData == null) {
+            Flux<ByteBuffer> dataFlux = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
+                .subscribeOn(Schedulers.boundedElastic())
+                : options.getDataFlux();
+            dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
+        } else {
+            dataMono = Mono.just(binaryData);
+        }
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
-        context = context == null ? Context.NONE : context;
+        Context finalContext = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
-            options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
-            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return dataMono.flatMap(data ->
+            this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
+                options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
+                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+                encryptionScope, finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
                     hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
                     hd.getXMsVersionId());
                 return new SimpleResponse<>(rb, item);
-            });
+            }));
     }
 
     /**
@@ -527,6 +609,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -551,6 +634,38 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlock(String base64BlockId, Flux<ByteBuffer> data, long length) {
         return stageBlockWithResponse(base64BlockId, data, length, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
+     *
+     * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
+     * ids for a given blob must be the same length.
+     * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     *
+     * @return A reactive response signalling completion.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData -->
+     * <pre>
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.stageBlock&#40;base64BlockID, binaryData&#41;&#41;
+     *     .subscribe&#40;
+     *         response -&gt; System.out.println&#40;&quot;Staging block completed&quot;&#41;,
+     *         error -&gt; System.out.printf&#40;&quot;Error when calling stage Block: %s&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData -->
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stageBlock(String base64BlockId, BinaryData data) {
+        return stageBlockWithResponse(new BlockBlobStageBlockOptions(base64BlockId, data)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -595,12 +710,60 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    /**
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions -->
+     * <pre>
+     * BinaryData.fromFlux&#40;data, length, false&#41;
+     *     .flatMap&#40;binaryData -&gt; client.stageBlockWithResponse&#40;
+     *         new BlockBlobStageBlockOptions&#40;base64BlockID, binaryData&#41;
+     *             .setContentMd5&#40;md5&#41;
+     *             .setLeaseId&#40;leaseId&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions -->
+     *
+     * @param options {@link BlockBlobStageBlockOptions}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
+        Objects.requireNonNull(options, "options must not be null");
+        try {
+            return withContext(context -> stageBlockWithResponse(
+                options.getBase64BlockId(), options.getData(),
+                options.getContentMd5(), options.getLeaseId(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
+        return BinaryData.fromFlux(data, length, false)
+            .flatMap(
+                binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
+    }
+
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data,
+        byte[] contentMd5, String leaseId, Context context) {
+        Objects.requireNonNull(data, "data must not be null");
+        Objects.requireNonNull(data.getLength(), "data must have defined length");
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
-            base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                base64BlockId, data.getLength(), data, contentMd5, null, null,
+                leaseId, null, getCustomerProvidedKey(),
+                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
