@@ -41,6 +41,8 @@
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.implementation=ALL-UNNAMED
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration=ALL-UNNAMED
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
+
+      --add-reads com.azure.messaging.servicebus=com.azure.http.netty
     </javaModulesSurefireArgLine>
   </properties>
 

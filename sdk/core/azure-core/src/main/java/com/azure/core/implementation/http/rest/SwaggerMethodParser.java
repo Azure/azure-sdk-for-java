@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.util.Base64Url;
@@ -148,9 +147,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             swaggerMethod.getAnnotation(ReturnValueWireType.class);
         if (returnValueWireTypeAnnotation != null) {
             Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
-            if (returnValueWireType == Base64Url.class
-                || returnValueWireType == UnixTime.class
-                || returnValueWireType == DateTimeRfc1123.class) {
+            if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
             } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
                 this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];

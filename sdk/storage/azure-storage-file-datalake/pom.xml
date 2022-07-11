@@ -51,8 +51,6 @@
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.models=ALL-UNNAMED
       --add-opens com.azure.storage.file.datalake/com.azure.storage.file.datalake.specialized=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.amqp=ALL-UNNAMED
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.blob=ALL-UNNAMED
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED

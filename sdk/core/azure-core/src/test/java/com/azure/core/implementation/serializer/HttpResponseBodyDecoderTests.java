@@ -14,7 +14,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Base64Url;
@@ -255,10 +254,9 @@ public class HttpResponseBodyDecoderTests {
 
         HttpResponseDecodeData unixTimeDecodeData = mock(HttpResponseDecodeData.class);
         when(unixTimeDecodeData.getReturnType()).thenReturn(OffsetDateTime.class);
-        when(unixTimeDecodeData.getReturnValueWireType()).thenReturn(UnixTime.class);
+        when(unixTimeDecodeData.getReturnValueWireType()).thenReturn(OffsetDateTime.class);
         when(unixTimeDecodeData.isExpectedResponseStatusCode(200)).thenReturn(true);
-        UnixTime unixTimeNow = new UnixTime(offsetDateTimeNow);
-        HttpResponse unixTimeResponse = new MockHttpResponse(GET_REQUEST, 200, unixTimeNow);
+        HttpResponse unixTimeResponse = new MockHttpResponse(GET_REQUEST, 200, offsetDateTimeNow);
 
         ParameterizedType stringList = mockParameterizedType(List.class, String.class);
         HttpResponseDecodeData stringListDecodeData = mock(HttpResponseDecodeData.class);
@@ -281,8 +279,7 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of(offsetDateTimeResponse, offsetDateTimeDecodeData, offsetDateTimeNow),
             Arguments.of(dateTimeRfc1123Response, dateTimeRfc1123DecodeData,
                 new DateTimeRfc1123(dateTimeRfc1123Now.toString()).getDateTime()),
-            Arguments.of(unixTimeResponse, unixTimeDecodeData,
-                new UnixTime(Long.parseLong(unixTimeNow.toString())).getDateTime()),
+            Arguments.of(unixTimeResponse, unixTimeDecodeData, offsetDateTimeNow),
             Arguments.of(stringListResponse, stringListDecodeData, list),
             Arguments.of(mapStringStringResponse, mapStringStringDecodeData, map)
         );

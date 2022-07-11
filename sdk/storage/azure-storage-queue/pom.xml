@@ -45,8 +45,6 @@
       --add-opens com.azure.storage.queue/com.azure.storage.queue.implementation.util=ALL-UNNAMED
       --add-opens com.azure.storage.queue/com.azure.storage.queue.models=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.amqp=ALL-UNNAMED
       --add-reads com.azure.storage.common=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>

@@ -27,7 +27,6 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.rest.ErrorOptions;
 import com.azure.core.implementation.http.rest.MissingRequiredAnnotationException;
 import com.azure.core.implementation.http.rest.SwaggerMethodParser;
@@ -137,10 +136,6 @@ public class SwaggerMethodParserTests {
         void base64Url();
 
         @Get("test")
-        @ReturnValueWireType(UnixTime.class)
-        void unixTime();
-
-        @Get("test")
         @ReturnValueWireType(DateTimeRfc1123.class)
         void dateTimeRfc1123();
 
@@ -166,7 +161,6 @@ public class SwaggerMethodParserTests {
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
             Arguments.of(clazz.getDeclaredMethod("base64Url"), Base64Url.class),
-            Arguments.of(clazz.getDeclaredMethod("unixTime"), UnixTime.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("page"), Page.class),
             Arguments.of(clazz.getDeclaredMethod("unknownType"), null)
