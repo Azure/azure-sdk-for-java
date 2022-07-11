@@ -9,8 +9,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
@@ -48,9 +46,6 @@ public class LogsCollectionClientTest extends TestBase {
         dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-adec84661d05465f8532f32a04af6f98");
         streamName = "Custom-MyTableRawData";
 
-        System.out.println("DCE " + dataCollectionEndpoint);
-        System.out.println("DCR " + dataCollectionRuleId);
-
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
                     @Override
@@ -75,7 +70,6 @@ public class LogsCollectionClientTest extends TestBase {
             clientBuilder.credential(getCredential());
         }
         this.clientBuilder = clientBuilder
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .endpoint(dataCollectionEndpoint);
     }
 
@@ -117,11 +111,6 @@ public class LogsCollectionClientTest extends TestBase {
         UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(UploadLogsStatus.SUCCESS, result.getStatus());
         assertEquals(2, count.get());
-
-        if (result.getErrors() != null) {
-            result.getErrors()
-                    .forEach(error -> System.out.println("ERROR " + error.getResponseError().getMessage()));
-        }
     }
 
     @Test
