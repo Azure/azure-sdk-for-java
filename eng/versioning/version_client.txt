@@ -58,7 +58,7 @@ com.azure:azure-aot-graalvm-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-aot-graalvm-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-chat;1.2.3;1.3.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-communication-common;1.1.4;1.1.5
+com.azure:azure-communication-common;1.1.5;1.2.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.3;1.2.0-beta.1
 com.azure:azure-communication-identity;1.1.10;1.2.0-beta.2
