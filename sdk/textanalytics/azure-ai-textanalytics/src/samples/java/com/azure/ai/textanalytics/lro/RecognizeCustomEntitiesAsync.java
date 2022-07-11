@@ -5,13 +5,9 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
@@ -48,24 +44,17 @@ public class RecognizeCustomEntitiesAsync {
 
         // See the service documentation for regional support and how to train a model to recognize the custom entities,
         // see https://aka.ms/azsdk/textanalytics/customentityrecognition
-        client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                .setRecognizeCustomEntitiesActions(
-                    new RecognizeCustomEntitiesAction("{project_name}", "{deployment_name}")),
-            "en",
+        client.beginRecognizeCustomEntities(documents, "{project_name}", "{deployment_name}", "en",
             null)
-            .flatMap(result -> {
-                AnalyzeActionsOperationDetail operationDetail = result.getValue();
-                System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
-                                      + " failed actions: %d, total actions: %d%n",
-                    operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
-                    operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
-                    operationDetail.getTotalCount());
-                return result.getFinalResult();
+            .flatMap(pollResult -> {
+                RecognizeCustomEntitiesOperationDetail operationResult = pollResult.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationResult.getCreatedAt(), operationResult.getExpiresAt());
+                return pollResult.getFinalResult();
             })
-            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
+            .flatMap(analyzeHealthcareEntitiesPagedFlux -> analyzeHealthcareEntitiesPagedFlux.byPage())
             .subscribe(
-                perPage -> processAnalyzeActionsResult(perPage),
+                perPage -> processResult(perPage),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
 
@@ -79,32 +68,24 @@ public class RecognizeCustomEntitiesAsync {
         }
     }
 
-    private static void processAnalyzeActionsResult(PagedResponse<AnalyzeActionsResult> perPage) {
+    private static void processResult(PagedResponse<RecognizeCustomEntitiesResultCollection> perPage) {
         System.out.printf("Response code: %d, Continuation Token: %s.%n",
             perPage.getStatusCode(), perPage.getContinuationToken());
 
-        for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-            for (RecognizeCustomEntitiesActionResult actionResult : actionsResult.getRecognizeCustomEntitiesResults()) {
-                if (!actionResult.isError()) {
-                    RecognizeCustomEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
-                    System.out.printf("Project name: %s, deployment name: %s.%n",
-                        documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                    for (RecognizeEntitiesResult documentResult : documentsResults) {
-                        System.out.println("Document ID: " + documentResult.getId());
-                        if (!documentResult.isError()) {
-                            for (CategorizedEntity entity : documentResult.getEntities()) {
-                                System.out.printf(
-                                    "\tText: %s, category: %s, confidence score: %f.%n",
-                                    entity.getText(), entity.getCategory(), entity.getConfidenceScore());
-                            }
-                        } else {
-                            System.out.printf("\tCannot recognize custom entities. Error: %s%n",
-                                documentResult.getError().getMessage());
-                        }
+        for (RecognizeCustomEntitiesResultCollection documentsResults : perPage.getElements()) {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (RecognizeEntitiesResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                if (!documentResult.isError()) {
+                    for (CategorizedEntity entity : documentResult.getEntities()) {
+                        System.out.printf(
+                            "\tText: %s, category: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
                     }
                 } else {
-                    System.out.printf("\tCannot execute 'RecognizeCustomEntitiesAction'. Error: %s%n",
-                        actionResult.getError().getMessage());
+                    System.out.printf("\tCannot recognize custom entities. Error: %s%n",
+                        documentResult.getError().getMessage());
                 }
             }
         }

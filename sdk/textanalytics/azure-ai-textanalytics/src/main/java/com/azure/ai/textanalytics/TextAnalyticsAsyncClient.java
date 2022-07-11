@@ -10,7 +10,6 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -19,9 +18,12 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -32,10 +34,11 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.LabelClassifyPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassifyPagedFlux;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -1761,9 +1764,6 @@ public final class TextAnalyticsAsyncClient {
         return analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
     }
 
-
-    // Single Category
-
     /**
      * a
      *
@@ -1775,9 +1775,44 @@ public final class TextAnalyticsAsyncClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux>
+        beginRecognizeCustomEntities(Iterable<String> documents, String projectName,
+            String deploymentName, String language, RecognizeCustomEntitiesOptions options) {
+        return null;
+    }
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedFlux>
+    beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName,
+        String deploymentName, RecognizeCustomEntitiesOptions options) {
+        return null;
+    }
+
+    // Single Category
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param language
+     * @param options
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<LabelClassifyOperationDetail, LabelClassifyPagedFlux>
-        beginSingleLabelClassify(Iterable<String> documents, String language,
-            String projectName, String deploymentName, SingleLabelClassifyOptions options) {
+        beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
+            String language, SingleLabelClassifyOptions options) {
         return null;
     }
 
@@ -1803,16 +1838,16 @@ public final class TextAnalyticsAsyncClient {
      *  a
      *
      * @param documents
-     * @param language
      * @param projectName
      * @param deploymentName
+     * @param language
      * @param options
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<LabelClassifyOperationDetail, LabelClassifyPagedFlux>
-        beginMultiLabelClassify(Iterable<String> documents, String language,
-            String projectName, String deploymentName, MultiLabelClassifyOptions options) {
+        beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
+            String language, MultiLabelClassifyOptions options) {
         return null;
     }
 

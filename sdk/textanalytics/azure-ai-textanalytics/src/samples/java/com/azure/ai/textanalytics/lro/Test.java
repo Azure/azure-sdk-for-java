@@ -31,6 +31,16 @@ public class Test {
         multiClassification();
     }
 
+    public static void customEntitiesRecognitionStringInput() {
+        TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
+                                              .credential(new AzureKeyCredential("{key}"))
+                                              .endpoint("{endpoint}")
+                                              .buildAsyncClient();
+    }
+
+    public static void customEntitiesRecognition() {
+
+    }
 
     public static void singleClassificationStringInput() {
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
@@ -49,7 +59,7 @@ public class Test {
         SingleLabelClassifyOptions options = new SingleLabelClassifyOptions()
                                                      .setServiceLogsDisabled(true);
 
-        client.beginSingleLabelClassify(documents, "en", "{project_name}", "{deployment_name}", options)
+        client.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}", "en", options)
             .flatMap(pollResult -> {
                 LabelClassifyOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
@@ -153,7 +163,7 @@ public class Test {
 
         final MultiLabelClassifyOptions multiLabelClassifyOptions = new MultiLabelClassifyOptions();
 
-        client.beginMultiLabelClassify(documents, "en", "{project_name}", "{deployment_name}",
+        client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}", "en",
             multiLabelClassifyOptions)
             .flatMap(pollResult -> {
                 LabelClassifyOperationDetail operationResult = pollResult.getValue();

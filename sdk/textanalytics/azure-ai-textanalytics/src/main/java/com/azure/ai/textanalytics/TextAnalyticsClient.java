@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
-import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -16,9 +14,13 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -30,9 +32,10 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.LabelClassifyPagedIterable;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.LabelClassifyPagedIterable;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -1669,9 +1672,43 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable>
+        beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName,
+            String language, RecognizeCustomEntitiesOptions options) {
+        return null;
+    }
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param options
+     * @param context
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable>
+        beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName,
+            String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
+        return null;
+    }
+
+    /**
+     * a
+     *
+     * @param documents
+     * @param projectName
+     * @param deploymentName
+     * @param language
+     * @param options
+     * @return
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
-        beginSingleLabelClassify(Iterable<String> documents, String language, String projectName,
-            String deploymentName, SingleLabelClassifyOptions options) {
+        beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
+            String language, SingleLabelClassifyOptions options) {
         return null;
     }
 
@@ -1692,24 +1729,22 @@ public final class TextAnalyticsClient {
         return null;
     }
 
-
     /**
      * a
      *
      * @param documents
-     * @param language
      * @param projectName
      * @param deploymentName
+     * @param language
      * @param options
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
-        beginMultiLabelClassify(Iterable<String> documents, String language, String projectName,
-            String deploymentName, MultiLabelClassifyOptions options) {
+        beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
+            String language, MultiLabelClassifyOptions options) {
         return null;
     }
-
 
     /**
      * a

@@ -51,7 +51,7 @@ public class TestSync {
 
         SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable> syncPoller =
             client.beginSingleLabelClassify(documents,
-                "en", "{project_name}", "{deployment_name}", options);
+                "{project_name}", "{deployment_name}", "en", options);
 
         syncPoller.waitForCompletion();
 
@@ -123,7 +123,7 @@ public class TestSync {
         final MultiLabelClassifyOptions multiLabelClassifyOptions = new MultiLabelClassifyOptions();
 
         final SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable> syncPoller =
-            client.beginMultiLabelClassify(documents, "en", "{project_name}", "{deployment_name}",
+            client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}", "en",
                 multiLabelClassifyOptions);
 
         syncPoller.waitForCompletion();

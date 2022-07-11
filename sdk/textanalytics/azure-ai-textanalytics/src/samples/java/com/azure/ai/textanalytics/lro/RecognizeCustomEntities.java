@@ -5,14 +5,10 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -47,38 +43,27 @@ public class RecognizeCustomEntities {
 
         // See the service documentation for regional support and how to train a model to recognize the custom entities,
         // see https://aka.ms/azsdk/textanalytics/customentityrecognition
-        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-            client.beginAnalyzeActions(documents,
-                new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setRecognizeCustomEntitiesActions(
-                        new RecognizeCustomEntitiesAction("{project_name}", "{deployment_name}")),
-                "en",
+        SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable> syncPoller =
+            client.beginRecognizeCustomEntities(documents, "en",
+              "{project_name}", "{deployment_name}",
                 null);
 
         syncPoller.waitForCompletion();
 
-        syncPoller.getFinalResult().forEach(actionsResult -> {
-            for (RecognizeCustomEntitiesActionResult actionResult : actionsResult.getRecognizeCustomEntitiesResults()) {
-                if (!actionResult.isError()) {
-                    RecognizeCustomEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
-                    System.out.printf("Project name: %s, deployment name: %s.%n",
-                        documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                    for (RecognizeEntitiesResult documentResult : documentsResults) {
-                        System.out.println("Document ID: " + documentResult.getId());
-                        if (!documentResult.isError()) {
-                            for (CategorizedEntity entity : documentResult.getEntities()) {
-                                System.out.printf(
-                                    "\tText: %s, category: %s, confidence score: %f.%n",
-                                    entity.getText(), entity.getCategory(), entity.getConfidenceScore());
-                            }
-                        } else {
-                            System.out.printf("\tCannot recognize custom entities. Error: %s%n",
-                                documentResult.getError().getMessage());
-                        }
+        syncPoller.getFinalResult().forEach(documentsResults -> {
+            System.out.printf("Project name: %s, deployment name: %s.%n",
+                documentsResults.getProjectName(), documentsResults.getDeploymentName());
+            for (RecognizeEntitiesResult documentResult : documentsResults) {
+                System.out.println("Document ID: " + documentResult.getId());
+                if (!documentResult.isError()) {
+                    for (CategorizedEntity entity : documentResult.getEntities()) {
+                        System.out.printf(
+                            "\tText: %s, category: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getConfidenceScore());
                     }
                 } else {
-                    System.out.printf("\tCannot execute 'RecognizeCustomEntitiesAction'. Error: %s%n",
-                        actionResult.getError().getMessage());
+                    System.out.printf("\tCannot recognize custom entities. Error: %s%n",
+                        documentResult.getError().getMessage());
                 }
             }
         });
