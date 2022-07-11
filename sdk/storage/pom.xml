@@ -23,8 +23,6 @@
         <module>azure-storage-internal-avro</module>
         <module>azure-storage-queue</module>
         <module>azure-storage-datamover</module>
-        <module>azure-storage-datamover-blob</module>
-        <module>azure-storage-datamover-file-share</module>
         <module>azure-storage-datamover-s3</module>
         <module>azure-storage-datamover-sample</module>
       </modules>
@@ -114,8 +112,6 @@
         <module>microsoft-azure-storage-blob</module>
         <module>microsoft-azure-storage-perf</module>
         <module>azure-storage-datamover</module>
-        <module>azure-storage-datamover-blob</module>
-        <module>azure-storage-datamover-file-share</module>
         <module>azure-storage-datamover-s3</module>
         <module>azure-storage-datamover-sample</module>
       </modules>

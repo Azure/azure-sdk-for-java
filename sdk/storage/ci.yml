@@ -21,8 +21,6 @@ trigger:
       - sdk/storage/azure-storage-perf/
       - sdk/storage/azure-storage-queue/
       - sdk/storage/azure-storage-datamover/
-      - sdk/storage/azure-storage-datamover-blob/
-      - sdk/storage/azure-storage-datamover-file-share/
       - sdk/storage/azure-storage-datamover-s3/
       - sdk/storage/azure-storage-datamover-sample/
     exclude:
@@ -39,8 +37,6 @@ trigger:
       - sdk/storage/azure-storage-perf/pom.xml
       - sdk/storage/azure-storage-queue/pom.xml
       - sdk/storage/azure-storage-datamover/pom.xml
-      - sdk/storage/azure-storage-datamover-blob/pom.xml
-      - sdk/storage/azure-storage-datamover-file-share/pom.xml
       - sdk/storage/azure-storage-datamover-s3/pom.xml
       - sdk/storage/azure-storage-datamover-sample/pom.xml
 
@@ -66,8 +62,6 @@ pr:
       - sdk/storage/azure-storage-perf/
       - sdk/storage/azure-storage-queue/
       - sdk/storage/azure-storage-datamover/
-      - sdk/storage/azure-storage-datamover-blob/
-      - sdk/storage/azure-storage-datamover-file-share/
       - sdk/storage/azure-storage-datamover-s3/
       - sdk/storage/azure-storage-datamover-sample/
     exclude:
@@ -84,8 +78,6 @@ pr:
       - sdk/storage/azure-storage-perf/pom.xml
       - sdk/storage/azure-storage-queue/pom.xml
       - sdk/storage/azure-storage-datamover/pom.xml
-      - sdk/storage/azure-storage-datamover-blob/pom.xml
-      - sdk/storage/azure-storage-datamover-file-share/pom.xml
       - sdk/storage/azure-storage-datamover-s3/pom.xml
       - sdk/storage/azure-storage-datamover-sample/pom.xml
 
@@ -132,14 +124,6 @@ parameters:
   default: true
 - name: release_azurestoragedatamover
   displayName: 'azure-storage-datamover'
-  type: boolean
-  default: true
-- name: release_azurestoragedatamoverblob
-  displayName: 'azure-storage-datamover-blob'
-  type: boolean
-  default: true
-- name: release_azurestoragedatamoverfileshare
-  displayName: 'azure-storage-datamover-file-share'
   type: boolean
   default: true
 - name: release_azurestoragedatamovers3
@@ -203,14 +187,6 @@ extends:
         groupId: com.azure
         safeName: azurestoragedatamover
         releaseInBatch: ${{ parameters.release_azurestoragedatamover }}
-      - name: azure-storage-datamover-blob
-        groupId: com.azure
-        safeName: azurestoragedatamoverblob
-        releaseInBatch: ${{ parameters.release_azurestoragedatamoverblob }}
-      - name: azure-storage-datamover-file-share
-        groupId: com.azure
-        safeName: azurestoragedatamoverfileshare
-        releaseInBatch: ${{ parameters.release_azurestoragedatamoverfileshare }}
       - name: azure-storage-datamover-s3
         groupId: com.azure
         safeName: azurestoragedatamovers3

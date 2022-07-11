@@ -1,4 +1,4 @@
-package com.azure.storage.datamover.blob;
+package com.azure.storage.blob.resource;
 
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.common.resource.StorageResource;

@@ -1,4 +1,4 @@
-package com.azure.storage.datamover.file.share;
+package com.azure.storage.file.share.resource;
 
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.resource.StorageResource;
