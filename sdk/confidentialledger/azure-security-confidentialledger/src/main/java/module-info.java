@@ -4,7 +4,6 @@
 
 module com.azure.security.confidentialledger {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.experimental;
 
     exports com.azure.security.confidentialledger;
 }

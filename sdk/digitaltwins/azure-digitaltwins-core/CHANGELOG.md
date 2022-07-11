@@ -1,14 +1,14 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2022-07-11)
 
 ### Features Added
+- Updated service API version to use API version 2022-05-31 by default.
+- Added `sourceTime` to `DigitalTwinPropertyMetadata`.
+- Added support for `lastUpdatedOn` for digital twins and components.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+### Fixes and improvements
+- Updated samples to illustrate usage of `sourceTime`, `lastUpdatedOn` at digital twin and component metadata level, and use of `DigitalTwinComponentMetadata`.
 
 ## 1.2.4 (2022-07-08)
 
