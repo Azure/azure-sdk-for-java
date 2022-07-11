@@ -750,10 +750,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         Flux<FeedResponse<JsonNode>> feedResponseFlux;
         if (pageable instanceof CosmosPageRequest) {
+            int contentSize = pageable.getPageSize();
+            if (!pageable.hasPrevious()) {
+                contentSize = (int) (contentSize + pageable.getOffset());
+            }
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
-                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(),
-                    pageable.getPageSize());
+                .byPage(((CosmosPageRequest) pageable).getRequestContinuation(), contentSize);
         } else {
             feedResponseFlux = container
                 .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
@@ -774,9 +777,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         assert feedResponse != null;
         final Iterator<JsonNode> it = feedResponse.getResults().iterator();
 
+        int offset = 0;
+        if (!pageable.hasPrevious()) {
+            offset = (int) pageable.getOffset();
+        }
+
         final List<T> result = new ArrayList<>();
         for (int index = 0; it.hasNext()
-            && index < pageable.getPageSize(); index++) {
+            && index < pageable.getPageSize() + offset; index++) {
 
             final JsonNode jsonNode = it.next();
             if (jsonNode == null) {
@@ -785,7 +793,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
             maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
             final T entity = mappingCosmosConverter.read(returnType, jsonNode);
-            result.add(entity);
+            if (index >= offset) {
+                result.add(entity);
+            }
         }
 
         final int contentSize = result.size();

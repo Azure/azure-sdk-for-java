@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos.core.generator;
 
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -260,6 +261,28 @@ public abstract class AbstractQueryGenerator {
         return String.join(" ", queryTails.stream().filter(StringUtils::hasText).collect(Collectors.toList()));
     }
 
+    /**
+     * Generates a Cosmos count query.
+     *
+     * @param query the representation for query method.
+     * @param queryHead the query head.
+     * @return the SQL query spec.
+     */
+    protected SqlQuerySpec generateCosmosCountQuery(@NonNull CosmosQuery query,
+                                               @NonNull String queryHead) {
+        final AtomicInteger counter = new AtomicInteger();
+        final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query, counter);
+        String queryString = String.join(" ", queryHead, queryBody.getFirst(), generateQueryTail(query));
+        final List<Pair<String, Object>> parameters = queryBody.getSecond();
+
+        List<SqlParameter> sqlParameters = parameters.stream()
+            .map(p -> new SqlParameter("@" + p.getFirst(),
+                toCosmosDbValue(p.getSecond())))
+            .collect(Collectors.toList());
+
+        return new SqlQuerySpec(queryString, sqlParameters);
+    }
+
 
     /**
      * Generates a Cosmos query.
@@ -280,26 +303,15 @@ public abstract class AbstractQueryGenerator {
                                                          toCosmosDbValue(p.getSecond())))
                                                      .collect(Collectors.toList());
 
+        /*if (query.getPageable().isPaged()) {
+            query.withOffsetAndLimit(query.getPageable().getOffset(), query.getPageable().getPageSize());
+        }*/
 
-        long offset = 0;
-        long pageSize = 0;
-        try {
-                offset = query.getPageable().getOffset();
-                pageSize = query.getPageable().getPageSize();
-        } catch (UnsupportedOperationException ex) {
-            // Ignore
-        }
-
-        if (offset > 0 && pageSize > 0 && !queryString.contains("COUNT")) {
+        if (query.getLimit() > 0) {
             queryString = new StringBuilder(queryString)
                 .append(" OFFSET ")
-                .append(offset)
+                .append(query.getOffset())
                 .append(" LIMIT ")
-                .append(pageSize).toString();
-        }
-        else if (query.getLimit() > 0) {
-            queryString = new StringBuilder(queryString)
-                .append(" OFFSET 0 LIMIT ")
                 .append(query.getLimit()).toString();
         }
 
