@@ -7,7 +7,7 @@ package com.azure.communication.identity.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A communication identity. */
+/** The CommunicationIdentity model. */
 @Fluent
 public final class CommunicationIdentity {
     /*
