@@ -195,7 +195,7 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
             raise Exception('Cannot found built jar in {0}'.format(new_jar))
         breaking, changelog = generate_changelog_and_breaking_change(
             sdk_root, old_jar, new_jar)
-        if changelog:
+        if changelog is not None:
             changelog_file = os.path.join(
                 sdk_root,
                 CHANGELOG_FORMAT.format(service = service,

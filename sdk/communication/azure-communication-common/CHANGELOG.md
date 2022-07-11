@@ -3,6 +3,7 @@
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `String getRawId()` and `static CommunicationIdentifier fromRawId(String rawId)` to `CommunicationIdentifier` to translate between a `CommunicationIdentifier` and its underlying canonical rawId representation. Developers can now use the rawId as an encoded format for identifiers to store in their databases or as stable keys in general.
 
 ### Breaking Changes
 
@@ -10,11 +11,20 @@
 
 ### Other Changes
 
-## 1.1.4 (2022-06-07)
+## 1.1.5 (2022-07-11)
 
 ### Features Added
 
-- Added `String getRawId()` and `static CommunicationIdentifier fromRawId(String rawId)` to `CommunicationIdentifier` to translate between a `CommunicationIdentifier` and its underlying canonical rawId representation. Developers can now use the rawId as an encoded format for identifiers to store in their databases or as stable keys in general.
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+
+## 1.1.4 (2022-06-07)
+
+### Features Added
 
 ### Other Changes
 

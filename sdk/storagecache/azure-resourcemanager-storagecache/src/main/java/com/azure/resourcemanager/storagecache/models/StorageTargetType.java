@@ -33,7 +33,11 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
         return fromString(name, StorageTargetType.class);
     }
 
-    /** @return known StorageTargetType values. */
+    /**
+     * Gets known StorageTargetType values.
+     *
+     * @return known StorageTargetType values.
+     */
     public static Collection<StorageTargetType> values() {
         return values(StorageTargetType.class);
     }

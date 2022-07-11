@@ -355,7 +355,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 }
 
 function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
-  return ValidatePackages(@{ Group = $groupId; Name = $artifactId; Version = $version; }, $DocValidationImageId)
+  return ValidatePackages @{ Group = $groupId; Name = $artifactId; Version = $version; } $DocValidationImageId
 }
 
 function ValidatePackages([array]$packageInfos, $DocValidationImageId) {
@@ -464,15 +464,17 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValida
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
     'preview' `
-    $FilteredMetadata
+    $FilteredMetadata `
+    $DocValidationImageId
 
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
     'latest' `
-    $FilteredMetadata
+    $FilteredMetadata`
+    $DocValidationImageId
 }
 
-function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
+function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidationImageId) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
 
   $packageOutputPath = 'docs-ref-autogen'
@@ -539,7 +541,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion 
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $DocValidationImageId
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -562,11 +564,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $remainingPackages = @()
   if ($Mode -eq 'preview') {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+      ![string]::IsNullOrWhiteSpace($_.VersionPreview) -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   } else {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+      ![string]::IsNullOrWhiteSpace($_.VersionGA) -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   }
 
@@ -580,7 +582,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion 
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $DocValidationImageId
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue

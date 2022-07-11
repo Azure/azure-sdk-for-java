@@ -30,10 +30,10 @@
   </scm>
 
   <properties>
-    <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
     <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-exports com.azure.http.netty/com.azure.core.http.netty=com.azure.security.confidentialledger
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -42,11 +42,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.30</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
