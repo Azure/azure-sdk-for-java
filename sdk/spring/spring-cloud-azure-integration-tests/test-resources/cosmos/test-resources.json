@@ -9,9 +9,11 @@
       "type": "string"
     },
     "subscriptionId": {
+      "defaultValue": "[subscription().subscriptionId]",
       "type": "string"
     },
     "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
       "type": "string"
     },
     "baseName": {
