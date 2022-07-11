@@ -28,6 +28,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -42,11 +43,12 @@ import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -99,6 +101,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
 
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
+
+    /**
+     *
+     */
+    private static final int DEFAULT_FILE_READ_CHUNK_SIZE = 1024 * 64;
+
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClient.class);
 
     private BlockBlobAsyncClient blockBlobAsyncClient;
@@ -962,44 +970,36 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         try {
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
-                channel -> {
-                    try {
-                        BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
-                        long fileSize = channel.size();
+            Path filePath = Paths.get(options.getFilePath());
+            BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
+            // This will retrieve file length but won't read file body.
+            BinaryData fullFileData = BinaryData.fromFile(filePath, DEFAULT_FILE_READ_CHUNK_SIZE);
+            long fileSize = fullFileData.getLength();
 
-                        // By default, if the file is larger than 256MB chunk it and stage it as blocks.
-                        // But, this is configurable by the user passing options with max single upload size configured.
-                        if (UploadUtils.shouldUploadInChunks(options.getFilePath(),
-                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
-                            return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
-                                options.getHeaders(), options.getMetadata(), options.getTags(),
-                                options.getTier(), options.getRequestConditions(), channel,
-                                blockBlobAsyncClient);
-                        } else {
-                            // Otherwise, we know it can be sent in a single request reducing network overhead.
-                            Flux<ByteBuffer> data = FluxUtil.readFile(channel);
-                            Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(
-                                new BlockBlobSimpleUploadOptions(data, fileSize).setHeaders(options.getHeaders())
-                                    .setMetadata(options.getMetadata()).setTags(options.getTags())
-                                    .setTier(options.getTier())
-                                    .setRequestConditions(options.getRequestConditions()));
-                            if (finalParallelTransferOptions.getProgressListener() != null) {
-                                ProgressReporter progressReporter = ProgressReporter.withProgressListener(
-                                    finalParallelTransferOptions.getProgressListener());
-                                responseMono = responseMono.contextWrite(
-                                    FluxUtil.toReactorContext(
-                                        Contexts.empty()
-                                            .setHttpRequestProgressReporter(progressReporter).getContext()));
-                            }
-                            return responseMono;
-                        }
-                    } catch (IOException ex) {
-                        return Mono.error(ex);
-                    }
-                },
-                channel ->
-                UploadUtils.uploadFileCleanup(channel, LOGGER));
+            // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+            // But, this is configurable by the user passing options with max single upload size configured.
+            if (fileSize > finalParallelTransferOptions.getMaxSingleUploadSizeLong()) {
+                return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
+                    options.getHeaders(), options.getMetadata(), options.getTags(),
+                    options.getTier(), options.getRequestConditions(), filePath,
+                    blockBlobAsyncClient);
+            } else {
+                // Otherwise, we know it can be sent in a single request reducing network overhead.
+                Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(
+                    new BlockBlobSimpleUploadOptions(fullFileData).setHeaders(options.getHeaders())
+                        .setMetadata(options.getMetadata()).setTags(options.getTags())
+                        .setTier(options.getTier())
+                        .setRequestConditions(options.getRequestConditions()));
+                if (finalParallelTransferOptions.getProgressListener() != null) {
+                    ProgressReporter progressReporter = ProgressReporter.withProgressListener(
+                        finalParallelTransferOptions.getProgressListener());
+                    responseMono = responseMono.contextWrite(
+                        FluxUtil.toReactorContext(
+                            Contexts.empty()
+                                .setHttpRequestProgressReporter(progressReporter).getContext()));
+                }
+                return responseMono;
+            }
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1008,7 +1008,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Response<BlockBlobItem>> uploadFileChunks(
         long fileSize, ParallelTransferOptions parallelTransferOptions,
         Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
-        AccessTier tier, BlobRequestConditions requestConditions, AsynchronousFileChannel channel,
+        AccessTier tier, BlobRequestConditions requestConditions, Path filePath,
         BlockBlobAsyncClient client) {
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
             ? new BlobRequestConditions() : requestConditions;
@@ -1024,10 +1024,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
 
-                Flux<ByteBuffer> data = FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount());
+                BinaryData data = BinaryData.fromFile(
+                    filePath, chunk.getOffset(), chunk.getCount(), DEFAULT_FILE_READ_CHUNK_SIZE);
 
-                Mono<Response<Void>> responseMono = client.stageBlockWithResponse(blockId, data, chunk.getCount(), null,
-                    finalRequestConditions.getLeaseId());
+                Mono<Response<Void>> responseMono = client.stageBlockWithResponse(
+                    new BlockBlobStageBlockOptions(blockId, data)
+                        .setLeaseId(finalRequestConditions.getLeaseId()));
                 if (progressReporter != null) {
                     responseMono = responseMono.contextWrite(
                         FluxUtil.toReactorContext(Contexts.empty().setHttpRequestProgressReporter(
