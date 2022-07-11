@@ -9,13 +9,16 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
@@ -27,8 +30,8 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
 
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
-    static final String CHECKPOINT = "checkpoint";
-    static final String  PARTITION_OWNERSHIP = "partitionOwnership";
+    static final byte[] CHECKPOINT = "checkpoint".getBytes(StandardCharsets.UTF_8);
+    static final byte[] PARTITION_OWNERSHIP = "partitionOwnership".getBytes(StandardCharsets.UTF_8);
     private final JedisPool jedisPool;
 
     JedisRedisCheckpointStore(JedisPool jedisPool) {
@@ -47,26 +50,26 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         return Flux.fromIterable(requestedPartitionOwnerships).handle(((partitionOwnership, sink) -> {
 
             String partitionId = partitionOwnership.getPartitionId();
-            String key = keyBuilder(prefixBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup()), partitionId);
+            byte[] key = keyBuilder(partitionOwnership.getFullyQualifiedNamespace(), partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId);
 
             try (Jedis jedis = jedisPool.getResource()) {
-                List<String> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
-                String currentPartitionOwnership = keyInformation.get(0);
+                List<byte[]> keyInformation = jedis.hmget(key, PARTITION_OWNERSHIP);
+                byte[] currentPartitionOwnership = keyInformation.get(0);
 
                 if (currentPartitionOwnership == null) {
                     // if PARTITION_OWNERSHIP field does not exist for member we will get a null, and we must add the field
-                    jedis.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
+                    jedis.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
                 } else {
                     // otherwise we have to change the ownership and "watch" the transaction
                     jedis.watch(key);
 
                     Transaction transaction = jedis.multi();
-                    transaction.hset(key, PARTITION_OWNERSHIP, new String(DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership), StandardCharsets.UTF_8));
+                    transaction.hset(key, PARTITION_OWNERSHIP, DEFAULT_SERIALIZER.serializeToBytes(partitionOwnership));
                     List<Object> executionResponse = transaction.exec();
 
                     if (executionResponse == null) {
                         //This means that the transaction did not execute, which implies that another client has changed the ownership during this transaction
-                        sink.error(new RuntimeException());
+                        sink.error(new RuntimeException("Ownership records were changed by another client"));
                     }
                 }
                 jedisPool.returnResource(jedis);
@@ -86,28 +89,28 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
 
-        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        byte[] prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         try (Jedis jedis = jedisPool.getResource()) {
 
             ArrayList<Checkpoint> listStoredCheckpoints = new ArrayList<>();
-            Set<String> members = jedis.smembers(prefix);
+            Set<byte[]> members = jedis.smembers(prefix);
 
             if (members.isEmpty()) {
                 jedisPool.returnResource(jedis);
                 return Flux.fromIterable(listStoredCheckpoints);
             }
-            for (String member : members) {
+            for (byte[] member : members) {
                 //get the associated JSON representation for each for the members
-                List<String> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
+                List<byte[]> checkpointJsonList = jedis.hmget(member, CHECKPOINT);
 
                 if (!checkpointJsonList.isEmpty()) {
-                    String checkpointJson = checkpointJsonList.get(0);
+                    byte[] checkpointJson = checkpointJsonList.get(0);
 
                     if (checkpointJson == null) {
                         LOGGER.verbose("No checkpoint persists yet.");
                         continue;
                     }
-                    Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(Checkpoint.class));
+                    Checkpoint checkpoint = DEFAULT_SERIALIZER.deserializeFromBytes(checkpointJson, TypeReference.createInstance(Checkpoint.class));
                     listStoredCheckpoints.add(checkpoint);
                 } else {
                     LOGGER.verbose("No checkpoint persists yet.");
@@ -128,29 +131,29 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      */
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
-        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
+        byte[] prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup);
         try (Jedis jedis = jedisPool.getResource()) {
 
-            Set<String> members = jedis.smembers(prefix);
+            Set<byte[]> members = jedis.smembers(prefix);
             ArrayList<PartitionOwnership> listStoredOwnerships = new ArrayList<>();
 
             if (members.isEmpty()) {
                 jedisPool.returnResource(jedis);
                 return Flux.fromIterable(listStoredOwnerships);
             }
-            for (String member : members) {
+            for (byte[] member : members) {
                 //get the associated JSON representation for each for the members
-                List<String> partitionOwnershipJsonList = jedis.hmget(member, PARTITION_OWNERSHIP);
+                List<byte[]> partitionOwnershipJsonList = jedis.hmget(member, PARTITION_OWNERSHIP);
 
                 // if PARTITION_OWNERSHIP field exists but has no records than the list will be empty
                 if (!partitionOwnershipJsonList.isEmpty()) {
-                    String partitionOwnershipJson = partitionOwnershipJsonList.get(0);
+                    byte[] partitionOwnershipJson = partitionOwnershipJsonList.get(0);
                     // if PARTITION_OWNERSHIP field does not exist for member we will get a null
                     if (partitionOwnershipJson == null) {
                         LOGGER.verbose("No partition ownership records exist for this checkpoint yet.");
                         continue;
                     }
-                    PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(PartitionOwnership.class));
+                    PartitionOwnership partitionOwnership = DEFAULT_SERIALIZER.deserializeFromBytes(partitionOwnershipJson, TypeReference.createInstance(PartitionOwnership.class));
                     listStoredOwnerships.add(partitionOwnership);
                 }
             }
@@ -172,17 +175,17 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 .propagate(new IllegalStateException(
                     "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
-        String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-        String key = keyBuilder(prefix, checkpoint.getPartitionId());
+        byte[] prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
+        byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
 
         try (Jedis jedis = jedisPool.getResource()) {
             if (!jedis.exists(prefix) || !jedis.exists(key)) {
                 //Case 1: new checkpoint
                 jedis.sadd(prefix, key);
-                jedis.hset(key, CHECKPOINT, new String(DEFAULT_SERIALIZER.serializeToBytes(checkpoint), StandardCharsets.UTF_8));
+                jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
             } else {
                 //Case 2: checkpoint already exists in Redis cache
-                jedis.hset(key, CHECKPOINT, new String(DEFAULT_SERIALIZER.serializeToBytes(checkpoint), StandardCharsets.UTF_8));
+                jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
             }
 
             jedisPool.returnResource(jedis);
@@ -190,12 +193,12 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         return Mono.empty();
     }
 
-    static String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
-        return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
+    static byte[] prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        return (fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup).getBytes(StandardCharsets.UTF_8);
     }
 
-    static String keyBuilder(String prefix, String partitionId) {
-        return prefix + "/" + partitionId;
+    static byte[] keyBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId) {
+        return (fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId).getBytes(StandardCharsets.UTF_8);
     }
 
     private static Boolean isCheckpointValid(Checkpoint checkpoint) {

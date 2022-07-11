@@ -38,8 +38,8 @@ public class JedisRedisCheckpointStoreTests {
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String CONSUMER_GROUP = "consumerGroup";
     private static final String PARTITION_ID = "1";
-    private static final String PREFIX = JedisRedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
-    private static final String KEY = JedisRedisCheckpointStore.keyBuilder(PREFIX, PARTITION_ID);
+    private static final byte[] PREFIX = JedisRedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
+    private static final byte[] KEY = JedisRedisCheckpointStore.keyBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
 
     @BeforeEach
     public void setup() {
@@ -52,10 +52,10 @@ public class JedisRedisCheckpointStoreTests {
     @Test
     public void testListCheckpoints() {
         Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
-        Set<String> value = new HashSet<>();
+        Set<byte[]> value = new HashSet<>();
         value.add(KEY);
-        byte[] bytes = jsonSerializer.serializeToBytes(checkpoint);
-        List<String> list = Collections.singletonList(new String(bytes, StandardCharsets.UTF_8));
+        byte[] checkpointInBytes = jsonSerializer.serializeToBytes(checkpoint);
+        List<byte[]> list = Collections.singletonList(checkpointInBytes);
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
@@ -82,8 +82,8 @@ public class JedisRedisCheckpointStoreTests {
 
     @Test
     public void testCheckpointKeyNotStored() {
-        Set<String> value = new HashSet<>();
-        List<String> nullList = Collections.singletonList(null);
+        Set<byte[]> value = new HashSet<>();
+        List<byte[]> nullList = Collections.singletonList(null);
         value.add(KEY);
 
         when(jedisPool.getResource()).thenReturn(jedis);
@@ -98,10 +98,10 @@ public class JedisRedisCheckpointStoreTests {
     @Test
     public void testListOwnership() {
         PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
-        Set<String> value = new HashSet<>();
+        Set<byte[]> value = new HashSet<>();
         value.add(KEY);
-        byte[] bytes = jsonSerializer.serializeToBytes(partitionOwnership);
-        List<String> list = Collections.singletonList(new String(bytes, StandardCharsets.UTF_8));
+        byte[] partitionOwnershipToBytes = jsonSerializer.serializeToBytes(partitionOwnership);
+        List<byte[]> list = Collections.singletonList(partitionOwnershipToBytes);
 
         when(jedisPool.getResource()).thenReturn(jedis);
         when(jedis.smembers(PREFIX)).thenReturn(value);
@@ -153,7 +153,7 @@ public class JedisRedisCheckpointStoreTests {
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
 
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList("oldOwnershipRecord"));
+        when(jedis.hmget(KEY, JedisRedisCheckpointStore.PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList("oldOwnershipRecord".getBytes(StandardCharsets.UTF_8)));
         when(jedis.multi()).thenReturn(transaction);
         when(transaction.exec()).thenReturn(Collections.singletonList(1L));
 
