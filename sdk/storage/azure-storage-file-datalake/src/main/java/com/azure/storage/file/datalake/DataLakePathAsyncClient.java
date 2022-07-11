@@ -1405,8 +1405,9 @@ public class DataLakePathAsyncClient {
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
-        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
-        AtomicInteger filesSuccessfulCount, AtomicInteger failureCount, AtomicInteger batchesCount,
+        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response,
+        Integer maxBatches, AtomicInteger directoriesSuccessfulCount, AtomicInteger filesSuccessfulCount,
+        AtomicInteger failureCount, AtomicInteger batchesCount,
         Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
         List<AccessControlChangeFailure> batchFailures, Context context) {
