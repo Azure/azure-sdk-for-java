@@ -2,19 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.fullfidelity;
 
-import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
 /**
  * The metadata of a change feed resource with ChangeFeedMode set to FULL_FIDELITY
  */
-@Beta(value = Beta.SinceVersion.V4_28_0)
 public class ChangeFeedMetadata {
+    @JsonProperty(value = "crts", access = JsonProperty.Access.WRITE_ONLY)
     private final Instant conflictResolutionTimestamp;
+    @JsonProperty(value = "lsn", access = JsonProperty.Access.WRITE_ONLY)
     private final long logSequenceNumber;
+    @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private final ChangeFeedOperationType operationType;
+    @JsonProperty(value = "previousImageLSN", access = JsonProperty.Access.WRITE_ONLY)
     private final long previousLogSequenceNumber;
+    @JsonProperty(value = "timeToLiveExpired", access = JsonProperty.Access.WRITE_ONLY)
     private final boolean timeToLiveExpired;
 
     public ChangeFeedMetadata(

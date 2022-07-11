@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedItemChanges;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
@@ -458,9 +459,15 @@ public class ChangeFeedTest extends TestSuiteBase {
                    .map(ResourceResponse::getResource).collectList().block();
     }
 
+
+    @Test(groups = { "simple" })
+    public void fullFidelityChangeFeedFromPartitionKey() throws Exception {
+
+    }
+
     @Test(groups = { "simple" })
     @Tag(name = "GoFullFidelity")
-    public void changeFeed_ffcf() throws Exception {
+    public void fullFidelityChangeFeedFromFeedRange() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer();
         List<FeedRange> feedRanges = cosmosContainer.getFeedRanges();
 
@@ -468,10 +475,8 @@ public class ChangeFeedTest extends TestSuiteBase {
             .createForProcessingFromNow(feedRanges.get(0));
         options.fullFidelity();
 
-        for (int i = 0; i < 10; i++) {
-            String itemId = UUID.randomUUID().toString();
-            cosmosContainer.createItem(new InternalObjectNode().setId(itemId));
-        }
+        String id = UUID.randomUUID().toString();
+        cosmosContainer.createItem(new InternalObjectNode().setId(id));
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
@@ -505,6 +510,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         while (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
+            assertFullFidelityGatewayMode(response);
             logger.info("Final results with continuation token {} are {}", response.getContinuationToken(), response.getResults());
         }
     }
@@ -522,17 +528,21 @@ public class ChangeFeedTest extends TestSuiteBase {
         paths.add("/id");
         partitionKeyDef.setPaths(paths);
 
-        String dbId = "ffcf_testdb";
         String containerId = "FFCF_Container";
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties(containerId, partitionKeyDef);
         containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
 
-        CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabaseIfNotExists(dbId);
+        CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabaseIfNotExists(createdDatabase.getId());
         CosmosDatabase database = FFCF_client.getDatabase(databaseResponse.getProperties().getId());
         CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerProperties);
 
         return database.getContainer(containerResponse.getProperties().getId());
+    }
+
+    void assertFullFidelityGatewayMode(FeedResponse<JsonNode> response) throws Exception {
+        String diagnostics = response.getCosmosDiagnostics().toString();
+        assertThat(diagnostics).contains("");
     }
 
     @AfterMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
