@@ -103,6 +103,9 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
                     eTagNode.textValue(),
                     feedRange);
 
+            case LEGACY_CHECKPOINT:
+                return new ChangeFeedStartFromLegacyContinuationImpl();
+
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }

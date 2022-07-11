@@ -10,7 +10,7 @@ import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
 /** Samples for Topics RegenerateKey. */
 public final class TopicsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_RegenerateKey.json
      */
     /**
      * Sample code: Topics_RegenerateKey.

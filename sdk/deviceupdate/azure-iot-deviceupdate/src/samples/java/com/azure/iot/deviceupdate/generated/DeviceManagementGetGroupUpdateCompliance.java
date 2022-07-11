@@ -13,18 +13,16 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementGetGroupUpdateCompliance {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.iot.deviceupdate.generated.devicemanagementgetgroupupdatecompliance.devicemanagementgetgroupupdatecompliance
         DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
+        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetdeviceclasssubgroup.devicemanagementgetgroupupdatecompliance
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                deviceManagementClient.getGroupUpdateComplianceWithResponse("group1", requestOptions);
-        // END:
-        // com.azure.iot.deviceupdate.generated.devicemanagementgetgroupupdatecompliance.devicemanagementgetgroupupdatecompliance
+                deviceManagementClient.getDeviceClassSubgroupWithResponse("group1", "deviceClassId", requestOptions);
+        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetdeviceclasssubgroup.devicemanagementgetgroupupdatecompliance
     }
 }

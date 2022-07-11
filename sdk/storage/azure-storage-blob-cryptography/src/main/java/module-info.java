@@ -5,7 +5,6 @@ module com.azure.storage.blob.cryptography {
     requires transitive com.azure.storage.blob;
 
     requires com.fasterxml.jackson.dataformat.xml;
-    requires com.azure.core;
 
     exports com.azure.storage.blob.specialized.cryptography;
 

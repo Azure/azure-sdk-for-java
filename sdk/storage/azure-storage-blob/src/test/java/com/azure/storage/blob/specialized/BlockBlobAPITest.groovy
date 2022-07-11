@@ -4,14 +4,17 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
+import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
@@ -39,6 +42,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
@@ -46,6 +50,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.common.test.shared.http.WireTapHttpClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -58,6 +63,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.stream.Stream
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -91,12 +97,111 @@ class BlockBlobAPITest extends APISpec {
         Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block with BinaryData"() {
+        setup:
+        def response = blockBlobClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), binaryData), null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 201
+        headers.getValue("x-ms-content-crc64") != null
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block with BinaryData async"() {
+        setup:
+        def stepVerifier = StepVerifier.create(blockBlobAsyncClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), binaryData)))
+
+        expect:
+        stepVerifier.assertNext({
+            def headers = it.getHeaders()
+            assert it.getStatusCode() == 201
+            assert headers.getValue("x-ms-content-crc64") != null
+            assert headers.getValue("x-ms-request-id") != null
+            assert headers.getValue("x-ms-version") != null
+            assert headers.getValue("Date") != null
+            assert Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+        }).verifyComplete()
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
     def "Stage block min"() {
         when:
         blockBlobClient.stageBlock(getBlockID(), data.defaultInputStream, data.defaultDataSize) == 201
 
         then:
         blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+    }
+
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block min with BinaryData"() {
+        when:
+        blockBlobClient.stageBlock(getBlockID(), binaryData) == 201
+
+        then:
+        blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block does not transform replayable BinaryData"() {
+        setup:
+        def wireTap = new WireTapHttpClient(getHttpClient())
+        def wireTapClient = getSpecializedBuilder(environment.primaryAccount.credential,
+            blockBlobClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobClient()
+
+        when:
+        wireTapClient.stageBlock(getBlockID(), binaryData) == 201
+
+        then:
+        blockBlobClient.listBlocks(BlockListType.ALL).getUncommittedBlocks().size() == 1
+        binaryData == wireTap.getLastRequest().getBodyAsBinaryData()
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile)
+        ]
     }
 
     @Unroll
@@ -114,6 +219,23 @@ class BlockBlobAPITest extends APISpec {
         true       | null                    | data.defaultDataSize     | NullPointerException
         true       | data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
         true       | data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block illegal arguments with BinaryData"() {
+        when:
+        blockBlobClient.stageBlock(getBlockID(), binaryData)
+
+        then:
+        thrown(exceptionType)
+
+        where:
+        binaryData                                                               | exceptionType
+        null                                                                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, null)                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize + 1) | UnexpectedLengthException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize - 1) | UnexpectedLengthException
     }
 
     def "Stage block empty body"() {
@@ -143,6 +265,18 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
+    def "Stage block transactionalMD5 fail BinaryData"() {
+        when:
+        blockBlobClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data.defaultBytes))
+                .setContentMd5(MessageDigest.getInstance("MD5").digest("garbage".getBytes())),
+            null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
     def "Stage block null body"() {
         when:
         blockBlobClient.stageBlock(getBlockID(), null, 0)
@@ -158,6 +292,17 @@ class BlockBlobAPITest extends APISpec {
         expect:
         blockBlobClient.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, leaseID, null, null)
             .getStatusCode() == 201
+    }
+
+    def "Stage block lease BinaryData"() {
+        setup:
+        def leaseID = setupBlobLeaseCondition(blockBlobClient, receivedLeaseID)
+
+        expect:
+        blockBlobClient.stageBlockWithResponse(
+            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data.defaultBytes))
+                .setLeaseId(leaseID),
+            null, null).getStatusCode() == 201
     }
 
     def "Stage block lease fail"() {
@@ -202,6 +347,34 @@ class BlockBlobAPITest extends APISpec {
         def os = new ByteArrayOutputStream()
         blobClient.download(os)
         os.toByteArray() == data
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Stage block retry on transient failure with retriable BinaryData"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            environment.primaryAccount.credential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getBlockBlobClient()
+
+        when:
+        def blockId = getBlockID()
+        clientWithFailure.stageBlock(blockId, binaryData)
+        blobClient.getBlockBlobClient().commitBlockList([blockId] as List<String>, true)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+        os.toByteArray() == binaryData.toBytes()
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile)
+        ]
     }
 
     def "Stage block from url"() {
@@ -728,6 +901,57 @@ class BlockBlobAPITest extends APISpec {
         Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload BinaryData"() {
+        when:
+        def uploadOptions = new BlockBlobSimpleUploadOptions(binaryData)
+        def response = blockBlobClient.uploadWithResponse(uploadOptions, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        def outStream = new ByteArrayOutputStream()
+        blockBlobClient.downloadStream(outStream)
+        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+        validateBasicHeaders(response.getHeaders())
+        response.getHeaders().getValue("Content-MD5") != null
+        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload does not transform replayable BinaryData"() {
+        when:
+        def uploadOptions = new BlockBlobSimpleUploadOptions(binaryData)
+        def wireTap = new WireTapHttpClient(getHttpClient())
+        def wireTapClient = getSpecializedBuilder(environment.primaryAccount.credential,
+            blockBlobClient.getBlobUrl())
+            .httpClient(wireTap)
+            .buildBlockBlobClient()
+        def response = wireTapClient.uploadWithResponse(uploadOptions, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        // Check that replayable BinaryData contents are passed to http client unchanged.
+        wireTap.lastRequest.getBodyAsBinaryData() == binaryData
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+        ]
+    }
+
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
        for getBlockID that will change every time test is run
      */
@@ -868,6 +1092,19 @@ class BlockBlobAPITest extends APISpec {
         }
     }
 
+    class FileUploadListener implements ProgressListener {
+        private long reportedByteCount
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            this.reportedByteCount = bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Upload from file reporter"() {
@@ -884,6 +1121,35 @@ class BlockBlobAPITest extends APISpec {
             .verifyComplete()
 
         uploadReporter.getReportedByteCount() == size
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+        100               | 1 * Constants.MB  | 2
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Upload from file listener"() {
+        when:
+        def uploadListener = new FileUploadReporter()
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(blockSize - 1)
+
+        then:
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null, null))
+            .verifyComplete()
+
+        uploadListener.getReportedByteCount() == size
 
         cleanup:
         file.delete()
@@ -946,6 +1212,27 @@ class BlockBlobAPITest extends APISpec {
         outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
     }
 
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload min BinaryData"() {
+        when:
+        blockBlobClient.upload(binaryData, true)
+
+        then:
+        def outStream = new ByteArrayOutputStream()
+        blockBlobClient.download(outStream)
+        outStream.toByteArray() == data.defaultText.getBytes(StandardCharsets.UTF_8)
+
+        where:
+        binaryData << [
+            BinaryData.fromBytes(data.defaultBytes),
+            BinaryData.fromString(data.defaultText),
+            BinaryData.fromFile(data.defaultFile),
+            BinaryData.fromFlux(data.defaultFlux, data.defaultDataSizeLong, false).block(),
+            BinaryData.fromStream(data.defaultInputStream, data.defaultDataSizeLong)
+        ]
+    }
+
     @Unroll
     def "Upload illegal argument"() {
         when:
@@ -957,8 +1244,25 @@ class BlockBlobAPITest extends APISpec {
         where:
         stream                   | dataSize                 | exceptionType
         null                     | data.defaultDataSize     | NullPointerException
-        data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
-        data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
+        data.defaultInputStream  | data.defaultDataSize + 1 | UnexpectedLengthException
+        data.defaultInputStream  | data.defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    // Override name to prevent BinaryData.toString() invocation by test framework.
+    @Unroll("#featureName #iterationIndex")
+    def "Upload illegal argument BinaryData"() {
+        when:
+        blockBlobClient.upload(binaryData)
+
+        then:
+        thrown(exceptionType)
+
+        where:
+        binaryData                                                               | exceptionType
+        null                                                                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, null)                     | NullPointerException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize + 1) | UnexpectedLengthException
+        BinaryData.fromStream(data.defaultInputStream, data.defaultDataSize - 1) | UnexpectedLengthException
     }
 
     def "Upload empty body"() {
@@ -1340,6 +1644,25 @@ class BlockBlobAPITest extends APISpec {
         }
     }
 
+    class Listener implements ProgressListener {
+        private final long blockSize
+        private long reportingCount
+
+        Listener(long blockSize) {
+            this.blockSize = blockSize
+        }
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @LiveOnly
@@ -1366,6 +1689,42 @@ class BlockBlobAPITest extends APISpec {
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
                 assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
+            }).verifyComplete()
+
+        where:
+        size              | blockSize          | bufferCount
+        10 * Constants.MB | 10 * Constants.MB  | 8
+        20 * Constants.MB | 1 * Constants.MB   | 5
+        10 * Constants.MB | 5 * Constants.MB   | 2
+        10 * Constants.MB | 512 * Constants.KB | 20
+    }
+
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with listener"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
+        when:
+        def uploadListener = new Listener(blockSize)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(4 * Constants.MB)
+
+        then:
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
+            null, null, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 201
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadListener.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
         where:

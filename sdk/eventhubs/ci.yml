@@ -11,7 +11,7 @@ trigger:
       - sdk/eventhubs/ci.yml
       - sdk/eventhubs/azure-messaging-eventhubs/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
       - sdk/eventhubs/azure-messaging-eventhubs-stress/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
@@ -19,7 +19,7 @@ trigger:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
@@ -36,7 +36,7 @@ pr:
       - sdk/eventhubs/ci.yml
       - sdk/eventhubs/azure-messaging-eventhubs/
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/
       - sdk/eventhubs/azure-messaging-eventhubs-stress/
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
@@ -44,7 +44,7 @@ pr:
       - sdk/eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-redis/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-stress/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
       - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
@@ -58,8 +58,8 @@ parameters:
   displayName: 'azure-messaging-eventhubs-checkpointstore-blob'
   type: boolean
   default: true
-- name: release_azuremessagingeventhubscheckpointstoreredis
-  displayName: 'azure-messaging-eventhubs-checkpointstore-redis'
+- name: release_azuremessagingeventhubscheckpointstorejedis
+  displayName: 'azure-messaging-eventhubs-checkpointstore-jedis'
   type: boolean
   default: true
 
@@ -77,10 +77,10 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
         releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstoreblob }}
-      - name: azure-messaging-eventhubs-checkpointstore-redis
+      - name: azure-messaging-eventhubs-checkpointstore-jedis
         groupId: com.azure
-        safeName: azuremessagingeventhubscheckpointstoreredis
-        releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstoreredis }}
+        safeName: azuremessagingeventhubscheckpointstorejedis
+        releaseInBatch: ${{ parameters.release_azuremessagingeventhubscheckpointstorejedis }}
     AdditionalModules:
       - name: azure-messaging-eventhubs-track1-perf
         groupId: com.azure
