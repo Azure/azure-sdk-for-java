@@ -1,6 +1,8 @@
 package com.azure.storage.datamover;
 
-import com.azure.storage.datamover.models.TransferCapabilities;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.TransferCapabilities;
 
 import java.io.IOException;
 import java.io.InputStream;

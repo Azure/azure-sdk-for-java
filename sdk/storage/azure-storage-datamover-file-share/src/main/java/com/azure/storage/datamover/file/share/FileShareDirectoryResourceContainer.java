@@ -1,9 +1,9 @@
 package com.azure.storage.datamover.file.share;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -24,7 +24,7 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Iterable<StorageResource> listResources() {
+    public Iterable<StorageResource> listResources() {
         return listResources(shareDirectoryClient, shareDirectoryClient)
             .collect(Collectors.toList());
     }
@@ -43,7 +43,7 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
+    public TransferCapabilities getIncomingTransferCapabilities() {
         TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
             .canStream(true);
 
@@ -60,13 +60,13 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         String directoryPath = shareDirectoryClient.getDirectoryPath();
         return Arrays.asList(directoryPath.split("/"));
     }
 
     @Override
-    protected StorageResource getStorageResource(List<String> path) {
+    public StorageResource getStorageResource(List<String> path) {
         return new FileShareResource(
             shareDirectoryClient.getFileClient(String.join("/", path)),
             shareDirectoryClient);

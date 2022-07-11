@@ -1,4 +1,4 @@
-package com.azure.storage.datamover.models;
+package com.azure.storage.common.resource;
 
 public class TransferCapabilitiesBuilder {
     private boolean canStream;

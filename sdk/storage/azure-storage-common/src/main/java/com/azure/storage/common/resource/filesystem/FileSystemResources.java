@@ -1,7 +1,7 @@
-package com.azure.storage.datamover.filesystem;
+package com.azure.storage.common.resource.filesystem;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
 
 import java.nio.file.Path;
 import java.util.Collections;

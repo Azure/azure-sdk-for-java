@@ -1,7 +1,7 @@
 package com.azure.storage.datamover.s3;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
 import software.amazon.awssdk.services.s3.S3Client;
 
 public final class S3Resources {

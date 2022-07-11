@@ -5,5 +5,6 @@ module com.azure.storage.datamover.s3 {
     requires com.azure.storage.datamover;
     requires software.amazon.awssdk.services.s3;
     requires software.amazon.awssdk.core;
+    requires com.azure.storage.common;
     exports com.azure.storage.datamover.s3;
 }

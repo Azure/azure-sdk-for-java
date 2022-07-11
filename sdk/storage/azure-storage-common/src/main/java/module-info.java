@@ -7,6 +7,8 @@ module com.azure.storage.common {
     exports com.azure.storage.common;
     exports com.azure.storage.common.sas;
     exports com.azure.storage.common.policy;
+    exports com.azure.storage.common.resource;
+    exports com.azure.storage.common.resource.filesystem;
 
     exports com.azure.storage.common.implementation to // FIXME this should not be a long-term solution
         com.azure.data.tables,

@@ -1,8 +1,8 @@
-package com.azure.storage.datamover.filesystem;
+package com.azure.storage.common.resource.filesystem;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,21 +30,21 @@ class FileResource extends StorageResource {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
+    public TransferCapabilities getIncomingTransferCapabilities() {
         return new TransferCapabilitiesBuilder()
             .canStream(true)
             .build();
     }
 
     @Override
-    protected TransferCapabilities getOutgoingTransferCapabilities() {
+    public TransferCapabilities getOutgoingTransferCapabilities() {
         return new TransferCapabilitiesBuilder()
             .canStream(true)
             .build();
     }
 
     @Override
-    protected InputStream openInputStream() {
+    public InputStream openInputStream() {
         try {
             return new FileInputStream(path.toFile());
         } catch (FileNotFoundException e) {
@@ -53,12 +53,12 @@ class FileResource extends StorageResource {
     }
 
     @Override
-    protected long getLength() {
+    public long getLength() {
         return path.toFile().length();
     }
 
     @Override
-    protected void consumeInputStream(InputStream inputStream, long length) {
+    public void consumeInputStream(InputStream inputStream, long length) {
         try (OutputStream fos = new FileOutputStream(path.toFile())) {
             transfer(inputStream, fos);
         } catch (IOException e) {
@@ -83,17 +83,17 @@ class FileResource extends StorageResource {
     }
 
     @Override
-    protected String getSasUri() {
+    public String getSasUri() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected void consumeSasUri(String sasUri) {
+    public void consumeSasUri(String sasUri) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         return abstractPath;
     }
 }

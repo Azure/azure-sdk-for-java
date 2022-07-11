@@ -1,9 +1,9 @@
 package com.azure.storage.datamover.file.share;
 
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -35,7 +35,7 @@ class FileShareResource extends StorageResource {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
+    public TransferCapabilities getIncomingTransferCapabilities() {
         TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
             .canStream(true);
 
@@ -52,7 +52,7 @@ class FileShareResource extends StorageResource {
     }
 
     @Override
-    protected TransferCapabilities getOutgoingTransferCapabilities() {
+    public TransferCapabilities getOutgoingTransferCapabilities() {
         TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
             .canStream(true);
 
@@ -69,17 +69,17 @@ class FileShareResource extends StorageResource {
     }
 
     @Override
-    protected InputStream openInputStream() {
+    public InputStream openInputStream() {
         return shareFileClient.openInputStream();
     }
 
     @Override
-    protected long getLength() {
+    public long getLength() {
         return shareFileClient.getProperties().getContentLength();
     }
 
     @Override
-    protected void consumeInputStream(InputStream inputStream, long length) {
+    public void consumeInputStream(InputStream inputStream, long length) {
         try {
             if (!shareFileClient.exists()) {
                 shareFileClient.create(length);
@@ -101,13 +101,13 @@ class FileShareResource extends StorageResource {
     }
 
     @Override
-    protected String getSasUri() {
+    public String getSasUri() {
         return shareFileClient.getFileUrl() + "?" + shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new ShareSasPermission().setReadPermission(true)));
     }
 
     @Override
-    protected void consumeSasUri(String sasUri) {
+    public void consumeSasUri(String sasUri) {
         try {
             if (!shareFileClient.exists()) {
                 // TODO HEAD sas uri.
@@ -132,7 +132,7 @@ class FileShareResource extends StorageResource {
     }
 
     @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         String filePath = shareFileClient.getFilePath();
         if (root != null) {
             filePath = filePath.replace(root.getDirectoryPath(), "");

@@ -3,10 +3,10 @@ package com.azure.storage.datamover.blob;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -22,7 +22,7 @@ class BlobResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Iterable<StorageResource> listResources() {
+    public Iterable<StorageResource> listResources() {
         return blobContainerClient.listBlobs()
             .mapPage(
                 blobItem -> new BlobResource(blobContainerClient.getBlobClient(blobItem.getName()))
@@ -52,7 +52,7 @@ class BlobResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected StorageResource getStorageResource(List<String> path) {
+    public StorageResource getStorageResource(List<String> path) {
         return new BlobResource(blobContainerClient.getBlobClient(String.join("/", path)));
     }
 }

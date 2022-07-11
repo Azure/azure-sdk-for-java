@@ -1,8 +1,8 @@
 package com.azure.storage.datamover.s3;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -27,21 +27,21 @@ class S3ObjectResource extends StorageResource {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
+    public TransferCapabilities getIncomingTransferCapabilities() {
         return new TransferCapabilitiesBuilder()
             .canStream(true)
             .build();
     }
 
     @Override
-    protected TransferCapabilities getOutgoingTransferCapabilities() {
+    public TransferCapabilities getOutgoingTransferCapabilities() {
         return new TransferCapabilitiesBuilder()
             .canStream(true)
             .build();
     }
 
     @Override
-    protected InputStream openInputStream() {
+    public InputStream openInputStream() {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
             .bucket(bucketName)
             .key(objectKey)
@@ -51,7 +51,7 @@ class S3ObjectResource extends StorageResource {
     }
 
     @Override
-    protected long getLength() {
+    public long getLength() {
         HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
             .bucket(bucketName)
             .key(objectKey)
@@ -60,7 +60,7 @@ class S3ObjectResource extends StorageResource {
     }
 
     @Override
-    protected void consumeInputStream(InputStream inputStream, long length) {
+    public void consumeInputStream(InputStream inputStream, long length) {
         PutObjectRequest objectRequest = PutObjectRequest.builder()
             .bucket(bucketName)
             .key(objectKey)
@@ -70,19 +70,19 @@ class S3ObjectResource extends StorageResource {
     }
 
     @Override
-    protected String getSasUri() {
+    public String getSasUri() {
         // TODO
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected void consumeSasUri(String sasUri) {
+    public void consumeSasUri(String sasUri) {
         // TODO
         throw new UnsupportedOperationException();
     }
 
     @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         return Collections.singletonList(objectKey);
     }
 }

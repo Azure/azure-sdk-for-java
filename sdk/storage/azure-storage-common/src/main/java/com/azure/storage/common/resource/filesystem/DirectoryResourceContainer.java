@@ -1,15 +1,14 @@
-package com.azure.storage.datamover.filesystem;
+package com.azure.storage.common.resource.filesystem;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +25,7 @@ class DirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Iterable<StorageResource> listResources() {
+    public Iterable<StorageResource> listResources() {
         try {
             return Files.walk(path)
                 .filter(Files::isRegularFile)
@@ -54,7 +53,7 @@ class DirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected StorageResource getStorageResource(List<String> path) {
+    public StorageResource getStorageResource(List<String> path) {
         Path resourcePath = this.path;
         for (String subPath : path) {
             resourcePath = resourcePath.resolve(subPath);

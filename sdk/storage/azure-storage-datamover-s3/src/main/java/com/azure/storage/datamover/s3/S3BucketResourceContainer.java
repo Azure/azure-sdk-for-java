@@ -1,9 +1,9 @@
 package com.azure.storage.datamover.s3;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 
@@ -23,7 +23,7 @@ class S3BucketResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Iterable<StorageResource> listResources() {
+    public Iterable<StorageResource> listResources() {
         ListObjectsV2Request request = ListObjectsV2Request.builder()
             .bucket(bucketName)
             .build();
@@ -48,7 +48,7 @@ class S3BucketResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected StorageResource getStorageResource(List<String> path) {
+    public StorageResource getStorageResource(List<String> path) {
         String objectKey = String.join("/", path);
         return new S3ObjectResource(s3Client, bucketName, objectKey);
     }

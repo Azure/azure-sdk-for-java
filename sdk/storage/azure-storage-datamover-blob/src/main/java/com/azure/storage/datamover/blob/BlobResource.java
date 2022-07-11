@@ -4,9 +4,9 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.io.InputStream;
 import java.time.OffsetDateTime;
@@ -23,7 +23,7 @@ class BlobResource extends StorageResource {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
+    public TransferCapabilities getIncomingTransferCapabilities() {
         TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
             .canStream(true);
 
@@ -40,7 +40,7 @@ class BlobResource extends StorageResource {
     }
 
     @Override
-    protected TransferCapabilities getOutgoingTransferCapabilities() {
+    public TransferCapabilities getOutgoingTransferCapabilities() {
         TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
             .canStream(true);
 
@@ -57,34 +57,34 @@ class BlobResource extends StorageResource {
     }
 
     @Override
-    protected InputStream openInputStream() {
+    public InputStream openInputStream() {
         return blobClient.openInputStream();
     }
 
     @Override
-    protected long getLength() {
+    public long getLength() {
         return blobClient.getProperties().getBlobSize();
     }
 
     @Override
-    protected void consumeInputStream(InputStream inputStream, long length) {
+    public void consumeInputStream(InputStream inputStream, long length) {
         blobClient.upload(inputStream, length);
     }
 
     @Override
-    protected String getSasUri() {
+    public String getSasUri() {
         return blobClient.getBlobUrl() + "?" + blobClient.generateSas(
             new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobSasPermission().setReadPermission(true)));
     }
 
     @Override
-    protected void consumeSasUri(String sasUri) {
+    public void consumeSasUri(String sasUri) {
         blobClient.getBlockBlobClient().uploadFromUrl(sasUri);
     }
 
     @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         String[] split = blobClient.getBlobName().split("/");
         return Arrays.asList(split);
     }

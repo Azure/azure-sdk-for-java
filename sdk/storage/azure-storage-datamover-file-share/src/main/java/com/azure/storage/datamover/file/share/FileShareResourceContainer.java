@@ -1,9 +1,9 @@
 package com.azure.storage.datamover.file.share;
 
-import com.azure.storage.datamover.StorageResource;
-import com.azure.storage.datamover.StorageResourceContainer;
-import com.azure.storage.datamover.models.TransferCapabilities;
-import com.azure.storage.datamover.models.TransferCapabilitiesBuilder;
+import com.azure.storage.common.resource.StorageResource;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.TransferCapabilities;
+import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
@@ -25,7 +25,7 @@ class FileShareResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected Iterable<StorageResource> listResources() {
+    public Iterable<StorageResource> listResources() {
         return listResources(shareClient.getRootDirectoryClient(), shareClient.getRootDirectoryClient())
             .collect(Collectors.toList());
     }
@@ -66,7 +66,7 @@ class FileShareResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected StorageResource getStorageResource(List<String> path) {
+    public StorageResource getStorageResource(List<String> path) {
         return new FileShareResource(
             shareClient.getFileClient(String.join("/", path)), shareClient.getRootDirectoryClient());
     }
