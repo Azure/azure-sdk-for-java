@@ -17,26 +17,29 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.PageBlobsClearPagesResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsCreateResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsResizeResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLResponse;
-import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesResponse;
+import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsResizeHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
+import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -73,7 +76,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCreateResponse> create(
+        Mono<ResponseBase<PageBlobsCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -112,7 +115,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUploadPagesResponse> uploadPages(
+        Mono<ResponseBase<PageBlobsUploadPagesHeaders, Void>> uploadPages(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -145,7 +148,40 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsClearPagesResponse> clearPages(
+        Mono<ResponseBase<PageBlobsUploadPagesHeaders, Void>> uploadPages(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-MD5") String transactionalContentMD5,
+                @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
+                @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan,
+                @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/octet-stream") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{containerName}/{blob}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<ResponseBase<PageBlobsClearPagesHeaders, Void>> clearPages(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -175,7 +211,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(
+        Mono<ResponseBase<PageBlobsUploadPagesFromURLHeaders, Void>> uploadPagesFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -214,7 +250,7 @@ public final class PageBlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesResponse> getPageRanges(
+        Mono<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> getPageRanges(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -238,7 +274,7 @@ public final class PageBlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(
+        Mono<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> getPageRangesDiff(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -264,7 +300,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsResizeResponse> resize(
+        Mono<ResponseBase<PageBlobsResizeHeaders, Void>> resize(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -289,7 +325,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
+        Mono<ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void>> updateSequenceNumber(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -311,7 +347,7 @@ public final class PageBlobsImpl {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCopyIncrementalResponse> copyIncremental(
+        Mono<ResponseBase<PageBlobsCopyIncrementalHeaders, Void>> copyIncremental(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -370,10 +406,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsCreateHeaders, Void>> createWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -528,14 +564,134 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsUploadPagesHeaders, Void>> uploadPagesWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
             Flux<ByteBuffer> body,
+            byte[] transactionalContentMD5,
+            byte[] transactionalContentCrc64,
+            Integer timeout,
+            String range,
+            String leaseId,
+            Long ifSequenceNumberLessThanOrEqualTo,
+            Long ifSequenceNumberLessThan,
+            Long ifSequenceNumberEqualTo,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            CpkInfo cpkInfo,
+            EncryptionScope encryptionScopeParam,
+            Context context) {
+        final String comp = "page";
+        final String pageWrite = "update";
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+        }
+        String encryptionScope = encryptionScopeInternal;
+        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.uploadPages(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                pageWrite,
+                contentLength,
+                transactionalContentMD5Converted,
+                transactionalContentCrc64Converted,
+                timeout,
+                range,
+                leaseId,
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                encryptionScope,
+                ifSequenceNumberLessThanOrEqualTo,
+                ifSequenceNumberLessThan,
+                ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * The Upload Pages operation writes a range of pages to a page blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param contentLength The length of the request.
+     * @param body Initial data.
+     * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence
+     *     number less than or equal to the specified.
+     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number
+     *     less than the specified.
+     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified
+     *     sequence number.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScopeParam Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<PageBlobsUploadPagesHeaders, Void>> uploadPagesWithResponseAsync(
+            String containerName,
+            String blob,
+            long contentLength,
+            BinaryData body,
             byte[] transactionalContentMD5,
             byte[] transactionalContentCrc64,
             Integer timeout,
@@ -645,10 +801,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsClearPagesResponse> clearPagesWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsClearPagesHeaders, Void>> clearPagesWithResponseAsync(
             String containerName,
             String blob,
             long contentLength,
@@ -769,10 +925,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsUploadPagesFromURLHeaders, Void>> uploadPagesFromURLWithResponseAsync(
             String containerName,
             String blob,
             String sourceUrl,
@@ -908,10 +1064,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of pages on successful completion of {@link Mono}.
+     * @return the list of pages along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesResponse> getPageRangesWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsGetPageRangesHeaders, PageList>> getPageRangesWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1001,10 +1157,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of pages on successful completion of {@link Mono}.
+     * @return the list of pages along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsGetPageRangesDiffHeaders, PageList>> getPageRangesDiffWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -1078,10 +1234,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsResizeResponse> resizeWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsResizeHeaders, Void>> resizeWithResponseAsync(
             String containerName,
             String blob,
             long blobContentLength,
@@ -1172,10 +1328,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumberWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsUpdateSequenceNumberHeaders, Void>> updateSequenceNumberWithResponseAsync(
             String containerName,
             String blob,
             SequenceNumberActionType sequenceNumberAction,
@@ -1242,10 +1398,10 @@ public final class PageBlobsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithResponseAsync(
+    public Mono<ResponseBase<PageBlobsCopyIncrementalHeaders, Void>> copyIncrementalWithResponseAsync(
             String containerName,
             String blob,
             String copySource,

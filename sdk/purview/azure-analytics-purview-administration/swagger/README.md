@@ -19,6 +19,7 @@ data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 generate-samples: true
+generate-tests: true
 title: PurviewMetadataClient
 service-name: PurviewMetadata
 artifact-id: azure-analytics-purview-administration
@@ -39,6 +40,7 @@ data-plane: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 generate-samples: true
+generate-tests: true
 title: PurviewAccountClient
 artifact-id: azure-analytics-purview-administration
 service-name: PurviewAccount

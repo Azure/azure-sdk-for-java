@@ -20,9 +20,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -52,9 +52,12 @@ class AmqpChannelProcessorTest {
     private AmqpChannelProcessor<TestObject> channelProcessor;
     private AutoCloseable mocksCloseable;
 
+    private VirtualTimeScheduler virtualTimeScheduler;
+
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
+        virtualTimeScheduler = VirtualTimeScheduler.create();
         channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
     }
 
@@ -63,7 +66,7 @@ class AmqpChannelProcessorTest {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMock(this);
-
+        virtualTimeScheduler.dispose();
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
@@ -305,70 +308,10 @@ class AmqpChannelProcessorTest {
     }
 
     @Test
-    void doesNotEmitConnectionWhenNotActive() {
-        // Arrange
-        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-
-        // Act & Assert
-        StepVerifier.withVirtualTime(() -> publisher.next(connection1).flux()
-            .subscribeWith(channelProcessor))
-            .expectSubscription()
-            .thenAwait(Duration.ofMinutes(10))
-            .expectNoEvent(Duration.ofMinutes(10))
-            .then(() -> connection1.getSink().next(AmqpEndpointState.UNINITIALIZED))
-            .expectNoEvent(Duration.ofMinutes(10))
-            .thenCancel()
-            .verify(VERIFY_TIMEOUT);
-    }
-
-    @Test
     void requiresNonNull() {
         Assertions.assertThrows(NullPointerException.class, () -> channelProcessor.onNext(null));
 
         Assertions.assertThrows(NullPointerException.class, () -> channelProcessor.onError(null));
-    }
-
-    /**
-     * Verifies that this AmqpChannelProcessor won't time out even if the 5 minutes default timeout occurs. This is
-     * possible when there is a disconnect for a long period of time.
-     */
-    @Test
-    void waitsLongPeriodOfTimeForConnection() {
-        // Arrange
-        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-
-        // Act & Assert
-        StepVerifier.withVirtualTime(() -> publisher.next(connection1).flux()
-            .subscribeWith(channelProcessor))
-            .expectSubscription()
-            .thenAwait(Duration.ofMinutes(10))
-            .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
-            .expectNext(connection1)
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
-    }
-
-    /**
-     * Verifies that this AmqpChannelProcessor won't time out even if the 5 minutes default timeout occurs. This is
-     * possible when there is a disconnect for a long period of time.
-     */
-    @Test
-    void waitsLongPeriodOfTimeForChainedConnections() {
-        // Arrange
-        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-        final String contents = "Emitted something after 10 minutes.";
-
-        // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            return publisher.next(connection1).flux()
-                .subscribeWith(channelProcessor).flatMap(e -> Mono.just(contents));
-        })
-            .expectSubscription()
-            .thenAwait(Duration.ofMinutes(10))
-            .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
-            .expectNext(contents)
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
     }
 
     static final class TestObject {

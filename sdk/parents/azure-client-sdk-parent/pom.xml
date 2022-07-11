@@ -121,6 +121,8 @@
     <heapDumpOnOom>
       -XX:+HeapDumpOnOutOfMemoryError
       -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
+      <!-- Heap dump is produced before crashing. This flag makes sure JVM exists promptly after disaster instead of waiting for time out -->
+      -XX:+CrashOnOutOfMemoryError
     </heapDumpOnOom>
 
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
@@ -731,7 +733,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -753,7 +755,7 @@
             <dependency>
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
-              <version>9.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              <version>9.3</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -976,7 +978,7 @@
             </configuration>
             <executions>
               <!-- compile first with VM's default Java version -->
-              <!-- this will generate module-info with major class version 61 or higher (i.e Java 17 or higher) -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
               <execution>
                 <id>default-compile</id>
                 <goals>
@@ -986,6 +988,7 @@
                   <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
+
               <!-- then compile with Java 11 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
               when the Azure SDK policy is changed -->
@@ -997,8 +1000,12 @@
                 </goals>
                 <configuration>
                   <release>11</release>
+                  <includes>
+                    <include>module-info.java</include>
+                  </includes>
                 </configuration>
               </execution>
+
               <!-- then compile without module-info for Java 8 -->
               <execution>
                 <id>base-compile</id>
@@ -1025,18 +1032,6 @@
                 </configuration>
               </execution>
 
-              <!-- compile tests with Java 11 -->
-              <execution>
-                <id>base-modules-testCompile</id>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <release>11</release>
-                  <testRelease>11</testRelease>
-                </configuration>
-              </execution>
-
               <!-- then compile with Java 8 -->
               <execution>
                 <id>base-testCompile</id>
@@ -1054,7 +1049,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
@@ -1240,7 +1235,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1262,7 +1257,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1283,7 +1278,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1305,7 +1300,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>

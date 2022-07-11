@@ -1,0 +1,232 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ba12563a-8b6a-47c7-8488-f59951a2e551",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "69e30197-7ce2-4bed-926e-fe10ad327568",
+      "x-ms-client-request-id" : "ba12563a-8b6a-47c7-8488-f59951a2e551",
+      "Date" : "Thu, 16 Jun 2022 18:25:26 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "74894721-dc74-4b4a-a3c7-df4062a42e68",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "c1c2001e-76c7-4e0c-abb2-2773971abac0",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "x-ms-client-request-id" : "74894721-dc74-4b4a-a3c7-df4062a42e68",
+      "Date" : "Thu, 16 Jun 2022 18:25:26 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b0b9d6ba-38c3-49ab-99ab-79e86f4b0982",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "7a70dff4-0be9-4045-98e0-73b129c493d0",
+      "x-ms-client-request-id" : "b0b9d6ba-38c3-49ab-99ab-79e86f4b0982",
+      "Date" : "Thu, 16 Jun 2022 18:25:26 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f60d2aec-eea1-4300-b733-ae6ba7cbda37",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "b004c1a3-5506-444f-bc35-f710595245de",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "x-ms-client-request-id" : "f60d2aec-eea1-4300-b733-ae6ba7cbda37",
+      "Date" : "Thu, 16 Jun 2022 18:25:27 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b777e620-9921-4d5e-95d0-e462c9cbd33f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "446d6029-5d7a-46ba-b3c0-50cb84c2042c",
+      "x-ms-client-request-id" : "b777e620-9921-4d5e-95d0-e462c9cbd33f",
+      "Date" : "Thu, 16 Jun 2022 18:25:26 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a60d95bf-6c8b-42b2-a9c9-a8f853e3067f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "adb2a2b0-c6bb-4f22-ab12-5c922953b5b0",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "x-ms-client-request-id" : "a60d95bf-6c8b-42b2-a9c9-a8f853e3067f",
+      "Date" : "Thu, 16 Jun 2022 18:25:27 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ec094474-8acf-43a6-9ca4-065f1d3755ff",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "e78cb09f-95c3-476f-b095-b1543a52527d",
+      "x-ms-client-request-id" : "ec094474-8acf-43a6-9ca4-065f1d3755ff",
+      "Date" : "Thu, 16 Jun 2022 18:25:26 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "de648fff-bf1b-4d94-8d97-5148471e4c49",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "4f2011fd-52eb-4c03-a0f0-0e682e8a948c",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "x-ms-client-request-id" : "de648fff-bf1b-4d94-8d97-5148471e4c49",
+      "Date" : "Thu, 16 Jun 2022 18:25:27 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7f58c754-166c-4450-886c-0db96e341a6c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "ba784388-2330-4459-99ec-d2ba226362e2",
+      "x-ms-client-request-id" : "7f58c754-166c-4450-886c-0db96e341a6c",
+      "Date" : "Thu, 16 Jun 2022 18:25:26 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0df5188d-72cc-40a1-88f3-9ca372f5b4bf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "90723b98-f2c4-4063-8097-41c0dcea0ddd",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "x-ms-client-request-id" : "0df5188d-72cc-40a1-88f3-9ca372f5b4bf",
+      "Date" : "Thu, 16 Jun 2022 18:25:27 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8fc878bb-eef7-4c1c-aabb-a0917e72a0b8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "56dba2c6-f910-4a6b-8a99-8b18d4a4b880",
+      "x-ms-client-request-id" : "8fc878bb-eef7-4c1c-aabb-a0917e72a0b8",
+      "Date" : "Thu, 16 Jun 2022 18:25:27 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-id/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.1 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "78560d24-7c33-4cf5-a3ef-31d69b0671c3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "NotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "9fe41f22-b7b3-4ac2-9854-d74946d65d66",
+      "Body" : "{\"error\":{\"code\":\"NotFound\",\"message\":\"Data collection rule with immutable Id 'dcr-id' not found.\"}}",
+      "x-ms-client-request-id" : "78560d24-7c33-4cf5-a3ef-31d69b0671c3",
+      "Date" : "Thu, 16 Jun 2022 18:25:27 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

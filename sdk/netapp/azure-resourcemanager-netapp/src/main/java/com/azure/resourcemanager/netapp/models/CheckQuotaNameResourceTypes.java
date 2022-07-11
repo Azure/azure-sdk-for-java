@@ -38,7 +38,11 @@ public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<Chec
         return fromString(name, CheckQuotaNameResourceTypes.class);
     }
 
-    /** @return known CheckQuotaNameResourceTypes values. */
+    /**
+     * Gets known CheckQuotaNameResourceTypes values.
+     *
+     * @return known CheckQuotaNameResourceTypes values.
+     */
     public static Collection<CheckQuotaNameResourceTypes> values() {
         return values(CheckQuotaNameResourceTypes.class);
     }

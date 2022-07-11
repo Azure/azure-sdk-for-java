@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetAppResourceQuotaLimits List. */
 public final class NetAppResourceQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/QuotaLimits_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/QuotaLimits_List.json
      */
     /**
      * Sample code: QuotaLimits.

@@ -46,7 +46,11 @@ public final class WebApplicationFirewallMatchVariable
         return fromString(name, WebApplicationFirewallMatchVariable.class);
     }
 
-    /** @return known WebApplicationFirewallMatchVariable values. */
+    /**
+     * Gets known WebApplicationFirewallMatchVariable values.
+     *
+     * @return known WebApplicationFirewallMatchVariable values.
+     */
     public static Collection<WebApplicationFirewallMatchVariable> values() {
         return values(WebApplicationFirewallMatchVariable.class);
     }

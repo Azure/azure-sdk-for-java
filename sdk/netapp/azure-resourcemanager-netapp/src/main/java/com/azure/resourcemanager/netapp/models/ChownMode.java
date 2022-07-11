@@ -27,7 +27,11 @@ public final class ChownMode extends ExpandableStringEnum<ChownMode> {
         return fromString(name, ChownMode.class);
     }
 
-    /** @return known ChownMode values. */
+    /**
+     * Gets known ChownMode values.
+     *
+     * @return known ChownMode values.
+     */
     public static Collection<ChownMode> values() {
         return values(ChownMode.class);
     }

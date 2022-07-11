@@ -25,4 +25,21 @@ public class StoreResponseTest {
         assertThat(sp.getResponseBody()).isEqualTo(getUTF8BytesOrNull(content));
         assertThat(sp.getHeaderValue("key1")).isEqualTo("value1");
     }
+
+    @Test(groups = { "unit" })
+    public void headerNamesAreCaseInsensitive() {
+        String content = "I am body";
+        HashMap<String, String> headerMap = new HashMap<>();
+        headerMap.put("key1", "value1");
+        headerMap.put("key2", "value2");
+        headerMap.put("KEY1", "value3");
+
+        StoreResponse sp = new StoreResponse(200, headerMap, getUTF8BytesOrNull(content));
+
+        assertThat(sp.getStatus()).isEqualTo(200);
+        assertThat(sp.getResponseBody()).isEqualTo(getUTF8BytesOrNull(content));
+        assertThat(sp.getHeaderValue("key1")).isEqualTo("value3");
+        assertThat(sp.getHeaderValue("kEy1")).isEqualTo("value3");
+        assertThat(sp.getHeaderValue("KEY2")).isEqualTo("value2");
+    }
 }

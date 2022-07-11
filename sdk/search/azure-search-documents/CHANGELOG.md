@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.10 (Unreleased)
+## 11.5.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,59 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 11.5.0-beta.11 (2022-07-01)
+
+### Features Added
+
+- Added support for `LexicalNormalizer`s in `SimpleField` and `SearchableField` annotations.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.18` to version `1.2.19`.
+
+## 11.4.12 (2022-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.18` to version `1.2.19`.
+
+## 11.5.0-beta.10 (2022-06-07)
+
+### Bugs Fixed
+
 - Fixed a bug where a custom `ObjectSerializer`'s output wasn't being respected in regard to null field values. ([#29238](https://github.com/Azure/azure-sdk-for-java/pull/29238))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.16` to version `1.2.18`.
+
+## 11.4.11 (2022-06-07)
+
+### Bugs Fixed
+
+- Fixed a bug where a custom `ObjectSerializer`'s output wasn't being respected in regard to null field values. ([#29238](https://github.com/Azure/azure-sdk-for-java/pull/29238))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.16` to version `1.2.18`.
 
 ## 11.4.10 (2022-05-12)
 

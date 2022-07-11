@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.file.core.windows.net/d98fb423d98fb4239f300527ac5e48573a814ee8a2?restype=share",
     "Headers" : {
-      "x-ms-version" : "2021-06-08",
+      "x-ms-version" : "2021-08-06",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.13; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b90c6590-5b56-452a-8742-85dc60f2494b"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-06-08",
+      "x-ms-version" : "2021-08-06",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "eTag" : "0x8DA27D7EC2679A0",
       "Last-Modified" : "Tue, 26 Apr 2022 22:55:55 GMT",

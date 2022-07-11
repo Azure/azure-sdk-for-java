@@ -1,5 +1,5 @@
 # Azure Form Recognizer client library for Java
-Azure Cognitive Services Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
 It includes the following main features:
 
 * Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
@@ -37,7 +37,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-Then, include the direct dependency in the dependencies section without the version tag.
+Then, include the direct dependency in the dependencies' section without the version tag.
 
 ```xml
 <dependencies>
@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.11</version>
+    <version>3.1.13</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,7 +68,7 @@ This table shows the relationship between SDK versions and supported API version
 |SDK version|Supported API version of service
 |-|-
 |3.0.x | 2.0
-|3.1.X - 3.1.3| 2.0, 2.1 (default)
+|3.1.X - 3.1.12| 2.0, 2.1 (default)
 |4.0.0-beta.1 - Latest beta release| 2022-01-30-preview (default)
 
 > Note: Starting with version 2022-01-30-preview, a new set of clients were introduced to leverage the newest features
@@ -78,7 +78,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
-|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-06-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -162,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -190,23 +190,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
 provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
-Use the `modelId` parameter to select the type of model for analysis.
-
-| Model                   | Features                                                                                                  |
-|-------------------------|-----------------------------------------------------------------------------------------------------------|
-| "prebuilt-layout"       | Text extraction, selection marks, tables                                                                  |
-| "prebuilt-document"     | Text extraction, selection marks, tables, key-value pairs, and entities                                   |
-| "prebuilt-read"         | Text extraction, text languages and styles                                                                |  
-| "prebuilt-invoice"      | Text extraction, selection marks, tables, and prebuilt fields and values related to English invoices      |
-| "prebuilt-businessCard" | Text extraction and prebuilt fields, and values related to English business cards                         |
-| "prebuilt-idDocument"   | Text extraction and prebuilt fields and values related to US driver licenses and international passports  |
-| "prebuilt-receipt"      | Text extraction and prebuilt fields and values related to English sales receipts                          |
-| "prebuilt-tax.us.w2"    | Text extraction and pre-trained fields and values pertaining to US W2 tax forms                           |
-| "{custom-model-id}"     | Text extraction, selection marks, tables, labeled fields, and values from your custom documents           |
+See a full list of supported models [here][fr_models].
 
 Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
 More information about analyzing documents, including supported features, locales, and document types can be found
-[here][fr-models].
+[here][fr_models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -246,11 +234,11 @@ Extract text, table structures, and selection marks like radio buttons and check
 ```java readme-sample-extractLayout
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
-byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
-InputStream fileStream = new ByteArrayInputStream(fileContent);
+Path filePath = layoutDocument.toPath();
+BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
 
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
-    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", fileStream, layoutDocument.length());
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData, layoutDocument.length());
 
 AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
@@ -388,18 +376,18 @@ More details on setting up a container and required file structure can be found 
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
+SyncPoller<DocumentOperationResult, DocumentModelInfo> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
         DocumentBuildMode.TEMPLATE,
         new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
-DocumentModel documentModel = buildOperationPoller.getFinalResult();
+DocumentModelInfo documentModelInfo = buildOperationPoller.getFinalResult();
 
 // Model Info
-System.out.printf("Model ID: %s%n", documentModel.getModelId());
-System.out.printf("Model Description: %s%n", documentModel.getDescription());
-System.out.printf("Model created on: %s%n%n", documentModel.getCreatedOn());
-documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+System.out.printf("Model created on: %s%n%n", documentModelInfo.getCreatedOn());
+documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
     System.out.printf("Document type: %s%n", key);
     docTypeInfo.getFieldSchema().forEach((name, documentFieldSchema) -> {
         System.out.printf("Document field: %s%n", name);
@@ -475,19 +463,19 @@ Manage the models in your Form Recognizer account.
 AtomicReference<String> modelId = new AtomicReference<>();
 
 // First, we see how many models we have, and what our limit is
-AccountProperties accountProperties = documentModelAdminClient.getAccountProperties();
-System.out.printf("The account has %s models, and we can have at most %s models",
-    accountProperties.getDocumentModelCount(), accountProperties.getDocumentModelLimit());
+ResourceInfo resourceInfo = documentModelAdminClient.getResourceInfo();
+System.out.printf("The resource has %s models, and we can have at most %s models",
+    resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
 
 // Next, we get a paged list of all of our models
-PagedIterable<DocumentModelInfo> customDocumentModels = documentModelAdminClient.listModels();
+PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
 System.out.println("We have following models in the account:");
 customDocumentModels.forEach(documentModelInfo -> {
     System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
     modelId.set(documentModelInfo.getModelId());
 
     // get custom document analysis model info
-    DocumentModel documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
+    DocumentModelInfo documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
     System.out.printf("Model ID: %s%n", documentModel.getModelId());
     System.out.printf("Model Description: %s%n", documentModel.getDescription());
     System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
@@ -544,7 +532,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Build a model: [BuildModel][build_model]
 * Manage custom models: [ManageCustomModels][manage_custom_models]
 * Copy a model between Form Recognizer resources: [CopyModel][copy_model]
-* Create a composed model from a collection of custom-built models: [CreateComposedModel][create_composed_model]
+* Create a composed model from a collection of custom-built models: [ComposeModel][compose_model]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
 
 ### Async APIs
@@ -567,7 +555,7 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Build a model: [BuildModelAsync][build_model_async]
 * Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
 * Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
-* Create a composed model from a collection of custom-built models: [CreateComposedModelAsync][create_composed_model_async]
+* Create a composed model from a collection of custom-built models: [ComposeModelAsync][compose_model_async]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
 
 ### Additional documentation
@@ -612,9 +600,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
+[changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
 
-[create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
-[create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
+[compose_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeModel.java
+[compose_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeModelAsync.java
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/
 [document_analysis_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java
 [document_analysis_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java

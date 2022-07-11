@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.models.KeyValueInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to list key-values. */
 @Fluent
 public final class KeyValueListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyValueListResult.class);
-
     /*
      * The collection value.
      */

@@ -10,6 +10,23 @@
 
 ### Other Changes
 
+## 12.3.2 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.30.0`
+- Upgraded `azure-core-http-netty` dependency to `1.12.3`
+
+## 12.3.1 (2022-06-10)
+
+### Other Changes
+- Added small performance improvements to the authentication flow.
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.29.1`
+- Upgraded `azure-core-http-netty` dependency to `1.12.2` 
+
 ## 12.3.0 (2022-05-11)
 
 ### Features Added

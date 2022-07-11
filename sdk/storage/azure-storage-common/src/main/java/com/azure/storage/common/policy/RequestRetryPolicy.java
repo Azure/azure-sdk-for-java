@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -94,10 +95,15 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          duplicates the ByteBuffer object, not the underlying data.
          */
         context.setHttpRequest(originalRequest.copy());
-        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
-            ? null
-            : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
-        context.getHttpRequest().setBody(bufferedBody);
+        BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
+        if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
+            // Replayable bodies don't require this transformation.
+            // TODO (kasobol-msft) Remove this transformation in favor of
+            // BinaryData.toReplayableBinaryData()
+            // But this should be done together with removal of buffering in chunked uploads.
+            Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
+            context.getHttpRequest().setBody(bufferedBody);
+        }
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.getSecondaryHost());

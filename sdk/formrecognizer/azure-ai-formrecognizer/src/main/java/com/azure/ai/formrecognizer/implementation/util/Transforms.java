@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
@@ -28,10 +28,8 @@ import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.BoundingRegion;
 import com.azure.ai.formrecognizer.models.CurrencyValue;
-import com.azure.ai.formrecognizer.models.DocumentCaption;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
-import com.azure.ai.formrecognizer.models.DocumentFootnote;
 import com.azure.ai.formrecognizer.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.models.DocumentLanguage;
@@ -39,6 +37,7 @@ import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentPage;
+import com.azure.ai.formrecognizer.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.models.DocumentParagraph;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentSignatureType;
@@ -114,6 +113,8 @@ public class Transforms {
                 DocumentPageHelper.setUnit(documentPage, innerDocumentPage.getUnit() == null
                     ? null : LengthUnit.fromString(innerDocumentPage.getUnit().toString()));
                 DocumentPageHelper.setSpans(documentPage, toDocumentSpans(innerDocumentPage.getSpans()));
+                DocumentPageHelper.setKind(documentPage, innerDocumentPage.getKind() != null
+                    ? DocumentPageKind.fromString(innerDocumentPage.getKind().toString()) : null);
                 DocumentPageHelper.setSelectionMarks(documentPage, innerDocumentPage.getSelectionMarks() == null
                     ? null
                     : innerDocumentPage.getSelectionMarks()
@@ -239,39 +240,12 @@ public class Transforms {
                     DocumentTableHelper.setSpans(documentTable, toDocumentSpans(innerDocumentTable.getSpans()));
                     DocumentTableHelper.setColumnCount(documentTable, innerDocumentTable.getColumnCount());
                     DocumentTableHelper.setRowCount(documentTable, innerDocumentTable.getRowCount());
-                    DocumentTableHelper.setTableCaption(documentTable, innerDocumentTable.getCaption() == null
-                        ? null : toDocumentCaption(innerDocumentTable.getCaption()));
-                    DocumentTableHelper.setTableFootnotes(documentTable, innerDocumentTable.getFootnotes() == null
-                        ? null : innerDocumentTable.getFootnotes()
-                        .stream()
-                        .map(innerDocumentFootnote -> toDocumentFootnote(innerDocumentFootnote))
-                        .collect(Collectors.toList()));
                     return documentTable;
                 })
                 .collect(Collectors.toList()));
         }
 
         return analyzeResult;
-    }
-
-    private static DocumentCaption toDocumentCaption(com.azure.ai.formrecognizer.implementation.models.DocumentCaption innerDocumentCaption) {
-        DocumentCaption documentCaption = new DocumentCaption();
-        DocumentCaptionHelper.setContent(documentCaption, innerDocumentCaption.getContent());
-        DocumentCaptionHelper.setSpans(documentCaption, toDocumentSpans(innerDocumentCaption.getSpans()));
-        DocumentCaptionHelper.setBoundingRegions(documentCaption,
-            toBoundingRegions(innerDocumentCaption.getBoundingRegions()));
-
-        return documentCaption;
-    }
-
-    private static DocumentFootnote toDocumentFootnote(com.azure.ai.formrecognizer.implementation.models.DocumentFootnote innerDocumentFootnote) {
-        DocumentFootnote documentFootnote = new DocumentFootnote();
-        DocumentFootnoteHelper.setContent(documentFootnote, innerDocumentFootnote.getContent());
-        DocumentFootnoteHelper.setSpans(documentFootnote, toDocumentSpans(innerDocumentFootnote.getSpans()));
-        DocumentFootnoteHelper.setBoundingRegions(documentFootnote,
-            toBoundingRegions(innerDocumentFootnote.getBoundingRegions()));
-
-        return documentFootnote;
     }
 
     /**
@@ -312,24 +286,24 @@ public class Transforms {
         return copyAuthorization;
     }
 
-    public static AccountProperties toAccountProperties(GetInfoResponse getInfoResponse) {
-        AccountProperties accountProperties = new AccountProperties();
-        AccountPropertiesHelper.setDocumentModelCount(accountProperties,
+    public static ResourceInfo toAccountProperties(GetInfoResponse getInfoResponse) {
+        ResourceInfo resourceInfo = new ResourceInfo();
+        ResourceInfoHelper.setDocumentModelCount(resourceInfo,
             getInfoResponse.getCustomDocumentModels().getCount());
-        AccountPropertiesHelper.setDocumentModelLimit(accountProperties,
+        ResourceInfoHelper.setDocumentModelLimit(resourceInfo,
             getInfoResponse.getCustomDocumentModels().getLimit());
-        return accountProperties;
+        return resourceInfo;
     }
 
-    public static DocumentModel toDocumentModel(ModelInfo modelInfo) {
-        DocumentModel documentModel = new DocumentModel();
-        DocumentModelHelper.setModelId(documentModel, modelInfo.getModelId());
-        DocumentModelHelper.setDescription(documentModel, modelInfo.getDescription());
+    public static DocumentModelInfo toDocumentModel(ModelInfo modelInfo) {
+        DocumentModelInfo documentModelInfo = new DocumentModelInfo();
+        DocumentModelInfoHelper.setModelId(documentModelInfo, modelInfo.getModelId());
+        DocumentModelInfoHelper.setDescription(documentModelInfo, modelInfo.getDescription());
         Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-        DocumentModelHelper.setDocTypes(documentModel, docTypeMap);
-        DocumentModelHelper.setCreatedOn(documentModel, modelInfo.getCreatedDateTime());
-        DocumentModelHelper.setTags(documentModel, modelInfo.getTags());
-        return documentModel;
+        DocumentModelInfoHelper.setDocTypes(documentModelInfo, docTypeMap);
+        DocumentModelInfoHelper.setCreatedOn(documentModelInfo, modelInfo.getCreatedDateTime());
+        DocumentModelInfoHelper.setTags(documentModelInfo, modelInfo.getTags());
+        return documentModelInfo;
     }
 
     private static Map<String, DocTypeInfo> getStringDocTypeInfoMap(ModelInfo modelInfo) {
@@ -404,7 +378,6 @@ public class Transforms {
             documentFieldMap.put(key, toDocumentField(innerDocumentField)));
         return documentFieldMap;
     }
-
 
     private static DocumentField toDocumentField(
         com.azure.ai.formrecognizer.implementation.models.DocumentField innerDocumentField) {
@@ -565,16 +538,16 @@ public class Transforms {
         return pointList;
     }
 
-    public static List<DocumentModelInfo> toDocumentModelInfo(List<ModelSummary> modelSummaryList) {
+    public static List<DocumentModelSummary> toDocumentModelInfo(List<ModelSummary> modelSummaryList) {
         return modelSummaryList
             .stream()
             .map(modelSummary -> {
-                DocumentModelInfo documentModelInfo = new DocumentModelInfo();
-                DocumentModelInfoHelper.setModelId(documentModelInfo, modelSummary.getModelId());
-                DocumentModelInfoHelper.setDescription(documentModelInfo, modelSummary.getDescription());
-                DocumentModelInfoHelper.setCreatedOn(documentModelInfo, modelSummary.getCreatedDateTime());
-                DocumentModelInfoHelper.setTags(documentModelInfo, modelSummary.getTags());
-                return documentModelInfo;
+                DocumentModelSummary documentModelSummary = new DocumentModelSummary();
+                DocumentModelSummaryHelper.setModelId(documentModelSummary, modelSummary.getModelId());
+                DocumentModelSummaryHelper.setDescription(documentModelSummary, modelSummary.getDescription());
+                DocumentModelSummaryHelper.setCreatedOn(documentModelSummary, modelSummary.getCreatedDateTime());
+                DocumentModelSummaryHelper.setTags(documentModelSummary, modelSummary.getTags());
+                return documentModelSummary;
             }).collect(Collectors.toList());
     }
 

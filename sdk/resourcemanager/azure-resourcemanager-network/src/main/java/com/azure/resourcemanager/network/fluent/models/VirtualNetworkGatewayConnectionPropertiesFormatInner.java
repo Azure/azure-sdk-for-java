@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
@@ -128,6 +129,13 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
      */
     @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
+
+    /*
+     * GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     */
+    @JsonProperty(value = "gatewayCustomBgpIpAddresses")
+    private List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses;
 
     /*
      * Use private local Azure IP for the connection.
@@ -496,6 +504,29 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
+     * Get the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @return the gatewayCustomBgpIpAddresses value.
+     */
+    public List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses() {
+        return this.gatewayCustomBgpIpAddresses;
+    }
+
+    /**
+     * Set the gatewayCustomBgpIpAddresses property: GatewayCustomBgpIpAddresses to be used for virtual network gateway
+     * Connection.
+     *
+     * @param gatewayCustomBgpIpAddresses the gatewayCustomBgpIpAddresses value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner withGatewayCustomBgpIpAddresses(
+        List<GatewayCustomBgpIpAddressIpConfiguration> gatewayCustomBgpIpAddresses) {
+        this.gatewayCustomBgpIpAddresses = gatewayCustomBgpIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the useLocalAzureIpAddress property: Use private local Azure IP for the connection.
      *
      * @return the useLocalAzureIpAddress value.
@@ -647,6 +678,9 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
         }
         if (tunnelConnectionStatus() != null) {
             tunnelConnectionStatus().forEach(e -> e.validate());
+        }
+        if (gatewayCustomBgpIpAddresses() != null) {
+            gatewayCustomBgpIpAddresses().forEach(e -> e.validate());
         }
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());

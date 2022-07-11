@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.administration.generated;
 
 import com.azure.analytics.purview.administration.CollectionsClient;
-import com.azure.analytics.purview.administration.PurviewAccountClientBuilder;
+import com.azure.analytics.purview.administration.CollectionsClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,15 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionsCreateOrUpdateCollection {
     public static void main(String[] args) {
-        CollectionsClient client =
-                new PurviewAccountClientBuilder()
+        CollectionsClient collectionsClient =
+                new CollectionsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{endpoint}")
-                        .buildCollectionsClient();
+                        .buildClient();
+        // BEGIN:com.azure.analytics.purview.administration.generated.collectionscreateorupdatecollection.collectionscreateorupdatecollection
         BinaryData collection =
                 BinaryData.fromString("{\"parentCollection\":{\"referenceName\":\"myParentCollection1\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.createOrUpdateCollectionWithResponse("myCollection1", collection, requestOptions);
+                collectionsClient.createOrUpdateCollectionWithResponse("myCollection1", collection, requestOptions);
+        // END:com.azure.analytics.purview.administration.generated.collectionscreateorupdatecollection.collectionscreateorupdatecollection
     }
 }

@@ -6,7 +6,7 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                                           @jsquire
+/.github/                                           @jsquire @ronniegeraghty
 
 ###########
 # SDK
@@ -19,7 +19,7 @@
 # PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                            @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/          @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/boms/spring-cloud-azure-dependencies/          @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
 
 ####
 # Service teams
@@ -31,8 +31,8 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
-/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
 
 
 # PRLabel: %Attestation
@@ -85,9 +85,9 @@
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @xinlian12
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @xinlian12
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                  @dpokluda
@@ -99,7 +99,7 @@
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
+/sdk/eventgrid/                                     @mssfang @srnagar @lmolkova
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang @anushkasingh16
@@ -128,7 +128,7 @@
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/keyvault/azure-security-keyvault-jca           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
@@ -148,7 +148,7 @@
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @mssfang @samvaity
+/sdk/search/                                        @alzimmermsft
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
@@ -160,18 +160,21 @@
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft @ibrahimrabab
 
 # PRLabel: %Tables
-/sdk/tables/                                        @vcolin7 @conniey
+/sdk/tables/                                        @vcolin7 @conniey @kasobol-msft
 
 # PRLabel: %EngSys
-/sdk/template/                                      @hallipr @weshaggard
+/sdk/template/                                      @hallipr @weshaggard @JimSuplizio
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                 @samvaity @mssfang
 
+# PRLabel: %Azure SDK Tools
+/sdk/tools/                                         @srnagar @jonathangiles
+
 # PRLabel: %azure-spring
-/sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
 # PRLabel: %azure-spring
-/sdk/spring-experimental/                           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/sdk/spring-experimental/                           @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -357,7 +360,7 @@
 #/<NotInRepo>/          @qike-ms @jwilder @thomas1206 @seanmck
 
 # ServiceLabel: %Cosmos %Service Attention
-#/<NotInRepo>/          @kushagraThapar @simplynaveen20 @abinav2307
+#/<NotInRepo>/          @kushagraThapar @TheovanKraay @pjohari-ms
 
 # ServiceLabel: %Customer Insights %Service Attention
 #/<NotInRepo>/          @shefymk
@@ -737,18 +740,18 @@
 ###########
 # Eng Sys
 ###########
-/eng/                                               @hallipr @weshaggard @benbp
+/eng/                                               @hallipr @weshaggard @benbp @JimSuplizio
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp
-/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo
+/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
+/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay @JimSuplizio
+/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @jonathangiles @backwind1233 @chenrujun @hui1110 @jialigit @netyyyy @saragluna @stliu @yiliuTo @moarychan
 /eng/bomgenerator                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 
-/**/tests.yml                                       @hallipr
-/**/ci.yml                                          @hallipr
+/**/tests.yml                                       @hallipr @JimSuplizio
+/**/ci.yml                                          @hallipr @JimSuplizio
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                @joshfree @jonathangiles

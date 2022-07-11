@@ -61,32 +61,70 @@ pr:
       - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
 
+parameters:
+- name: release_azuredataappconfiguration
+  displayName: 'azure-data-appconfiguration'
+  type: boolean
+  default: true
+- name: release_azurespringcloudappconfigurationconfig
+  displayName: 'azure-spring-cloud-appconfiguration-config'
+  type: boolean
+  default: true
+- name: release_azurespringcloudappconfigurationconfigweb
+  displayName: 'azure-spring-cloud-appconfiguration-config-web'
+  type: boolean
+  default: true
+- name: release_azurespringcloudfeaturemanagement
+  displayName: 'azure-spring-cloud-feature-management'
+  type: boolean
+  default: true
+- name: release_azurespringcloudfeaturemanagementweb
+  displayName: 'azure-spring-cloud-feature-management-web'
+  type: boolean
+  default: true
+- name: release_azurespringcloudstarterappconfigurationconfig
+  displayName: 'azure-spring-cloud-starter-appconfiguration-config'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerappconfiguration
+  displayName: 'azure-resourcemanager-appconfiguration'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: appconfiguration
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-appconfiguration
         groupId: com.azure
         safeName: azuredataappconfiguration
+        releaseInBatch: ${{ parameters.release_azuredataappconfiguration }}
       - name: azure-spring-cloud-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudappconfigurationconfig
+        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfig }}
       - name: azure-spring-cloud-appconfiguration-config-web
         groupId: com.azure.spring
         safeName: azurespringcloudappconfigurationconfigweb
+        releaseInBatch: ${{ parameters.release_azurespringcloudappconfigurationconfigweb }}
       - name: azure-spring-cloud-feature-management
         groupId: com.azure.spring
         safeName: azurespringcloudfeaturemanagement
+        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagement }}
       - name: azure-spring-cloud-feature-management-web
         groupId: com.azure.spring
         safeName: azurespringcloudfeaturemanagementweb
+        releaseInBatch: ${{ parameters.release_azurespringcloudfeaturemanagementweb }}
       - name: azure-spring-cloud-starter-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudstarterappconfigurationconfig
+        releaseInBatch: ${{ parameters.release_azurespringcloudstarterappconfigurationconfig }}
       - name: azure-resourcemanager-appconfiguration
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappconfiguration
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappconfiguration }}
     AdditionalModules:
       - name: azure-spring-cloud-test-appconfiguration-config
         groupId: com.azure.spring

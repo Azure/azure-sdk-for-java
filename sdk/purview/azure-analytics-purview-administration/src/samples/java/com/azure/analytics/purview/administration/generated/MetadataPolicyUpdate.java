@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.administration.generated;
 
 import com.azure.analytics.purview.administration.MetadataPolicyClient;
-import com.azure.analytics.purview.administration.PurviewMetadataClientBuilder;
+import com.azure.analytics.purview.administration.MetadataPolicyClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,16 +13,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class MetadataPolicyUpdate {
     public static void main(String[] args) {
-        MetadataPolicyClient client =
-                new PurviewMetadataClientBuilder()
+        MetadataPolicyClient metadataPolicyClient =
+                new MetadataPolicyClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildMetadataPolicyClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setBody(
-                BinaryData.fromString(
-                        "{\"name\":\"policy_mycollection\",\"id\":\"98ed42ff-b67f-44df-8c8c-7e6b43e77055\",\"properties\":{\"description\":\"\",\"attributeRules\":[{\"name\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"principal.microsoft.id\",\"attributeValueIncludedIn\":[\"69e520f2-5f26-4074-9fe1-5187d85ec005\",\"3f10f245-d5c4-4541-98ce-01a4580a30e0\"]},{\"attributeName\":\"derived.purview.role\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:myparentcollection\"}]],\"id\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\"},{\"name\":\"permission:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:myparentcollection\"}]],\"id\":\"permission:mycollection\"}],\"collection\":{\"referenceName\":\"mycollection\"},\"decisionRules\":[{\"dnfCondition\":[[{\"attributeName\":\"resource.purview.collection\",\"attributeValueIncludes\":\"mycollection\"},{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:mycollection\"}]],\"effect\":\"Permit\"}],\"parentCollectionName\":\"myparentcollection\"},\"version\":1}"));
+                        .buildClient();
+        // BEGIN:com.azure.analytics.purview.administration.generated.metadatapolicyupdate.metadatapolicyupdate
+        RequestOptions requestOptions =
+                new RequestOptions()
+                        .setBody(
+                                BinaryData.fromString(
+                                        "{\"name\":\"policy_mycollection\",\"id\":\"98ed42ff-b67f-44df-8c8c-7e6b43e77055\",\"properties\":{\"description\":\"\",\"attributeRules\":[{\"name\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"principal.microsoft.id\",\"attributeValueIncludedIn\":[\"69e520f2-5f26-4074-9fe1-5187d85ec005\",\"3f10f245-d5c4-4541-98ce-01a4580a30e0\"]},{\"attributeName\":\"derived.purview.role\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:myparentcollection\"}]],\"id\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\"},{\"name\":\"permission:mycollection\",\"dnfCondition\":[[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"purviewmetadatarole_builtin_collection-administrator:mycollection\"}],[{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:myparentcollection\"}]],\"id\":\"permission:mycollection\"}],\"collection\":{\"referenceName\":\"mycollection\"},\"decisionRules\":[{\"dnfCondition\":[[{\"attributeName\":\"resource.purview.collection\",\"attributeValueIncludes\":\"mycollection\"},{\"attributeName\":\"derived.purview.permission\",\"attributeValueIncludes\":\"permission:mycollection\"}]],\"effect\":\"Permit\"}],\"parentCollectionName\":\"myparentcollection\"},\"version\":1}"));
         Response<BinaryData> response =
-                client.updateWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
+                metadataPolicyClient.updateWithResponse("98ed42ff-b67f-44df-8c8c-7e6b43e77055", requestOptions);
+        // END:com.azure.analytics.purview.administration.generated.metadatapolicyupdate.metadatapolicyupdate
     }
 }

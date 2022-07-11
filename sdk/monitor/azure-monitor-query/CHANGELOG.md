@@ -8,9 +8,28 @@
 
 ### Bugs Fixed
 
-- Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+### Other Changes
+
+## 1.0.8 (2022-07-07)
 
 ### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.3`.
+
+## 1.0.7 (2022-06-09)
+
+### Bugs Fixed
+
+- Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+- [Fixed bug that causes `NullPointerException` when batch queries have server timeout configured.](https://github.com/Azure/azure-sdk-for-java/issues/29339) 
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` to version `1.12.2`.
 
 ## 1.0.6 (2022-05-12)
 

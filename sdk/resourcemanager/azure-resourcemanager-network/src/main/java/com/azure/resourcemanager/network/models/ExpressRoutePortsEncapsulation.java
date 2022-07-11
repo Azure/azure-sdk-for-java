@@ -27,7 +27,11 @@ public final class ExpressRoutePortsEncapsulation extends ExpandableStringEnum<E
         return fromString(name, ExpressRoutePortsEncapsulation.class);
     }
 
-    /** @return known ExpressRoutePortsEncapsulation values. */
+    /**
+     * Gets known ExpressRoutePortsEncapsulation values.
+     *
+     * @return known ExpressRoutePortsEncapsulation values.
+     */
     public static Collection<ExpressRoutePortsEncapsulation> values() {
         return values(ExpressRoutePortsEncapsulation.class);
     }

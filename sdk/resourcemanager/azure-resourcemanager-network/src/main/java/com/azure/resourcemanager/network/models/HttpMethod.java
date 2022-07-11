@@ -24,7 +24,11 @@ public final class HttpMethod extends ExpandableStringEnum<HttpMethod> {
         return fromString(name, HttpMethod.class);
     }
 
-    /** @return known HttpMethod values. */
+    /**
+     * Gets known HttpMethod values.
+     *
+     * @return known HttpMethod values.
+     */
     public static Collection<HttpMethod> values() {
         return values(HttpMethod.class);
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.16.0-beta.1 (Unreleased)
+## 2.17.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.16.0 (2022-06-24)
+
+### Features Added
+
+- Supported swapping OS disk in `VirtualMachine`.
+
+### Breaking Changes
+
+- Provisioning state in gallery changed to `GalleryProvisioningState`.
+- User assigned identity in virtual machine scale set changed to `VirtualMachineIdentityUserAssignedIdentities`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-02`.
 
 ## 2.15.0 (2022-05-25)
 

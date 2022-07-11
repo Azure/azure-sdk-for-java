@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
 /** Samples for DiskRestorePoint GrantAccess. */
 public final class DiskRestorePointGrantAccessSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/BeginGetAccessDiskRestorePoint.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskRestorePointExamples/DiskRestorePoint_BeginGetAccess.json
      */
     /**
      * Sample code: Grants access to a diskRestorePoint.

@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for IpAllocations CreateOrUpdate. */
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/IpAllocationCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskAccesses ListByResourceGroup. */
 public final class DiskAccessesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListDiskAccessesInAResourceGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-02/DiskRP/examples/diskAccessExamples/DiskAccess_ListByResourceGroup.json
      */
     /**
      * Sample code: List all disk access resources in a resource group.

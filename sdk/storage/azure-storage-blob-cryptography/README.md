@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.16.0</version>
+  <version>12.17.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

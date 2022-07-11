@@ -19,34 +19,38 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.FilesAbortCopyResponse;
-import com.azure.storage.file.share.implementation.models.FilesAcquireLeaseResponse;
-import com.azure.storage.file.share.implementation.models.FilesBreakLeaseResponse;
-import com.azure.storage.file.share.implementation.models.FilesChangeLeaseResponse;
-import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
-import com.azure.storage.file.share.implementation.models.FilesDeleteResponse;
-import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesResponse;
-import com.azure.storage.file.share.implementation.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.FilesGetRangeListResponse;
-import com.azure.storage.file.share.implementation.models.FilesListHandlesResponse;
-import com.azure.storage.file.share.implementation.models.FilesReleaseLeaseResponse;
-import com.azure.storage.file.share.implementation.models.FilesRenameResponse;
-import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersResponse;
-import com.azure.storage.file.share.implementation.models.FilesSetMetadataResponse;
-import com.azure.storage.file.share.implementation.models.FilesStartCopyResponse;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
+import com.azure.storage.file.share.implementation.models.FilesAbortCopyHeaders;
+import com.azure.storage.file.share.implementation.models.FilesAcquireLeaseHeaders;
+import com.azure.storage.file.share.implementation.models.FilesBreakLeaseHeaders;
+import com.azure.storage.file.share.implementation.models.FilesChangeLeaseHeaders;
+import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
+import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
+import com.azure.storage.file.share.implementation.models.FilesListHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesReleaseLeaseHeaders;
+import com.azure.storage.file.share.implementation.models.FilesRenameHeaders;
+import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
+import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
+import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
+import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
+import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
 import java.nio.ByteBuffer;
@@ -82,7 +86,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesCreateResponse> create(
+        Mono<ResponseBase<FilesCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -125,7 +129,7 @@ public final class FilesImpl {
         @Head("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesGetPropertiesResponse> getProperties(
+        Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getProperties(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -139,7 +143,7 @@ public final class FilesImpl {
         @Delete("/{shareName}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesDeleteResponse> delete(
+        Mono<ResponseBase<FilesDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -152,7 +156,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesSetHttpHeadersResponse> setHttpHeaders(
+        Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeaders(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -179,7 +183,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesUploadRangeResponse> uploadRange(
+        Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRange(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -197,9 +201,29 @@ public final class FilesImpl {
                 Context context);
 
         @Put("/{shareName}/{fileName}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
+        Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRange(
+                @HostParam("url") String url,
+                @PathParam("shareName") String shareName,
+                @PathParam("fileName") String fileName,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-write") ShareFileRangeWriteType fileRangeWrite,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-MD5") String contentMD5,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
+                @BodyParam("application/octet-stream") BinaryData optionalbody,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesSetMetadataResponse> setMetadata(
+        Mono<ResponseBase<FilesSetMetadataHeaders, Void>> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -214,7 +238,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesAcquireLeaseResponse> acquireLease(
+        Mono<ResponseBase<FilesAcquireLeaseHeaders, Void>> acquireLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -231,7 +255,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesReleaseLeaseResponse> releaseLease(
+        Mono<ResponseBase<FilesReleaseLeaseHeaders, Void>> releaseLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -247,7 +271,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesChangeLeaseResponse> changeLease(
+        Mono<ResponseBase<FilesChangeLeaseHeaders, Void>> changeLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -264,7 +288,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesBreakLeaseResponse> breakLease(
+        Mono<ResponseBase<FilesBreakLeaseHeaders, Void>> breakLease(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -280,7 +304,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURL(
+        Mono<ResponseBase<FilesUploadRangeFromURLHeaders, Void>> uploadRangeFromURL(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -304,7 +328,7 @@ public final class FilesImpl {
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(
+        Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeList(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -321,7 +345,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesStartCopyResponse> startCopy(
+        Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -336,6 +360,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-file-attributes") String fileAttributes,
                 @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
                 @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+                @HeaderParam("x-ms-file-change-time") String fileChangeTime,
                 @HeaderParam("x-ms-file-copy-set-archive") Boolean setArchiveAttribute,
                 @HeaderParam("x-ms-lease-id") String leaseId,
                 @HeaderParam("Accept") String accept,
@@ -344,7 +369,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesAbortCopyResponse> abortCopy(
+        Mono<ResponseBase<FilesAbortCopyHeaders, Void>> abortCopy(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -360,7 +385,7 @@ public final class FilesImpl {
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesListHandlesResponse> listHandles(
+        Mono<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> listHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -376,7 +401,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesForceCloseHandlesResponse> forceCloseHandles(
+        Mono<ResponseBase<FilesForceCloseHandlesHeaders, Void>> forceCloseHandles(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -392,7 +417,7 @@ public final class FilesImpl {
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesRenameResponse> rename(
+        Mono<ResponseBase<FilesRenameHeaders, Void>> rename(
                 @HostParam("url") String url,
                 @PathParam("shareName") String shareName,
                 @PathParam("fileName") String fileName,
@@ -443,10 +468,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(
             String shareName,
             String fileName,
             long fileContentLength,
@@ -577,10 +602,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesGetPropertiesResponse> getPropertiesWithResponseAsync(
+    public Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(
             String shareName, String fileName, String sharesnapshot, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.getProperties(
@@ -608,10 +633,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesDeleteResponse> deleteWithResponseAsync(
+    public Mono<ResponseBase<FilesDeleteHeaders, Void>> deleteWithResponseAsync(
             String shareName, String fileName, Integer timeout, String leaseId, Context context) {
         final String accept = "application/xml";
         return service.delete(
@@ -645,10 +670,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetHttpHeadersResponse> setHttpHeadersWithResponseAsync(
+    public Mono<ResponseBase<FilesSetHttpHeadersHeaders, Void>> setHttpHeadersWithResponseAsync(
             String shareName,
             String fileName,
             String fileAttributes,
@@ -750,10 +775,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesUploadRangeResponse> uploadRangeWithResponseAsync(
+    public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(
             String shareName,
             String fileName,
             String range,
@@ -764,6 +789,72 @@ public final class FilesImpl {
             String leaseId,
             FileLastWrittenMode fileLastWrittenMode,
             Flux<ByteBuffer> optionalbody,
+            Context context) {
+        final String comp = "range";
+        final String accept = "application/xml";
+        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        return service.uploadRange(
+                this.client.getUrl(),
+                shareName,
+                fileName,
+                comp,
+                timeout,
+                range,
+                fileRangeWrite,
+                contentLength,
+                contentMD5Converted,
+                this.client.getVersion(),
+                leaseId,
+                fileLastWrittenMode,
+                optionalbody,
+                accept,
+                context);
+    }
+
+    /**
+     * Upload a range of bytes to a file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param range Specifies the range of bytes to be written. Both the start and end of the range must be specified.
+     *     For an update operation, the range can be up to 4 MB in size. For a clear operation, the range can be up to
+     *     the value of the file's full size. The File service accepts only a single byte range for the Range and
+     *     'x-ms-range' headers, and the byte range must be specified in the following format: bytes=startByte-endByte.
+     * @param fileRangeWrite Specify one of the following options: - Update: Writes the bytes specified by the request
+     *     body into the specified range. The Range and Content-Length headers must match to perform the update. -
+     *     Clear: Clears the specified range and releases the space used in storage for that range. To clear a range,
+     *     set the Content-Length header to zero, and set the Range header to a value that indicates the range to clear,
+     *     up to maximum file size.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     *     header is set to clear, the value of this header must be set to zero.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     *     Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     *     transport. When the Content-MD5 header is specified, the File service compares the hash of the content that
+     *     has arrived with the header value that was sent. If the two hashes do not match, the operation will fail with
+     *     error code 400 (Bad Request).
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param optionalbody Initial data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(
+            String shareName,
+            String fileName,
+            String range,
+            ShareFileRangeWriteType fileRangeWrite,
+            long contentLength,
+            Integer timeout,
+            byte[] contentMD5,
+            String leaseId,
+            FileLastWrittenMode fileLastWrittenMode,
+            BinaryData optionalbody,
             Context context) {
         final String comp = "range";
         final String accept = "application/xml";
@@ -800,10 +891,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesSetMetadataResponse> setMetadataWithResponseAsync(
+    public Mono<ResponseBase<FilesSetMetadataHeaders, Void>> setMetadataWithResponseAsync(
             String shareName,
             String fileName,
             Integer timeout,
@@ -845,10 +936,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesAcquireLeaseResponse> acquireLeaseWithResponseAsync(
+    public Mono<ResponseBase<FilesAcquireLeaseHeaders, Void>> acquireLeaseWithResponseAsync(
             String shareName,
             String fileName,
             Integer timeout,
@@ -889,10 +980,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesReleaseLeaseResponse> releaseLeaseWithResponseAsync(
+    public Mono<ResponseBase<FilesReleaseLeaseHeaders, Void>> releaseLeaseWithResponseAsync(
             String shareName, String fileName, String leaseId, Integer timeout, String requestId, Context context) {
         final String comp = "lease";
         final String action = "release";
@@ -929,10 +1020,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesChangeLeaseResponse> changeLeaseWithResponseAsync(
+    public Mono<ResponseBase<FilesChangeLeaseHeaders, Void>> changeLeaseWithResponseAsync(
             String shareName,
             String fileName,
             String leaseId,
@@ -973,10 +1064,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesBreakLeaseResponse> breakLeaseWithResponseAsync(
+    public Mono<ResponseBase<FilesBreakLeaseHeaders, Void>> breakLeaseWithResponseAsync(
             String shareName, String fileName, Integer timeout, String leaseId, String requestId, Context context) {
         final String comp = "lease";
         final String action = "break";
@@ -1024,10 +1115,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesUploadRangeFromURLResponse> uploadRangeFromURLWithResponseAsync(
+    public Mono<ResponseBase<FilesUploadRangeFromURLHeaders, Void>> uploadRangeFromURLWithResponseAsync(
             String shareName,
             String fileName,
             String range,
@@ -1097,10 +1188,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of file ranges on successful completion of {@link Mono}.
+     * @return the list of file ranges along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesGetRangeListResponse> getRangeListWithResponseAsync(
+    public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
             String shareName,
             String fileName,
             String sharesnapshot,
@@ -1153,10 +1244,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesStartCopyResponse> startCopyWithResponseAsync(
+    public Mono<ResponseBase<FilesStartCopyHeaders, Void>> startCopyWithResponseAsync(
             String shareName,
             String fileName,
             String copySource,
@@ -1193,6 +1284,11 @@ public final class FilesImpl {
             fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
         }
         String fileLastWriteTime = fileLastWriteTimeInternal;
+        String fileChangeTimeInternal = null;
+        if (copyFileSmbInfo != null) {
+            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+        }
+        String fileChangeTime = fileChangeTimeInternal;
         Boolean setArchiveAttributeInternal = null;
         if (copyFileSmbInfo != null) {
             setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
@@ -1213,6 +1309,7 @@ public final class FilesImpl {
                 fileAttributes,
                 fileCreationTime,
                 fileLastWriteTime,
+                fileChangeTime,
                 setArchiveAttribute,
                 leaseId,
                 accept,
@@ -1233,10 +1330,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesAbortCopyResponse> abortCopyWithResponseAsync(
+    public Mono<ResponseBase<FilesAbortCopyHeaders, Void>> abortCopyWithResponseAsync(
             String shareName, String fileName, String copyId, Integer timeout, String leaseId, Context context) {
         final String comp = "copy";
         final String copyActionAbortConstant = "abort";
@@ -1275,10 +1372,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of handles on successful completion of {@link Mono}.
+     * @return an enumeration of handles along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesListHandlesResponse> listHandlesWithResponseAsync(
+    public Mono<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> listHandlesWithResponseAsync(
             String shareName,
             String fileName,
             String marker,
@@ -1322,10 +1419,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithResponseAsync(
+    public Mono<ResponseBase<FilesForceCloseHandlesHeaders, Void>> forceCloseHandlesWithResponseAsync(
             String shareName,
             String fileName,
             String handleId,
@@ -1381,10 +1478,10 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesRenameResponse> renameWithResponseAsync(
+    public Mono<ResponseBase<FilesRenameHeaders, Void>> renameWithResponseAsync(
             String shareName,
             String fileName,
             String renameSource,

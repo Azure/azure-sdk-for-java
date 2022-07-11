@@ -58,12 +58,12 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image version. The provisioning state, which
-     * only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
+     * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImageVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
