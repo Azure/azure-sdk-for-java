@@ -511,6 +511,36 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testFindWithOffsetAndLimit() {
+        final Person testPerson4 = new Person("id_4", "fred", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        final Person testPerson5 = new Person("id_5", "barney", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+        final Person testPerson6 = new Person("id_6", "george", NEW_LAST_NAME, HOBBIES,
+            ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+        insertPerson(testPerson4);
+        insertPerson(testPerson5);
+        insertPerson(testPerson6);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "lastName",
+            Collections.singletonList(NEW_LAST_NAME), Part.IgnoreCaseType.ALWAYS);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        query.with(Sort.by(Sort.Direction.ASC, "firstName"));
+
+        final List<Person> result = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getFirstName()).isEqualTo("barney");
+        assertThat(result.get(1).getFirstName()).isEqualTo("fred");
+        assertThat(result.get(2).getFirstName()).isEqualTo("george");
+
+        query.withOffsetAndLimit(1, 1);
+        final List<Person> resultWithLimit = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(resultWithLimit.size()).isEqualTo(1);
+        assertThat(resultWithLimit.get(0).getFirstName()).isEqualTo("fred");
+    }
+
+    @Test
     public void testFindAllWithPageableAndSort() {
         cosmosTemplate.insert(TEST_PERSON_2,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
