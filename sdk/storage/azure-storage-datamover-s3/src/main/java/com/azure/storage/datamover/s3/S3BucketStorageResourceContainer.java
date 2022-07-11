@@ -2,8 +2,6 @@ package com.azure.storage.datamover.s3;
 
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-class S3BucketStorageResourceContainer extends StorageResourceContainer {
+class S3BucketStorageResourceContainer implements StorageResourceContainer {
 
     private final S3Client s3Client;
     private final String bucketName;
@@ -36,14 +34,7 @@ class S3BucketStorageResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
-        return new TransferCapabilitiesBuilder()
-            .canStream(true)
-            .build();
-    }
-
-    @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         return Collections.emptyList();
     }
 
@@ -51,5 +42,10 @@ class S3BucketStorageResourceContainer extends StorageResourceContainer {
     public StorageResource getStorageResource(List<String> path) {
         String objectKey = String.join("/", path);
         return new S3ObjectStorageResource(s3Client, bucketName, objectKey);
+    }
+
+    @Override
+    public StorageResourceContainer getStorageResourceContainer(List<String> path) {
+        throw new UnsupportedOperationException("Virtual directories not supported yet");
     }
 }

@@ -1,8 +1,6 @@
 package com.azure.storage.datamover.s3;
 
 import com.azure.storage.common.resource.StorageResource;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -14,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-class S3ObjectStorageResource extends StorageResource {
+class S3ObjectStorageResource implements StorageResource {
 
     private final S3Client s3Client;
     private final String bucketName;
@@ -24,20 +22,6 @@ class S3ObjectStorageResource extends StorageResource {
         this.s3Client = Objects.requireNonNull(s3Client);
         this.bucketName = Objects.requireNonNull(bucketName);
         this.objectKey = Objects.requireNonNull(objectKey);
-    }
-
-    @Override
-    public TransferCapabilities getIncomingTransferCapabilities() {
-        return new TransferCapabilitiesBuilder()
-            .canStream(true)
-            .build();
-    }
-
-    @Override
-    public TransferCapabilities getOutgoingTransferCapabilities() {
-        return new TransferCapabilitiesBuilder()
-            .canStream(true)
-            .build();
     }
 
     @Override
@@ -70,19 +54,37 @@ class S3ObjectStorageResource extends StorageResource {
     }
 
     @Override
-    public String getSasUri() {
-        // TODO
+    public String getUri() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void consumeSasUri(String sasUri) {
-        // TODO
+    public void consumeUri(String sasUri) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public List<String> getPath() {
         return Collections.singletonList(objectKey);
+    }
+
+    @Override
+    public boolean canConsumeStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canProduceStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canConsumeUri() {
+        return false;
+    }
+
+    @Override
+    public boolean canProduceUri() {
+        return false;
     }
 }

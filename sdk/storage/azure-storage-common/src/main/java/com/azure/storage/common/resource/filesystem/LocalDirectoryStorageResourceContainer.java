@@ -2,8 +2,6 @@ package com.azure.storage.common.resource.filesystem;
 
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -14,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class LocalDirectoryStorageResourceContainer extends StorageResourceContainer {
+class LocalDirectoryStorageResourceContainer implements StorageResourceContainer {
     private final Path path;
 
     LocalDirectoryStorageResourceContainer(Path path) {
@@ -41,14 +39,7 @@ class LocalDirectoryStorageResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
-        return new TransferCapabilitiesBuilder()
-            .canStream(true)
-            .build();
-    }
-
-    @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         return Collections.emptyList();
     }
 
@@ -59,6 +50,15 @@ class LocalDirectoryStorageResourceContainer extends StorageResourceContainer {
             resourcePath = resourcePath.resolve(subPath);
         }
         return new LocalFileStorageResource(resourcePath, path);
+    }
+
+    @Override
+    public StorageResourceContainer getStorageResourceContainer(List<String> path) {
+        Path resourcePath = this.path;
+        for (String subPath : path) {
+            resourcePath = resourcePath.resolve(subPath);
+        }
+        return new LocalDirectoryStorageResourceContainer(resourcePath);
     }
 
 }

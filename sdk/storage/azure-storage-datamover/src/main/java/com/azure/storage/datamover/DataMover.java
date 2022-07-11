@@ -2,7 +2,6 @@ package com.azure.storage.datamover;
 
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
-import com.azure.storage.common.resource.TransferCapabilities;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,12 +15,10 @@ public class DataMover {
     }
 
     public DataTransfer startTransfer(StorageResource from, StorageResource to) {
-        TransferCapabilities fromOutgoingTransferCapabilities = from.getOutgoingTransferCapabilities();
-        TransferCapabilities toIncomingTransferCapabilities = to.getIncomingTransferCapabilities();
 
-        if (fromOutgoingTransferCapabilities.isCanUseSasUri() && toIncomingTransferCapabilities.isCanUseSasUri()) {
-            return transferViaSasUri(from, to);
-        } else if (fromOutgoingTransferCapabilities.isCanStream() && toIncomingTransferCapabilities.isCanStream()) {
+        if (from.canProduceUri() && to.canConsumeUri()) {
+            return transferViaUri(from, to);
+        } else if (from.canProduceStream() && to.canConsumeStream()) {
             return transferViaStreams(from, to);
         }
 
@@ -43,11 +40,11 @@ public class DataMover {
         return dataTransfer;
     }
 
-    private DataTransfer transferViaSasUri(StorageResource from, StorageResource to) {
+    private DataTransfer transferViaUri(StorageResource from, StorageResource to) {
         DataTransfer dataTransfer = new DataTransfer();
 
-        String sasUri = from.getSasUri();
-        to.consumeSasUri(sasUri);
+        String uri = from.getUri();
+        to.consumeUri(uri);
 
         dataTransfer.latch.countDown();
         return dataTransfer;

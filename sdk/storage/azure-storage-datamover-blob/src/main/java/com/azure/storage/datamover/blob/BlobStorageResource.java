@@ -5,8 +5,6 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.resource.StorageResource;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.io.InputStream;
 import java.time.OffsetDateTime;
@@ -14,46 +12,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-class BlobStorageResource extends StorageResource {
+class BlobStorageResource implements StorageResource {
 
     private final BlobClient blobClient;
 
     BlobStorageResource(BlobClient blobClient) {
         this.blobClient = Objects.requireNonNull(blobClient);
-    }
-
-    @Override
-    public TransferCapabilities getIncomingTransferCapabilities() {
-        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
-            .canStream(true);
-
-        try {
-            // probe sas.
-            blobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
-                new BlobContainerSasPermission().setWritePermission(true)));
-            transferCapabilitiesBuilder.canUseSasUri(true);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        return transferCapabilitiesBuilder.build();
-    }
-
-    @Override
-    public TransferCapabilities getOutgoingTransferCapabilities() {
-        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
-            .canStream(true);
-
-        try {
-            // probe sas.
-            blobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
-                new BlobContainerSasPermission().setReadPermission(true)));
-            transferCapabilitiesBuilder.canUseSasUri(true);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        return transferCapabilitiesBuilder.build();
     }
 
     @Override
@@ -72,14 +36,14 @@ class BlobStorageResource extends StorageResource {
     }
 
     @Override
-    public String getSasUri() {
+    public String getUri() {
         return blobClient.getBlobUrl() + "?" + blobClient.generateSas(
             new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobSasPermission().setReadPermission(true)));
     }
 
     @Override
-    public void consumeSasUri(String sasUri) {
+    public void consumeUri(String sasUri) {
         blobClient.getBlockBlobClient().uploadFromUrl(sasUri);
     }
 
@@ -87,5 +51,32 @@ class BlobStorageResource extends StorageResource {
     public List<String> getPath() {
         String[] split = blobClient.getBlobName().split("/");
         return Arrays.asList(split);
+    }
+
+    @Override
+    public boolean canConsumeStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canProduceStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canConsumeUri() {
+        return true;
+    }
+
+    @Override
+    public boolean canProduceUri() {
+        try {
+            // probe sas.
+            blobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+                new BlobContainerSasPermission().setReadPermission(true)));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

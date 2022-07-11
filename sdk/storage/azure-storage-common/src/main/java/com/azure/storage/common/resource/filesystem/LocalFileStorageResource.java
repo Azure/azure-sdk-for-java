@@ -1,8 +1,6 @@
 package com.azure.storage.common.resource.filesystem;
 
 import com.azure.storage.common.resource.StorageResource;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-class LocalFileStorageResource extends StorageResource {
+class LocalFileStorageResource implements StorageResource {
 
     private final Path path;
     private final List<String> abstractPath;
@@ -27,20 +25,6 @@ class LocalFileStorageResource extends StorageResource {
         }
         this.path = path;
         this.abstractPath = new ArrayList<>(abstractPath);
-    }
-
-    @Override
-    public TransferCapabilities getIncomingTransferCapabilities() {
-        return new TransferCapabilitiesBuilder()
-            .canStream(true)
-            .build();
-    }
-
-    @Override
-    public TransferCapabilities getOutgoingTransferCapabilities() {
-        return new TransferCapabilitiesBuilder()
-            .canStream(true)
-            .build();
     }
 
     @Override
@@ -66,6 +50,16 @@ class LocalFileStorageResource extends StorageResource {
         }
     }
 
+    @Override
+    public String getUri() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void consumeUri(String sasUri) {
+        throw new UnsupportedOperationException();
+    }
+
     private static final int DEFAULT_BUFFER_SIZE = 8192;
 
     // No Java 9+ on agent building apiview :-(
@@ -83,17 +77,27 @@ class LocalFileStorageResource extends StorageResource {
     }
 
     @Override
-    public String getSasUri() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void consumeSasUri(String sasUri) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public List<String> getPath() {
         return abstractPath;
+    }
+
+    @Override
+    public boolean canConsumeStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canProduceStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canConsumeUri() {
+        return false;
+    }
+
+    @Override
+    public boolean canProduceUri() {
+        return false;
     }
 }

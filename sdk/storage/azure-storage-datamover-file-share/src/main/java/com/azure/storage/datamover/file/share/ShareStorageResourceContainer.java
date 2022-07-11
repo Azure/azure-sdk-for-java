@@ -2,21 +2,16 @@ package com.azure.storage.datamover.file.share;
 
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
-import com.azure.storage.file.share.sas.ShareSasPermission;
-import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
-import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class ShareStorageResourceContainer extends StorageResourceContainer {
+class ShareStorageResourceContainer implements StorageResourceContainer {
 
     private final ShareClient shareClient;
 
@@ -44,24 +39,7 @@ class ShareStorageResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    protected TransferCapabilities getIncomingTransferCapabilities() {
-        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
-            .canStream(true);
-
-        try {
-            // probe sas.
-            shareClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
-                new ShareSasPermission().setWritePermission(true)));
-            transferCapabilitiesBuilder.canUseSasUri(true);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        return transferCapabilitiesBuilder.build();
-    }
-
-    @Override
-    protected List<String> getPath() {
+    public List<String> getPath() {
         return Collections.emptyList();
     }
 
@@ -69,5 +47,12 @@ class ShareStorageResourceContainer extends StorageResourceContainer {
     public StorageResource getStorageResource(List<String> path) {
         return new ShareFileStorageResource(
             shareClient.getFileClient(String.join("/", path)), shareClient.getRootDirectoryClient());
+    }
+
+    @Override
+    public StorageResourceContainer getStorageResourceContainer(List<String> path) {
+        return new ShareDirectoryStorageResourceContainer(
+            shareClient.getRootDirectoryClient()
+                .getSubdirectoryClient(String.join("/", path)));
     }
 }

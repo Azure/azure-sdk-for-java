@@ -2,13 +2,13 @@ package com.azure.storage.common.resource;
 
 import java.util.List;
 
-public abstract class StorageResourceContainer {
+public interface StorageResourceContainer {
 
-    public abstract Iterable<StorageResource> listResources();
+    Iterable<StorageResource> listResources();
 
-    protected abstract TransferCapabilities getIncomingTransferCapabilities();
+    List<String> getPath();
 
-    protected abstract List<String> getPath();
+    StorageResource getStorageResource(List<String> path);
 
-    public abstract StorageResource getStorageResource(List<String> path);
+    StorageResourceContainer getStorageResourceContainer(List<String> path);
 }

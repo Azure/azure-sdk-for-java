@@ -2,8 +2,6 @@ package com.azure.storage.datamover.file.share;
 
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.resource.StorageResource;
-import com.azure.storage.common.resource.TransferCapabilities;
-import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -19,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-class ShareFileStorageResource extends StorageResource {
+class ShareFileStorageResource implements StorageResource {
 
     private final ShareFileClient shareFileClient;
     private final ShareDirectoryClient root;
@@ -32,40 +30,6 @@ class ShareFileStorageResource extends StorageResource {
     ShareFileStorageResource(ShareFileClient shareFileClient, ShareDirectoryClient root) {
         this.shareFileClient = Objects.requireNonNull(shareFileClient);
         this.root = Objects.requireNonNull(root);
-    }
-
-    @Override
-    public TransferCapabilities getIncomingTransferCapabilities() {
-        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
-            .canStream(true);
-
-        try {
-            // probe sas.
-            shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
-                new ShareSasPermission().setWritePermission(true)));
-            transferCapabilitiesBuilder.canUseSasUri(true);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        return transferCapabilitiesBuilder.build();
-    }
-
-    @Override
-    public TransferCapabilities getOutgoingTransferCapabilities() {
-        TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
-            .canStream(true);
-
-        try {
-            // probe sas.
-            shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
-                new ShareSasPermission().setReadPermission(true)));
-            transferCapabilitiesBuilder.canUseSasUri(true);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        return transferCapabilitiesBuilder.build();
     }
 
     @Override
@@ -101,13 +65,13 @@ class ShareFileStorageResource extends StorageResource {
     }
 
     @Override
-    public String getSasUri() {
+    public String getUri() {
         return shareFileClient.getFileUrl() + "?" + shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new ShareSasPermission().setReadPermission(true)));
     }
 
     @Override
-    public void consumeSasUri(String sasUri) {
+    public void consumeUri(String uri) {
         try {
             if (!shareFileClient.exists()) {
                 // TODO HEAD sas uri.
@@ -128,7 +92,7 @@ class ShareFileStorageResource extends StorageResource {
             }
         }
 
-        shareFileClient.beginCopy(sasUri, Collections.emptyMap(), Duration.ofSeconds(1)).waitForCompletion();
+        shareFileClient.beginCopy(uri, Collections.emptyMap(), Duration.ofSeconds(1)).waitForCompletion();
     }
 
     @Override
@@ -139,5 +103,32 @@ class ShareFileStorageResource extends StorageResource {
         }
         String[] split = filePath.split("/");
         return Arrays.asList(split);
+    }
+
+    @Override
+    public boolean canConsumeStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canProduceStream() {
+        return true;
+    }
+
+    @Override
+    public boolean canConsumeUri() {
+        return true;
+    }
+
+    @Override
+    public boolean canProduceUri() {
+        try {
+            // probe sas.
+            shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+                new ShareSasPermission().setReadPermission(true)));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
