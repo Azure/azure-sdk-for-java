@@ -88,7 +88,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
-        Boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
+        boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
             String storeName = configStores.get(0).getEndpoint();
             AppConfigurationStoreSelects selectedKey = configStores.get(0).getSelects().get(0);
             if (source.getName()
