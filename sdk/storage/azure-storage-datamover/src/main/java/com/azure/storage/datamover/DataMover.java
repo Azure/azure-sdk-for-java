@@ -8,27 +8,48 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.List;
 
+/**
+ * Data mover can move data from one place to the other.
+ */
 public class DataMover {
 
     DataMover() {
 
     }
 
+    /**
+     * Starts a transfer of a single storage resource.
+     * @param from a source storage resource.
+     * @param to a destination storage resource.
+     * @return A {@link DataTransfer} that can be used to monitor the transfer.
+     */
     public DataTransfer startTransfer(StorageResource from, StorageResource to) {
 
-        if (from.canProduceUri() && to.canConsumeUri()) {
+        if (from.canProduceUrl() && to.canConsumeUrl()) {
             return transferViaUri(from, to);
-        } else if (from.canProduceStream() && to.canConsumeStream()) {
+        } else if (from.canProduceInputStream() && to.canConsumeInputStream()) {
             return transferViaStreams(from, to);
         }
 
         throw new IllegalArgumentException("Can't transfer");
     }
 
+    /**
+     * Starts a transfer of a single storage resource.
+     * @param from a source storage resource.
+     * @param to a destination storage resource container.
+     * @return A {@link DataTransfer} that can be used to monitor the transfer.
+     */
     public DataTransfer startTransfer(StorageResource from, StorageResourceContainer to) {
         return null;
     }
 
+    /**
+     * Starts a transfer of multiple storage resources that reside in storage resource container.
+     * @param from a source storage resource container.
+     * @param to a destination storage resource container.
+     * @return A {@link DataTransfer} that can be used to monitor the transfer.
+     */
     public DataTransfer startTransfer(StorageResourceContainer from, StorageResourceContainer to) {
         DataTransfer dataTransfer = new DataTransfer();
         for (StorageResource fromResource : from.listResources()) {
@@ -43,8 +64,8 @@ public class DataMover {
     private DataTransfer transferViaUri(StorageResource from, StorageResource to) {
         DataTransfer dataTransfer = new DataTransfer();
 
-        String uri = from.getUri();
-        to.consumeUri(uri);
+        String uri = from.getUrl();
+        to.consumeUrl(uri);
 
         dataTransfer.latch.countDown();
         return dataTransfer;

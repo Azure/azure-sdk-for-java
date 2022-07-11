@@ -65,13 +65,13 @@ class ShareFileStorageResource implements StorageResource {
     }
 
     @Override
-    public String getUri() {
+    public String getUrl() {
         return shareFileClient.getFileUrl() + "?" + shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new ShareSasPermission().setReadPermission(true)));
     }
 
     @Override
-    public void consumeUri(String uri) {
+    public void consumeUrl(String uri) {
         try {
             if (!shareFileClient.exists()) {
                 // TODO HEAD sas uri.
@@ -106,22 +106,22 @@ class ShareFileStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeStream() {
+    public boolean canConsumeInputStream() {
         return true;
     }
 
     @Override
-    public boolean canProduceStream() {
+    public boolean canProduceInputStream() {
         return true;
     }
 
     @Override
-    public boolean canConsumeUri() {
+    public boolean canConsumeUrl() {
         return true;
     }
 
     @Override
-    public boolean canProduceUri() {
+    public boolean canProduceUrl() {
         try {
             // probe sas.
             shareFileClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),

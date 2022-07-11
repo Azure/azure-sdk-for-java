@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.resource.filesystem;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
 
@@ -13,11 +17,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class LocalDirectoryStorageResourceContainer implements StorageResourceContainer {
+
+    private static final ClientLogger LOGGER = new ClientLogger(LocalDirectoryStorageResourceContainer.class);
+
     private final Path path;
 
     LocalDirectoryStorageResourceContainer(Path path) {
         if (!path.toFile().isDirectory()) {
-            throw new IllegalArgumentException("provided path isn't directory");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("provided path isn't directory"));
         }
         this.path = path;
     }
@@ -34,7 +41,7 @@ class LocalDirectoryStorageResourceContainer implements StorageResourceContainer
                 })
                 .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 

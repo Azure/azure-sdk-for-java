@@ -54,12 +54,12 @@ class S3ObjectStorageResource implements StorageResource {
     }
 
     @Override
-    public String getUri() {
+    public String getUrl() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void consumeUri(String sasUri) {
+    public void consumeUrl(String sasUri) {
         throw new UnsupportedOperationException();
     }
 
@@ -69,22 +69,22 @@ class S3ObjectStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeStream() {
+    public boolean canConsumeInputStream() {
         return true;
     }
 
     @Override
-    public boolean canProduceStream() {
+    public boolean canProduceInputStream() {
         return true;
     }
 
     @Override
-    public boolean canConsumeUri() {
+    public boolean canConsumeUrl() {
         return false;
     }
 
     @Override
-    public boolean canProduceUri() {
+    public boolean canProduceUrl() {
         return false;
     }
 }

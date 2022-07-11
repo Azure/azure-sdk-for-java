@@ -36,14 +36,14 @@ class BlobStorageResource implements StorageResource {
     }
 
     @Override
-    public String getUri() {
+    public String getUrl() {
         return blobClient.getBlobUrl() + "?" + blobClient.generateSas(
             new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobSasPermission().setReadPermission(true)));
     }
 
     @Override
-    public void consumeUri(String sasUri) {
+    public void consumeUrl(String sasUri) {
         blobClient.getBlockBlobClient().uploadFromUrl(sasUri);
     }
 
@@ -54,22 +54,22 @@ class BlobStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeStream() {
+    public boolean canConsumeInputStream() {
         return true;
     }
 
     @Override
-    public boolean canProduceStream() {
+    public boolean canProduceInputStream() {
         return true;
     }
 
     @Override
-    public boolean canConsumeUri() {
+    public boolean canConsumeUrl() {
         return true;
     }
 
     @Override
-    public boolean canProduceUri() {
+    public boolean canProduceUrl() {
         try {
             // probe sas.
             blobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),

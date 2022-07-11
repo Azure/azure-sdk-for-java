@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.resource.filesystem;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.resource.StorageResource;
 
 import java.io.FileInputStream;
@@ -16,12 +20,14 @@ import java.util.Objects;
 
 class LocalFileStorageResource implements StorageResource {
 
+    private static final ClientLogger LOGGER = new ClientLogger(LocalFileStorageResource.class);
+
     private final Path path;
     private final List<String> abstractPath;
 
     LocalFileStorageResource(Path path, List<String> abstractPath) {
         if (!path.toFile().isFile()) {
-            throw new IllegalArgumentException("provided path isn't file");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("provided path isn't file"));
         }
         this.path = path;
         this.abstractPath = new ArrayList<>(abstractPath);
@@ -32,7 +38,7 @@ class LocalFileStorageResource implements StorageResource {
         try {
             return new FileInputStream(path.toFile());
         } catch (FileNotFoundException e) {
-            throw new UncheckedIOException(e);
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -46,18 +52,18 @@ class LocalFileStorageResource implements StorageResource {
         try (OutputStream fos = new FileOutputStream(path.toFile())) {
             transfer(inputStream, fos);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
     @Override
-    public String getUri() {
-        throw new UnsupportedOperationException();
+    public String getUrl() {
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
-    public void consumeUri(String sasUri) {
-        throw new UnsupportedOperationException();
+    public void consumeUrl(String sasUri) {
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException());
     }
 
     private static final int DEFAULT_BUFFER_SIZE = 8192;
@@ -82,22 +88,22 @@ class LocalFileStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeStream() {
+    public boolean canConsumeInputStream() {
         return true;
     }
 
     @Override
-    public boolean canProduceStream() {
+    public boolean canProduceInputStream() {
         return true;
     }
 
     @Override
-    public boolean canConsumeUri() {
+    public boolean canConsumeUrl() {
         return false;
     }
 
     @Override
-    public boolean canProduceUri() {
+    public boolean canProduceUrl() {
         return false;
     }
 }

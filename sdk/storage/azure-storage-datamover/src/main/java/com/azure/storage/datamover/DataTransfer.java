@@ -2,11 +2,21 @@ package com.azure.storage.datamover;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Represents long-running transfer.
+ */
 public class DataTransfer {
 
     final CountDownLatch latch = new CountDownLatch(1);
 
-    public void awaitCompletion() throws InterruptedException {
-        latch.await();
+    /**
+     * Awaits for tranfer completion.
+     */
+    public void awaitCompletion() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
