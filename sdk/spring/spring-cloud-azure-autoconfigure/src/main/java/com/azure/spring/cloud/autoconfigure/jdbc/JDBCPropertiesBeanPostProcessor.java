@@ -1,20 +1,23 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
-import org.apache.commons.logging.Log;
-import org.springframework.boot.SpringApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.env.EnvironmentPostProcessor;
-import org.springframework.boot.logging.DeferredLog;
-import org.springframework.core.Ordered;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,7 +34,15 @@ import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringProp
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_POSTGRESQL_SSL_MODE;
 
-public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
+
+/**
+ */
+class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JDBCPropertiesBeanPostProcessor.class);
+
+    ConfigurableEnvironment environment;
+
 
     private static final Map<String, String> POSTGRES_ENHANCED_PROPERTIES = new TreeMap<>();
     private static final Map<String, String> MYSQL_ENHANCED_PROPERTIES = new TreeMap<>();
@@ -50,62 +61,55 @@ public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcess
         ENHANCED_PROPERTIES.put(DatabaseType.POSTGRESQL, POSTGRES_ENHANCED_PROPERTIES);
     }
 
-    private final Log logger;
-
-    public AzureJdbcEnvironmentPostProcessor(Log logger) {
-        this.logger = logger;
-    }
-
-    public AzureJdbcEnvironmentPostProcessor() {
-        this.logger = new DeferredLog();
-    }
-
     @Override
-    public int getOrder() {
-        return ConfigDataEnvironmentPostProcessor.ORDER + 100;
-    }
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        if (bean instanceof DataSource) {
+            DataSourceProperties dataSourceProperties = Binder.get(environment).bindOrCreate("spring.datasource", DataSourceProperties.class);
+            boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
 
-    @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application){
-
-        DataSourceProperties dataSourceProperties = Binder.get(environment).bindOrCreate("spring.datasource", DataSourceProperties.class);
-        boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
-
-        if (isPasswordProvided) {
-            logger.debug("'spring.datasource.password' provided, skip AzureJdbcEnvironmentPostProcessor.");
-            return;
-        }
-
-        String url = dataSourceProperties.getUrl();
-        if (!StringUtils.hasText(url)) {
-            logger.debug("No 'spring.datasource.url' provided, skip AzureJdbcEnvironmentPostProcessor.");
-            return;
-        }
-
-        JdbcConnectionString connectionString = new JdbcConnectionString(url);
-        DatabaseType databaseType = connectionString.getDatabaseType();
-        if (!isDatabasePluginEnabled(databaseType)) {
-            logger.info("The jdbc plugin with provided jdbc schema is not on the classpath , skip AzureJdbcEnvironmentPostProcessor");
-        }
-
-        try {
-            if (ENHANCED_PROPERTIES.containsKey(databaseType)) {
-                AzureJDBCProperties azureJDBCProperties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJDBCProperties.class);
-                Map<String, String> configMap = new HashMap<>();
-                AzureJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
-                configMap.putAll(ENHANCED_PROPERTIES.get(databaseType));
-                String enhancedUrl = connectionString.enhanceConnectionString(configMap);
-                logger.info("Enhanced url is " + enhancedUrl);
-
-                Map<String, Object> propertyMap = new HashMap<>();
-                propertyMap.put("spring.datasource.url", enhancedUrl);
-
-                environment.getPropertySources().addFirst(new MapPropertySource("AZURE_DATABASE", propertyMap));
+            if (isPasswordProvided) {
+                LOGGER.debug("'spring.datasource.password' provided, skip JDBCPropertiesBeanPostProcessor.");
+                return bean;
             }
-        } catch (IllegalStateException e) {
-            logger.debug("Inconsistent properties detected, skip AzureJdbcEnvironmentPostProcessor");
+
+            String url = dataSourceProperties.getUrl();
+            if (!StringUtils.hasText(url)) {
+                LOGGER.debug("No 'spring.datasource.url' provided, skip JDBCPropertiesBeanPostProcessor.");
+                return bean;
+            }
+
+            JdbcConnectionString connectionString = new JdbcConnectionString(url);
+            DatabaseType databaseType = connectionString.getDatabaseType();
+            if (!isDatabasePluginEnabled(databaseType)) {
+                LOGGER.info("The jdbc plugin with provided jdbc schema is not on the classpath , skip JDBCPropertiesBeanPostProcessor");
+            }
+
+            try {
+                if (ENHANCED_PROPERTIES.containsKey(databaseType)) {
+                    AzureJDBCProperties azureJDBCProperties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJDBCProperties.class);
+                    Map<String, String> configMap = new HashMap<>();
+                    AzureJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
+                    configMap.putAll(ENHANCED_PROPERTIES.get(databaseType));
+                    String enhancedUrl = connectionString.enhanceConnectionString(configMap);
+                    LOGGER.info("Enhanced url is " + enhancedUrl);
+
+                    Map<String, Object> propertyMap = new HashMap<>();
+                    propertyMap.put("spring.datasource.url", enhancedUrl);
+
+                    environment.getPropertySources().addFirst(new MapPropertySource("AZURE_DATABASE", propertyMap));
+                }
+            } catch (IllegalStateException e) {
+                LOGGER.debug("Inconsistent properties detected, skip JDBCPropertiesBeanPostProcessor");
+            }
         }
+        return bean;
     }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = (ConfigurableEnvironment) environment;
+    }
+
 
     private boolean isDatabasePluginEnabled(DatabaseType databaseType){
         if (DatabaseType.POSTGRESQL.equals(databaseType)) {
@@ -129,5 +133,4 @@ public class AzureJdbcEnvironmentPostProcessor implements EnvironmentPostProcess
     private boolean isOnClasspath(String className) {
         return ClassUtils.isPresent(className, null);
     }
-
 }

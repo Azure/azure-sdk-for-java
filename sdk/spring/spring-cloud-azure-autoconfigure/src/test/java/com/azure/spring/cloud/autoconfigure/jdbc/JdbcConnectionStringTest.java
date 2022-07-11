@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import static com.azure.spring.cloud.autoconfigure.jdbc.AzureJdbcEnvironmentPostProcessor.ENHANCED_PROPERTIES;
+
+import static com.azure.spring.cloud.autoconfigure.jdbc.JDBCPropertiesBeanPostProcessor.ENHANCED_PROPERTIES;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionString.INVALID_CONNECTION_STRING_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionString.INVALID_PROPERTY_PAIR_FORMAT;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.MYSQL_PLUGIN_CLASS_NAME;
