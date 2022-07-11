@@ -30,7 +30,11 @@ public final class InsightsType extends ExpandableStringEnum<InsightsType> {
         return fromString(name, InsightsType.class);
     }
 
-    /** @return known InsightsType values. */
+    /**
+     * Gets known InsightsType values.
+     *
+     * @return known InsightsType values.
+     */
     public static Collection<InsightsType> values() {
         return values(InsightsType.class);
     }

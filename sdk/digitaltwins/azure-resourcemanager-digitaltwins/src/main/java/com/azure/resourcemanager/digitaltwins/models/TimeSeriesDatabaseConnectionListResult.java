@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.fluent.models.TimeSeriesDatabaseConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A pageable list of time series database connection resources. */
 @Fluent
 public final class TimeSeriesDatabaseConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesDatabaseConnectionListResult.class);
-
     /*
      * The link used to get the next page of results.
      */

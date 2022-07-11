@@ -61,33 +61,33 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-keys</artifactId>
-            <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+            <version>4.4.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.17.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.18.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
 
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.4.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-certificates</artifactId>
-            <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+            <version>4.3.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
         </dependency>
 
         <dependency>
@@ -98,17 +98,17 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.31.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+            <version>4.32.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-formrecognizer</artifactId>
-            <version>4.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;dependency} -->
+            <version>4.0.0-beta.6</version> <!-- {x-version-update;unreleased_com.azure:azure-ai-formrecognizer;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-textanalytics</artifactId>
-            <version>5.1.10</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
+            <version>5.1.11</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
         </dependency>
 
 

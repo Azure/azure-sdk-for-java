@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/preview/2021-06-30-preview/examples/PrivateEndpointConnectionsList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-05-31/examples/PrivateEndpointConnectionsList_example.json
      */
     /**
      * Sample code: List private endpoint connection properties.

@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
@@ -35,16 +36,13 @@ import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.FilesCreateResponse;
+import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.FilesGetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersResponse;
-import com.azure.storage.file.share.implementation.models.FilesSetMetadataResponse;
+import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
+import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLResponse;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
-import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -484,7 +482,7 @@ public class ShareFileAsyncClient {
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
         ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata);
-        return beginCopy(sourceUrl, pollInterval, options);
+        return beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -545,11 +543,11 @@ public class ShareFileAsyncClient {
             .setFilePermission(filePermission)
             .setPermissionCopyModeType(filePermissionCopyMode)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setMetadata(metadata)
             .setDestinationRequestConditions(destinationRequestConditions);
 
-        return beginCopy(sourceUrl, pollInterval, options);
+        return beginCopy(sourceUrl, options, pollInterval);
     }
 
     /**
@@ -578,14 +576,14 @@ public class ShareFileAsyncClient {
      *     .setSmbProperties&#40;smbProperties&#41;
      *     .setFilePermission&#40;filePermission&#41;
      *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
-     *     .setSetArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setArchiveAttribute&#40;setArchiveAttribute&#41;
      *     .setDestinationRequestConditions&#40;requestConditions&#41;
      *     .setSmbPropertiesToCopy&#40;list&#41;
      *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
      *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
      *
      * PollerFlux&lt;ShareFileCopyInfo, Void&gt; poller = shareFileAsyncClient.beginCopy&#40;
-     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, Duration.ofSeconds&#40;2&#41;, options&#41;;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, options, Duration.ofSeconds&#40;2&#41;&#41;;
      *
      * poller.subscribe&#40;response -&gt; &#123;
      *     final ShareFileCopyInfo value = response.getValue&#40;&#41;;
@@ -604,7 +602,7 @@ public class ShareFileAsyncClient {
      * @return A {@link PollerFlux} that polls the file copy operation until it has completed or has been cancelled.
      * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
      */
-    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval, ShareFileCopyOptions options) {
+    public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options, Duration pollInterval) {
 
         final ShareRequestConditions finalRequestConditions =
             options.getDestinationRequestConditions() == null ? new ShareRequestConditions() : options.getDestinationRequestConditions();
@@ -657,7 +655,7 @@ public class ShareFileAsyncClient {
             .setFileLastWriteTime(fileLastWriteTime)
             .setFileChangeTime(fileChangedOnTime)
             .setIgnoreReadOnly(options.isIgnoreReadOnly())
-            .setSetArchiveAttribute(options.getSetArchiveAttribute());
+            .setSetArchiveAttribute(options.isArchiveAttributeSet());
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 
@@ -2492,7 +2490,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, requestConditions.getLeaseId(), null, null,
+                0L, null, null, requestConditions.getLeaseId(), null, (Flux<ByteBuffer>) null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(ShareFileAsyncClient::uploadResponse);
     }
@@ -3245,7 +3243,7 @@ public class ShareFileAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private static Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {
+    private static Response<ShareFileInfo> createFileInfoResponse(ResponseBase<FilesCreateHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
@@ -3254,7 +3252,8 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    private static Response<ShareFileInfo> setPropertiesResponse(final FilesSetHttpHeadersResponse response) {
+    private static Response<ShareFileInfo> setPropertiesResponse(
+        final ResponseBase<FilesSetHttpHeadersHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
@@ -3263,7 +3262,8 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    private static Response<ShareFileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {
+    private static Response<ShareFileProperties> getPropertiesResponse(
+        final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
         FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
@@ -3298,7 +3298,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
-    private static Response<ShareFileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
+    private static Response<ShareFileUploadInfo> uploadResponse(ResponseBase<FilesUploadRangeHeaders, Void> response) {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
@@ -3315,7 +3315,7 @@ public class ShareFileAsyncClient {
     }
 
     private static Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
-        final FilesUploadRangeFromURLResponse response) {
+        final ResponseBase<FilesUploadRangeFromURLHeaders, Void> response) {
         FilesUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
@@ -3325,7 +3325,8 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
     }
 
-    private static Response<ShareFileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
+    private static Response<ShareFileMetadataInfo> setMetadataResponse(
+        final ResponseBase<FilesSetMetadataHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         Boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);

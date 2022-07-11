@@ -55,6 +55,10 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TransformInner innerModel() {
         return this.innerObject;
     }

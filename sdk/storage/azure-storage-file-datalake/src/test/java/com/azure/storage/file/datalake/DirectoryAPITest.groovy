@@ -8,6 +8,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -3918,5 +3919,29 @@ class DirectoryAPITest extends APISpec {
         then:
         renamedDir.getObjectPath() == renamedName
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
+    }
+
+    def "create file system with small timeouts fail for service client"() {
+        setup:
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new DataLakeServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        serviceClient.createFileSystem(generateFileSystemName())
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
     }
 }

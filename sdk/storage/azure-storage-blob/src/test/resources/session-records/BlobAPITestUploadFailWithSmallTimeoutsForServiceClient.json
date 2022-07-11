@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/f99a08b90f99a08b982755904fe8bd71769d34e79893?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.18.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "513dcbb4-2315-4656-91d7-1f9e647cd347"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-08-06",
+      "eTag" : "0x8DA53D2FC8E89E3",
+      "Last-Modified" : "Tue, 21 Jun 2022 22:11:27 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "019f521b-201e-0006-39bb-8503a9000000",
+      "x-ms-client-request-id" : "513dcbb4-2315-4656-91d7-1f9e647cd347",
+      "Date" : "Tue, 21 Jun 2022 22:11:27 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/f99a08b90f99a08b982755904fe8bd71769d34e79893/f99a08b91f99a08b982735414cbf891d4536c47b4882",
+    "Headers" : {
+      "x-ms-version" : "2021-08-06",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.18.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "861a0b16-448e-4f3a-8d2b-08a7a45fcd6f",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-08-06",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "eTag" : "0x8DA53D2FCC48F19",
+      "Last-Modified" : "Tue, 21 Jun 2022 22:11:27 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "019f521e-201e-0006-3abb-8503a9000000",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-client-request-id" : "861a0b16-448e-4f3a-8d2b-08a7a45fcd6f",
+      "Date" : "Tue, 21 Jun 2022 22:11:27 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f99a08b90f99a08b982755904fe8bd71769d34e79893", "f99a08b91f99a08b982735414cbf891d4536c47b4882", "ea8d09cb-677f-4de5-b2c8-089b9dcff15b", "f99a08b92f99a08b9827650230a30b2ebd04343578e2" ]
+}

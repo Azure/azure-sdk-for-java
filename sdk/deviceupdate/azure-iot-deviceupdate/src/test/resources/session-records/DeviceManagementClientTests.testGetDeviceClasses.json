@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/deviceClasses?api-version=2022-07-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.3 (11.0.15; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "704a2e80-52c6-42d1-bfcb-f61755ca8245"
+    },
+    "Response" : {
+      "content-length" : "586",
+      "traceparent" : "00-9065f52133ea134ba29a8fd95e123e8f-d659541ff14f5c40-00",
+      "mise-correlation-id" : "815a8294-7254-459b-abfc-7c246aaf8627",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"deviceClassId\": \"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\r\n      \"deviceClassProperties\": {\r\n        \"compatProperties\": {\r\n          \"manufacturer\": \"fabrikam\",\r\n          \"model\": \"vacuum\"\r\n        },\r\n        \"contractModel\": {\r\n          \"id\": \"dtmi:azure:iot:deviceUpdateContractModel;1\",\r\n          \"name\": \"Device Update Model V1\"\r\n        }\r\n      },\r\n      \"bestCompatibleUpdate\": {\r\n        \"updateId\": {\r\n          \"provider\": \"fabrikam\",\r\n          \"name\": \"vacuum\",\r\n          \"version\": \"2022.701.235.32\"\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Date" : "Fri, 01 Jul 2022 22:41:48 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

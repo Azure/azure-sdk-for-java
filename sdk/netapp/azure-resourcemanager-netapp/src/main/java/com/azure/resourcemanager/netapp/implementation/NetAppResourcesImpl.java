@@ -15,10 +15,9 @@ import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetAppResourcesImpl implements NetAppResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetAppResourcesImpl.class);
 
     private final NetAppResourcesClient innerClient;
 

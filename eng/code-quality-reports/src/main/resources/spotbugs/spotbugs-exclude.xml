@@ -606,6 +606,14 @@
 
   <Match>
     <Or>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
@@ -1049,7 +1057,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
-    <Field name="durationInMicroSec"/>
+    <Field name="durationInMilliSecs"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2750,5 +2758,10 @@
     <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+ <Match>
+    <Class name="com.azure.core.implementation.http.rest.ResponseExceptionConstructorCache"/>
+    <Method name="locateExceptionConstructor"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 </FindBugsFilter>

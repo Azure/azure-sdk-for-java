@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.BinaryData;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
@@ -34,6 +35,11 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromStream(this.responseBody.byteStream());
     }
 
     @Override
@@ -93,7 +99,7 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
             return Mono.empty();
         }
 
-        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close());
+        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close(), false);
     }
 
     @Override

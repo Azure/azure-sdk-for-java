@@ -11,9 +11,9 @@ import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,10 +53,10 @@ public class FormRecognizerSample {
         }
         byte[] fileContent = buffer.toByteArray();
 
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
+        BinaryData targetData = BinaryData.fromStream(resourceAsStream);
 
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
-                client.beginAnalyzeDocument("prebuilt-receipt", targetStream, fileContent.length);
+                client.beginAnalyzeDocument("prebuilt-receipt", targetData, fileContent.length);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 

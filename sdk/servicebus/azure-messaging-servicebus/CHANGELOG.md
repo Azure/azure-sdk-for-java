@@ -3,12 +3,14 @@
 ## 7.10.0-beta.1 (Unreleased)
 
 ### Features Added
+- Exposing `ServiceBusClientBuilder.customEndpointAddress` to support connecting to an intermediary before Azure ServiceBus.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- Moved message state key to `azure-core-amqp` constants. ([#26898](https://github.com/Azure/azure-sdk-for-java/issues/26898))
 
 ## 7.9.1 (2022-06-16)
 
