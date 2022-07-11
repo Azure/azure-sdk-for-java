@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
@@ -286,24 +286,24 @@ public class Transforms {
         return copyAuthorization;
     }
 
-    public static AccountProperties toAccountProperties(GetInfoResponse getInfoResponse) {
-        AccountProperties accountProperties = new AccountProperties();
-        AccountPropertiesHelper.setDocumentModelCount(accountProperties,
+    public static ResourceInfo toAccountProperties(GetInfoResponse getInfoResponse) {
+        ResourceInfo resourceInfo = new ResourceInfo();
+        ResourceInfoHelper.setDocumentModelCount(resourceInfo,
             getInfoResponse.getCustomDocumentModels().getCount());
-        AccountPropertiesHelper.setDocumentModelLimit(accountProperties,
+        ResourceInfoHelper.setDocumentModelLimit(resourceInfo,
             getInfoResponse.getCustomDocumentModels().getLimit());
-        return accountProperties;
+        return resourceInfo;
     }
 
-    public static DocumentModel toDocumentModel(ModelInfo modelInfo) {
-        DocumentModel documentModel = new DocumentModel();
-        DocumentModelHelper.setModelId(documentModel, modelInfo.getModelId());
-        DocumentModelHelper.setDescription(documentModel, modelInfo.getDescription());
+    public static DocumentModelInfo toDocumentModel(ModelInfo modelInfo) {
+        DocumentModelInfo documentModelInfo = new DocumentModelInfo();
+        DocumentModelInfoHelper.setModelId(documentModelInfo, modelInfo.getModelId());
+        DocumentModelInfoHelper.setDescription(documentModelInfo, modelInfo.getDescription());
         Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-        DocumentModelHelper.setDocTypes(documentModel, docTypeMap);
-        DocumentModelHelper.setCreatedOn(documentModel, modelInfo.getCreatedDateTime());
-        DocumentModelHelper.setTags(documentModel, modelInfo.getTags());
-        return documentModel;
+        DocumentModelInfoHelper.setDocTypes(documentModelInfo, docTypeMap);
+        DocumentModelInfoHelper.setCreatedOn(documentModelInfo, modelInfo.getCreatedDateTime());
+        DocumentModelInfoHelper.setTags(documentModelInfo, modelInfo.getTags());
+        return documentModelInfo;
     }
 
     private static Map<String, DocTypeInfo> getStringDocTypeInfoMap(ModelInfo modelInfo) {
@@ -538,16 +538,16 @@ public class Transforms {
         return pointList;
     }
 
-    public static List<DocumentModelInfo> toDocumentModelInfo(List<ModelSummary> modelSummaryList) {
+    public static List<DocumentModelSummary> toDocumentModelInfo(List<ModelSummary> modelSummaryList) {
         return modelSummaryList
             .stream()
             .map(modelSummary -> {
-                DocumentModelInfo documentModelInfo = new DocumentModelInfo();
-                DocumentModelInfoHelper.setModelId(documentModelInfo, modelSummary.getModelId());
-                DocumentModelInfoHelper.setDescription(documentModelInfo, modelSummary.getDescription());
-                DocumentModelInfoHelper.setCreatedOn(documentModelInfo, modelSummary.getCreatedDateTime());
-                DocumentModelInfoHelper.setTags(documentModelInfo, modelSummary.getTags());
-                return documentModelInfo;
+                DocumentModelSummary documentModelSummary = new DocumentModelSummary();
+                DocumentModelSummaryHelper.setModelId(documentModelSummary, modelSummary.getModelId());
+                DocumentModelSummaryHelper.setDescription(documentModelSummary, modelSummary.getDescription());
+                DocumentModelSummaryHelper.setCreatedOn(documentModelSummary, modelSummary.getCreatedDateTime());
+                DocumentModelSummaryHelper.setTags(documentModelSummary, modelSummary.getTags());
+                return documentModelSummary;
             }).collect(Collectors.toList());
     }
 

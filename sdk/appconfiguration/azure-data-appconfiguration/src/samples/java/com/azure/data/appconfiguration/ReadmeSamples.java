@@ -11,6 +11,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -19,6 +22,7 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -217,6 +221,126 @@ public class ReadmeSamples {
             .httpClient(httpClient)
             .buildAsyncClient();
         // END: readme-sample-createClientWithProxyOption
+    }
+
+    public void createFeatureFlagConfigurationSetting() {
+        // BEGIN: readme-sample-addFeatureFlagConfigurationSetting
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.addConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-addFeatureFlagConfigurationSetting
+    }
+
+    public void updateFeatureFlagConfigurationSetting() {
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        // BEGIN: readme-sample-updateFeatureFlagConfigurationSetting
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.setConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-updateFeatureFlagConfigurationSetting
+    }
+
+    public void getFeatureFlagConfigurationSetting() {
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        // BEGIN: readme-sample-getFeatureFlagConfigurationSetting
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.getConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-getFeatureFlagConfigurationSetting
+    }
+
+    public void deleteFeatureFlagConfigurationSetting() {
+        String key = "some_key";
+        String filterName = "{filter_name}"; // such as "Microsoft.Percentage"
+        String filterParameterKey = "{filter_parameter_key}"; // "Value"
+        Object filterParameterValue = 30; // Any value. Could be String, primitive value, or Json Object
+        FeatureFlagFilter percentageFilter = new FeatureFlagFilter(filterName)
+                                                 .addParameter(filterParameterKey, filterParameterValue);
+        FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
+            new FeatureFlagConfigurationSetting(key, true)
+                .setClientFilters(Arrays.asList(percentageFilter));
+
+        // BEGIN: readme-sample-deleteFeatureFlagConfigurationSetting
+        FeatureFlagConfigurationSetting setting = (FeatureFlagConfigurationSetting)
+            configurationClient.deleteConfigurationSetting(featureFlagConfigurationSetting);
+        // END: readme-sample-deleteFeatureFlagConfigurationSetting
+    }
+
+    public void addSecretReferenceConfigurationSetting() {
+        // BEGIN: readme-sample-addSecretReferenceConfigurationSetting
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.addConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-addSecretReferenceConfigurationSetting
+    }
+
+    public void updateSecretReferenceConfigurationSetting() {
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        // BEGIN: readme-sample-updateSecretReferenceConfigurationSetting
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.setConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-updateSecretReferenceConfigurationSetting
+    }
+
+    public void getSecretReferenceConfigurationSetting() {
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        // BEGIN: readme-sample-getSecretReferenceConfigurationSetting
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.getConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-getSecretReferenceConfigurationSetting
+    }
+
+    public void deleteSecretReferenceConfigurationSetting() {
+        String key = "{some_key}";
+        String keyVaultReference = "{key_vault_reference}";
+
+        SecretReferenceConfigurationSetting referenceConfigurationSetting =
+            new SecretReferenceConfigurationSetting(key, keyVaultReference);
+
+        // BEGIN: readme-sample-deleteSecretReferenceConfigurationSetting
+        SecretReferenceConfigurationSetting setting = (SecretReferenceConfigurationSetting)
+            configurationClient.deleteConfigurationSetting(referenceConfigurationSetting);
+        // END: readme-sample-deleteSecretReferenceConfigurationSetting
     }
 
     private void updateConfiguration(ConfigurationSetting setting) {

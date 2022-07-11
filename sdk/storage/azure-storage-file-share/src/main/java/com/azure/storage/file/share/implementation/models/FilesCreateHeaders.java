@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -91,6 +92,40 @@ public final class FilesCreateHeaders {
      */
     @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of FilesCreateHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public FilesCreateHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsFilePermissionKey = rawHeaders.getValue("x-ms-file-permission-key");
+        this.xMsFileId = rawHeaders.getValue("x-ms-file-id");
+        if (rawHeaders.getValue("x-ms-file-creation-time") != null) {
+            this.xMsFileCreationTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-creation-time"));
+        }
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.eTag = rawHeaders.getValue("ETag");
+        this.xMsFileAttributes = rawHeaders.getValue("x-ms-file-attributes");
+        if (rawHeaders.getValue("x-ms-file-change-time") != null) {
+            this.xMsFileChangeTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-change-time"));
+        }
+        this.xMsFileParentId = rawHeaders.getValue("x-ms-file-parent-id");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("x-ms-file-last-write-time") != null) {
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(rawHeaders.getValue("x-ms-file-last-write-time"));
+        }
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
