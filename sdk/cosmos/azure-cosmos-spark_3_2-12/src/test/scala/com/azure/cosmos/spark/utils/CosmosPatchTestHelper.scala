@@ -187,8 +187,10 @@ object CosmosPatchTestHelper {
  /***
   * Get partition key path without "/" at the beginning
   * @param partitionKeyDefinition the partition key definition
+  *
   * @return the partition key path without
   */
+  // TODO: Reexamine the logic here when hierarchical partitioning being supported
  def getStrippedPartitionKeyPath(partitionKeyDefinition: PartitionKeyDefinition): String = {
   StringUtils.join(partitionKeyDefinition.getPaths, "").substring(1)
  }
