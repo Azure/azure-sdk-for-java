@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
+import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobAsyncClient
@@ -1091,6 +1092,19 @@ class BlockBlobAPITest extends APISpec {
         }
     }
 
+    class FileUploadListener implements ProgressListener {
+        private long reportedByteCount
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            this.reportedByteCount = bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Upload from file reporter"() {
@@ -1107,6 +1121,35 @@ class BlockBlobAPITest extends APISpec {
             .verifyComplete()
 
         uploadReporter.getReportedByteCount() == size
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+        100               | 1 * Constants.MB  | 2
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Upload from file listener"() {
+        when:
+        def uploadListener = new FileUploadReporter()
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(blockSize - 1)
+
+        then:
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null, null))
+            .verifyComplete()
+
+        uploadListener.getReportedByteCount() == size
 
         cleanup:
         file.delete()
@@ -1601,6 +1644,25 @@ class BlockBlobAPITest extends APISpec {
         }
     }
 
+    class Listener implements ProgressListener {
+        private final long blockSize
+        private long reportingCount
+
+        Listener(long blockSize) {
+            this.blockSize = blockSize
+        }
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
     @LiveOnly
@@ -1627,6 +1689,42 @@ class BlockBlobAPITest extends APISpec {
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
                 assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
+            }).verifyComplete()
+
+        where:
+        size              | blockSize          | bufferCount
+        10 * Constants.MB | 10 * Constants.MB  | 8
+        20 * Constants.MB | 1 * Constants.MB   | 5
+        10 * Constants.MB | 5 * Constants.MB   | 2
+        10 * Constants.MB | 512 * Constants.KB | 20
+    }
+
+    // Only run these tests in live mode as they use variables that can't be captured.
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with listener"() {
+        setup:
+        def blobAsyncClient = getPrimaryServiceClientForWrites(blockSize)
+            .getBlobContainerAsyncClient(blobAsyncClient.getContainerName())
+            .getBlobAsyncClient(blobAsyncClient.getBlobName())
+
+        when:
+        def uploadListener = new Listener(blockSize)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(4 * Constants.MB)
+
+        then:
+        StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
+            null, null, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 201
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadListener.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
         where:
