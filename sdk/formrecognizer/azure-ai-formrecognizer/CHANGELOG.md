@@ -12,6 +12,8 @@
 - Renamed `DocumentModel` model to `DocumentModelInfo`
 - Renamed `getAccountProperties` method to `getResourceInfo`
 - Renamed `AccountProperties` model to `ResourceInfo`
+- Renamed `ModelOperation` model to `DocumentModelOperationInfo`
+- Renamed `ModelOperationInfo` model to `DocumentModelOperationSummary`
 
 ### Bugs Fixed
 
