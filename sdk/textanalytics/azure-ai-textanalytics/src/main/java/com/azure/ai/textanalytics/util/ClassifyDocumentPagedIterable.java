@@ -14,15 +14,15 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class LabelClassifyPagedIterable extends ContinuablePagedIterable<String,
-    LabelClassifyResultCollection, PagedResponse<LabelClassifyResultCollection>> {
+public final class ClassifyDocumentPagedIterable extends ContinuablePagedIterable<String,
+    ClassifyDocumentResultCollection, PagedResponse<ClassifyDocumentResultCollection>> {
 
     /**
-     * Creates instance given {@link LabelClassifyPagedIterable}.
+     * Creates instance given {@link ClassifyDocumentPagedIterable}.
      *
      * @param pagedFlux It used as iterable.
      */
-    public LabelClassifyPagedIterable(LabelClassifyPagedFlux pagedFlux) {
+    public ClassifyDocumentPagedIterable(ClassifyDocumentPagedFlux pagedFlux) {
         super(pagedFlux);
     }
 }

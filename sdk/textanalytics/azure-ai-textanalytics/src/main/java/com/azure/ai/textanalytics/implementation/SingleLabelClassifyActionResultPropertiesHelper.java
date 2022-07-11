@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
-import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 
 /**
  * The helper class to set the non-public properties of an {@link SingleLabelClassifyActionResult} instance.
@@ -20,7 +20,7 @@ public final class SingleLabelClassifyActionResultPropertiesHelper {
      */
     public interface SingleLabelClassifyActionResultAccessor {
         void setDocumentsResults(SingleLabelClassifyActionResult actionResult,
-            LabelClassifyResultCollection documentsResults);
+            ClassifyDocumentResultCollection documentsResults);
     }
 
     /**
@@ -34,7 +34,7 @@ public final class SingleLabelClassifyActionResultPropertiesHelper {
     }
 
     public static void setDocumentsResults(SingleLabelClassifyActionResult actionResult,
-        LabelClassifyResultCollection documentsResults) {
+        ClassifyDocumentResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

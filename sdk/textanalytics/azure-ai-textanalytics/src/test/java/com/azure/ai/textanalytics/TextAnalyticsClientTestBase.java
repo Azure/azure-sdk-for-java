@@ -40,7 +40,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
-import com.azure.ai.textanalytics.models.LabelClassifyResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -1568,7 +1568,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             actualSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
-    static void validateLabelClassificationResult(LabelClassifyResult documentResult) {
+    static void validateLabelClassificationResult(ClassifyDocumentResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());

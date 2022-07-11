@@ -5,13 +5,13 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.ClassifiedCategory;
-import com.azure.ai.textanalytics.models.LabelClassifyResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 
@@ -61,7 +61,7 @@ public class Test {
 
         client.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}", "en", options)
             .flatMap(pollResult -> {
-                LabelClassifyOperationDetail operationResult = pollResult.getValue();
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -103,7 +103,7 @@ public class Test {
 
         client.beginSingleLabelClassify(documents, "{project_name}", "{deployment_name}", options)
             .flatMap(pollResult -> {
-                LabelClassifyOperationDetail operationResult = pollResult.getValue();
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -125,13 +125,13 @@ public class Test {
     }
 
     private static void processAnalyzeCategoryClassificationResultCollection(
-        PagedResponse<LabelClassifyResultCollection> perPage) {
+        PagedResponse<ClassifyDocumentResultCollection> perPage) {
         System.out.printf("Response code: %d, Continuation Token: %s.%n",
             perPage.getStatusCode(), perPage.getContinuationToken());
-        for (LabelClassifyResultCollection documentsResults : perPage.getElements()) {
+        for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
             System.out.printf("Project name: %s, deployment name: %s.%n",
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
-            for (LabelClassifyResult documentResult : documentsResults) {
+            for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
                 if (!documentResult.isError()) {
                     for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
@@ -166,7 +166,7 @@ public class Test {
         client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}", "en",
             multiLabelClassifyOptions)
             .flatMap(pollResult -> {
-                LabelClassifyOperationDetail operationResult = pollResult.getValue();
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -208,7 +208,7 @@ public class Test {
         client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}",
             multiLabelClassifyOptions)
             .flatMap(pollResult -> {
-                LabelClassifyOperationDetail operationResult = pollResult.getValue();
+                ClassifyDocumentOperationDetail operationResult = pollResult.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
@@ -230,14 +230,14 @@ public class Test {
     }
 
     private static void processMultiCategoryClassificationResult(
-        PagedResponse<LabelClassifyResultCollection> perPage) {
+        PagedResponse<ClassifyDocumentResultCollection> perPage) {
         System.out.printf("Response code: %d, Continuation Token: %s.%n",
             perPage.getStatusCode(), perPage.getContinuationToken());
 
-        for (LabelClassifyResultCollection documentsResults : perPage.getElements()) {
+        for (ClassifyDocumentResultCollection documentsResults : perPage.getElements()) {
             System.out.printf("Project name: %s, deployment name: %s.%n",
                 documentsResults.getProjectName(), documentsResults.getDeploymentName());
-            for (LabelClassifyResult documentResult : documentsResults) {
+            for (ClassifyDocumentResult documentResult : documentsResults) {
                 System.out.println("Document ID: " + documentResult.getId());
                 if (!documentResult.isError()) {
                     for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {

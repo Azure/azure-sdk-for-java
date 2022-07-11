@@ -9,10 +9,10 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
-import com.azure.ai.textanalytics.models.LabelClassifyResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.ClassifiedCategory;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -83,10 +83,10 @@ public class ClassifyDocumentSingleCategoryAsync {
     private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
         for (SingleLabelClassifyActionResult actionResult : actionsResult.getSingleLabelClassifyResults()) {
             if (!actionResult.isError()) {
-                LabelClassifyResultCollection documentsResults = actionResult.getDocumentsResults();
+                ClassifyDocumentResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (LabelClassifyResult documentResult : documentsResults) {
+                for (ClassifyDocumentResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
                         for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {

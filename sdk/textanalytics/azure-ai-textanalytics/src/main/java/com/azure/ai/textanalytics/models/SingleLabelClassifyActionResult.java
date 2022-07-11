@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.SingleLabelClassifyActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class SingleLabelClassifyActionResult extends TextAnalyticsActionResult {
-    private LabelClassifyResultCollection documentsResults;
+    private ClassifyDocumentResultCollection documentsResults;
 
     static {
         SingleLabelClassifyActionResultPropertiesHelper.setAccessor(
@@ -27,12 +27,12 @@ public final class SingleLabelClassifyActionResult extends TextAnalyticsActionRe
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public LabelClassifyResultCollection getDocumentsResults() {
+    public ClassifyDocumentResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(LabelClassifyResultCollection documentsResults) {
+    private void setDocumentsResults(ClassifyDocumentResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

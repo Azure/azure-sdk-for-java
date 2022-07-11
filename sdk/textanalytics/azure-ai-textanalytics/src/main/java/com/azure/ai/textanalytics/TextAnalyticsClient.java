@@ -14,7 +14,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
-import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
@@ -34,7 +34,7 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.LabelClassifyPagedIterable;
+import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
@@ -1706,7 +1706,7 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
         beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
             String language, SingleLabelClassifyOptions options) {
         return null;
@@ -1723,7 +1723,7 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
         beginSingleLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
         String deploymentName, SingleLabelClassifyOptions options, Context context) {
         return null;
@@ -1740,7 +1740,7 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
         beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
             String language, MultiLabelClassifyOptions options) {
         return null;
@@ -1757,7 +1757,7 @@ public final class TextAnalyticsClient {
      * @return
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable>
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
         beginMultiLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
             String deploymentName, MultiLabelClassifyOptions options, Context context) {
         return null;

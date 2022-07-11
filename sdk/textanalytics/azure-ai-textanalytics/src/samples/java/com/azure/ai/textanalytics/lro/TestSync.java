@@ -5,14 +5,14 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.LabelClassifyOperationDetail;
+import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.ClassifiedCategory;
-import com.azure.ai.textanalytics.models.LabelClassifyResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.LabelClassifyPagedIterable;
-import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -49,7 +49,7 @@ public class TestSync {
         SingleLabelClassifyOptions options = new SingleLabelClassifyOptions()
                                                      .setServiceLogsDisabled(true);
 
-        SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable> syncPoller =
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
             client.beginSingleLabelClassify(documents,
                 "{project_name}", "{deployment_name}", "en", options);
 
@@ -78,7 +78,7 @@ public class TestSync {
         SingleLabelClassifyOptions options = new SingleLabelClassifyOptions()
                                                      .setServiceLogsDisabled(true);
 
-        SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable> syncPoller =
+        SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
             client.beginSingleLabelClassify(documents, "{project_name}",
                 "{deployment_name}", options, Context.NONE);
 
@@ -89,10 +89,10 @@ public class TestSync {
     }
 
     private static void processAnalyzeCategoryClassificationResultCollection(
-        LabelClassifyResultCollection documentsResults) {
+        ClassifyDocumentResultCollection documentsResults) {
         System.out.printf("Project name: %s, deployment name: %s.%n",
             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-        for (LabelClassifyResult documentResult : documentsResults) {
+        for (ClassifyDocumentResult documentResult : documentsResults) {
             System.out.println("Document ID: " + documentResult.getId());
             if (!documentResult.isError()) {
                 for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {
@@ -122,7 +122,7 @@ public class TestSync {
 
         final MultiLabelClassifyOptions multiLabelClassifyOptions = new MultiLabelClassifyOptions();
 
-        final SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable> syncPoller =
+        final SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
             client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}", "en",
                 multiLabelClassifyOptions);
 
@@ -150,7 +150,7 @@ public class TestSync {
 
         final MultiLabelClassifyOptions multiLabelClassifyOptions = new MultiLabelClassifyOptions();
 
-        final SyncPoller<LabelClassifyOperationDetail, LabelClassifyPagedIterable> syncPoller =
+        final SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> syncPoller =
             client.beginMultiLabelClassify(documents, "{project_name}", "{deployment_name}",
                 multiLabelClassifyOptions, Context.NONE);
 
@@ -160,10 +160,10 @@ public class TestSync {
             documentsResults -> processMultiCategoryClassificationResult(documentsResults));
     }
 
-    private static void processMultiCategoryClassificationResult(LabelClassifyResultCollection documentsResults) {
+    private static void processMultiCategoryClassificationResult(ClassifyDocumentResultCollection documentsResults) {
         System.out.printf("Project name: %s, deployment name: %s.%n",
             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-        for (LabelClassifyResult documentResult : documentsResults) {
+        for (ClassifyDocumentResult documentResult : documentsResults) {
             System.out.println("Document ID: " + documentResult.getId());
             if (!documentResult.isError()) {
                 for (ClassifiedCategory classifiedCategory : documentResult.getClassifiedCategories()) {

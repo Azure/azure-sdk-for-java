@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.MultiLabelClassifyActionResult;
-import com.azure.ai.textanalytics.util.LabelClassifyResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 
 /**
  * The helper class to set the non-public properties of an {@link MultiLabelClassifyActionResult} instance.
@@ -21,7 +21,7 @@ public final class MultiLabelClassifyActionResultPropertiesHelper {
      */
     public interface MultiLabelClassifyActionResultAccessor {
         void setDocumentsResults(MultiLabelClassifyActionResult actionResult,
-            LabelClassifyResultCollection documentsResults);
+            ClassifyDocumentResultCollection documentsResults);
     }
 
     /**
@@ -35,7 +35,7 @@ public final class MultiLabelClassifyActionResultPropertiesHelper {
     }
 
     public static void setDocumentsResults(MultiLabelClassifyActionResult actionResult,
-        LabelClassifyResultCollection documentsResults) {
+        ClassifyDocumentResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

@@ -3,45 +3,45 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.LabelClassifyResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ClassifyDocumentResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link LabelClassifyResult} model. It classify the text document one single category.
+ * The {@link ClassifyDocumentResult} model. It classify the text document one single category.
  */
 @Immutable
-public final class LabelClassifyResult extends TextAnalyticsResult {
+public final class ClassifyDocumentResult extends TextAnalyticsResult {
     private IterableStream<ClassifiedCategory> classifiedCategories;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        LabelClassifyResultPropertiesHelper.setAccessor(
-            new LabelClassifyResultPropertiesHelper.LabelClassifyResultAccessor() {
+        ClassifyDocumentResultPropertiesHelper.setAccessor(
+            new ClassifyDocumentResultPropertiesHelper.ClassifyDocumentResultAccessor() {
                 @Override
                 public void setClassifiedCategories(
-                    LabelClassifyResult labelClassifyResult,
+                    ClassifyDocumentResult classifyDocumentResult,
                     IterableStream<ClassifiedCategory> classifiedCategories) {
-                    labelClassifyResult.setClassifiedCategories(classifiedCategories);
+                    classifyDocumentResult.setClassifiedCategories(classifiedCategories);
                 }
 
                 @Override
-                public void setWarnings(LabelClassifyResult labelClassifyResult,
+                public void setWarnings(ClassifyDocumentResult classifyDocumentResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
-                    labelClassifyResult.setWarnings(warnings);
+                    classifyDocumentResult.setWarnings(warnings);
                 }
             });
 
     }
 
     /**
-     * Creates a {@link LabelClassifyResult} model.
+     * Creates a {@link ClassifyDocumentResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public LabelClassifyResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public ClassifyDocumentResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
