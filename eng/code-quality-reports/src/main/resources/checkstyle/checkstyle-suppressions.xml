@@ -188,7 +188,9 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.core.http.vertx.VertxProvider"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"/>
-
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions"/>
+            
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.serializer.avro.apache.ApacheAvroSerializerBuilder"/>

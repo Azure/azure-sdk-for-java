@@ -6,6 +6,9 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.MetricsOptions;
 import io.opentelemetry.api.metrics.MeterProvider;
 
+/**
+ * OpenTelemetry-specific Azure SDK metrics options.
+ */
 public class OpenTelemetryMetricsOptions extends MetricsOptions {
     private MeterProvider provider;
 
