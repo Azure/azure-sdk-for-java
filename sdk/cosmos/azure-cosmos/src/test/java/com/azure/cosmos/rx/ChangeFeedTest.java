@@ -5,7 +5,6 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.changefeed.fullfidelity.ChangeFeedItemChanges;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
@@ -510,6 +509,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         while (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
+            CosmosDiagnostics cosmosDiagnostics = response.getCosmosDiagnostics();
+            logger.info("Cosmos Diagnostics are : {}", cosmosDiagnostics);
             assertFullFidelityGatewayMode(response);
             logger.info("Final results with continuation token {} are {}", response.getContinuationToken(), response.getResults());
         }

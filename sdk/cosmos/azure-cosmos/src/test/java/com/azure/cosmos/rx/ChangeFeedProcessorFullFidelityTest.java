@@ -145,7 +145,6 @@ public class ChangeFeedProcessorFullFidelityTest {
 
     private static void runFullFidelityChangeFeedProcessorFromNow() {
         ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-        //  changeFeedProcessorOptions.setStartTime(Instant.now());
         ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
