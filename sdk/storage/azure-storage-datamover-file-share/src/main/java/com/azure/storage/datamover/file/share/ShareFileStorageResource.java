@@ -19,17 +19,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-class FileShareResource extends StorageResource {
+class ShareFileStorageResource extends StorageResource {
 
     private final ShareFileClient shareFileClient;
     private final ShareDirectoryClient root;
 
-    FileShareResource(ShareFileClient shareFileClient) {
+    ShareFileStorageResource(ShareFileClient shareFileClient) {
         this.shareFileClient = Objects.requireNonNull(shareFileClient);
         root = null;
     }
 
-    FileShareResource(ShareFileClient shareFileClient, ShareDirectoryClient root) {
+    ShareFileStorageResource(ShareFileClient shareFileClient, ShareDirectoryClient root) {
         this.shareFileClient = Objects.requireNonNull(shareFileClient);
         this.root = Objects.requireNonNull(root);
     }

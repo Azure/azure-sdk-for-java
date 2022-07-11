@@ -13,11 +13,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-class BlobResourceContainer extends StorageResourceContainer {
+class BlobStorageResourceContainer extends StorageResourceContainer {
 
     private final BlobContainerClient blobContainerClient;
 
-    BlobResourceContainer(BlobContainerClient blobContainerClient) {
+    BlobStorageResourceContainer(BlobContainerClient blobContainerClient) {
         this.blobContainerClient = Objects.requireNonNull(blobContainerClient);
     }
 
@@ -25,7 +25,7 @@ class BlobResourceContainer extends StorageResourceContainer {
     public Iterable<StorageResource> listResources() {
         return blobContainerClient.listBlobs()
             .mapPage(
-                blobItem -> new BlobResource(blobContainerClient.getBlobClient(blobItem.getName()))
+                blobItem -> new BlobStorageResource(blobContainerClient.getBlobClient(blobItem.getName()))
             );
     }
 
@@ -53,6 +53,6 @@ class BlobResourceContainer extends StorageResourceContainer {
 
     @Override
     public StorageResource getStorageResource(List<String> path) {
-        return new BlobResource(blobContainerClient.getBlobClient(String.join("/", path)));
+        return new BlobStorageResource(blobContainerClient.getBlobClient(String.join("/", path)));
     }
 }

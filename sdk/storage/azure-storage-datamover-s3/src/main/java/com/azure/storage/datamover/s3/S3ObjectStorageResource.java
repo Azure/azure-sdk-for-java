@@ -14,13 +14,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-class S3ObjectResource extends StorageResource {
+class S3ObjectStorageResource extends StorageResource {
 
     private final S3Client s3Client;
     private final String bucketName;
     private final String objectKey;
 
-    S3ObjectResource(S3Client s3Client, String bucketName, String objectKey) {
+    S3ObjectStorageResource(S3Client s3Client, String bucketName, String objectKey) {
         this.s3Client = Objects.requireNonNull(s3Client);
         this.bucketName = Objects.requireNonNull(bucketName);
         this.objectKey = Objects.requireNonNull(objectKey);

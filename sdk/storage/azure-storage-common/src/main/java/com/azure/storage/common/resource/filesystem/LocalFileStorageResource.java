@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-class FileResource extends StorageResource {
+class LocalFileStorageResource extends StorageResource {
 
     private final Path path;
     private final List<String> abstractPath;
 
-    FileResource(Path path, List<String> abstractPath) {
+    LocalFileStorageResource(Path path, List<String> abstractPath) {
         if (!path.toFile().isFile()) {
             throw new IllegalArgumentException("provided path isn't file");
         }

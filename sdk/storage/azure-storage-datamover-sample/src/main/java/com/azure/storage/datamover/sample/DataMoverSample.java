@@ -6,12 +6,12 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
-import com.azure.storage.common.resource.filesystem.FileSystemResources;
+import com.azure.storage.common.resource.filesystem.LocalFileSystemStorageResources;
 import com.azure.storage.datamover.DataMover;
 import com.azure.storage.datamover.DataMoverBuilder;
 import com.azure.storage.datamover.DataTransfer;
-import com.azure.storage.datamover.blob.BlobResources;
-import com.azure.storage.datamover.file.share.FileShareResources;
+import com.azure.storage.datamover.blob.BlobStorageResources;
+import com.azure.storage.datamover.file.share.ShareStorageResources;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
@@ -55,9 +55,9 @@ public class DataMoverSample {
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
 
-        StorageResource localFile = FileSystemResources.file(sampleFile);
+        StorageResource localFile = LocalFileSystemStorageResources.file(sampleFile);
         BlobClient blobClient = containerClient.getBlobClient("samplefile.txt");
-        StorageResource blob = BlobResources.blob(blobClient);
+        StorageResource blob = BlobStorageResources.blob(blobClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localFile, blob);
 
@@ -71,8 +71,8 @@ public class DataMoverSample {
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
-        StorageResourceContainer localDirectory = FileSystemResources.directory(sampleDirectory);
-        StorageResourceContainer blobContainer = BlobResources.blobContainer(containerClient);
+        StorageResourceContainer localDirectory = LocalFileSystemStorageResources.directory(sampleDirectory);
+        StorageResourceContainer blobContainer = BlobStorageResources.blobContainer(containerClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, blobContainer);
 
@@ -87,8 +87,8 @@ public class DataMoverSample {
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
 
-        StorageResource localFile = FileSystemResources.file(sampleFile);
-        StorageResource shareFile = FileShareResources.file(fileClient);
+        StorageResource localFile = LocalFileSystemStorageResources.file(sampleFile);
+        StorageResource shareFile = ShareStorageResources.file(fileClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localFile, shareFile);
 
@@ -100,8 +100,8 @@ public class DataMoverSample {
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
-        StorageResourceContainer localDirectory = FileSystemResources.directory(sampleDirectory);
-        StorageResourceContainer share = FileShareResources.share(shareClient);
+        StorageResourceContainer localDirectory = LocalFileSystemStorageResources.directory(sampleDirectory);
+        StorageResourceContainer share = ShareStorageResources.share(shareClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, share);
 
@@ -116,8 +116,8 @@ public class DataMoverSample {
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
-        StorageResourceContainer localDirectory = FileSystemResources.directory(sampleDirectory);
-        StorageResourceContainer shareDirectory = FileShareResources.directory(shareDirectoryClient);
+        StorageResourceContainer localDirectory = LocalFileSystemStorageResources.directory(sampleDirectory);
+        StorageResourceContainer shareDirectory = ShareStorageResources.directory(shareDirectoryClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(localDirectory, shareDirectory);
 
@@ -129,8 +129,8 @@ public class DataMoverSample {
 
         ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-06-blobcontainertoshare");
 
-        StorageResourceContainer blobContainer = BlobResources.blobContainer(blobContainerClient);
-        StorageResourceContainer share = FileShareResources.share(shareClient);
+        StorageResourceContainer blobContainer = BlobStorageResources.blobContainer(blobContainerClient);
+        StorageResourceContainer share = ShareStorageResources.share(shareClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(blobContainer, share);
 
@@ -140,8 +140,8 @@ public class DataMoverSample {
     private static void transferShareToBlobContainer(DataMover dataMover, ShareClient shareClient, BlobServiceClient blobServiceClient) throws Exception{
         BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-07-sharetoblobcontainer");
 
-        StorageResourceContainer share = FileShareResources.share(shareClient);
-        StorageResourceContainer blobContainer = BlobResources.blobContainer(containerClient);
+        StorageResourceContainer share = ShareStorageResources.share(shareClient);
+        StorageResourceContainer blobContainer = BlobStorageResources.blobContainer(containerClient);
 
         DataTransfer dataTransfer = dataMover.startTransfer(share, blobContainer);
 

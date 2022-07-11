@@ -5,15 +5,15 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
 
-public final class BlobResources {
-    private BlobResources() {
+public final class BlobStorageResources {
+    private BlobStorageResources() {
     }
 
     public static StorageResource blob(BlobClient blobClient) {
-        return new BlobResource(blobClient);
+        return new BlobStorageResource(blobClient);
     }
 
     public static StorageResourceContainer blobContainer(BlobContainerClient blobContainerClient) {
-        return new BlobResourceContainer(blobContainerClient);
+        return new BlobStorageResourceContainer(blobContainerClient);
     }
 }

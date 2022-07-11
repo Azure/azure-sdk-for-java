@@ -4,28 +4,29 @@ import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
 import com.azure.storage.common.resource.TransferCapabilities;
 import com.azure.storage.common.resource.TransferCapabilitiesBuilder;
+import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class FileShareDirectoryResourceContainer extends StorageResourceContainer {
+class ShareStorageResourceContainer extends StorageResourceContainer {
 
-    private final ShareDirectoryClient shareDirectoryClient;
+    private final ShareClient shareClient;
 
-    FileShareDirectoryResourceContainer(ShareDirectoryClient shareDirectoryClient) {
-        this.shareDirectoryClient = Objects.requireNonNull(shareDirectoryClient);
+    ShareStorageResourceContainer(ShareClient shareClient) {
+        this.shareClient = Objects.requireNonNull(shareClient);
     }
 
     @Override
     public Iterable<StorageResource> listResources() {
-        return listResources(shareDirectoryClient, shareDirectoryClient)
+        return listResources(shareClient.getRootDirectoryClient(), shareClient.getRootDirectoryClient())
             .collect(Collectors.toList());
     }
 
@@ -37,19 +38,19 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
                 if (item.isDirectory()) {
                     return listResources(directoryClient.getSubdirectoryClient(item.getName()), rootDir);
                 } else {
-                    return Stream.of(new FileShareResource(directoryClient.getFileClient(item.getName()), rootDir));
+                    return Stream.of(new ShareFileStorageResource(directoryClient.getFileClient(item.getName()), rootDir));
                 }
             });
     }
 
     @Override
-    public TransferCapabilities getIncomingTransferCapabilities() {
+    protected TransferCapabilities getIncomingTransferCapabilities() {
         TransferCapabilitiesBuilder transferCapabilitiesBuilder = new TransferCapabilitiesBuilder()
             .canStream(true);
 
         try {
             // probe sas.
-            shareDirectoryClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            shareClient.generateSas(new ShareServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
                 new ShareSasPermission().setWritePermission(true)));
             transferCapabilitiesBuilder.canUseSasUri(true);
         } catch (Exception e) {
@@ -60,15 +61,13 @@ class FileShareDirectoryResourceContainer extends StorageResourceContainer {
     }
 
     @Override
-    public List<String> getPath() {
-        String directoryPath = shareDirectoryClient.getDirectoryPath();
-        return Arrays.asList(directoryPath.split("/"));
+    protected List<String> getPath() {
+        return Collections.emptyList();
     }
 
     @Override
     public StorageResource getStorageResource(List<String> path) {
-        return new FileShareResource(
-            shareDirectoryClient.getFileClient(String.join("/", path)),
-            shareDirectoryClient);
+        return new ShareFileStorageResource(
+            shareClient.getFileClient(String.join("/", path)), shareClient.getRootDirectoryClient());
     }
 }

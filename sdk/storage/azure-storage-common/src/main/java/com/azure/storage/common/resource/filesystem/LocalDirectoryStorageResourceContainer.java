@@ -14,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class DirectoryResourceContainer extends StorageResourceContainer {
+class LocalDirectoryStorageResourceContainer extends StorageResourceContainer {
     private final Path path;
 
-    DirectoryResourceContainer(Path path) {
+    LocalDirectoryStorageResourceContainer(Path path) {
         if (!path.toFile().isDirectory()) {
             throw new IllegalArgumentException("provided path isn't directory");
         }
@@ -32,7 +32,7 @@ class DirectoryResourceContainer extends StorageResourceContainer {
                 .map(file -> {
                     Path relativePath = path.relativize(file);
                     String[] split = relativePath.toString().split("(\\\\)|(/)");
-                    return new FileResource(file, Arrays.asList(split));
+                    return new LocalFileStorageResource(file, Arrays.asList(split));
                 })
                 .collect(Collectors.toList());
         } catch (IOException e) {
@@ -58,7 +58,7 @@ class DirectoryResourceContainer extends StorageResourceContainer {
         for (String subPath : path) {
             resourcePath = resourcePath.resolve(subPath);
         }
-        return new FileResource(resourcePath, path);
+        return new LocalFileStorageResource(resourcePath, path);
     }
 
 }

@@ -6,20 +6,20 @@ import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 
-public final class FileShareResources {
+public final class ShareStorageResources {
 
-    private FileShareResources(){
+    private ShareStorageResources(){
     }
 
     public static StorageResourceContainer share(ShareClient shareClient) {
-        return new FileShareResourceContainer(shareClient);
+        return new ShareStorageResourceContainer(shareClient);
     }
 
     public static StorageResourceContainer directory(ShareDirectoryClient directoryClient) {
-        return new FileShareDirectoryResourceContainer(directoryClient);
+        return new ShareDirectoryStorageResourceContainer(directoryClient);
     }
 
     public static StorageResource file(ShareFileClient file) {
-        return new FileShareResource(file);
+        return new ShareFileStorageResource(file);
     }
 }

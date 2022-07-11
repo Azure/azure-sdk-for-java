@@ -14,11 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-class BlobResource extends StorageResource {
+class BlobStorageResource extends StorageResource {
 
     private final BlobClient blobClient;
 
-    BlobResource(BlobClient blobClient) {
+    BlobStorageResource(BlobClient blobClient) {
         this.blobClient = Objects.requireNonNull(blobClient);
     }
 

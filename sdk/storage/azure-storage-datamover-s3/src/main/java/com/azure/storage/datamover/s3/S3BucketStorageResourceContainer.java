@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-class S3BucketResourceContainer extends StorageResourceContainer {
+class S3BucketStorageResourceContainer extends StorageResourceContainer {
 
     private final S3Client s3Client;
     private final String bucketName;
 
-    S3BucketResourceContainer(S3Client s3Client, String bucketName) {
+    S3BucketStorageResourceContainer(S3Client s3Client, String bucketName) {
         this.s3Client = Objects.requireNonNull(s3Client);
         this.bucketName = Objects.requireNonNull(bucketName);
     }
@@ -31,7 +31,7 @@ class S3BucketResourceContainer extends StorageResourceContainer {
             .stream()
             .flatMap(response -> response.contents()
                 .stream()
-                .map(s3Object -> new S3ObjectResource(s3Client, bucketName, s3Object.key())))
+                .map(s3Object -> new S3ObjectStorageResource(s3Client, bucketName, s3Object.key())))
             .collect(Collectors.toList());
     }
 
@@ -50,6 +50,6 @@ class S3BucketResourceContainer extends StorageResourceContainer {
     @Override
     public StorageResource getStorageResource(List<String> path) {
         String objectKey = String.join("/", path);
-        return new S3ObjectResource(s3Client, bucketName, objectKey);
+        return new S3ObjectStorageResource(s3Client, bucketName, objectKey);
     }
 }
