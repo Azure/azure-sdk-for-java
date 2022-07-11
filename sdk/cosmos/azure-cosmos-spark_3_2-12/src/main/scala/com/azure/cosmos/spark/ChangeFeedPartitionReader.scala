@@ -33,7 +33,7 @@ private case class ChangeFeedPartitionReader
   diagnosticsContext: DiagnosticsContext,
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
   diagnosticsConfig: DiagnosticsConfig
-) extends PartitionReader[InternalRow] {
+) extends PartitionReader[InternalRow] { 
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
