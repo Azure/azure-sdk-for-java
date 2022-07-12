@@ -3,22 +3,17 @@
 
 package com.azure.spring.cloud.core.resource;
 
-import com.azure.core.util.Context;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.StorageFileOutputStream;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareStorageException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -86,13 +81,7 @@ public final class StorageFileResource extends AzureStorageResource {
     @Override
     public OutputStream getOutputStream() throws IOException {
         try {
-            if (!exists()) {
-                if (autoCreateFiles) {
-                    create();
-                } else {
-                    throw new FileNotFoundException("The file was not found: " + this.location);
-                }
-            }
+            this.shareClient.createIfNotExists();
             return this.shareFileClient.getFileOutputStream();
         } catch (ShareStorageException e) {
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
@@ -106,7 +95,7 @@ public final class StorageFileResource extends AzureStorageResource {
      */
     @Override
     public boolean exists() {
-        return this.shareClient.exists() && shareFileClient.exists();
+        return this.shareFileClient.exists();
     }
 
     /**
@@ -185,10 +174,13 @@ public final class StorageFileResource extends AzureStorageResource {
     @Override
     public InputStream getInputStream() throws IOException {
         try {
-            assertExisted();
             return this.shareFileClient.openInputStream();
         } catch (ShareStorageException e) {
-            throw new IOException("Failed to open input stream of cloud file", e);
+            if (e.getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND) {
+                throw new FileNotFoundException("Share or file not existed");
+            } else {
+                throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
+            }
         }
     }
 
@@ -197,24 +189,16 @@ public final class StorageFileResource extends AzureStorageResource {
         return StorageType.FILE;
     }
 
-    private void assertExisted() throws FileNotFoundException {
-        if (!exists()) {
-            throw new FileNotFoundException("File or container not existed.");
-        }
-    }
-
-    private void create() throws ShareStorageException {
-        if (!shareClient.exists()) {
-            this.shareClient.create();
-        }
-        if (!shareFileClient.exists()) {
-            ShareFileHttpHeaders header = null;
-            if (StringUtils.hasText(contentType)) {
-                header = new ShareFileHttpHeaders();
-                header.setContentType(contentType);
-            }
-            //TODO: create method must provide file length, but we don't know actual
-            this.shareFileClient.createWithResponse(1024, header, null, null, null, null, Context.NONE).getValue();
-        }
-    }
+//    private void create() throws ShareStorageException {
+//
+//        if (!shareFileClient.exists()) {
+//            ShareFileHttpHeaders header = null;
+//            if (StringUtils.hasText(contentType)) {
+//                header = new ShareFileHttpHeaders();
+//                header.setContentType(contentType);
+//            }
+//            //TODO: create method must provide file length, but we don't know actual
+//            this.shareFileClient.createWithResponse(1024, header, null, null, null, null, Context.NONE).getValue();
+//        }
+//    }
 }

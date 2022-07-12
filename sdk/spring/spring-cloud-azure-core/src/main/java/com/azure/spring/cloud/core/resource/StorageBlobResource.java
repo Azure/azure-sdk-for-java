@@ -226,8 +226,7 @@ public final class StorageBlobResource extends AzureStorageResource {
         } catch (BlobStorageException e) {
             if(e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND){
                 throw new FileNotFoundException("Blob or container not existed.");
-
-            }else {
+            } else {
                 throw new IOException(MSG_FAIL_OPEN_INPUT, e);
             }
         }
