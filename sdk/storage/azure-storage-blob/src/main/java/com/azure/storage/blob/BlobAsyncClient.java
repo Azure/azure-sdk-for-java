@@ -103,7 +103,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
 
     /**
-     *
+     * The default block size used in {@link FluxUtil#readFile(AsynchronousFileChannel)}.
+     * This is to make sure we're using same size when using {@link BinaryData#fromFile(Path, int)}
+     * and {@link BinaryData#fromFile(Path, Long, Long, int)}
+     * to represent the content.
      */
     private static final int DEFAULT_FILE_READ_CHUNK_SIZE = 1024 * 64;
 
