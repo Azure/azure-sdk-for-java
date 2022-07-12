@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.ReflectionUtilsApi;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.lang.invoke.MethodHandle;
@@ -121,7 +121,7 @@ final class HeaderCollectionHandler {
         return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, field -> {
             MethodHandles.Lookup lookupToUse;
             try {
-                lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
+                lookupToUse = ReflectionUtils.getLookupToUse(clazz);
             } catch (Exception ex) {
                 logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, ex);
 

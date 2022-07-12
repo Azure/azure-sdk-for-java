@@ -5,7 +5,8 @@ package com.azure.core.implementation;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Integration tests for {@link ReflectionUtils}.
@@ -20,9 +21,9 @@ public class ReflectionUtilsIT {
     public void validateImplementationVersion() {
         String javaSpecificationVersion = System.getProperty("java.specification.version");
         if ("1.8".equals(javaSpecificationVersion)) {
-            assertEquals(8, ReflectionUtilsApi.INSTANCE.getJavaImplementationMajorVersion());
+            assertFalse(ReflectionUtils.isModuleBased(), "Java 8 can't use module-based privateLookupIn.");
         } else {
-            assertEquals(9, ReflectionUtilsApi.INSTANCE.getJavaImplementationMajorVersion());
+            assertTrue(ReflectionUtils.isModuleBased(), "Java 9+ must use module-based privateLookupIn.");
         }
     }
 }
