@@ -175,22 +175,23 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                 .propagate(new IllegalStateException(
                     "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
-        byte[] prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-        byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
+        return Mono.fromRunnable(() -> {
+            byte[] prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
+            byte[] key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
 
-        try (Jedis jedis = jedisPool.getResource()) {
-            if (!jedis.exists(prefix) || !jedis.exists(key)) {
-                //Case 1: new checkpoint
-                jedis.sadd(prefix, key);
-                jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
-            } else {
-                //Case 2: checkpoint already exists in Redis cache
-                jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
+            try (Jedis jedis = jedisPool.getResource()) {
+                if (!jedis.exists(prefix) || !jedis.exists(key)) {
+                    //Case 1: new checkpoint
+                    jedis.sadd(prefix, key);
+                    jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
+                } else {
+                    //Case 2: checkpoint already exists in Redis cache
+                    jedis.hset(key, CHECKPOINT, DEFAULT_SERIALIZER.serializeToBytes(checkpoint));
+                }
+
+                jedisPool.returnResource(jedis);
             }
-
-            jedisPool.returnResource(jedis);
-        }
-        return Mono.empty();
+        });
     }
 
     static byte[] prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
