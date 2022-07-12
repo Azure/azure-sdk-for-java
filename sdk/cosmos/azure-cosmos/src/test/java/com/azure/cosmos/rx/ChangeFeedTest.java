@@ -460,22 +460,16 @@ public class ChangeFeedTest extends TestSuiteBase {
 
 
     @Test(groups = { "simple" })
-    public void fullFidelityChangeFeedFromPartitionKey() throws Exception {
+    public void fullFidelityChangeFeedFromFeedRange() throws Exception {
 
     }
 
     @Test(groups = { "simple" })
-    @Tag(name = "GoFullFidelity")
-    public void fullFidelityChangeFeedFromFeedRange() throws Exception {
-        CosmosContainer cosmosContainer = initializeFFCFContainer();
-        List<FeedRange> feedRanges = cosmosContainer.getFeedRanges();
-
+    public void fullFidelityChangeFeedFromContinuationToken() throws Exception {
+        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromNow(feedRanges.get(0));
+            .createForProcessingFromNow(FeedRange.forFullRange());
         options.fullFidelity();
-
-        String id = UUID.randomUUID().toString();
-        cosmosContainer.createItem(new InternalObjectNode().setId(id));
 
         Iterator<FeedResponse<JsonNode>> results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
@@ -489,34 +483,65 @@ public class ChangeFeedTest extends TestSuiteBase {
             logger.info("Initial results with continuation token {} are {}", continuationToken, response.getResults());
         }
 
-        List<String> idList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            String itemId = UUID.randomUUID().toString();
-            idList.add(itemId);
-            cosmosContainer.createItem(new InternalObjectNode().setId(itemId));
-        }
-
-        cosmosContainer.deleteItem(idList.get(0), new PartitionKey(idList.get(0)), new CosmosItemRequestOptions());
-
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken);
         options.fullFidelity();
+
+        TestConfigurations.TestItem item1 = new TestConfigurations.TestItem(
+            UUID.randomUUID().toString(),
+            "mypk", "Johnson", "1 Microsoft Way");
+        TestConfigurations.TestItem item2 = new TestConfigurations.TestItem(
+            UUID.randomUUID().toString(),
+            "mypk", "Smith", "1 Microsoft Way");
+        cosmosContainer.upsertItem(item1);
+        cosmosContainer.upsertItem(item2);
+        String originalLastName = item1.lastName;
+        item1.lastName = "Gates";
+        cosmosContainer.upsertItem(item1);
+        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
+
+        // Check item2 deleted with TTL
+        // TODO: this is not working - item does get deleted but it won't show up in CF
+        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
+        Thread.sleep(5 * 1000);
 
         results = cosmosContainer
             .queryChangeFeed(options, JsonNode.class)
             .iterableByPage()
             .iterator();
 
-        while (results.hasNext()) {
+        if (results.hasNext()){
             FeedResponse<JsonNode> response = results.next();
-            CosmosDiagnostics cosmosDiagnostics = response.getCosmosDiagnostics();
-            logger.info("Cosmos Diagnostics are : {}", cosmosDiagnostics);
-            assertFullFidelityGatewayMode(response);
-            logger.info("Final results with continuation token {} are {}", response.getContinuationToken(), response.getResults());
+            List<JsonNode> itemChanges = response.getResults();
+            assertGatewayMode(response);
+            assertThat(itemChanges.size() == 4);
+            // Assert initial creation of items
+            assertThat(itemChanges.get(0).get("current").get("id").asText().equals(item1.id));
+            assertThat(itemChanges.get(0).get("current").get("lastName").asText().equals(originalLastName));
+            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText().equals("create"));
+            assertThat(itemChanges.get(1).get("current").get("id").asText().equals(item2.id));
+            assertThat(itemChanges.get(1).get("current").get("lastName").asText().equals(item2.lastName));
+            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText().equals("create"));
+            // Assert replace of item1
+            assertThat(itemChanges.get(2).get("current").get("id").asText().equals(item1.id));
+            assertThat(itemChanges.get(2).get("current").get("lastName").asText().equals(item1.lastName));
+            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText().equals("replace"));
+            // Assert delete of item1
+            assertThat(itemChanges.get(3).get("previous").get("id").asText().equals(item1.id));
+            assertThat(itemChanges.get(3).get("current").isEmpty());
+            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText().equals("delete"));
+            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+                .equals(itemChanges.get(2).get("metadata").get("lsn").asText()));
+            // Assert item2 deleted with TTL
+            // TODO: Missing TTL logic
+        }
+        // Finish draining query
+        while (results.hasNext()) {
+            results.next();
         }
     }
 
-    public CosmosContainer initializeFFCFContainer() {
+    public CosmosContainer initializeFFCFContainer(int ttl) {
         CosmosClient FFCF_client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -529,10 +554,13 @@ public class ChangeFeedTest extends TestSuiteBase {
         paths.add("/id");
         partitionKeyDef.setPaths(paths);
 
-        String containerId = "FFCF_Container";
+        String containerId = "FFCF_container" + UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties(containerId, partitionKeyDef);
         containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+        if (ttl != 0) {
+            containerProperties.setDefaultTimeToLiveInSeconds(ttl);
+        }
 
         CosmosDatabaseResponse databaseResponse = FFCF_client.createDatabaseIfNotExists(createdDatabase.getId());
         CosmosDatabase database = FFCF_client.getDatabase(databaseResponse.getProperties().getId());
@@ -541,7 +569,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         return database.getContainer(containerResponse.getProperties().getId());
     }
 
-    void assertFullFidelityGatewayMode(FeedResponse<JsonNode> response) throws Exception {
+    // TODO: check why diagnostics are not showing this for change feed
+    void assertGatewayMode(FeedResponse<JsonNode> response) {
         String diagnostics = response.getCosmosDiagnostics().toString();
         assertThat(diagnostics).contains("");
     }
