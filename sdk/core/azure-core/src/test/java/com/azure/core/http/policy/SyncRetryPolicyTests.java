@@ -52,7 +52,6 @@ public class SyncRetryPolicyTests {
         assertEquals(200, response.getStatusCode());
     }
 
-    @Disabled
     @ParameterizedTest
     @ValueSource(ints = {400, 401, 402, 403, 404, 409, 412, 501, 505})
     public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) {
@@ -73,11 +72,12 @@ public class SyncRetryPolicyTests {
             .build();
 
         HttpResponse response = sendRequestSync(pipeline);
-        assertEquals(200, response.getStatusCode());
+        assertEquals(returnCode, response.getStatusCode());
     }
 
     @Test
     public void defaultRetryPolicyRetriesAllExceptions() {
+        // defaultRetryPolicyDoesNotRetryErrors - when would we ever get an instance of throwable or exception/ error?
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
