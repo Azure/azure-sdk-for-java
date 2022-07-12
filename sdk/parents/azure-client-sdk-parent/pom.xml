@@ -1041,6 +1041,9 @@
                 <configuration>
                   <release>8</release>
                   <testRelease>8</testRelease>
+                  <testExcludes>
+                    <testExclude>module-info.java</testExclude>
+                  </testExcludes>
                 </configuration>
               </execution>
             </executions>
