@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated `api-version` to `2022-05-15`.
+
 ## 2.16.0 (2022-06-24)
 
 ### Other Changes
