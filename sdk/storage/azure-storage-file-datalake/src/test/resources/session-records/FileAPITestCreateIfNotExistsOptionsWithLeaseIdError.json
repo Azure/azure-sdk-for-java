@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/287a4d2c0287a4d2c090087127eb818d851f541ba9f1?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d860a8f6-5513-407f-919b-843b7a7b5219"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA383545F3EC8D",
       "Last-Modified" : "Tue, 17 May 2022 18:44:28 GMT",
       "retry-after" : "0",
@@ -23,13 +23,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/287a4d2c0287a4d2c090087127eb818d851f541ba9f1/287a4d2c1287a4d2c09010613a99fc4621b554cbcbfb?resource=file",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "76fb16fa-ad4c-451e-a900-ed23c668fe46"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA383546840DBB",
       "Last-Modified" : "Tue, 17 May 2022 18:44:29 GMT",
       "retry-after" : "0",
@@ -44,13 +44,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/287a4d2c0287a4d2c090087127eb818d851f541ba9f1/287a4d2c2287a4d2c09048472b7c39547658c41e6a1b?resource=file",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "dbaad121-c35a-4f7d-b7e5-5a85c6c24613"
     },
     "Response" : {
       "content-length" : "250",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-error-code" : "MissingRequiredHeader",
       "retry-after" : "0",
       "StatusCode" : "400",

@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/3c36d70303c36d70327f856661aeaa504e5144528b26?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "49a7c132-8e69-431e-84d2-bc53915a8073"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA38363D6DE91C",
       "Last-Modified" : "Tue, 17 May 2022 18:51:23 GMT",
       "retry-after" : "0",
@@ -23,13 +23,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/3c36d70303c36d70327f856661aeaa504e5144528b26/3c36d70313c36d70327f83214a8ed3e313db84a22987?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a567bc08-ee5f-46ec-b079-67380ecb1c9e"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA38363DF6CEF5",
       "Last-Modified" : "Tue, 17 May 2022 18:51:24 GMT",
       "retry-after" : "0",
@@ -44,13 +44,13 @@
     "Method" : "HEAD",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/3c36d70303c36d70327f856661aeaa504e5144528b26/3c36d70313c36d70327f83214a8ed3e313db84a22987?action=getAccessControl&upn=true",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fdeec0d1-8e3a-45ad-8bdf-6233e60f6cb0"
     },
     "Response" : {
       "x-ms-group" : "$superuser",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-acl" : "user::rwx,group::-w-,other::---",
       "eTag" : "0x8DA38363DF6CEF5",
       "Last-Modified" : "Tue, 17 May 2022 18:51:24 GMT",
