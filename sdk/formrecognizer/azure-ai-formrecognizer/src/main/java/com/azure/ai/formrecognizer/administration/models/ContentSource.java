@@ -23,4 +23,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "web", value = WebContentSource.class)
 })
 @Immutable
-public abstract class ContentSource { }
+public abstract class ContentSource {
+}
