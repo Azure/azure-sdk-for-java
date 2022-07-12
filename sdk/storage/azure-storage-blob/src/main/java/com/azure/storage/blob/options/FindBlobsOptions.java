@@ -4,9 +4,11 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * Defines options available to configure the behavior of a call to
@@ -20,6 +22,7 @@ public class FindBlobsOptions {
 
     private final String query;
     private Integer maxResultsPerPage;
+    private List<FilterBlobsIncludeItem> filterBlobsIncludeItems;
 
     /**
      * @param query Filters the results to return only blobs whose tags match the specified expression.
