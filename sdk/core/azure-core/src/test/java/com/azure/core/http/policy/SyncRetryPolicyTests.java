@@ -77,7 +77,6 @@ public class SyncRetryPolicyTests {
 
     @Test
     public void defaultRetryPolicyRetriesAllExceptions() {
-        // defaultRetryPolicyDoesNotRetryErrors - when would we ever get an instance of throwable or exception/ error?
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
