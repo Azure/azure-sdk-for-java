@@ -15,6 +15,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressListener;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -23,7 +25,6 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
@@ -109,9 +110,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -1562,8 +1560,9 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
         Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        Lock progressLock = new ReentrantLock();
-        AtomicLong totalProgress = new AtomicLong(0);
+        ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressReceiver == null ? null : ProgressReporter.withProgressListener(
+            progressReceiver);
 
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
@@ -1589,7 +1588,8 @@ public class BlobAsyncClientBase {
                     .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
                         finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
+                            progressReporter == null ? null : progressReporter.createChild()
+                        ).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
@@ -1597,19 +1597,37 @@ public class BlobAsyncClientBase {
     }
 
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
-        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, Lock progressLock,
-        AtomicLong totalProgress) {
+        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
+        ProgressReporter progressReporter) {
 
         // Extract the body.
         Flux<ByteBuffer> data = response.getValue();
 
         // Report progress as necessary.
-        data = ProgressReporter.addParallelProgressReporting(data,
-            ModelHelper.wrapCommonReceiver(finalParallelTransferOptions.getProgressReceiver()), progressLock,
-            totalProgress);
+        if (progressReporter != null) {
+            data = addProgressReporting(data, progressReporter);
+        }
 
         // Write to the file.
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+    }
+
+    // TODO (kasobol-msft) move this to FluxUtil.
+    private static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, ProgressReporter progressReporter) {
+        return Mono.just(progressReporter).flatMapMany(reporter -> {
+                /*
+                Each time there is a new subscription, we will rewind the progress. This is desirable specifically
+                for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
+                rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
+                expected.
+                 */
+            reporter.reset();
+
+                /*
+                Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
+                 */
+            return data.doOnNext(buffer -> reporter.reportProgress(buffer.remaining()));
+        });
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

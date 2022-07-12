@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cosmos.models.TriggerType;
 /** Samples for SqlResources CreateUpdateSqlTrigger. */
 public final class SqlResourcesCreateUpdateSqlTriggerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlTriggerCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlTriggerCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerCreateUpdate.

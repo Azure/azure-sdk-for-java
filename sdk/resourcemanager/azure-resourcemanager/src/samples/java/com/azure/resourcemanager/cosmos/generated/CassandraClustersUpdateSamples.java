@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for CassandraClusters Update. */
 public final class CassandraClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBManagedCassandraClusterPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBManagedCassandraClusterPatch.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterPatch.

@@ -310,7 +310,7 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.scheduleMessages(messages, instant))
-            .verifyError(IllegalArgumentException.class);
+            .verifyError(ServiceBusException.class);
 
         verify(managementNode, never()).schedule(any(), eq(instant), anyInt(), eq(LINK_NAME), isNull());
     }

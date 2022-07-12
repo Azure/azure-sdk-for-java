@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for SqlResources UpdateSqlDatabaseThroughput. */
 public final class SqlResourcesUpdateSqlDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlDatabaseThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseThroughputUpdate.
