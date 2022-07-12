@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import com.azure.cosmos.implementation.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -29,16 +29,12 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     private final static Logger logger = LoggerFactory.getLogger(AsyncCacheNonBlocking.class);
     private final ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values;
 
-    private AsyncCacheNonBlocking(ConcurrentHashMap<TKey, AsyncLazyWithRefresh<TValue>> values) {
-        this.values = values;
-    }
-
     public AsyncCacheNonBlocking() {
-        this(new ConcurrentHashMap<>());
+        this.values = new ConcurrentHashMap<>();
     }
 
     private Boolean removeNotFoundFromCacheException(CosmosException e) {
-        if (e.getStatusCode() == HttpResponseStatus.NOT_FOUND.code()) {
+        if (Exceptions.isNotFound(e)) {
             return true;
         }
         return false;
@@ -119,15 +115,18 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
             logger.debug("cache[{}] doesn't exist, computing new value", key);
         }
         AsyncLazyWithRefresh<TValue> asyncLazyWithRefresh = new AsyncLazyWithRefresh<TValue>(singleValueInitFunc);
-        this.values.putIfAbsent(key, asyncLazyWithRefresh);
-        AsyncLazyWithRefresh<TValue> result = this.values.get(key);
+        AsyncLazyWithRefresh<TValue> preResult = this.values.putIfAbsent(key, asyncLazyWithRefresh);
+        if (preResult == null) {
+            preResult = asyncLazyWithRefresh;
+        }
+        AsyncLazyWithRefresh<TValue> result = preResult;
 
         return result.getValueAsync().onErrorResume(
             (exception) -> {
                 if (logger.isDebugEnabled()) {
                     logger.debug("cache[{}] resulted in error", key, exception);
                 }
-                // Remove the failed task from the dictionary so future requests can send other calls..
+                // Remove the failed task from the dictionary so future requests can send other calls.
                 if (result.shouldRemoveFromCache()) {
                     this.remove(key);
                 }
@@ -156,7 +155,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
     private class AsyncLazyWithRefresh<TValue> {
 //        private final Function<TValue, Mono<TValue>> createValueFunc;
         private final AtomicBoolean removeFromCache = new AtomicBoolean(false);
-        private AtomicReference<Mono<TValue>> value;
+        private final AtomicReference<Mono<TValue>> value;
         private Mono<TValue> refreshInProgress;
         private final AtomicBoolean refreshInProgressCompleted = new AtomicBoolean(false);
 
@@ -193,9 +192,10 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
                             this.value.set(Mono.just(response));
                             this.refreshInProgressCompleted.set(false);
                             return this.value.get();
-                        });
+                        }).doOnError(e -> this.refreshInProgressCompleted.set(false));
+
                 }
-                return this.refreshInProgress;
+                return this.refreshInProgress == null ? valueMono : refreshInProgress;
             });
         }
 
