@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("local")
 @Fluent
-public final class LocalContentSourceT extends ContentSource {
+public final class LocalContentSource extends ContentSource {
     /*
      * Local Path.
      */
@@ -32,9 +32,9 @@ public final class LocalContentSourceT extends ContentSource {
      * Set the path property: Local Path.
      *
      * @param path the path value to set.
-     * @return the LocalContentSourceT object itself.
+     * @return the LocalContentSource object itself.
      */
-    public LocalContentSourceT setPath(String path) {
+    public LocalContentSource setPath(String path) {
         this.path = path;
         return this;
     }

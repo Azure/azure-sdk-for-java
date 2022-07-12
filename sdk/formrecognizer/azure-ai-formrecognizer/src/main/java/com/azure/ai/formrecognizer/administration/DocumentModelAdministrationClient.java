@@ -89,7 +89,7 @@ public final class DocumentModelAdministrationClient {
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModelInfo documentModelInfo
      *     = documentModelAdministrationClient.beginBuildModel&#40;
-     *         new AzureBlobContentSourceT&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;,
+     *         new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;,
      *         DocumentBuildMode.TEMPLATE&#41;
      *     .getFinalResult&#40;&#41;;
      *
@@ -112,7 +112,7 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModelInfo custom document analysis model}.
      * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException            If {@code trainingFilesUrl} is null.
+     * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelInfo> beginBuildModel(
@@ -139,7 +139,7 @@ public final class DocumentModelAdministrationClient {
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * DocumentModelInfo documentModelInfo = documentModelAdministrationClient.beginBuildModel&#40;
-     *     new AzureBlobContentSourceT&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;,
+     *     new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;,
      *         DocumentBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
@@ -172,7 +172,7 @@ public final class DocumentModelAdministrationClient {
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelInfo custom document analysis model}.
      * @throws DocumentModelOperationException If building the model fails with {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException            If {@code trainingFilesUrl} is null.
+     * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelInfo> beginBuildModel(

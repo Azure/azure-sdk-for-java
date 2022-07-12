@@ -33,7 +33,7 @@ public final class WebContentSourceT extends ContentSource {
      * Set the url property: Publicly accessible URL.
      *
      * @param url the url value to set.
-     * @return the WebContentSourceT object itself.
+     * @return the WebContentSource object itself.
      */
     public WebContentSourceT setUrl(String url) {
         this.url = url;

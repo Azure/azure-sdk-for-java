@@ -6,10 +6,14 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Azure Blob Storage content. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("azure.blob")
 @Fluent
-public final class AzureBlobContentSource {
+public final class AzureBlobContentSource extends ContentSource {
     /*
      * Azure Blob Storage container URL.
      */

@@ -33,7 +33,7 @@ public final class LocalContentSourceT extends ContentSource {
      * Set the path property: Local Path.
      *
      * @param path the path value to set.
-     * @return the LocalContentSourceT object itself.
+     * @return the LocalContentSource object itself.
      */
     public LocalContentSourceT setPath(String path) {
         this.path = path;

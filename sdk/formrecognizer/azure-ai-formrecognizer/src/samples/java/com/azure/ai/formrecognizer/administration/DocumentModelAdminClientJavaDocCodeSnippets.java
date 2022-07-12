@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
@@ -49,7 +49,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelInfo documentModelInfo
             = documentModelAdministrationClient.beginBuildModel(
-                new AzureBlobContentSourceT().setContainerUrl(trainingFilesUrl),
+                new AzureBlobContentSource().setContainerUrl(trainingFilesUrl),
                 DocumentBuildMode.TEMPLATE)
             .getFinalResult();
 
@@ -78,7 +78,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         attrs.put("createdBy", "sample");
 
         DocumentModelInfo documentModelInfo = documentModelAdministrationClient.beginBuildModel(
-            new AzureBlobContentSourceT().setContainerUrl(trainingFilesUrl),
+            new AzureBlobContentSource().setContainerUrl(trainingFilesUrl),
                 DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)

@@ -18,7 +18,7 @@ public final class Base64ContentSource extends ContentSource {
     /*
      * Base64 encoded content data.
      */
-    @JsonProperty(value = "data", required = true)
+    @JsonProperty(value = "data")
     private byte[] data;
 
     /**

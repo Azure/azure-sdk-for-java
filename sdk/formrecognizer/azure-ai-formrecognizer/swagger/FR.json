@@ -919,29 +919,6 @@
     },
     "Base64ContentSource": {
       "description": "Content represented via Base64 encoding.",
-      "type": "string",
-      "format": "byte"
-    },
-    "AzureBlobContentSource": {
-      "description": "Azure Blob Storage content.",
-      "type": "object",
-      "required": [
-        "containerUrl"
-      ],
-      "properties": {
-        "containerUrl": {
-          "description": "Azure Blob Storage container URL.",
-          "type": "string",
-          "format": "uri"
-        },
-        "prefix": {
-          "description": "Blob name prefix.",
-          "type": "string"
-        }
-      }
-    },
-    "Base64ContentSourceT": {
-      "description": "Content represented via Base64 encoding.",
       "type": "object",
       "x-ms-discriminator-value": "base64",
       "allOf": [
@@ -957,7 +934,7 @@
         }
       }
     },
-    "AzureBlobContentSourceT": {
+    "AzureBlobContentSource": {
       "description": "Azure Blob Storage content.",
       "type": "object",
       "x-ms-discriminator-value": "azure.blob",
@@ -981,7 +958,7 @@
         }
       }
     },
-    "LocalContentSourceT": {
+    "LocalContentSource": {
       "description": "Local storage content.",
       "type": "object",
       "x-ms-discriminator-value": "local",
@@ -1000,7 +977,7 @@
         }
       }
     },
-    "WebContentSourceT": {
+    "WebContentSource": {
       "description": "Publicly accessible Internet content.",
       "type": "object",
       "x-ms-discriminator-value": "web",

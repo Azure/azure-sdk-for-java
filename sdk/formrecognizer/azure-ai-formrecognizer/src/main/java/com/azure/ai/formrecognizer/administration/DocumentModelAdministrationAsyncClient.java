@@ -6,8 +6,8 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSourceT;
-import com.azure.ai.formrecognizer.administration.models.Base64ContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.administration.models.Base64ContentSource;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ContentSource;
@@ -16,11 +16,11 @@ import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOption
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.administration.models.LocalContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.LocalContentSource;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
-import com.azure.ai.formrecognizer.administration.models.WebContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.WebContentSource;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.implementation.models.BuildDocumentModelRequest;
@@ -158,7 +158,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * documentModelAdministrationAsyncClient.beginBuildModel&#40;
-     *     new AzureBlobContentSourceT&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;
+     *     new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;
      *         , DocumentBuildMode.TEMPLATE
      *     &#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
@@ -211,7 +211,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * documentModelAdministrationAsyncClient.beginBuildModel&#40;
-     *     new AzureBlobContentSourceT&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;,
+     *     new AzureBlobContentSource&#40;&#41;.setContainerUrl&#40;trainingFilesUrl&#41;,
      *         DocumentBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
@@ -958,24 +958,24 @@ public final class DocumentModelAdministrationAsyncClient {
 
     private BuildDocumentModelRequest setContentSourceType(ContentSource contentSource) {
         BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest();
-        if (contentSource instanceof AzureBlobContentSourceT) {
-            final AzureBlobContentSourceT azureBlobContentSourceT =
-                ((AzureBlobContentSourceT) contentSource);
-            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSourceT()
-                .setContainerUrl(azureBlobContentSourceT.getContainerUrl())
-                .setPrefix(azureBlobContentSourceT.getPrefix()));
-        } else if (contentSource instanceof Base64ContentSourceT) {
-            final Base64ContentSourceT base64ContentSourceT =
-                ((Base64ContentSourceT) contentSource);
-            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.Base64ContentSourceT()
-                .setData(base64ContentSourceT.getData()));
-        } else if (contentSource instanceof LocalContentSourceT) {
-            final LocalContentSourceT localContentSourceT =
-                ((LocalContentSourceT) contentSource);
+        if (contentSource instanceof AzureBlobContentSource) {
+            final AzureBlobContentSource azureBlobContentSource =
+                ((AzureBlobContentSource) contentSource);
+            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSource()
+                .setContainerUrl(azureBlobContentSource.getContainerUrl())
+                .setPrefix(azureBlobContentSource.getPrefix()));
+        } else if (contentSource instanceof Base64ContentSource) {
+            final Base64ContentSource base64ContentSource =
+                ((Base64ContentSource) contentSource);
+            buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.Base64ContentSource()
+                .setData(base64ContentSource.getData()));
+        } else if (contentSource instanceof LocalContentSource) {
+            final LocalContentSource localContentSource =
+                ((LocalContentSource) contentSource);
             buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.LocalContentSourceT()
-                .setPath(localContentSourceT.getPath()));
-        } else if (contentSource instanceof WebContentSourceT) {
-            final WebContentSourceT webContentSourceT = ((WebContentSourceT) contentSource);
+                .setPath(localContentSource.getPath()));
+        } else if (contentSource instanceof WebContentSource) {
+            final WebContentSource webContentSourceT = ((WebContentSource) contentSource);
             buildDocumentModelRequest.setSource(new com.azure.ai.formrecognizer.implementation.models.WebContentSourceT()
                 .setUrl(webContentSourceT.getUrl()));
         }

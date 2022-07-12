@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("web")
 @Fluent
-public final class WebContentSourceT extends ContentSource {
+public final class WebContentSource extends ContentSource {
     /*
      * Publicly accessible URL.
      */
@@ -32,9 +32,9 @@ public final class WebContentSourceT extends ContentSource {
      * Set the url property: Publicly accessible URL.
      *
      * @param url the url value to set.
-     * @return the WebContentSourceT object itself.
+     * @return the WebContentSource object itself.
      */
-    public WebContentSourceT setUrl(String url) {
+    public WebContentSource setUrl(String url) {
         this.url = url;
         return this;
     }

@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.LocalContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.LocalContentSource;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -43,12 +43,12 @@ public class ComposeModelAsync {
         // Build custom document analysis model
         String model1TrainingFilesPath = "/local-file-path";
         PollerFlux<DocumentOperationResult, DocumentModelInfo> model1Poller =
-            client.beginBuildModel(new LocalContentSourceT().setPath(model1TrainingFilesPath), DocumentBuildMode.TEMPLATE, null);
+            client.beginBuildModel(new LocalContentSource().setPath(model1TrainingFilesPath), DocumentBuildMode.TEMPLATE, null);
 
         // Build custom document analysis model
         String model2TrainingFilesPath = "/local-file-path";
         PollerFlux<DocumentOperationResult, DocumentModelInfo> model2Poller =
-            client.beginBuildModel(new LocalContentSourceT().setPath(model2TrainingFilesPath), DocumentBuildMode.TEMPLATE, null);
+            client.beginBuildModel(new LocalContentSource().setPath(model2TrainingFilesPath), DocumentBuildMode.TEMPLATE, null);
 
         String labeledModelId1 = model1Poller.getSyncPoller().getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getSyncPoller().getFinalResult().getModelId();

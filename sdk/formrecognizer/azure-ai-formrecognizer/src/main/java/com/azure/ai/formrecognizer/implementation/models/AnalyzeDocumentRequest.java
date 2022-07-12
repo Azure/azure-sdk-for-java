@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Document analysis parameters. */
@@ -21,7 +20,7 @@ public final class AnalyzeDocumentRequest {
      * Base64 encoding of the document to analyze
      */
     @JsonProperty(value = "base64Source")
-    private byte[] base64Source;
+    private Base64ContentSource base64Source;
 
     /**
      * Get the urlSource property: Document URL to analyze.
@@ -48,8 +47,8 @@ public final class AnalyzeDocumentRequest {
      *
      * @return the base64Source value.
      */
-    public byte[] getBase64Source() {
-        return CoreUtils.clone(this.base64Source);
+    public Base64ContentSource getBase64Source() {
+        return this.base64Source;
     }
 
     /**
@@ -58,8 +57,8 @@ public final class AnalyzeDocumentRequest {
      * @param base64Source the base64Source value to set.
      * @return the AnalyzeDocumentRequest object itself.
      */
-    public AnalyzeDocumentRequest setBase64Source(byte[] base64Source) {
-        this.base64Source = CoreUtils.clone(base64Source);
+    public AnalyzeDocumentRequest setBase64Source(Base64ContentSource base64Source) {
+        this.base64Source = base64Source;
         return this;
     }
 }

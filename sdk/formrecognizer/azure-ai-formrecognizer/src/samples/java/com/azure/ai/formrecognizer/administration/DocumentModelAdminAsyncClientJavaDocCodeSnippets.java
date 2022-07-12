@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSourceT;
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ContentSource;
@@ -66,9 +66,8 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#ContentSource-DocumentBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         documentModelAdministrationAsyncClient.beginBuildModel(
-            new AzureBlobContentSourceT().setContainerUrl(trainingFilesUrl)
-                , DocumentBuildMode.TEMPLATE
-            )
+            new AzureBlobContentSource().setContainerUrl(trainingFilesUrl),
+                DocumentBuildMode.TEMPLATE)
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(documentModel -> {
@@ -97,7 +96,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         attrs.put("createdBy", "sample");
 
         documentModelAdministrationAsyncClient.beginBuildModel(
-            new AzureBlobContentSourceT().setContainerUrl(trainingFilesUrl),
+            new AzureBlobContentSource().setContainerUrl(trainingFilesUrl),
                 DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
