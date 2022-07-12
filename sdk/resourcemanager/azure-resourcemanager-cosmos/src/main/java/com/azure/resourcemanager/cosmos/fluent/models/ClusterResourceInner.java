@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ClusterResourceProperties;
 import com.azure.resourcemanager.cosmos.models.ManagedCassandraArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.ManagedCassandraManagedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Representation of a managed Cassandra cluster. */
 @Fluent
 public final class ClusterResourceInner extends ManagedCassandraArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterResourceInner.class);
-
     /*
      * Properties of a managed Cassandra cluster.
      */
