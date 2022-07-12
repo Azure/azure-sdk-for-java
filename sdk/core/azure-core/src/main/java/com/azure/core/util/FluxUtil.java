@@ -6,8 +6,9 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
+import com.azure.core.implementation.AsynchronousFileChannelAdapter;
 import com.azure.core.implementation.ByteBufferCollector;
-import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
@@ -531,7 +533,44 @@ public final class FluxUtil {
             return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
         }
 
-        return Mono.create(emitter -> content.subscribe(new FileWriteSubscriber(outFile, position, emitter)));
+        return writeToAsynchronousByteChannel(content, toAsynchronousByteChannel(outFile, position));
+    }
+
+    /**
+     * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
+     * @param fileChannel The {@link AsynchronousFileChannel}.
+     * @param position The position in the file to begin writing or reading the {@code content}.
+     * @return A {@link AsynchronousByteChannel} that delegates to {@code fileChannel}.
+     */
+    public static AsynchronousByteChannel toAsynchronousByteChannel(
+        AsynchronousFileChannel fileChannel, long position) {
+        return new AsynchronousFileChannelAdapter(fileChannel, position);
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * AsynchronousByteChannel}.
+     * <p>
+     * The {@code channel} is not closed by this call, closing of the {@code channel} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code channel} are null.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param channel The {@link AsynchronousByteChannel}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * AsynchronousByteChannel}.
+     */
+    public static Mono<Void> writeToAsynchronousByteChannel(Flux<ByteBuffer> content, AsynchronousByteChannel channel) {
+        if (content == null && channel == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'outFile' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return Mono.create(emitter -> content.subscribe(
+            new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
     }
 
     /**

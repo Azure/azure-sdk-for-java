@@ -10,15 +10,16 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a file.
+ * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link AsynchronousByteChannel}.
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
-public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
+public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<ByteBuffer> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(AsynchronousByteChannelWriteSubscriber.class);
 
     // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
     // An I/O pool thread will write to isWriting and read isCompleted,
@@ -26,18 +27,13 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     private volatile boolean isWriting = false;
     private volatile boolean isCompleted = false;
 
-    // FileWriteSubscriber is a commonly used subscriber, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(FileWriteSubscriber.class);
-
-    private final AsynchronousFileChannel fileChannel;
-    private final AtomicLong position;
+    private final AsynchronousByteChannel channel;
     private final MonoSink<Void> emitter;
 
     private Subscription subscription;
 
-    public FileWriteSubscriber(AsynchronousFileChannel fileChannel, long position, MonoSink<Void> emitter) {
-        this.fileChannel = fileChannel;
-        this.position = new AtomicLong(position);
+    public AsynchronousByteChannelWriteSubscriber(AsynchronousByteChannel channel, MonoSink<Void> emitter) {
+        this.channel = channel;
         this.emitter = emitter;
     }
 
@@ -70,10 +66,9 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     private void write(ByteBuffer bytes) {
         isWriting = true;
 
-        fileChannel.write(bytes, position.get(), bytes, new CompletionHandler<Integer, ByteBuffer>() {
+        channel.write(bytes, bytes, new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
-                position.addAndGet(result);
 
                 if (bytes.hasRemaining()) {
                     // If the entire ByteBuffer hasn't been written send it to be written again until it completes.

@@ -20,9 +20,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests {@link FileWriteSubscriber}.
+ * Tests {@link AsynchronousByteChannelWriteSubscriber}.
  */
-public class FileWriteSubscriberTests {
+public class AsynchronousByteChannelWriteSubscriberTests {
     @SuppressWarnings("unchecked")
     @Test
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
@@ -40,7 +40,8 @@ public class FileWriteSubscriberTests {
 
         MonoSink<Void> sink = (MonoSink<Void>) mock(MonoSink.class);
 
-        FileWriteSubscriber fileWriteSubscriber = new FileWriteSubscriber(channel, 0, sink);
+        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
+            new AsynchronousFileChannelAdapter(channel, 0), sink);
         Subscription subscription1 = mock(Subscription.class);
         Subscription subscription2 = mock(Subscription.class);
 
