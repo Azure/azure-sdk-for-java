@@ -105,5 +105,49 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > 60 })
     }
 
-    // TODO (rickle-msft): See TransferManagerTest for network tests of the parallel ProgressReporter.
+    /**
+     * This test asserts that ProgressListener from core dispatches progress notification to old
+     * ProgressReceiver API to assure backwards compatibility.
+     */
+    def "Progress listener delegates to progress receiver by default"() {
+        setup:
+        def blobReceiver = new TestBlobProgressReceiver()
+        def commonReceiver = new TestCommonProgressReceiver()
+
+        when:
+        blobReceiver.handleProgress(1L)
+        blobReceiver.handleProgress(3L)
+        blobReceiver.handleProgress(5L)
+
+        then:
+        [1L, 3L, 5L] == blobReceiver.progresses
+
+        when:
+        commonReceiver.handleProgress(1L)
+        commonReceiver.handleProgress(3L)
+        commonReceiver.handleProgress(5L)
+
+        then:
+        [1L, 3L, 5L] == commonReceiver.progresses
+    }
+
+    private static class TestBlobProgressReceiver implements ProgressReceiver {
+
+        List<Long> progresses = new ArrayList<>();
+
+        @Override
+        void reportProgress(long bytesTransferred) {
+            progresses.add(bytesTransferred)
+        }
+    }
+
+    private static class TestCommonProgressReceiver implements com.azure.storage.common.ProgressReceiver {
+
+        List<Long> progresses = new ArrayList<>();
+
+        @Override
+        void reportProgress(long bytesTransferred) {
+            progresses.add(bytesTransferred)
+        }
+    }
 }

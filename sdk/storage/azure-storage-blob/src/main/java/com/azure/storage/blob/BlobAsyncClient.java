@@ -8,7 +8,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressListener;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -32,9 +35,9 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,9 +54,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -521,7 +521,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
      *     .setBlockSizeLong&#40;blockSize&#41;
      *     .setMaxConcurrency&#40;maxConcurrency&#41;
-     *     .setProgressReceiver&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
+     *     .setProgressListener&#40;bytesTransferred -&gt; System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;data, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
@@ -593,7 +593,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressReceiver&#40;bytesTransferred -&gt;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressListener&#40;bytesTransferred -&gt;
      *         System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;new BlobParallelUploadOptions&#40;data&#41;
@@ -620,7 +620,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;
-     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressReceiver&#40;bytesTransferred -&gt;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;.setProgressListener&#40;bytesTransferred -&gt;
      *         System.out.printf&#40;&quot;Upload progress: %s bytes sent&quot;, bytesTransferred&#41;&#41;;
      *
      * client.uploadWithResponse&#40;new BlobParallelUploadOptions&#40;data&#41;
@@ -721,11 +721,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         from an iterable and is therefore replayable.
          */
 
-        // Report progress as necessary.
-        Flux<ByteBuffer> progressData = ProgressReporter.addProgressReporting(data,
-            parallelTransferOptions.getProgressReceiver());
-
-        return UploadUtils.computeMd5(progressData, computeMd5, LOGGER)
+        return UploadUtils.computeMd5(data, computeMd5, LOGGER)
             .map(fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length)
                 .setHeaders(headers)
                 .setMetadata(metadata)
@@ -735,7 +731,18 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 .setContentMd5(fluxMd5Wrapper.getMd5())
                 .setImmutabilityPolicy(immutabilityPolicy)
                 .setLegalHold(legalHold))
-            .flatMap(blockBlobAsyncClient::uploadWithResponse);
+            .flatMap(options -> {
+                Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(options);
+                if (parallelTransferOptions.getProgressListener() != null) {
+                    ProgressReporter progressReporter = ProgressReporter.withProgressListener(
+                        parallelTransferOptions.getProgressListener());
+                    responseMono = responseMono.contextWrite(
+                        FluxUtil.toReactorContext(
+                            Contexts.empty()
+                                .setHttpRequestProgressReporter(progressReporter).getContext()));
+                }
+                return responseMono;
+            });
     }
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
@@ -744,9 +751,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
         Boolean legalHold) {
         // TODO: Sample/api reference
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong();
-        Lock progressLock = new ReentrantLock();
+
+        ProgressListener progressListener = parallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
+            progressListener);
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(),
@@ -764,18 +772,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
-                // Report progress as necessary.
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    bufferAggregator.asFlux(),
-                    parallelTransferOptions.getProgressReceiver(),
-                    progressLock,
-                    totalProgress);
+                Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
 
                 final String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
-                return UploadUtils.computeMd5(progressData, computeMd5, LOGGER)
-                    .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient.stageBlockWithResponse(blockId,
-                        fluxMd5Wrapper.getData(), bufferAggregator.length(), fluxMd5Wrapper.getMd5(),
-                        requestConditions.getLeaseId()))
+                return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER)
+                    .flatMap(fluxMd5Wrapper -> {
+                        Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
+                            fluxMd5Wrapper.getData(), bufferAggregator.length(), fluxMd5Wrapper.getMd5(),
+                            requestConditions.getLeaseId());
+                        if (progressReporter != null) {
+                            responseMono = responseMono.contextWrite(
+                                FluxUtil.toReactorContext(Contexts.empty()
+                                    .setHttpRequestProgressReporter(progressReporter.createChild()).getContext())
+                            );
+                        }
+                        return responseMono;
+                    })
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)
@@ -967,15 +979,20 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         } else {
                             // Otherwise, we know it can be sent in a single request reducing network overhead.
                             Flux<ByteBuffer> data = FluxUtil.readFile(channel);
-                            if (finalParallelTransferOptions.getProgressReceiver() != null) {
-                                data = ProgressReporter.addProgressReporting(data,
-                                    finalParallelTransferOptions.getProgressReceiver());
-                            }
-                            return blockBlobAsyncClient.uploadWithResponse(
+                            Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(
                                 new BlockBlobSimpleUploadOptions(data, fileSize).setHeaders(options.getHeaders())
                                     .setMetadata(options.getMetadata()).setTags(options.getTags())
                                     .setTier(options.getTier())
                                     .setRequestConditions(options.getRequestConditions()));
+                            if (finalParallelTransferOptions.getProgressListener() != null) {
+                                ProgressReporter progressReporter = ProgressReporter.withProgressListener(
+                                    finalParallelTransferOptions.getProgressListener());
+                                responseMono = responseMono.contextWrite(
+                                    FluxUtil.toReactorContext(
+                                        Contexts.empty()
+                                            .setHttpRequestProgressReporter(progressReporter).getContext()));
+                            }
+                            return responseMono;
                         }
                     } catch (IOException ex) {
                         return Mono.error(ex);
@@ -997,9 +1014,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             ? new BlobRequestConditions() : requestConditions;
         // parallelTransferOptions are finalized in the calling method.
 
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong();
-        Lock progressLock = new ReentrantLock();
+        ProgressListener progressListener = parallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
+            progressListener);
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
         return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
@@ -1007,12 +1024,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
 
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                    parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                Flux<ByteBuffer> data = FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount());
 
-                return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
+                Mono<Response<Void>> responseMono = client.stageBlockWithResponse(blockId, data, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
+                if (progressReporter != null) {
+                    responseMono = responseMono.contextWrite(
+                        FluxUtil.toReactorContext(Contexts.empty().setHttpRequestProgressReporter(
+                            progressReporter.createChild()).getContext())
+                    );
+                }
+                return responseMono;
             }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values()))
