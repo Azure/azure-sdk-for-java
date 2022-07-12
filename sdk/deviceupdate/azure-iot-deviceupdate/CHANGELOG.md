@@ -18,6 +18,13 @@
 - Added `DeviceManagementClientBuilder` to create `DeviceManagementClient` instance via `DeviceManagementClientBuilder.buildClient()`.
 - Modified `DeviceUpdateClientBuilder` to create `DeviceUpdateClient` instance via `DeviceUpdateClientBuilder.buildClient()`.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` from `1.12.2` to version `1.12.3`.
+
 ## 1.0.0-beta.2 (2022-01-19)
 
 ### Breaking Changes
