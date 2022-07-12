@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2022-07-12)
 
 ### Features Added
 
@@ -17,10 +17,6 @@
 
 - Added `DeviceManagementClientBuilder` to create `DeviceManagementClient` instance via `DeviceManagementClientBuilder.buildClient()`.
 - Modified `DeviceUpdateClientBuilder` to create `DeviceUpdateClient` instance via `DeviceUpdateClientBuilder.buildClient()`.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.0-beta.2 (2022-01-19)
 
