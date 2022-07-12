@@ -70,7 +70,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @param retryAfterTimeUnit The time unit to use when applying the retry delay. null is valid if, and only if,
      * {@code retryAfterHeader} is null.
      * @throws NullPointerException If {@code retryStrategy} is null or when {@code retryAfterTimeUnit} is null and
-     *                              {@code retryAfterHeader} is not null.
+     * {@code retryAfterHeader} is not null.
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
@@ -127,7 +127,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
 
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-                                            final HttpRequest originalHttpRequest, final int tryCount) {
+        final HttpRequest originalHttpRequest, final int tryCount) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         return next.clone().process()
@@ -238,7 +238,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-                                           String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
+        String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (isNullOrEmpty(retryAfterHeader)) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
@@ -259,7 +259,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
     static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
-                                           Supplier<OffsetDateTime> nowSupplier) {
+        Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;

@@ -130,7 +130,7 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("com.azure.core.http.policy.RetryPolicyTestUtil#customRetryPolicyCanDetermineRetryStatusCodesSupplier")
     public void customRetryPolicyCanDetermineRetryStatusCodes(RetryStrategy retryStrategy, int[] statusCodes,
-                                                              int expectedStatusCode) {
+        int expectedStatusCode) {
         AtomicInteger attempt = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(retryStrategy))
@@ -145,7 +145,7 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("com.azure.core.http.policy.RetryPolicyTestUtil#customRetryPolicyCanDetermineRetryExceptionsSupplier")
     public void customRetryPolicyCanDetermineRetryExceptions(RetryStrategy retryStrategy, Throwable[] exceptions,
-                                                             Class<? extends Throwable> expectedException) {
+        Class<? extends Throwable> expectedException) {
         AtomicInteger attempt = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(retryStrategy))

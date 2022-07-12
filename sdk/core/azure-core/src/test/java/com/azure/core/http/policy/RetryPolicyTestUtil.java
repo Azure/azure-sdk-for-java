@@ -27,6 +27,9 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * A utility class for retry policy tests suppliers.
+ */
 public class RetryPolicyTestUtil {
     static Stream<Arguments> customRetryPolicyCanDetermineRetryStatusCodesSupplier() {
         RetryStrategy onlyRetries429And503 = createStatusCodeRetryStrategy(429, 503);
