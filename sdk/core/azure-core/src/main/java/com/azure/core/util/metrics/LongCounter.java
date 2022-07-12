@@ -3,8 +3,8 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 
 /**
  * A counter instrument that records {@code long} values.
@@ -20,7 +20,7 @@ public interface LongCounter {
      * @param attributes Collection of attributes representing metric dimensions.
      * @param context The explicit context to associate with this measurement.
      */
-    void add(long value, AttributesBuilder attributes, Context context);
+    void add(long value, TelemetryAttributes attributes, Context context);
 
 
     /**

@@ -3,53 +3,23 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributesBuilder;
+import com.azure.core.util.TelemetryAttributes;
+import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * {@inheritDoc}
  */
-class MicrometerTags implements AttributesBuilder {
-    private Tags tags;
+class MicrometerTags implements TelemetryAttributes {
+    private final Tags tags;
 
-    MicrometerTags() {
-        tags = Tags.empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, String value) {
-        this.tags = tags.and(key, value);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, long value) {
-        this.tags = tags.and(key, String.valueOf(value));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, double value) {
-        this.tags = tags.and(key, String.valueOf(value));
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, boolean value) {
-        this.tags = tags.and(key, String.valueOf(value));
-        return this;
+    MicrometerTags(Map<String, Object> attributes) {
+        tags = Tags.of(attributes.entrySet().stream()
+            .map(kvp -> Tag.of(kvp.getKey(), kvp.getValue().toString()))
+            .collect(Collectors.toList()));
     }
 
     Tags get() {

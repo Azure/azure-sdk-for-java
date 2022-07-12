@@ -3,10 +3,10 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
@@ -27,6 +27,7 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 import java.time.Instant;
+import java.util.Collections;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
@@ -188,12 +189,11 @@ public class MetricsJavaDocCodeSnippets {
         private static final MeterProvider DEFAULT_PROVIDER = MeterProvider.getDefaultProvider();
         private final Meter meter;
         private final LongHistogram callDuration;
-        private final AttributesBuilder attributes;
+        private final TelemetryAttributes attributes;
         AzureClient(String endpoint, ClientOptions options) {
             meter = DEFAULT_PROVIDER.createMeter("azure-core-samples", "1.0.0", options == null ? null : options.getMetricsOptions());
             callDuration = meter.createLongHistogram("az.sample.method.duration", "Duration of sample method call", "ms");
-            attributes = meter.createAttributesBuilder()
-                .add("endpoint", endpoint);
+            attributes = meter.createAttributes(Collections.singletonMap("endpoint", endpoint));
         }
 
         public String methodCall(String request) {

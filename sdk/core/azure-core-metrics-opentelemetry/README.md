@@ -66,7 +66,7 @@ AzureClient sampleClient = new AzureClientBuilder()
     .build();
 
 // use client as usual, if it emits metric, they will be exported
-sampleClient.methodCall("get items", Context.NONE);
+sampleClient.methodCall("get items");
 
 ```
 
@@ -82,7 +82,7 @@ SdkMeterProvider meterProvider = SdkMeterProvider.builder()
     .build();
 
 // Pass OTel meterProvider to MetricsOptions.
-MetricsOptions customMetricsOptions = new MetricsOptions()
+MetricsOptions customMetricsOptions = new OpenTelemetryMetricsOptions()
     .setProvider(meterProvider);
 
 // configure Azure Client to use customMetricsOptions - it will use meterProvider

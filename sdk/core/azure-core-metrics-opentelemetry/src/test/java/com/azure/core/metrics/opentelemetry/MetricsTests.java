@@ -3,9 +3,9 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongHistogram;
 import com.azure.core.util.metrics.Meter;
@@ -23,6 +23,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.assertThat;
@@ -35,7 +37,7 @@ public class MetricsTests {
     private static final long SECOND_NANOS = 1_000_000_000;
     private static final Resource RESOURCE =
         Resource.create(Attributes.of(stringKey("resource_key"), "resource_value"));
-    private static final AttributesBuilder METRIC_ATTRIBUTES = new OpenTelemetryAttributesBuilder().add("key", "value");
+    private static final TelemetryAttributes METRIC_ATTRIBUTES = new OpenTelemetryAttributes(Collections.singletonMap("key", "value"));
     private static final Attributes EXPECTED_ATTRIBUTES = Attributes.builder().put("key", "value").build();
 
     private InMemoryMetricReader sdkMeterReader;
@@ -64,7 +66,7 @@ public class MetricsTests {
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider));
         LongHistogram longHistogram = meter.createLongHistogram("az.sdk.test-histogram", "important metric", null);
         assertTrue(longHistogram.isEnabled());
-        longHistogram.record(1, new OpenTelemetryAttributesBuilder(), Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
             .satisfiesExactly(
@@ -100,7 +102,7 @@ public class MetricsTests {
         LongHistogram longHistogram = meter
             .createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributesBuilder(), Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
         assertFalse(longHistogram.isEnabled());
@@ -110,11 +112,10 @@ public class MetricsTests {
     public void noopOTelMeterProvider() {
         MetricsOptions options = new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop());
         Meter meter = MeterProvider.getDefaultProvider().createMeter("az.sdk-name", null, options);
-        LongHistogram longHistogram = MeterProvider.getDefaultProvider()
-            .createMeter("az.sdk-name", null, new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop()))
+        LongHistogram longHistogram = meter
             .createLongHistogram("az.sdk.test-histogram", "important metric", null);
 
-        longHistogram.record(1, new OpenTelemetryAttributesBuilder(), Context.NONE);
+        longHistogram.record(1, new OpenTelemetryAttributes(Collections.emptyMap()), Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertTrue(sdkMeterReader.collectAllMetrics().isEmpty());
         assertFalse(longHistogram.isEnabled());
@@ -163,8 +164,8 @@ public class MetricsTests {
             .createMeter("az.sdk-name", "1.0.0-beta.1", new OpenTelemetryMetricsOptions().setProvider(sdkMeterProvider))
             .createLongHistogram("az.sdk.test-histogram", "important metric", "ms");
 
-        AttributesBuilder attributes1 = new OpenTelemetryAttributesBuilder().add("key1", "value1");
-        AttributesBuilder attributes2 = new OpenTelemetryAttributesBuilder().add("key2", "value2");
+        TelemetryAttributes attributes1 = new OpenTelemetryAttributes(Collections.singletonMap("key1", "value1"));
+        TelemetryAttributes attributes2 = new OpenTelemetryAttributes(Collections.singletonMap("key2", "value2"));
         longHistogram.record(42, attributes1, Context.NONE);
         longHistogram.record(1, attributes1, Context.NONE);
         longHistogram.record(420, attributes2, Context.NONE);
@@ -265,14 +266,15 @@ public class MetricsTests {
 
     @Test
     public void attributeTypes() {
-        AttributesBuilder attributes = new OpenTelemetryAttributesBuilder()
-            .add("string", "foo")
-            .add("boolean", true)
-            .add("double", 0.42d)
-            .add("long", 42L);
+        TelemetryAttributes attributes = new OpenTelemetryAttributes(new HashMap<String, Object>() {{
+                put("string", "string-value");
+                put("long", 42L);
+                put("boolean", true);
+                put("double", 0.42d);
+            }});
 
         Attributes expected = Attributes.builder()
-            .put(AttributeKey.stringKey("string"), "foo")
+            .put(AttributeKey.stringKey("string"), "string-value")
             .put(AttributeKey.booleanKey("boolean"), true)
             .put(AttributeKey.doubleKey("double"), 0.42d)
             .put(AttributeKey.longKey("long"), 42L)

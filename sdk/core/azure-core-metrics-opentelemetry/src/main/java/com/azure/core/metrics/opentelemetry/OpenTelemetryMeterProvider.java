@@ -37,7 +37,7 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      *
      *     &#47;&#47; Current context flows to OpenTelemetry metrics and is used to populate exemplars
      *     &#47;&#47; you can also pass OpenTelemetry context explicitly by passing it under PARENT_TRACE_CONTEXT_KEY
-     *     String response = sampleClient.methodCall&#40;&quot;get items&quot;, Context.NONE&#41;;
+     *     String response = sampleClient.methodCall&#40;&quot;get items&quot;&#41;;
      *     &#47;&#47; do more work
      * &#125;
      *
@@ -68,7 +68,7 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * Tracer tracer = openTelemetry.getTracer&#40;&quot;azure-core-samples&quot;&#41;;
      *
      * &#47;&#47; pass custom OpenTelemetry SdkMeterProvider to MetricsOptions
-     * MetricsOptions metricsOptions = new MetricsOptions&#40;&#41;
+     * MetricsOptions metricsOptions = new OpenTelemetryMetricsOptions&#40;&#41;
      *     .setProvider&#40;openTelemetry.getMeterProvider&#40;&#41;&#41;;
      *
      * &#47;&#47; configure Azure Client to use customized MetricOptions

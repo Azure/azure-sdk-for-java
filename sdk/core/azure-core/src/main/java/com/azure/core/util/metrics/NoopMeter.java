@@ -3,9 +3,10 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ final class NoopMeter implements Meter {
     public static final Meter INSTANCE = new NoopMeter();
     private static final LongHistogram NOOP_LONG_HISTOGRAM = new LongHistogram() {
         @Override
-        public void record(long value, AttributesBuilder attributes, Context context) {
+        public void record(long value, TelemetryAttributes attributes, Context context) {
         }
 
         @Override
@@ -26,7 +27,7 @@ final class NoopMeter implements Meter {
 
     private static final LongCounter NOOP_LONG_COUNTER = new LongCounter() {
         @Override
-        public void add(long value, AttributesBuilder attributes, Context context) {
+        public void add(long value, TelemetryAttributes attributes, Context context) {
         }
 
         @Override
@@ -35,26 +36,7 @@ final class NoopMeter implements Meter {
         }
     };
 
-    private static final AttributesBuilder NOOP_ATTRIBUTES = new AttributesBuilder() {
-        @Override
-        public AttributesBuilder add(String key, String value) {
-            return this;
-        }
-
-        @Override
-        public AttributesBuilder add(String key, long value) {
-            return this;
-        }
-
-        @Override
-        public AttributesBuilder add(String key, double value) {
-            return this;
-        }
-
-        @Override
-        public AttributesBuilder add(String key, boolean value) {
-            return this;
-        }
+    private static final TelemetryAttributes NOOP_ATTRIBUTES = new TelemetryAttributes() {
     };
 
     private NoopMeter() {
@@ -94,7 +76,13 @@ final class NoopMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public AttributesBuilder createAttributesBuilder() {
+    public TelemetryAttributes createAttributes(Map<String, Object> attributeMap) {
+        Objects.requireNonNull(attributeMap, "'attributeMap' cannot be null.");
+        for (Map.Entry<String, Object> kvp : attributeMap.entrySet()) {
+            Objects.requireNonNull(kvp.getKey(), "'key' cannot be null.");
+            Objects.requireNonNull(kvp.getValue(), "'value' cannot be null.");
+        }
+
         return NOOP_ATTRIBUTES;
     }
 

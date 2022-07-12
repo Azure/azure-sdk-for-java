@@ -3,9 +3,11 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,11 +34,9 @@ public class NoopMeterTests {
 
         LongHistogram histogram = noopMeter.createLongHistogram("name", "description", null);
         assertFalse(histogram.isEnabled());
-        AttributesBuilder attributes = noopMeter.createAttributesBuilder();
+        TelemetryAttributes attributes = noopMeter.createAttributes(Collections.singletonMap("foo", 42L));
         assertNotNull(attributes);
 
-        attributes.add("foo", "bar")
-                .add("bar", true);
         histogram.record(42L, attributes, Context.NONE);
     }
 
@@ -44,9 +44,7 @@ public class NoopMeterTests {
     public void noopCounterMeasurement() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         LongCounter counter = noopMeter.createLongCounter("name", "description", null);
-        AttributesBuilder attributes = noopMeter.createAttributesBuilder()
-            .add("foo", 42L)
-            .add("bar", 0.42d);
+        TelemetryAttributes attributes = noopMeter.createAttributes(Collections.singletonMap("foo", 0.42d));
         counter.add(42L, attributes, Context.NONE);
     }
 
@@ -54,9 +52,7 @@ public class NoopMeterTests {
     public void noopUpDownCounterMeasurement() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         LongCounter counter = noopMeter.createLongUpDownCounter("name", "description", null);
-        AttributesBuilder attributes = noopMeter.createAttributesBuilder()
-            .add("foo", 42L)
-            .add("bar", 0.42d);
+        TelemetryAttributes attributes = noopMeter.createAttributes(Collections.emptyMap());
         counter.add(42L, attributes, Context.NONE);
     }
 

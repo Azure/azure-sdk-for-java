@@ -3,16 +3,17 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -22,22 +23,23 @@ public class OpenTelemetryAttributesBuilderTests {
 
     @Test
     public void empty() {
-        AttributesBuilder attributeCollection = METER.createAttributesBuilder();
-        assertEquals(OpenTelemetryAttributesBuilder.class, attributeCollection.getClass());
-        Attributes attributes = ((OpenTelemetryAttributesBuilder) attributeCollection).build();
+        TelemetryAttributes attributeCollection = METER.createAttributes(Collections.emptyMap());
+        assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
+        Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
         assertTrue(attributes.isEmpty());
     }
 
     @Test
     public void addAttribute() {
-        AttributesBuilder attributeCollection = METER.createAttributesBuilder();
-        attributeCollection.add("string", "string-value")
-            .add("long", 42L)
-            .add("boolean", true)
-            .add("double", 0.42d);
+        TelemetryAttributes attributeCollection = METER.createAttributes(new HashMap<String, Object>() {{
+                put("string", "string-value");
+                put("long", 42L);
+                put("boolean", true);
+                put("double", 0.42d);
+            }});
 
-        assertEquals(OpenTelemetryAttributesBuilder.class, attributeCollection.getClass());
-        Attributes attributes = ((OpenTelemetryAttributesBuilder) attributeCollection).build();
+        assertEquals(OpenTelemetryAttributes.class, attributeCollection.getClass());
+        Attributes attributes = ((OpenTelemetryAttributes) attributeCollection).get();
 
         assertEquals(4, attributes.size());
         assertEquals("string-value", attributes.get(AttributeKey.stringKey("string")));
@@ -47,31 +49,11 @@ public class OpenTelemetryAttributesBuilderTests {
     }
 
     @Test
-    public void addAttributeBuildMultiple() {
-        AttributesBuilder attributeCollection = METER.createAttributesBuilder();
-        attributeCollection.add("string", "string-value");
-        Attributes attributes1 = ((OpenTelemetryAttributesBuilder) attributeCollection).build();
-        assertEquals(1, attributes1.size());
-        assertEquals("string-value", attributes1.get(AttributeKey.stringKey("string")));
-
-        attributeCollection.add("long", 42L);
-        Attributes attributes2 = ((OpenTelemetryAttributesBuilder) attributeCollection).build();
-        assertNotSame(attributes1, attributes2);
-
-        assertEquals(1, attributes1.size());
-        assertEquals(2, attributes2.size());
-        assertEquals(42L, attributes2.get(AttributeKey.longKey("long")));
-
-        assertSame(attributes2, ((OpenTelemetryAttributesBuilder) attributeCollection).build());
-    }
-
-    @Test
     public void addAttributeInvalid() {
-        AttributesBuilder attributeCollection = METER.createAttributesBuilder();
-        assertThrows(NullPointerException.class, () -> attributeCollection.add("string", null));
-        assertThrows(NullPointerException.class, () -> attributeCollection.add(null, "foo"));
-        assertThrows(NullPointerException.class, () -> attributeCollection.add(null, 42L));
-        assertThrows(NullPointerException.class, () -> attributeCollection.add(null, false));
-        assertThrows(NullPointerException.class, () -> attributeCollection.add(null, 0.1d));
+        assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap("string", null)));
+        assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, "foo")));
+        assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, 42L)));
+        assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, false)));
+        assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, 0.1d)));
     }
 }
