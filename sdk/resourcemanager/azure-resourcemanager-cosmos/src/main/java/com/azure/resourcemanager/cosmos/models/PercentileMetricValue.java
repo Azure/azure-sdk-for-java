@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents percentile metrics values. */
 @Immutable
 public final class PercentileMetricValue extends MetricValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PercentileMetricValue.class);
-
     /*
      * The 10th percentile value for the metric.
      */

@@ -17,14 +17,16 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ProgressListener;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
@@ -106,10 +108,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -2047,10 +2046,17 @@ public class ShareFileAsyncClient {
             Function<Flux<ByteBuffer>, Mono<Response<ShareFileUploadInfo>>> uploadInChunks = (stream) ->
                 uploadInChunks(stream, validatedOffset, validatedParallelTransferOptions, validatedRequestConditions, context);
 
-            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) ->
-                uploadRangeWithResponse(new ShareFileUploadRangeOptions(ProgressReporter.addProgressReporting(
-                    stream, validatedParallelTransferOptions.getProgressReceiver()), length)
-                    .setOffset(options.getOffset()).setRequestConditions(validatedRequestConditions), context);
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<ShareFileUploadInfo>>> uploadFull = (stream, length) -> {
+                ProgressListener progressListener = validatedParallelTransferOptions.getProgressListener();
+                Context uploadContext = context;
+                if (progressListener != null) {
+                    uploadContext = Contexts.with(context).setHttpRequestProgressReporter(
+                        ProgressReporter.withProgressListener(progressListener)
+                    ).getContext();
+                }
+                return uploadRangeWithResponse(new ShareFileUploadRangeOptions(stream, length)
+                    .setOffset(options.getOffset()).setRequestConditions(validatedRequestConditions), uploadContext);
+            };
 
             Flux<ByteBuffer> data = options.getDataFlux();
             // no specified length: use azure.core's converter
@@ -2076,14 +2082,15 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileUploadInfo>> uploadInChunks(Flux<ByteBuffer> data, long offset,
         ParallelTransferOptions parallelTransferOptions, ShareRequestConditions requestConditions, Context context) {
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong();
-        Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), FILE_MAX_PUT_RANGE_SIZE);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
+
+        ProgressListener progressListener = parallelTransferOptions.getProgressListener();
+        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
+            progressListener);
 
         /*
          Write to the staging area and upload the output.
@@ -2114,11 +2121,14 @@ public class ShareFileAsyncClient {
                 long currentBufferLength = bufferAggregator.length();
                 long currentOffset = tuple3.getT3() + offset;
                 // Report progress as necessary.
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
-                    progressLock, totalProgress);
-                return uploadRangeWithResponse(new ShareFileUploadRangeOptions(progressData, currentBufferLength)
-                    .setOffset(currentOffset).setRequestConditions(requestConditions), context)
+                Context uploadContext = context;
+                if (progressReporter != null) {
+                    uploadContext = Contexts.with(context)
+                        .setHttpRequestProgressReporter(progressReporter.createChild()).getContext();
+                }
+                return uploadRangeWithResponse(
+                    new ShareFileUploadRangeOptions(bufferAggregator.asFlux(), currentBufferLength)
+                        .setOffset(currentOffset).setRequestConditions(requestConditions), uploadContext)
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last();
