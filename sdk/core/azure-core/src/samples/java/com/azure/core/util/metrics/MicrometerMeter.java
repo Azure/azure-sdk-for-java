@@ -3,15 +3,16 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.TelemetryAttributes;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Tags;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,7 +24,6 @@ import java.util.function.Supplier;
  * Implements Micrometer version of {@link Meter}
  */
 class MicrometerMeter implements Meter {
-    private static final MicrometerTags EMPTY = new MicrometerTags();
     private static final Map<io.micrometer.core.instrument.Meter.Id, DistributionSummary> SUMMARY_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
     private static final Map<io.micrometer.core.instrument.Meter.Id, Counter> COUNTER_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
     private static final Map<io.micrometer.core.instrument.Meter.Id, GaugeWrapper> SETTABLE_GAUGE_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
@@ -68,8 +68,8 @@ class MicrometerMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public AttributesBuilder createAttributesBuilder() {
-        return new MicrometerTags();
+    public TelemetryAttributes createAttributes(Map<String, Object> attributes) {
+        return new MicrometerTags(attributes);
     }
 
     @Override
@@ -97,13 +97,13 @@ class MicrometerMeter implements Meter {
          * {@inheritDoc}
          */
         @Override
-        public void record(long value, AttributesBuilder attributes, Context context) {
-            MicrometerTags tags = EMPTY;
+        public void record(long value, TelemetryAttributes attributes, Context context) {
+            Tags tags = Tags.empty();
             if (attributes instanceof MicrometerTags) {
-                tags = ((MicrometerTags) attributes);
+                tags = ((MicrometerTags) attributes).get();
             }
 
-            io.micrometer.core.instrument.Meter.Id id = new io.micrometer.core.instrument.Meter.Id(name, tags.get(), unit, description, io.micrometer.core.instrument.Meter.Type.DISTRIBUTION_SUMMARY);
+            io.micrometer.core.instrument.Meter.Id id = new io.micrometer.core.instrument.Meter.Id(name, tags, unit, description, io.micrometer.core.instrument.Meter.Type.DISTRIBUTION_SUMMARY);
             DistributionSummary summary = SUMMARY_CACHE.computeIfAbsent(id, this::createSummary);
             summary.record(value);
         }
@@ -148,12 +148,12 @@ class MicrometerMeter implements Meter {
          * {@inheritDoc}
          */
         @Override
-        public void add(long value, AttributesBuilder attributes, Context context) {
-            MicrometerTags tags = EMPTY;
+        public void add(long value, TelemetryAttributes attributes, Context context) {
+            Tags tags = Tags.empty();
             if (attributes instanceof MicrometerTags) {
-                tags = ((MicrometerTags) attributes);
+                tags = ((MicrometerTags) attributes).get();
             }
-            io.micrometer.core.instrument.Meter.Id id = new io.micrometer.core.instrument.Meter.Id(name, tags.get(), unit, description, io.micrometer.core.instrument.Meter.Type.COUNTER);
+            io.micrometer.core.instrument.Meter.Id id = new io.micrometer.core.instrument.Meter.Id(name, tags, unit, description, io.micrometer.core.instrument.Meter.Type.COUNTER);
             Counter counter = COUNTER_CACHE.computeIfAbsent(id, this::createCounter);
             counter.increment(value);
         }
@@ -197,13 +197,13 @@ class MicrometerMeter implements Meter {
          * {@inheritDoc}
          */
         @Override
-        public void add(long value, AttributesBuilder attributes, Context context) {
-            MicrometerTags tags = EMPTY;
+        public void add(long value, TelemetryAttributes attributes, Context context) {
+            Tags tags = Tags.empty();
             if (attributes instanceof MicrometerTags) {
-                tags = ((MicrometerTags) attributes);
+                tags = ((MicrometerTags) attributes).get();
             }
 
-            io.micrometer.core.instrument.Meter.Id id = new io.micrometer.core.instrument.Meter.Id(name, tags.get(), unit, description, io.micrometer.core.instrument.Meter.Type.COUNTER);
+            io.micrometer.core.instrument.Meter.Id id = new io.micrometer.core.instrument.Meter.Id(name, tags, unit, description, io.micrometer.core.instrument.Meter.Type.COUNTER);
             GaugeWrapper gauge = SETTABLE_GAUGE_CACHE.computeIfAbsent(id, i -> new GaugeWrapper(i));
             gauge.add(value);
         }

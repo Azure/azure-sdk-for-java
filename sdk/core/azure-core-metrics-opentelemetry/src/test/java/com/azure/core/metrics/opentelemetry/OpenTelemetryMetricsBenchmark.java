@@ -3,8 +3,8 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
@@ -24,6 +24,7 @@ import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
@@ -44,9 +45,10 @@ public class OpenTelemetryMetricsBenchmark {
         .registerMetricReader(SDK_METER_READER)
         .build();
 
-    private static final AttributesBuilder COMMON_ATTRIBUTES = new OpenTelemetryAttributesBuilder()
-        .add("az.messaging.destination", "fqdn")
-        .add("az.messaging.entity", "entityName");
+    private static final TelemetryAttributes COMMON_ATTRIBUTES = new OpenTelemetryAttributes(new HashMap<String, Object>() {{
+            put("az.messaging.destination", "fqdn");
+            put("az.messaging.entity", "entityName");
+        }});
 
     private static final Meter METER = AZURE_METER_PROVIDER
         .createMeter("bench", null, new OpenTelemetryMetricsOptions().setProvider(SDK_METER_PROVIDER));
@@ -144,20 +146,18 @@ public class OpenTelemetryMetricsBenchmark {
     static class DynamicAttributeCache {
         private static final int ERROR_DIMENSIONS_LENGTH = ErrorCode.values().length + 2;
 
-        private final MeterProvider meterProvider;
         private final String fullyQualifiedNamespace;
         private final String eventHubName;
 
         DynamicAttributeCache(MeterProvider meterProvider, String fullyQualifiedNamespace, String eventHubName) {
-            this.meterProvider = meterProvider;
             this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.eventHubName = eventHubName;
         }
 
-        private final ConcurrentMap<String, AttributesBuilder[]> allAttributes = new ConcurrentHashMap<>();
+        private final ConcurrentMap<String, TelemetryAttributes[]> allAttributes = new ConcurrentHashMap<>();
 
-        AttributesBuilder getOrCreate(String partitionId, boolean error, ErrorCode errorCode) {
-            AttributesBuilder[] attributes = allAttributes.computeIfAbsent(partitionId, this::createAttributes);
+        TelemetryAttributes getOrCreate(String partitionId, boolean error, ErrorCode errorCode) {
+            TelemetryAttributes[] attributes = allAttributes.computeIfAbsent(partitionId, this::createAttributes);
 
             int index = ERROR_DIMENSIONS_LENGTH - 1; // ok
             if (error) {
@@ -167,8 +167,8 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes[index];
         }
 
-        private AttributesBuilder[]  createAttributes(String partitionId) {
-            AttributesBuilder[] attributes = new AttributesBuilder[ERROR_DIMENSIONS_LENGTH];
+        private TelemetryAttributes[]  createAttributes(String partitionId) {
+            TelemetryAttributes[] attributes = new TelemetryAttributes[ERROR_DIMENSIONS_LENGTH];
             for (int i = 0; i < ERROR_DIMENSIONS_LENGTH - 2; i++) {
                 attributes[i] =  getAttributes(partitionId, ErrorCode.values()[i].name());
             }
@@ -178,12 +178,13 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes;
         }
 
-        private AttributesBuilder getAttributes(String partitionId, String errorCode) {
-            return METER.createAttributesBuilder()
-                .add("az.messaging.destination", fullyQualifiedNamespace)
-                .add("az.messaging.entity", eventHubName)
-                .add("az.messaging.partition_id", partitionId)
-                .add("az.messaging.status_code", errorCode);
+        private TelemetryAttributes getAttributes(String partitionId, String errorCode) {
+            return METER.createAttributes(new HashMap<String, Object>() {{
+                    put("az.messaging.destination", fullyQualifiedNamespace);
+                    put("az.messaging.entity", eventHubName);
+                    put("az.messaging.partition_id", partitionId);
+                    put("az.messaging.status_code", errorCode);
+                }});
         }
     }
 }

@@ -3,8 +3,8 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongCounter;
 
 /**
@@ -13,7 +13,7 @@ import com.azure.core.util.metrics.LongCounter;
 class OpenTelemetryLongCounter implements LongCounter {
     static final LongCounter NOOP = new LongCounter() {
         @Override
-        public void add(long value, AttributesBuilder attributes, Context context) {
+        public void add(long value, TelemetryAttributes attributes, Context context) {
         }
 
         @Override
@@ -32,8 +32,8 @@ class OpenTelemetryLongCounter implements LongCounter {
      * {@inheritDoc}
      */
     @Override
-    public void add(long value, AttributesBuilder attributeCollection, Context context) {
-        counter.add(value, Utils.getAttributes(attributeCollection), Utils.getTraceContextOrCurrent(context));
+    public void add(long value, TelemetryAttributes attributes, Context context) {
+        counter.add(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 
     @Override

@@ -3,9 +3,9 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongHistogram;
 import com.azure.core.util.metrics.Meter;
@@ -15,6 +15,7 @@ import io.opentelemetry.api.metrics.LongHistogramBuilder;
 import io.opentelemetry.api.metrics.LongUpDownCounterBuilder;
 import io.opentelemetry.api.metrics.MeterProvider;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,7 +46,7 @@ class OpenTelemetryMeter implements Meter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
 
-        if (isEnabled) {
+        if (!isEnabled) {
             // we might have per-instrument control later.
             return OpenTelemetryLongHistogram.NOOP;
         }
@@ -68,7 +69,7 @@ class OpenTelemetryMeter implements Meter {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
 
-        if (isEnabled) {
+        if (!isEnabled) {
             // we might have per-instrument control later.
             return OpenTelemetryLongCounter.NOOP;
         }
@@ -105,8 +106,8 @@ class OpenTelemetryMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public AttributesBuilder createAttributesBuilder() {
-        return new OpenTelemetryAttributesBuilder();
+    public TelemetryAttributes createAttributes(Map<String, Object> attributeMap) {
+        return new OpenTelemetryAttributes(attributeMap);
     }
 
     @Override

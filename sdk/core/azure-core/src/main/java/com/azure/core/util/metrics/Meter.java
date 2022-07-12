@@ -3,7 +3,9 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.AttributesBuilder;
+import com.azure.core.util.TelemetryAttributes;
+
+import java.util.Map;
 
 /**
  * Meter is generally associated with Azure Service Client instance and allows creating
@@ -26,8 +28,8 @@ import com.azure.core.util.AttributesBuilder;
  * LongHistogram amqpLinkDuration = meter
  *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
  *
- * AttributesBuilder attributes = meter.createAttributesBuilder&#40;&#41;
- *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+ * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;
+ *     Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
  *
  * &#47;&#47; when measured operation starts, record the measurement
  * Instant start = Instant.now&#40;&#41;;
@@ -59,8 +61,8 @@ public interface Meter extends AutoCloseable {
      * LongHistogram amqpLinkDuration = meter
      *     .createLongHistogram&#40;&quot;az.core.amqp.link.duration&quot;, &quot;AMQP link response time.&quot;, &quot;ms&quot;&#41;;
      *
-     * AttributesBuilder attributes = meter.createAttributesBuilder&#40;&#41;
-     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;
+     *     Collections.singletonMap&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;&#41;;
      *
      * &#47;&#47; when measured operation starts, record the measurement
      * Instant start = Instant.now&#40;&#41;;
@@ -93,9 +95,10 @@ public interface Meter extends AutoCloseable {
      *
      * <!-- src_embed com.azure.core.util.metrics.Meter.longCounter -->
      * <pre>
-     * AttributesBuilder attributes = defaultMeter.createAttributesBuilder&#40;&#41;
-     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
-     *     .add&#40;&quot;error&quot;, true&#41;;
+     * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
+     *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     *         put&#40;&quot;status&quot;, &quot;ok&quot;&#41;;
+     *     &#125;&#125;&#41;;
      *
      * LongCounter createdHttpConnections = defaultMeter.createLongCounter&#40;&quot;az.core.http.connections&quot;,
      *     &quot;Number of created HTTP connections&quot;, null&#41;;
@@ -120,9 +123,10 @@ public interface Meter extends AutoCloseable {
      *
      * <!-- src_embed com.azure.core.util.metrics.Meter.upDownCounter -->
      * <pre>
-     * AttributesBuilder attributes = defaultMeter.createAttributesBuilder&#40;&#41;
-     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
-     *     .add&#40;&quot;error&quot;, true&#41;;
+     * TelemetryAttributes attributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
+     *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     *         put&#40;&quot;status&quot;, &quot;ok&quot;&#41;;
+     *     &#125;&#125;&#41;;
      *
      * LongCounter activeHttpConnections = defaultMeter.createLongUpDownCounter&#40;&quot;az.core.http.active.connections&quot;,
      *     &quot;Number of active HTTP connections&quot;, null&#41;;
@@ -155,13 +159,15 @@ public interface Meter extends AutoCloseable {
      * <pre>
      *
      * &#47;&#47; Create attributes for possible error codes. Can be done lazily once specific error code is received.
-     * AttributesBuilder successAttributes = defaultMeter.createAttributesBuilder&#40;&#41;
-     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
-     *     .add&#40;&quot;error&quot;, true&#41;;
+     * TelemetryAttributes successAttributes = defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
+     *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     *         put&#40;&quot;error&quot;, true&#41;;
+     *     &#125;&#125;&#41;;
      *
-     * AttributesBuilder errorAttributes =  defaultMeter.createAttributesBuilder&#40;&#41;
-     *     .add&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;
-     *     .add&#40;&quot;error&quot;, false&#41;;
+     * TelemetryAttributes errorAttributes =  defaultMeter.createAttributes&#40;new HashMap&lt;String, Object&gt;&#40;&#41; &#123;&#123;
+     *         put&#40;&quot;endpoint&quot;, &quot;http:&#47;&#47;service-endpoint.azure.com&quot;&#41;;
+     *         put&#40;&quot;error&quot;, false&#41;;
+     *     &#125;&#125;&#41;;
      *
      * LongCounter httpConnections = defaultMeter.createLongCounter&#40;&quot;az.core.http.connections&quot;,
      *     &quot;Number of created HTTP connections&quot;, null&#41;;
@@ -175,9 +181,10 @@ public interface Meter extends AutoCloseable {
      *
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.longCounter#errorFlag -->
+     * @param attributeMap map of key value pairs to cache.
      * @return an instance of {@code AttributesBuilder}
      */
-    AttributesBuilder createAttributesBuilder();
+    TelemetryAttributes createAttributes(Map<String, Object> attributeMap);
 
     /**
      * Closes the token manager.

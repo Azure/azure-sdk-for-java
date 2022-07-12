@@ -3,8 +3,8 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongHistogram;
 
 /**
@@ -13,7 +13,7 @@ import com.azure.core.util.metrics.LongHistogram;
 class OpenTelemetryLongHistogram implements LongHistogram {
     static final LongHistogram NOOP = new LongHistogram() {
         @Override
-        public void record(long value, AttributesBuilder attributes, Context context) {
+        public void record(long value, TelemetryAttributes attributes, Context context) {
         }
 
         @Override
@@ -31,8 +31,8 @@ class OpenTelemetryLongHistogram implements LongHistogram {
      * {@inheritDoc}
      */
     @Override
-    public void record(long value, AttributesBuilder attributeCollection, Context context) {
-        histogram.record(value, Utils.getAttributes(attributeCollection), Utils.getTraceContextOrCurrent(context));
+    public void record(long value, TelemetryAttributes attributes, Context context) {
+        histogram.record(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 
     @Override

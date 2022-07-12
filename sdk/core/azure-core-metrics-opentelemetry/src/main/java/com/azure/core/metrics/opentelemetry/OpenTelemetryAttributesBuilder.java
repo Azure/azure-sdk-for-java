@@ -3,69 +3,30 @@
 
 package com.azure.core.metrics.opentelemetry;
 
-import com.azure.core.util.AttributesBuilder;
-import io.opentelemetry.api.common.AttributeKey;
+import com.azure.core.util.TelemetryAttributes;
 import io.opentelemetry.api.common.Attributes;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
- * OpenTelemetry-specific implementation of {@link AttributesBuilder}
+ * OpenTelemetry-specific implementation of {@link TelemetryAttributes}
  */
-class OpenTelemetryAttributesBuilder implements AttributesBuilder {
+class OpenTelemetryAttributes implements TelemetryAttributes {
     private final io.opentelemetry.api.common.AttributesBuilder builder;
     private Attributes attributes;
-    OpenTelemetryAttributesBuilder() {
+    OpenTelemetryAttributes(Map<String, Object> attributeMap) {
+        Objects.requireNonNull(attributeMap, "'attributeMap' cannot be null.");
         builder = Attributes.builder();
-        attributes = null;
+        for (Map.Entry<String, Object> kvp : attributeMap.entrySet()) {
+            Objects.requireNonNull(kvp.getKey(), "'key' cannot be null.");
+            Objects.requireNonNull(kvp.getValue(), "'value' cannot be null.");
+
+            OpenTelemetryUtils.addAttribute(builder, kvp.getKey(), kvp.getValue());
+        }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, String value) {
-        Objects.requireNonNull(key, "'key' cannot be null");
-        Objects.requireNonNull(value, "'value' cannot be null");
-        builder.put(AttributeKey.stringKey(key), value);
-        attributes = null;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, long value) {
-        Objects.requireNonNull(AttributeKey.longKey(key), "'key' cannot be null");
-        builder.put(key, value);
-        attributes = null;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, double value) {
-        Objects.requireNonNull(AttributeKey.doubleKey(key), "'key' cannot be null");
-        builder.put(key, value);
-        attributes = null;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AttributesBuilder add(String key, boolean value) {
-        Objects.requireNonNull(AttributeKey.booleanKey(key), "'key' cannot be null");
-        builder.put(key, value);
-        attributes = null;
-        return this;
-    }
-
-    Attributes build() {
+    Attributes get() {
         if (attributes == null) {
             attributes = builder.build();
         }
