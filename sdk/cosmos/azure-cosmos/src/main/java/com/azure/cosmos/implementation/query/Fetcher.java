@@ -68,6 +68,7 @@ abstract class Fetcher<T> {
 
     protected final Mono<FeedResponse<T>> nextPageCore() {
         RxDocumentServiceRequest request = createRequest();
+        logger.info("Getting next page core with request headers : {}", request.getHeaders());
         return nextPage(request);
     }
 

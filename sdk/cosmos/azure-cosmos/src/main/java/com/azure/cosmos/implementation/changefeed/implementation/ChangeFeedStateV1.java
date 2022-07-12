@@ -159,6 +159,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         request.getHeaders().put(
             HttpConstants.HttpHeaders.PAGE_SIZE,
             String.valueOf(maxItemCount));
+        request.getHeaders().put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(true));
         switch (this.mode) {
             case INCREMENTAL:
                 request.getHeaders().put(

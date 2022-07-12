@@ -15,6 +15,8 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,6 +28,8 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedQueryImpl<T> {
+
+    private final static Logger logger = LoggerFactory.getLogger(ChangeFeedQueryImpl.class);
 
     private static final int INITIAL_TOP_VALUE = -1;
 
@@ -141,7 +145,10 @@ class ChangeFeedQueryImpl<T> {
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
             return client.readFeed(request)
-                         .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass));
+                         .map(rsp -> {
+                             logger.info("Response in executeRequestAsync headers are : {}", rsp.getResponseHeaders());
+                             return BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass);
+                         });
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -152,6 +159,7 @@ class ChangeFeedQueryImpl<T> {
 
             return client.readFeed(request)
                          .map(rsp -> {
+                             logger.info("Response in executeRequestAsync headers are : {}", rsp.getResponseHeaders());
                              listener.responseListener(operationContext, rsp);
 
                              final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(

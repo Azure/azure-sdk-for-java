@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.SkipException;
@@ -487,16 +488,16 @@ public class ChangeFeedTest extends TestSuiteBase {
             .createForProcessingFromContinuation(continuationToken);
         options.fullFidelity();
 
-        TestConfigurations.TestItem item1 = new TestConfigurations.TestItem(
+        TestItem item1 = new TestItem(
             UUID.randomUUID().toString(),
-            "mypk", "Johnson", "1 Microsoft Way");
-        TestConfigurations.TestItem item2 = new TestConfigurations.TestItem(
+            "mypk", "Johnson");
+        TestItem item2 = new TestItem(
             UUID.randomUUID().toString(),
-            "mypk", "Smith", "1 Microsoft Way");
+            "mypk", "Smith");
         cosmosContainer.upsertItem(item1);
         cosmosContainer.upsertItem(item2);
-        String originalLastName = item1.lastName;
-        item1.lastName = "Gates";
+        String originalLastName = item1.getProp();
+        item1.setProp("Gates");
         cosmosContainer.upsertItem(item1);
         cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
 
@@ -516,18 +517,18 @@ public class ChangeFeedTest extends TestSuiteBase {
             assertGatewayMode(response);
             assertThat(itemChanges.size() == 4);
             // Assert initial creation of items
-            assertThat(itemChanges.get(0).get("current").get("id").asText().equals(item1.id));
-            assertThat(itemChanges.get(0).get("current").get("lastName").asText().equals(originalLastName));
+            assertThat(itemChanges.get(0).get("current").get("id").asText().equals(item1.getId()));
+            assertThat(itemChanges.get(0).get("current").get("prop").asText().equals(originalLastName));
             assertThat(itemChanges.get(0).get("metadata").get("operationType").asText().equals("create"));
-            assertThat(itemChanges.get(1).get("current").get("id").asText().equals(item2.id));
-            assertThat(itemChanges.get(1).get("current").get("lastName").asText().equals(item2.lastName));
+            assertThat(itemChanges.get(1).get("current").get("id").asText().equals(item2.getId()));
+            assertThat(itemChanges.get(1).get("current").get("prop").asText().equals(item2.getProp()));
             assertThat(itemChanges.get(1).get("metadata").get("operationType").asText().equals("create"));
             // Assert replace of item1
-            assertThat(itemChanges.get(2).get("current").get("id").asText().equals(item1.id));
-            assertThat(itemChanges.get(2).get("current").get("lastName").asText().equals(item1.lastName));
+            assertThat(itemChanges.get(2).get("current").get("id").asText().equals(item1.getId()));
+            assertThat(itemChanges.get(2).get("current").get("prop").asText().equals(item1.getProp()));
             assertThat(itemChanges.get(2).get("metadata").get("operationType").asText().equals("replace"));
             // Assert delete of item1
-            assertThat(itemChanges.get(3).get("previous").get("id").asText().equals(item1.id));
+            assertThat(itemChanges.get(3).get("previous").get("id").asText().equals(item1.getId()));
             assertThat(itemChanges.get(3).get("current").isEmpty());
             assertThat(itemChanges.get(3).get("metadata").get("operationType").asText().equals("delete"));
             assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
@@ -572,6 +573,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     // TODO: check why diagnostics are not showing this for change feed
     void assertGatewayMode(FeedResponse<JsonNode> response) {
         String diagnostics = response.getCosmosDiagnostics().toString();
+        logger.info("Full Fidelity Diagnostics are : {}", diagnostics);
         assertThat(diagnostics).contains("");
     }
 

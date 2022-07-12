@@ -34,6 +34,7 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedFetcher<T> extends Fetcher<T> {
+    private final static Logger logger = LoggerFactory.getLogger(ChangeFeedFetcher.class);
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final DocumentClientRetryPolicy feedRangeContinuationSplitRetryPolicy;

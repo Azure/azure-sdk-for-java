@@ -138,6 +138,9 @@ public class FullFidelityChangeFeedProcessorBuilder {
             throw new IllegalArgumentException("consumer");
         }
 
+        //  TODO:(kuthapar) - validate the full fidelity options (from now and continuation token only).
+        //  TODO:(kuthapar) - point in time in multi-master check. where do we do that?
+
         FullFidelityChangeFeedProcessorBuilderImpl builder = new FullFidelityChangeFeedProcessorBuilderImpl()
             .hostName(this.hostName)
             .feedContainer(this.feedContainer)
