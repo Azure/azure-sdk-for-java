@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        endpoint: ${AZURE_APPCONFIGURATION_ENDPOINT}
+        credential:
+          client-id: ${AZURE_SPRING_CLIENT_ID}
+          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+        profile:
+          tenant-id: ${AZURE_SPRING_TENANT_ID}
