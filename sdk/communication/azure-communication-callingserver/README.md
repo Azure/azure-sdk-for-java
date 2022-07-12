@@ -21,24 +21,10 @@ This package contains a Java SDK for Azure Communication CallingServer Service. 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callingserver</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-## Key concepts
-
-At a high level the Azure Communication CallingServer API will support two kinds of scenarios:
-
-- In-call app: Contoso server app is a participant in the call.  
-
-- Out-call app: Contoso server app is not a participant in the call - Server app can subscribe to events for calls between specific users or even all users belonging to the ACS azure resource.  
-
-Based on if the Contoso app join a call or not, APIs can be divided into two categories:   
-
-- In-call APIs: Contoso app is one of the participant in a call. It can be applicable for app to person (A2P) or person to app (P2A) case, or multi-party/group calls that server apps joined as a participant to provide audio/prompt.  
-
-- Out-of-call APIs: Contoso app can invoke these set of APIs without joining a call. It is applicable for actions on P2P calls, A2P calls, P2A calls and group calls.  
 
 ## Examples
 
