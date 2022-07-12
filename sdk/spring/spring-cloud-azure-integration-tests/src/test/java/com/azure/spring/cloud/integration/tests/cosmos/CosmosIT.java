@@ -28,18 +28,18 @@ public class CosmosIT {
     public void testCosmosOperation() {
         LOGGER.info("CosmosIT begin.");
         User testUser = new User(
-            "testId",
+            "testCosmos",
             "testFirstName",
             "testLastName",
-            "test address line one"
+            "test address line two"
         );
         CosmosContainer container = client.getDatabase(databaseName).getContainer(containerName);
         container.createItem(testUser);
-        CosmosPagedIterable<User> users = container.queryItems("SELECT * FROM c", new CosmosQueryRequestOptions(),
+        CosmosPagedIterable<User> users = container.queryItems("SELECT * FROM c WHERE c.id = 'testCosmos'", new CosmosQueryRequestOptions(),
             User.class);
         if (users.stream().iterator().hasNext()) {
             User user = users.stream().iterator().next();
-            Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line one");
+            Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line two");
         }
         LOGGER.info("CosmosIT end.");
     }
