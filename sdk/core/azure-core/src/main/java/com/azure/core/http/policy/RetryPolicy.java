@@ -35,13 +35,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
-    private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
-
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-        }
-    };
-
     /**
      * Creates {@link RetryPolicy} using {@link ExponentialBackoff#ExponentialBackoff()} as the {@link RetryStrategy}.
      */
@@ -186,47 +179,50 @@ public class RetryPolicy implements HttpPipelinePolicy {
                                      final HttpRequest originalHttpRequest, final int tryCount) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+        HttpResponse httpResponse;
         try {
-            HttpResponse httpResponse = next.clone().processSync();
-            if (shouldRetry(httpResponse, tryCount)) {
-                final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
-                    retryAfterHeader, retryAfterTimeUnit);
-                LOGGER.atVerbose()
-                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
-                    .log("Retrying.");
-
-                Flux<ByteBuffer> responseBody = httpResponse.getBody();
-                if (responseBody == null) {
-                    return attemptSync(context, next, originalHttpRequest, tryCount + 1);
-                        // .delaySubscription(delayDuration);
-                } else {
-                    httpResponse.getBody().ignoreElements().block();
-
-                    return attemptSync(context, next, originalHttpRequest, tryCount + 1);
-                            // .delaySubscription(delayDuration));
-                }
-            } else {
-                if (tryCount >= retryStrategy.getMaxRetries()) {
-                    LOGGER.atInfo()
-                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                        .log("Retry attempts have been exhausted.");
-                }
-                return httpResponse;
-            }
-        } catch (RuntimeException    err) {
+            httpResponse = next.clone().processSync();
+        } catch (RuntimeException err) {
             if (shouldRetryException(err, tryCount)) {
                 LOGGER.atVerbose()
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                     .log("Error resume.", err);
+                try {
+                    Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toSeconds());
+                } catch (InterruptedException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                }
                 return attemptSync(context, next, originalHttpRequest, tryCount + 1);
-                    // .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
             } else {
                 LOGGER.atError()
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                     .log("Retry attempts have been exhausted.", err);
                 throw LOGGER.logExceptionAsError(err);
             }
+        }
+        if (shouldRetry(httpResponse, tryCount)) {
+            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+                retryAfterHeader, retryAfterTimeUnit);
+            LOGGER.atVerbose()
+                .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+                .log("Retrying.");
+
+            httpResponse.getBodyAsBinaryData();
+            // Is this enough?
+            try {
+                Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
+            } catch (InterruptedException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+            return attemptSync(context, next, originalHttpRequest, tryCount + 1);
+        } else {
+            if (tryCount >= retryStrategy.getMaxRetries()) {
+                LOGGER.atInfo()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .log("Retry attempts have been exhausted.");
+            }
+            return httpResponse;
         }
     }
 
