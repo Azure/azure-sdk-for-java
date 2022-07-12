@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSourceT;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
@@ -44,10 +45,12 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(com.azure.ai.formrecognizer.administration.models.ContentSource, DocumentBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelInfo documentModelInfo
-            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+            = documentModelAdministrationClient.beginBuildModel(
+                new AzureBlobContentSourceT().setContainerUrl(trainingFilesUrl),
+                DocumentBuildMode.TEMPLATE)
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
@@ -59,7 +62,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentBuildMode
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentBuildMode
     }
 
     /**
@@ -67,14 +70,15 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentBuildMode-BuildModelOptions-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "custom-model-id";
         String prefix = "Invoice";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        DocumentModelInfo documentModelInfo = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+        DocumentModelInfo documentModelInfo = documentModelAdministrationClient.beginBuildModel(
+            new AzureBlobContentSourceT().setContainerUrl(trainingFilesUrl),
                 DocumentBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
@@ -94,7 +98,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentBuildMode-BuildModelOptions-Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentBuildMode-BuildModelOptions-Context
     }
 
     /**

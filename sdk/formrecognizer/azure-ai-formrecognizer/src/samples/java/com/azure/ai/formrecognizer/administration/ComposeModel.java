@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.LocalContentSourceT;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
@@ -39,16 +40,14 @@ public class ComposeModel {
             .buildClient();
 
         // Build custom document analysis model
-        String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
-        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String model1TrainingFilesPath = "/local-file-path";
         SyncPoller<DocumentOperationResult, DocumentModelInfo> model1Poller =
-            client.beginBuildModel(model1TrainingFiles, DocumentBuildMode.TEMPLATE);
+            client.beginBuildModel(new LocalContentSourceT().setPath(model1TrainingFilesPath), DocumentBuildMode.TEMPLATE);
 
         // Build custom document analysis model
-        String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
-        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        String model2TrainingFilesPath = "/local-file-path";
         SyncPoller<DocumentOperationResult, DocumentModelInfo> model2Poller =
-            client.beginBuildModel(model2TrainingFiles, DocumentBuildMode.TEMPLATE);
+            client.beginBuildModel(new LocalContentSourceT().setPath(model2TrainingFilesPath), DocumentBuildMode.TEMPLATE);
 
         String labeledModelId1 = model1Poller.getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
