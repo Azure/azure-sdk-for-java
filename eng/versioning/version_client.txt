@@ -316,7 +316,7 @@ com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.0.0-beta.3;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.0.0-beta.5;1.0.0-beta.6
-com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0-beta.2;1.0.0-beta.3
