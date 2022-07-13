@@ -68,6 +68,8 @@ public final class UserTests extends ConfidentialLedgerClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
 
         Response<BinaryData> response = confidentialLedgerClient.getUserWithResponse(userAad, requestOptions);
+
+        System.out.println("response = " + response);
         
         BinaryData parsedResponse = response.getValue();
 

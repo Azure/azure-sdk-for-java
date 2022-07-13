@@ -158,34 +158,30 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         ConfidentialLedgerClient confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
 
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = confidentialLedgerClient.listCollections(requestOptions);
+        PagedIterable<BinaryData> pagedIterableResponse = confidentialLedgerClient.listCollections(requestOptions);
 
-        /*
-        Assertions.assertEquals(200, response.getStatusCode());
-        
-        BinaryData parsedResponse = response.getValue();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = null;
-
-        try {
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-
-        JsonNode collections = responseBodyJson.get("collections");
         List<String> collectionKeys = new ArrayList<>();
 
-        collections.forEach((collection) -> {
-            JsonNode collectionJson = collection;
-            String value = collectionJson.get("collectionId").toString();
-            collectionKeys.add(value);
+        pagedIterableResponse.streamByPage().forEach(resp -> {
+            Assertions.assertEquals(200, resp.getStatusCode());
+            resp.getValue().forEach(item -> {
+                System.out.println("item = " + item);
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseBodyJson = null;
+
+                try {
+                    responseBodyJson = objectMapper.readTree(item.toBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Assertions.assertTrue(false);
+                }
+
+                Assertions.assertNotNull(responseBodyJson.get("collectionId"));
+                collectionKeys.add(responseBodyJson.get("collectionId").asText());
+            });
+
+            collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
         });
-        
-        collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
-        */
     }
 }
 
