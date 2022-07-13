@@ -1,14 +1,8 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
+### 4.33.0 (2022-07-13)
 #### Other Changes
+* Upgraded `jackson-annotations` `jackson-core` `jackson-databind` to `2.13.3` - See [PR 29638](https://github.com/Azure/azure-sdk-for-java/pull/29638)
 
 ### 4.32.1 (2022-06-30)
 
