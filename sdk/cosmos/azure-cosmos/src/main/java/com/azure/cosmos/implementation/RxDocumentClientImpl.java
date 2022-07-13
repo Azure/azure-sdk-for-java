@@ -120,7 +120,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         "ParallelDocumentQueryExecutioncontext, but not used";
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
-    private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
     private final ConnectionPolicy connectionPolicy;

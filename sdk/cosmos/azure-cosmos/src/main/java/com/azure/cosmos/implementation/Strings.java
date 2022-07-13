@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -15,14 +14,6 @@ import java.nio.charset.StandardCharsets;
  */
 public class Strings {
     public static final String Emtpy = "";
-    private final static String[][] ENCODE_URI_COMPONENT_REPLACEMENTS = {
-        { "\\+", "%20" },
-        { "%21", "!" },
-        { "%27", "'" },
-        { "%28", "(" },
-        { "%29", ")" },
-        { "%7E", "~" }
-    };
 
     private final static String UTF8_CHARSET = StandardCharsets.UTF_8.name();
 
@@ -81,10 +72,60 @@ public class Strings {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        for (String[] entry : ENCODE_URI_COMPONENT_REPLACEMENTS) {
-            result = result.replaceAll(entry[0], entry[1]);
+
+        // after URLEncoding - the following transformations need to be applied
+        // to get to encodeUriComponent consistent behavior
+        //  "+" -> "%20"
+        //  "%21" -> "!"
+        //  "%27" -> "'"
+        //  "%28" -> "("
+        //  "%29" -> ")"
+        //  "%7E" -> "~"
+
+        final int len = result.length();
+        final StringBuilder buf = new StringBuilder(
+            result.length() + 4); // leaving enough buffer for two '+' replacements
+                                          // without having to allocate new buffer
+        for (int i = 0; i < len; i++) {
+            char currentChar = result.charAt(i);
+
+            if (currentChar == '+') {
+                buf.append("%20");
+            } else if (currentChar == '%' && i < len - 2) {
+                char nextChar = result.charAt(i + 1);
+                char secondToNextChar = result.charAt(i + 2);
+                if (nextChar == '7' && secondToNextChar == 'E') {
+                    i += 2;
+                    buf.append('~');
+                } else if (nextChar == '2') {
+                    switch (secondToNextChar) {
+                        case '1':
+                            buf.append('!');
+                            i += 2;
+                            break;
+                        case '7':
+                            buf.append('\'');
+                            i += 2;
+                            break;
+                        case '8':
+                            buf.append('(');
+                            i += 2;
+                            break;
+                        case '9':
+                            buf.append(')');
+                            i += 2;
+                            break;
+                        default:
+                            buf.append(currentChar);
+                    }
+                } else {
+                    buf.append(currentChar);
+                }
+            } else {
+                buf.append(currentChar);
+            }
         }
 
-        return result;
+        return buf.toString();
     }
 }

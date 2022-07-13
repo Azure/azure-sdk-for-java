@@ -133,6 +133,16 @@ public class ArrayUtils {
     }
 
     /**
+     * <p>Checks if an array of Objects is non-empty and not {@code null}.
+     *
+     * @param array  the array to test
+     * @return {@code true} if the array is non-empty and not {@code null}
+     */
+    public static boolean isNotEmpty(final Object[] array) {
+        return array != null && getLength(array) > 0;
+    }
+
+    /**
      * <p>Checks if an array of primitive chars is empty or {@code null}.
      *
      * @param array  the array to test
