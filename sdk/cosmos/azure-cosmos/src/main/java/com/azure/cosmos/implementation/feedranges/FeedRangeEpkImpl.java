@@ -178,13 +178,17 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
                         if (pkRanges == null) {
                             return Mono.error(new NotFoundException(
-                                String.format("Stale cache for collection rid '%s': pkRanges are null",
-                                        containerRid)));
+                                String.format(
+                                        "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are null",
+                                        containerRid,
+                                        this.range)));
                         }
                         if (pkRanges.size() == 0) {
                             return Mono.error(new NotFoundException(
-                                    String.format("Stale cache for collection rid '%s': pkRanges are empty",
-                                            containerRid)));
+                                    String.format(
+                                            "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are empty",
+                                            containerRid,
+                                            this.range)));
                         }
 
                         // For epk range filtering we can end up in one of 3 cases:
@@ -196,7 +200,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             // datastructures
                             GoneException goneException = new GoneException(
                                     String.format(
-                                            "EpkRange {} spans {} physical partitions: {}",
+                                            "EpkRange %s spans %s physical partitions: %s",
                                             this.range,
                                             pkRanges.size(),
                                             pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList()),
