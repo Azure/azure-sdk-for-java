@@ -9,9 +9,34 @@ function Get-java-OnboardedDocsMsPackages($DocRepoLocation) {
     return $allPackages
 }
 
-function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
+function Get-java-OnboardedDocsMsPackagesForMoniker ($DocRepoLocation, $moniker) {
+    $packageOnboardingFiles = "$DocRepoLocation/package.json"
+  
+    $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
+    if ("preview" -eq $moniker) {
+        $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "preview/docs-ref-autogen" }
+    }
+    elseif("latest" -eq $moniker) {
+        $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "docs-ref-autogen" }
+    }
+    $onboardedPackages = @{}
+    foreach ($spec in $onboardingSpec.packages) {
+        $packageName = $spec.packageArtifactId
+        $groupId = $spec.packageGroupId
+        $jsonFile = "$DocRepoLocation/metadata/$moniker/$packageName.json"
+        if (Test-Path $jsonFile) {
+          $onboardedPackages["$groupId`:$packageName"] = ConvertFrom-Json (Get-Content $jsonFile -Raw)
+        }
+        else{
+          $onboardedPackages["$groupId`:$packageName"] = $null
+        }
+    }
+    return $onboardedPackages
+}
+
+function GetPackageReadmeName ($packageMetadata) {
     # Fallback to get package-level readme name if metadata file info does not exist
-    $packageLevelReadmeName = $packageMetadata.Package.Replace('azure-', '');
+    $packageLevelReadmeName = $packageMetadata.Package.Replace('azure-', '')
 
     # If there is a metadata json for the package use the DocsMsReadmeName from
     # the metadata function
@@ -20,6 +45,14 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
         $packageLevelReadmeName = $readmeMetadata.DocsMsReadMeName
     }
 
+    return $packageLevelReadmeName
+}
+function Get-java-PackageLevelReadme($packageMetadata) {   
+    return GetPackageReadmeName -packageMetadata $packageMetadata
+}
+
+function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
+    $packageLevelReadmeName = GetPackageReadmeName -packageMetadata $packageMetadata
     $packageTocHeader = $packageMetadata.Package
     if ($packageMetadata.DisplayName) {
         $packageTocHeader = $packageMetadata.DisplayName
@@ -145,6 +178,11 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
     else {
         Write-Error "Can't find namespaces from javadoc jar jarFilePath."
     }
+}
+
+function Get-java-RepositoryLink ($packageInfo) {
+    $groupIdPath = $packageInfo.GroupId -replace "\.", "/"
+    return "$PackageRepositoryUri/$groupIdPath/$($packageInfo.Package)"
 }
   
 function Parse-Overview-Frame ($filePath, $destination) {

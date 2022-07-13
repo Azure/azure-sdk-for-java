@@ -6,6 +6,8 @@ $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/rel
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $packageDownloadUrl = "https://repo1.maven.org/maven2"
+$GithubUri = "https://github.com/Azure/azure-sdk-for-java"
+$PackageRepositoryUri = "https://repo1.maven.org/maven2"
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 
