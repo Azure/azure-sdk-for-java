@@ -38,7 +38,7 @@ public class MetricsOptions {
             return new MetricsOptions().setEnabled(!configuration.get(IS_DISABLED_PROPERTY));
         }
 
-        return null;
+        return new MetricsOptions();
     }
 
     /**
@@ -59,5 +59,4 @@ public class MetricsOptions {
         this.isEnabled = enabled;
         return this;
     }
-
 }

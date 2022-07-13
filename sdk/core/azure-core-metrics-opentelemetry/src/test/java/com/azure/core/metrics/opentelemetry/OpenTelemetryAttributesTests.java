@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OpenTelemetryAttributesBuilderTests {
+public class OpenTelemetryAttributesTests {
     private static final MeterProvider METER_PROVIDER = new OpenTelemetryMeterProvider();
     private static final Meter METER = METER_PROVIDER.createMeter("test", null, null);
 
@@ -50,6 +50,7 @@ public class OpenTelemetryAttributesBuilderTests {
 
     @Test
     public void addAttributeInvalid() {
+        assertThrows(NullPointerException.class, () -> METER.createAttributes(null));
         assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap("string", null)));
         assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, "foo")));
         assertThrows(NullPointerException.class, () -> METER.createAttributes(Collections.singletonMap(null, 42L)));

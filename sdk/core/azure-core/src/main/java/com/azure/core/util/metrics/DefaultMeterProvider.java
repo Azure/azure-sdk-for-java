@@ -4,6 +4,7 @@
 package com.azure.core.util.metrics;
 
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.ServiceLoader;
 
 final class DefaultMeterProvider implements MeterProvider {
     public static final MeterProvider INSTANCE = new DefaultMeterProvider();
-
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultMeterProvider.class);
     private static MeterProvider meterProvider;
 
     private DefaultMeterProvider() {
@@ -24,9 +25,16 @@ final class DefaultMeterProvider implements MeterProvider {
         // classloading differently (OSGi, Spring and others) and don't/ depend on the
         // System classloader to load Meter classes.
         ServiceLoader<MeterProvider> serviceLoader = ServiceLoader.load(MeterProvider.class, MeterProvider.class.getClassLoader());
-        Iterator<?> iterator = serviceLoader.iterator();
+        Iterator<MeterProvider> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
             meterProvider = serviceLoader.iterator().next();
+            LOGGER.info("Found MeterProvider implementation on the classpath: {}", meterProvider.getClass().getName());
+        }
+
+        while (iterator.hasNext()) {
+            MeterProvider ignoredProvider = iterator.next();
+            LOGGER.warning("Multiple MeterProviders were found on the classpath, ignoring {}.",
+                ignoredProvider.getClass().getName());
         }
     }
 

@@ -187,7 +187,7 @@ public interface Meter extends AutoCloseable {
     TelemetryAttributes createAttributes(Map<String, Object> attributeMap);
 
     /**
-     * Closes the token manager.
+     * {@inheritDoc}
      */
     @Override
     void close();
