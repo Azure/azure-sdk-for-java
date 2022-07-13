@@ -460,10 +460,79 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "simple" })
-    public void fullFidelityChangeFeedFromFeedRange() throws Exception {
-
-    }
+//    @Test(groups = { "simple" })
+//    public void fullFidelityChangeFeedFromFeedRange() throws Exception {
+//        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
+//        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+//            .createForProcessingFromNow(FeedRange.forFullRange());
+//        options.fullFidelity();
+//
+//        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+//            .queryChangeFeed(options, JsonNode.class)
+//            .iterableByPage()
+//            .iterator();
+//
+//        while (results.hasNext()) {
+//            FeedResponse<JsonNode> response = results.next();
+//        }
+//
+//        TestItem item1 = new TestItem(
+//            UUID.randomUUID().toString(),
+//            "mypk", "Johnson");
+//        TestItem item2 = new TestItem(
+//            UUID.randomUUID().toString(),
+//            "mypk", "Smith");
+//        cosmosContainer.upsertItem(item1);
+//        cosmosContainer.upsertItem(item2);
+//        String originalLastName = item1.getProp();
+//        item1.setProp("Gates");
+//        cosmosContainer.upsertItem(item1);
+//        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
+//
+//        // Check item2 deleted with TTL
+//        // TODO: this is not working - item does get deleted but it won't show up in CF
+//        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
+//        Thread.sleep(5 * 1000);
+//
+//        options = CosmosChangeFeedRequestOptions
+//            .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("/mypk")));
+//        options.fullFidelity();
+//
+//        results = cosmosContainer
+//            .queryChangeFeed(options, JsonNode.class)
+//            .iterableByPage()
+//            .iterator();
+//
+//        if (results.hasNext()){ // returns one empty page only
+//            FeedResponse<JsonNode> response = results.next();
+//            List<JsonNode> itemChanges = response.getResults();
+//            assertGatewayMode(response);
+//            assertThat(itemChanges.size() == 4);
+//            // Assert initial creation of items
+//            assertThat(itemChanges.get(0).get("current").get("id").asText().equals(item1.getId()));
+//            assertThat(itemChanges.get(0).get("current").get("prop").asText().equals(originalLastName));
+//            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText().equals("create"));
+//            assertThat(itemChanges.get(1).get("current").get("id").asText().equals(item2.getId()));
+//            assertThat(itemChanges.get(1).get("current").get("prop").asText().equals(item2.getProp()));
+//            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText().equals("create"));
+//            // Assert replace of item1
+//            assertThat(itemChanges.get(2).get("current").get("id").asText().equals(item1.getId()));
+//            assertThat(itemChanges.get(2).get("current").get("prop").asText().equals(item1.getProp()));
+//            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText().equals("replace"));
+//            // Assert delete of item1
+//            assertThat(itemChanges.get(3).get("previous").get("id").asText().equals(item1.getId()));
+//            assertThat(itemChanges.get(3).get("current").isEmpty());
+//            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText().equals("delete"));
+//            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+//                .equals(itemChanges.get(2).get("metadata").get("lsn").asText()));
+//            // Assert item2 deleted with TTL
+//            // TODO: Missing TTL logic
+//        }
+//        // Finish draining query
+//        while (results.hasNext()) {
+//            results.next();
+//        }
+//    }
 
     @Test(groups = { "simple" })
     public void fullFidelityChangeFeedFromContinuationToken() throws Exception {
@@ -481,7 +550,6 @@ public class ChangeFeedTest extends TestSuiteBase {
         while (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
             continuationToken = response.getContinuationToken();
-            logger.info("Initial results with continuation token {} are {}", continuationToken, response.getResults());
         }
 
         options = CosmosChangeFeedRequestOptions
@@ -534,7 +602,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
                 .equals(itemChanges.get(2).get("metadata").get("lsn").asText()));
             // Assert item2 deleted with TTL
-            // TODO: Missing TTL logic
+            // TODO: Missing TTL logic showing up
         }
         // Finish draining query
         while (results.hasNext()) {
@@ -552,7 +620,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .buildClient();
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
-        paths.add("/id");
+        paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
         String containerId = "FFCF_container" + UUID.randomUUID().toString();
