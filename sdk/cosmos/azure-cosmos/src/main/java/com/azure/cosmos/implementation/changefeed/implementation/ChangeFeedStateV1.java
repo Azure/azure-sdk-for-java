@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -16,6 +18,8 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedStateV1 extends ChangeFeedState {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChangeFeedStateV1.class);
     private final String containerRid;
     private final FeedRangeInternal feedRange;
     private final ChangeFeedMode mode;

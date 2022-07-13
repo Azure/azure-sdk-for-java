@@ -2,9 +2,24 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.*;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
@@ -12,7 +27,17 @@ import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.ChangeFeedPolicy;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -29,7 +54,11 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -99,8 +128,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             count += changeFeedPage.getResults().size();
             assertThat(changeFeedPage.getResults().size())
-            .as("change feed should contain all the previously created documents")
-            .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
+                .as("change feed should contain all the previously created documents")
+                .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
         }
         assertThat(count).as("the number of changes").isEqualTo(expectedDocuments.size());
     }
@@ -108,10 +137,10 @@ public class ChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = 5 * TIMEOUT)
     public void changesFromPartitionKeyRangeId_FromBeginning() {
         List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
-                .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
-                .map(Resource::getId)
-                .collectList()
-                .block();
+                                                  .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
+                                                  .map(Resource::getId)
+                                                  .collectList()
+                                                  .block();
 
         assertThat(partitionKeyRangeIds.size()).isGreaterThan(1);
 
@@ -126,7 +155,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .collectList().block();
 
         int count = 0;
-        for(int i = 0; i < changeFeedResultList.size(); i++) {
+        for (int i = 0; i < changeFeedResultList.size(); i++) {
             FeedResponse<Document> changeFeedPage = changeFeedResultList.get(i);
             assertThat(changeFeedPage.getContinuationToken())
                 .as("Response continuation should not be null")
@@ -134,8 +163,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             count += changeFeedPage.getResults().size();
             assertThat(changeFeedPage.getResults().size())
-            .as("change feed should contain all the previously created documents")
-            .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
+                .as("change feed should contain all the previously created documents")
+                .isLessThanOrEqualTo(changeFeedOption.getMaxItemCount());
 
             assertThat(changeFeedPage.getContinuationToken())
                 .as("Response continuation should not be null")
@@ -166,8 +195,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         FeedResponseListValidator<Document> validator =
             new FeedResponseListValidator.Builder<Document>().totalSize(0).build();
         validator.validate(changeFeedResultsList);
-        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() - 1).
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
     private void changeFeed_withUpdatesAndDelete(boolean enableFullFidelityChangeFeedMode) {
@@ -195,8 +224,8 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .totalSize(0)
                 .build();
         validator.validate(changeFeedResultsList);
-        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() - 1).
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
 
         String continuationToken = changeFeedResultsList
             .get(changeFeedResultsList.size() - 1)
@@ -217,11 +246,11 @@ public class ChangeFeedTest extends TestSuiteBase {
         FeedResponseListValidator<Document> validatorAfterDeletes =
             new FeedResponseListValidator
                 .Builder<Document>()
-                .totalSize(enableFullFidelityChangeFeedMode ? 1: 0)
+                .totalSize(enableFullFidelityChangeFeedMode ? 1 : 0)
                 .build();
         validatorAfterDeletes.validate(changeFeedResultsListAfterDeletes);
-        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() - 1).
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
 
         continuationToken = changeFeedResultsListAfterDeletes
             .get(changeFeedResultsList.size() - 1)
@@ -244,12 +273,12 @@ public class ChangeFeedTest extends TestSuiteBase {
         FeedResponseListValidator<Document> validatorAfterUpdates =
             new FeedResponseListValidator
                 .Builder<Document>()
-                .totalSize(enableFullFidelityChangeFeedMode ? 3: 1)
+                .totalSize(enableFullFidelityChangeFeedMode ? 3 : 1)
                 .build();
 
         validatorAfterUpdates.validate(changeFeedResultsListAfterUpdates);
-        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
-            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() - 1).
+                                        getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
     @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
@@ -260,7 +289,8 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
-    @Ignore("TODO fabianm - re-enable when bug in emulator always using FF change feed on conatiners with retention is fixed")
+    @Ignore("TODO fabianm - re-enable when bug in emulator always using FF change feed on conatiners with retention "
+        + "is fixed")
     public void changeFeed_incrementalOnFullFidelityContainer_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(false);
     }
@@ -275,7 +305,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void changeFeed_fromStartDate() throws Exception {
 
         //setStartDateTime is not currently supported in multimaster mode. So skipping the test
-        if(BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().single().block())){
+        if (BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().single().block())) {
             throw new SkipException(
                 "StartTime/IfModifiedSince is not currently supported when EnableMultipleWriteLocations is set");
         }
@@ -306,10 +336,10 @@ public class ChangeFeedTest extends TestSuiteBase {
             .block();
 
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(createdCollection,
-                changeFeedOption, Document.class).collectList().block();
+            changeFeedOption, Document.class).collectList().block();
 
         int count = 0;
-        for(int i = 0; i < changeFeedResultList.size(); i++) {
+        for (int i = 0; i < changeFeedResultList.size(); i++) {
             FeedResponse<Document> changeFeedPage = changeFeedResultList.get(i);
             count += changeFeedPage.getResults().size();
             assertThat(changeFeedPage.getContinuationToken())
@@ -338,7 +368,8 @@ public class ChangeFeedTest extends TestSuiteBase {
             .as("no recent changes")
             .isEmpty();
 
-        String changeFeedContinuation = changeFeedResultsList.get(changeFeedResultsList.size()-1).getContinuationToken();
+        String changeFeedContinuation =
+            changeFeedResultsList.get(changeFeedResultsList.size() - 1).getContinuationToken();
         assertThat(changeFeedContinuation).as("continuation token is not null").isNotNull();
         assertThat(changeFeedContinuation).as("continuation token is not empty").isNotEmpty();
 
@@ -381,7 +412,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         for (String partitionKey : partitionKeyToDocuments.keySet().stream().collect(Collectors.toList())) {
             Collection<Document> expectedDocuments = partitionKeyToDocuments.get(partitionKey);
 
-            FeedRangePartitionKeyImpl feedRangeForLogicalPartition= new FeedRangePartitionKeyImpl(
+            FeedRangePartitionKeyImpl feedRangeForLogicalPartition = new FeedRangePartitionKeyImpl(
                 ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKey)));
 
             Range<String> effectiveRange =
@@ -426,9 +457,9 @@ public class ChangeFeedTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition(partitionKey);
 
         Document createdDocument = client
-                .createDocument(getCollectionLink(), docDefinition, null, false)
-                .block()
-                .getResource();
+            .createDocument(getCollectionLink(), docDefinition, null, false)
+            .block()
+            .getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
     }
 
@@ -454,88 +485,190 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
 
         return Flux.merge(
-            Flux.fromIterable(result),
-            100)
+                       Flux.fromIterable(result),
+                       100)
                    .map(ResourceResponse::getResource).collectList().block();
     }
 
 
-//    @Test(groups = { "simple" })
-//    public void fullFidelityChangeFeedFromFeedRange() throws Exception {
-//        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
-//        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-//            .createForProcessingFromNow(FeedRange.forFullRange());
-//        options.fullFidelity();
-//
-//        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
-//            .queryChangeFeed(options, JsonNode.class)
-//            .iterableByPage()
-//            .iterator();
-//
-//        while (results.hasNext()) {
-//            FeedResponse<JsonNode> response = results.next();
-//        }
-//
-//        TestItem item1 = new TestItem(
-//            UUID.randomUUID().toString(),
-//            "mypk", "Johnson");
-//        TestItem item2 = new TestItem(
-//            UUID.randomUUID().toString(),
-//            "mypk", "Smith");
-//        cosmosContainer.upsertItem(item1);
-//        cosmosContainer.upsertItem(item2);
-//        String originalLastName = item1.getProp();
-//        item1.setProp("Gates");
-//        cosmosContainer.upsertItem(item1);
-//        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
-//
-//        // Check item2 deleted with TTL
-//        // TODO: this is not working - item does get deleted but it won't show up in CF
-//        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
-//        Thread.sleep(5 * 1000);
-//
-//        options = CosmosChangeFeedRequestOptions
-//            .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("/mypk")));
-//        options.fullFidelity();
-//
-//        results = cosmosContainer
-//            .queryChangeFeed(options, JsonNode.class)
-//            .iterableByPage()
-//            .iterator();
-//
-//        if (results.hasNext()){ // returns one empty page only
-//            FeedResponse<JsonNode> response = results.next();
-//            List<JsonNode> itemChanges = response.getResults();
-//            assertGatewayMode(response);
-//            assertThat(itemChanges.size() == 4);
-//            // Assert initial creation of items
-//            assertThat(itemChanges.get(0).get("current").get("id").asText().equals(item1.getId()));
-//            assertThat(itemChanges.get(0).get("current").get("prop").asText().equals(originalLastName));
-//            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText().equals("create"));
-//            assertThat(itemChanges.get(1).get("current").get("id").asText().equals(item2.getId()));
-//            assertThat(itemChanges.get(1).get("current").get("prop").asText().equals(item2.getProp()));
-//            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText().equals("create"));
-//            // Assert replace of item1
-//            assertThat(itemChanges.get(2).get("current").get("id").asText().equals(item1.getId()));
-//            assertThat(itemChanges.get(2).get("current").get("prop").asText().equals(item1.getProp()));
-//            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText().equals("replace"));
-//            // Assert delete of item1
-//            assertThat(itemChanges.get(3).get("previous").get("id").asText().equals(item1.getId()));
-//            assertThat(itemChanges.get(3).get("current").isEmpty());
-//            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText().equals("delete"));
-//            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
-//                .equals(itemChanges.get(2).get("metadata").get("lsn").asText()));
-//            // Assert item2 deleted with TTL
-//            // TODO: Missing TTL logic
-//        }
-//        // Finish draining query
-//        while (results.hasNext()) {
-//            results.next();
-//        }
-//    }
+    @Test(groups = { "simple" })
+    public void fullFidelityChangeFeed_FromNowForFullRange() throws Exception {
+        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange());
+        options.fullFidelity();
+
+        Iterator<FeedResponse<JsonNode>> results = cosmosContainer
+            .queryChangeFeed(options, JsonNode.class)
+            .iterableByPage()
+            .iterator();
+
+        while (results.hasNext()) {
+            FeedResponse<JsonNode> response = results.next();
+        }
+
+        TestItem item1 = new TestItem(
+            UUID.randomUUID().toString(),
+            "mypk", "Johnson");
+        TestItem item2 = new TestItem(
+            UUID.randomUUID().toString(),
+            "mypk", "Smith");
+        cosmosContainer.upsertItem(item1);
+        cosmosContainer.upsertItem(item2);
+        String originalLastName = item1.getProp();
+        item1.setProp("Gates");
+        cosmosContainer.upsertItem(item1);
+        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
+
+        // Check item2 deleted with TTL
+        // TODO: this is not working - item does get deleted but it won't show up in CF
+        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
+        Thread.sleep(5 * 1000);
+
+        if (results.hasNext()) { // returns one empty page only
+            FeedResponse<JsonNode> response = results.next();
+            List<JsonNode> itemChanges = response.getResults();
+            assertGatewayMode(response);
+            assertThat(itemChanges.size()).isEqualTo(4);
+            // Assert initial creation of items
+            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
+            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
+            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item2.getProp());
+            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
+            // Assert replace of item1
+            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
+            // Assert delete of item1
+            assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(3).get("current")).isEmpty();
+            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
+            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+                                  ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
+            // Assert item2 deleted with TTL
+            // TODO: Missing TTL logic
+        }
+        // Finish draining query
+        while (results.hasNext()) {
+            results.next();
+        }
+    }
 
     @Test(groups = { "simple" })
-    public void fullFidelityChangeFeedFromContinuationToken() throws Exception {
+    public void fullFidelityChangeFeed_FromNowForLogicalPartition() throws Exception {
+        CosmosContainer cosmosContainer = initializeFFCFContainer(2);
+        CosmosChangeFeedRequestOptions options1 = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-1")));
+        options1.fullFidelity();
+
+        CosmosChangeFeedRequestOptions options2 = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forLogicalPartition(new PartitionKey("mypk-2")));
+        options2.fullFidelity();
+
+        Iterator<FeedResponse<JsonNode>> results1 = cosmosContainer
+            .queryChangeFeed(options1, JsonNode.class)
+            .iterableByPage()
+            .iterator();
+
+        Iterator<FeedResponse<JsonNode>> results2 = cosmosContainer
+            .queryChangeFeed(options1, JsonNode.class)
+            .iterableByPage()
+            .iterator();
+
+        while (results1.hasNext()) {
+            FeedResponse<JsonNode> response = results1.next();
+        }
+
+        while (results2.hasNext()) {
+            FeedResponse<JsonNode> response = results2.next();
+        }
+
+        TestItem item1 = new TestItem(
+            UUID.randomUUID().toString(),
+            "mypk-1", "Johnson");
+        TestItem item2 = new TestItem(
+            UUID.randomUUID().toString(),
+            "mypk-1", "Smith");
+        TestItem item3 = new TestItem(
+            UUID.randomUUID().toString(),
+            "mypk-2", "John");
+        cosmosContainer.createItem(item1);
+        cosmosContainer.createItem(item2);
+        cosmosContainer.createItem(item3);
+        String originalLastNameItem1 = item1.getProp();
+        item1.setProp("Gates");
+        cosmosContainer.upsertItem(item1);
+        String originalLastNameItem2 = item2.getProp();
+        item2.setProp("Doe");
+        cosmosContainer.upsertItem(item2);
+        cosmosContainer.deleteItem(item1, new CosmosItemRequestOptions());
+
+        String originalLastNameItem3 = item3.getProp();
+        item3.setProp("Potter");
+        cosmosContainer.upsertItem(item3);
+        cosmosContainer.deleteItem(item3, new CosmosItemRequestOptions());
+
+        // Check item2 deleted with TTL
+        // TODO: this is not working - item does get deleted but it won't show up in CF
+        logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
+        Thread.sleep(5 * 1000);
+
+        while (results1.hasNext()) {
+            FeedResponse<JsonNode> response = results1.next();
+            List<JsonNode> itemChanges = response.getResults();
+            assertGatewayMode(response);
+            assertThat(itemChanges.size()).isEqualTo(4);
+            // Assert initial creation of items
+            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem1);
+            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
+            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(originalLastNameItem2);
+            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
+            // Assert replace of item1
+            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
+            // Assert delete of item1
+            assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(3).get("current")).isEmpty();
+            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
+            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+                                  ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
+            // Assert item2 deleted with TTL
+            // TODO: Missing TTL logic
+        }
+
+        while (results2.hasNext()) {
+            FeedResponse<JsonNode> response = results2.next();
+            List<JsonNode> itemChanges = response.getResults();
+            assertGatewayMode(response);
+            assertThat(itemChanges.size()).isEqualTo(3);
+            // Assert initial creation of item3
+            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item3.getId());
+            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastNameItem3);
+            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+            // Assert replace of item3
+            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item3.getId());
+            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item3.getProp());
+            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
+            // Assert delete of item3
+            assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item3.getId());
+            assertThat(itemChanges.get(3).get("current")).isEmpty();
+            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
+            assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
+                                  ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
+        }
+        // Finish draining query
+        while (results1.hasNext()) {
+            results1.next();
+        }
+    }
+
+    @Test(groups = { "simple" })
+    public void fullFidelityChangeFeed_FromContinuationToken() throws Exception {
         CosmosContainer cosmosContainer = initializeFFCFContainer(2);
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromNow(FeedRange.forFullRange());
@@ -579,28 +712,28 @@ public class ChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        if (results.hasNext()){
+        if (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
             List<JsonNode> itemChanges = response.getResults();
             assertGatewayMode(response);
-            assertThat(itemChanges.size() == 4);
+            assertThat(itemChanges.size()).isEqualTo(4);
             // Assert initial creation of items
-            assertThat(itemChanges.get(0).get("current").get("id").asText().equals(item1.getId()));
-            assertThat(itemChanges.get(0).get("current").get("prop").asText().equals(originalLastName));
-            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText().equals("create"));
-            assertThat(itemChanges.get(1).get("current").get("id").asText().equals(item2.getId()));
-            assertThat(itemChanges.get(1).get("current").get("prop").asText().equals(item2.getProp()));
-            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText().equals("create"));
+            assertThat(itemChanges.get(0).get("current").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(0).get("current").get("prop").asText()).isEqualTo(originalLastName);
+            assertThat(itemChanges.get(0).get("metadata").get("operationType").asText()).isEqualTo("create");
+            assertThat(itemChanges.get(1).get("current").get("id").asText()).isEqualTo(item2.getId());
+            assertThat(itemChanges.get(1).get("current").get("prop").asText()).isEqualTo(item2.getProp());
+            assertThat(itemChanges.get(1).get("metadata").get("operationType").asText()).isEqualTo("create");
             // Assert replace of item1
-            assertThat(itemChanges.get(2).get("current").get("id").asText().equals(item1.getId()));
-            assertThat(itemChanges.get(2).get("current").get("prop").asText().equals(item1.getProp()));
-            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText().equals("replace"));
+            assertThat(itemChanges.get(2).get("current").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(2).get("current").get("prop").asText()).isEqualTo(item1.getProp());
+            assertThat(itemChanges.get(2).get("metadata").get("operationType").asText()).isEqualTo("replace");
             // Assert delete of item1
-            assertThat(itemChanges.get(3).get("previous").get("id").asText().equals(item1.getId()));
-            assertThat(itemChanges.get(3).get("current").isEmpty());
-            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText().equals("delete"));
+            assertThat(itemChanges.get(3).get("previous").get("id").asText()).isEqualTo(item1.getId());
+            assertThat(itemChanges.get(3).get("current")).isEmpty();
+            assertThat(itemChanges.get(3).get("metadata").get("operationType").asText()).isEqualTo("delete");
             assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
-                .equals(itemChanges.get(2).get("metadata").get("lsn").asText()));
+                                  ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
             // Assert item2 deleted with TTL
             // TODO: Missing TTL logic showing up
         }
@@ -681,13 +814,13 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         for (int i = 0; i < 200; i++) {
             String partitionKey = UUID.randomUUID().toString();
-            for(int j = 0; j < 7; j++) {
+            for (int j = 0; j < 7; j++) {
                 docs.add(getDocumentDefinition(partitionKey));
             }
         }
 
         List<Document> insertedDocs = bulkInsert(client, docs);
-        for(Document doc: insertedDocs) {
+        for (Document doc : insertedDocs) {
             partitionKeyToDocuments.put(doc.getString(PartitionKeyFieldName), doc);
         }
     }
@@ -720,7 +853,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-    @Target({METHOD})
+    @Target({ METHOD })
     @interface Tag {
         String name();
     }

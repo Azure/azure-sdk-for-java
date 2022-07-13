@@ -138,7 +138,21 @@ public class FullFidelityChangeFeedProcessorBuilder {
             throw new IllegalArgumentException("consumer");
         }
 
-        //  TODO:(kuthapar) - validate the full fidelity options (from now and continuation token only).
+        if (this.changeFeedProcessorOptions.getStartTime() != null) {
+            throw new IllegalStateException(
+                "Full fidelity retention is not supported for the chosen change feed start from " +
+                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                    "CosmosChangeFeedRequestOptions.createForProcessingFromContinuation instead."
+            );
+        }
+
+        if (this.changeFeedProcessorOptions.isStartFromBeginning()) {
+            throw new IllegalStateException(
+                "Full fidelity retention is not supported for the chosen change feed start from " +
+                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                    "CosmosChangeFeedRequestOptions.createForProcessingFromContinuation instead."
+            );
+        }
         //  TODO:(kuthapar) - point in time in multi-master check. where do we do that?
 
         FullFidelityChangeFeedProcessorBuilderImpl builder = new FullFidelityChangeFeedProcessorBuilderImpl()

@@ -82,21 +82,21 @@ class FullFidelityPartitionProcessorFactoryImpl implements PartitionProcessorFac
         //  Even when we throw Exception from below in certain cases, CFP continues to run.
         //  We should fix this.
 
-        if (processorOptions.getStartTime() != null) {
-            throw new IllegalStateException(
-                "Full fidelity retention is not supported for the chosen change feed start from " +
-                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-            );
-        }
-
-        if (processorOptions.isStartFromBeginning()) {
-            throw new IllegalStateException(
-                "Full fidelity retention is not supported for the chosen change feed start from " +
-                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-            );
-        }
+//        if (processorOptions.getStartTime() != null) {
+//            throw new IllegalStateException(
+//                "Full fidelity retention is not supported for the chosen change feed start from " +
+//                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+//                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
+//            );
+//        }
+//
+//        if (processorOptions.isStartFromBeginning()) {
+//            throw new IllegalStateException(
+//                "Full fidelity retention is not supported for the chosen change feed start from " +
+//                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+//                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
+//            );
+//        }
 
         return ChangeFeedStartFromInternal.createFromNow();
     }
