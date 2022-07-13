@@ -8,4 +8,5 @@ import com.azure.core.annotation.Immutable;
 
 /** The aggregate total of the Offline Evaluation. */
 @Immutable
-public final class PolicyResultTotalSummary extends PolicyResultSummary {}
+public final class PolicyResultTotalSummary extends PolicyResultSummary {
+}

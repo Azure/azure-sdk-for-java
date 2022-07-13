@@ -8,4 +8,5 @@ import com.azure.core.annotation.Immutable;
 
 /** Date range. */
 @Immutable
-public final class LogsPropertiesDateRange extends DateRange {}
+public final class LogsPropertiesDateRange extends DateRange {
+}
