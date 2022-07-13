@@ -78,4 +78,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             linkProcessor.dispose();
         }
     }
+
+    public boolean isProcessorTerminated() {
+        return linkProcessor.isTerminated();
+    }
 }

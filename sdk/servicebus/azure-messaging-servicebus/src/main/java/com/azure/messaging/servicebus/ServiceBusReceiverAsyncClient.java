@@ -1435,7 +1435,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
         final ServiceBusAsyncConsumer existing = consumer.get();
-        if (existing != null) {
+        if (existing != null && !existing.isProcessorTerminated()) {
             return existing;
         }
 
@@ -1505,7 +1505,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (consumer.compareAndSet(null, newConsumer)) {
             return newConsumer;
         } else {
-            newConsumer.close();
+            final ServiceBusAsyncConsumer oldConsumer = consumer.get();
+            // If retry exhausted or a non-retriable error occurred, we can call receiveMessages() again to set newConsumer.
+            if (oldConsumer.isProcessorTerminated()) {
+                consumer.set(newConsumer);
+                oldConsumer.close();
+            } else {
+                newConsumer.close();
+            }
             return consumer.get();
         }
     }
