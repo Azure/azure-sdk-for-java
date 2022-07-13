@@ -291,12 +291,13 @@ public final class CallingServerClientBuilder implements
      * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
      * specified by additionalPolicies will be applied after them
      *
+     * @param isDebug Debug mode is for using custom PMA endpoint with custom ACS resource
      * @return The updated {@link CallingServerClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerAsyncClient buildAsyncClient() {
-        return new CallingServerAsyncClient(createServiceImpl());
+    public CallingServerAsyncClient buildAsyncClient(boolean isDebug) {
+        return new CallingServerAsyncClient(createServiceImpl(isDebug));
     }
 
     /**
@@ -304,23 +305,29 @@ public final class CallingServerClientBuilder implements
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
      * additionalPolicies will be applied after them.
      *
+     * @param isDebug Debug mode is for using custom PMA endpoint with custom ACS resource
      * @return Updated {@link CallingServerClientBuilder} object.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
-    public CallingServerClient buildClient() {
-        return new CallingServerClient(buildAsyncClient());
+    public CallingServerClient buildClient(boolean isDebug) {
+        return new CallingServerClient(buildAsyncClient(isDebug));
     }
 
-    private AzureCommunicationCallingServerServiceImpl createServiceImpl() {
+    private AzureCommunicationCallingServerServiceImpl createServiceImpl(boolean isDebug) {
         boolean isConnectionStringSet = connectionString != null && !connectionString.trim().isEmpty();
         boolean isEndpointSet = endpoint != null && !endpoint.trim().isEmpty();
         boolean isAzureKeyCredentialSet = azureKeyCredential != null;
         boolean isTokenCredentialSet = tokenCredential != null;
 
-        if (isConnectionStringSet && isEndpointSet) {
+        if (isConnectionStringSet && isEndpointSet && !isDebug) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
+        }
+
+        if ((!isConnectionStringSet || !isEndpointSet) && isDebug) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Debug mode requires ConnectionString and Endpoint both to be set. Requirement is not fulfilled, changing back to normal mode."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
@@ -338,7 +345,11 @@ public final class CallingServerClientBuilder implements
                 "Both 'tokenCredential' and 'keyCredential' are set. Just one may be used."));
         }
 
-        if (isConnectionStringSet) {
+        if (isDebug) {
+            CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
+            String accessKey = connectionStringObject.getAccessKey();
+            credential(new AzureKeyCredential(accessKey));
+        } else if (isConnectionStringSet) {
             CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
             String endpoint = connectionStringObject.getEndpoint();
             String accessKey = connectionStringObject.getAccessKey();
@@ -356,7 +367,7 @@ public final class CallingServerClientBuilder implements
 
         HttpPipeline builderPipeline = pipeline;
         if (pipeline == null) {
-            builderPipeline = createHttpPipeline(httpClient);
+            builderPipeline = createHttpPipeline(httpClient, isDebug);
         }
 
         AzureCommunicationCallingServerServiceImplBuilder clientBuilder = new AzureCommunicationCallingServerServiceImplBuilder();
@@ -377,7 +388,7 @@ public final class CallingServerClientBuilder implements
         return this;
     }
 
-    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies() {
+    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies(boolean isDebug) throws MalformedURLException {
         if (tokenCredential != null && azureKeyCredential != null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'credential' and 'keyCredential' are set. Just one may be used."));
@@ -391,7 +402,12 @@ public final class CallingServerClientBuilder implements
             httpHeaders.put("x-ms-host", hostName);
             pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
         } else if (azureKeyCredential != null) {
-            pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
+            if (isDebug) {
+                String acsEndpoint = (new CommunicationConnectionString(connectionString)).getEndpoint();
+                pipelinePolicies.add(new CustomHmacAuthenticationPolicy(azureKeyCredential, (new URL(acsEndpoint)).getHost()));
+            } else {
+                pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
+            }
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
@@ -400,7 +416,7 @@ public final class CallingServerClientBuilder implements
         return pipelinePolicies;
     }
 
-    private HttpPipeline createHttpPipeline(HttpClient httpClient) {
+    private HttpPipeline createHttpPipeline(HttpClient httpClient, boolean isDebug) {
         if (pipeline != null) {
             return pipeline;
         }
@@ -424,7 +440,13 @@ public final class CallingServerClientBuilder implements
         policyList.add(new RequestIdPolicy());
         policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policyList.add(new RedirectPolicy());
-        policyList.addAll(createHttpPipelineAuthPolicies());
+        try {
+            policyList.addAll(createHttpPipelineAuthPolicies(isDebug));
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Invalid ACS Endpoint exception: " + e));
+        }
+
         policyList.add(new CookiePolicy());
 
         // Add additional policies

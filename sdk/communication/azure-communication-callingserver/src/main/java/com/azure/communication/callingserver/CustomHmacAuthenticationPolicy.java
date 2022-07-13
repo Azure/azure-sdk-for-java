@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common.implementation;
+package com.azure.communication.callingserver;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -36,7 +36,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * HttpPipelinePolicy to append CommunicationClient required headers
  */
-public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
+public final class CustomHmacAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String X_MS_DATE_HEADER = "x-ms-date";
     private static final String X_MS_STRING_TO_SIGN_HEADER = "x-ms-hmac-string-to-sign-base64";
     private static final String HOST_HEADER = "host";
@@ -57,15 +57,18 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
     private final AzureKeyCredential credential;
-    private final ClientLogger logger = new ClientLogger(HmacAuthenticationPolicy.class);
+    private final String acsResource;
+    private final ClientLogger logger = new ClientLogger(CustomHmacAuthenticationPolicy.class);
 
     /**
      * Created with a non-null client credential
      * @param clientCredential client credential with valid access key
+     * @param acsResource the acs resource endpoint
      */
-    public HmacAuthenticationPolicy(AzureKeyCredential clientCredential) {
+    public CustomHmacAuthenticationPolicy(AzureKeyCredential clientCredential, String acsResource) {
         Objects.requireNonNull(clientCredential, "'clientCredential' cannot be a null value.");
-        credential = clientCredential;
+        this.credential = clientCredential;
+        this.acsResource = acsResource;
     }
 
     @Override
@@ -86,9 +89,9 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
                 .orElse(context.getHttpRequest().getUrl());
 
             return appendAuthorizationHeaders(
-                    hostnameToSignWith,
-                    context.getHttpRequest().getHttpMethod().toString(),
-                    contents)
+                hostnameToSignWith,
+                context.getHttpRequest().getHttpMethod().toString(),
+                contents)
                 .flatMap(headers -> {
                     headers.entrySet().forEach(
                         header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()));
@@ -108,7 +111,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
                 throw logger.logExceptionAsError(Exceptions.propagate(e));
             }
         }, MessageDigest::update)
-            .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
+        .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
     }
 
     private Map<String, String> addAuthenticationHeaders(final URL url,
@@ -117,13 +120,12 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         final Map<String, String> headers = new HashMap<>();
 
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
+        headers.put("X_FORWARDED_HOST", acsResource);
+        headers.put(HOST_HEADER, acsResource);
         headers.put(CONTENT_HASH_HEADER, contentHash);
         String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
             .format(HMAC_DATETIMEFORMATTER_PATTERN);
         headers.put(X_MS_DATE_HEADER, utcNow);
-        //headers.put(HOST_HEADER, url.getHost());
-        headers.put("X_FORWARDED_HOST", "acstestappjuntu.communication.azure.com");
-        headers.put(HOST_HEADER, "acstestappjuntu.communication.azure.com");
         addSignatureHeader(url, httpMethod, headers);
         return headers;
     }

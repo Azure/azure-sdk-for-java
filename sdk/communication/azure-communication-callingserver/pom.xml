@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-callingserver</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+  <version>1.0.0-beta.6-20220713</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
 
   <name>Microsoft Azure client library for CallingServer service</name>
   <description>
