@@ -6,7 +6,6 @@ package com.azure.core.util.metrics;
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
-import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -16,17 +15,16 @@ import java.util.HashMap;
  * Contains code snippets for {@link Meter} showing how to use it in Azure client libraries.
  */
 public class MetricsJavaDocCodeSnippets {
-    final MeterProvider meterProvider = new MicrometerMeterProvider();
+    final MeterProvider meterProvider = MeterProvider.getDefaultProvider();
     final Meter defaultMeter = meterProvider.createMeter("azure-core-metrics-samples", "1.0.0", null);
     /**
      * Code snippet for {@link MeterProvider#createMeter(String, String, MetricsOptions)}}
      */
     public void createMeter() {
         // BEGIN: com.azure.core.util.metrics.MeterProvider.createMeter
-        MetricsOptions metricsOptions = new MicrometerMetricsOptions()
-            .setRegistry(new LoggingMeterRegistry());
+        MetricsOptions metricsOptions = new MetricsOptions();
 
-        Meter meter = meterProvider.createMeter("azure-core", "1.0.0", metricsOptions);
+        Meter meter = MeterProvider.getDefaultProvider().createMeter("azure-core", "1.0.0", metricsOptions);
         // END: com.azure.core.util.metrics.MeterProvider.createMeter
     }
 

@@ -17,10 +17,9 @@ public interface MeterProvider {
      *
      * <!-- src_embed com.azure.core.util.metrics.MeterProvider.createMeter -->
      * <pre>
-     * MetricsOptions metricsOptions = new MicrometerMetricsOptions&#40;&#41;
-     *     .setRegistry&#40;new LoggingMeterRegistry&#40;&#41;&#41;;
+     * MetricsOptions metricsOptions = new MetricsOptions&#40;&#41;;
      *
-     * Meter meter = meterProvider.createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, metricsOptions&#41;;
+     * Meter meter = MeterProvider.getDefaultProvider&#40;&#41;.createMeter&#40;&quot;azure-core&quot;, &quot;1.0.0&quot;, metricsOptions&#41;;
      * </pre>
      * <!-- end com.azure.core.util.metrics.MeterProvider.createMeter -->
      *

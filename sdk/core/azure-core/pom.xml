@@ -194,14 +194,6 @@
       <version>1.1.4</version>  <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-core</artifactId>
-      <version>1.9.1</version>  <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -248,7 +240,6 @@
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.3]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>io.micrometer:micrometer-core:[1.9.1]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency}-->
               </includes>
             </bannedDependencies>
           </rules>
