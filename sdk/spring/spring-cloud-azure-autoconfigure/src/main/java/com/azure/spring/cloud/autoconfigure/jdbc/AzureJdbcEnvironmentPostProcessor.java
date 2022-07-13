@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;

@@ -24,7 +24,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
  * <dd>The fragment section is ignored in Connector/J connection strings.</dd>
  * </dl>
  */
-enum DatabaseType {
+public enum DatabaseType {
 
     MYSQL("jdbc:mysql", "?", "&"),
     POSTGRESQL("jdbc:postgresql", "?", "&"),

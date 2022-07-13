@@ -13,13 +13,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- * Store the constants for customized Azure properties with Kafka.
+ * Store the constants for customized Azure properties with JDBC.
  */
 public final class AzureJDBCPropertiesUtils {
     private AzureJDBCPropertiesUtils() {
     }
-
-    public static final String AZURE_TOKEN_CREDENTIAL = "azure.token.credential";
 
     private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
     static final String CREDENTIAL_PREFIX = "azure.credential.";
