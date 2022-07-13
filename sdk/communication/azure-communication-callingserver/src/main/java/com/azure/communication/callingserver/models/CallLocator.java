@@ -6,6 +6,8 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Objects;
+
 /** The locator used for joining or taking action on a call. */
 @Immutable
 public final class CallLocator {
@@ -25,11 +27,11 @@ public final class CallLocator {
     private final CallLocatorKind kind;
 
     private CallLocator(String id, String kind) {
-        if (kind == "groupCallLocator") {
+        if (Objects.equals(kind, "groupCallLocator")) {
             this.groupCallId = id;
             this.serverCallId = null;
             this.kind = CallLocatorKind.fromString(kind);
-        } else if (kind == "serverCallLocator") {
+        } else if (Objects.equals(kind, "serverCallLocator")) {
             this.groupCallId = null;
             this.serverCallId = id;
             this.kind = CallLocatorKind.fromString(kind);
