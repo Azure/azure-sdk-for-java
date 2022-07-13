@@ -64,6 +64,7 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
     protected void configureService(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
         Assert.notNull(processorClientProperties.getEntityType(), "Entity type cannot be null.");
         Assert.notNull(processorClientProperties.getEntityName(), "Entity name cannot be null.");
+        super.configureService(builder);
         final PropertyMapper propertyMapper = new PropertyMapper();
 
         if (TOPIC == processorClientProperties.getEntityType()) {

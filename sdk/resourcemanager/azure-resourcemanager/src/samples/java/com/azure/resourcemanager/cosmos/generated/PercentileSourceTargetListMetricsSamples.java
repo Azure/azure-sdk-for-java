@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PercentileSourceTarget ListMetrics. */
 public final class PercentileSourceTargetListMetricsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBPercentileSourceTargetGetMetrics.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBPercentileSourceTargetGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.

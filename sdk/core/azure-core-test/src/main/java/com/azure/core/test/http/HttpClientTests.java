@@ -8,12 +8,16 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Named;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,10 +41,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Generic test suite for {@link HttpClient HttpClients}.
@@ -48,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class HttpClientTests {
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
 
-    private static final String REQUEST_HOST = "http://localhost";
+    private static final String REQUEST_HOST = "localhost";
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
@@ -80,135 +87,261 @@ public abstract class HttpClientTests {
     protected abstract int getWireMockPort();
 
     /**
+     * Get a flag indicating if communication should be secured or not (https or http).
+     * @return A flag indicating if communication should be secured or not (https or http).
+     */
+    protected boolean isSecure() {
+        return false;
+    }
+
+    /**
      * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
      */
-    @Test
+    @SyncAsyncTest
     public void plainResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        StepVerifier.create(sendRequest(PLAIN_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(PLAIN_RESPONSE),
+            () -> sendRequest(PLAIN_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a 'Content-Type' header encodes using the specified charset.
      */
-    @Test
+    @SyncAsyncTest
     public void headerResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        StepVerifier.create(sendRequest(HEADER_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(HEADER_RESPONSE),
+            () -> sendRequest(HEADER_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a 'Content-Type' containing an invalid or unsupported charset encodes using UTF-8.
      */
-    @Test
+    @SyncAsyncTest
     public void invalidHeaderResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        StepVerifier.create(sendRequest(INVALID_HEADER_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(INVALID_HEADER_RESPONSE),
+            () -> sendRequest(INVALID_HEADER_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
-    @Test
+    @SyncAsyncTest
     public void utf8BomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        StepVerifier.create(sendRequest(UTF_8_BOM_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(UTF_8_BOM_RESPONSE),
+            () -> sendRequest(UTF_8_BOM_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
-    @Test
+    @SyncAsyncTest
     public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        StepVerifier.create(sendRequest(UTF_16BE_BOM_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(UTF_16BE_BOM_RESPONSE),
+            () -> sendRequest(UTF_16BE_BOM_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
-    @Test
+    @SyncAsyncTest
     public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
 
-        StepVerifier.create(sendRequest(UTF_16LE_BOM_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(UTF_16LE_BOM_RESPONSE),
+            () -> sendRequest(UTF_16LE_BOM_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
-    @Test
+    @SyncAsyncTest
     public void utf32BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
 
-        StepVerifier.create(sendRequest(UTF_32BE_BOM_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(UTF_32BE_BOM_RESPONSE),
+            () -> sendRequest(UTF_32BE_BOM_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
-    @Test
+    @SyncAsyncTest
     public void utf32LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
 
-        StepVerifier.create(sendRequest(UTF_32LE_BOM_RESPONSE))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(UTF_32LE_BOM_RESPONSE),
+            () -> sendRequest(UTF_32LE_BOM_RESPONSE)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
      */
-    @Test
+    @SyncAsyncTest
     public void bomWithSameHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        StepVerifier.create(sendRequest(BOM_WITH_SAME_HEADER))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(BOM_WITH_SAME_HEADER),
+            () -> sendRequest(BOM_WITH_SAME_HEADER)
+        );
+
+        assertEquals(expected, actual);
     }
 
     /**
      * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
      */
-    @Test
+    @SyncAsyncTest
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        StepVerifier.create(sendRequest(BOM_WITH_DIFFERENT_HEADER))
-            .assertNext(actual -> assertEquals(expected, actual))
-            .verifyComplete();
+        String actual = SyncAsyncExtension.execute(
+            () -> sendRequestSync(BOM_WITH_DIFFERENT_HEADER),
+            () -> sendRequest(BOM_WITH_DIFFERENT_HEADER)
+        );
+
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Tests that unbuffered response body can be accessed.
+     */
+    @SyncAsyncTest
+    public void canAccessResponseBody() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        Supplier<HttpResponse> responseSupplier = () -> SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, Context.NONE),
+            () -> createHttpClient().send(request)
+        );
+
+        assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+    }
+
+    /**
+     * Tests that client returns buffered response if requested via azure-eagerly-read-response Context flag.
+     */
+    @SyncAsyncTest
+    public void shouldBufferResponse() {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            BinaryData.fromString("test body"));
+
+        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Buffering buffered response is identity transformation.
+        HttpResponse bufferedResponse = response.buffer();
+        assertSame(response, bufferedResponse);
+    }
+
+    /**
+     * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
+     */
+    @SyncAsyncTest
+    public void bufferedResponseCanBeReadMultipleTimes() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        Context context = Context.NONE.addData("azure-eagerly-read-response", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Read response twice using all accessors.
+        assertEquals(requestBody.toString(), response.getBodyAsString().block());
+        assertEquals(requestBody.toString(), response.getBodyAsString().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
     }
 
     /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      * @param requestBody The BinaryData that contains random bytes.
      * @param expectedResponseBody The expected bytes in the echo response.
-     * @throws MalformedURLException If it can't parse URL
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody)
-        throws MalformedURLException {
+    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
             getRequestUrl(ECHO_RESPONSE),
@@ -220,6 +353,90 @@ public abstract class HttpClientTests {
             .flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
             .verifyComplete();
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataSync(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        HttpResponse httpResponse = createHttpClient()
+            .sendSync(request, Context.NONE);
+
+        byte[] responseBytes = httpResponse
+            .getBodyAsByteArray()
+            .block();
+
+        assertArrayEquals(expectedResponseBody, responseBytes);
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        StepVerifier.create(createHttpClient()
+                .send(request, context)
+                .flatMap(HttpResponse::getBodyAsByteArray))
+            .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
+            .verifyComplete();
+
+        assertEquals(expectedResponseBody.length, progress.intValue());
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setHttpRequestProgressReporter(
+                ProgressReporter.withProgressListener(progress::set))
+            .getContext();
+
+        HttpResponse httpResponse = createHttpClient()
+            .sendSync(request, context);
+
+        byte[] responseBytes = httpResponse
+            .getBodyAsByteArray()
+            .block();
+
+        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertEquals(expectedResponseBody.length, progress.intValue());
     }
 
     private static Stream<Arguments> getBinaryDataBodyVariants() {
@@ -314,6 +531,14 @@ public abstract class HttpClientTests {
             .flatMap(HttpResponse::getBodyAsString);
     }
 
+    private String sendRequestSync(String requestPath) {
+        HttpResponse httpResponse = createHttpClient()
+            .sendSync(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)), Context.NONE);
+        return httpResponse
+            .getBodyAsString()
+            .block();
+    }
+
     /**
      * Gets the request URL for given path.
      * @param requestPath The path.
@@ -322,7 +547,8 @@ public abstract class HttpClientTests {
      */
     protected URL getRequestUrl(String requestPath) {
         try {
-            return new URL(REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
+            String prefix = isSecure() ? "https://" : "http://";
+            return new URL(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

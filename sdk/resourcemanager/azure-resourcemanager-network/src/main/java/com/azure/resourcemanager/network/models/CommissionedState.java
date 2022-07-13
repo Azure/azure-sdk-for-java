@@ -39,7 +39,11 @@ public final class CommissionedState extends ExpandableStringEnum<CommissionedSt
         return fromString(name, CommissionedState.class);
     }
 
-    /** @return known CommissionedState values. */
+    /**
+     * Gets known CommissionedState values.
+     *
+     * @return known CommissionedState values.
+     */
     public static Collection<CommissionedState> values() {
         return values(CommissionedState.class);
     }

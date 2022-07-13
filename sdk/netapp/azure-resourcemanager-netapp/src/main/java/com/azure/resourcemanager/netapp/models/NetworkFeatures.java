@@ -27,7 +27,11 @@ public final class NetworkFeatures extends ExpandableStringEnum<NetworkFeatures>
         return fromString(name, NetworkFeatures.class);
     }
 
-    /** @return known NetworkFeatures values. */
+    /**
+     * Gets known NetworkFeatures values.
+     *
+     * @return known NetworkFeatures values.
+     */
     public static Collection<NetworkFeatures> values() {
         return values(NetworkFeatures.class);
     }

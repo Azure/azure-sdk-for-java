@@ -22,11 +22,11 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Disabled because  for ConfigurationClient, the header is not outputted in log.
- * I debugged and confirmed that User-Agent been set successfully.
- * The reason why the User-Agent not outputted in log is not clear.
+ * Disabled because  for ConfigurationClient, the header is not outputted in log. I debugged and confirmed that
+ * User-Agent been set successfully. The reason why the User-Agent not outputted in log is not clear.
  */
 @Disabled
 @Isolated("Run this by itself as it captures System.out")
@@ -66,9 +66,10 @@ public class AppConfigurationUserAgentTests {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).containsAnyOf(
-                    String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG),
-                    String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG));
+                String allOutput = output.getAll();
+                String format1 = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+                String format2 = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+                assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }
 }

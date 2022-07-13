@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
@@ -27,7 +26,6 @@ import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +33,6 @@ import java.util.Map;
 /** An Azure Cosmos DB database account. */
 @Fluent
 public final class DatabaseAccountGetResultsInner extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountGetResultsInner.class);
-
     /*
      * Indicates the type of database account. This can only be set at database
      * account creation.

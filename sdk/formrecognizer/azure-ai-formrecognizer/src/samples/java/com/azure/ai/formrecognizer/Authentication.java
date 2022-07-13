@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentField;
@@ -80,7 +80,7 @@ public class Authentication {
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
-        getAccountProperties(documentModelAdminClient);
+        getResourceInfo(documentModelAdminClient);
     }
 
     private static void authenticationWithAzureActiveDirectoryDocumentModelAdministrationClient() {
@@ -88,7 +88,7 @@ public class Authentication {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildClient();
-        getAccountProperties(documentModelAdminClient);
+        getResourceInfo(documentModelAdminClient);
     }
 
     private static void beginRecognizeCustomFormsFromUrl(DocumentAnalysisClient documentAnalysisClient) {
@@ -159,10 +159,10 @@ public class Authentication {
         }
     }
 
-    private static void getAccountProperties(DocumentModelAdministrationClient documentModelAdminClient) {
-        AccountProperties accountProperties = documentModelAdminClient.getAccountProperties();
+    private static void getResourceInfo(DocumentModelAdministrationClient documentModelAdminClient) {
+        ResourceInfo resourceInfo = documentModelAdminClient.getResourceInfo();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            accountProperties.getDocumentModelLimit());
-        System.out.printf("Current count of built custom models: %d%n", accountProperties.getDocumentModelCount());
+            resourceInfo.getDocumentModelLimit());
+        System.out.printf("Current count of built custom models: %d%n", resourceInfo.getDocumentModelCount());
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageTargetOperation Suspend. */
 public final class StorageTargetOperationSuspendSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Suspend.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_Suspend.json
      */
     /**
      * Sample code: StorageTargets_Suspend.

@@ -8,9 +8,10 @@ import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
+import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,14 +23,36 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AzureKeyVaultCertificateAutoConfigurationTests {
-
-
+class AzureKeyVaultCertificateAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
+    CertificateClientBuilderFactory, AzureKeyVaultCertificateProperties> {
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-        .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getMinimalContextRunner() {
+        return this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv")
+            );
+    }
+
+    @Override
+    protected String getPropertyPrefix() {
+        return AzureKeyVaultCertificateProperties.PREFIX;
+    }
+
+    @Override
+    protected Class<CertificateClientBuilderFactory> getBuilderFactoryType() {
+        return CertificateClientBuilderFactory.class;
+    }
+
+    @Override
+    protected Class<AzureKeyVaultCertificateProperties> getConfigurationPropertiesType() {
+        return AzureKeyVaultCertificateProperties.class;
+    }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
@@ -46,6 +69,17 @@ class AzureKeyVaultCertificateAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.keyvault.certificate.enabled=false",
+                endpointProperty + "=" + String.format(ENDPOINT, "mykv")
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void disableKeyVaultShouldNotConfigure(String endpointProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.enabled=false",
                 endpointProperty + "=" + String.format(ENDPOINT, "mykv")
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));

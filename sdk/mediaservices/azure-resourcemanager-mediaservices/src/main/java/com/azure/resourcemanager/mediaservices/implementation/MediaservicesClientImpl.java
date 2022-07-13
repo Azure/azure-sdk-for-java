@@ -28,8 +28,11 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.MediaservicesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.EdgePoliciesInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
@@ -37,6 +40,8 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceCollection;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceUpdate;
 import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MediaservicesClient. */
@@ -100,7 +105,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 + "/{accountName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MediaServiceInner>> createOrUpdate(
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -129,9 +134,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
                 + "/{accountName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MediaServiceInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -233,7 +238,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -243,7 +247,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<MediaServiceInner>>map(
@@ -288,7 +292,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -296,7 +299,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -404,7 +407,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -415,7 +417,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -455,7 +457,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -464,7 +465,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -482,14 +483,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MediaServiceInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<MediaServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -536,7 +530,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      * @return a Media Services account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MediaServiceInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, MediaServiceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -562,7 +556,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -573,7 +566,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -593,7 +586,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      * @return a Media Services account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MediaServiceInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, MediaServiceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -619,7 +612,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -628,10 +620,95 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
+    }
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String accountName, MediaServiceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters);
+        return this
+            .client
+            .<MediaServiceInner, MediaServiceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                MediaServiceInner.class,
+                MediaServiceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this
+            .client
+            .<MediaServiceInner, MediaServiceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), MediaServiceInner.class, MediaServiceInner.class, context);
+    }
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, MediaServiceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -648,15 +725,29 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MediaServiceInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, MediaServiceInner parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<MediaServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates a Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Media Services account on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MediaServiceInner> createOrUpdateAsync(
+        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -686,12 +777,12 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Media Services account along with {@link Response}.
+     * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MediaServiceInner> createOrUpdateWithResponse(
+    public MediaServiceInner createOrUpdate(
         String resourceGroupName, String accountName, MediaServiceInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -725,7 +816,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -736,7 +826,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -775,7 +865,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -784,7 +873,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -801,7 +890,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -846,7 +935,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      * @return a Media Services account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MediaServiceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accountName, MediaServiceUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -872,7 +961,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -883,7 +971,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -903,7 +991,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      * @return a Media Services account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MediaServiceInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -929,7 +1017,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -938,10 +1025,94 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
+    }
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, parameters);
+        return this
+            .client
+            .<MediaServiceInner, MediaServiceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                MediaServiceInner.class,
+                MediaServiceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this
+            .client
+            .<MediaServiceInner, MediaServiceInner>getLroResult(
+                mono, this.client.getHttpPipeline(), MediaServiceInner.class, MediaServiceInner.class, context);
+    }
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a Media Services account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -958,15 +1129,29 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MediaServiceInner> updateAsync(
         String resourceGroupName, String accountName, MediaServiceUpdate parameters) {
-        return updateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<MediaServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, accountName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Media Services account on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MediaServiceInner> updateAsync(
+        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -995,12 +1180,12 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Media Services account along with {@link Response}.
+     * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MediaServiceInner> updateWithResponse(
+    public MediaServiceInner update(
         String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+        return updateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -1041,7 +1226,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1052,7 +1236,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1098,7 +1282,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1107,7 +1290,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -1128,7 +1311,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     private Mono<Void> syncStorageKeysAsync(
         String resourceGroupName, String accountName, SyncStorageKeysInput parameters) {
         return syncStorageKeysWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1165,7 +1348,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1202,7 +1385,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1213,7 +1395,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -1221,7 +1403,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1259,7 +1441,6 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1268,14 +1449,14 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1289,18 +1470,11 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     private Mono<EdgePoliciesInner> listEdgePoliciesAsync(
         String resourceGroupName, String accountName, ListEdgePoliciesInput parameters) {
         return listEdgePoliciesWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<EdgePoliciesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1317,7 +1491,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     }
 
     /**
-     * List the media edge policies associated with the Media Services account.
+     * List all the media edge policies associated with the Media Services account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1356,13 +1530,17 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .<PagedResponse<MediaServiceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1399,11 +1577,15 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(

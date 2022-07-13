@@ -30,7 +30,11 @@ public final class LoadBalancerType extends ExpandableStringEnum<LoadBalancerTyp
         return fromString(name, LoadBalancerType.class);
     }
 
-    /** @return known LoadBalancerType values. */
+    /**
+     * Gets known LoadBalancerType values.
+     *
+     * @return known LoadBalancerType values.
+     */
     public static Collection<LoadBalancerType> values() {
         return values(LoadBalancerType.class);
     }

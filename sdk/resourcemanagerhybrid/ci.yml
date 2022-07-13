@@ -10,6 +10,7 @@ trigger:
     include:
       - sdk/resourcemanagerhybrid/
     exclude:
+      - sdk/resourcemanagerhybrid/pom.xml
       - sdk/resourcemanagerhybrid/azure-resourcemanager/pom.xml
       - sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/pom.xml
@@ -36,6 +37,7 @@ pr:
     include:
       - sdk/resourcemanagerhybrid/
     exclude:
+      - sdk/resourcemanagerhybrid/pom.xml
       - sdk/resourcemanagerhybrid/azure-resourcemanager/pom.xml
       - sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/pom.xml
       - sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/pom.xml

@@ -77,8 +77,8 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * available on {@link BlobAsyncClient}.
  *
  * <p>
- * Please see <a href=https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction>here</a> for more
- * information on containers.
+ * Please see the <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction">Azure Docs</a> for
+ * more information on containers.
  *
  * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core project
@@ -326,8 +326,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
-     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
-     * Docs</a>.
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobServiceAsyncClient.deleteBlobContainer#String -->

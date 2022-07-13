@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerConfigurations ListByResourceGroup. */
 public final class PartnerConfigurationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerConfigurations_ListByResourceGroup.json
      */
     /**
      * Sample code: PartnerConfigurations_ListByResourceGroup.

@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for DscpConfiguration CreateOrUpdate. */
 public final class DscpConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/DscpConfigurationCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/DscpConfigurationCreate.json
      */
     /**
      * Sample code: Create DSCP Configuration.

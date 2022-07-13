@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public class ThroughputSettingsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsResource.class);
-
     /*
      * Value of the Cosmos DB resource throughput. Either throughput is
      * required or autoscaleSettings is required, but not both.

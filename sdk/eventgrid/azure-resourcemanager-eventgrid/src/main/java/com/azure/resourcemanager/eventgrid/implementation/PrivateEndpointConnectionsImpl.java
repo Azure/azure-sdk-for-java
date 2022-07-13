@@ -11,9 +11,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.eventgrid.models.ParentType;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
 
 public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConnections {
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionsImpl.class);
@@ -30,7 +30,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PrivateEndpointConnection get(
-        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName) {
+        String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType,
+        String parentName,
+        String privateEndpointConnectionName) {
         PrivateEndpointConnectionInner inner =
             this.serviceClient().get(resourceGroupName, parentType, parentName, privateEndpointConnectionName);
         if (inner != null) {
@@ -42,7 +45,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context) {
@@ -63,7 +66,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PrivateEndpointConnection update(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
@@ -85,7 +88,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PrivateEndpointConnection update(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection,
@@ -108,13 +111,16 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(
-        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName) {
+        String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType,
+        String parentName,
+        String privateEndpointConnectionName) {
         this.serviceClient().delete(resourceGroupName, parentType, parentName, privateEndpointConnectionName);
     }
 
     public void delete(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context) {
@@ -122,7 +128,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PagedIterable<PrivateEndpointConnection> listByResource(
-        String resourceGroupName, ParentType parentType, String parentName) {
+        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName) {
         PagedIterable<PrivateEndpointConnectionInner> inner =
             this.serviceClient().listByResource(resourceGroupName, parentType, parentName);
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
@@ -130,7 +136,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PagedIterable<PrivateEndpointConnection> listByResource(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String filter,
         Integer top,

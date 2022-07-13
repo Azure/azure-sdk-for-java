@@ -1,5 +1,26 @@
 # Release History
 
+## 5.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added identifier to client. ([#22981](https://github.com/Azure/azure-sdk-for-java/issues/22981))
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.12.2 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.30.0`.
+- Upgraded `azure-core-amqp` to `2.6.0`.
+
 ## 5.12.1 (2022-06-10)
 
 ### Features Added

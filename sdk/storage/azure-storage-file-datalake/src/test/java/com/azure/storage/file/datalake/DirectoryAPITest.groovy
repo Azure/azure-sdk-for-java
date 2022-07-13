@@ -8,6 +8,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -77,7 +78,7 @@ class DirectoryAPITest extends APISpec {
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
     }
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create defaults with options"() {
         setup:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -262,6 +263,7 @@ class DirectoryAPITest extends APISpec {
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create options with ACL"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -276,6 +278,7 @@ class DirectoryAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create options with owner and group"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -3916,5 +3919,29 @@ class DirectoryAPITest extends APISpec {
         then:
         renamedDir.getObjectPath() == renamedName
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
+    }
+
+    def "create file system with small timeouts fail for service client"() {
+        setup:
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new DataLakeServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        serviceClient.createFileSystem(generateFileSystemName())
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
     }
 }

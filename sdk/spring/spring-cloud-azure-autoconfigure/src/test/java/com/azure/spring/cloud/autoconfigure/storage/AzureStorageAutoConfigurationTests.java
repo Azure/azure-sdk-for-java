@@ -20,6 +20,8 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -35,6 +37,57 @@ class AzureStorageAutoConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
+
+    @Test
+    void configureWithStorageGlobalDisabled() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.storage.enabled=false")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureStorageBlobAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class);
+            });
+    }
+
+    @Test
+    void configureWithStorageGlobalEnabledAndServicesDisabled() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.enabled=true",
+                "spring.cloud.azure.storage.blob.enabled=false",
+                "spring.cloud.azure.storage.fileshare.enabled=false",
+                "spring.cloud.azure.storage.queue.enabled=false"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureStorageBlobAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class);
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void configureWithStorageGlobalAndBlobEnabled(String accountNameProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.enabled=true",
+                "spring.cloud.azure.storage.blob.enabled=true",
+                "spring.cloud.azure.storage.fileshare.enabled=false",
+                "spring.cloud.azure.storage.queue.enabled=false",
+                accountNameProperty
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class);
+            });
+    }
 
     @Test
     void blobConfigShouldWorkWithFileShareConfig() {

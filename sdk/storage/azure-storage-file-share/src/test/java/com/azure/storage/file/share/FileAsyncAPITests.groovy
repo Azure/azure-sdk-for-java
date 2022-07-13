@@ -35,6 +35,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 import static com.azure.storage.file.share.FileTestHelper.*
 
@@ -838,12 +839,12 @@ class FileAsyncAPITests extends APISpec {
             .setSmbProperties(smbProperties)
             .setFilePermission(setFilePermission ? filePermission : null)
             .setIgnoreReadOnly(ignoreReadOnly)
-            .setSetArchiveAttribute(setArchiveAttribute)
+            .setArchiveAttribute(setArchiveAttribute)
             .setPermissionCopyModeType(permissionType)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
 
         def copyInfoVerifier = StepVerifier.create(poller)
 
@@ -866,11 +867,11 @@ class FileAsyncAPITests extends APISpec {
         def sourceURL = primaryFileAsyncClient.getFileUrl()
         def options = new ShareFileCopyOptions()
             .setIgnoreReadOnly(true)
-            .setSetArchiveAttribute(true)
+            .setArchiveAttribute(true)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
 
         def copyInfoVerifier = StepVerifier.create(poller)
 
@@ -880,6 +881,7 @@ class FileAsyncAPITests extends APISpec {
         }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options file permission"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -898,8 +900,8 @@ class FileAsyncAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
 
         def copyInfoVerifier = StepVerifier.create(poller)
 
@@ -910,11 +912,12 @@ class FileAsyncAPITests extends APISpec {
 
         def properties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
 
-        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
-        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        compareDatesWithPrecision(properties.getFileCreationTime(), smbProperties.getFileCreationTime())
+        compareDatesWithPrecision(properties.getFileLastWriteTime(), smbProperties.getFileLastWriteTime())
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options change time"() {
         given:
         def client = primaryFileAsyncClient.create(1024).block()
@@ -928,8 +931,8 @@ class FileAsyncAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -937,9 +940,10 @@ class FileAsyncAPITests extends APISpec {
             assert it.getValue().getCopyId() != null
         }.expectComplete().verify(Duration.ofMinutes(1))
 
-        smbProperties.getFileChangeTime() == primaryFileAsyncClient.getProperties().block().getSmbProperties().getFileChangeTime()
+        compareDatesWithPrecision(smbProperties.getFileChangeTime(), primaryFileAsyncClient.getProperties().block().getSmbProperties().getFileChangeTime())
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options copy smbFileProperties permission key"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -958,8 +962,8 @@ class FileAsyncAPITests extends APISpec {
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -969,8 +973,8 @@ class FileAsyncAPITests extends APISpec {
 
         def properties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
 
-        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
-        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        compareDatesWithPrecision(properties.getFileCreationTime(), smbProperties.getFileCreationTime())
+        compareDatesWithPrecision(properties.getFileLastWriteTime(), smbProperties.getFileLastWriteTime())
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
@@ -985,8 +989,8 @@ class FileAsyncAPITests extends APISpec {
             .setDestinationRequestConditions(conditions)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -1007,7 +1011,7 @@ class FileAsyncAPITests extends APISpec {
 
 
         when:
-        primaryFileAsyncClient.beginCopy(sourceURL, getPollingDuration(1000), options).blockFirst()
+        primaryFileAsyncClient.beginCopy(sourceURL, options, getPollingDuration(1000)).blockFirst()
 
         then:
         // exception: LeaseNotPresentWithFileOperation
@@ -1022,8 +1026,8 @@ class FileAsyncAPITests extends APISpec {
             .setMetadata(testMetadata)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -1032,6 +1036,7 @@ class FileAsyncAPITests extends APISpec {
         }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options with original smb properties"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -1055,8 +1060,8 @@ class FileAsyncAPITests extends APISpec {
             .setSmbPropertiesToCopy(list)
 
         when:
-        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
-            getPollingDuration(1000), options)
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL, options,
+            getPollingDuration(1000))
         def copyInfoVerifier = StepVerifier.create(poller)
 
         then:
@@ -1066,9 +1071,9 @@ class FileAsyncAPITests extends APISpec {
 
         def resultProperties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
 
-        creationTime == resultProperties.getFileCreationTime()
-        lastWrittenTime == resultProperties.getFileLastWriteTime()
-        changedTime == resultProperties.getFileChangeTime()
+        compareDatesWithPrecision(creationTime, resultProperties.getFileCreationTime())
+        compareDatesWithPrecision(lastWrittenTime, resultProperties.getFileLastWriteTime())
+        compareDatesWithPrecision(changedTime, resultProperties.getFileChangeTime())
         fileAttributes == resultProperties.getNtfsFileAttributes()
     }
 
@@ -1097,7 +1102,7 @@ class FileAsyncAPITests extends APISpec {
             .setSmbPropertiesToCopy(list)
 
         when:
-        primaryFileAsyncClient.beginCopy(sourceURL, getPollingDuration(1000), options)
+        primaryFileAsyncClient.beginCopy(sourceURL, options, getPollingDuration(1000))
 
         then:
         thrown(IllegalArgumentException)

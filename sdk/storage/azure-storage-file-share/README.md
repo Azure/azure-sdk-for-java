@@ -59,7 +59,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.13.1</version>
+  <version>12.14.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -373,7 +373,7 @@ Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with string of sou
 ```java readme-sample-copyFile
 String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
 Duration pollInterval = Duration.ofSeconds(2);
-SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, null, pollInterval);
+SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, (Map<String, String>) null, pollInterval);
 ```
 
 ### Abort copy a file

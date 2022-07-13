@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkSecurityGroups Delete. */
 public final class NetworkSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupDelete.json
      */
     /**
      * Sample code: Delete network security group.

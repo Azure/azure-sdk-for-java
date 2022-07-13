@@ -6,7 +6,10 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
  * Defines grant types: client_credentials, authorization_code, on_behalf_of, azure_delegated.
+ *
+ * @deprecated use {@link AuthorizationGrantType} instead.
  */
+@Deprecated
 public enum AadAuthorizationGrantType {
 
     /**

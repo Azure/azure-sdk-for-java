@@ -177,7 +177,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -238,7 +238,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -368,7 +368,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -426,7 +426,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -456,14 +456,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
     public Mono<BackendAddressPoolInner> getAsync(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName)
-            .flatMap(
-                (Response<BackendAddressPoolInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -549,7 +542,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -618,7 +611,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -878,7 +871,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -936,7 +929,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

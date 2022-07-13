@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for MongoDBResources UpdateMongoDBDatabaseThroughput. */
 public final class MongoDBResourcesUpdateMongoDBDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseThroughputUpdate.

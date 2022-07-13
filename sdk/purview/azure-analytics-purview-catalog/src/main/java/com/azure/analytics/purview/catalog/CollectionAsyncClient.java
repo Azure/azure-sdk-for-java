@@ -38,14 +38,6 @@ public final class CollectionAsyncClient {
      * its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -57,6 +49,9 @@ public final class CollectionAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -82,8 +77,15 @@ public final class CollectionAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -168,6 +170,10 @@ public final class CollectionAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -216,14 +222,6 @@ public final class CollectionAsyncClient {
      * or by its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -235,6 +233,9 @@ public final class CollectionAsyncClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -260,8 +261,15 @@ public final class CollectionAsyncClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -348,6 +356,10 @@ public final class CollectionAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -393,14 +405,6 @@ public final class CollectionAsyncClient {
 
     /**
      * Move existing entities to the target collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -455,6 +459,10 @@ public final class CollectionAsyncClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
