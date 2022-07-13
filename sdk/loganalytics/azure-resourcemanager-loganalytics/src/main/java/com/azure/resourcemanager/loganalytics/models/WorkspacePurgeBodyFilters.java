@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User-defined filters to return data which will be purged from the table. */
 @Fluent
 public final class WorkspacePurgeBodyFilters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgeBodyFilters.class);
-
     /*
      * The column of the table over which the given query should run
      */

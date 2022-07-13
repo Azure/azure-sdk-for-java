@@ -6,12 +6,18 @@ package com.azure.iot.deviceupdate;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
@@ -19,11 +25,14 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.iot.deviceupdate.implementation.DeviceUpdateClientImpl;
 import java.util.ArrayList;
@@ -33,7 +42,11 @@ import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the DeviceManagementClient type. */
 @ServiceClientBuilder(serviceClients = {DeviceManagementClient.class, DeviceManagementAsyncClient.class})
-public final class DeviceManagementClientBuilder {
+public final class DeviceManagementClientBuilder
+        implements HttpTrait<DeviceManagementClientBuilder>,
+                ConfigurationTrait<DeviceManagementClientBuilder>,
+                TokenCredentialTrait<DeviceManagementClientBuilder>,
+                EndpointTrait<DeviceManagementClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -43,6 +56,8 @@ public final class DeviceManagementClientBuilder {
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-iot-deviceupdate.properties");
 
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+
     /** Create an instance of the DeviceManagementClientBuilder. */
     @Generated
     public DeviceManagementClientBuilder() {
@@ -50,17 +65,114 @@ public final class DeviceManagementClientBuilder {
     }
 
     /*
-     * Account endpoint.
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated private HttpPipeline pipeline;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The HTTP client used to send the request.
+     */
+    @Generated private HttpClient httpClient;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    @Generated private HttpLogOptions httpLogOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    @Generated private ClientOptions clientOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /*
+     * The retry options to configure retry policy for failed requests.
+     */
+    @Generated private RetryOptions retryOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        pipelinePolicies.add(customPolicy);
+        return this;
+    }
+
+    /*
+     * The configuration store that is used during construction of the service
+     * client.
+     */
+    @Generated private Configuration configuration;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated private TokenCredential tokenCredential;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public DeviceManagementClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
+     * The service endpoint
      */
     @Generated private String endpoint;
 
-    /**
-     * Sets Account endpoint.
-     *
-     * @param endpoint the endpoint value.
-     * @return the DeviceManagementClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
+    @Override
     public DeviceManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -101,92 +213,6 @@ public final class DeviceManagementClientBuilder {
     }
 
     /*
-     * The HTTP pipeline to send requests through
-     */
-    @Generated private HttpPipeline pipeline;
-
-    /**
-     * Sets The HTTP pipeline to send requests through.
-     *
-     * @param pipeline the pipeline value.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The HTTP client used to send the request.
-     */
-    @Generated private HttpClient httpClient;
-
-    /**
-     * Sets The HTTP client used to send the request.
-     *
-     * @param httpClient the httpClient value.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
-        return this;
-    }
-
-    /*
-     * The configuration store that is used during construction of the service
-     * client.
-     */
-    @Generated private Configuration configuration;
-
-    /**
-     * Sets The configuration store that is used during construction of the service client.
-     *
-     * @param configuration the configuration value.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /*
-     * The TokenCredential used for authentication.
-     */
-    @Generated private TokenCredential tokenCredential;
-
-    /**
-     * Sets The TokenCredential used for authentication.
-     *
-     * @param tokenCredential the tokenCredential value.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder credential(TokenCredential tokenCredential) {
-        this.tokenCredential = tokenCredential;
-        return this;
-    }
-
-    /*
-     * The logging configuration for HTTP requests and responses.
-     */
-    @Generated private HttpLogOptions httpLogOptions;
-
-    /**
-     * Sets The logging configuration for HTTP requests and responses.
-     *
-     * @param httpLogOptions the httpLogOptions value.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /*
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
@@ -204,41 +230,6 @@ public final class DeviceManagementClientBuilder {
         return this;
     }
 
-    /*
-     * The list of Http pipeline policies to add.
-     */
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
-
-    /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
-     */
-    @Generated private ClientOptions clientOptions;
-
-    /**
-     * Sets The client options such as application ID and custom headers to set on a request.
-     *
-     * @param clientOptions the clientOptions value.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /**
-     * Adds a custom Http pipeline policy.
-     *
-     * @param customPolicy The custom Http pipeline policy to add.
-     * @return the DeviceManagementClientBuilder.
-     */
-    @Generated
-    public DeviceManagementClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        pipelinePolicies.add(customPolicy);
-        return this;
-    }
-
     /**
      * Builds an instance of DeviceUpdateClientImpl with the provided parameters.
      *
@@ -246,11 +237,11 @@ public final class DeviceManagementClientBuilder {
      */
     @Generated
     private DeviceUpdateClientImpl buildInnerClient() {
-        if (serviceVersion == null) {
-            this.serviceVersion = DeviceUpdateServiceVersion.getLatest();
-        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
+        }
+        if (serviceVersion == null) {
+            this.serviceVersion = DeviceUpdateServiceVersion.getLatest();
         }
         DeviceUpdateClientImpl client =
                 new DeviceUpdateClientImpl(
@@ -277,6 +268,8 @@ public final class DeviceManagementClientBuilder {
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
         clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
@@ -287,7 +280,8 @@ public final class DeviceManagementClientBuilder {
                         .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                         .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
@@ -308,7 +302,7 @@ public final class DeviceManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of DeviceManagementAsyncClient async client.
+     * Builds an instance of DeviceManagementAsyncClient class.
      *
      * @return an instance of DeviceManagementAsyncClient.
      */
@@ -318,12 +312,12 @@ public final class DeviceManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of DeviceManagementClient sync client.
+     * Builds an instance of DeviceManagementClient class.
      *
      * @return an instance of DeviceManagementClient.
      */
     @Generated
     public DeviceManagementClient buildClient() {
-        return new DeviceManagementClient(buildInnerClient().getDeviceManagements());
+        return new DeviceManagementClient(new DeviceManagementAsyncClient(buildInnerClient().getDeviceManagements()));
     }
 }

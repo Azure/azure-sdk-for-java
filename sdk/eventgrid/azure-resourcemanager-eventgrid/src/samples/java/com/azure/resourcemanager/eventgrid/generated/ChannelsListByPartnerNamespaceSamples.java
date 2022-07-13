@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Channels ListByPartnerNamespace. */
 public final class ChannelsListByPartnerNamespaceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_ListByPartnerNamespace.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Channels_ListByPartnerNamespace.json
      */
     /**
      * Sample code: Channels_ListByPartnerNamespace.

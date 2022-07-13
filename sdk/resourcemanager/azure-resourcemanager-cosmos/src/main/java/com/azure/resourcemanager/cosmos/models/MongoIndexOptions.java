@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB MongoDB collection index options. */
 @Fluent
 public final class MongoIndexOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoIndexOptions.class);
-
     /*
      * Expire after seconds
      */

@@ -950,6 +950,7 @@
         <module>sdk/mysql</module>
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
+        <module>sdk/networkfunction</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
@@ -968,6 +969,7 @@
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
+        <module>sdk/resourceconnector</module>
         <module>sdk/resourcegraph</module>
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>

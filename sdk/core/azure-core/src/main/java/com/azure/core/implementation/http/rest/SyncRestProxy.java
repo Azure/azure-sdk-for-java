@@ -9,7 +9,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -22,7 +21,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -226,6 +224,7 @@ public class SyncRestProxy extends RestProxyBase {
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
 
+<<<<<<< HEAD
         if (bodyContentObject instanceof JsonSerializable<?>) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try (JsonWriter jsonWriter = DefaultJsonWriter.fromStream(outputStream)) {
@@ -243,6 +242,10 @@ public class SyncRestProxy extends RestProxyBase {
             request.setBody(BinaryData.fromBytes(serializedBytes));
 
 
+=======
+        if (isJson) {
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
+>>>>>>> cef7d73580ade6e908211ae1b30f9fb012c4eea4
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody((byte[]) bodyContentObject);
         } else if (bodyContentObject instanceof String) {
@@ -261,7 +264,6 @@ public class SyncRestProxy extends RestProxyBase {
         } else {
             byte[] serializedBytes = serializerAdapter
                 .serializeToBytes(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()));
-            request.setHeader("Content-Length", String.valueOf(serializedBytes.length));
             request.setBody(serializedBytes);
         }
     }
