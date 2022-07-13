@@ -286,12 +286,61 @@ public abstract class JsonReader implements Closeable {
     public abstract String getFieldName();
 
     /**
+     * Convenience method to read a nullable type.
+     * <p>
+     * If the {@link #currentToken()} is {@link JsonToken#NULL} null will be returned, otherwise this {@link JsonReader}
+     * will be passed into the {@code nonNullGetter} function to get the value. Effectively, this is the generic form of
+     * the get*NullableValue methods.
+     *
+     * @param nonNullGetter Function that reads the non-null JSON value.
+     * @param <T> Type returned by the function.
+     * @return null if the {@link #currentToken()} is {@link JsonToken#NULL} or the value returned by
+     * {@code nonNullGetter}.
+     */
+    public final <T> T getNullableValue(Function<JsonReader, T> nonNullGetter) {
+        return currentToken() == JsonToken.NULL ? null : nonNullGetter.apply(this);
+    }
+
+    /**
      * Recursively skips the JSON token sub-stream if the current token is either {@link JsonToken#START_ARRAY} or
      * {@link JsonToken#START_OBJECT}.
      * <p>
      * If the current token isn't the beginning of an array or object this method is a no-op.
      */
     public abstract void skipChildren();
+
+    /**
+     * Reads and returns the current JSON structure the {@link JsonReader} is pointing to. This will mutate the current
+     * location of this {@link JsonReader}.
+     * <p>
+     * If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or {@link JsonToken#FIELD_NAME} an
+     * {@link IllegalStateException} will be thrown.
+     * <p>
+     * The returned {@link JsonReader} is able to be {@link #reset()} to replay the underlying JSON stream.
+     *
+     * @return The buffered JSON object the {@link JsonReader} was pointing to.
+     * @throws IllegalStateException If the {@link #currentToken()} isn't {@link JsonToken#START_OBJECT} or
+     * {@link JsonToken#FIELD_NAME}.
+     */
+    public abstract JsonReader bufferObject();
+
+    /**
+     * Indicates whether the {@link JsonReader} supports {@link #reset() resetting}.
+     *
+     * @return Whether {@link #reset()} is supported.
+     */
+    public abstract boolean resetSupported();
+
+    /**
+     * Creates a new {@link JsonReader} reset to the beginning of the JSON stream.
+     * <p>
+     * Use {@link #resetSupported()} to determine whether the {@link JsonReader} can be reset. If resetting is called
+     * and it isn't supported an {@link IllegalStateException} will be thrown.
+     *
+     * @return A new {@link JsonReader} reset to the beginning of the JSON stream.
+     * @throws IllegalStateException If resetting isn't supported by the current JsonReader.
+     */
+    public abstract JsonReader reset();
 
     /**
      * Recursively reads the JSON token sub-stream if the current token is either {@link JsonToken#START_ARRAY} or

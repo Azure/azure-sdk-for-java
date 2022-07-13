@@ -3,8 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.DefaultJsonReader;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -33,8 +31,7 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonSerializable<
             } else {
                 // If it isn't the discriminator field buffer the JSON structure to make it replayable and find the
                 // discriminator field value.
-                String json = JsonUtils.bufferJsonObject(jsonReader);
-                JsonReader replayReader = DefaultJsonReader.fromString(json);
+                JsonReader replayReader = jsonReader.bufferObject();
                 while (replayReader.nextToken() != JsonToken.END_OBJECT) {
                     String fieldName = replayReader.getFieldName();
                     replayReader.nextToken();
@@ -48,7 +45,7 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonSerializable<
                 }
 
                 if (discriminatorValue != null) {
-                    readerToUse = DefaultJsonReader.fromString(json);
+                    readerToUse = replayReader.reset();
                 }
             }
 

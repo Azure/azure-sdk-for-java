@@ -1249,4 +1249,101 @@ public abstract class JsonWriter implements Closeable {
      * @return The updated JsonWriter object.
      */
     public abstract JsonWriter writeRawField(String fieldName, String value);
+
+    /**
+     * Writes the unknown type {@code value} field.
+     * <p>
+     * The following is how each {@code value} is handled (in this order):
+     *
+     * <ul>
+     *     <li>null -&gt; {@link #writeNull()}</li>
+     *     <li>{@code short} -&gt; {@link #writeInt(int)}</li>
+     *     <li>{@code int} -&gt; {@link #writeInt(int)}</li>
+     *     <li>{@code long} -&gt; {@link #writeLong(long)}</li>
+     *     <li>{@code float} -&gt; {@link #writeFloat(float)}</li>
+     *     <li>{@code double} -&gt; {@link #writeDouble(double)}</li>
+     *     <li>{@code boolean} -&gt; {@link #writeBoolean(boolean)}</li>
+     *     <li>{@link CharSequence} -&gt; {@link #writeString(String)}</li>
+     *     <li>{@code char} -&gt; {@link #writeString(String)}</li>
+     *     <li>{@link JsonSerializable} -&gt; {@link #writeJson(JsonSerializable)}</li>
+     *     <li>{@code Object[]} -&gt; {@link #writeUntyped(Object)} for each element</li>
+     *     <li>{@link Iterable} -&gt; {@link #writeUntyped(Object)} for each element</li>
+     *     <li>{@link Map} -&gt; {@link #writeUntyped(Object)} for each element where the key to {@code toString}'d</li>
+     *     <li>{@link Object} -&gt; empty JSON object ({@code {}})</li>
+     *     <li>All other values use the {@code toString} value with {@link #writeString(String)}</li>
+     * </ul>
+     *
+     * @param fieldName The field name.
+     * @param value The value to write.
+     * @return The updated JsonWriter object.
+     */
+    public JsonWriter writeUntypedField(String fieldName, Object value) {
+        return writeFieldName(fieldName).writeUntyped(value);
+    }
+
+    /**
+     * Writes the unknown type {@code value}.
+     * <p>
+     * The following is how each {@code value} is handled (in this order):
+     *
+     * <ul>
+     *     <li>null -&gt; {@link #writeNull()}</li>
+     *     <li>{@code short} -&gt; {@link #writeInt(int)}</li>
+     *     <li>{@code int} -&gt; {@link #writeInt(int)}</li>
+     *     <li>{@code long} -&gt; {@link #writeLong(long)}</li>
+     *     <li>{@code float} -&gt; {@link #writeFloat(float)}</li>
+     *     <li>{@code double} -&gt; {@link #writeDouble(double)}</li>
+     *     <li>{@code boolean} -&gt; {@link #writeBoolean(boolean)}</li>
+     *     <li>{@link CharSequence} -&gt; {@link #writeString(String)}</li>
+     *     <li>{@code char} -&gt; {@link #writeString(String)}</li>
+     *     <li>{@link JsonSerializable} -&gt; {@link #writeJson(JsonSerializable)}</li>
+     *     <li>{@code Object[]} -&gt; {@link #writeUntyped(Object)} for each element</li>
+     *     <li>{@link Iterable} -&gt; {@link #writeUntyped(Object)} for each element</li>
+     *     <li>{@link Map} -&gt; {@link #writeUntyped(Object)} for each element where the key to {@code toString}'d</li>
+     *     <li>{@link Object} -&gt; empty JSON object ({@code {}})</li>
+     *     <li>All other values use the {@code toString} value with {@link #writeString(String)}</li>
+     * </ul>
+     *
+     * @param value The value to write.
+     * @return The updated JsonWriter object.
+     */
+    public JsonWriter writeUntyped(Object value) {
+        if (value == null) {
+            return writeNull();
+        } else if (value instanceof Short) {
+            return writeInt((short) value);
+        } else if (value instanceof Integer) {
+            return writeInt((int) value);
+        } else if (value instanceof Long) {
+            return writeLong((long) value);
+        } else if (value instanceof Float) {
+            return writeFloat((float) value);
+        } else if (value instanceof Double) {
+            return writeDouble((double) value);
+        } else if (value instanceof Boolean) {
+            return writeBoolean((boolean) value);
+        } else if (value instanceof byte[]) {
+            return writeBinary((byte[]) value);
+        } else if (value instanceof CharSequence) {
+            return writeString(String.valueOf(value));
+        } else if (value instanceof Character) {
+            return writeString(String.valueOf(((Character) value).charValue()));
+        } else if (value instanceof JsonSerializable<?>) {
+            return ((JsonSerializable<?>) value).toJson(this);
+        } else if (value instanceof Object[]) {
+            return writeArray((Object[]) value, JsonWriter::writeUntyped);
+        } else if (value instanceof Iterable<?>) {
+            return writeArray((Iterable<?>) value, JsonWriter::writeUntyped);
+        } else if (value instanceof Map<?, ?>) {
+            Map<?, ?> mapValue = (Map<?, ?>) value;
+
+            writeStartObject();
+            mapValue.forEach((k, v) -> writeFieldName(String.valueOf(k)).writeUntyped(v));
+            return writeEndObject();
+        } else if (value.getClass() == Object.class) {
+            return writeStartObject().writeEndObject();
+        } else {
+            return writeString(String.valueOf(value));
+        }
+    }
 }

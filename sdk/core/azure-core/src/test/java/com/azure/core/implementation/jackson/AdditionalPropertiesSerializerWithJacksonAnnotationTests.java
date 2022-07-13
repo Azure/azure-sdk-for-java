@@ -139,7 +139,7 @@ public class AdditionalPropertiesSerializerWithJacksonAnnotationTests {
         Assertions.assertEquals("c.d", deserialized.additionalProperties().get("a.b"));
         Assertions.assertEquals("barbar", deserialized.additionalProperties().get("properties.bar"));
         Assertions.assertEquals(1, deserialized.additionalPropertiesProperty().size());
-        Assertions.assertEquals(73L, deserialized.additionalPropertiesProperty().get("age"));
+        Assertions.assertEquals(73, deserialized.additionalPropertiesProperty().get("age"));
     }
 
     private static String writeJson(JsonSerializable<?> jsonSerializable) {

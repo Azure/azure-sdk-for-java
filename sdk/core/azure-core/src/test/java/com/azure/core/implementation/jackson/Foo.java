@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -110,9 +109,7 @@ public class Foo implements JsonSerializable<Foo> {
         }
 
         if (additionalProperties != null) {
-            additionalProperties.forEach((key, value) ->
-                JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));
-
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
         }
 
         return jsonWriter.writeEndObject().flush();
@@ -201,7 +198,7 @@ public class Foo implements JsonSerializable<Foo> {
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                    additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
 

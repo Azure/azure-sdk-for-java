@@ -19,6 +19,9 @@ public final class DefaultJsonReader extends JsonReader {
     private static final JsonFactory FACTORY = JsonFactory.builder().build();
 
     private final JsonParser parser;
+    private final byte[] jsonBytes;
+    private final String jsonString;
+    private final boolean resetSupported;
 
     /**
      * Constructs an instance of {@link DefaultJsonReader} from a {@code byte[]}.
@@ -29,7 +32,8 @@ public final class DefaultJsonReader extends JsonReader {
      * {@code byte[]}.
      */
     public static JsonReader fromBytes(byte[] json) {
-        return callWithWrappedIoException(() -> new DefaultJsonReader(FACTORY.createParser(json)));
+        return callWithWrappedIoException(() ->
+            new DefaultJsonReader(FACTORY.createParser(json), true, json, null));
     }
 
     /**
@@ -40,7 +44,8 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON String.
      */
     public static JsonReader fromString(String json) {
-        return callWithWrappedIoException(() -> new DefaultJsonReader(FACTORY.createParser(json)));
+        return callWithWrappedIoException(() ->
+            new DefaultJsonReader(FACTORY.createParser(json), true, null, json));
     }
 
     /**
@@ -52,11 +57,15 @@ public final class DefaultJsonReader extends JsonReader {
      * {@link InputStream}.
      */
     public static JsonReader fromStream(InputStream json) {
-        return callWithWrappedIoException(() -> new DefaultJsonReader(FACTORY.createParser(json)));
+        return callWithWrappedIoException(() ->
+            new DefaultJsonReader(FACTORY.createParser(json), false, null, null));
     }
 
-    private DefaultJsonReader(JsonParser parser) {
+    private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString) {
         this.parser = parser;
+        this.resetSupported = resetSupported;
+        this.jsonBytes = jsonBytes;
+        this.jsonString = jsonString;
     }
 
     @Override
@@ -116,6 +125,79 @@ public final class DefaultJsonReader extends JsonReader {
     @Override
     public void skipChildren() {
         callWithWrappedIoException(parser::skipChildren);
+    }
+
+    @Override
+    public JsonReader bufferObject() {
+        StringBuilder bufferedObject = new StringBuilder();
+        if (isStartArrayOrObject()) {
+            // If the current token is the beginning of an array or object use JsonReader's readChildren method.
+            readChildren(bufferedObject);
+        } else if (currentToken() == JsonToken.FIELD_NAME) {
+            // Otherwise, we're in a complex case where the reading needs to be handled.
+
+            // Add a starting object token.
+            bufferedObject.append("{");
+
+            JsonToken token = currentToken();
+            boolean needsComa = false;
+            while (token != JsonToken.END_OBJECT) {
+                // Appending comas happens in the subsequent loop run to prevent the case of appending comas before
+                // the end of the object, ex {"fieldName":true,}
+                if (needsComa) {
+                    bufferedObject.append(",");
+                }
+
+                if (token == JsonToken.FIELD_NAME) {
+                    // Field names need to have quotes added and a trailing colon.
+                    bufferedObject.append("\"").append(getFieldName()).append("\":");
+
+                    // Comas shouldn't happen after a field name.
+                    needsComa = false;
+                } else {
+                    if (token == JsonToken.STRING) {
+                        // String fields need to have quotes added.
+                        bufferedObject.append("\"").append(getStringValue()).append("\"");
+                    } else if (isStartArrayOrObject()) {
+                        // Structures use readChildren.
+                        readChildren(bufferedObject);
+                    } else {
+                        // All other value types use text value.
+                        bufferedObject.append(getTextValue());
+                    }
+
+                    // Comas should happen after a field value.
+                    needsComa = true;
+                }
+
+                token = nextToken();
+            }
+
+            bufferedObject.append("}");
+        } else {
+            throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
+                + "starting location. Starting location: " + currentToken());
+        }
+
+        return DefaultJsonReader.fromString(bufferedObject.toString());
+    }
+
+    @Override
+    public boolean resetSupported() {
+        return resetSupported;
+    }
+
+    @Override
+    public JsonReader reset() {
+        if (!resetSupported) {
+            throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
+        }
+
+        if (jsonBytes != null) {
+            return DefaultJsonReader.fromBytes(jsonBytes);
+        } else {
+            return DefaultJsonReader.fromString(jsonString);
+        }
     }
 
     @Override

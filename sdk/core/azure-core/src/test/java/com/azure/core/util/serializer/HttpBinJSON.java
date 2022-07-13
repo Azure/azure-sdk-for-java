@@ -87,8 +87,7 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
         }
 
         if (data != null) {
-            jsonWriter.writeFieldName("data");
-            JsonUtils.writeUntypedField(jsonWriter, data);
+            jsonWriter.writeUntypedField("data", data);
         }
 
         return jsonWriter.writeEndObject().flush();
@@ -118,7 +117,7 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
                         headers.put(fieldName, reader.getStringValue());
                     }
                 } else if ("data".equals(fieldName)) {
-                    data = JsonUtils.readUntypedField(reader);
+                    data = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

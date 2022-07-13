@@ -4,7 +4,6 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -44,7 +43,7 @@ public final class VirtualMachineIdentity implements JsonSerializable<VirtualMac
     public JsonWriter toJson(JsonWriter jsonWriter) {
         return jsonWriter.writeStartObject()
             .writeArrayField("type", type, false, JsonWriter::writeString)
-            .writeMapField("userAssignedIdentities", userAssignedIdentities, false, JsonUtils::writeUntypedField)
+            .writeMapField("userAssignedIdentities", userAssignedIdentities, false, JsonWriter::writeUntyped)
             .writeEndObject()
             .flush();
     }
@@ -61,7 +60,7 @@ public final class VirtualMachineIdentity implements JsonSerializable<VirtualMac
                     identity.setType(reader.readArray(JsonReader::getStringValue));
                 } else if ("userAssignedIdentities".equals(fieldName)
                     && reader.currentToken() == JsonToken.START_OBJECT) {
-                    identity.setUserAssignedIdentities(reader.readMap(JsonUtils::readUntypedField));
+                    identity.setUserAssignedIdentities(reader.readMap(JsonReader::readUntyped));
                 } else {
                     reader.skipChildren();
                 }

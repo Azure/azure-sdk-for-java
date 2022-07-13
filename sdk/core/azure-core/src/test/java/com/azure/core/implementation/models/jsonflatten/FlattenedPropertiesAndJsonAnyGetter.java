@@ -4,7 +4,6 @@
 package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -55,8 +54,7 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonSerializab
         }
 
         if (additionalProperties != null) {
-            additionalProperties.forEach((key, value) ->
-                JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
         }
 
         return jsonWriter.writeEndObject().flush();
@@ -88,7 +86,7 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonSerializab
                                 (Map<String, Object>) additionalProperties
                                     .computeIfAbsent("flattened", ignored -> new LinkedHashMap<String, Object>());
 
-                            flattenedAdditionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                            flattenedAdditionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
                 } else {
@@ -96,7 +94,7 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonSerializab
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                    additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
 

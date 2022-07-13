@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -126,12 +125,10 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                 .writeEndObject();
         }
 
-        jsonWriter.writeMapField("additionalProperties", additionalPropertiesProperty, false,
-            JsonUtils::writeUntypedField);
+        jsonWriter.writeMapField("additionalProperties", additionalPropertiesProperty, false, JsonWriter::writeUntyped);
 
         if (additionalProperties != null) {
-            additionalProperties.forEach((key, value) ->
-                JsonUtils.writeUntypedField(jsonWriter.writeFieldName(key), value));
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
 
         }
 
@@ -227,14 +224,14 @@ public class NewFoo implements JsonSerializable<NewFoo> {
                         fieldName = reader.getFieldName();
                         reader.nextToken();
 
-                        additionalPropertiesProperty.put(fieldName, JsonUtils.readUntypedField(reader));
+                        additionalPropertiesProperty.put(fieldName, reader.readUntyped());
                     }
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                    additionalProperties.put(fieldName, reader.readUntyped());
                 }
             }
 
