@@ -291,6 +291,10 @@
                 </goals>
                 <configuration>
                   <failOnWarning>false</failOnWarning>
+                  <compilerArgs>
+                    <compilerArg>--add-reads</compilerArg>
+                    <compilerArg>com.azure.storage.common=java.desktop</compilerArg>
+                  </compilerArgs>
                 </configuration>
               </execution>
             </executions>
