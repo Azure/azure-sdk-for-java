@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 /**
  * The Authentication plugin that enables Azure AD managed identity support.
  */
-public class AzureMySqlMSIAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureMySqlMSIAuthenticationPlugin.class);
+public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
 
     private static String PLUGIN_NAME = "mysql_clear_password";
 
@@ -53,11 +53,11 @@ public class AzureMySqlMSIAuthenticationPlugin implements AuthenticationPlugin<N
 
     private String sourceOfAuthData;
 
-    public AzureMySqlMSIAuthenticationPlugin() {
+    public AzureIdentityMysqlAuthenticationPlugin() {
         this(new AzureJDBCProperties(), new AzureTokenCredentialResolver());
     }
 
-    public AzureMySqlMSIAuthenticationPlugin(AzureJDBCProperties azureJDBCProperties, AzureTokenCredentialResolver tokenCredentialResolver) {
+    public AzureIdentityMysqlAuthenticationPlugin(AzureJDBCProperties azureJDBCProperties, AzureTokenCredentialResolver tokenCredentialResolver) {
         this.azureJDBCProperties = azureJDBCProperties;
         this.tokenCredentialResolver = tokenCredentialResolver;
     }

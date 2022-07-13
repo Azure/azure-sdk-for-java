@@ -14,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AzurePostgresqlMSIAuthenticationPluginTest {
+class AzureIdentityPostgresqlAuthenticationPluginTest {
 
     @Test
     void testDefaultScope() {
-        AzurePostgresqlMSIAuthenticationPlugin postgresqlPlugin = new AzurePostgresqlMSIAuthenticationPlugin(new Properties());
+        AzureIdentityPostgresqlAuthenticationPlugin postgresqlPlugin = new AzureIdentityPostgresqlAuthenticationPlugin(new Properties());
         String scope = (String) ReflectionTestUtils.getField(postgresqlPlugin, "OSSRDBMS_SCOPE");
         assertEquals("https://ossrdbms-aad.database.windows.net/.default", scope);
     }
@@ -27,7 +27,7 @@ class AzurePostgresqlMSIAuthenticationPluginTest {
     void testCreateDefaultTokenCredential() {
 
         Properties properties = new Properties();
-        AzurePostgresqlMSIAuthenticationPlugin postgresqlPlugin = new AzurePostgresqlMSIAuthenticationPlugin(properties);
+        AzureIdentityPostgresqlAuthenticationPlugin postgresqlPlugin = new AzureIdentityPostgresqlAuthenticationPlugin(properties);
 
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(postgresqlPlugin, "getTokenCredential");
         assertNotNull(getTokenCredential);
@@ -45,7 +45,7 @@ class AzurePostgresqlMSIAuthenticationPluginTest {
         properties.put("azure.credential.client-secret", "mock-client-secret");
         properties.put("azure.profile.tenant-id", "mock-tenant-id");
 
-        AzurePostgresqlMSIAuthenticationPlugin postgresqlPlugin = new AzurePostgresqlMSIAuthenticationPlugin(properties);
+        AzureIdentityPostgresqlAuthenticationPlugin postgresqlPlugin = new AzureIdentityPostgresqlAuthenticationPlugin(properties);
 
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(postgresqlPlugin, "getTokenCredential");
         assertNotNull(getTokenCredential);
@@ -61,7 +61,7 @@ class AzurePostgresqlMSIAuthenticationPluginTest {
         Properties properties = new Properties();
         properties.put("azure.credential.managed-identity-enabled", "true");
 
-        AzurePostgresqlMSIAuthenticationPlugin postgresqlPlugin = new AzurePostgresqlMSIAuthenticationPlugin(properties);
+        AzureIdentityPostgresqlAuthenticationPlugin postgresqlPlugin = new AzureIdentityPostgresqlAuthenticationPlugin(properties);
 
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(postgresqlPlugin, "getTokenCredential");
         assertNotNull(getTokenCredential);
