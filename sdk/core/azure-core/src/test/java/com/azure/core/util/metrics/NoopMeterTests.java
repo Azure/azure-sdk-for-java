@@ -41,6 +41,15 @@ public class NoopMeterTests {
     }
 
     @Test
+    public void noopInvalidAttributes() {
+        Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
+
+        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(null));
+        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(Collections.singletonMap(null, "foo")));
+        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(Collections.singletonMap("foo", null)));
+    }
+
+    @Test
     public void noopCounterMeasurement() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
         LongCounter counter = noopMeter.createLongCounter("name", "description", null);

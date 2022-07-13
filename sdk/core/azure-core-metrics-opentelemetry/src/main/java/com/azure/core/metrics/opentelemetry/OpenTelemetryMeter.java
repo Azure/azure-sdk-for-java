@@ -3,6 +3,7 @@
 
 package com.azure.core.metrics.opentelemetry;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
@@ -71,7 +72,7 @@ class OpenTelemetryMeter implements Meter {
 
         if (!isEnabled) {
             // we might have per-instrument control later.
-            return OpenTelemetryLongCounter.NOOP;
+            return NOOP_COUNTER;
         }
 
         LongCounterBuilder otelMetricBuilder = meter.counterBuilder(name)
@@ -91,6 +92,11 @@ class OpenTelemetryMeter implements Meter {
     public LongCounter createLongUpDownCounter(String name, String description, String unit) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
+
+        if (!isEnabled) {
+            // we might have per-instrument control later.
+            return NOOP_COUNTER;
+        }
 
         LongUpDownCounterBuilder otelMetricBuilder = meter.upDownCounterBuilder(name)
             .setDescription(description);
@@ -113,4 +119,16 @@ class OpenTelemetryMeter implements Meter {
     @Override
     public void close() {
     }
+
+
+    private static final LongCounter NOOP_COUNTER = new LongCounter() {
+        @Override
+        public void add(long value, TelemetryAttributes attributes, Context context) {
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return false;
+        }
+    };
 }

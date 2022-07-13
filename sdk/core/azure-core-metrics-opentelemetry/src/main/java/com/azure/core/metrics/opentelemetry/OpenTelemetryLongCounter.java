@@ -11,17 +11,6 @@ import com.azure.core.util.metrics.LongCounter;
  * {@inheritDoc}
  */
 class OpenTelemetryLongCounter implements LongCounter {
-    static final LongCounter NOOP = new LongCounter() {
-        @Override
-        public void add(long value, TelemetryAttributes attributes, Context context) {
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return false;
-        }
-    };
-
     private final io.opentelemetry.api.metrics.LongCounter counter;
 
     OpenTelemetryLongCounter(io.opentelemetry.api.metrics.LongCounter counter) {
