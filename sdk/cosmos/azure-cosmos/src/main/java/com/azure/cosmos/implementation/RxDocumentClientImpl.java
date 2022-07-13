@@ -77,6 +77,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1584,8 +1585,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
 
+            int documentIdPrefixPosition = -1;
+            boolean needToEncodeIdInUriForGateway = request.getResourceType() == ResourceType.Document &&
+                (documentIdPrefixPosition = resourceName.indexOf("/docs/")) > 0 &&
+                this.getStoreProxy(request) == this.gatewayProxy;
+
+            if (needToEncodeIdInUriForGateway) {
+                String encodedResourceName = resourceName.substring(0, documentIdPrefixPosition + 6) +
+                        Strings.encodeURIComponent(resourceName.substring(documentIdPrefixPosition + 6));
+
+                if (!resourceName.equals(encodedResourceName)) {
+                    request.setResourceAddress(encodedResourceName);
+                }
+            }
+
             String authorization = this.getUserAuthorizationToken(
-                    resourceName, request.getResourceType(), httpMethod, request.getHeaders(),
+                resourceName, request.getResourceType(), httpMethod, request.getHeaders(),
                     AuthorizationTokenType.PrimaryMasterKey, request.properties);
             try {
                 authorization = URLEncoder.encode(authorization, "UTF-8");

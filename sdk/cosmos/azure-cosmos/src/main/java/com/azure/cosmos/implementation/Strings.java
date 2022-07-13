@@ -4,12 +4,27 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
 public class Strings {
     public static final String Emtpy = "";
+    private final static String[][] ENCODE_URI_COMPONENT_REPLACEMENTS = {
+        { "\\+", "%20" },
+        { "%21", "!" },
+        { "%27", "'" },
+        { "%28", "(" },
+        { "%29", ")" },
+        { "%7E", "~" }
+    };
+
+    private final static String UTF8_CHARSET = StandardCharsets.UTF_8.name();
 
     public static boolean isNullOrWhiteSpace(String str) {
         return StringUtils.isEmpty(str) || StringUtils.isWhitespace(str);
@@ -57,5 +72,19 @@ public class Strings {
         }
 
         return result.toString();
+    }
+
+    public static String encodeURIComponent(String text) {
+        String result;
+        try {
+            result = URLEncoder.encode(text, UTF8_CHARSET);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        for (String[] entry : ENCODE_URI_COMPONENT_REPLACEMENTS) {
+            result = result.replaceAll(entry[0], entry[1]);
+        }
+
+        return result;
     }
 }
