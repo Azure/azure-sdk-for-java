@@ -19,12 +19,13 @@ import io.netty.handler.ssl.SslContextBuilder;
 
 public class ConfidentialLedgerClientBase {
     public ConfidentialLedgerClientBase() {
+        try {
         // BEGIN:readme-sample-createClient
         ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-                .identityServiceUri("https://identity.confidential-ledger.core.azure.com")
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .httpClient(HttpClient.createDefault());
-            
+        .identityServiceUri("https://identity.confidential-ledger.core.azure.com")
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .httpClient(HttpClient.createDefault());
+        
         ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
 
         String ledgerId = "java-tests";
@@ -43,12 +44,15 @@ public class ConfidentialLedgerClientBase {
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
 
-       ConfidentialLedgerClient confidentialLedgerClient =
+        ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .httpClient(httpClient)
-                        .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         // END:readme-sample-createClient
+        } catch (Exception ex) {
+                System.out.println("Caught exception" + ex);
+        }
     }
 }

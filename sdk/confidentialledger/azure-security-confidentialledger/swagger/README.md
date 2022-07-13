@@ -1,4 +1,6 @@
 ## Generate autorest code
+### To run, use `autorest --tag:confidential-ledger README.md`
+
 ``` yaml $(tag) == 'confidential-ledger'
 input-file: 
 - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/confidentialledger/data-plane/Microsoft.ConfidentialLedger/stable/2022-05-13/common.json
@@ -12,7 +14,7 @@ data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerClient
-use: '@autorest/java@4.0.62'
+use: '@autorest/java@4.1.0'
 generate-samples: true
 generate-tests: true
 ```
@@ -33,7 +35,7 @@ data-plane: true
 credential-types: tokencredential
 credential-scopes: https://confidential-ledger.azure.com/.default
 title: ConfidentialLedgerIdentityClient
-use: '@autorest/java@4.0.62'
+use: '@autorest/java@4.1.0'
 generate-samples: true
 generate-tests: true
 ```

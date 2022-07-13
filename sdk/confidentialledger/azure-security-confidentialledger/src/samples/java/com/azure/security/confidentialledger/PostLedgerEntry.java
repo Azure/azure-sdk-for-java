@@ -19,14 +19,14 @@ public class PostLedgerEntry {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
 
         // optionally, you can define a collection id (here, the collectionId is 2):
         // requestOptions = new RequestOptions().addQueryParam("collectionId", "" + 2);
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.postLedgerEntryWithResponse(entry, requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.createLedgerEntryWithResponse(entry, requestOptions);
 
         BinaryData parsedResponse = response.getValue();
 

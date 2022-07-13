@@ -14,6 +14,8 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 class ConfidentialLedgerClientTestBase extends TestBase {
@@ -46,7 +48,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
             String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
 
             confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-                    .ledgerUri(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
+                    .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERURI", "https://emily-java-sdk-tests.confidential-ledger.azure.com"))
                     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
             if (getTestMode() == TestMode.PLAYBACK) {
                 confidentialLedgerClientBuilder

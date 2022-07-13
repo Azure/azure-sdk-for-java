@@ -22,10 +22,34 @@ Getting started explained in detail [here](https://github.com/Azure/azure-sdk-fo
 ## Examples
 
 ```java readme-sample-createClient
+ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
+.identityServiceUri("https://identity.confidential-ledger.core.azure.com")
+.credential(new DefaultAzureCredentialBuilder().build())
+.httpClient(HttpClient.createDefault());
+
+ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
+
+String ledgerId = "java-tests";
+// this is a built in test of getLedgerIdentity
+Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+        .getLedgerIdentityWithResponse(ledgerId, null);
+BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+ObjectMapper mapper = new ObjectMapper();
+JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+
+
+SslContext sslContext = SslContextBuilder.forClient()
+        .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
+reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
+        .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+
 ConfidentialLedgerClient confidentialLedgerClient =
         new ConfidentialLedgerClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                .httpClient(httpClient)
+                .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                 .buildClient();
 ```
 
