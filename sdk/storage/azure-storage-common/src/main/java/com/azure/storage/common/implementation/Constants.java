@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2021-08-06");
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2021-10-04");
 
     private Constants() {
     }

@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/871b5a890871b5a8957b81286a25b67e85cac438fa55?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f473bf56-fbdb-4cc9-a207-d454964eb7ad"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA38367B8925F5",
       "Last-Modified" : "Tue, 17 May 2022 18:53:07 GMT",
       "retry-after" : "0",
@@ -23,13 +23,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/871b5a890871b5a8957b81286a25b67e85cac438fa55/871b5a891871b5a8957b223564b5493e6670a4171b57?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f625055d-ecb5-4044-8ae8-e051a2746bae"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA38367BE78FB9",
       "Last-Modified" : "Tue, 17 May 2022 18:53:08 GMT",
       "retry-after" : "0",
@@ -44,13 +44,13 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/871b5a890871b5a8957b81286a25b67e85cac438fa55?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a5ca68c9-955c-42af-b01f-9e01ec21b096"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "x-ms-lease-status" : "unlocked",
       "x-ms-lease-state" : "available",
       "x-ms-deny-encryption-scope-override" : "false",

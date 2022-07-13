@@ -3,13 +3,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.blob.preprod.core.windows.net/e14f609c0e14f609c05606528b7a4c3268bdd4b5cbf8?restype=container",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.2 azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2de0a75a-d950-4308-8d21-8271f6de73ba"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA383545F4CC2D",
       "Last-Modified" : "Tue, 17 May 2022 18:44:28 GMT",
       "retry-after" : "0",
@@ -23,13 +23,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/e14f609c0e14f609c05606528b7a4c3268bdd4b5cbf8/e14f609c1e14f609c0565062564b5f12426ce42b8b2c?resource=file",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "03aa5458-5dd8-42d7-887f-147ecd773d2c"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA3835467CA3CC",
       "Last-Modified" : "Tue, 17 May 2022 18:44:29 GMT",
       "retry-after" : "0",
@@ -44,13 +44,13 @@
     "Method" : "PUT",
     "Uri" : "https://REDACTED.dfs.preprod.core.windows.net/e14f609c0e14f609c05606528b7a4c3268bdd4b5cbf8/e14f609c2e14f609c05673706c873598a39194b62b8f?resource=file",
     "Headers" : {
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.2 (11.0.14; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cdeacb04-7e10-4e9f-b6e1-65e1a663968a"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2021-08-06",
+      "x-ms-version" : "2021-10-04",
       "eTag" : "0x8DA3835468B63F1",
       "Last-Modified" : "Tue, 17 May 2022 18:44:29 GMT",
       "retry-after" : "0",
