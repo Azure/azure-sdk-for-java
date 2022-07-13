@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-personalizer</artifactId>
-  <version>1.0.0-beta.0</version> <!-- {x-version-update;com.azure:azure-ai-personalizer;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-personalizer;current} -->
 
   <name>Microsoft Azure client library for Personalizer</name>
   <description>This package contains the Microsoft Azure Cognitive Services Personalizer SDK.</description>
