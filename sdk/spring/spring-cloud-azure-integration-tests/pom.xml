@@ -33,6 +33,16 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
+      <version>${spring-cloud-azure-dependencies}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-storage-file-share</artifactId>
+      <version>${spring-cloud-azure-dependencies}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
       <version>${spring-cloud-azure-dependencies}</version>
     </dependency>
