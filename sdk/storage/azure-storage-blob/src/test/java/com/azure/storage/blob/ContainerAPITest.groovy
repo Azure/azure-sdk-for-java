@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.FilterBlobsIncludeItem
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
@@ -27,6 +28,7 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.options.BlobContainerCreateOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
@@ -1959,6 +1961,32 @@ class ContainerAPITest extends APISpec {
 
         then: "Still have paging functionality"
         notThrown(Exception)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_10_04")
+    def "Find blobs by tag blob versions"() {
+        setup:
+        def blobClient = cc.getBlobClient(generateBlobName())
+        def appendBlobClient = blobClient.getAppendBlobClient()
+        def tagKey = "myTagKey"
+        def tagValue = "myTagValue"
+        def tags = Collections.singletonMap(tagKey, tagValue)
+        def options = new AppendBlobCreateOptions().setTags(tags)
+        appendBlobClient.createWithResponse(options, null, null)
+        // Create blob again to trigger new version
+        appendBlobClient.createWithResponse(options, null, null)
+        sleepIfRecord(10 * 1000) // To allow tags to index
+        def query = String.format("\"%s\"='%s'", tagKey, tagValue)
+        def findBlobOptions = new FindBlobsOptions(query).addFilterBlobsIncludeItems(FilterBlobsIncludeItem.VERSIONS)
+
+        when:
+        def results = cc.findBlobsByTags(findBlobOptions, null, null)
+
+        then:
+        results.size() == 2
+        def resultTags = results.first().getTags()
+        resultTags.size() == 1
+        resultTags.get(tagKey) == tagValue
     }
 
     @Unroll
