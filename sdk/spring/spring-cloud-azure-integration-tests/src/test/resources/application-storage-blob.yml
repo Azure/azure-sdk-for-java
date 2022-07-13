@@ -6,7 +6,6 @@ spring:
       storage:
         blob:
           account-name: ${AZURE_STORAGE_ACCOUNT}
-          container-name: ${STORAGE_CONTAINER_NAME}
         credential:
           client-id: ${AZURE_SPRING_CLIENT_ID}
           client-secret: ${AZURE_SPRING_CLIENT_SECRET}
