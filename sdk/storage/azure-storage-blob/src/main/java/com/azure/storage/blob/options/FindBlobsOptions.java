@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.FilterBlobsIncludeItem;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,26 @@ public class FindBlobsOptions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
+        return this;
+    }
+
+    /**
+     * @return the list of {@link FilterBlobsIncludeItem}
+     */
+    public List<FilterBlobsIncludeItem> getFilterBlobsIncludeItems() {
+        return filterBlobsIncludeItems;
+    }
+
+    /**
+     *
+     * @param item {@link FilterBlobsIncludeItem} containing specific filter tags
+     * @return the updated FindBlobOptions object
+     */
+    public FindBlobsOptions addFilterBlobsIncludeItems(FilterBlobsIncludeItem item) {
+        if (this.filterBlobsIncludeItems == null) {
+            filterBlobsIncludeItems = new ArrayList<>();
+        }
+        filterBlobsIncludeItems.add(item);
         return this;
     }
 }
