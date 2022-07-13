@@ -36,7 +36,7 @@ The simplest way of providing a bearer token is to use the `DefaultAzureCredenti
 
 #### Using a client certificate
 
-As an alternative to Azure Active Directory, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose.
+As an alternative to Azure Active Directory, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose. This is not the recommended approach for anyone new to the service. 
 
 #### Create LedgerBaseClient with Azure Active Directory Credential
 
