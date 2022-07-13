@@ -133,6 +133,8 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
                     throw LOGGER.logExceptionAsError(new ReadPendingException());
                 case WRITE:
                     throw LOGGER.logExceptionAsError(new WritePendingException());
+                default:
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown channel operation"));
             }
         }
     }
