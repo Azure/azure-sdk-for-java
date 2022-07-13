@@ -14,7 +14,7 @@ import java.util.Objects;
  * OpenTelemetry-specific implementation of {@link TelemetryAttributes}
  */
 class OpenTelemetryAttributes implements TelemetryAttributes {
-    private Attributes attributes;
+    private final Attributes attributes;
     OpenTelemetryAttributes(Map<String, Object> attributeMap) {
         Objects.requireNonNull(attributeMap, "'attributeMap' cannot be null.");
 

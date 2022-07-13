@@ -6,24 +6,12 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.LongCounter;
-import com.azure.core.util.metrics.LongHistogram;
 import io.opentelemetry.api.metrics.LongUpDownCounter;
 
 /**
  * {@inheritDoc}
  */
 class OpenTelemetryLongUpDownCounter implements LongCounter {
-    static final LongHistogram NOOP = new LongHistogram() {
-        @Override
-        public void record(long value, TelemetryAttributes attributes, Context context) {
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return false;
-        }
-    };
-
     private final LongUpDownCounter counter;
 
     OpenTelemetryLongUpDownCounter(LongUpDownCounter counter) {
@@ -38,6 +26,9 @@ class OpenTelemetryLongUpDownCounter implements LongCounter {
         counter.add(value, OpenTelemetryUtils.getAttributes(attributeCollection), OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEnabled() {
         return true;

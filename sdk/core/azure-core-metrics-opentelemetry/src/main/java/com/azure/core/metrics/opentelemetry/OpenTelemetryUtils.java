@@ -33,7 +33,7 @@ class OpenTelemetryUtils {
         } else if (value instanceof Long) {
             attributesBuilder.put(AttributeKey.longKey(key), (Long) value);
         } else {
-            LOGGER.warning("Could not populate attribute with key '{}', type is not supported.");
+            LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
         }
     }
     /**
@@ -47,7 +47,7 @@ class OpenTelemetryUtils {
             if (traceContextObj instanceof io.opentelemetry.context.Context) {
                 return (io.opentelemetry.context.Context) traceContextObj;
             } else if (traceContextObj != null) {
-                LOGGER.warning("Expected instance of `io.opentelemetry.context.Context` under `PARENT_TRACE_CONTEXT_KEY`, but got {}, ignoring it.", traceContextObj.getClass());
+                LOGGER.warning("Expected instance of `io.opentelemetry.context.Context` under `PARENT_TRACE_CONTEXT_KEY`, but got {}, ignoring it.", traceContextObj.getClass().getName());
             }
         }
 
@@ -61,7 +61,7 @@ class OpenTelemetryUtils {
         }
 
         if (attributesBuilder != null) {
-            LOGGER.warning("Expected instance of `OpenTelemetryAttributeBuilder` in `attributeCollection`, but got {}, ignoring it.", attributesBuilder.getClass());
+            LOGGER.warning("Expected instance of `OpenTelemetryAttributeBuilder` in `attributeCollection`, but got {}, ignoring it.", attributesBuilder.getClass().getName());
         }
 
         return Attributes.empty();

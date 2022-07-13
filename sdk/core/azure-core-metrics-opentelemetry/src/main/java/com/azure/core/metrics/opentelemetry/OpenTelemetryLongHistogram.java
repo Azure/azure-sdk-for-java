@@ -35,6 +35,9 @@ class OpenTelemetryLongHistogram implements LongHistogram {
         histogram.record(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEnabled() {
         return true;
