@@ -4,6 +4,7 @@ package com.azure.spring.cloud.integration.tests.cosmos;
 
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.junit.jupiter.api.Assertions;
@@ -41,6 +42,10 @@ public class CosmosIT {
             User user = users.stream().iterator().next();
             Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line two");
         }
+        container.deleteItem(testUser, new CosmosItemRequestOptions());
+        CosmosPagedIterable<User> usersDelete = container.queryItems("SELECT * FROM c WHERE c.id = 'testCosmos'", new CosmosQueryRequestOptions(),
+            User.class);
+        Assertions.assertFalse(usersDelete.iterator().hasNext());
         LOGGER.info("CosmosIT end.");
     }
 
