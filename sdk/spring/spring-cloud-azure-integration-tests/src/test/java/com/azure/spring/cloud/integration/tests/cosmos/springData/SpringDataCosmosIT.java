@@ -27,6 +27,8 @@ public class SpringDataCosmosIT {
         userRepository.save(testUser).block();
         User user = userRepository.findById(userId).block();
         Assertions.assertEquals(user.toString(), "testFirstName testLastName, test address line one");
+        userRepository.delete(testUser).block();
+        Assertions.assertNull(userRepository.findById(userId).block());
         LOGGER.info("SpringDataCosmosIT end.");
     }
 }
