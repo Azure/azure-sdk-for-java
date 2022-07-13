@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for SqlResources CreateUpdateSqlRoleDefinition. */
 public final class SqlResourcesCreateUpdateSqlRoleDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionCreateUpdate.

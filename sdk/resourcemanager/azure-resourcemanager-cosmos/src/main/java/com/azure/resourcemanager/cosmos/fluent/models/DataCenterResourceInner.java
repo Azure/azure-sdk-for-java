@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.DataCenterResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A managed Cassandra data center. */
 @Fluent
 public final class DataCenterResourceInner extends ArmProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataCenterResourceInner.class);
-
     /*
      * Properties of a managed Cassandra data center.
      */

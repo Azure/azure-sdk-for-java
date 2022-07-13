@@ -5,21 +5,22 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.StorageAccount;
 import com.azure.resourcemanager.loganalytics.models.StorageInsightStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The top level storage insight resource container. */
-@JsonFlatten
 @Fluent
-public class StorageInsightInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageInsightInner.class);
+public final class StorageInsightInner extends ProxyResource {
+    /*
+     * Storage insight properties.
+     */
+    @JsonProperty(value = "properties")
+    private StorageInsightProperties innerProperties;
 
     /*
      * The ETag of the storage insight.
@@ -31,31 +32,17 @@ public class StorageInsightInner extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The names of the blob containers that the workspace should read
+    /**
+     * Get the innerProperties property: Storage insight properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.containers")
-    private List<String> containers;
-
-    /*
-     * The names of the Azure tables that the workspace should read
-     */
-    @JsonProperty(value = "properties.tables")
-    private List<String> tables;
-
-    /*
-     * The storage account connection details
-     */
-    @JsonProperty(value = "properties.storageAccount")
-    private StorageAccount storageAccount;
-
-    /*
-     * The status of the storage insight
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private StorageInsightStatus status;
+    private StorageInsightProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: The ETag of the storage insight.
@@ -103,7 +90,7 @@ public class StorageInsightInner extends ProxyResource {
      * @return the containers value.
      */
     public List<String> containers() {
-        return this.containers;
+        return this.innerProperties() == null ? null : this.innerProperties().containers();
     }
 
     /**
@@ -113,7 +100,10 @@ public class StorageInsightInner extends ProxyResource {
      * @return the StorageInsightInner object itself.
      */
     public StorageInsightInner withContainers(List<String> containers) {
-        this.containers = containers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageInsightProperties();
+        }
+        this.innerProperties().withContainers(containers);
         return this;
     }
 
@@ -123,7 +113,7 @@ public class StorageInsightInner extends ProxyResource {
      * @return the tables value.
      */
     public List<String> tables() {
-        return this.tables;
+        return this.innerProperties() == null ? null : this.innerProperties().tables();
     }
 
     /**
@@ -133,7 +123,10 @@ public class StorageInsightInner extends ProxyResource {
      * @return the StorageInsightInner object itself.
      */
     public StorageInsightInner withTables(List<String> tables) {
-        this.tables = tables;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageInsightProperties();
+        }
+        this.innerProperties().withTables(tables);
         return this;
     }
 
@@ -143,7 +136,7 @@ public class StorageInsightInner extends ProxyResource {
      * @return the storageAccount value.
      */
     public StorageAccount storageAccount() {
-        return this.storageAccount;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccount();
     }
 
     /**
@@ -153,7 +146,10 @@ public class StorageInsightInner extends ProxyResource {
      * @return the StorageInsightInner object itself.
      */
     public StorageInsightInner withStorageAccount(StorageAccount storageAccount) {
-        this.storageAccount = storageAccount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageInsightProperties();
+        }
+        this.innerProperties().withStorageAccount(storageAccount);
         return this;
     }
 
@@ -163,7 +159,7 @@ public class StorageInsightInner extends ProxyResource {
      * @return the status value.
      */
     public StorageInsightStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -172,11 +168,8 @@ public class StorageInsightInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (storageAccount() != null) {
-            storageAccount().validate();
-        }
-        if (status() != null) {
-            status().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

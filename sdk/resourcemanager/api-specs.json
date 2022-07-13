@@ -83,7 +83,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2021-10"
+    "args": "--tag=package-2022-05"
   },
   "dns": {
     "dir": "azure-resourcemanager-dns",

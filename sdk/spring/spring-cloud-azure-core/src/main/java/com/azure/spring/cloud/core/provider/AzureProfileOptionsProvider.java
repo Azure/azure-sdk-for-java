@@ -95,7 +95,7 @@ public interface AzureProfileOptionsProvider {
          * @param cloudType the cloud type string value
          * @return the {@link CloudType}
          */
-        public static CloudType get(String cloudType) {
+        public static CloudType fromString(String cloudType) {
             return CLOUD_TYPE_MAP.get(cloudType.toUpperCase(Locale.ROOT));
         }
     }

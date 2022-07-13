@@ -5,6 +5,8 @@ package com.azure.core.util;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * {@link ProgressReporter} offers a convenient way to add progress tracking to I/O operations.
@@ -60,6 +62,7 @@ import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 public final class ProgressReporter {
 
     private final ProgressListener progressListener;
+    private final Lock listenerLock;
     private final ProgressReporter parent;
 
     private static final AtomicLongFieldUpdater<ProgressReporter> PROGRESS_ATOMIC_UPDATER =
@@ -74,6 +77,7 @@ public final class ProgressReporter {
     private ProgressReporter(ProgressListener progressListener) {
         this.progressListener = Objects.requireNonNull(progressListener,
             "'progressListener' must not be null");
+        this.listenerLock = new ReentrantLock();
         this.parent = null;
     }
 
@@ -85,6 +89,7 @@ public final class ProgressReporter {
         this.parent = Objects.requireNonNull(parent,
             "'parent' must not be null");
         this.progressListener = null;
+        this.listenerLock = null;
     }
 
     /**
@@ -115,12 +120,21 @@ public final class ProgressReporter {
      * </p>
      */
     public void reset() {
-        long accumulated = PROGRESS_ATOMIC_UPDATER.getAndSet(this, 0L);
-        if (parent != null) {
-            parent.reportProgress(-1L * accumulated);
-        }
-        if (progressListener != null) {
-            progressListener.handleProgress(0L);
+        try {
+            if (listenerLock != null) {
+                listenerLock.lock();
+            }
+            long accumulated = PROGRESS_ATOMIC_UPDATER.getAndSet(this, 0L);
+            if (parent != null) {
+                parent.reportProgress(-1L * accumulated);
+            }
+            if (progressListener != null) {
+                progressListener.handleProgress(0L);
+            }
+        } finally {
+            if (listenerLock != null) {
+                listenerLock.unlock();
+            }
         }
     }
 
@@ -136,12 +150,21 @@ public final class ProgressReporter {
      * @param progress The number to be accumulated.
      */
     public void reportProgress(long progress) {
-        long totalProgress = PROGRESS_ATOMIC_UPDATER.addAndGet(this, progress);
-        if (parent != null) {
-            parent.reportProgress(progress);
-        }
-        if (progressListener != null) {
-            progressListener.handleProgress(totalProgress);
+        try {
+            if (listenerLock != null) {
+                listenerLock.lock();
+            }
+            long totalProgress = PROGRESS_ATOMIC_UPDATER.addAndGet(this, progress);
+            if (parent != null) {
+                parent.reportProgress(progress);
+            }
+            if (progressListener != null) {
+                progressListener.handleProgress(totalProgress);
+            }
+        } finally {
+            if (listenerLock != null) {
+                listenerLock.unlock();
+            }
         }
     }
 }

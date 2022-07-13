@@ -255,7 +255,7 @@ class TransientIOErrorsRetryingIteratorITest
     // transient I/O errors can only happen in reality between
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
-    // last document of one page (and before retrieving teh next one)
+    // last document of one page (and before retrieving the next one)
     if (!idSnapshot.equals("") &&
       idSnapshot.equals(lastIdOfPage.get()) &&
         idsWithRetries.computeIfAbsent(idSnapshot, _ => 0) < maxRetryCountPerIOOperation &&
@@ -281,7 +281,7 @@ class TransientIOErrorsRetryingIteratorITest
     // transient I/O errors can only happen in reality between
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
-    // last document of one page (and before retrieving teh next one)
+    // last document of one page (and before retrieving the next one)
     if (
       idsWithRetries.computeIfAbsent(idSnapshot, _ => 0) <= maxRetryCountPerIOOperation * 100 &&
       idsWithRetries.computeIfPresent(

@@ -408,12 +408,12 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     @Override
-    public final BlobInputStream openInputStream() {
+    public BlobInputStream openInputStream() {
         return openInputStream((BlobRange) null, null);
     }
 
     @Override
-    public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
+    public BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
         return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
     }
 
@@ -422,7 +422,8 @@ public class EncryptedBlobClient extends BlobClient {
         return openInputStream(options, null);
     }
 
-    protected BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+    @Override
+    public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions());

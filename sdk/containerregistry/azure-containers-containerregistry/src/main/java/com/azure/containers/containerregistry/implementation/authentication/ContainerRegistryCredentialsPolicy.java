@@ -3,9 +3,11 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.logging.ClientLogger;
@@ -36,7 +38,7 @@ import java.util.regex.Pattern;
  * Request Header: {Bearer acrTokenAccess}</p>
  */
 public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
-
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryCredentialsPolicy.class);
     private static final String BEARER = "Bearer";
     public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
         Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
@@ -151,6 +153,90 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
                 return Mono.just(false);
             }
         });
+    }
+
+    /**
+     * Executed before sending the initial request and authenticates the request.
+     *
+     * @param context The request context.
+     * @return A {@link Mono} containing {@link Void}
+     */
+    @Override
+    public void authorizeRequestSync(HttpPipelineCallContext context) {
+    }
+
+    /**
+     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
+     *
+     * @param context the HTTP pipeline context.
+     * @param tokenRequestContext the token request context to be used for token acquisition.
+     * @return a {@link Mono} containing {@link Void}
+     */
+    @Override
+    public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+        AccessToken token = tokenService.getTokenSync(tokenRequestContext);
+        context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+        }
+
+        // Since we will need to replay this call, adding duplicate to make this replayable.
+        if (context.getHttpRequest().getBody() != null) {
+            context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
+        }
+
+        HttpPipelineNextSyncPolicy nextPolicy = next.clone();
+        authorizeRequestSync(context);
+        HttpResponse httpResponse = next.processSync();
+        String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
+        if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+            if (authorizeRequestOnChallengeSync(context, httpResponse)) {
+                // Both Netty and OkHttp expect the requestBody to be closed after the connection is closed.
+                // Failure to do so results in memory leak.
+                // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
+                // we let the client close the connection after the stream read.
+                // This can cause potential leaks in the scenarios like above, where the policy
+                // may intercept the response and prevent it from reaching the client.
+                // Hence, the policy needs to ensure that the connection is closed.
+                httpResponse.close();
+                return nextPolicy.processSync();
+            } else {
+                return httpResponse;
+            }
+        }
+        return httpResponse;
+    }
+
+    /**
+     * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication
+     * challenge header is received after the initial request and returns appropriate {@link TokenRequestContext} to
+     * be used for re-authentication.
+     *
+     * @param context The request context.
+     * @param response The Http Response containing the authentication challenge header.
+     * @return A {@link Mono} containing {@link Boolean}
+     */
+    @Override
+    public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        if (!(response.getStatusCode() == 401 && authHeader != null)) {
+            return false;
+        } else {
+            Map<String, String> extractedChallengeParams = parseBearerChallenge(authHeader);
+            if (extractedChallengeParams != null && extractedChallengeParams.containsKey(SCOPES_PARAMETER)) {
+                String scope = extractedChallengeParams.get(SCOPES_PARAMETER);
+                String serviceName = extractedChallengeParams.get(SERVICE_PARAMETER);
+                setAuthorizationHeaderSync(context, new ContainerRegistryTokenRequestContext(serviceName, scope));
+                return true;
+            }
+
+            return false;
+        }
     }
 
     private Map<String, String> parseBearerChallenge(String header) {

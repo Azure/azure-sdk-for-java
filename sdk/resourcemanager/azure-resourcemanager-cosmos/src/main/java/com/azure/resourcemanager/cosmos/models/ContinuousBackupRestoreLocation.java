@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the regional restorable account. */
 @Fluent
 public final class ContinuousBackupRestoreLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinuousBackupRestoreLocation.class);
-
     /*
      * The name of the continuous backup restore location.
      */

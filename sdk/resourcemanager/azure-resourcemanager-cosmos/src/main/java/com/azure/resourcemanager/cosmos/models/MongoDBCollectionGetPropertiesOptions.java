@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The MongoDBCollectionGetPropertiesOptions model. */
 @Fluent
 public final class MongoDBCollectionGetPropertiesOptions extends OptionsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionGetPropertiesOptions.class);
-
     /** {@inheritDoc} */
     @Override
     public MongoDBCollectionGetPropertiesOptions withThroughput(Integer throughput) {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The metric values for a single partition. */
 @Immutable
 public final class PartitionMetricInner extends MetricInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartitionMetricInner.class);
-
     /*
      * The partition id (GUID identifier) of the metric values.
      */
