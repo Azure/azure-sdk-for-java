@@ -2,7 +2,8 @@
 
 ### 4.33.0 (2022-07-13)
 #### Other Changes
-* Upgraded `jackson-annotations` `jackson-core` `jackson-databind` to `2.13.3` - See [PR 29638](https://github.com/Azure/azure-sdk-for-java/pull/29638)
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
 
 ### 4.32.1 (2022-06-30)
 
