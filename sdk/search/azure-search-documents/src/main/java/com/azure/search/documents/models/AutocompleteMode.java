@@ -31,6 +31,9 @@ public enum AutocompleteMode {
      * @return the parsed AutocompleteMode object, or null if unable to parse.
      */
     public static AutocompleteMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutocompleteMode[] items = AutocompleteMode.values();
         for (AutocompleteMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -196,9 +195,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
                         } else if ("pattern".equals(fieldName)) {
                             pattern = reader.getStringValue();
                         } else if ("flags".equals(fieldName)) {
-                            flags =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> RegexFlags.fromString(reader.getStringValue()));
+                            flags = RegexFlags.fromString(reader.getStringValue());
                         } else if ("stopwords".equals(fieldName)) {
                             stopwords = reader.readArray(reader1 -> reader1.getStringValue());
                         } else {

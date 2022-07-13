@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -216,16 +215,9 @@ public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
                             context = reader.getStringValue();
                         } else if ("categories".equals(fieldName)) {
                             categories =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1,
-                                                            r -> EntityCategory.fromString(reader1.getStringValue())));
+                                    reader.readArray(reader1 -> EntityCategory.fromString(reader1.getStringValue()));
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> EntityRecognitionSkillLanguage.fromString(reader.getStringValue()));
+                            defaultLanguageCode = EntityRecognitionSkillLanguage.fromString(reader.getStringValue());
                         } else if ("includeTypelessEntities".equals(fieldName)) {
                             includeTypelessEntities = reader.getBooleanNullableValue();
                         } else if ("minimumPrecision".equals(fieldName)) {

@@ -28,6 +28,9 @@ public enum EdgeNGramTokenFilterSide {
      * @return the parsed EdgeNGramTokenFilterSide object, or null if unable to parse.
      */
     public static EdgeNGramTokenFilterSide fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EdgeNGramTokenFilterSide[] items = EdgeNGramTokenFilterSide.values();
         for (EdgeNGramTokenFilterSide item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

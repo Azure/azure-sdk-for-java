@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -279,8 +278,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
                         } else if ("resourceId".equals(fieldName)) {
                             resourceId = reader.getStringValue();
                         } else if ("timeout".equals(fieldName)) {
-                            timeout =
-                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            timeout = reader.getNullableValue(r -> Duration.parse(reader.getStringValue()));
                         } else if ("region".equals(fieldName)) {
                             region = reader.getStringValue();
                         } else if ("degreeOfParallelism".equals(fieldName)) {

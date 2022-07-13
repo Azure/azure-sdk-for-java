@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -123,10 +122,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("parsingMode", this.parsingMode, false);
         jsonWriter.writeStringField("dataToExtract", this.dataToExtract, false);
         jsonWriter.writeMapField(
-                "configuration",
-                this.configuration,
-                false,
-                (writer, element) -> JsonUtils.writeUntypedField(writer, element));
+                "configuration", this.configuration, false, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -176,7 +172,7 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                         } else if ("dataToExtract".equals(fieldName)) {
                             dataToExtract = reader.getStringValue();
                         } else if ("configuration".equals(fieldName)) {
-                            configuration = reader.readMap(reader1 -> JsonUtils.readUntypedField(reader1));
+                            configuration = reader.readMap(reader1 -> reader1.readUntyped());
                         } else {
                             reader.skipChildren();
                         }

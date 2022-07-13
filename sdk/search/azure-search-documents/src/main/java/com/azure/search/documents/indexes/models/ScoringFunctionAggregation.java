@@ -37,6 +37,9 @@ public enum ScoringFunctionAggregation {
      * @return the parsed ScoringFunctionAggregation object, or null if unable to parse.
      */
     public static ScoringFunctionAggregation fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ScoringFunctionAggregation[] items = ScoringFunctionAggregation.values();
         for (ScoringFunctionAggregation item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

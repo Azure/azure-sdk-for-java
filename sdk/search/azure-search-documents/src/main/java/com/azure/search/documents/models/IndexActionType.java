@@ -34,6 +34,9 @@ public enum IndexActionType {
      * @return the parsed IndexActionType object, or null if unable to parse.
      */
     public static IndexActionType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IndexActionType[] items = IndexActionType.values();
         for (IndexActionType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

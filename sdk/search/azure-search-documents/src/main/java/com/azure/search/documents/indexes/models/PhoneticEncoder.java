@@ -55,6 +55,9 @@ public enum PhoneticEncoder {
      * @return the parsed PhoneticEncoder object, or null if unable to parse.
      */
     public static PhoneticEncoder fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PhoneticEncoder[] items = PhoneticEncoder.values();
         for (PhoneticEncoder item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

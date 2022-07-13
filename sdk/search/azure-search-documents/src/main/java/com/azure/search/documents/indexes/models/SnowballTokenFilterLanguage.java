@@ -88,6 +88,9 @@ public enum SnowballTokenFilterLanguage {
      * @return the parsed SnowballTokenFilterLanguage object, or null if unable to parse.
      */
     public static SnowballTokenFilterLanguage fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SnowballTokenFilterLanguage[] items = SnowballTokenFilterLanguage.values();
         for (SnowballTokenFilterLanguage item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

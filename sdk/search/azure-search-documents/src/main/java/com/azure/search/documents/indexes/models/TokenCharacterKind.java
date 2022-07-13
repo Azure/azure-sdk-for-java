@@ -37,6 +37,9 @@ public enum TokenCharacterKind {
      * @return the parsed TokenCharacterKind object, or null if unable to parse.
      */
     public static TokenCharacterKind fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TokenCharacterKind[] items = TokenCharacterKind.values();
         for (TokenCharacterKind item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

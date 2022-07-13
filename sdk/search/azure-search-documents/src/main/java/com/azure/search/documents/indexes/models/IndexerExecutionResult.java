@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -279,22 +278,15 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                             failedItemCount = reader.getIntValue();
                             failedItemCountFound = true;
                         } else if ("statusDetail".equals(fieldName)) {
-                            statusDetail =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> IndexerExecutionStatusDetail.fromString(reader.getStringValue()));
+                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getStringValue());
                         } else if ("currentState".equals(fieldName)) {
                             currentState = IndexerCurrentState.fromJson(reader);
                         } else if ("errorMessage".equals(fieldName)) {
                             errorMessage = reader.getStringValue();
                         } else if ("startTime".equals(fieldName)) {
-                            startTime =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> OffsetDateTime.parse(reader.getStringValue()));
+                            startTime = reader.getNullableValue(r -> OffsetDateTime.parse(reader.getStringValue()));
                         } else if ("endTime".equals(fieldName)) {
-                            endTime =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> OffsetDateTime.parse(reader.getStringValue()));
+                            endTime = reader.getNullableValue(r -> OffsetDateTime.parse(reader.getStringValue()));
                         } else if ("initialTrackingState".equals(fieldName)) {
                             initialTrackingState = reader.getStringValue();
                         } else if ("finalTrackingState".equals(fieldName)) {

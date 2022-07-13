@@ -157,6 +157,9 @@ public enum MicrosoftStemmingTokenizerLanguage {
      * @return the parsed MicrosoftStemmingTokenizerLanguage object, or null if unable to parse.
      */
     public static MicrosoftStemmingTokenizerLanguage fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MicrosoftStemmingTokenizerLanguage[] items = MicrosoftStemmingTokenizerLanguage.values();
         for (MicrosoftStemmingTokenizerLanguage item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

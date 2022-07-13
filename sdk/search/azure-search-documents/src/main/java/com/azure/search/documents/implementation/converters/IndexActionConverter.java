@@ -3,10 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.json.DefaultJsonReader;
+import com.azure.json.JsonReader;
 import com.azure.search.documents.models.IndexAction;
 
 import java.util.Map;
@@ -38,7 +37,6 @@ public final class IndexActionConverter {
     /**
      * Maps from {@link IndexAction} to {@link com.azure.search.documents.implementation.models.IndexAction}.
      */
-    @SuppressWarnings("unchecked")
     public static <T> com.azure.search.documents.implementation.models.IndexAction map(IndexAction<T> obj,
         ObjectSerializer serializer) {
         if (obj == null) {
@@ -57,8 +55,8 @@ public final class IndexActionConverter {
         // Convert the document to the JSON representation.
         byte[] documentJson = serializer.serializeToBytes(document);
         if (documentJson != null) {
-            indexAction.setAdditionalProperties(
-                (Map<String, Object>) JsonUtils.readUntypedField(DefaultJsonReader.fromBytes(documentJson)));
+            indexAction.setAdditionalProperties(DefaultJsonReader.fromBytes(documentJson)
+                .readMap(JsonReader::readUntyped));
         }
 
         return indexAction;

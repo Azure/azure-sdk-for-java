@@ -555,7 +555,7 @@ public abstract class JsonReader implements Closeable {
      *     <li>null if the starting token is null or {@link JsonToken#NULL}</li>
      *     <li>true or false if the starting token is {@link JsonToken#BOOLEAN}</li>
      *     <li>One of int, long, float, or double is the starting token is {@link JsonToken#NUMBER}, the smallest
-     *     containing value will be used based on whether the number is an integer or floating point value</li>
+     *     containing value will be used if the number is an integer</li>
      *     <li>An array of untyped elements if the starting point is {@link JsonToken#START_ARRAY}</li>
      *     <li>A map of String-untyped value if the starting point is {@link JsonToken#START_OBJECT}</li>
      * </ul>
@@ -592,11 +592,8 @@ public abstract class JsonReader implements Closeable {
         } else if (token == JsonToken.NUMBER) {
             String numberText = getTextValue();
             if (numberText.contains(".")) {
-                try {
-                    return Float.parseFloat(numberText);
-                } catch (NumberFormatException ex) {
-                    return Double.parseDouble(numberText);
-                }
+                // Unlike integers always use Double to prevent floating point rounding issues.
+                return Double.parseDouble(numberText);
             } else {
                 try {
                     return Integer.parseInt(numberText);

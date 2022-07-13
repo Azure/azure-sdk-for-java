@@ -7,7 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -68,11 +67,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("count", this.count, false);
         if (additionalProperties != null) {
-            additionalProperties.forEach(
-                    (key, value) -> {
-                        jsonWriter.writeFieldName(key);
-                        JsonUtils.writeUntypedField(jsonWriter, value);
-                    });
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
         }
         return jsonWriter.writeEndObject().flush();
     }
@@ -100,7 +95,7 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
                                 additionalProperties = new LinkedHashMap<>();
                             }
 
-                            additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                            additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
                     FacetResult deserializedValue = new FacetResult();

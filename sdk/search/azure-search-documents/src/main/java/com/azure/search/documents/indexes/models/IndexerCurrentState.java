@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -166,9 +165,7 @@ public final class IndexerCurrentState implements JsonSerializable<IndexerCurren
                         reader.nextToken();
 
                         if ("mode".equals(fieldName)) {
-                            mode =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> IndexingMode.fromString(reader.getStringValue()));
+                            mode = IndexingMode.fromString(reader.getStringValue());
                         } else if ("allDocsInitialChangeTrackingState".equals(fieldName)) {
                             allDocsInitialChangeTrackingState = reader.getStringValue();
                         } else if ("allDocsFinalChangeTrackingState".equals(fieldName)) {

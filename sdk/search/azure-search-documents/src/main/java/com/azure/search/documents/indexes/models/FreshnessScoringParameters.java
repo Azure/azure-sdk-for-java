@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -70,8 +69,7 @@ public final class FreshnessScoringParameters implements JsonSerializable<Freshn
                         reader.nextToken();
 
                         if ("boostingDuration".equals(fieldName)) {
-                            boostingDuration =
-                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            boostingDuration = reader.getNullableValue(r -> Duration.parse(reader.getStringValue()));
                             boostingDurationFound = true;
                         } else {
                             reader.skipChildren();

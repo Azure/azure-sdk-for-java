@@ -6,7 +6,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -75,11 +74,7 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
         jsonWriter.writeStringField(
                 "@search.action", this.actionType == null ? null : this.actionType.toString(), false);
         if (additionalProperties != null) {
-            additionalProperties.forEach(
-                    (key, value) -> {
-                        jsonWriter.writeFieldName(key);
-                        JsonUtils.writeUntypedField(jsonWriter, value);
-                    });
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
         }
         return jsonWriter.writeEndObject().flush();
     }
@@ -105,7 +100,7 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
                             }
-                            additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                            additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
                     IndexAction deserializedValue = new IndexAction();

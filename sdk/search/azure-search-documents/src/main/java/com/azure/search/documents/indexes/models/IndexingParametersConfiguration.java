@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -541,11 +540,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                 false);
         jsonWriter.writeStringField("queryTimeout", this.queryTimeout, false);
         if (additionalProperties != null) {
-            additionalProperties.forEach(
-                    (key, value) -> {
-                        jsonWriter.writeFieldName(key);
-                        JsonUtils.writeUntypedField(jsonWriter, value);
-                    });
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
         }
         return jsonWriter.writeEndObject().flush();
     }
@@ -582,9 +577,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                         reader.nextToken();
 
                         if ("parsingMode".equals(fieldName)) {
-                            parsingMode =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> BlobIndexerParsingMode.fromString(reader.getStringValue()));
+                            parsingMode = BlobIndexerParsingMode.fromString(reader.getStringValue());
                         } else if ("excludedFileNameExtensions".equals(fieldName)) {
                             excludedFileNameExtensions = reader.getStringValue();
                         } else if ("indexedFileNameExtensions".equals(fieldName)) {
@@ -604,27 +597,16 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                         } else if ("documentRoot".equals(fieldName)) {
                             documentRoot = reader.getStringValue();
                         } else if ("dataToExtract".equals(fieldName)) {
-                            dataToExtract =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> BlobIndexerDataToExtract.fromString(reader.getStringValue()));
+                            dataToExtract = BlobIndexerDataToExtract.fromString(reader.getStringValue());
                         } else if ("imageAction".equals(fieldName)) {
-                            imageAction =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> BlobIndexerImageAction.fromString(reader.getStringValue()));
+                            imageAction = BlobIndexerImageAction.fromString(reader.getStringValue());
                         } else if ("allowSkillsetToReadFileData".equals(fieldName)) {
                             allowSkillsetToReadFileData = reader.getBooleanNullableValue();
                         } else if ("pdfTextRotationAlgorithm".equals(fieldName)) {
                             pdfTextRotationAlgorithm =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r ->
-                                                    BlobIndexerPdfTextRotationAlgorithm.fromString(
-                                                            reader.getStringValue()));
+                                    BlobIndexerPdfTextRotationAlgorithm.fromString(reader.getStringValue());
                         } else if ("executionEnvironment".equals(fieldName)) {
-                            executionEnvironment =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> IndexerExecutionEnvironment.fromString(reader.getStringValue()));
+                            executionEnvironment = IndexerExecutionEnvironment.fromString(reader.getStringValue());
                         } else if ("queryTimeout".equals(fieldName)) {
                             queryTimeout = reader.getStringValue();
                         } else {
@@ -632,7 +614,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
                                 additionalProperties = new LinkedHashMap<>();
                             }
 
-                            additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                            additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
                     IndexingParametersConfiguration deserializedValue = new IndexingParametersConfiguration();

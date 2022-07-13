@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -553,9 +552,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("type".equals(fieldName)) {
-                            type =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SearchFieldDataType.fromString(reader.getStringValue()));
+                            type = SearchFieldDataType.fromString(reader.getStringValue());
                             typeFound = true;
                         } else if ("key".equals(fieldName)) {
                             key = reader.getBooleanNullableValue();
@@ -570,21 +567,13 @@ public final class SearchField implements JsonSerializable<SearchField> {
                         } else if ("facetable".equals(fieldName)) {
                             facetable = reader.getBooleanNullableValue();
                         } else if ("analyzer".equals(fieldName)) {
-                            analyzerName =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
+                            analyzerName = LexicalAnalyzerName.fromString(reader.getStringValue());
                         } else if ("searchAnalyzer".equals(fieldName)) {
-                            searchAnalyzerName =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
+                            searchAnalyzerName = LexicalAnalyzerName.fromString(reader.getStringValue());
                         } else if ("indexAnalyzer".equals(fieldName)) {
-                            indexAnalyzerName =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> LexicalAnalyzerName.fromString(reader.getStringValue()));
+                            indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getStringValue());
                         } else if ("normalizer".equals(fieldName)) {
-                            normalizerName =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> LexicalNormalizerName.fromString(reader.getStringValue()));
+                            normalizerName = LexicalNormalizerName.fromString(reader.getStringValue());
                         } else if ("synonymMaps".equals(fieldName)) {
                             synonymMapNames = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("fields".equals(fieldName)) {

@@ -34,6 +34,9 @@ public enum ScoringFunctionInterpolation {
      * @return the parsed ScoringFunctionInterpolation object, or null if unable to parse.
      */
     public static ScoringFunctionInterpolation fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ScoringFunctionInterpolation[] items = ScoringFunctionInterpolation.values();
         for (ScoringFunctionInterpolation item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

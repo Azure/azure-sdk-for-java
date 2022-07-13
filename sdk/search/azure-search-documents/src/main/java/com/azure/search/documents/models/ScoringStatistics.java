@@ -28,6 +28,9 @@ public enum ScoringStatistics {
      * @return the parsed ScoringStatistics object, or null if unable to parse.
      */
     public static ScoringStatistics fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ScoringStatistics[] items = ScoringStatistics.values();
         for (ScoringStatistics item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

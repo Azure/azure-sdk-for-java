@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -169,13 +168,9 @@ public final class SplitSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SplitSkillLanguage.fromString(reader.getStringValue()));
+                            defaultLanguageCode = SplitSkillLanguage.fromString(reader.getStringValue());
                         } else if ("textSplitMode".equals(fieldName)) {
-                            textSplitMode =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> TextSplitMode.fromString(reader.getStringValue()));
+                            textSplitMode = TextSplitMode.fromString(reader.getStringValue());
                         } else if ("maximumPageLength".equals(fieldName)) {
                             maximumPageLength = reader.getIntegerNullableValue();
                         } else {

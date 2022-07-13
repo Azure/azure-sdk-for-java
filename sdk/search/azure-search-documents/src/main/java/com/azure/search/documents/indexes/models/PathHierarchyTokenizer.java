@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -203,9 +202,9 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("delimiter".equals(fieldName)) {
-                            delimiter = JsonUtils.getNullableProperty(reader, r -> reader.getStringValue().charAt(0));
+                            delimiter = reader.getNullableValue(r -> reader.getStringValue().charAt(0));
                         } else if ("replacement".equals(fieldName)) {
-                            replacement = JsonUtils.getNullableProperty(reader, r -> reader.getStringValue().charAt(0));
+                            replacement = reader.getNullableValue(r -> reader.getStringValue().charAt(0));
                         } else if ("maxTokenLength".equals(fieldName)) {
                             maxTokenLength = reader.getIntegerNullableValue();
                         } else if ("reverse".equals(fieldName)) {

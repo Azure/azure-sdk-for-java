@@ -7,8 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.DefaultJsonReader;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -184,8 +182,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
                     } else {
                         // If it isn't the discriminator field buffer the JSON to make it replayable and find the
                         // discriminator field value.
-                        String json = JsonUtils.bufferJsonObject(reader);
-                        JsonReader replayReader = DefaultJsonReader.fromString(json);
+                        JsonReader replayReader = reader.bufferObject();
                         replayReader.nextToken(); // Prepare for reading
                         while (replayReader.nextToken() != JsonToken.END_OBJECT) {
                             String fieldName = replayReader.getFieldName();
@@ -199,7 +196,7 @@ public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndex
                         }
 
                         if (discriminatorValue != null) {
-                            readerToUse = DefaultJsonReader.fromString(json);
+                            readerToUse = replayReader.reset();
                         }
                     }
                     // Use the discriminator value to determine which subtype should be deserialized.

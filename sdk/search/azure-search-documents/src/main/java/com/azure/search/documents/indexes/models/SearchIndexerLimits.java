@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -89,8 +88,7 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
                         reader.nextToken();
 
                         if ("maxRunTime".equals(fieldName)) {
-                            maxRunTime =
-                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            maxRunTime = reader.getNullableValue(r -> Duration.parse(reader.getStringValue()));
                         } else if ("maxDocumentExtractionSize".equals(fieldName)) {
                             maxDocumentExtractionSize = reader.getLongNullableValue();
                         } else if ("maxDocumentContentCharactersToExtract".equals(fieldName)) {

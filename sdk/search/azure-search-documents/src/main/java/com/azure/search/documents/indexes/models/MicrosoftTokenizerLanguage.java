@@ -148,6 +148,9 @@ public enum MicrosoftTokenizerLanguage {
      * @return the parsed MicrosoftTokenizerLanguage object, or null if unable to parse.
      */
     public static MicrosoftTokenizerLanguage fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MicrosoftTokenizerLanguage[] items = MicrosoftTokenizerLanguage.values();
         for (MicrosoftTokenizerLanguage item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

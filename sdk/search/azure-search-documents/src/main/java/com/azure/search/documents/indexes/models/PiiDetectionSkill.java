@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -300,10 +299,7 @@ public final class PiiDetectionSkill extends SearchIndexerSkill {
                         } else if ("minimumPrecision".equals(fieldName)) {
                             minimumPrecision = reader.getDoubleNullableValue();
                         } else if ("maskingMode".equals(fieldName)) {
-                            maskingMode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> PiiDetectionSkillMaskingMode.fromString(reader.getStringValue()));
+                            maskingMode = PiiDetectionSkillMaskingMode.fromString(reader.getStringValue());
                         } else if ("maskingCharacter".equals(fieldName)) {
                             maskingCharacter = reader.getStringValue();
                         } else if ("modelVersion".equals(fieldName)) {

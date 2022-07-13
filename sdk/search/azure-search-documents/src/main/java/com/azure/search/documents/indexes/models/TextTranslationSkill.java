@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -176,21 +175,12 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultToLanguageCode".equals(fieldName)) {
-                            defaultToLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> TextTranslationSkillLanguage.fromString(reader.getStringValue()));
+                            defaultToLanguageCode = TextTranslationSkillLanguage.fromString(reader.getStringValue());
                             defaultToLanguageCodeFound = true;
                         } else if ("defaultFromLanguageCode".equals(fieldName)) {
-                            defaultFromLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> TextTranslationSkillLanguage.fromString(reader.getStringValue()));
+                            defaultFromLanguageCode = TextTranslationSkillLanguage.fromString(reader.getStringValue());
                         } else if ("suggestedFrom".equals(fieldName)) {
-                            suggestedFrom =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> TextTranslationSkillLanguage.fromString(reader.getStringValue()));
+                            suggestedFrom = TextTranslationSkillLanguage.fromString(reader.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

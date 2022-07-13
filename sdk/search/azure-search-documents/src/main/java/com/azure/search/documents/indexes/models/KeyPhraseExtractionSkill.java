@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -175,10 +174,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> KeyPhraseExtractionSkillLanguage.fromString(reader.getStringValue()));
+                            defaultLanguageCode = KeyPhraseExtractionSkillLanguage.fromString(reader.getStringValue());
                         } else if ("maxKeyPhraseCount".equals(fieldName)) {
                             maxKeyPhraseCount = reader.getIntegerNullableValue();
                         } else if ("modelVersion".equals(fieldName)) {

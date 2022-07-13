@@ -184,6 +184,9 @@ public enum StemmerTokenFilterLanguage {
      * @return the parsed StemmerTokenFilterLanguage object, or null if unable to parse.
      */
     public static StemmerTokenFilterLanguage fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StemmerTokenFilterLanguage[] items = StemmerTokenFilterLanguage.values();
         for (StemmerTokenFilterLanguage item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

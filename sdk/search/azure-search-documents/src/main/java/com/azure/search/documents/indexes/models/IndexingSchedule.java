@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -96,13 +95,10 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
                         reader.nextToken();
 
                         if ("interval".equals(fieldName)) {
-                            interval =
-                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            interval = reader.getNullableValue(r -> Duration.parse(reader.getStringValue()));
                             intervalFound = true;
                         } else if ("startTime".equals(fieldName)) {
-                            startTime =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> OffsetDateTime.parse(reader.getStringValue()));
+                            startTime = reader.getNullableValue(r -> OffsetDateTime.parse(reader.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

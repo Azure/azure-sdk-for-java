@@ -34,6 +34,9 @@ public enum IndexerExecutionStatus {
      * @return the parsed IndexerExecutionStatus object, or null if unable to parse.
      */
     public static IndexerExecutionStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IndexerExecutionStatus[] items = IndexerExecutionStatus.values();
         for (IndexerExecutionStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

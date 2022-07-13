@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -163,24 +162,14 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("tokenizer".equals(fieldName)) {
-                            tokenizer =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> LexicalTokenizerName.fromString(reader.getStringValue()));
+                            tokenizer = LexicalTokenizerName.fromString(reader.getStringValue());
                             tokenizerFound = true;
                         } else if ("tokenFilters".equals(fieldName)) {
                             tokenFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1,
-                                                            r -> TokenFilterName.fromString(reader1.getStringValue())));
+                                    reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getStringValue()));
                         } else if ("charFilters".equals(fieldName)) {
                             charFilters =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1,
-                                                            r -> CharFilterName.fromString(reader1.getStringValue())));
+                                    reader.readArray(reader1 -> CharFilterName.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

@@ -28,6 +28,9 @@ public enum SearchMode {
      * @return the parsed SearchMode object, or null if unable to parse.
      */
     public static SearchMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SearchMode[] items = SearchMode.values();
         for (SearchMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -68,9 +67,7 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
                         reader.nextToken();
 
                         if ("x-ms-client-request-id".equals(fieldName)) {
-                            xMsClientRequestId =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> UUID.fromString(reader.getStringValue()));
+                            xMsClientRequestId = reader.getNullableValue(r -> UUID.fromString(reader.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -343,10 +342,7 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                         } else if ("description".equals(fieldName)) {
                             description = reader.getStringValue();
                         } else if ("type".equals(fieldName)) {
-                            type =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> SearchIndexerDataSourceType.fromString(reader.getStringValue()));
+                            type = SearchIndexerDataSourceType.fromString(reader.getStringValue());
                         } else if ("credentials".equals(fieldName)) {
                             credentials = DataSourceCredentials.fromJson(reader);
                         } else if ("container".equals(fieldName)) {

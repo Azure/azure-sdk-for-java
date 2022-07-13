@@ -115,6 +115,9 @@ public enum StopwordsList {
      * @return the parsed StopwordsList object, or null if unable to parse.
      */
     public static StopwordsList fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StopwordsList[] items = StopwordsList.values();
         for (StopwordsList item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

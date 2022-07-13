@@ -8,7 +8,6 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -132,11 +131,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
         jsonWriter.writeArrayField(
                 "@search.captions", this.captions, false, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
-            additionalProperties.forEach(
-                    (key, value) -> {
-                        jsonWriter.writeFieldName(key);
-                        JsonUtils.writeUntypedField(jsonWriter, value);
-                    });
+            additionalProperties.forEach(jsonWriter::writeUntypedField);
         }
         return jsonWriter.writeEndObject().flush();
     }
@@ -177,7 +172,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                                 additionalProperties = new LinkedHashMap<>();
                             }
 
-                            additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                            additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
                     List<String> missingProperties = new ArrayList<>();

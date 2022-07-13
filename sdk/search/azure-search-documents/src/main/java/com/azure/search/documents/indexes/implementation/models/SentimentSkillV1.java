@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -118,9 +117,7 @@ public final class SentimentSkillV1 extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> SentimentSkillLanguage.fromString(reader.getStringValue()));
+                            defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getStringValue());
                         } else {
                             reader.skipChildren();
                         }

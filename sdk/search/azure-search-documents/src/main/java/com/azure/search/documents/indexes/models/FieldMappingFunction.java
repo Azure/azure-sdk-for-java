@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -75,10 +74,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name, false);
         jsonWriter.writeMapField(
-                "parameters",
-                this.parameters,
-                false,
-                (writer, element) -> JsonUtils.writeUntypedField(writer, element));
+                "parameters", this.parameters, false, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject().flush();
     }
 
@@ -104,7 +100,7 @@ public final class FieldMappingFunction implements JsonSerializable<FieldMapping
                             name = reader.getStringValue();
                             nameFound = true;
                         } else if ("parameters".equals(fieldName)) {
-                            parameters = reader.readMap(reader1 -> JsonUtils.readUntypedField(reader1));
+                            parameters = reader.readMap(reader1 -> reader1.readUntyped());
                         } else {
                             reader.skipChildren();
                         }

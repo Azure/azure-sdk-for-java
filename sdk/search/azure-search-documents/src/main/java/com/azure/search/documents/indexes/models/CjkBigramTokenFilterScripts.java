@@ -34,6 +34,9 @@ public enum CjkBigramTokenFilterScripts {
      * @return the parsed CjkBigramTokenFilterScripts object, or null if unable to parse.
      */
     public static CjkBigramTokenFilterScripts fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CjkBigramTokenFilterScripts[] items = CjkBigramTokenFilterScripts.values();
         for (CjkBigramTokenFilterScripts item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -825,13 +824,9 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                         } else if ("searchFields".equals(fieldName)) {
                             searchFields = reader.readArray(reader1 -> reader1.getStringValue());
                         } else if ("queryLanguage".equals(fieldName)) {
-                            queryLanguage =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> QueryLanguage.fromString(reader.getStringValue()));
+                            queryLanguage = QueryLanguage.fromString(reader.getStringValue());
                         } else if ("speller".equals(fieldName)) {
-                            speller =
-                                    JsonUtils.getNullableProperty(
-                                            reader, r -> QuerySpellerType.fromString(reader.getStringValue()));
+                            speller = QuerySpellerType.fromString(reader.getStringValue());
                         } else if ("answers".equals(fieldName)) {
                             answers = reader.getStringValue();
                         } else if ("searchMode".equals(fieldName)) {

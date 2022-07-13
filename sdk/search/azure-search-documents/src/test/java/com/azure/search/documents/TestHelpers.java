@@ -11,7 +11,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.DefaultJsonReader;
 import com.azure.json.DefaultJsonWriter;
@@ -123,10 +122,9 @@ public final class TestHelpers {
                 actualJson = SERIALIZER.serializeToBytes(actual);
             }
 
-            Map<String, Object> expectedMap = (Map<String, Object>) JsonUtils.readUntypedField(
-                DefaultJsonReader.fromBytes(expectedJson));
-            Map<String, Object> actualMap = (Map<String, Object>) JsonUtils.readUntypedField(
-                DefaultJsonReader.fromBytes(actualJson));
+            Map<String, Object> expectedMap = DefaultJsonReader.fromBytes(expectedJson)
+                .readMap(JsonReader::readUntyped);
+            Map<String, Object> actualMap = DefaultJsonReader.fromBytes(actualJson).readMap(JsonReader::readUntyped);
 
             assertMapEqualsInternal(expectedMap, actualMap, ignoredDefaults, ignoredFields);
         }
@@ -330,12 +328,11 @@ public final class TestHelpers {
     public static List<Map<String, Object>> readJsonFileToList(String filename) {
         JsonReader reader = DefaultJsonReader.fromBytes(loadResource(filename));
 
-        return reader.readArray(reader1 -> reader1.readMap(JsonUtils::readUntypedField));
+        return reader.readArray(reader1 -> reader1.readMap(JsonReader::readUntyped));
     }
 
-    @SuppressWarnings("unchecked")
     public static Map<String, Object> convertStreamToMap(byte[] source) {
-        return (Map<String, Object>) JsonUtils.readUntypedField(DefaultJsonReader.fromBytes(source));
+        return DefaultJsonReader.fromBytes(source).readMap(JsonReader::readUntyped);
     }
 
     public static <T> T convertMapToValue(Map<String, Object> value, Class<T> clazz) {

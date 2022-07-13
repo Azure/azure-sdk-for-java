@@ -31,6 +31,9 @@ public enum QueryType {
      * @return the parsed QueryType object, or null if unable to parse.
      */
     public static QueryType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         QueryType[] items = QueryType.values();
         for (QueryType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -176,24 +175,12 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> ImageAnalysisSkillLanguage.fromString(reader.getStringValue()));
+                            defaultLanguageCode = ImageAnalysisSkillLanguage.fromString(reader.getStringValue());
                         } else if ("visualFeatures".equals(fieldName)) {
                             visualFeatures =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1,
-                                                            r -> VisualFeature.fromString(reader1.getStringValue())));
+                                    reader.readArray(reader1 -> VisualFeature.fromString(reader1.getStringValue()));
                         } else if ("details".equals(fieldName)) {
-                            details =
-                                    reader.readArray(
-                                            reader1 ->
-                                                    JsonUtils.getNullableProperty(
-                                                            reader1,
-                                                            r -> ImageDetail.fromString(reader1.getStringValue())));
+                            details = reader.readArray(reader1 -> ImageDetail.fromString(reader1.getStringValue()));
                         } else {
                             reader.skipChildren();
                         }

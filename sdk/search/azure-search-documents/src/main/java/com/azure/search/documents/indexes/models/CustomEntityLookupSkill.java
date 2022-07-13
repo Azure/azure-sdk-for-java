@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -268,10 +267,7 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                         } else if ("context".equals(fieldName)) {
                             context = reader.getStringValue();
                         } else if ("defaultLanguageCode".equals(fieldName)) {
-                            defaultLanguageCode =
-                                    JsonUtils.getNullableProperty(
-                                            reader,
-                                            r -> CustomEntityLookupSkillLanguage.fromString(reader.getStringValue()));
+                            defaultLanguageCode = CustomEntityLookupSkillLanguage.fromString(reader.getStringValue());
                         } else if ("entitiesDefinitionUri".equals(fieldName)) {
                             entitiesDefinitionUri = reader.getStringValue();
                         } else if ("inlineEntitiesDefinition".equals(fieldName)) {

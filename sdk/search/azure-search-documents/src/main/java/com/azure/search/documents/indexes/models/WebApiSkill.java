@@ -8,7 +8,6 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -248,8 +247,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                         } else if ("httpMethod".equals(fieldName)) {
                             httpMethod = reader.getStringValue();
                         } else if ("timeout".equals(fieldName)) {
-                            timeout =
-                                    JsonUtils.getNullableProperty(reader, r -> Duration.parse(reader.getStringValue()));
+                            timeout = reader.getNullableValue(r -> Duration.parse(reader.getStringValue()));
                         } else if ("batchSize".equals(fieldName)) {
                             batchSize = reader.getIntegerNullableValue();
                         } else if ("degreeOfParallelism".equals(fieldName)) {
