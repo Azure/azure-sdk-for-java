@@ -40,8 +40,8 @@ public final class ConfidentialLedgerIdentityAsyncClient {
      *
      * <pre>{@code
      * {
-     *     ledgerId: String
-     *     ledgerTlsCertificate: String
+     *     ledgerId: String (Optional)
+     *     ledgerTlsCertificate: String (Required)
      * }
      * }</pre>
      *

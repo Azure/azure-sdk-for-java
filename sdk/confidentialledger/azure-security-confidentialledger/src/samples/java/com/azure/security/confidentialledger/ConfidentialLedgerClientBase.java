@@ -22,7 +22,7 @@ public class ConfidentialLedgerClientBase {
         try {
             // BEGIN:readme-sample-createClient
             ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-                .identityServiceUri("https://identity.confidential-ledger.core.azure.com")
+                .certificateClientEndpoint("https://identity.confidential-ledger.core.azure.com")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
         

@@ -26,7 +26,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
     protected void beforeTest() {
         try {
             ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-                .identityServiceUri(
+                .certificateClientEndpoint(
                         Configuration.getGlobalConfiguration().get("IDENTITYSERVICEURI", "https://identity.confidential-ledger.core.azure.com"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
