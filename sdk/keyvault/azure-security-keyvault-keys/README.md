@@ -63,19 +63,27 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ```
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you'll need to create an instance of the [KeyClient](#create-key-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Key Vault service, you'll need to create an instance of the [KeyClient](#create-key-client) class. You would need a **vault url** and **[a managed identity][managed_identity]** to instantiate a client object using the `ManagedIdentityCredential` examples shown in this document.
 
-The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+The `ManagedIdentityCredential` way of authentication is being used in this getting started section but you can find more ways to authenticate with the [azure-identity][azure_identity].
 
-#### Create/Get credentials
-To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell][azure_cloud_shell]
+#### Create a managed identity
+To create a managed identity you can use the [Azure Portal][azure_portal_managed_identity], [Azure CLI][azure_cli_managed_identity] or [Azure Cloud Shell][azure_cloud_shell].
 
 Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
 
- * Create a service principal and configure its access to Azure resources:
+ * Create a virtual machine and configure its access to your Key Vault:
 
 ```bash
-az ad sp create-for-rbac -n <your-application-name> --skip-assignment
+az vmss create \
+  --resource-group <your-resource-group> \
+  --name <your-vm-name> \
+  --image UbuntuLTS \
+  --upgrade-policy-mode automatic \
+  --admin-username <a-username-for-the-vm> \
+  --generate-ssh-keys \
+  --assign-identity \
+  --scope subscriptions/<your-subscription-id>/resourceGroups/<your-resource-group>
 ````
 
 Output:
@@ -91,7 +99,7 @@ Output:
 ```
 
 * Take note of the service principal objectId
-```PowerShell
+```bash
 az ad sp show --id <appId> --query objectId
 ```
 Output:
@@ -164,24 +172,24 @@ az keyvault security-domain download --hsm-name <your-key-vault-name> --sd-wrapp
 ```
 
 #### Create Key client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the KeyClient:
+Once you've set up your VM along with its managed identity and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyClient`:
 
 ```java readme-sample-createKeyClient
 KeyClient keyClient = new KeyClientBuilder()
     .vaultUrl("<your-key-vault-url>")
-    .credential(new DefaultAzureCredentialBuilder().build())
+    .credential(new ManagedIdentityCredentialBuilder().build())
     .buildClient();
 ```
 
 > NOTE: For using an asynchronous client use KeyAsyncClient instead of KeyClient and call `buildAsyncClient()`
 
 #### Create Cryptography client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the URI returned above, you can create the CryptographyClient:
+Once you've set up your VM along with its managed identity and replaced **your-vault-url** with the URI returned above, you can create the `CryptographyClient`:
 
 ```java readme-sample-createCryptographyClient
 // Create client with key identifier from key vault.
 CryptographyClient cryptoClient = new CryptographyClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
+    .credential(new ManagedIdentityCredentialBuilder().build())
     .keyIdentifier("<your-key-id-from-key-vault>")
     .buildClient();
 ```
@@ -459,9 +467,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [rest_api]: https://docs.microsoft.com/rest/api/keyvault/
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
-[azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
+[azure_portal_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vmss
+[azure_cli_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-cli-windows-vmss
 [keys_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
@@ -472,5 +479,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
+[managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-keys%2FREADME.png)
