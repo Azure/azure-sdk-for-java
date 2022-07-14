@@ -32,7 +32,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumber").getPurchasedPhoneNumber(phoneNumber)
             )
@@ -46,7 +46,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
             this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAAD").getPurchasedPhoneNumber(phoneNumber)
             )
@@ -60,7 +60,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponse").getPurchasedPhoneNumberWithResponse(phoneNumber)
         )
@@ -132,7 +132,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
                 return result.getFinalResult()
                 .flatMap((PhoneNumberSearchResult searchResult) -> {
-                    String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
+                    String phoneNumber = getTestPhoneNumber(searchResult.getPhoneNumbers().get(0));
                     return beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbers").last()
                     .flatMap((AsyncPollResponse<PhoneNumberOperation, PurchasePhoneNumbersResult> purchaseResult)  -> {
                         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseResult.getStatus());
@@ -152,11 +152,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @DisabledIfEnvironmentVariable(
         named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
         matches = "(?i)(true)")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS",
-        matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
+        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
 
         StepVerifier.create(
             this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities").getPurchasedPhoneNumberWithResponse(phoneNumber)
@@ -275,5 +272,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     private PhoneNumbersAsyncClient getClientWithManagedIdentity(HttpClient httpClient, String testName) {
         PhoneNumbersClientBuilder builder = super.getClientBuilderUsingManagedIdentity(httpClient);
         return addLoggingPolicy(builder, testName).buildAsyncClient();
+    }
+
+    private String getTestPhoneNumber(String phoneNumber) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            phoneNumber = "+REDACTED";
+        }
+        return phoneNumber;
     }
 }
