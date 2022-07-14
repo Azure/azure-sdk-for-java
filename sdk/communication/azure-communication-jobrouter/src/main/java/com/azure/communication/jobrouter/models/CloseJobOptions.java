@@ -14,12 +14,12 @@ public class CloseJobOptions {
     /**
      * id of job to close.
      */
-    private String jobId;
+    private final String jobId;
 
     /**
      * id of assignment associated with the job.
      */
-    private String assignmentId;
+    private final String assignmentId;
 
     /**
      * Reason code for closing the job.

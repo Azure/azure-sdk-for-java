@@ -12,7 +12,34 @@ import java.util.Map;
  * Queue: A queue that can contain jobs to be routed.
  */
 @Fluent
-public class CreateQueueOptions extends QueueOptions {
+public class CreateQueueOptions {
+    /**
+     * The Id of this queue
+     */
+    private String queueId;
+
+    /**
+     * The name of this queue.
+     */
+    private String name;
+
+    /**
+     * The ID of the distribution policy that will determine how a job is
+     * distributed to workers.
+     */
+    private String distributionPolicyId;
+
+    /**
+     * A set of key/value pairs that are identifying attributes used by the
+     * rules engines to make decisions.
+     */
+    private Map<String, LabelValue> labels;
+
+    /**
+     * (Optional) The ID of the exception policy that determines various job
+     * escalation rules.
+     */
+    private String exceptionPolicyId;
 
     /**
      * Constructor for CreateQueueOptions.
@@ -52,5 +79,45 @@ public class CreateQueueOptions extends QueueOptions {
     public CreateQueueOptions setExceptionPolicyId(String exceptionPolicyId) {
         this.exceptionPolicyId = exceptionPolicyId;
         return this;
+    }
+
+    /**
+     * Returns the id of Job Queue.
+     * @return id.
+     */
+    public String getQueueId() {
+        return this.queueId;
+    }
+
+    /**
+     * Returns the name of this queue.
+     * @return name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns the id of distribution policy.
+     * @return id
+     */
+    public String getDistributionPolicyId() {
+        return this.distributionPolicyId;
+    }
+
+    /**
+     * Returns labels of Queue.
+     * @return labels
+     */
+    public Map<String, LabelValue> getLabels() {
+        return this.labels;
+    }
+
+    /**
+     * Returns the id of exception policy.
+     * @return exceptionPolicyId
+     */
+    public String getExceptionPolicyId() {
+        return this.exceptionPolicyId;
     }
 }

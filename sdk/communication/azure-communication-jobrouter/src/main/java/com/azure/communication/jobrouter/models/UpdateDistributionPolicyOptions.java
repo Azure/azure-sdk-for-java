@@ -7,7 +7,27 @@ package com.azure.communication.jobrouter.models;
  *  Request options to update a DistributionPolicy.
  *  DistributionPolicy: Policy governing how jobs are distributed to workers.
  * */
-public class UpdateDistributionPolicyOptions extends DistributionPolicyOptions {
+public class UpdateDistributionPolicyOptions {
+    /**
+     * The unique identifier of the policy.
+     */
+    private String id;
+
+    /**
+     * The human readable name of the policy.
+     */
+    private String name;
+
+    /**
+     * The expiry time of any offers created under this policy will be governed
+     * by the offer time to live.
+     */
+    private Double offerTtlSeconds;
+
+    /**
+     * Abstract base class for defining a distribution mode
+     */
+    private DistributionMode mode;
 
     /**
      * Constructor for UpdateDistributionPolicyOptions.
@@ -46,5 +66,37 @@ public class UpdateDistributionPolicyOptions extends DistributionPolicyOptions {
     public UpdateDistributionPolicyOptions setMode(DistributionMode mode) {
         this.mode = mode;
         return this;
+    }
+
+    /**
+     * Get the unique identifier of the policy.
+     * @return id
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Get the human-readable name of the policy.
+     * @return name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the offer time to live of offers created under this policy.
+     * @return offerTtlSeconds
+     */
+    public Double getOfferTtlSeconds() {
+        return this.offerTtlSeconds;
+    }
+
+    /**
+     * Get the distribution mode of this policy.
+     * @return distributionMode
+     */
+    public DistributionMode getMode() {
+        return this.mode;
     }
 }

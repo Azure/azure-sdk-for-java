@@ -12,7 +12,42 @@ import java.util.List;
  * ClassificationPolicy: A container for the rules that govern how jobs are classified.
  */
 @Fluent
-public class UpdateClassificationPolicyOptions extends ClassificationPolicyOptions {
+public class UpdateClassificationPolicyOptions {
+    /**
+     * Unique identifier of this policy.
+     */
+    private String id;
+
+    /**
+     * Friendly name of this policy.
+     */
+    private String name;
+
+    /**
+     * The fallback queue to select if the queue selector doesn't find a match.
+     */
+    private String fallbackQueueId;
+
+    /**
+     * The queue selectors to resolve a queue for a given job.
+     */
+    private List<QueueSelectorAttachment> queueSelectors;
+
+    /**
+     * A rule of one of the following types:
+     *
+     *  StaticRule:  A rule providing static rules that always return the same result, regardless of input.
+     *  DirectMapRule:  A rule that return the same labels as the input labels.
+     *  ExpressionRule: A rule providing inline expression rules.
+     *  AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     */
+    private RouterRule prioritizationRule;
+
+    /**
+     * The worker label selectors to attach to a given job.
+     */
+    private List<WorkerSelectorAttachment> workerSelectors;
+
     /**
      * Constructor for UpdateClassificationPolicyOptions
      * @param id Unique identifier of this policy.
@@ -73,5 +108,53 @@ public class UpdateClassificationPolicyOptions extends ClassificationPolicyOptio
     public UpdateClassificationPolicyOptions setWorkerSelectors(List<WorkerSelectorAttachment> workerSelectors) {
         this.workerSelectors = workerSelectors;
         return this;
+    }
+
+    /**
+     * Returns classification policy id.
+     * @return id
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Returns classification policy name.
+     * @return name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns fallback queue id.
+     * @return fallbackQueueId
+     */
+    public String getFallbackQueueId() {
+        return this.fallbackQueueId;
+    }
+
+    /**
+     * Returns queueSelectors.
+     * @return queueSelectors
+     */
+    public List<QueueSelectorAttachment> getQueueSelectors() {
+        return this.queueSelectors;
+    }
+
+    /**
+     * Returns prioritizationRule.
+     * @return prioritizationRule
+     */
+    public RouterRule getPrioritizationRule() {
+        return this.prioritizationRule;
+    }
+
+    /**
+     * Returns workerSelectors.
+     * @return workerSelectors
+     */
+    public List<WorkerSelectorAttachment> getWorkerSelectors() {
+        return this.workerSelectors;
     }
 }
