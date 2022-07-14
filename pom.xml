@@ -80,9 +80,6 @@
         <!-- Form Recognizer -->
         <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
-        <!-- Personalizer -->
-        <module>sdk/personalizer/azure-ai-personalizer</module>
-
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
 
@@ -105,6 +102,9 @@
         <!-- Azure Monitor -->
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
 
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
@@ -248,9 +248,6 @@
         <!-- Form Recognizer -->
         <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
-        <!-- Personalizer -->
-        <module>sdk/personalizer/azure-ai-personalizer</module>
-
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
 
@@ -273,6 +270,9 @@
         <!-- Azure Monitor -->
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
 
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
@@ -465,10 +465,6 @@
                     <packages>com.azure.ai.formrecognizer*</packages>
                   </group>
                   <group>
-                    <title>Azure Personalizer</title>
-                    <packages>com.azure.ai.personalizer*</packages>
-                  </group>
-                  <group>
                     <title>Azure Identity</title>
                     <packages>com.azure.identity*</packages>
                   </group>
@@ -487,6 +483,10 @@
                   <group>
                     <title>Azure Security Attestation</title>
                     <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Personalizer</title>
+                    <packages>com.azure.ai.personalizer*</packages>
                   </group>
                   <group>
                     <title>Azure Purview Catalog</title>
@@ -914,7 +914,6 @@
         <module>sdk/eventhubs</module>
         <module>sdk/extendedlocation</module>
         <module>sdk/formrecognizer</module>
-        <module>sdk/personalizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
         <module>sdk/hardwaresecuritymodules</module>
@@ -959,6 +958,7 @@
         <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
+        <module>sdk/personalizer</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
