@@ -31,17 +31,17 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * ContentCapabilities.
+ * CallContentClient.
  */
-public class ContentCapabilitiesAsync {
+public class CallContentAsyncClient {
     private final ContentsImpl contentsInternal;
     private final String callConnectionId;
     private final ClientLogger logger;
 
-    ContentCapabilitiesAsync(String callConnectionId, ContentsImpl contentsInternal) {
+    CallContentAsyncClient(String callConnectionId, ContentsImpl contentsInternal) {
         this.callConnectionId = callConnectionId;
         this.contentsInternal = contentsInternal;
-        this.logger = new ClientLogger(ContentCapabilitiesAsync.class);
+        this.logger = new ClientLogger(CallContentAsyncClient.class);
     }
 
     /**

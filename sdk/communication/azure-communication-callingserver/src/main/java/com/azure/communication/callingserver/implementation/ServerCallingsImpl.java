@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesDto;
+import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
@@ -56,7 +56,7 @@ public final class ServerCallingsImpl {
         @Post("/calling/callConnections")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CallConnectionPropertiesDto>> createCall(
+        Mono<Response<CallConnectionPropertiesInternal>> createCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateCallRequestInternal body,
@@ -66,7 +66,7 @@ public final class ServerCallingsImpl {
         @Post("/calling/callConnections:answer")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CallConnectionPropertiesDto>> answerCall(
+        Mono<Response<CallConnectionPropertiesInternal>> answerCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
@@ -102,7 +102,8 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesDto>> createCallWithResponseAsync(CreateCallRequestInternal body) {
+    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
+            CreateCallRequestInternal body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -121,7 +122,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesDto>> createCallWithResponseAsync(
+    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
             CreateCallRequestInternal body, Context context) {
         final String accept = "application/json";
         return service.createCall(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
@@ -137,10 +138,10 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesDto> createCallAsync(CreateCallRequestInternal body) {
+    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal body) {
         return createCallWithResponseAsync(body)
                 .flatMap(
-                        (Response<CallConnectionPropertiesDto> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -160,10 +161,10 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesDto> createCallAsync(CreateCallRequestInternal body, Context context) {
+    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal body, Context context) {
         return createCallWithResponseAsync(body, context)
                 .flatMap(
-                        (Response<CallConnectionPropertiesDto> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -182,7 +183,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionPropertiesDto createCall(CreateCallRequestInternal body) {
+    public CallConnectionPropertiesInternal createCall(CreateCallRequestInternal body) {
         return createCallAsync(body).block();
     }
 
@@ -197,7 +198,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesDto> createCallWithResponse(
+    public Response<CallConnectionPropertiesInternal> createCallWithResponse(
             CreateCallRequestInternal body, Context context) {
         return createCallWithResponseAsync(body, context).block();
     }
@@ -212,7 +213,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesDto>> answerCallWithResponseAsync(
+    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
             AnswerCallRequestInternal answerCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -236,7 +237,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesDto>> answerCallWithResponseAsync(
+    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
             AnswerCallRequestInternal answerCallRequest, Context context) {
         final String accept = "application/json";
         return service.answerCall(
@@ -253,10 +254,10 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesDto> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
+    public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest) {
         return answerCallWithResponseAsync(answerCallRequest)
                 .flatMap(
-                        (Response<CallConnectionPropertiesDto> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -276,11 +277,11 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesDto> answerCallAsync(
+    public Mono<CallConnectionPropertiesInternal> answerCallAsync(
             AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context)
                 .flatMap(
-                        (Response<CallConnectionPropertiesDto> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -299,7 +300,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionPropertiesDto answerCall(AnswerCallRequestInternal answerCallRequest) {
+    public CallConnectionPropertiesInternal answerCall(AnswerCallRequestInternal answerCallRequest) {
         return answerCallAsync(answerCallRequest).block();
     }
 
@@ -314,7 +315,7 @@ public final class ServerCallingsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesDto> answerCallWithResponse(
+    public Response<CallConnectionPropertiesInternal> answerCallWithResponse(
             AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context).block();
     }

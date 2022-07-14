@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallSourceDto model. */
+/** The CallSourceInternal model. */
 @Fluent
-public final class CallSourceDto {
+public final class CallSourceInternal {
     /*
      * The alternate identity of the source of the call if dialing out to a
      * pstn number
@@ -36,9 +36,9 @@ public final class CallSourceDto {
      * Set the callerId property: The alternate identity of the source of the call if dialing out to a pstn number.
      *
      * @param callerId the callerId value to set.
-     * @return the CallSourceDto object itself.
+     * @return the CallSourceInternal object itself.
      */
-    public CallSourceDto setCallerId(PhoneNumberIdentifierModel callerId) {
+    public CallSourceInternal setCallerId(PhoneNumberIdentifierModel callerId) {
         this.callerId = callerId;
         return this;
     }
@@ -56,9 +56,9 @@ public final class CallSourceDto {
      * Set the identifier property: The identifier property.
      *
      * @param identifier the identifier value to set.
-     * @return the CallSourceDto object itself.
+     * @return the CallSourceInternal object itself.
      */
-    public CallSourceDto setIdentifier(CommunicationIdentifierModel identifier) {
+    public CallSourceInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }

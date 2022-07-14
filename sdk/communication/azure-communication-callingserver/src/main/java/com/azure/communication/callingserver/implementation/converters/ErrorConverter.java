@@ -40,7 +40,7 @@ public final class ErrorConverter {
             communicationError.getCode(),
             communicationError.getTarget(),
             details,
-            convert(communicationError.getInnerError())
+            convert(communicationError.getInnererror())
         );
     }
 

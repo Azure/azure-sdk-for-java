@@ -3,8 +3,8 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
+import com.azure.communication.callingserver.implementation.models.CallSourceInternal;
 import com.azure.communication.callingserver.models.CallSource;
-import com.azure.communication.callingserver.implementation.models.CallSourceDto;
 
 /**
  * A converter for {@link CallSource}
@@ -14,7 +14,7 @@ public final class CallSourceConverter {
     /**
      * Converts to {@link CallSource}.
      */
-    public static CallSource convert(CallSourceDto callSourceDto) {
+    public static CallSource convert(CallSourceInternal callSourceDto) {
 
         if (callSourceDto == null) {
             return null;
@@ -25,15 +25,15 @@ public final class CallSourceConverter {
     }
 
     /**
-     * Converts to {@link CallSourceDto}.
+     * Converts to {@link CallSourceInternal}.
      */
-    public static CallSourceDto convert(CallSource callSource) {
+    public static CallSourceInternal convert(CallSource callSource) {
 
         if (callSource == null) {
             return null;
         }
 
-        return new CallSourceDto()
+        return new CallSourceInternal()
             .setIdentifier(CommunicationIdentifierConverter.convert(callSource.getIdentifier()))
             .setCallerId(PhoneNumberIdentifierConverter.convert(callSource.getCallerId()));
     }

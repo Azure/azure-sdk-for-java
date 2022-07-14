@@ -4,78 +4,24 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.core.annotation.Immutable;
-
-import java.util.Objects;
-
 /** The locator used for joining or taking action on a call. */
-@Immutable
-public final class CallLocator {
-    /*
-     * The group call id
-     */
-    private final String groupCallId;
-
-    /*
-     * The server call id.
-     */
-    private final String serverCallId;
-
+public abstract class CallLocator {
     /*
      * The call locator kind.
      */
     private final CallLocatorKind kind;
 
-    private CallLocator(String id, String kind) {
-        if (Objects.equals(kind, "groupCallLocator")) {
-            this.groupCallId = id;
-            this.serverCallId = null;
-            this.kind = CallLocatorKind.fromString(kind);
-        } else if (Objects.equals(kind, "serverCallLocator")) {
-            this.groupCallId = null;
-            this.serverCallId = id;
-            this.kind = CallLocatorKind.fromString(kind);
+    /**
+     * The constructor
+     *
+     * @param kind Specify the call locator kind.
+     */
+    CallLocator(CallLocatorKind kind) {
+        if (kind == CallLocatorKind.GROUP_CALL_LOCATOR || kind == CallLocatorKind.SERVER_CALL_LOCATOR) {
+            this.kind = kind;
         } else {
             throw new IllegalArgumentException("Illegal callLocator kind");
         }
-    }
-
-    /**
-     * Create a callLocator with groupCallId
-     *
-     * @param groupCallId group call Id
-     * @return the callLocator itself.
-     */
-    public static CallLocator createGroupCallLocator(String groupCallId) {
-        return new CallLocator(groupCallId, "groupCallLocator");
-    }
-
-    /**
-     * Create a callLocator with serverCallId
-     *
-     * @param serverCallId server call Id
-     * @return the callLocator itself.
-     */
-    public static CallLocator createServerCallLocator(String serverCallId) {
-        return new CallLocator(serverCallId, "serverCallLocator");
-    }
-
-    /**
-     * Get the groupCallId property: The group call id.
-     *
-     * @return the groupCallId value.
-     */
-    public String getGroupCallId() {
-        return this.groupCallId;
-    }
-
-    /**
-     * Get the serverCallId property: The server call id.
-     *
-     * @return the serverCallId value.
-     */
-    public String getServerCallId() {
-        return this.serverCallId;
     }
 
     /**

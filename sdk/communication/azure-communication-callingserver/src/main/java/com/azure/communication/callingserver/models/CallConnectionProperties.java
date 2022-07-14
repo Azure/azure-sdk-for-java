@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callingserver;
+package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
-import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesDto;
-import com.azure.communication.callingserver.models.CallConnectionState;
+import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
@@ -18,7 +17,7 @@ import java.util.List;
  * Asynchronous client that supports call connection operations.
  */
 @Immutable
-public final class CallConnection {
+public final class CallConnectionProperties {
     private final String callConnectionId;
     private final CommunicationIdentifier source;
     private final PhoneNumberIdentifier alternateCallerId;
@@ -27,7 +26,12 @@ public final class CallConnection {
     private final String subject;
     private final String callbackUri;
 
-    CallConnection(CallConnectionPropertiesDto callConnectionPropertiesDto) {
+    /**
+     * Constructor of the class
+     *
+     * @param callConnectionPropertiesDto The internal response of callConnectionProperties
+     */
+    public CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesDto) {
         this.callConnectionId = callConnectionPropertiesDto.getCallConnectionId();
         this.source = CommunicationIdentifierConverter.convert(callConnectionPropertiesDto.getSource());
         this.alternateCallerId = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesDto.getAlternateCallerId());

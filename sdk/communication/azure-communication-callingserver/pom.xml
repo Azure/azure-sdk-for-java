@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-callingserver</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.6-20220713</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
 
   <name>Microsoft Azure client library for CallingServer service</name>
   <description>
@@ -25,16 +25,26 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <repositories>
-	<repository>
-	  <id>azure-sdk-for-java-communication</id>
-	  <url>https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-communication/maven/v1</url>
-	  <releases>
-		<enabled>true</enabled>
-	  </releases>
-	  <snapshots>
-		<enabled>true</enabled>
-	  </snapshots>
-	</repository>
+<!--    <repository>-->
+<!--      <id>azure-sdk-for-java-communication</id>-->
+<!--      <url>https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-communication/maven/v1</url>-->
+<!--      <releases>-->
+<!--        <enabled>true</enabled>-->
+<!--      </releases>-->
+<!--      <snapshots>-->
+<!--        <enabled>true</enabled>-->
+<!--      </snapshots>-->
+<!--    </repository>-->
+    <repository>
+      <id>azure-sdk-for-java-communication-interaction</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java-communication-interaction/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <distributionManagement>
@@ -42,16 +52,26 @@
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
-	<repository>
-	  <id>azure-sdk-for-java-communication</id>
-	  <url>https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-communication/maven/v1</url>
-	  <releases>
-		<enabled>true</enabled>
-	  </releases>
-	  <snapshots>
-		<enabled>true</enabled>
-	  </snapshots>
-	</repository>
+<!--    <repository>-->
+<!--      <id>azure-sdk-for-java-communication</id>-->
+<!--      <url>https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-communication/maven/v1</url>-->
+<!--      <releases>-->
+<!--        <enabled>true</enabled>-->
+<!--      </releases>-->
+<!--      <snapshots>-->
+<!--        <enabled>true</enabled>-->
+<!--      </snapshots>-->
+<!--    </repository>-->
+    <repository>
+      <id>azure-sdk-for-java-communication-interaction</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java-communication-interaction/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </distributionManagement>
 
   <scm>
@@ -82,12 +102,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.1.5</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.7</version> <!-- {x-version-update;com.azure:azure-communication-identity;dependency} -->
+      <version>1.1.9</version> <!-- {x-version-update;com.azure:azure-communication-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for CallConnectionState. */
@@ -34,7 +34,7 @@ public final class CallConnectionState extends ExpandableStringEnum<CallConnecti
      * @param name a name to look for.
      * @return the corresponding CallConnectionState.
      */
-    @JsonCreator
+
     public static CallConnectionState fromString(String name) {
         return fromString(name, CallConnectionState.class);
     }

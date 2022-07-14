@@ -3,7 +3,7 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.AcsCallParticipantDto;
+import com.azure.communication.callingserver.implementation.models.AcsCallParticipantInternal;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 
 /**
@@ -15,7 +15,7 @@ public final class AcsCallParticipantConverter {
      * Converts to {@link AcsCallParticipant}.
      */
     public static AcsCallParticipant convert(
-        AcsCallParticipantDto acsCallParticipantDto) {
+        AcsCallParticipantInternal acsCallParticipantDto) {
 
         if (acsCallParticipantDto == null) {
             return null;

@@ -32,7 +32,7 @@ public final class AddParticipantsResponseInternal {
      * The result info for the operation.
      */
     @JsonProperty(value = "resultDetails")
-    private CallingOperationResultDetailsDto resultDetails;
+    private CallingOperationResultDetailsInternal resultDetails;
 
     /**
      * Get the operationId property: The operation id.
@@ -99,7 +99,7 @@ public final class AddParticipantsResponseInternal {
      *
      * @return the resultDetails value.
      */
-    public CallingOperationResultDetailsDto getResultDetails() {
+    public CallingOperationResultDetailsInternal getResultDetails() {
         return this.resultDetails;
     }
 
@@ -109,7 +109,7 @@ public final class AddParticipantsResponseInternal {
      * @param resultDetails the resultDetails value to set.
      * @return the AddParticipantsResponseInternal object itself.
      */
-    public AddParticipantsResponseInternal setResultDetails(CallingOperationResultDetailsDto resultDetails) {
+    public AddParticipantsResponseInternal setResultDetails(CallingOperationResultDetailsInternal resultDetails) {
         this.resultDetails = resultDetails;
         return this;
     }

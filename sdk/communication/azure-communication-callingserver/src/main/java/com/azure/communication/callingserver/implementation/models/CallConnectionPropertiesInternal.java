@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CallConnectionPropertiesDto model. */
+/** The CallConnectionPropertiesInternal model. */
 @Fluent
-public final class CallConnectionPropertiesDto {
+public final class CallConnectionPropertiesInternal {
     /*
      * The call connection id.
      */
@@ -73,9 +73,9 @@ public final class CallConnectionPropertiesDto {
      * Set the callConnectionId property: The call connection id.
      *
      * @param callConnectionId the callConnectionId value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setCallConnectionId(String callConnectionId) {
+    public CallConnectionPropertiesInternal setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
     }
@@ -93,9 +93,9 @@ public final class CallConnectionPropertiesDto {
      * Set the serverCallId property: The server call id.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setServerCallId(String serverCallId) {
+    public CallConnectionPropertiesInternal setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
@@ -113,9 +113,9 @@ public final class CallConnectionPropertiesDto {
      * Set the source property: The source of the call.
      *
      * @param source the source value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setSource(CommunicationIdentifierModel source) {
+    public CallConnectionPropertiesInternal setSource(CommunicationIdentifierModel source) {
         this.source = source;
         return this;
     }
@@ -135,9 +135,9 @@ public final class CallConnectionPropertiesDto {
      * number.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public CallConnectionPropertiesInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
@@ -155,9 +155,9 @@ public final class CallConnectionPropertiesDto {
      * Set the targets property: The targets of the call.
      *
      * @param targets the targets value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setTargets(List<CommunicationIdentifierModel> targets) {
+    public CallConnectionPropertiesInternal setTargets(List<CommunicationIdentifierModel> targets) {
         this.targets = targets;
         return this;
     }
@@ -175,9 +175,9 @@ public final class CallConnectionPropertiesDto {
      * Set the callConnectionState property: The state of the call connection.
      *
      * @param callConnectionState the callConnectionState value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setCallConnectionState(CallConnectionStateModel callConnectionState) {
+    public CallConnectionPropertiesInternal setCallConnectionState(CallConnectionStateModel callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }
@@ -195,9 +195,9 @@ public final class CallConnectionPropertiesDto {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setSubject(String subject) {
+    public CallConnectionPropertiesInternal setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -215,9 +215,9 @@ public final class CallConnectionPropertiesDto {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the CallConnectionPropertiesDto object itself.
+     * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesDto setCallbackUri(String callbackUri) {
+    public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AcsCallParticipantDto model. */
+/** The AcsCallParticipantInternal model. */
 @Fluent
-public final class AcsCallParticipantDto {
+public final class AcsCallParticipantInternal {
     /*
      * Communication identifier of the participant
      */
@@ -35,9 +35,9 @@ public final class AcsCallParticipantDto {
      * Set the identifier property: Communication identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the AcsCallParticipantDto object itself.
+     * @return the AcsCallParticipantInternal object itself.
      */
-    public AcsCallParticipantDto setIdentifier(CommunicationIdentifierModel identifier) {
+    public AcsCallParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -55,9 +55,9 @@ public final class AcsCallParticipantDto {
      * Set the isMuted property: Is participant muted.
      *
      * @param isMuted the isMuted value to set.
-     * @return the AcsCallParticipantDto object itself.
+     * @return the AcsCallParticipantInternal object itself.
      */
-    public AcsCallParticipantDto setIsMuted(Boolean isMuted) {
+    public AcsCallParticipantInternal setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
     }

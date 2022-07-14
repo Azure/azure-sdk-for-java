@@ -38,7 +38,7 @@ public final class RecordingIdResponseInternal {
      * The result info for the operation.
      */
     @JsonProperty(value = "resultDetails")
-    private CallingOperationResultDetailsDto resultDetails;
+    private CallingOperationResultDetailsInternal resultDetails;
 
     /**
      * Get the recordingId property: The recording id of the started recording.
@@ -125,7 +125,7 @@ public final class RecordingIdResponseInternal {
      *
      * @return the resultDetails value.
      */
-    public CallingOperationResultDetailsDto getResultDetails() {
+    public CallingOperationResultDetailsInternal getResultDetails() {
         return this.resultDetails;
     }
 
@@ -135,7 +135,7 @@ public final class RecordingIdResponseInternal {
      * @param resultDetails the resultDetails value to set.
      * @return the RecordingIdResponseInternal object itself.
      */
-    public RecordingIdResponseInternal setResultDetails(CallingOperationResultDetailsDto resultDetails) {
+    public RecordingIdResponseInternal setResultDetails(CallingOperationResultDetailsInternal resultDetails) {
         this.resultDetails = resultDetails;
         return this;
     }

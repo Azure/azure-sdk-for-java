@@ -3,12 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsDto;
-import com.azure.core.annotation.Fluent;
+import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsInternal;
 import com.azure.core.annotation.Immutable;
 
 /** The CallingOperationResultDetails model. */
-@Fluent
 @Immutable
 public final class CallingOperationResultDetails {
     /*
@@ -31,7 +29,7 @@ public final class CallingOperationResultDetails {
      *
      * @param callingOperationResultDetailsDto The calling operation result details
      */
-    public CallingOperationResultDetails(CallingOperationResultDetailsDto callingOperationResultDetailsDto) {
+    public CallingOperationResultDetails(CallingOperationResultDetailsInternal callingOperationResultDetailsDto) {
         this.code = callingOperationResultDetailsDto.getCode();
         this.subcode = callingOperationResultDetailsDto.getSubcode();
         this.message = callingOperationResultDetailsDto.getMessage();

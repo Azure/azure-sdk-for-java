@@ -49,8 +49,8 @@ context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:
-    from: CreateCallResponse
-    to: CreateCallResponseInternal
+    from: AcsCallParticipantDto
+    to: AcsCallParticipantInternal    
 - rename-model:
     from: AddParticipantsRequest
     to: AddParticipantsRequestInternal    
@@ -58,14 +58,20 @@ directive:
     from: AddParticipantsResponse
     to: AddParticipantsResponseInternal
 - rename-model:
-    from: AnswerCallResult
-    to: AnswerCallResultInternal
+    from: CallConnectionPropertiesDto
+    to: CallConnectionPropertiesInternal     
 - rename-model:
-    from: AnswerCallResponse
-    to: AnswerCallResponseInternal   
+    from: CallingOperationResultDetailsDto
+    to: CallingOperationResultDetailsInternal
 - rename-model:
-    from: GetCallResponse
-    to: GetCallResponseInternal      
+    from: CallingOperationStatusDto
+    to: CallingOperationStatusInternal
+- rename-model:
+    from: CallSourceDto
+    to: CallSourceInternal
+- rename-model:
+    from: CommunicationCloudEnvironmentModel
+    to: CommunicationCloudEnvironmentInternal
 - rename-model:
     from: GetParticipantRequest
     to: GetParticipantRequestInternal
@@ -162,4 +168,13 @@ directive:
   where: $.definitions.CallLocatorKind["x-ms-enum"]
   transform: >
     $.name = "CallLocatorKindInternal";
+```
+
+### Rename CallConnectionStateModel to CallConnectionStateModelInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.CallConnectionStateModel["x-ms-enum"]
+  transform: >
+    $.name = "CallConnectionStateModelInternal";
 ```

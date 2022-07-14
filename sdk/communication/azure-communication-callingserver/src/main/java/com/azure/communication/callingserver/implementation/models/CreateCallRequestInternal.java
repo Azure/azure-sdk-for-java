@@ -21,7 +21,7 @@ public final class CreateCallRequestInternal {
      * The source property.
      */
     @JsonProperty(value = "source", required = true)
-    private CallSourceDto source;
+    private CallSourceInternal source;
 
     /*
      * The subject.
@@ -60,7 +60,7 @@ public final class CreateCallRequestInternal {
      *
      * @return the source value.
      */
-    public CallSourceDto getSource() {
+    public CallSourceInternal getSource() {
         return this.source;
     }
 
@@ -70,7 +70,7 @@ public final class CreateCallRequestInternal {
      * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSource(CallSourceDto source) {
+    public CreateCallRequestInternal setSource(CallSourceInternal source) {
         this.source = source;
         return this;
     }

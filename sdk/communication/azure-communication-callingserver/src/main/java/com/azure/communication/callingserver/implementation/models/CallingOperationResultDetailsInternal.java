@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallingOperationResultDetailsDto model. */
+/** The CallingOperationResultDetailsInternal model. */
 @Fluent
-public final class CallingOperationResultDetailsDto {
+public final class CallingOperationResultDetailsInternal {
     /*
      * The result code associated with the operation.
      */
@@ -41,9 +41,9 @@ public final class CallingOperationResultDetailsDto {
      * Set the code property: The result code associated with the operation.
      *
      * @param code the code value to set.
-     * @return the CallingOperationResultDetailsDto object itself.
+     * @return the CallingOperationResultDetailsInternal object itself.
      */
-    public CallingOperationResultDetailsDto setCode(int code) {
+    public CallingOperationResultDetailsInternal setCode(int code) {
         this.code = code;
         return this;
     }
@@ -61,9 +61,9 @@ public final class CallingOperationResultDetailsDto {
      * Set the subcode property: The subcode that further classifies the result.
      *
      * @param subcode the subcode value to set.
-     * @return the CallingOperationResultDetailsDto object itself.
+     * @return the CallingOperationResultDetailsInternal object itself.
      */
-    public CallingOperationResultDetailsDto setSubcode(int subcode) {
+    public CallingOperationResultDetailsInternal setSubcode(int subcode) {
         this.subcode = subcode;
         return this;
     }
@@ -81,9 +81,9 @@ public final class CallingOperationResultDetailsDto {
      * Set the message property: The message is a detail explanation of subcode.
      *
      * @param message the message value to set.
-     * @return the CallingOperationResultDetailsDto object itself.
+     * @return the CallingOperationResultDetailsInternal object itself.
      */
-    public CallingOperationResultDetailsDto setMessage(String message) {
+    public CallingOperationResultDetailsInternal setMessage(String message) {
         this.message = message;
         return this;
     }
