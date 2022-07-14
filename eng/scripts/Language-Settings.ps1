@@ -5,7 +5,8 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
-$packageDownloadUrl = "https://repo1.maven.org/maven2"
+$GithubUri = "https://github.com/Azure/azure-sdk-for-java"
+$PackageRepositoryUri = "https://repo1.maven.org/maven2"
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 
@@ -255,7 +256,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
     }
     else {
       $newItem = New-Object PSObject -Property @{
-        packageDownloadUrl = $packageDownloadUrl
+        packageDownloadUrl = $PackageRepositoryUri
         packageGroupId = $releasingPkg.GroupId
         packageArtifactId = $releasingPkg.PackageId
         packageVersion = $releasingPkg.PackageVersion
@@ -424,7 +425,7 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
         packageGroupId = $_.Group;
         packageArtifactId = $_.Name;
         packageVersion = $_.Version;
-        packageDownloadUrl = $packageDownloadUrl;
+        packageDownloadUrl = $PackageRepositoryUri;
       } });
   }
 
@@ -593,7 +594,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
       packageArtifactId = $packageName
       packageGroupId = $packageGroupId
       packageVersion = $packageVersion
-      packageDownloadUrl = $packageDownloadUrl
+      packageDownloadUrl = $PackageRepositoryUri
     }
 
     $outputPackages += $package

@@ -22,6 +22,7 @@ jobs:
             - package.json
             - metadata/
             - docs-ref-mapping/reference-unified.yml
+            - docs-ref-services/
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
@@ -73,6 +74,7 @@ jobs:
             - package.json
             - metadata/
             - docs-ref-mapping/reference-unified.yml
+            - docs-ref-services/
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
@@ -97,6 +99,16 @@ jobs:
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DailyDocRepoLocation)
         displayName: Update Docs Onboarding for Daily branch
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: >-
+            -DocRepoLocation $(DailyDocRepoLocation)
+            -TenantId '$(opensource-aad-tenant-id)' 
+            -ClientId '$(opensource-aad-app-id)' 
+            -ClientSecret '$(opensource-aad-secret)'
+        displayName: Generate Service Level Readme
       - task: Powershell@2
         inputs:
           pwsh: true
