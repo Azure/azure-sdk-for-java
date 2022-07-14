@@ -6,8 +6,8 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
 import com.azure.core.implementation.ByteBufferCollector;
-import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -20,6 +20,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.context.ContextView;
 
 import java.io.FileInputStream;
@@ -28,9 +29,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
@@ -531,7 +534,68 @@ public final class FluxUtil {
             return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
         }
 
-        return Mono.create(emitter -> content.subscribe(new FileWriteSubscriber(outFile, position, emitter)));
+        return writeToAsynchronousByteChannel(content, IOUtils.toAsynchronousByteChannel(outFile, position));
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * AsynchronousByteChannel}.
+     * <p>
+     * The {@code channel} is not closed by this call, closing of the {@code channel} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code channel} are null.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param channel The {@link AsynchronousByteChannel}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * AsynchronousByteChannel}.
+     */
+    public static Mono<Void> writeToAsynchronousByteChannel(Flux<ByteBuffer> content, AsynchronousByteChannel channel) {
+        if (content == null && channel == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'channel' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return Mono.create(emitter -> content.subscribe(
+            new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * WritableByteChannel}.
+     * <p>
+     * The {@code channel} is not closed by this call, closing of the {@code channel} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code channel} are null.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param channel The {@link WritableByteChannel}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * WritableByteChannel}.
+     */
+    public static Mono<Void> writeToWritableByteChannel(Flux<ByteBuffer> content, WritableByteChannel channel) {
+        if (content == null && channel == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'channel' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return content.publishOn(Schedulers.boundedElastic())
+            .map(buffer -> {
+                while (buffer.hasRemaining()) {
+                    try {
+                        channel.write(buffer);
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
+                    }
+                }
+                return buffer;
+            }).then();
     }
 
     /**
