@@ -6,10 +6,10 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for CloudServiceRoles Get. */
-public final class CloudServiceRolesGetSamples {
+/** Samples for CloudServiceRoleInstances GetRemoteDesktopFile. */
+public final class CloudServiceRoleInstancesGetRemoteDesktopFileSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRole_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Get_RemoteDesktopFile.json
      */
     /**
      * Sample code: Get Cloud Service Role.
@@ -21,7 +21,7 @@ public final class CloudServiceRolesGetSamples {
             .virtualMachines()
             .manager()
             .serviceClient()
-            .getCloudServiceRoles()
-            .getWithResponse("{role-name}", "ConstosoRG", "{cs-name}", Context.NONE);
+            .getCloudServiceRoleInstances()
+            .getRemoteDesktopFileWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "rgcloudService", "aaaa", Context.NONE);
     }
 }

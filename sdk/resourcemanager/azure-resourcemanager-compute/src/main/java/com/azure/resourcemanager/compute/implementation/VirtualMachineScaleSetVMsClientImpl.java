@@ -1986,7 +1986,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     public Mono<VirtualMachineScaleSetVMInner> getAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, InstanceViewTypes expand) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineScaleSetVMInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2005,7 +2012,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         final InstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineScaleSetVMInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -2168,7 +2182,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     public Mono<VirtualMachineScaleSetVMInstanceViewInner> getInstanceViewAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId) {
         return getInstanceViewWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<VirtualMachineScaleSetVMInstanceViewInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -3701,7 +3722,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         String resourceGroupName, String vmScaleSetName, String instanceId, Integer sasUriExpirationTimeInMinutes) {
         return retrieveBootDiagnosticsDataWithResponseAsync(
                 resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RetrieveBootDiagnosticsDataResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -3721,7 +3749,14 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
         final Integer sasUriExpirationTimeInMinutes = null;
         return retrieveBootDiagnosticsDataWithResponseAsync(
                 resourceGroupName, vmScaleSetName, instanceId, sasUriExpirationTimeInMinutes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<RetrieveBootDiagnosticsDataResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -4147,7 +4182,7 @@ public final class VirtualMachineScaleSetVMsClientImpl implements VirtualMachine
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> simulateEvictionAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         return simulateEvictionWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId)
-            .flatMap(ignored -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
