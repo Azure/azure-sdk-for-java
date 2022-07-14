@@ -73,6 +73,12 @@ stages:
             AdditionalModules: ${{parameters.AdditionalModules}}
             JobType: 'Build'
 
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+            ServiceDirectory: "template"
+            TestPipeline: true
+
         - task: UsePythonVersion@0
           displayName: 'Use Python 3.6'
           inputs:
@@ -101,25 +107,6 @@ stages:
           parameters:
             Paths: $(SparseCheckoutDirectories)
             SkipDefaultCheckout: true
-
-        # Just in case template is part of the release set
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: "azure-sdk-template"
-            ServiceDirectory: "template"
-            TestPipeline: true
-
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: "azure-sdk-template-two"
-            ServiceDirectory: "template"
-            TestPipeline: true
-
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: "azure-sdk-template-three"
-            ServiceDirectory: "template"
-            TestPipeline: true
 
         - script: |
             pip install markdown2 BeautifulSoup4
@@ -210,6 +197,12 @@ stages:
             AdditionalModules: ${{ parameters.AdditionalModules }}
             JobType: 'AnalyzeAndVerify'
 
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+            ServiceDirectory: "template"
+            TestPipeline: true
+
         - task: PythonScript@0
           displayName: 'Set versions for source build'
           inputs:
@@ -233,24 +226,6 @@ stages:
           parameters:
             Paths: $(SparseCheckoutDirectories)
             SkipDefaultCheckout: true
-
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: "azure-sdk-template"
-            ServiceDirectory: "template"
-            TestPipeline: true
-
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: "azure-sdk-template-two"
-            ServiceDirectory: "template"
-            TestPipeline: true
-
-        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-          parameters:
-            PackageName: "azure-sdk-template-three"
-            ServiceDirectory: "template"
-            TestPipeline: true
 
         - template: /eng/common/pipelines/templates/steps/check-spelling.yml
           parameters:
