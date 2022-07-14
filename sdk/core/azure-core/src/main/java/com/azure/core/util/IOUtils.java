@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
@@ -21,6 +22,8 @@ import java.util.Objects;
  */
 public final class IOUtils {
 
+    private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
+
     private static final int DEFAULT_BUFFER_SIZE = 8192;
 
     /**
@@ -29,10 +32,14 @@ public final class IOUtils {
      * @param position The position in the file to begin writing or reading the {@code content}.
      * @return A {@link AsynchronousByteChannel} that delegates to {@code fileChannel}.
      * @throws NullPointerException When {@code fileChannel} is null.
+     * @throws IllegalArgumentException When {@code position} is negative.
      */
     public static AsynchronousByteChannel toAsynchronousByteChannel(
         AsynchronousFileChannel fileChannel, long position) {
         Objects.requireNonNull(fileChannel, "'fileChannel' must not be null");
+        if (position < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be less than 0."));
+        }
         return new AsynchronousFileChannelAdapter(fileChannel, position);
     }
 
