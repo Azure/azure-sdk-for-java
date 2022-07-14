@@ -181,7 +181,6 @@ public final class RouterClient {
      * Delete a classification policy by Id.
      *
      * @param classificationPolicyId Id of the classification policy.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -325,7 +324,6 @@ public final class RouterClient {
      * Delete a distribution policy by Id.
      *
      * @param distributionPolicyId Id of the distribution policy.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -469,7 +467,6 @@ public final class RouterClient {
      * Deletes a exception policy by Id.
      *
      * @param exceptionPolicyId Id of the exception policy to delete.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -613,7 +610,6 @@ public final class RouterClient {
      * Deletes a job and all of its traces.
      *
      * @param jobId Id of the job.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -977,7 +973,6 @@ public final class RouterClient {
      * Deletes a queue by Id.
      *
      * @param queueId Id of the queue to delete.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1150,7 +1145,6 @@ public final class RouterClient {
      * Deletes a worker and all of its traces.
      *
      * @param workerId Id of the worker to delete.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
