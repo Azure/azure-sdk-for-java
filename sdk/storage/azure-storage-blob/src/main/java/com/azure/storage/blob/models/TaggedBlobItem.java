@@ -28,9 +28,21 @@ public final class TaggedBlobItem {
      * @param tags The blob tags
      */
     public TaggedBlobItem(String containerName, String name, Map<String, String> tags) {
+        this(containerName, name, tags, null, null);
+    }
+
+    /**
+     * Constructor to create a new TaggedBlobItem
+     * @param containerName The container name
+     * @param name The blob name
+     * @param tags The blob tags
+     */
+    public TaggedBlobItem(String containerName, String name, Map<String, String> tags, String versionId, Boolean isCurrentVersion) {
         this.name = name;
         this.containerName = containerName;
         this.tags = tags;
+        this.versionId = versionId;
+        this.isCurrentVersion = isCurrentVersion;
     }
 
     /*
@@ -44,6 +56,9 @@ public final class TaggedBlobItem {
     private final String containerName;
 
     private final Map<String, String> tags;
+
+    private final String versionId;
+    private final Boolean isCurrentVersion;
 
     /**
      * Get the name property: The name property.
@@ -70,5 +85,13 @@ public final class TaggedBlobItem {
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    public String getVersionId() {
+        return versionId;
+    }
+
+    public Boolean getIsCurrentVersion() {
+        return isCurrentVersion;
     }
 }

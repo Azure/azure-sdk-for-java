@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.FindBlobsByTagsDetails;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
@@ -20,6 +21,7 @@ public class FindBlobsOptions {
 
     private final String query;
     private Integer maxResultsPerPage;
+    private FindBlobsByTagsDetails findBlobsByTagsDetails;
 
     /**
      * @param query Filters the results to return only blobs whose tags match the specified expression.
@@ -59,6 +61,15 @@ public class FindBlobsOptions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
+        return this;
+    }
+
+    public FindBlobsByTagsDetails getFindBlobsByTagsDetails() {
+        return findBlobsByTagsDetails;
+    }
+
+    public FindBlobsOptions setFindBlobsByTagsDetails(FindBlobsByTagsDetails findBlobsByTagsDetails) {
+        this.findBlobsByTagsDetails = findBlobsByTagsDetails;
         return this;
     }
 }

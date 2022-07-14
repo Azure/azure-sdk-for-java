@@ -215,7 +215,7 @@ public final class ModelHelper {
 
     public static TaggedBlobItem populateTaggedBlobItem(FilterBlobItem filterBlobItem) {
         return new TaggedBlobItem(filterBlobItem.getContainerName(), filterBlobItem.getName(),
-            tagMapFromBlobTags(filterBlobItem.getTags()));
+            tagMapFromBlobTags(filterBlobItem.getTags()), filterBlobItem.getVersionId(), filterBlobItem.isCurrentVersion());
     }
 
     private static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
