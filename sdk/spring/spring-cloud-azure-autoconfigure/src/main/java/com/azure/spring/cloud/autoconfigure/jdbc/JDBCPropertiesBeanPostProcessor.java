@@ -121,12 +121,12 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     }
 
     private boolean isPostgresqlPluginEnabled() {
-        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql.AzurePostgresqlMSIAuthenticationPlugin")
+        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql.AzureIdentityPostgresqlAuthenticationPlugin")
             && isOnClasspath("org.postgresql.Driver");
     }
 
     private boolean isMySqlPluginEnabled() {
-        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql.AzureMySqlMSIAuthenticationPlugin")
+        return isOnClasspath("com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql.AzureIdentityMysqlAuthenticationPlugin")
             && isOnClasspath("com.mysql.cj.jdbc.Driver");
     }
 

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc.extension.postgresql;
 
 import com.azure.core.credential.AccessToken;
@@ -20,7 +22,7 @@ import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
 /**
  * The Authentication plugin that enables Azure AD managed identity support.
  */
-public class AzurePostgresqlMSIAuthenticationPlugin implements AuthenticationPlugin {
+public class AzureIdentityPostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 
     private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
@@ -45,7 +47,7 @@ public class AzurePostgresqlMSIAuthenticationPlugin implements AuthenticationPlu
      *
      * @param properties the properties.
      */
-    public AzurePostgresqlMSIAuthenticationPlugin(Properties properties) {
+    public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
         this.properties = properties;
         this.azureJDBCProperties = new AzureJDBCProperties();
         this.tokenCredentialResolver =  new AzureTokenCredentialResolver();

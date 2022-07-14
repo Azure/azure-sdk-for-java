@@ -14,16 +14,15 @@ import java.util.Optional;
 
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.NONE_VALUE;
 
-class JdbcConnectionString {
+public class JdbcConnectionString {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
-    private static final String TOKEN_VALUE_SEPARATOR = "=";
     static final String INVALID_CONNECTION_STRING_FORMAT = "Invalid connection string: %s";
     static final String INVALID_PROPERTY_PAIR_FORMAT = "Connection string has invalid key value pair: %s";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionString.class);
+    private static final String TOKEN_VALUE_SEPARATOR = "=";
     private final String str;
-    private DatabaseType databaseType = null;
     private final Map<String, String> properties = new HashMap<>();
+    private DatabaseType databaseType = null;
 
     JdbcConnectionString(String str) {
         this.str = str;
@@ -37,8 +36,8 @@ class JdbcConnectionString {
         }
 
         Optional<DatabaseType> optionalDatabaseType = Arrays.stream(DatabaseType.values())
-                                                            .filter(databaseType -> this.str.startsWith(databaseType.getSchema()))
-                                                            .findAny();
+            .filter(databaseType -> this.str.startsWith(databaseType.getSchema()))
+            .findAny();
 
         if (optionalDatabaseType.isPresent()) {
             this.databaseType = optionalDatabaseType.get();
@@ -89,9 +88,9 @@ class JdbcConnectionString {
 
             if (valueProvidedInConnectionString == null) {
                 builder.append(key)
-                           .append("=")
-                           .append(value)
-                           .append(databaseType.getQueryDelimiter());
+                    .append("=")
+                    .append(value)
+                    .append(databaseType.getQueryDelimiter());
             } else if (!value.equals(valueProvidedInConnectionString)) {
                 LOGGER.debug("The property {} is set to another value than default {}", key, value);
                 throw new IllegalArgumentException("Inconsistent property detected");

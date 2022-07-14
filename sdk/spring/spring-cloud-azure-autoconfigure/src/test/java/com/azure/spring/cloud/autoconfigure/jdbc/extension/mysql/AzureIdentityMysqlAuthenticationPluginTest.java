@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AzureMySqlMSIAuthenticationPluginTest {
+class AzureIdentityMysqlAuthenticationPluginTest {
 
     @Test
     void testDefaultScope() {
-        AzureMySqlMSIAuthenticationPlugin mysqlPlugin = new AzureMySqlMSIAuthenticationPlugin();
+        AzureIdentityMysqlAuthenticationPlugin mysqlPlugin = new AzureIdentityMysqlAuthenticationPlugin();
         String scope = (String) ReflectionTestUtils.getField(mysqlPlugin, "OSSRDBMS_SCOPE");
         assertEquals("https://ossrdbms-aad.database.windows.net/.default", scope);
     }
@@ -35,7 +35,7 @@ class AzureMySqlMSIAuthenticationPluginTest {
         NativeProtocol protocol = mock(NativeProtocol.class);
         PropertySet propertySet = new DefaultPropertySet();
         when(protocol.getPropertySet()).thenReturn(propertySet);
-        AzureMySqlMSIAuthenticationPlugin mysqlPlugin = new AzureMySqlMSIAuthenticationPlugin();
+        AzureIdentityMysqlAuthenticationPlugin mysqlPlugin = new AzureIdentityMysqlAuthenticationPlugin();
         mysqlPlugin.init(protocol);
 
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(mysqlPlugin, "getTokenCredential");
@@ -58,7 +58,7 @@ class AzureMySqlMSIAuthenticationPluginTest {
         properties.put("azure.profile.tenant-id", "mock-tenant-id");
         propertySet.initializeProperties(properties);
         when(protocol.getPropertySet()).thenReturn(propertySet);
-        AzureMySqlMSIAuthenticationPlugin mysqlPlugin = new AzureMySqlMSIAuthenticationPlugin();
+        AzureIdentityMysqlAuthenticationPlugin mysqlPlugin = new AzureIdentityMysqlAuthenticationPlugin();
         mysqlPlugin.init(protocol);
 
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(mysqlPlugin, "getTokenCredential");
@@ -78,7 +78,7 @@ class AzureMySqlMSIAuthenticationPluginTest {
         properties.put("azure.credential.managed-identity-enabled", "true");
         propertySet.initializeProperties(properties);
         when(protocol.getPropertySet()).thenReturn(propertySet);
-        AzureMySqlMSIAuthenticationPlugin mysqlPlugin = new AzureMySqlMSIAuthenticationPlugin();
+        AzureIdentityMysqlAuthenticationPlugin mysqlPlugin = new AzureIdentityMysqlAuthenticationPlugin();
         mysqlPlugin.init(protocol);
 
         TokenCredential getTokenCredential = ReflectionTestUtils.invokeMethod(mysqlPlugin, "getTokenCredential");

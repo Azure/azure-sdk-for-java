@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql;
 
 import java.time.Duration;
@@ -23,29 +25,23 @@ import org.slf4j.LoggerFactory;
 /**
  * The Authentication plugin that enables Azure AD managed identity support.
  */
-public class AzureMySqlMSIAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureMySqlMSIAuthenticationPlugin.class);
+public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureIdentityMysqlAuthenticationPlugin.class);
 
     private static String PLUGIN_NAME = "mysql_clear_password";
 
     private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
-
+    private final AzureJDBCProperties azureJDBCProperties;
+    private final AzureTokenCredentialResolver tokenCredentialResolver;
     /**
      * Stores the access token.
      */
     private AccessToken accessToken;
-
     private TokenCredential credential;
-
     /**
      * Stores the callback handler.
      */
     private MysqlCallbackHandler callbackHandler;
-
-    private final AzureJDBCProperties azureJDBCProperties;
-
-    private final AzureTokenCredentialResolver tokenCredentialResolver;
-
     /**
      * Stores the protocol.
      */
@@ -53,11 +49,11 @@ public class AzureMySqlMSIAuthenticationPlugin implements AuthenticationPlugin<N
 
     private String sourceOfAuthData;
 
-    public AzureMySqlMSIAuthenticationPlugin() {
+    public AzureIdentityMysqlAuthenticationPlugin() {
         this(new AzureJDBCProperties(), new AzureTokenCredentialResolver());
     }
 
-    public AzureMySqlMSIAuthenticationPlugin(AzureJDBCProperties azureJDBCProperties, AzureTokenCredentialResolver tokenCredentialResolver) {
+    public AzureIdentityMysqlAuthenticationPlugin(AzureJDBCProperties azureJDBCProperties, AzureTokenCredentialResolver tokenCredentialResolver) {
         this.azureJDBCProperties = azureJDBCProperties;
         this.tokenCredentialResolver = tokenCredentialResolver;
     }
@@ -106,8 +102,8 @@ public class AzureMySqlMSIAuthenticationPlugin implements AuthenticationPlugin<N
                     String password = getAccessToken().getToken();
                     byte[] content = password.getBytes(
                         protocol.getServerSession()
-                                .getCharsetSettings()
-                                .getPasswordCharacterEncoding());
+                            .getCharsetSettings()
+                            .getPasswordCharacterEncoding());
                     response = new NativePacketPayload(content);
                     response.setPosition(response.getPayloadLength());
                     response.writeInteger(NativeConstants.IntegerDataType.INT1, 0);
@@ -136,7 +132,8 @@ public class AzureMySqlMSIAuthenticationPlugin implements AuthenticationPlugin<N
     }
 
     @Override
-    public void setAuthenticationParameters(String username, String password) {    }
+    public void setAuthenticationParameters(String username, String password) {
+    }
 
     @Override
     public void setSourceOfAuthData(String sourceOfAuthData) {
