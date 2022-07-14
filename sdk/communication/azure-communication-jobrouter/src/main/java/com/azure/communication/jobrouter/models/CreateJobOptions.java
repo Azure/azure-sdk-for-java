@@ -14,7 +14,7 @@ public class CreateJobOptions {
     /**
      * The id of the job.
      */
-    private String id;
+    private final String id;
 
     /**
      * Reference to an external parent context, eg. call ID.
@@ -24,7 +24,7 @@ public class CreateJobOptions {
     /**
      * The channel identifier. eg. voice, chat, etc.
      */
-    private String channelId;
+    private final String channelId;
 
     /**
      * The Id of the Classification policy used for classifying a job.
@@ -34,7 +34,7 @@ public class CreateJobOptions {
     /**
      * The Id of the Queue that this job is queued to.
      */
-    private String queueId;
+    private final String queueId;
 
     /**
      * The priority of this job.

@@ -16,7 +16,7 @@ public class CreateQueueOptions {
     /**
      * The Id of this queue
      */
-    private String queueId;
+    private final String queueId;
 
     /**
      * The name of this queue.
@@ -27,7 +27,7 @@ public class CreateQueueOptions {
      * The ID of the distribution policy that will determine how a job is
      * distributed to workers.
      */
-    private String distributionPolicyId;
+    private final String distributionPolicyId;
 
     /**
      * A set of key/value pairs that are identifying attributes used by the

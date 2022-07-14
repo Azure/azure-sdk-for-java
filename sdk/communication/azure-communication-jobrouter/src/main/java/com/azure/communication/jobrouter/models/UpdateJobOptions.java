@@ -14,7 +14,7 @@ public class UpdateJobOptions {
     /**
      * The id of the job.
      */
-    private String id;
+    private final String id;
 
     /**
      * Reference to an external parent context, eg. call ID.

@@ -16,7 +16,7 @@ public class UpdateClassificationPolicyOptions {
     /**
      * Unique identifier of this policy.
      */
-    private String id;
+    private final String id;
 
     /**
      * Friendly name of this policy.

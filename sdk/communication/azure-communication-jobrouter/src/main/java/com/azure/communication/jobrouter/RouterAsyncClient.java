@@ -104,7 +104,7 @@ public final class RouterAsyncClient {
     public Mono<ClassificationPolicy> createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
             ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
-            return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context)
+            return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.id(), classificationPolicy, context)
                 .flatMap(
                     (Response<ClassificationPolicy> res) -> {
                         if (res.getValue() != null) {
@@ -131,7 +131,7 @@ public final class RouterAsyncClient {
     public Mono<Response<ClassificationPolicy>> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         try {
             ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
-            return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context));
+            return withContext(context -> upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.id(), classificationPolicy, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

@@ -114,7 +114,7 @@ public final class RouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions, Context context) {
         ClassificationPolicy classificationPolicy = ClassificationPolicyAdapter.convertCreateOptionsToClassificationPolicy(createClassificationPolicyOptions);
-        return this.client.upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getId(), classificationPolicy, context).block();
+        return this.client.upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.id(), classificationPolicy, context).block();
     }
 
     /**

@@ -14,7 +14,7 @@ public class CreateDistributionPolicyOptions {
     /**
      * The unique identifier of the policy.
      */
-    private String id;
+    private final String id;
 
     /**
      * The human readable name of the policy.
@@ -25,12 +25,12 @@ public class CreateDistributionPolicyOptions {
      * The expiry time of any offers created under this policy will be governed
      * by the offer time to live.
      */
-    private Double offerTtlSeconds;
+    private final Double offerTtlSeconds;
 
     /**
      * Abstract base class for defining a distribution mode
      */
-    private DistributionMode mode;
+    private final DistributionMode mode;
 
     /**
      * Constructor for CreateDistributionPolicyOptions.

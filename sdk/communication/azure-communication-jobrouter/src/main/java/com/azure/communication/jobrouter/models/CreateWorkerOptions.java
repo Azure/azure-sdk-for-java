@@ -13,7 +13,7 @@ public class CreateWorkerOptions {
     /**
      * The id property.
      */
-    private String workerId;
+    private final String workerId;
 
     /**
      * The queue(s) that this worker can receive work from.
@@ -24,7 +24,7 @@ public class CreateWorkerOptions {
      * The total capacity score this worker has to manage multiple concurrent
      * jobs.
      */
-    private Integer totalCapacity;
+    private final Integer totalCapacity;
 
     /**
      * A set of key/value pairs that are identifying attributes used by the

@@ -13,7 +13,7 @@ public class UpdateWorkerOptions {
     /**
      * The id property.
      */
-    private String workerId;
+    private final String workerId;
 
     /**
      * The queue(s) that this worker can receive work from.

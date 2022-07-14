@@ -11,7 +11,7 @@ public class UpdateDistributionPolicyOptions {
     /**
      * The unique identifier of the policy.
      */
-    private String id;
+    private final String id;
 
     /**
      * The human readable name of the policy.
