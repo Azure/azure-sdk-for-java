@@ -29,7 +29,7 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     private final AtomicLong position;
 
     // AsynchronousByteChannel implementation may disallow concurrent reads and writes.
-    private AtomicReference<Operation> pendingOperation = new AtomicReference<>();
+    private final AtomicReference<Operation> pendingOperation = new AtomicReference<>();
 
     public AsynchronousFileChannelAdapter(AsynchronousFileChannel fileChannel, long position) {
         this.fileChannel = Objects.requireNonNull(fileChannel);
@@ -42,7 +42,9 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         fileChannel.read(dst, position.get(), attachment, new CompletionHandler<Integer, A>() {
             @Override
             public void completed(Integer result, A attachment) {
-                position.addAndGet(result);
+                if (result >= 0) {
+                    position.addAndGet(result);
+                }
                 endOperation(Operation.READ);
                 handler.completed(result, attachment);
             }
@@ -62,7 +64,9 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         fileChannel.read(dst, position.get(), dst, new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
-                position.addAndGet(result);
+                if (result >= 0) {
+                    position.addAndGet(result);
+                }
                 endOperation(Operation.READ);
                 future.complete(result);
             }
