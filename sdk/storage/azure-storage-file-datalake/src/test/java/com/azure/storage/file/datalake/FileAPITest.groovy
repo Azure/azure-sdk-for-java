@@ -47,7 +47,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
-
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
@@ -2594,6 +2594,23 @@ class FileAPITest extends APISpec {
         fc.flush(data.defaultDataSize, true)
 
         then:
+        def os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Append data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
         def os = new ByteArrayOutputStream()
         fc.read(os)
         os.toByteArray() == data.defaultBytes
