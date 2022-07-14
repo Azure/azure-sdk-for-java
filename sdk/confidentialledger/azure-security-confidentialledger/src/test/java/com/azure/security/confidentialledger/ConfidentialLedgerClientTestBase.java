@@ -15,7 +15,6 @@ import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 
 class ConfidentialLedgerClientTestBase extends TestBase {

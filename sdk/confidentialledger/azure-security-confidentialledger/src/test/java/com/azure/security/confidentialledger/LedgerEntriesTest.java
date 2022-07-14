@@ -165,7 +165,6 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         pagedIterableResponse.streamByPage().forEach(resp -> {
             Assertions.assertEquals(200, resp.getStatusCode());
             resp.getValue().forEach(item -> {
-                System.out.println("item = " + item);
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseBodyJson = null;
 

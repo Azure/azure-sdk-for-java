@@ -20,39 +20,39 @@ import io.netty.handler.ssl.SslContextBuilder;
 public class ConfidentialLedgerClientBase {
     public ConfidentialLedgerClientBase() {
         try {
-        // BEGIN:readme-sample-createClient
-        ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-        .identityServiceUri("https://identity.confidential-ledger.core.azure.com")
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .httpClient(HttpClient.createDefault());
+            // BEGIN:readme-sample-createClient
+            ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
+                .identityServiceUri("https://identity.confidential-ledger.core.azure.com")
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .httpClient(HttpClient.createDefault());
         
-        ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
+            ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
 
-        String ledgerId = "java-tests";
-        // this is a built in test of getLedgerIdentity
-        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+            String ledgerId = "java-tests";
+            // this is a built in test of getLedgerIdentity
+            Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
-        BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
-        String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+            BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+            String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
 
-        SslContext sslContext = SslContextBuilder.forClient()
+            SslContext sslContext = SslContextBuilder.forClient()
                 .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
-        reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
+            reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
+            HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
 
-        ConfidentialLedgerClient confidentialLedgerClient =
+            ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .httpClient(httpClient)
                         .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
-        // END:readme-sample-createClient
+            // END:readme-sample-createClient
         } catch (Exception ex) {
-                System.out.println("Caught exception" + ex);
+            System.out.println("Caught exception" + ex);
         }
     }
 }
