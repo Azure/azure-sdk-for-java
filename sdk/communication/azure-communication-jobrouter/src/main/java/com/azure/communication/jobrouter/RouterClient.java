@@ -11,6 +11,7 @@ import com.azure.communication.jobrouter.models.AcceptJobOfferResponse;
 import com.azure.communication.jobrouter.models.CancelJobResult;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.jobrouter.models.CloseJobOptions;
 import com.azure.communication.jobrouter.models.CloseJobResult;
 import com.azure.communication.jobrouter.models.CompleteJobResult;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -150,21 +151,21 @@ public final class RouterClient {
     /**
      * Retrieves an existing classification policy by Id.
      *
-     * @param id Id of the classification policy.
+     * @param classificationPolicyId Id of the classification policy.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy getClassificationPolicy(String id) {
-        return this.client.getClassificationPolicy(id).block();
+    public ClassificationPolicy getClassificationPolicy(String classificationPolicyId) {
+        return this.client.getClassificationPolicy(classificationPolicyId).block();
     }
 
     /**
      * Retrieves an existing classification policy by Id.
      *
-     * @param id Id of the classification policy.
+     * @param classificationPolicyId Id of the classification policy.
      * @param context The context to associate with this operation.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,22 +173,22 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> getClassificationPolicyWithResponse(String id, Context context) {
-        return this.client.getClassificationPolicyWithResponse(id, context).block();
+    public Response<ClassificationPolicy> getClassificationPolicyWithResponse(String classificationPolicyId, Context context) {
+        return this.client.getClassificationPolicyWithResponse(classificationPolicyId, context).block();
     }
 
     /**
      * Delete a classification policy by Id.
      *
-     * @param id Id of the classification policy.
+     * @param classificationPolicyId Id of the classification policy.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteClassificationPolicy(String id) {
-        this.client.deleteClassificationPolicy(id).block();
+    public void deleteClassificationPolicy(String classificationPolicyId) {
+        this.client.deleteClassificationPolicy(classificationPolicyId).block();
     }
 
     /**
@@ -323,15 +324,15 @@ public final class RouterClient {
     /**
      * Delete a distribution policy by Id.
      *
-     * @param id Id of the distribution policy.
+     * @param distributionPolicyId Id of the distribution policy.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDistributionPolicy(String id) {
-        this.client.deleteDistributionPolicy(id).block();
+    public void deleteDistributionPolicy(String distributionPolicyId) {
+        this.client.deleteDistributionPolicy(distributionPolicyId).block();
     }
 
     /**
@@ -634,7 +635,7 @@ public final class RouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobId, Context context) {
-        this.client.deleteJobWithResponse(jobId, context).block();
+        return this.client.deleteJobWithResponse(jobId, context).block();
     }
 
     /**
@@ -737,33 +738,21 @@ public final class RouterClient {
     /**
      * Closes a completed job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     * notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     * time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param closeJobOptions Options object for close job operation.
      * @return CloseJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloseJobResult closeJob(String jobId, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
-        return this.client.closeJob(jobId, assignmentId, dispositionCode, closeTime, note).block();
+    public CloseJobResult closeJob(CloseJobOptions closeJobOptions) {
+        return this.client.closeJob(closeJobOptions).block();
     }
 
     /**
      * Closes a completed job.
      *
-     * @param jobId Id of the job.
-     * @param assignmentId The assignment within which the job is to be closed.
-     * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
-     * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
-     * notification. If provided, worker capacity is released along with a JobClosedEvent notification at a future
-     * time.
-     * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
+     * @param closeJobOptions Options object for close job operation.
      * @param context The context to associate with this operation.
      * @return CloseJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -771,8 +760,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CloseJobResult> closeJobWithResponse(String jobId, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
-        return this.client.closeJobWithResponse(jobId, assignmentId, dispositionCode, closeTime, note, context).block();
+    public Response<CloseJobResult> closeJobWithResponse(CloseJobOptions closeJobOptions, Context context) {
+        return this.client.closeJobWithResponse(closeJobOptions, context).block();
     }
 
     /**
