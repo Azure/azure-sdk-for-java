@@ -33,6 +33,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
+      <version>${spring-cloud-azure-dependencies}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
       <version>${spring-cloud-azure-dependencies}</version>
     </dependency>
