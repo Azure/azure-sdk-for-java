@@ -688,9 +688,6 @@ public class CosmosAsyncContainer {
             ModelBridgeInternal.getNoChangesFromFeedResponse(response)
             : false;
 
-        logger.info("Query Change Feed Response query metrics : {}", ModelBridgeInternal.queryMetrics(response));
-        logger.info("Query Change Feed Response diagnostics  : {}", response.getCosmosDiagnostics());
-
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             response.getResults(),
             response.getResponseHeaders(),

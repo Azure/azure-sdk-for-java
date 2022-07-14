@@ -525,7 +525,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         logger.info("{} going to sleep for 5 seconds to populate ttl delete", Thread.currentThread().getName());
         Thread.sleep(5 * 1000);
 
-        if (results.hasNext()) { // returns one empty page only
+        while (results.hasNext()) { // returns one empty page only
             FeedResponse<JsonNode> response = results.next();
             List<JsonNode> itemChanges = response.getResults();
             assertGatewayMode(response);
@@ -549,10 +549,6 @@ public class ChangeFeedTest extends TestSuiteBase {
                                   ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
             // Assert item2 deleted with TTL
             // TODO: Missing TTL logic
-        }
-        // Finish draining query
-        while (results.hasNext()) {
-            results.next();
         }
     }
 
@@ -661,10 +657,6 @@ public class ChangeFeedTest extends TestSuiteBase {
             assertThat(itemChanges.get(3).get("metadata").get("previousImageLSN").asText()
                                   ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
         }
-        // Finish draining query
-        while (results1.hasNext()) {
-            results1.next();
-        }
     }
 
     @Test(groups = { "simple" })
@@ -712,9 +704,14 @@ public class ChangeFeedTest extends TestSuiteBase {
             .iterableByPage()
             .iterator();
 
-        if (results.hasNext()) {
+        while (results.hasNext()) {
             FeedResponse<JsonNode> response = results.next();
             List<JsonNode> itemChanges = response.getResults();
+            if (itemChanges.isEmpty()) {
+                //  There are no more change feed items
+                //  breaking now;
+                break;
+            }
             assertGatewayMode(response);
             assertThat(itemChanges.size()).isEqualTo(4);
             // Assert initial creation of items
@@ -736,10 +733,6 @@ public class ChangeFeedTest extends TestSuiteBase {
                                   ).isEqualTo(itemChanges.get(2).get("metadata").get("lsn").asText());
             // Assert item2 deleted with TTL
             // TODO: Missing TTL logic showing up
-        }
-        // Finish draining query
-        while (results.hasNext()) {
-            results.next();
         }
     }
 
