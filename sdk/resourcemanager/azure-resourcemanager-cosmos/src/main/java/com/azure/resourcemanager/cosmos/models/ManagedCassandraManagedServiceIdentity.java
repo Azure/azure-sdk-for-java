@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
 public class ManagedCassandraManagedServiceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedCassandraManagedServiceIdentity.class);
-
     /*
      * The object id of the identity resource.
      */

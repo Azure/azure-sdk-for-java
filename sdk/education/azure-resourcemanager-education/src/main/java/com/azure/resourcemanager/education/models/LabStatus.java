@@ -16,6 +16,9 @@ public final class LabStatus extends ExpandableStringEnum<LabStatus> {
     /** Static value Deleted for LabStatus. */
     public static final LabStatus DELETED = fromString("Deleted");
 
+    /** Static value Pending for LabStatus. */
+    public static final LabStatus PENDING = fromString("Pending");
+
     /**
      * Creates or finds a LabStatus from its string representation.
      *

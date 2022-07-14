@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
@@ -52,6 +53,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -812,8 +814,17 @@ public class EventHubClientBuilder implements
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
+        String identifier;
+        if (clientOptions instanceof AmqpClientOptions) {
+            String clientOptionIdentifier = ((AmqpClientOptions) clientOptions).getIdentifier();
+            identifier = CoreUtils.isNullOrEmpty(clientOptionIdentifier) ? UUID.randomUUID().toString() : clientOptionIdentifier;
+        } else {
+            identifier = UUID.randomUUID().toString();
+        }
+
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose);
+            isSharedConnection.get(), this::onClientClose,
+            identifier);
     }
 
     /**

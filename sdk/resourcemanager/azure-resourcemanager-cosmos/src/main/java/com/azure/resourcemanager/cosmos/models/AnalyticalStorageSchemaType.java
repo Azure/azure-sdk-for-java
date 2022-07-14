@@ -27,7 +27,11 @@ public final class AnalyticalStorageSchemaType extends ExpandableStringEnum<Anal
         return fromString(name, AnalyticalStorageSchemaType.class);
     }
 
-    /** @return known AnalyticalStorageSchemaType values. */
+    /**
+     * Gets known AnalyticalStorageSchemaType values.
+     *
+     * @return known AnalyticalStorageSchemaType values.
+     */
     public static Collection<AnalyticalStorageSchemaType> values() {
         return values(AnalyticalStorageSchemaType.class);
     }

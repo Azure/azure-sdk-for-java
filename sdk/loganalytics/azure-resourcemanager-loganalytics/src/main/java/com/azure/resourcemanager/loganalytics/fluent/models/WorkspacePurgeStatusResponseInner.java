@@ -7,14 +7,11 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.PurgeState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response containing status for a specific purge operation. */
 @Fluent
 public final class WorkspacePurgeStatusResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgeStatusResponseInner.class);
-
     /*
      * Status of the operation represented by the requested Id.
      */
@@ -48,10 +45,12 @@ public final class WorkspacePurgeStatusResponseInner {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model WorkspacePurgeStatusResponseInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacePurgeStatusResponseInner.class);
 }

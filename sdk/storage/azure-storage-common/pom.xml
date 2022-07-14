@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-common</artifactId>
-  <version>12.17.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+  <version>12.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
 
   <name>Microsoft Azure common module for Storage</name>
   <description>This module contains common code based for all Microsoft Azure Storage client libraries.</description>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.30.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.31.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

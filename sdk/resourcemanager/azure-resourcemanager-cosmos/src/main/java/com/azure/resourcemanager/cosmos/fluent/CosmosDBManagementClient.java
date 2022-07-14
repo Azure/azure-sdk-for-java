@@ -178,6 +178,20 @@ public interface CosmosDBManagementClient {
     LocationsClient getLocations();
 
     /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    CassandraClustersClient getCassandraClusters();
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    CassandraDataCentersClient getCassandraDataCenters();
+
+    /**
      * Gets the NotebookWorkspacesClient object to access its operations.
      *
      * @return the NotebookWorkspacesClient object.
@@ -248,16 +262,9 @@ public interface CosmosDBManagementClient {
     RestorableMongodbResourcesClient getRestorableMongodbResources();
 
     /**
-     * Gets the CassandraClustersClient object to access its operations.
+     * Gets the ServicesClient object to access its operations.
      *
-     * @return the CassandraClustersClient object.
+     * @return the ServicesClient object.
      */
-    CassandraClustersClient getCassandraClusters();
-
-    /**
-     * Gets the CassandraDataCentersClient object to access its operations.
-     *
-     * @return the CassandraDataCentersClient object.
-     */
-    CassandraDataCentersClient getCassandraDataCenters();
+    ServicesClient getServices();
 }

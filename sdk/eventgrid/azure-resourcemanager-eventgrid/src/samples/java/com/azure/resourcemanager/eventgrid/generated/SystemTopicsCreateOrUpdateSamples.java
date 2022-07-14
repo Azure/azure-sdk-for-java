@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for SystemTopics CreateOrUpdate. */
 public final class SystemTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: SystemTopics_CreateOrUpdate.

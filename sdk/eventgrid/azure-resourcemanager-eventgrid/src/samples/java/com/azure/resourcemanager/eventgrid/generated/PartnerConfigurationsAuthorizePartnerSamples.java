@@ -12,7 +12,7 @@ import java.util.UUID;
 /** Samples for PartnerConfigurations AuthorizePartner. */
 public final class PartnerConfigurationsAuthorizePartnerSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_AuthorizePartner.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerConfigurations_AuthorizePartner.json
      */
     /**
      * Sample code: PartnerConfigurations_AuthorizePartner.

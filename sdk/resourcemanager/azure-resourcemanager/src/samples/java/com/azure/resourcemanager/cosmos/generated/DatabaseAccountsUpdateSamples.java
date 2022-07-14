@@ -27,7 +27,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts Update. */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.

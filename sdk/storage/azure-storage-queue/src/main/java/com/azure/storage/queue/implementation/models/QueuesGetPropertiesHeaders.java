@@ -6,10 +6,13 @@ package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The QueuesGetPropertiesHeaders model. */
@@ -45,6 +48,32 @@ public final class QueuesGetPropertiesHeaders {
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of QueuesGetPropertiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public QueuesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        if (rawHeaders.getValue("x-ms-approximate-messages-count") != null) {
+            this.xMsApproximateMessagesCount = Integer.parseInt(rawHeaders.getValue("x-ms-approximate-messages-count"));
+        }
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            if (!header.getName().startsWith("x-ms-meta-")) {
+                continue;
+            }
+            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
+        }
+        this.xMsMeta = xMsMetaHeaderCollection;
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

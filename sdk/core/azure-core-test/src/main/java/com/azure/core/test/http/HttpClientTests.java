@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -244,6 +245,35 @@ public abstract class HttpClientTests {
     }
 
     /**
+     * Tests that unbuffered response body can be accessed.
+     */
+    @SyncAsyncTest
+    public void canAccessResponseBody() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        Supplier<HttpResponse> responseSupplier = () -> SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, Context.NONE),
+            () -> createHttpClient().send(request)
+        );
+
+        assertEquals(requestBody.toString(), responseSupplier.get().getBodyAsString().block());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsBinaryData().toBytes());
+
+        assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBodyAsInputStream()
+            .map(s -> BinaryData.fromStream(s).toBytes()).block());
+
+        assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+    }
+
+    /**
      * Tests that client returns buffered response if requested via azure-eagerly-read-response Context flag.
      */
     @SyncAsyncTest
@@ -291,6 +321,9 @@ public abstract class HttpClientTests {
 
         assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
         assertArrayEquals(requestBody.toBytes(), response.getBodyAsByteArray().block());
+
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
+        assertArrayEquals(requestBody.toBytes(), response.getBodyAsBinaryData().toBytes());
 
         assertArrayEquals(requestBody.toBytes(), response.getBodyAsInputStream()
             .map(s -> BinaryData.fromStream(s).toBytes()).block());

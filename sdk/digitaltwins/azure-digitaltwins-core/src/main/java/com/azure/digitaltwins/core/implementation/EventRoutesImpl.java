@@ -233,11 +233,13 @@ public final class EventRoutesImpl {
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
         }
+        if (eventRoute == null) {
+            return Mono.error(new IllegalArgumentException("Parameter eventRoute is required and cannot be null."));
+        } else {
+            eventRoute.validate();
+        }
         if (eventRoutesAddOptions != null) {
             eventRoutesAddOptions.validate();
-        }
-        if (eventRoute != null) {
-            eventRoute.validate();
         }
         String traceparentInternal = null;
         if (eventRoutesAddOptions != null) {

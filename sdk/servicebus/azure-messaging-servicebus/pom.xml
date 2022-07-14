@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-servicebus</artifactId>
-  <version>7.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+  <version>7.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
   <name>Microsoft Azure client library for Service Bus</name>
   <description>This package contains the Microsoft Azure Service Bus client library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

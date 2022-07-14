@@ -35,7 +35,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB databases and their properties.
+     * @return the List operation response, that contains the MongoDB databases and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MongoDBDatabaseGetResultsInner> listMongoDBDatabasesAsync(String resourceGroupName, String accountName);
@@ -48,7 +49,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB databases and their properties.
+     * @return the List operation response, that contains the MongoDB databases and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MongoDBDatabaseGetResultsInner> listMongoDBDatabases(String resourceGroupName, String accountName);
@@ -62,7 +64,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB databases and their properties.
+     * @return the List operation response, that contains the MongoDB databases and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MongoDBDatabaseGetResultsInner> listMongoDBDatabases(
@@ -77,7 +80,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MongoDBDatabaseGetResultsInner>> getMongoDBDatabaseWithResponseAsync(
@@ -92,7 +96,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseAsync(
@@ -123,7 +128,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseWithResponse(
@@ -139,7 +145,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
+     * @return an Azure Cosmos DB MongoDB database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBDatabaseWithResponseAsync(
@@ -158,7 +164,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
@@ -178,7 +184,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
@@ -199,7 +205,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
@@ -220,7 +226,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB database.
+     * @return an Azure Cosmos DB MongoDB database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MongoDBDatabaseGetResultsInner> createUpdateMongoDBDatabaseAsync(
@@ -278,7 +284,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteMongoDBDatabaseWithResponseAsync(
@@ -293,7 +299,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBDatabaseAsync(
@@ -308,7 +314,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
@@ -324,7 +330,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
@@ -339,7 +345,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
@@ -382,7 +388,7 @@ public interface MongoDBResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughputWithResponseAsync(
@@ -399,7 +405,7 @@ public interface MongoDBResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> getMongoDBDatabaseThroughputAsync(
@@ -434,7 +440,7 @@ public interface MongoDBResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ThroughputSettingsGetResultsInner> getMongoDBDatabaseThroughputWithResponse(
@@ -451,7 +457,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughputWithResponseAsync(
@@ -471,7 +478,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -492,7 +499,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -514,7 +521,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -536,7 +543,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> updateMongoDBDatabaseThroughputAsync(
@@ -596,7 +603,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> migrateMongoDBDatabaseToAutoscaleWithResponseAsync(
@@ -611,7 +619,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -626,7 +634,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -642,7 +650,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -658,7 +666,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToAutoscaleAsync(
@@ -704,7 +712,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> migrateMongoDBDatabaseToManualThroughputWithResponseAsync(
@@ -719,7 +728,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -735,7 +744,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -752,7 +761,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -768,7 +777,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToManualThroughputAsync(
@@ -814,7 +823,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collections and their properties.
+     * @return the List operation response, that contains the MongoDB collections and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MongoDBCollectionGetResultsInner> listMongoDBCollectionsAsync(
@@ -829,7 +839,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collections and their properties.
+     * @return the List operation response, that contains the MongoDB collections and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MongoDBCollectionGetResultsInner> listMongoDBCollections(
@@ -845,7 +856,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collections and their properties.
+     * @return the List operation response, that contains the MongoDB collections and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MongoDBCollectionGetResultsInner> listMongoDBCollections(
@@ -861,7 +873,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MongoDBCollectionGetResultsInner>> getMongoDBCollectionWithResponseAsync(
@@ -877,7 +890,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MongoDBCollectionGetResultsInner> getMongoDBCollectionAsync(
@@ -910,7 +924,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MongoDBCollectionGetResultsInner> getMongoDBCollectionWithResponse(
@@ -927,7 +941,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
+     * @return an Azure Cosmos DB MongoDB collection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBCollectionWithResponseAsync(
@@ -948,7 +963,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
@@ -970,7 +985,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
@@ -993,7 +1008,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
@@ -1016,7 +1031,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB MongoDB collection.
+     * @return an Azure Cosmos DB MongoDB collection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MongoDBCollectionGetResultsInner> createUpdateMongoDBCollectionAsync(
@@ -1080,7 +1095,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteMongoDBCollectionWithResponseAsync(
@@ -1096,7 +1111,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBCollectionAsync(
@@ -1112,7 +1127,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(
@@ -1129,7 +1144,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(
@@ -1145,7 +1160,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteMongoDBCollectionAsync(
@@ -1194,7 +1209,7 @@ public interface MongoDBResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughputWithResponseAsync(
@@ -1212,7 +1227,7 @@ public interface MongoDBResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> getMongoDBCollectionThroughputAsync(
@@ -1249,7 +1264,7 @@ public interface MongoDBResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     *     provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ThroughputSettingsGetResultsInner> getMongoDBCollectionThroughputWithResponse(
@@ -1267,7 +1282,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateMongoDBCollectionThroughputWithResponseAsync(
@@ -1289,7 +1305,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1312,7 +1328,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1336,7 +1352,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1360,7 +1376,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> updateMongoDBCollectionThroughputAsync(
@@ -1426,7 +1442,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> migrateMongoDBCollectionToAutoscaleWithResponseAsync(
@@ -1442,7 +1459,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1459,7 +1476,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1477,7 +1494,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1494,7 +1511,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToAutoscaleAsync(
@@ -1543,7 +1560,8 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> migrateMongoDBCollectionToManualThroughputWithResponseAsync(
@@ -1559,7 +1577,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1576,7 +1594,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1594,7 +1612,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
@@ -1611,7 +1629,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToManualThroughputAsync(
@@ -1661,7 +1679,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
@@ -1682,7 +1700,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
@@ -1704,7 +1722,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
@@ -1726,7 +1744,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
@@ -1748,7 +1766,7 @@ public interface MongoDBResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup information of a resource.
+     * @return backup information of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(

@@ -1,10 +1,20 @@
 # Release History
 
-## 12.18.0-beta.2 (Unreleased)
+## 12.19.0-beta.1 (Unreleased)
 
 ### Features Added
-- Introducing a new field isMultipleClosedAllowed for BlobOutputStream and BlockBlobOutputStream, which allows users to
-  specify if close() will be called on the stream multiple times, and whether to ignore STREAM_CLOSED exception.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.18.0 (2022-07-07)
+
+### Features Added
+- BlobOutputStream.close() will now attempt to close the stream at first attempt. Subsequent calls to close have no effect.
+- GA release for 2021-08-06 service version.
 
 ## 12.18.0-beta.1 (2022-06-15)
 
