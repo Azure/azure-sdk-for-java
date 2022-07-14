@@ -930,7 +930,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         DataLakeFileAppendOptions appendOptions, Context context) {
         appendOptions = appendOptions == null ? new DataLakeFileAppendOptions() : appendOptions;
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(appendOptions.getLeaseId());
-        PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(appendOptions.getContentHash());
+        PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(appendOptions.getContentMd5());
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(

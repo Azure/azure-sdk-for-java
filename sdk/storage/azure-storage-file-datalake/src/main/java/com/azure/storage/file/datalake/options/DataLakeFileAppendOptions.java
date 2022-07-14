@@ -13,7 +13,7 @@ import com.azure.core.util.CoreUtils;
 public class DataLakeFileAppendOptions {
 
     private String leaseId;
-    private byte[] contentHash;
+    private byte[] contentMd5;
     private Boolean flush;
 
 
@@ -45,8 +45,8 @@ public class DataLakeFileAppendOptions {
      *
      * @return MD5 hash of the content of the data.
      */
-    public byte[] getContentHash() {
-        return CoreUtils.clone(this.contentHash);
+    public byte[] getContentMd5() {
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
@@ -55,12 +55,12 @@ public class DataLakeFileAppendOptions {
      * do not match, the operation will fail with error code 400 (Bad Request). Note that this MD5 hash is not stored
      * with the file. This header is associated with the request content, and not with the stored content of the file itself.
      *
-     * @param contentHash contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate
+     * @param contentMd5 contentMd5 An MD5 hash of the content of the data. If specified, the service will calculate
      * the MD5 of the received data and fail the request if it does not match the provided MD5.
      * @return the updated DataLakeFileAppendOptions object.
      */
-    public DataLakeFileAppendOptions setContentHash(byte[] contentHash) {
-        this.contentHash = CoreUtils.clone(contentHash);
+    public DataLakeFileAppendOptions setContentHash(byte[] contentMd5) {
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
