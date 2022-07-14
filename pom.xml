@@ -80,6 +80,9 @@
         <!-- Form Recognizer -->
         <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
+
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
 
