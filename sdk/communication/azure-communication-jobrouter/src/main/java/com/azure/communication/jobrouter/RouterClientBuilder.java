@@ -3,10 +3,10 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
 import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImplBuilder;
+import com.azure.communication.jobrouter.implementation.authentication.CommunicationConnectionString;
+import com.azure.communication.jobrouter.implementation.authentication.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.implementation.utils.BuilderHelper;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
