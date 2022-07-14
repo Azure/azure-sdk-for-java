@@ -31,12 +31,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <javaModulesSurefireArgLine>
-      --add-opens com.azure.core.metrics.opentelemetry/com.azure.core.metrics.opentelemetry.implementation=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>io.opentelemetry</groupId>
