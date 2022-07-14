@@ -599,8 +599,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength, null,
-                    requestConditions.getLeaseId(), appendContexts.getContext())
+                return appendWithResponse(bufferAggregator.asFlux(), currentOffset, currentBufferLength,
+                    new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext())
                     .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
             }, parallelTransferOptions.getMaxConcurrency(), 1)
@@ -615,8 +615,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             appendContexts.setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progressListener));
         }
-        return appendWithResponse(data, fileOffset, length, null,
-            requestConditions.getLeaseId(), appendContexts.getContext())
+        return appendWithResponse(data, fileOffset, length, new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()),
+            appendContexts.getContext())
             .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
                 requestConditions));
     }
@@ -792,8 +792,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 if (progressReporter != null) {
                     appendContexts.setHttpRequestProgressReporter(progressReporter.createChild());
                 }
-                return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(), null,
-                    requestConditions.getLeaseId(), appendContexts.getContext());
+                return appendWithResponse(data, fileOffset + chunk.getOffset(), chunk.getCount(),
+                    new DataLakeFileAppendOptions().setLeaseId(requestConditions.getLeaseId()), appendContexts.getContext());
             }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();
