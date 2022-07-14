@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
+### 4.33.0 (2022-07-14)
 #### Other Changes
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
 
 ### 4.32.1 (2022-06-30)
 
