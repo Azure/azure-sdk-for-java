@@ -58,6 +58,8 @@
         <module>sdk/core/azure-core-serializer-json-jackson</module>
         <module>sdk/core/azure-core-test</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
+        <module>sdk/core/azure-json</module>
+        <module>sdk/core/azure-json-gson</module>
 
         <!-- Cosmos -->
 <!--        <module>sdk/cosmos/azure-cosmos</module>-->
@@ -223,6 +225,8 @@
         <module>sdk/core/azure-core-serializer-json-jackson</module>
         <module>sdk/core/azure-core-test</module>
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
+        <module>sdk/core/azure-json</module>
+        <module>sdk/core/azure-json-gson</module>
 
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>
@@ -421,6 +425,14 @@
                   <group>
                     <title>Azure Core - Tracing - OpenTelemetry</title>
                     <packages>com.azure.core.tracing.opentelemetry*</packages>
+                  </group>
+                  <group>
+                    <title>Azure JSON</title>
+                    <packages>com.azure.json*</packages>
+                  </group>
+                  <group>
+                    <title>Azure JSON - GSON</title>
+                    <packages>com.azure.json.gson*</packages>
                   </group>
                   <group>
                     <title>Azure Anomaly Detector</title>

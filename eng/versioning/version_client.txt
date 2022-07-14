@@ -102,6 +102,8 @@ com.azure:azure-identity;1.5.3;1.6.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-json;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-json-gson;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventgrid;4.12.0;4.13.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.12.2;5.13.0-beta.1
