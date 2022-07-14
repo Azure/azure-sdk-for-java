@@ -3,14 +3,21 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
+import com.azure.communication.jobrouter.implementation.authentication.CommunicationConnectionString;
+import com.azure.communication.jobrouter.implementation.authentication.HmacAuthenticationPolicy;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 
