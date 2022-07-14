@@ -7,6 +7,7 @@ package com.azure.security.confidentialledger.certificate.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
@@ -16,7 +17,7 @@ public class GetLedgerIdentity {
         ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient =
                 new ConfidentialLedgerCertificateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .certificateClientEndpoint("identity.confidential-ledger.core.azure.com")
+                        .certificateEndpoint(Configuration.getGlobalConfiguration().get("CERTIFICATEENDPOINT"))
                         .buildClient();
         // BEGIN:com.azure.security.confidentialledger.certificate.generated.getledgeridentity.getledgeridentity
         RequestOptions requestOptions = new RequestOptions();

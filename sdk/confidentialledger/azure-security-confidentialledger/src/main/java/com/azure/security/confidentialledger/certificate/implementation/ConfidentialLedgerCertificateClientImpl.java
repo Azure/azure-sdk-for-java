@@ -40,16 +40,20 @@ public final class ConfidentialLedgerCertificateClientImpl {
     /** The proxy service used to perform REST calls. */
     private final ConfidentialLedgerCertificateClientService service;
 
-    /** The certificate client endpoint, for example https://identity.confidential-ledger.core.azure.com. */
-    private final String certificateClientEndpoint;
+    /**
+     * The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for example
+     * https://identity.confidential-ledger.core.azure.com.
+     */
+    private final String certificateEndpoint;
 
     /**
-     * Gets The certificate client endpoint, for example https://identity.confidential-ledger.core.azure.com.
+     * Gets The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for example
+     * https://identity.confidential-ledger.core.azure.com.
      *
-     * @return the certificateClientEndpoint value.
+     * @return the certificateEndpoint value.
      */
-    public String getCertificateClientEndpoint() {
-        return this.certificateClientEndpoint;
+    public String getCertificateEndpoint() {
+        return this.certificateEndpoint;
     }
 
     /** Service version. */
@@ -91,18 +95,18 @@ public final class ConfidentialLedgerCertificateClientImpl {
     /**
      * Initializes an instance of ConfidentialLedgerCertificateClient client.
      *
-     * @param certificateClientEndpoint The certificate client endpoint, for example
-     *     https://identity.confidential-ledger.core.azure.com.
+     * @param certificateEndpoint The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for
+     *     example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
     public ConfidentialLedgerCertificateClientImpl(
-            String certificateClientEndpoint, ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+            String certificateEndpoint, ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                certificateClientEndpoint,
+                certificateEndpoint,
                 serviceVersion);
     }
 
@@ -110,15 +114,15 @@ public final class ConfidentialLedgerCertificateClientImpl {
      * Initializes an instance of ConfidentialLedgerCertificateClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param certificateClientEndpoint The certificate client endpoint, for example
-     *     https://identity.confidential-ledger.core.azure.com.
+     * @param certificateEndpoint The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for
+     *     example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
     public ConfidentialLedgerCertificateClientImpl(
             HttpPipeline httpPipeline,
-            String certificateClientEndpoint,
+            String certificateEndpoint,
             ConfidentialLedgerCertificateServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), certificateClientEndpoint, serviceVersion);
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
     }
 
     /**
@@ -126,18 +130,18 @@ public final class ConfidentialLedgerCertificateClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param certificateClientEndpoint The certificate client endpoint, for example
-     *     https://identity.confidential-ledger.core.azure.com.
+     * @param certificateEndpoint The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for
+     *     example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
     public ConfidentialLedgerCertificateClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String certificateClientEndpoint,
+            String certificateEndpoint,
             ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.certificateClientEndpoint = certificateClientEndpoint;
+        this.certificateEndpoint = certificateEndpoint;
         this.serviceVersion = serviceVersion;
         this.service =
                 RestProxy.create(
@@ -166,7 +170,7 @@ public final class ConfidentialLedgerCertificateClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLedgerIdentity(
-                @HostParam("certificateClientEndpoint") String certificateClientEndpoint,
+                @HostParam("certificateEndpoint") String certificateEndpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("ledgerId") String ledgerId,
                 @HeaderParam("Accept") String accept,
@@ -202,7 +206,7 @@ public final class ConfidentialLedgerCertificateClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getLedgerIdentity(
-                                this.getCertificateClientEndpoint(),
+                                this.getCertificateEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 ledgerId,
                                 accept,
@@ -237,7 +241,7 @@ public final class ConfidentialLedgerCertificateClientImpl {
             String ledgerId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getLedgerIdentity(
-                this.getCertificateClientEndpoint(),
+                this.getCertificateEndpoint(),
                 this.getServiceVersion().getVersion(),
                 ledgerId,
                 accept,

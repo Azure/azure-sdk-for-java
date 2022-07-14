@@ -167,20 +167,21 @@ public final class ConfidentialLedgerCertificateClientBuilder
     }
 
     /*
-     * The certificate client endpoint, for example
-     * https://identity.confidential-ledger.core.azure.com
+     * The certificate endpoint (or "Identity Service Endpoint" in the Azure
+     * portal), for example https://identity.confidential-ledger.core.azure.com
      */
-    @Generated private String certificateClientEndpoint;
+    @Generated private String certificateEndpoint;
 
     /**
-     * Sets The certificate client endpoint, for example https://identity.confidential-ledger.core.azure.com.
+     * Sets The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for example
+     * https://identity.confidential-ledger.core.azure.com.
      *
-     * @param certificateClientEndpoint the certificateClientEndpoint value.
+     * @param certificateEndpoint the certificateEndpoint value.
      * @return the ConfidentialLedgerCertificateClientBuilder.
      */
     @Generated
-    public ConfidentialLedgerCertificateClientBuilder certificateClientEndpoint(String certificateClientEndpoint) {
-        this.certificateClientEndpoint = certificateClientEndpoint;
+    public ConfidentialLedgerCertificateClientBuilder certificateEndpoint(String certificateEndpoint) {
+        this.certificateEndpoint = certificateEndpoint;
         return this;
     }
 
@@ -235,10 +236,7 @@ public final class ConfidentialLedgerCertificateClientBuilder
         }
         ConfidentialLedgerCertificateClientImpl client =
                 new ConfidentialLedgerCertificateClientImpl(
-                        pipeline,
-                        JacksonAdapter.createDefaultSerializerAdapter(),
-                        certificateClientEndpoint,
-                        serviceVersion);
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
         return client;
     }
 
