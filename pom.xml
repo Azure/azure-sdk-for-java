@@ -248,6 +248,9 @@
         <!-- Form Recognizer -->
         <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
 
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
+
         <!-- Identity -->
         <module>sdk/identity/azure-identity</module>
 
@@ -460,6 +463,10 @@
                   <group>
                     <title>Azure Form Recognizer</title>
                     <packages>com.azure.ai.formrecognizer*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Personalizer</title>
+                    <packages>com.azure.ai.personalizer*</packages>
                   </group>
                   <group>
                     <title>Azure Identity</title>
@@ -907,6 +914,7 @@
         <module>sdk/eventhubs</module>
         <module>sdk/extendedlocation</module>
         <module>sdk/formrecognizer</module>
+        <module>sdk/personalizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
         <module>sdk/hardwaresecuritymodules</module>
