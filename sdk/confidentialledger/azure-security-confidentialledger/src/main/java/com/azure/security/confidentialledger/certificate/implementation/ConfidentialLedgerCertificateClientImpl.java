@@ -154,7 +154,7 @@ public final class ConfidentialLedgerCertificateClientImpl {
      * The interface defining all the services for ConfidentialLedgerCertificateClient to be used by the proxy service
      * to perform REST calls.
      */
-    @Host("{certificateClientEndpoint}")
+    @Host("{certificateEndpoint}")
     @ServiceInterface(name = "ConfidentialLedgerCe")
     private interface ConfidentialLedgerCertificateClientService {
         @Get("/ledgerIdentity/{ledgerId}")
