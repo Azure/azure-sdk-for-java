@@ -890,6 +890,7 @@
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
         <module>sdk/desktopvirtualization</module>
+        <module>sdk/devcenter</module>
         <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
