@@ -249,7 +249,7 @@ public class UpdateJobOptions {
      * @return labels
      */
     public Map<String, LabelValue> getLabels() {
-        return null;
+        return this.labels;
     }
 
     /**

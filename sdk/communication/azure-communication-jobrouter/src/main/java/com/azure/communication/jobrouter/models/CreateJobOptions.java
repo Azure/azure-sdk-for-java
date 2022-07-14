@@ -233,7 +233,7 @@ public class CreateJobOptions {
      * @return labels
      */
     public Map<String, LabelValue> getLabels() {
-        return null;
+        return this.labels;
     }
 
     /**
