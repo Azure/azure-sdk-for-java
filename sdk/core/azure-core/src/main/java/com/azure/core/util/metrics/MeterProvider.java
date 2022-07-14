@@ -35,6 +35,6 @@ public interface MeterProvider {
      * @return an instance of {@code MeterProvider}
      */
     static MeterProvider getDefaultProvider() {
-        return DefaultMeterProvider.INSTANCE;
+        return DefaultMeterProvider.getInstance();
     }
 }

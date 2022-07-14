@@ -9,9 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 final class DefaultMeterProvider implements MeterProvider {
-    public static final MeterProvider INSTANCE = new DefaultMeterProvider();
+    private static final MeterProvider INSTANCE = new DefaultMeterProvider();
+    private static final RuntimeException ERROR;
     private static final ClientLogger LOGGER = new ClientLogger(DefaultMeterProvider.class);
     private static MeterProvider meterProvider;
 
@@ -27,15 +30,34 @@ final class DefaultMeterProvider implements MeterProvider {
         ServiceLoader<MeterProvider> serviceLoader = ServiceLoader.load(MeterProvider.class, MeterProvider.class.getClassLoader());
         Iterator<MeterProvider> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
-            meterProvider = serviceLoader.iterator().next();
-            LOGGER.info("Found MeterProvider implementation on the classpath: {}", meterProvider.getClass().getName());
+            meterProvider = iterator.next();
+
+            if (iterator.hasNext()) {
+                String allProviders = StreamSupport.stream(serviceLoader.spliterator(), false)
+                    .map(p -> p.getClass().getName())
+                    .collect(Collectors.joining(", "));
+
+                // TODO (lmolkova) add configuration to allow picking specific provider
+                String message = String.format("Expected only one MeterProvider on the classpath, but found multiple providers: %s. "
+                         + "Please pick one MeterProvider implementation and remove or exclude packages that bring other implementations", allProviders);
+
+                ERROR = new UnsupportedOperationException(message);
+                LOGGER.error(message);
+            } else {
+                ERROR = null;
+                LOGGER.info("Found MeterProvider implementation on the classpath: {}", meterProvider.getClass().getName());
+            }
+        } else {
+            ERROR = null;
+        }
+    }
+
+    static MeterProvider getInstance() {
+        if (ERROR != null) {
+            throw LOGGER.logThrowableAsError(ERROR);
         }
 
-        while (iterator.hasNext()) {
-            MeterProvider ignoredProvider = iterator.next();
-            LOGGER.warning("Multiple MeterProviders were found on the classpath, ignoring {}.",
-                ignoredProvider.getClass().getName());
-        }
+        return INSTANCE;
     }
 
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
