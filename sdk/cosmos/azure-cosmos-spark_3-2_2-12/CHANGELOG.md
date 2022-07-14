@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.12.0 (2022-07-13)
+### 4.12.0 (2022-07-14)
 
 #### Features Added
 * Added a new config option `spark.cosmos.changeFeed.batchCheckpointLocation` that allows to also proceed a change feed batch query from a checkpoint/offset - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
