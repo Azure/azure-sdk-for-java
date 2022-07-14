@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    azure:
+      storage:
+        queue:
+          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+          queue-name: test
+        credential:
+          client-id: ${AZURE_SPRING_CLIENT_ID}
+          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+        profile:
+          tenant-id: ${AZURE_SPRING_TENANT_ID}
