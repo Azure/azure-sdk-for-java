@@ -37,6 +37,7 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.FindBlobsByTagsDetails;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -1458,9 +1459,11 @@ public final class BlobContainerAsyncClient {
         FindBlobsOptions options, String marker,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
+        FindBlobsByTagsDetails findBlobsByTagsDetails = options.getFindBlobsByTagsDetails() == null
+            ? new FindBlobsByTagsDetails() : options.getFindBlobsByTagsDetails();
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
-                options.getQuery(), marker, options.getMaxResultsPerPage(), options.getFindBlobsByTagsDetails().toList(),
+                options.getQuery(), marker, options.getMaxResultsPerPage(), findBlobsByTagsDetails.toList(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
             .map(response -> {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null

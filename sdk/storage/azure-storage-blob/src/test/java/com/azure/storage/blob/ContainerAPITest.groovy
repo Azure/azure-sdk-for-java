@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.FindBlobsByTagsDetails
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
@@ -1959,6 +1960,39 @@ class ContainerAPITest extends APISpec {
 
         then: "Still have paging functionality"
         notThrown(Exception)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_08_06")
+    def "Find blobs query with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blobClient = cc.getBlobClient(blobName)
+        def response1 = blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        def v1 = response1.getValue().getVersionId()
+        def response2 = blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        def v2 = response2.getValue().getVersionId()
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+        def findBlobOptions = new FindBlobsOptions(String.format("\"bar\"='foo'"))
+            .setFindBlobsByTagsDetails(new FindBlobsByTagsDetails()
+                .setRetrieveVersions(true))
+
+        when:
+        def results = cc.findBlobsByTags(findBlobOptions, null, Context.NONE)
+
+        then:
+        results.size() == 2
+        def tags = results.first().getTags()
+        tags.size() == 1
+        tags.get("bar") == "foo"
+        def firstItem = results.iterator().next()
+        def secondItem = results.iterator().next()
+        firstItem.getIsCurrentVersion() == null
+        secondItem.getIsCurrentVersion()
+        v1 == firstItem.getVersionId()
+        v2 == secondItem.getVersionId()
     }
 
     @Unroll
