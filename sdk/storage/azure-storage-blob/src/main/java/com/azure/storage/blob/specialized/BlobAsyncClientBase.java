@@ -1569,13 +1569,14 @@ public class BlobAsyncClientBase {
             : downloadRetryOptions;
         BlobRequestConditions finalRequestConditions =
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
 
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<StreamResponse>> downloadFunc =
             (range, conditions) -> this.downloadRange(
-                finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), rangeGetContentMd5, context);
+                range, conditions, conditions.getIfMatch(), getMD5, context);
 
         return ChunkedDownloadUtils.streamFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
             downloadFunc, true)
