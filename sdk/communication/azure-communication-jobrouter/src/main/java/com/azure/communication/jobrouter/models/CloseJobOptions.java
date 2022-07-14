@@ -1,7 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter.models;
 
 import java.time.OffsetDateTime;
 
+/**
+ * Request options to close a job.
+ * Job: A unit of work to be routed.
+ */
 public class CloseJobOptions {
 
     /**
