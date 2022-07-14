@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    azure:
+      servicebus:
+        namespace: ${AZURE_SERVICE_BUS_NAMESPACE}
+        entity-name: ${AZURE_SERVICE_BUS_ENTITY_NAME}
+        entity-type: queue
+        credential:
+          client-id: ${AZURE_SPRING_CLIENT_ID}
+          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+        profile:
+          tenant-id: ${AZURE_SPRING_TENANT_ID}
