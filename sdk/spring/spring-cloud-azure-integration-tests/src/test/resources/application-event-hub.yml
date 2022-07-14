@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        namespace: ${AZURE_EVENTHUBS_NAMESPACE}
+        event-hub-name: ${AZURE_EVENT_HUB_NAME}
+        consumer:
+          consumer-group: $Default
+        credential:
+          client-id: ${AZURE_SPRING_CLIENT_ID}
+          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+        profile:
+          tenant-id: ${AZURE_SPRING_TENANT_ID}
