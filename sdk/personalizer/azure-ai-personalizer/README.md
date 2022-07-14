@@ -9,7 +9,7 @@ TBD
 ### Install the package
 TBD
 
-## Key Concepts
+## Key concepts
 TBD
 
 ## Examples
