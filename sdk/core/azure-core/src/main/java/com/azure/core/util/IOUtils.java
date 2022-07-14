@@ -4,14 +4,24 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
+import java.util.Objects;
 
 /**
  * Utilities related to IO operations that involve channels, streams, byte transfers.
  */
 public final class IOUtils {
+
+    private static final int DEFAULT_BUFFER_SIZE = 8192;
 
     /**
      * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
@@ -22,5 +32,74 @@ public final class IOUtils {
     public static AsynchronousByteChannel toAsynchronousByteChannel(
         AsynchronousFileChannel fileChannel, long position) {
         return new AsynchronousFileChannelAdapter(fileChannel, position);
+    }
+
+    /**
+     * Transfers bytes from {@link ReadableByteChannel} to {@link WritableByteChannel}.
+     * @param source A source {@link ReadableByteChannel}.
+     * @param destination A destination {@link WritableByteChannel}.
+     * @throws IOException When I/O operation fails.
+     */
+    public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException {
+        Objects.requireNonNull(source, "'source' must not be null");
+        Objects.requireNonNull(source, "'destination' must not be null");
+        ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
+        int read;
+        do {
+            buffer.clear();
+            read = source.read(buffer);
+            buffer.flip();
+            while (buffer.hasRemaining()) {
+                destination.write(buffer);
+            }
+        } while (read >= 0);
+    }
+
+    /**
+     * Transfers bytes from {@link ReadableByteChannel} to {@link AsynchronousByteChannel}.
+     * @param source A source {@link ReadableByteChannel}.
+     * @param destination A destination {@link AsynchronousByteChannel}.
+     * @return A {@link Mono} that completes when transfer is finished.
+     */
+    public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination) {
+        Objects.requireNonNull(source, "'source' must not be null");
+        Objects.requireNonNull(source, "'destination' must not be null");
+        return Mono.create(sink -> sink.onRequest(value -> {
+            ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
+            try {
+                transferAsynchronously(source, destination, buffer, sink);
+            } catch (IOException e) {
+                sink.error(e);
+            }
+        }));
+    }
+
+    private static void transferAsynchronously(
+        ReadableByteChannel source, AsynchronousByteChannel destination,
+        ByteBuffer buffer, MonoSink<Void> sink) throws IOException {
+        buffer.clear();
+        int read = source.read(buffer);
+        if (read >= 0) {
+            buffer.flip();
+            destination.write(buffer, buffer, new CompletionHandler<Integer, ByteBuffer>() {
+                @Override
+                public void completed(Integer result, ByteBuffer attachment) {
+                    try {
+                        // This is not a classic recursion.
+                        // I.e. it happens in completion handler not on call stack.
+                        transferAsynchronously(source, destination, buffer, sink);
+                    } catch (IOException e) {
+                        sink.error(e);
+                    }
+                }
+
+                @Override
+                public void failed(Throwable e, ByteBuffer attachment) {
+                    sink.error(e);
+                }
+            });
+        } else {
+            sink.success();
+        }
     }
 }

@@ -254,7 +254,7 @@ public abstract class HttpClientTests {
      * Tests that unbuffered response body can be accessed.
      */
     @SyncAsyncTest
-    public void canAccessResponseBody() {
+    public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
@@ -311,7 +311,7 @@ public abstract class HttpClientTests {
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
      */
     @SyncAsyncTest
-    public void bufferedResponseCanBeReadMultipleTimes() {
+    public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
@@ -571,7 +571,7 @@ public abstract class HttpClientTests {
         }
     }
 
-    private byte[] getResponseBytesViaWritableChannel(HttpResponse response) {
+    private byte[] getResponseBytesViaWritableChannel(HttpResponse response) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         response.transferBodyTo(Channels.newChannel(byteArrayOutputStream));
         return byteArrayOutputStream.toByteArray();

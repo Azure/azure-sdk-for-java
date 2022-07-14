@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -155,8 +156,9 @@ public abstract class HttpResponse implements Closeable {
     /**
      * Transfers body bytes to the {@link WritableByteChannel}.
      * @param channel The destination {@link WritableByteChannel}.
+     * @throws IOException When I/O operation fails.
      */
-    public void transferBodyTo(WritableByteChannel channel) {
+    public void transferBodyTo(WritableByteChannel channel) throws IOException {
         Objects.requireNonNull(channel, "'channel' must not be null");
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
