@@ -252,7 +252,7 @@ function Get-java-UpdatedDocsMsToc($toc) {
     }
     $sortableServices += [PSCustomObject]@{
         name  = "Active Directory"
-        href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
+        href  = "~/docs-ref-services/{moniker}/activedirectory.md"
         landingPageType = "Service"
         items = @(
             [PSCustomObject]@{
@@ -262,7 +262,6 @@ function Get-java-UpdatedDocsMsToc($toc) {
             }, 
             [PSCustomObject]@{
                 name  = "Client"
-                href  = "~/docs-ref-services/{moniker}/resourcemanager-msi-readme.md"
                 children = @(
                     "com.microsoft.aad.adal*",
                     "com.microsoft.aad.adal4j*",
