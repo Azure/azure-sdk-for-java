@@ -19,11 +19,11 @@ public class ClassificationPolicyAdapter {
      */
     public static ClassificationPolicy convertCreateOptionsToClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         return new ClassificationPolicy()
-            .setName(createClassificationPolicyOptions.name())
-            .setPrioritizationRule(createClassificationPolicyOptions.prioritizationRule())
-            .setFallbackQueueId(createClassificationPolicyOptions.fallbackQueueId())
-            .setQueueSelectors(createClassificationPolicyOptions.queueSelectors())
-            .setWorkerSelectors(createClassificationPolicyOptions.workerSelectors());
+            .setName(createClassificationPolicyOptions.getName())
+            .setPrioritizationRule(createClassificationPolicyOptions.getPrioritizationRule())
+            .setFallbackQueueId(createClassificationPolicyOptions.getFallbackQueueId())
+            .setQueueSelectors(createClassificationPolicyOptions.getQueueSelectors())
+            .setWorkerSelectors(createClassificationPolicyOptions.getWorkerSelectors());
     }
 
     /**
