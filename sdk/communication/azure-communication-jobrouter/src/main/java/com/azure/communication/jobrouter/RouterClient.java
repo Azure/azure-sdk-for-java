@@ -186,14 +186,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteClassificationPolicy(String id) {
-        return this.client.deleteClassificationPolicy(id).block();
+    public void deleteClassificationPolicy(String id) {
+        this.client.deleteClassificationPolicy(id).block();
     }
 
     /**
      * Delete a classification policy by Id.
      *
-     * @param id Id of the classification policy.
+     * @param classificationPolicyId Id of the classification policy.
      * @param context The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,8 +201,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteClassificationPolicyWithResponse(String id, Context context) {
-        return this.client.deleteClassificationPolicyWithResponse(id, context).block();
+    public Response<Void> deleteClassificationPolicyWithResponse(String classificationPolicyId, Context context) {
+        return this.client.deleteClassificationPolicyWithResponse(classificationPolicyId, context).block();
     }
 
     /**
@@ -294,21 +294,21 @@ public final class RouterClient {
     /**
      * Retrieves an existing distribution policy by Id.
      *
-     * @param id Id of the distribution policy.
+     * @param distributionPolicyId Id of the distribution policy.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy getDistributionPolicy(String id) {
-        return this.client.getDistributionPolicy(id).block();
+    public DistributionPolicy getDistributionPolicy(String distributionPolicyId) {
+        return this.client.getDistributionPolicy(distributionPolicyId).block();
     }
 
     /**
      * Retrieves an existing distribution policy by Id.
      *
-     * @param id Id of the distribution policy.
+     * @param distributionPolicyId Id of the distribution policy.
      * @param context The context to associate with this operation.
      * @return policy governing how jobs are distributed to workers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,8 +316,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> getDistributionPolicyWithResponse(String id, Context context) {
-        return this.client.getDistributionPolicyWithResponse(id, context).block();
+    public Response<DistributionPolicy> getDistributionPolicyWithResponse(String distributionPolicyId, Context context) {
+        return this.client.getDistributionPolicyWithResponse(distributionPolicyId, context).block();
     }
 
     /**
@@ -330,14 +330,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteDistributionPolicy(String id) {
-        return this.client.deleteDistributionPolicy(id).block();
+    public void deleteDistributionPolicy(String id) {
+        this.client.deleteDistributionPolicy(id).block();
     }
 
     /**
      * Delete a distribution policy by Id.
      *
-     * @param id Id of the distribution policy.
+     * @param distributionPolicyId Id of the distribution policy.
      * @param context The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,8 +345,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDistributionPolicyWithResponse(String id, Context context) {
-        return this.client.deleteDistributionPolicyWithResponse(id, context).block();
+    public Response<Void> deleteDistributionPolicyWithResponse(String distributionPolicyId, Context context) {
+        return this.client.deleteDistributionPolicyWithResponse(distributionPolicyId, context).block();
     }
 
     /**
@@ -422,7 +422,7 @@ public final class RouterClient {
     /**
      * Update an exception policy.
      *
-     * @param id Id of the exception policy.
+     * @param exceptionPolicyId Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
      * @param context The context to associate with this operation.
      * @return a policy that defines actions to execute when exception are triggered.
@@ -431,28 +431,28 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> updateExceptionPolicyWithResponse(String id, ExceptionPolicy exceptionPolicy, Context context) {
-        return this.client.upsertExceptionPolicyWithResponse(id, exceptionPolicy, context).block();
+    public Response<ExceptionPolicy> updateExceptionPolicyWithResponse(String exceptionPolicyId, ExceptionPolicy exceptionPolicy, Context context) {
+        return this.client.upsertExceptionPolicyWithResponse(exceptionPolicyId, exceptionPolicy, context).block();
     }
 
     /**
      * Retrieves an existing exception policy by Id.
      *
-     * @param id Id of the exception policy to retrieve.
+     * @param exceptionPolicyId Id of the exception policy to retrieve.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy getExceptionPolicy(String id) {
-        return this.client.getExceptionPolicy(id).block();
+    public ExceptionPolicy getExceptionPolicy(String exceptionPolicyId) {
+        return this.client.getExceptionPolicy(exceptionPolicyId).block();
     }
 
     /**
      * Retrieves an existing exception policy by Id.
      *
-     * @param id Id of the exception policy to retrieve.
+     * @param exceptionPolicyId Id of the exception policy to retrieve.
      * @param context The context to associate with this operation.
      * @return a policy that defines actions to execute when exception are triggered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,28 +460,28 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> getExceptionPolicyWithResponse(String id, Context context) {
-        return this.client.getExceptionPolicyWithResponse(id, context).block();
+    public Response<ExceptionPolicy> getExceptionPolicyWithResponse(String exceptionPolicyId, Context context) {
+        return this.client.getExceptionPolicyWithResponse(exceptionPolicyId, context).block();
     }
 
     /**
      * Deletes a exception policy by Id.
      *
-     * @param id Id of the exception policy to delete.
+     * @param exceptionPolicyId Id of the exception policy to delete.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteExceptionPolicy(String id) {
-        return this.client.deleteExceptionPolicy(id).block();
+    public void deleteExceptionPolicy(String exceptionPolicyId) {
+        this.client.deleteExceptionPolicy(exceptionPolicyId).block();
     }
 
     /**
      * Deletes a exception policy by Id.
      *
-     * @param id Id of the exception policy to delete.
+     * @param exceptionPolicyId Id of the exception policy to delete.
      * @param context The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,8 +489,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteExceptionPolicyWithResponse(String id, Context context) {
-        return this.client.deleteExceptionPolicyWithResponse(id, context).block();
+    public Response<Void> deleteExceptionPolicyWithResponse(String exceptionPolicyId, Context context) {
+        return this.client.deleteExceptionPolicyWithResponse(exceptionPolicyId, context).block();
     }
 
     /**
@@ -582,21 +582,21 @@ public final class RouterClient {
     /**
      * Retrieves an existing job by Id.
      *
-     * @param id Id of the job to retrieve.
+     * @param jobId Id of the job to retrieve.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob getJob(String id) {
-        return this.client.getJob(id).block();
+    public RouterJob getJob(String jobId) {
+        return this.client.getJob(jobId).block();
     }
 
     /**
      * Retrieves an existing job by Id.
      *
-     * @param id Id of the job to retrieve.
+     * @param jobId Id of the job to retrieve.
      * @param context The context to associate with this operation.
      * @return a unit of work to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -604,28 +604,28 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> getJobWithResponse(String id, Context context) {
-        return this.client.getJobWithResponse(id, context).block();
+    public Response<RouterJob> getJobWithResponse(String jobId, Context context) {
+        return this.client.getJobWithResponse(jobId, context).block();
     }
 
     /**
      * Deletes a job and all of its traces.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteJob(String id) {
-        return this.client.deleteJob(id).block();
+    public void deleteJob(String jobId) {
+        this.client.deleteJob(jobId).block();
     }
 
     /**
      * Deletes a job and all of its traces.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param context The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -633,28 +633,28 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String id, Context context) {
-        return this.client.deleteJobWithResponse(id, context).block();
+    public Response<Void> deleteJobWithResponse(String jobId, Context context) {
+        this.client.deleteJobWithResponse(jobId, context).block();
     }
 
     /**
      * Reclassify a job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReclassifyJobResult reclassifyJob(String id) {
-        return this.client.reclassifyJob(id).block();
+    public ReclassifyJobResult reclassifyJob(String jobId) {
+        return this.client.reclassifyJob(jobId).block();
     }
 
     /**
      * Reclassify a job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param context The context to associate with this operation.
      * @return ReclassifyJobResult.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -662,14 +662,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReclassifyJobResult> reclassifyJobWithResponse(String id, Context context) {
-        return this.client.reclassifyJobWithResponse(id, context).block();
+    public Response<ReclassifyJobResult> reclassifyJobWithResponse(String jobId, Context context) {
+        return this.client.reclassifyJobWithResponse(jobId, context).block();
     }
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
@@ -679,14 +679,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelJobResult cancelJob(String id, String note, String dispositionCode) {
-        return this.client.cancelJob(id, note, dispositionCode).block();
+    public CancelJobResult cancelJob(String jobId, String note, String dispositionCode) {
+        return this.client.cancelJob(jobId, note, dispositionCode).block();
     }
 
     /**
      * Submits request to cancel an existing job by Id while supplying free-form cancellation reason.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values. If not
      * provided, default value of "Cancelled" is set.
@@ -697,14 +697,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelJobResult> cancelJobWithResponse(String id, String note, String dispositionCode, Context context) {
-        return this.client.cancelJobWithResponse(id, note, dispositionCode, context).block();
+    public Response<CancelJobResult> cancelJobWithResponse(String jobId, String note, String dispositionCode, Context context) {
+        return this.client.cancelJobWithResponse(jobId, note, dispositionCode, context).block();
     }
 
     /**
      * Completes an assigned job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @return CompleteJobResult.
@@ -713,14 +713,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CompleteJobResult completeJob(String id, String assignmentId, String note) {
-        return this.client.completeJob(id, assignmentId, note).block();
+    public CompleteJobResult completeJob(String jobId, String assignmentId, String note) {
+        return this.client.completeJob(jobId, assignmentId, note).block();
     }
 
     /**
      * Completes an assigned job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param assignmentId The assignment within the job to complete.
      * @param note (Optional) A note that will be appended to the jobs' Notes collection with th current timestamp.
      * @param context The context to associate with this operation.
@@ -730,14 +730,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CompleteJobResult> completeJobWithResponse(String id, String assignmentId, String note, Context context) {
-        return this.client.completeJobWithResponse(id, assignmentId, note, context).block();
+    public Response<CompleteJobResult> completeJobWithResponse(String jobId, String assignmentId, String note, Context context) {
+        return this.client.completeJobWithResponse(jobId, assignmentId, note, context).block();
     }
 
     /**
      * Closes a completed job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param assignmentId The assignment within which the job is to be closed.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
      * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
@@ -750,14 +750,14 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CloseJobResult closeJob(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
-        return this.client.closeJob(id, assignmentId, dispositionCode, closeTime, note).block();
+    public CloseJobResult closeJob(String jobId, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+        return this.client.closeJob(jobId, assignmentId, dispositionCode, closeTime, note).block();
     }
 
     /**
      * Closes a completed job.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param assignmentId The assignment within which the job is to be closed.
      * @param dispositionCode Indicates the outcome of the job, populate this field with your own custom values.
      * @param closeTime If not provided, worker capacity is released immediately along with a JobClosedEvent
@@ -771,8 +771,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CloseJobResult> closeJobWithResponse(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
-        return this.client.closeJobWithResponse(id, assignmentId, dispositionCode, closeTime, note, context).block();
+    public Response<CloseJobResult> closeJobWithResponse(String jobId, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note, Context context) {
+        return this.client.closeJobWithResponse(jobId, assignmentId, dispositionCode, closeTime, note, context).block();
     }
 
     /**
@@ -807,21 +807,21 @@ public final class RouterClient {
     /**
      * Gets a job's position details.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @return a job's position details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobPositionDetails getInQueuePosition(String id) {
-        return this.client.getInQueuePosition(id).block();
+    public JobPositionDetails getQueuePosition(String jobId) {
+        return this.client.getQueuePosition(jobId).block();
     }
 
     /**
      * Gets a job's position details.
      *
-     * @param id Id of the job.
+     * @param jobId Id of the job.
      * @param context The context to associate with this operation.
      * @return a job's position details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,8 +829,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
-        return this.client.getInQueuePositionWithResponse(id, context).block();
+    public Response<JobPositionDetails> getQueuePositionWithResponse(String jobId, Context context) {
+        return this.client.getQueuePositionWithResponse(jobId, context).block();
     }
 
     /**
@@ -958,21 +958,21 @@ public final class RouterClient {
     /**
      * Retrieves an existing queue by Id.
      *
-     * @param id Id of the queue to retrieve.
+     * @param queueId Id of the queue to retrieve.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue getQueue(String id) {
-        return this.client.getQueue(id).block();
+    public JobQueue getQueue(String queueId) {
+        return this.client.getQueue(queueId).block();
     }
 
     /**
      * Retrieves an existing queue by Id.
      *
-     * @param id Id of the queue to retrieve.
+     * @param queueId Id of the queue to retrieve.
      * @param context The context to associate with this operation.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,28 +980,28 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> getQueueWithResponse(String id, Context context) {
-        return this.client.getQueueWithResponse(id, context).block();
+    public Response<JobQueue> getQueueWithResponse(String queueId, Context context) {
+        return this.client.getQueueWithResponse(queueId, context).block();
     }
 
     /**
      * Deletes a queue by Id.
      *
-     * @param id Id of the queue to delete.
+     * @param queueId Id of the queue to delete.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteQueue(String id) {
-        return this.client.deleteQueue(id).block();
+    public void deleteQueue(String queueId) {
+        this.client.deleteQueue(queueId).block();
     }
 
     /**
      * Deletes a queue by Id.
      *
-     * @param id Id of the queue to delete.
+     * @param queueId Id of the queue to delete.
      * @param context The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1009,8 +1009,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteQueueWithResponse(String id, Context context) {
-        return this.client.deleteQueueWithResponse(id, context).block();
+    public Response<Void> deleteQueueWithResponse(String queueId, Context context) {
+        return this.client.deleteQueueWithResponse(queueId, context).block();
     }
 
     /**
@@ -1042,21 +1042,21 @@ public final class RouterClient {
     /**
      * Retrieves a queue's statistics.
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @return statistics for the queue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueueStatistics getQueueStatistics(String id) {
-        return this.client.getQueueStatistics(id).block();
+    public QueueStatistics getQueueStatistics(String queueId) {
+        return this.client.getQueueStatistics(queueId).block();
     }
 
     /**
      * Retrieves a queue's statistics.
      *
-     * @param id Id of the queue to retrieve statistics.
+     * @param queueId Id of the queue to retrieve statistics.
      * @param context The context to associate with this operation.
      * @return statistics for the queue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1064,8 +1064,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueStatistics> getQueueStatisticsWithResponse(String id, Context context) {
-        return this.client.getQueueStatisticsWithResponse(id, context).block();
+    public Response<QueueStatistics> getQueueStatisticsWithResponse(String queueId, Context context) {
+        return this.client.getQueueStatisticsWithResponse(queueId, context).block();
     }
 
     /**
@@ -1131,21 +1131,21 @@ public final class RouterClient {
     /**
      * Retrieves an existing worker by Id.
      *
-     * @param id Id of the worker to retrieve.
+     * @param workerId Id of the worker to retrieve.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker getWorker(String id) {
-        return this.client.getWorker(id).block();
+    public RouterWorker getWorker(String workerId) {
+        return this.client.getWorker(workerId).block();
     }
 
     /**
      * Retrieves an existing worker by Id.
      *
-     * @param id Id of the worker to retrieve.
+     * @param workerId Id of the worker to retrieve.
      * @param context The context to associate with this operation.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,28 +1153,28 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> getWorkerWithResponse(String id, Context context) {
-        return this.client.getWorkerWithResponse(id, context).block();
+    public Response<RouterWorker> getWorkerWithResponse(String workerId, Context context) {
+        return this.client.getWorkerWithResponse(workerId, context).block();
     }
 
     /**
      * Deletes a worker and all of its traces.
      *
-     * @param id Id of the worker to delete.
+     * @param workerId Id of the worker to delete.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteWorker(String id) {
-        return this.client.deleteWorker(id).block();
+    public void deleteWorker(String workerId) {
+        this.client.deleteWorker(workerId).block();
     }
 
     /**
      * Deletes a worker and all of its traces.
      *
-     * @param id Id of the worker to delete.
+     * @param workerId Id of the worker to delete.
      * @param context The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1182,8 +1182,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWorkerWithResponse(String id, Context context) {
-        return this.client.deleteWorkerWithResponse(id, context).block();
+    public Response<Void> deleteWorkerWithResponse(String workerId, Context context) {
+        return this.client.deleteWorkerWithResponse(workerId, context).block();
     }
 
     /**
