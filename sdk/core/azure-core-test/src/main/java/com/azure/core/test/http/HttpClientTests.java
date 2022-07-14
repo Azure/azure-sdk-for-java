@@ -13,6 +13,7 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
+import com.azure.core.util.IOUtils;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -26,12 +27,17 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -271,6 +277,11 @@ public abstract class HttpClientTests {
             .map(s -> BinaryData.fromStream(s).toBytes()).block());
 
         assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(responseSupplier.get().getBody()).map(BinaryData::toBytes).block());
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(responseSupplier.get()));
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(responseSupplier.get()));
+
     }
 
     /**
@@ -332,6 +343,12 @@ public abstract class HttpClientTests {
 
         assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
         assertArrayEquals(requestBody.toBytes(), BinaryData.fromFlux(response.getBody()).map(BinaryData::toBytes).block());
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaWritableChannel(response));
+
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
+        assertArrayEquals(requestBody.toBytes(), getResponseBytesViaAsynchronousChannel(response));
     }
 
     /**
@@ -551,6 +568,25 @@ public abstract class HttpClientTests {
             return new URL(prefix + REQUEST_HOST + ":" + getWireMockPort() + "/" + requestPath);
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    private byte[] getResponseBytesViaWritableChannel(HttpResponse response) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        response.transferBodyTo(Channels.newChannel(byteArrayOutputStream));
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private byte[] getResponseBytesViaAsynchronousChannel(HttpResponse response) {
+        try {
+            Path tempFile = Files.createTempFile("httpclienttestsasyncchannel", null);
+            try (AsynchronousByteChannel channel = IOUtils.toAsynchronousByteChannel(
+                AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+                response.transferBodyToAsync(channel).block();
+            }
+            return Files.readAllBytes(tempFile);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
