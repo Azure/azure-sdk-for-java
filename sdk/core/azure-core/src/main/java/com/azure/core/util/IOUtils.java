@@ -28,9 +28,11 @@ public final class IOUtils {
      * @param fileChannel The {@link AsynchronousFileChannel}.
      * @param position The position in the file to begin writing or reading the {@code content}.
      * @return A {@link AsynchronousByteChannel} that delegates to {@code fileChannel}.
+     * @throws NullPointerException When {@code fileChannel} is null.
      */
     public static AsynchronousByteChannel toAsynchronousByteChannel(
         AsynchronousFileChannel fileChannel, long position) {
+        Objects.requireNonNull(fileChannel, "'fileChannel' must not be null");
         return new AsynchronousFileChannelAdapter(fileChannel, position);
     }
 
@@ -39,6 +41,8 @@ public final class IOUtils {
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
+     * @throws NullPointerException When {@code source} is null.
+     * @throws NullPointerException When {@code destination} is null.
      */
     public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException {
         Objects.requireNonNull(source, "'source' must not be null");
@@ -60,6 +64,8 @@ public final class IOUtils {
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is finished.
+     * @throws NullPointerException When {@code source} is null.
+     * @throws NullPointerException When {@code destination} is null.
      */
     public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination) {
         Objects.requireNonNull(source, "'source' must not be null");

@@ -252,6 +252,7 @@ public abstract class HttpClientTests {
 
     /**
      * Tests that unbuffered response body can be accessed.
+     * @throws IOException When IO fails.
      */
     @SyncAsyncTest
     public void canAccessResponseBody() throws IOException {
@@ -309,6 +310,7 @@ public abstract class HttpClientTests {
 
     /**
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
+     * @throws IOException When IO fails.
      */
     @SyncAsyncTest
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
