@@ -14,10 +14,8 @@ import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -139,16 +137,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
                         retryAfterHeader, retryAfterTimeUnit);
                     logRetry(tryCount, delayDuration);
 
-                    Flux<ByteBuffer> responseBody = httpResponse.getBody();
-                    if (responseBody == null) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                            .delaySubscription(delayDuration);
-                    } else {
-                        return httpResponse.getBody()
-                            .ignoreElements()
-                            .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                                .delaySubscription(delayDuration));
-                    }
+                    httpResponse.close();
+
+                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                        .delaySubscription(delayDuration);
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
                         logRetryExhausted(tryCount);
@@ -177,7 +169,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
             httpResponse = next.clone().processSync();
         } catch (RuntimeException err) {
             Throwable throwable = Exceptions.unwrap(err);
-            if (shouldRetryException(throwable, tryCount)) {
+            Throwable cause = throwable.getCause();
+            if (shouldRetryException(throwable, tryCount) || shouldRetryException(cause, tryCount)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", throwable);
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
@@ -195,8 +188,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 retryAfterHeader, retryAfterTimeUnit);
             logRetry(tryCount, delayDuration);
 
-            httpResponse.getBodyAsBinaryData();
             httpResponse.close();
+
             try {
                 Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
             } catch (InterruptedException ie) {
