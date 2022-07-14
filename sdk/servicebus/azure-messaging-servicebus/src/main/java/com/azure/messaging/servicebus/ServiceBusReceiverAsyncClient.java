@@ -1506,7 +1506,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return newConsumer;
         } else {
             final ServiceBusAsyncConsumer oldConsumer = consumer.get();
-            // If the retry has been exhausted or a non-retryable error has occurred, we can call receiveMessages() again
+            // If the retry has been exhausted or a non-retriable error has occurred, we can call receiveMessages() again
             // to keep receiving messages. In this scenario, we replace the terminated consumer with a new consumer.
             if (oldConsumer.isProcessorTerminated()) {
                 consumer.set(newConsumer);

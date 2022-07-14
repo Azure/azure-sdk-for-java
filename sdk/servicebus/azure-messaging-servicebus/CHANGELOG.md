@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Allowed user to call `receiveMessages()` again after retry has been exhausted or non-retryable error has occured, instead of creating a new receiver client. ([#27520](https://github.com/Azure/azure-sdk-for-java/issues/27520))
+- Allowed user to call `receiveMessages()` again after retry has been exhausted or non-retriable error has occurred, instead of creating a new receiver client. ([#27520](https://github.com/Azure/azure-sdk-for-java/issues/27520))
 ### Other Changes
 
 ## 7.10.0 (2022-07-12)
