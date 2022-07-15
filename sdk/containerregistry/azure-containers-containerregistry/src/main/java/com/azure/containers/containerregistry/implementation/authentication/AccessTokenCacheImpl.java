@@ -29,6 +29,7 @@ public class AccessTokenCacheImpl {
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final AtomicReference<Sinks.One<AccessToken>> wip;
+    private final AtomicReference<AccessToken> wipSync;
     private final ContainerRegistryRefreshTokenCredential tokenCredential;
     private ContainerRegistryTokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
@@ -42,6 +43,7 @@ public class AccessTokenCacheImpl {
     public AccessTokenCacheImpl(ContainerRegistryRefreshTokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
+        this.wipSync = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
@@ -57,6 +59,16 @@ public class AccessTokenCacheImpl {
         return Mono.defer(retrieveToken(tokenRequestContext))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
+    }
+
+    /**
+     * Synchronously get a token from either the cache or replenish the cache with a new token.
+     *
+     * @param tokenRequestContext The request context for token acquisition.
+     * @return The AccessToken
+     */
+    public AccessToken getTokenSync(ContainerRegistryTokenRequestContext tokenRequestContext) {
+        return retrieveToken(tokenRequestContext).get().block();
     }
 
     private Supplier<Mono<? extends AccessToken>> retrieveToken(ContainerRegistryTokenRequestContext tokenRequestContext) {

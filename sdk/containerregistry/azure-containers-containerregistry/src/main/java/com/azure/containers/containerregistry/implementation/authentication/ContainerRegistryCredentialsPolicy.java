@@ -174,7 +174,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
-        AccessToken token = tokenService.getTokenSync(tokenRequestContext);
+        AccessToken token = tokenService.getTokenSync(tokenRequestContext, context.getContext());
         context.getHttpRequest().getHeaders().set(AUTHORIZATION, BEARER + " " + token.getToken());
     }
 

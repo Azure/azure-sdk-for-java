@@ -10,6 +10,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
@@ -89,7 +91,30 @@ public class ContainerRegistryTokenService implements TokenCredential {
         }).doOnError(err -> logger.error("Could not fetch the ACR error token.", err));
     }
 
-    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
-        return this.getToken(tokenRequestContext).block();
+    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, Context context) {
+        if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
+            logger.info("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext");
+            return null;
+        }
+
+        ContainerRegistryTokenRequestContext requestContext =
+            (ContainerRegistryTokenRequestContext) tokenRequestContext;
+
+        String scope = requestContext.getScope();
+        String serviceName = requestContext.getServiceName();
+
+        if (this.isAnonymousAccess) {
+            return this.tokenService.getAcrAccessTokenSync(null, scope, serviceName,
+                TokenGrantType.PASSWORD, context);
+        }
+
+        AccessToken refreshToken = this.refreshTokenCache.getTokenSync(requestContext);
+        AccessToken token = this.tokenService.getAcrAccessTokenSync(refreshToken.getToken(), scope,
+            serviceName, TokenGrantType.REFRESH_TOKEN, context);
+        if (token != null) {
+            return token;
+        } else {
+            throw logger.logExceptionAsError(new RuntimeException("Could not fetch the ACR error token."));
+        }
     }
 }

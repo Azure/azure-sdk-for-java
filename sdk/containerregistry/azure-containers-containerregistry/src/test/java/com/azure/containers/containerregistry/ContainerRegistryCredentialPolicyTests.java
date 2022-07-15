@@ -17,6 +17,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -63,7 +64,7 @@ public class ContainerRegistryCredentialPolicyTests {
 
         ContainerRegistryTokenService mockService = mock(ContainerRegistryTokenService.class);
         when(mockService.getToken(any(ContainerRegistryTokenRequestContext.class))).thenReturn(Mono.just(accessToken));
-        when(mockService.getTokenSync(any(ContainerRegistryTokenRequestContext.class))).thenReturn(accessToken);
+        when(mockService.getTokenSync(any(ContainerRegistryTokenRequestContext.class), Context.NONE)).thenReturn(accessToken);
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://mytest.azurecr.io");
 

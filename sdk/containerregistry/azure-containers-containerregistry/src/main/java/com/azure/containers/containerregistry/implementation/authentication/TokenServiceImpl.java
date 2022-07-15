@@ -10,6 +10,8 @@ import com.azure.containers.containerregistry.implementation.models.PostContentS
 import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
@@ -30,12 +32,13 @@ public class TokenServiceImpl {
     /**
      * Creates an instance of the token service impl class.TokenServiceImpl.java
      *
-     * @param url               the service endpoint.
-     * @param apiVersion        the api-version of the service being targeted.
-     * @param pipeline          the pipeline to use to make the call.
+     * @param url the service endpoint.
+     * @param apiVersion the api-version of the service being targeted.
+     * @param pipeline the pipeline to use to make the call.
      * @param serializerAdapter the serializer adapter for the rest client.
      */
-    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
+    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline,
+                            SerializerAdapter serializerAdapter) {
         if (serializerAdapter == null) {
             serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
@@ -51,39 +54,67 @@ public class TokenServiceImpl {
      * Gets the ACR access token.
      *
      * @param acrRefreshToken Given the ACRs refresh token.
-     * @param scope           - Token scope.
-     * @param serviceName     The name of the service.
+     * @param scope - Token scope.
+     * @param serviceName The name of the service.
      */
-    public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName, TokenGrantType grantType) {
-        return withContext(context -> this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceName, scope, acrRefreshToken, grantType, context)
-            .flatMap(response -> {
-                AcrAccessToken token = response.getValue();
-                if (token != null) {
-                    String accessToken = token.getAccessToken();
-                    OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);
-                    return Mono.just(new AccessToken(accessToken, expirationTime));
-                }
+    public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName,
+                                                    TokenGrantType grantType) {
+        return withContext(
+            context -> this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceName,
+                    scope, acrRefreshToken, grantType, context)
+                .flatMap(response -> {
+                    AcrAccessToken token = response.getValue();
+                    if (token != null) {
+                        String accessToken = token.getAccessToken();
+                        OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);
+                        return Mono.just(new AccessToken(accessToken, expirationTime));
+                    }
 
-                return Mono.empty();
-            }));
+                    return Mono.empty();
+                }));
+    }
+
+    /**
+     * Gets the ACR access token.
+     *
+     * @param acrRefreshToken Given the ACRs refresh token.
+     * @param scope - Token scope.
+     * @param serviceName The name of the service.
+     */
+    public AccessToken getAcrAccessTokenSync(String acrRefreshToken, String scope, String serviceName,
+                                             TokenGrantType grantType, Context context) {
+        Response<AcrAccessToken> response =
+            this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceName,
+                scope, acrRefreshToken, grantType, context).block();
+        AcrAccessToken token = response.getValue();
+        if (token != null) {
+            String accessToken = token.getAccessToken();
+            OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);
+            return new AccessToken(accessToken, expirationTime);
+        }
+
+        return null;
     }
 
     /**
      * Gets an ACR refresh token.
      *
      * @param aadAccessToken Given the ACR access token.
-     * @param serviceName    Given the ACR service.
+     * @param serviceName Given the ACR service.
      */
     public Mono<AccessToken> getAcrRefreshTokenAsync(String aadAccessToken, String serviceName) {
-        return withContext(context -> this.authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(PostContentSchemaGrantType.ACCESS_TOKEN, serviceName, null, null, aadAccessToken, context).flatMap(response -> {
-            AcrRefreshToken token = response.getValue();
-            if (token != null) {
-                String refreshToken = token.getRefreshToken();
-                OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(refreshToken);
-                return Mono.just(new AccessToken(refreshToken, expirationTime));
-            }
+        return withContext(
+            context -> this.authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(
+                    PostContentSchemaGrantType.ACCESS_TOKEN, serviceName, null, null, aadAccessToken, context)
+                .flatMap(response -> {
+                    AcrRefreshToken token = response.getValue();
+                    if (token != null) {
+                        String refreshToken = token.getRefreshToken();
+                        OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(refreshToken);
+                        return Mono.just(new AccessToken(refreshToken, expirationTime));
+                    }
 
-            return Mono.empty();
-        }));
+                    return Mono.empty();
+                }));
     }
 }
