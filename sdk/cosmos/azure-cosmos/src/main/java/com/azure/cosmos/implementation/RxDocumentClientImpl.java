@@ -453,10 +453,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void updateGatewayProxy() {
-        ((RxGatewayStoreModel)this.gatewayProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
-        ((RxGatewayStoreModel)this.gatewayProxy).setCollectionCache(this.collectionCache);
-        ((RxGatewayStoreModel)this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
-        ((RxGatewayStoreModel)this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.gatewayProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
+        (this.gatewayProxy).setCollectionCache(this.collectionCache);
+        (this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
+        (this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
     }
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
