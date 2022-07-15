@@ -138,7 +138,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private SessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
-    private RxStoreModel gatewayProxy;
+    private RxGatewayStoreModel gatewayProxy;
     private RxStoreModel storeModel;
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -1584,18 +1584,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
 
-            int documentIdPrefixPosition = -1;
-            boolean needToEncodeIdInUriForGateway = request.getResourceType() == ResourceType.Document &&
-                (documentIdPrefixPosition = resourceName.indexOf("/docs/")) > 0 &&
-                this.getStoreProxy(request) == this.gatewayProxy;
-
-            if (needToEncodeIdInUriForGateway) {
-                String encodedResourceName = resourceName.substring(0, documentIdPrefixPosition + 6) +
-                        Strings.encodeURIComponent(resourceName.substring(documentIdPrefixPosition + 6));
-
-                if (!resourceName.equals(encodedResourceName)) {
-                    request.setResourceAddress(encodedResourceName);
-                }
+            if (this.getStoreProxy(request) == this.gatewayProxy) {
+                this.gatewayProxy.prepareRequestForAuth(request, resourceName);
             }
 
             String authorization = this.getUserAuthorizationToken(
