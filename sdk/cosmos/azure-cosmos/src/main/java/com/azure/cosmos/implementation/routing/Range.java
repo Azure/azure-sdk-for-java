@@ -48,7 +48,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     }
 
     public static <T extends Comparable<T>> Range<T> getPointRange(T value) {
-        return new Range<>(value, value, true, true);
+        return new Range<>(value, value, true, false);
     }
 
     public static <T extends Comparable<T>> Range<T> getEmptyRange(T value) {
