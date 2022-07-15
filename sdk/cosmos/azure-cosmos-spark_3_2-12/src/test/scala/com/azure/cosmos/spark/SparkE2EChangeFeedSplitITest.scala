@@ -7,12 +7,10 @@ import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.ThroughputProperties
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.hadoop.fs.Path
-import org.scalatest.Ignore
 
 import java.nio.file.Paths
 import java.util.UUID
 
-@Ignore
 class SparkE2EChangeFeedSplitITest
  extends IntegrationSpec
   with Spark
