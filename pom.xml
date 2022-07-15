@@ -110,6 +110,9 @@
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
 
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
+
         <!-- Remote Rendering -->
         <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
 
@@ -948,6 +951,7 @@
         <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
+        <module>sdk/personalizer</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
