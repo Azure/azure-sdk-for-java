@@ -1,0 +1,5 @@
+spring:
+  jms:
+    servicebus:
+      connection-string: ${AZURE_SERVICE_BUS_JMS_CONNECTION_STRING}
+      pricing-tier: standard
