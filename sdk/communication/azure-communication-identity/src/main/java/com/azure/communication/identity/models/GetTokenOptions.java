@@ -57,6 +57,7 @@ public final class GetTokenOptions {
     /**
      * Sets token expiration time. Valid period of the token should be within [60,1440] minutes range.
      *
+     * @param expiresInMinutes duration of the token.
      * @return {@link GetTokenOptions}.
      */
     public GetTokenOptions setExpiresInMinutes(Duration expiresInMinutes){
