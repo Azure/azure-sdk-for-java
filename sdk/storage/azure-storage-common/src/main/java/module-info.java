@@ -6,6 +6,7 @@ module com.azure.storage.common {
 
     exports com.azure.storage.common;
     exports com.azure.storage.common.datamover;
+    exports com.azure.storage.common.datamover.checkpoint;
     exports com.azure.storage.common.sas;
     exports com.azure.storage.common.policy;
     exports com.azure.storage.common.resource;

@@ -33,7 +33,7 @@ import com.azure.storage.common.resource.StorageResourceContainer;
 import com.azure.storage.common.resource.filesystem.LocalFileSystemStorageResources;
 import reactor.core.publisher.Mono;
 
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -1067,7 +1067,7 @@ public final class BlobContainerClient {
      */
     public void downloadTo(String directoryPath) {
         StorageResourceContainer destination = LocalFileSystemStorageResources.directory(
-            Path.of(directoryPath));
+            Paths.get(directoryPath));
         StorageResourceContainer source = BlobStorageResources.blobContainer(this);
 
         DATA_MOVER.startTransfer(source, destination).awaitCompletion();
@@ -1079,7 +1079,7 @@ public final class BlobContainerClient {
      */
     public void uploadDirectory(String directoryPath) {
         StorageResourceContainer source = LocalFileSystemStorageResources.directory(
-            Path.of(directoryPath));
+            Paths.get(directoryPath));
         StorageResourceContainer destination = BlobStorageResources.blobContainer(this);
 
         DATA_MOVER.startTransfer(source, destination).awaitCompletion();
