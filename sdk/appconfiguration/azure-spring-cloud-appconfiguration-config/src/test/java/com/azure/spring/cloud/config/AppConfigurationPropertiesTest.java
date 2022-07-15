@@ -11,7 +11,7 @@ import static com.azure.spring.cloud.config.TestConstants.LABEL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.config.TestUtils.propPair;
+import static com.azure.spring.cloud.config.implementation.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;

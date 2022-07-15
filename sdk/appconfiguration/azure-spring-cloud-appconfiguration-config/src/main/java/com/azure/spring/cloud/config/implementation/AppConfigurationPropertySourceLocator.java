@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,13 +22,17 @@ import org.springframework.util.ReflectionUtils;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.config.ClientFactory;
+import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
+import com.azure.spring.cloud.config.KeyVaultSecretProvider;
+import com.azure.spring.cloud.config.NormalizeNull;
+import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
  * Locates Azure App Configuration Property Sources.
@@ -47,7 +51,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationProviderProperties appProperties;
 
-    private final ClientStore clients;
+    private final ClientFactory clientFactory;
 
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
@@ -69,13 +73,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientStore clients,
+        AppConfigurationProviderProperties appProperties, ClientFactory clientFactory,
         KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
-        this.clients = clients;
+        this.clientFactory = clientFactory;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
@@ -95,7 +99,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE_NAME);
-        Collections.reverse(configStores); // Last store has the highest precedence
+        Collections.reverse(configStores); // Last store has the highest precedence   
+
+        
+        StateHolder newState = new StateHolder();
 
         Iterator<ConfigStore> configStoreIterator = configStores.iterator();
         // Feature Management needs to be set in the last config store.
@@ -105,7 +112,101 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
 
             if (configStore.isEnabled() && loadNewPropertySources) {
-                addPropertySource(composite, configStore, profiles, !configStoreIterator.hasNext());
+                // There is only one Feature Set for all AppConfigurationPropertySources
+                FeatureSet featureSet = new FeatureSet();
+
+                List<ConfigurationClientWrapper> clients = clientFactory.getAvailableClients(configStore.getEndpoint());
+
+                boolean generatedPropertySources = true;
+
+                List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
+
+                for (ConfigurationClientWrapper client : clients) {
+
+                    sourceList = new ArrayList<>();
+
+                    // Reverse in order to add Profile specific properties earlier, and last profile
+                    // comes first
+
+                    try {
+                        sourceList
+                            .addAll(create(client, configStore, profiles, !configStoreIterator.hasNext(), featureSet));
+
+                        LOGGER.debug("PropertySource context.");
+
+                        // Setting new ETag values for Watch
+                        List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
+                        List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
+
+                        for (AppConfigurationStoreTrigger trigger : configStore.getMonitoring().getTriggers()) {
+                            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
+                            if (watchKey != null) {
+                                watchKeysSettings.add(watchKey);
+                            } else {
+                                watchKeysSettings
+                                    .add(new ConfigurationSetting().setKey(trigger.getKey())
+                                        .setLabel(trigger.getLabel()));
+                            }
+                        }
+                        
+                        if (configStore.getFeatureFlags().getEnabled()) {
+                            SettingSelector settingSelector = new SettingSelector()
+                                .setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
+                                .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
+
+                            PagedIterable<ConfigurationSetting> watchKeys = client.listSettings(settingSelector);
+
+                            watchKeys
+                                .forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
+                            
+                            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+                                configStore.getMonitoring().getFeatureFlagRefreshInterval());
+
+                            String id = configStore.getEndpoint() + "_feature";
+                            int refreshInterval = Math
+                                .toIntExact(configStore.getMonitoring().getFeatureFlagRefreshInterval().getSeconds());
+
+                            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
+                        }
+
+                        newState.setState(configStore.getEndpoint(), watchKeysSettings,
+                            configStore.getMonitoring().getRefreshInterval());
+                        newState.setLoadState(configStore.getEndpoint(), true);
+                    } catch (Exception e) {
+
+                        // TODO (mametcal) - F again.
+                        if (!startup.get()) {
+                            // Need to check for refresh first, or reset will never happen if fail fast is true.
+                            LOGGER.error(
+                                "Refreshing failed while reading configuration from Azure App Configuration store "
+                                    + configStore.getEndpoint() + ".");
+
+                            if (properties.getRefreshInterval() != null) {
+                                // The next refresh will happen sooner if refresh interval is expired.
+                                StateHolder.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
+                            }
+                            ReflectionUtils.rethrowRuntimeException(e);
+                        } else if (configStore.isFailFast()) {
+                            LOGGER.error(
+                                "Fail fast is set and there was an error reading configuration from Azure App "
+                                    + "Configuration store " + configStore.getEndpoint() + ".");
+                            ReflectionUtils.rethrowRuntimeException(e);
+                        } else {
+                            LOGGER.warn(
+                                "Unable to load configuration from Azure AppConfiguration store "
+                                    + configStore.getEndpoint() + ".",
+                                e);
+                            newState.setLoadState(configStore.getEndpoint(), false);
+                        }
+                        // If anything breaks we skip out on loading the rest of the store.
+                        generatedPropertySources = false;
+                    }
+                    if (generatedPropertySources) {
+                        break;
+                    }
+                }
+                sourceList.forEach(composite::addPropertySource);
+
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
             } else {
@@ -118,65 +219,11 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             StateHolder.setNextForcedRefresh(properties.getRefreshInterval());
         }
 
+        StateHolder.updateState(newState);
         configloaded.set(true);
         startup.set(false);
-
-        // Loading configurations worked. Setting attempts to zero.
-        StateHolder.clearAttempts();
+        
         return composite;
-    }
-
-    /**
-     * Adds a new Property Source
-     *
-     * @param composite PropertySource being added
-     * @param store Config Store the PropertySource is being generated from
-     * @param profiles Active profiles in the Store
-     * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
-     * it needs to be in the last one.
-     */
-    private void addPropertySource(CompositePropertySource composite, ConfigStore store, List<String> profiles,
-        boolean initFeatures) {
-
-        // There is only one Feature Set for all AppConfigurationPropertySources
-        FeatureSet featureSet = new FeatureSet();
-
-        List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
-
-        // Reverse in order to add Profile specific properties earlier, and last profile
-        // comes first
-
-        try {
-            sourceList.addAll(create(store, profiles, initFeatures, featureSet));
-
-            LOGGER.debug("PropertySource context.");
-        } catch (Exception e) {
-            if (!startup.get()) {
-                // Need to check for refresh first, or reset will never happen if fail fast is true.
-                LOGGER.error(
-                    "Refreshing failed while reading configuration from Azure App Configuration store "
-                        + store.getEndpoint() + ".");
-
-                if (properties.getRefreshInterval() != null) {
-                 // The next refresh will happen sooner if refresh interval is expired.
-                    StateHolder.updateNextRefreshTime(properties.getRefreshInterval(), appProperties);
-                }
-                ReflectionUtils.rethrowRuntimeException(e);
-            } else if (store.isFailFast()) {
-                LOGGER.error(
-                    "Fail fast is set and there was an error reading configuration from Azure App "
-                        + "Configuration store " + store.getEndpoint() + ".");
-                ReflectionUtils.rethrowRuntimeException(e);
-            } else {
-                LOGGER.warn(
-                    "Unable to load configuration from Azure AppConfiguration store " + store.getEndpoint() + ".",
-                    e);
-                StateHolder.setLoadState(store.getEndpoint(), false);
-            }
-            // If anything breaks we skip out on loading the rest of the store.
-            return;
-        }
-        sourceList.forEach(composite::addPropertySource);
     }
 
     /**
@@ -187,7 +234,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
-    private List<AppConfigurationPropertySource> create(ConfigStore store, List<String> profiles, boolean initFeatures,
+    private List<AppConfigurationPropertySource> create(ConfigurationClientWrapper client, ConfigStore store,
+        List<String> profiles, boolean initFeatures,
         FeatureSet featureSet)
         throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
@@ -197,7 +245,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             for (AppConfigurationStoreSelects selectedKeys : selects) {
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(store, selectedKeys,
-                    profiles, properties, clients, appProperties, keyVaultCredentialProvider,
+                    profiles, properties, client, appProperties, keyVaultCredentialProvider,
                     keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
@@ -206,39 +254,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 }
                 sourceList.add(propertySource);
             }
-
-            // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
-            List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
-
-            for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
-                ConfigurationSetting watchKey = clients.getWatchKey(trigger.getKey(), trigger.getLabel(),
-                    store.getEndpoint());
-                if (watchKey != null) {
-                    watchKeysSettings.add(watchKey);
-                } else {
-                    watchKeysSettings
-                        .add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
-                }
-            }
-            if (store.getFeatureFlags().getEnabled()) {
-                SettingSelector settingSelector = new SettingSelector()
-                    .setKeyFilter(store.getFeatureFlags().getKeyFilter())
-                    .setLabelFilter(store.getFeatureFlags().getLabelFilter());
-
-                PagedIterable<ConfigurationSetting> watchKeys = clients.getFeatureFlagWatchKey(settingSelector,
-                    store.getEndpoint());
-
-                watchKeys.forEach(watchKey -> watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey)));
-
-                StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
-                    store.getMonitoring().getFeatureFlagRefreshInterval());
-                StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
-            }
-
-            StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getRefreshInterval());
-            StateHolder.setLoadState(store.getEndpoint(), true);
         } catch (Exception e) {
+            // TODO (mametcal) this needs to be changed.
             delayException();
             throw e;
         }

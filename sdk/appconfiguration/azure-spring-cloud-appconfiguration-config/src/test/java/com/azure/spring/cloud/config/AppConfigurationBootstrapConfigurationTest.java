@@ -7,14 +7,14 @@ import static com.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
 import static com.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
-import static com.azure.spring.cloud.config.TestUtils.propPair;
+import static com.azure.spring.cloud.config.implementation.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import com.azure.spring.cloud.config.stores.ClientStore;
+import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
 
 public class AppConfigurationBootstrapConfigurationTest {
 
@@ -47,7 +47,7 @@ public class AppConfigurationBootstrapConfigurationTest {
     public void clientsBeanCreated() throws Exception {
         CONTEXT_RUNNER
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING)).run(context -> {
-                assertThat(context).hasSingleBean(ClientStore.class);
+                assertThat(context).hasSingleBean(ClientFactory.class);
             });
     }
 }

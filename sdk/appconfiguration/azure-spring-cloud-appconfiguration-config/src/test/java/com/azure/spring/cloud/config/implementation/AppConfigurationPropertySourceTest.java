@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_BOOLEAN_VALUE;
@@ -21,8 +21,8 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
-import static com.azure.spring.cloud.config.TestUtils.createItem;
-import static com.azure.spring.cloud.config.TestUtils.createItemFeatureFlag;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -51,6 +51,7 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -58,7 +59,6 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
-import com.azure.spring.cloud.config.stores.ClientStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -126,7 +126,7 @@ public class AppConfigurationPropertySourceTest {
     private AppConfigurationProperties appConfigurationProperties;
 
     @Mock
-    private ClientStore clientStoreMock;
+    private ConfigurationClientWrapper clientMock;
 
     @Mock
     private ConfigurationAsyncClient configClientMock;
@@ -185,7 +185,7 @@ public class AppConfigurationPropertySourceTest {
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(configStoreMock, selectedKeys, new ArrayList<>(),
-            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null, null);
+            appConfigurationProperties, clientMock, appProperties, tokenCredentialProvider, null, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
         testItems.add(ITEM_1);
@@ -211,7 +211,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(pagedFluxMock.iterator()).thenReturn(testItems.iterator()).thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
+        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
@@ -247,7 +247,7 @@ public class AppConfigurationPropertySourceTest {
         settings.add(slashedProp);
         when(pagedFluxMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
+        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock)
             .thenReturn(pagedFluxMock);
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -269,7 +269,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
+        when(clientMock.listSettings(Mockito.any()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         featureFlagStore.setEnabled(true);
 
@@ -310,7 +310,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagDisabled() throws IOException {
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
+        when(clientMock.listSettings(Mockito.any()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         featureFlagStore.setEnabled(false);
 
@@ -329,7 +329,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagThrowError() throws IOException {
         FeatureSet featureSet = new FeatureSet();
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock);
         try {
             propertySource.initProperties(featureSet);
         } catch (IOException e) {
@@ -342,7 +342,7 @@ public class AppConfigurationPropertySourceTest {
         featureFlagStore.setEnabled(true);
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
             .thenReturn(FEATURE_ITEMS.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -392,7 +392,7 @@ public class AppConfigurationPropertySourceTest {
         items.add(ITEM_NULL);
         when(pagedFluxMock.iterator()).thenReturn(items.iterator())
             .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(clientMock.listSettings(Mockito.any())).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -414,7 +414,7 @@ public class AppConfigurationPropertySourceTest {
         items.add(FEATURE_ITEM_NULL);
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
             .thenReturn(items.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
+        when(clientMock.listSettings(Mockito.any()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
 
         FeatureSet featureSet = new FeatureSet();
@@ -434,7 +434,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagTargeting() throws IOException {
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator())
             .thenReturn(FEATURE_ITEMS_TARGETING.iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
+        when(clientMock.listSettings(Mockito.any()))
             .thenReturn(pagedFluxMock).thenReturn(pagedFluxMock);
         featureFlagStore.setEnabled(true);
 

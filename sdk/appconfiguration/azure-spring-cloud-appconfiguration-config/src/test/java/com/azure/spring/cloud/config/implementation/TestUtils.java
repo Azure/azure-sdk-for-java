@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public final class TestUtils {
     private TestUtils() {
     }
 
-    static String propPair(String propName, String propValue) {
+    public static String propPair(String propName, String propValue) {
         return String.format("%s=%s", propName, propValue);
     }
 

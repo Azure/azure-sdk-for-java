@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import com.azure.spring.cloud.config.implementation.AppConfigurationPullRefresh;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
  * Setup AppConfigurationRefresh when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
@@ -19,16 +19,19 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 @Configuration
 @EnableAsync
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
-class AppConfigurationAutoConfiguration {
+public class AppConfigurationAutoConfiguration {
 
+    /**
+     * Auto Watch
+     */
     @Configuration
     @ConditionalOnClass(RefreshEndpoint.class)
-    static class AppConfigurationWatchAutoConfiguration {
+    public static class AppConfigurationWatchAutoConfiguration {
 
         @Bean
-        AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
-                AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
-            return new AppConfigurationRefresh(properties, appProperties, clientStore);
+        public AppConfigurationRefresh getConfigWatch(AppConfigurationProperties properties,
+                AppConfigurationProviderProperties appProperties, ClientFactory clientFactory) {
+            return new AppConfigurationPullRefresh(properties, appProperties, clientFactory);
         }
     }
 }

@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import com.azure.spring.cloud.config.implementation.AppConfigurationPropertySourceLocator;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
  * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when
@@ -34,7 +34,7 @@ public class AppConfigurationBootstrapConfiguration {
      *
      * @param properties Client properties
      * @param appProperties Library properties
-     * @param clients Store Connections
+     * @param clientFactory Store Connections
      * @param keyVaultCredentialProviderOptional Optional credentials for connecting to KeyVault
      * @param keyVaultClientProviderOptional Optional client for connecting to Key Vault
      * @param keyVaultSecretProviderOptional Secret Resolver
@@ -43,7 +43,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     public AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientStore clients,
+        AppConfigurationProviderProperties appProperties, ClientFactory clientFactory,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
         Optional<KeyVaultSecretProvider> keyVaultSecretProviderOptional) throws IllegalArgumentException {
@@ -75,7 +75,7 @@ public class AppConfigurationBootstrapConfiguration {
                 "KeyVaultClientProvider and KeyVaultSecretProvider both can't have Beans supplied.");
         }
 
-        return new AppConfigurationPropertySourceLocator(properties, appProperties, clients,
+        return new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactory,
             keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
     }
 
@@ -94,7 +94,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public ClientStore buildClientStores(AppConfigurationProperties properties,
+    public ClientFactory buildClientFactory(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
@@ -130,9 +130,7 @@ public class AppConfigurationBootstrapConfiguration {
             isKeyVaultConfigured = true;
         }
 
-        ClientFactory clientManager = new ClientFactory(properties, appProperties, tokenCredentialProvider,
+        return new ClientFactory(properties, appProperties, tokenCredentialProvider,
             clientProvider, isDev, isKeyVaultConfigured);
-
-        return new ClientStore(clientManager);
     }
 }

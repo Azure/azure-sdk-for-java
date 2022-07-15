@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 
 
@@ -14,6 +14,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.config.implementation.State;
+import com.azure.spring.cloud.config.implementation.StateHolder;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 
 public class StateHolderTest {
@@ -24,7 +26,10 @@ public class StateHolderTest {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        StateHolder.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
+        StateHolder testState = new StateHolder();
+        testState.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.updateState(testState);
+        
         State state = StateHolder.getState(endpoint);
         StateHolder.expireState(endpoint);
         State currentState = StateHolder.getState(endpoint);
@@ -39,7 +44,11 @@ public class StateHolderTest {
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setRefreshInterval(Duration.ofSeconds(-30));
-        StateHolder.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
+        
+        StateHolder testState = new StateHolder();
+        testState.setState(endpoint, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.updateState(testState);
+        
         State state = StateHolder.getState(endpoint);
         StateHolder.expireState(endpoint);
         State currentState = StateHolder.getState(endpoint);

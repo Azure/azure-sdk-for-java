@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
@@ -13,7 +13,7 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
-import static com.azure.spring.cloud.config.TestUtils.createItem;
+import static com.azure.spring.cloud.config.implementation.TestUtils.createItem;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -53,6 +53,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.config.ClientFactory;
+import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
@@ -60,7 +62,6 @@ import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
-import com.azure.spring.cloud.config.stores.ClientStore;
 
 import reactor.core.publisher.Flux;
 
@@ -91,7 +92,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ConfigurableEnvironment multiEnvironment;
 
     @Mock
-    private ClientStore clientStoreMock;
+    private ClientFactory clientFactoryMock;
 
     @Mock
     private ConfigStore configStore;
@@ -197,9 +198,9 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(pagedMock.getItems()).thenReturn(new ArrayList<ConfigurationSetting>());
 
         when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
-            .thenReturn(pagedFluxMock);
-        when(clientStoreMock.getFeatureFlagWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        // when(clientFactoryMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
+        // .thenReturn(pagedFluxMock);
+        // when(clientFactoryMock.getFeatureFlagWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
 
         appProperties = new AppConfigurationProviderProperties();
         appProperties.setVersion("1.0");
@@ -211,7 +212,12 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
         AppConfigurationPropertySourceLocator.startup.set(true);
-        StateHolder.setLoadState(TEST_STORE_NAME, false);
+        
+        StateHolder state = new StateHolder();
+        
+        state.setLoadState(TEST_STORE_NAME, false);
+        
+        StateHolder.updateState(state);
     }
 
     @Test
@@ -222,7 +228,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
-        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(emptyEnvironment);
         assertTrue(source instanceof CompositePropertySource);
@@ -243,9 +249,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         selects.add(selectedKeys);
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1);
+        // when(clientFactoryMock.getWatchKey(Mockito.any(), Mockito.anyString(),
+        // Mockito.anyString())).thenReturn(ITEM_1);
 
-        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(devEnvironment);
         assertTrue(source instanceof CompositePropertySource);
@@ -267,7 +274,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
-        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(multiEnvironment);
         assertTrue(source instanceof CompositePropertySource);
@@ -287,15 +294,15 @@ public class AppConfigurationPropertySourceLocatorTest {
         List<AppConfigurationStoreSelects> selects = new ArrayList<>();
         selects.add(selectedKeys);
         when(configStoreMock.getSelects()).thenReturn(selects);
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1)
-            .thenReturn(FEATURE_ITEM);
+        // when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1)
+        // .thenReturn(FEATURE_ITEM);
 
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(true);
 
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
 
-        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(emptyEnvironment);
         assertTrue(source instanceof CompositePropertySource);
@@ -320,7 +327,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
 
-        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
+        locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientFactoryMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(emptyEnvironment);
         assertTrue(source instanceof CompositePropertySource);
@@ -342,9 +349,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.isFailFast()).thenReturn(true);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, tokenCredentialProvider, null, null);
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
+        // when(clientFactoryMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString()))
+        // .thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
         verify(configStoreMock, times(1)).isFailFast();
@@ -353,13 +361,19 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void refreshThrowException() throws IOException, IllegalArgumentException {
         AppConfigurationPropertySourceLocator.startup.set(false);
-        StateHolder.setLoadState(TEST_STORE_NAME, true);
+        
+        StateHolder state = new StateHolder();
+        
+        state.setLoadState(TEST_STORE_NAME, true);
+        
+        StateHolder.updateState(state);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, tokenCredentialProvider, null, null);
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenThrow(new RuntimeException());
-        when(clientStoreMock.getFeatureFlagWatchKey(any(), anyString())).thenThrow(new RuntimeException());
+        // when(clientFactoryMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString()))
+        // .thenThrow(new RuntimeException());
+        // when(clientFactoryMock.getFeatureFlagWatchKey(any(), anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
     }
@@ -368,10 +382,10 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void notFailFastShouldPass() throws IOException {
         when(configStoreMock.isFailFast()).thenReturn(false);
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, tokenCredentialProvider, null, null);
 
         when(configStoreMock.isFailFast()).thenReturn(false);
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
+        // when(clientFactoryMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         PropertySource<?> source = locator.locate(emptyEnvironment);
@@ -395,13 +409,14 @@ public class AppConfigurationPropertySourceLocatorTest {
         TestUtils.addStore(properties, TEST_STORE_NAME_2, TEST_CONN_STRING_2, KEY_FILTER);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null, null);
+            clientFactoryMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(emptyEnvironment);
         assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
-        String[] expectedSourceNames = new String[] { KEY_FILTER + TEST_STORE_NAME_2 + "/\0", KEY_FILTER + TEST_STORE_NAME_1 + "/\0" };
+        String[] expectedSourceNames = new String[] { KEY_FILTER + TEST_STORE_NAME_2 + "/\0",
+            KEY_FILTER + TEST_STORE_NAME_1 + "/\0" };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
@@ -435,11 +450,11 @@ public class AppConfigurationPropertySourceLocatorTest {
         selects.add(selectedKeys);
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStore.isEnabled()).thenReturn(true);
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
+        // when(clientFactoryMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 
-        locator = new AppConfigurationPropertySourceLocator(properties, appPropertiesMock, clientStoreMock,
+        locator = new AppConfigurationPropertySourceLocator(properties, appPropertiesMock, clientFactoryMock,
             tokenCredentialProvider, null, null);
 
         boolean threwException = false;

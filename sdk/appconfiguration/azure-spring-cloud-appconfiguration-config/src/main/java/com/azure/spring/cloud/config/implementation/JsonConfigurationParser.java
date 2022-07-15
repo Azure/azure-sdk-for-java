@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.fasterxml.jackson.core.JsonProcessingException;

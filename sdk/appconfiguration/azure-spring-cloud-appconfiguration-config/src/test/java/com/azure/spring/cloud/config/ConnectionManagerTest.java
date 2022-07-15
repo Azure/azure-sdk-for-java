@@ -27,9 +27,9 @@ import org.mockito.MockitoAnnotations;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredential;
+import com.azure.spring.cloud.config.implementation.ConfigurationClientWrapper;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 public class ConnectionManagerTest {
 
@@ -223,7 +223,6 @@ public class ConnectionManagerTest {
         assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
         assertEquals(0, clientWrapper.getFailedAttempts());
 
-        spy.resetCurrentClient();
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
         clientWrapper = spy.getClient();
@@ -262,7 +261,6 @@ public class ConnectionManagerTest {
         assertEquals(TEST_ENDPOINT, clientWrapper.getEndpoint());
         assertEquals(0, clientWrapper.getFailedAttempts());
         
-        spy.resetCurrentClient();
         clientWrapper.updateBackoffEndTime(Instant.now().plusSeconds(100000));
 
         clientWrapper = spy.getClient();

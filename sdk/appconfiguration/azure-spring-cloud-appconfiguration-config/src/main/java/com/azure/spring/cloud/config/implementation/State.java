@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,25 +13,26 @@ class State {
 
     private final Instant nextRefreshCheck;
 
-    private final String key;
+    private final String configStoreIdentifier;
 
     private Integer refreshAttempt;
 
     private final int refreshInterval;
 
-    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String key) {
+    State(List<ConfigurationSetting> watchKeys, int refreshInterval, String configStoreIdentifier) {
         this.watchKeys = watchKeys;
         this.refreshInterval = refreshInterval;
         nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
-        this.key = key;
+        this.configStoreIdentifier = configStoreIdentifier;
         this.refreshAttempt = 1;
     }
 
-    State(State oldState, Instant newRefresh, String key) {
+    // TODO (mametcal) Not used, but should be.
+    State(State oldState, Instant newRefresh) {
         this.watchKeys = oldState.getWatchKeys();
         this.refreshInterval = oldState.getRefreshInterval();
         this.nextRefreshCheck = newRefresh;
-        this.key = key;
+        this.configStoreIdentifier = oldState.getConfigStoreIdentifier();
         this.refreshAttempt = oldState.getRefreshAttempt();
     }
 
@@ -52,8 +53,8 @@ class State {
     /**
      * @return the key
      */
-    public String getKey() {
-        return key;
+    public String getConfigStoreIdentifier() {
+        return configStoreIdentifier;
     }
 
     /**

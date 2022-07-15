@@ -7,6 +7,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 
+// TODO (mametcal) need to figure out what to do with this
 /**
  * Indicator class of App Configuration 
  */

@@ -19,10 +19,10 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.spring.cloud.config.implementation.ConfigurationClientWrapper;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
  * Holds a set of connections to an app configuration store with zero to many geo-replications.
@@ -48,8 +48,6 @@ public class ConnectionManager {
         CONN_STRING_REGEXP);
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
-
-    private ConfigurationClientWrapper currentClient;
 
     private final AppConfigurationProviderProperties appProperties;
 
@@ -117,19 +115,14 @@ public class ConnectionManager {
         if (client == null && clients == null) {
             buildClients();
         }
-        if (currentClient != null) {
-            return currentClient;
-        }
 
         if (client != null) {
-            currentClient = client;
             return client;
         }
 
         for (ConfigurationClientWrapper wrapper : clients) {
             if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
                 LOGGER.debug("Using Client: " + wrapper.getEndpoint());
-                currentClient = wrapper;
                 return wrapper;
             }
         }
@@ -139,18 +132,39 @@ public class ConnectionManager {
     }
 
     /**
-     * Call when the current client failed
+     * Returns a client.
+     * @return ConfiguraitonClient
      */
-    public void resetCurrentClient() {
-        if (currentClient != null) {
-            int failedAttempt = currentClient.getFailedAttempts();
+    public List<ConfigurationClientWrapper> getAvalibleClients() {
+        if (client == null && clients == null) {
+            buildClients();
+        }
+
+        List<ConfigurationClientWrapper> avalibleClients = new ArrayList<>();
+
+        for (ConfigurationClientWrapper wrapper : clients) {
+            if (wrapper.getBackoffEndTime().isBefore(Instant.now())) {
+                LOGGER.debug("Using Client: " + wrapper.getEndpoint());
+                avalibleClients.add(wrapper);
+            }
+        }
+        return avalibleClients;
+    }
+
+    /**
+     * Call when the current client failed
+     * @param endpoint replica endpoint
+     */
+    public void backoffClient(String endpoint) {
+        clients.stream().filter(client -> client.getEndpoint() == endpoint).map(client -> {
+            int failedAttempt = client.getFailedAttempts();
             long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt,
                 appProperties.getDefaultMaxBackoff(),
                 appProperties.getDefaultMinBackoff());
-            currentClient.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
+            client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
 
-            currentClient = null;
-        }
+            return client;
+        });
     }
 
     /**

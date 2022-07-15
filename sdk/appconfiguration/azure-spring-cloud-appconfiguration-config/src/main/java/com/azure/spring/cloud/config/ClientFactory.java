@@ -3,11 +3,12 @@
 package com.azure.spring.cloud.config;
 
 import java.util.HashMap;
+import java.util.List;
 
+import com.azure.spring.cloud.config.implementation.ConfigurationClientWrapper;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.resource.ConfigurationClientWrapper;
 
 /**
  * Manages all client connections for all configuration stores.
@@ -39,18 +40,21 @@ public class ClientFactory {
      * @param storeIdentifier identifier of the store. The identifier is the primary endpoint of the store. 
      * @return ConfigurationClient for accessing App Configuration
      */
-    public ConfigurationClientWrapper getClient(String storeIdentifier) {
-        return CONNECTIONS.get(storeIdentifier).getClient();
+    public List<ConfigurationClientWrapper> getAvailableClients(String storeIdentifier) {
+        return CONNECTIONS.get(storeIdentifier).getAvalibleClients();
     }
-
+    
     /**
      * Sets backoff time for the current client that is being used, and attempts to get a new one.
      * @param storeIdentifier identifier of the store. The identifier is the primary endpoint of the store. 
-     * @return ConfigurationClient for accessing App Configuration
+     * @param endpoint replica endpoint
      */
-    public ConfigurationClientWrapper resetAndGetNewClient(String storeIdentifier) {
-        CONNECTIONS.get(storeIdentifier).resetCurrentClient();
-        return CONNECTIONS.get(storeIdentifier).getClient();
+    public void backoffClientClient(String storeIdentifier, String endpoint) {
+        CONNECTIONS.get(storeIdentifier).backoffClient(endpoint);
     }
+    
+    // TODO (mametcal) need a way to mark a replica as the current one in use.
+    
+    // TODO (mametcal) need a way to reset in use replicas after refresh finishes in any form.
 
 }

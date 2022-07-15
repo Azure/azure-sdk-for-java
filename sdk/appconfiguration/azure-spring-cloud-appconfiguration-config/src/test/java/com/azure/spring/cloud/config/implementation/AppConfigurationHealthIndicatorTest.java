@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 
+import com.azure.spring.cloud.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.config.health.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -36,7 +37,7 @@ public class AppConfigurationHealthIndicatorTest {
     @Test
     public void noConfigurationStores() {
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null, null);
+        AppConfigurationRefresh refresh = new AppConfigurationPullRefresh(properties, null, null);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
         
         Health health = indicator.health();
@@ -58,9 +59,13 @@ public class AppConfigurationHealthIndicatorTest {
         
         properties.setStores(stores);
         
-        StateHolder.setLoadState(storeName, true);
+        StateHolder state = new StateHolder();
         
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null, null);
+        state.setLoadState(storeName, true);
+        
+        StateHolder.updateState(state);
+        
+        AppConfigurationRefresh refresh = new AppConfigurationPullRefresh(properties, null, null);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
         
         Health health = indicator.health();
@@ -83,7 +88,7 @@ public class AppConfigurationHealthIndicatorTest {
         
         properties.setStores(stores);
         
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null, null);
+        AppConfigurationRefresh refresh = new AppConfigurationPullRefresh(properties, null, null);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
         
         Health health = indicator.health();
@@ -96,7 +101,11 @@ public class AppConfigurationHealthIndicatorTest {
     public void unheathlyConfigurationStore() {
         String storeName = "singleUnhealthyStoreIndicatorTest";
         
-        StateHolder.setLoadState(storeName, true);
+        StateHolder state = new StateHolder();
+        
+        state.setLoadState(storeName, true);
+        
+        StateHolder.updateState(state);
         
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refreshMock);
         
