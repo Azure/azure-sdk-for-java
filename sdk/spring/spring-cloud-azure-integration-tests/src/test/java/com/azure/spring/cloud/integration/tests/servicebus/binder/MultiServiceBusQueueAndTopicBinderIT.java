@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = { MultiServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
     MultiServiceBusQueueAndTopicBinderIT.TestTopicConfig.class })
-@ActiveProfiles("service-bus-binder-multi")
+@ActiveProfiles(value = {"service-bus-binder-multi", "service-bus-jms"})
 class MultiServiceBusQueueAndTopicBinderIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiServiceBusQueueAndTopicBinderIT.class);

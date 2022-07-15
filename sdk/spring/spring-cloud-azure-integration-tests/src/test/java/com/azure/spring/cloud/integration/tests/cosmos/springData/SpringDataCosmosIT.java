@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("spring-data-cosmos")
+@ActiveProfiles(value = {"spring-data-cosmos", "service-bus-jms"})
 public class SpringDataCosmosIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringDataCosmosIT.class);
     private final String userId = "testSpringDataCosmos";

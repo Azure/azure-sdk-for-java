@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-sync",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-sync"
     })
-@ActiveProfiles("event-hubs-binder")
+@ActiveProfiles(value = {"event-hubs-binder", "service-bus-jms"})
 class EventHubsBinderSyncModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderSyncModeIT.class);

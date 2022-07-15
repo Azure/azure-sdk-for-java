@@ -18,7 +18,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 @SpringBootTest
-@ActiveProfiles("storage-file-share")
+@ActiveProfiles(value = {"storage-file-share", "service-bus-jms"})
 public class StorageFileShareIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileShareIT.class);
     private final String data = "sample-data";

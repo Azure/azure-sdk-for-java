@@ -33,7 +33,7 @@ import java.util.function.Supplier;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-message",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-message"
     })
-@ActiveProfiles("event-hubs-binder")
+@ActiveProfiles(value = {"event-hubs-binder", "service-bus-jms"})
 class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);

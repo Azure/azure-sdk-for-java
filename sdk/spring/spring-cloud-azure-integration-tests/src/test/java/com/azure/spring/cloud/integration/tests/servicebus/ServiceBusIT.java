@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("service-bus")
+@ActiveProfiles(value = {"service-bus", "service-bus-jms"})
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private final String data = "service bus test";

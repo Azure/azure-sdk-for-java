@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("storage-queue")
+@ActiveProfiles(value = {"storage-queue", "service-bus-jms"})
 public class StorageQueueIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageQueueIT.class);
     private final String data = "storage queue test";

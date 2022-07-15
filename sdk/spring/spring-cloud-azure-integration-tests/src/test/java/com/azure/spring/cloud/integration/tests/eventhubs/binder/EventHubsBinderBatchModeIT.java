@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
-@ActiveProfiles("event-hubs-binder")
+@ActiveProfiles(value = {"event-hubs-binder", "service-bus-jms"})
 class EventHubsBinderBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderBatchModeIT.class);
