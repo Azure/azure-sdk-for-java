@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
@@ -41,13 +43,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentModelBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(com.azure.ai.formrecognizer.administration.models.ContentSource, DocumentModelBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+            = documentModelAdministrationClient.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl),
+                DocumentModelBuildMode.TEMPLATE)
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
@@ -59,28 +62,30 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(ContentSource, DocumentModelBuildMode, BuildModelOptions, Context)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentModelBuildMode-BuildModelOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "custom-model-id";
         String prefix = "Invoice";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        DocumentModelDetails documentModelDetails = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
+        DocumentModelDetails documentModelDetails
+            = documentModelAdministrationClient.beginBuildModel(
+                new AzureBlobContentSource(trainingFilesUrl).setPrefix(prefix),
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
                     .setDescription("model desc")
-                    .setPrefix(prefix)
-                    .setTags(attrs), Context.NONE)
+                    .setTags(attrs),
+                Context.NONE)
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
@@ -94,7 +99,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#string-DocumentModelBuildMode-BuildModelOptions-Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions-Context
     }
 
     /**
@@ -198,14 +203,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginComposeModel(List)}
      */
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginComposeModel#list
         String modelId1 = "{custom-model-id_1}";
         String modelId2 = "{custom-model-id_2}";
         final DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2))
+            = documentModelAdministrationClient.beginComposeModel(Arrays.asList(modelId1, modelId2))
             .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
@@ -222,7 +227,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCreateComposedModel(List, ComposeModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginComposeModel(List, ComposeModelOptions, Context)}
      * with options
      */
     public void beginCreateComposedModelWithOptions() {
@@ -234,7 +239,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         attrs.put("createdBy", "sample");
 
         final DocumentModelDetails documentModelDetails =
-            documentModelAdministrationClient.beginCreateComposedModel(Arrays.asList(modelId1, modelId2),
+            documentModelAdministrationClient.beginComposeModel(Arrays.asList(modelId1, modelId2),
                     new ComposeModelOptions()
                         .setModelId(modelId)
                         .setDescription("my composed model desc")

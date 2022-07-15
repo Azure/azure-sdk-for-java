@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
@@ -552,7 +553,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                        .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -584,7 +585,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                        .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -617,7 +618,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                        .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -666,7 +667,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                        .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -695,7 +696,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         dataRunner((data, dataLength) -> multipageTrainingRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller
                 = adminClient
-                .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -723,7 +724,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             selectionMarkTrainingRunner((trainingFilesUrl) -> {
                 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller =
                     adminClient
-                        .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                        .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
 
@@ -755,7 +756,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         urlRunner((fileUrl) -> buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller
                 = adminClient
-                .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -780,7 +781,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         testingContainerUrlRunner((fileUrl) -> multipageTrainingRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller
                 = adminClient
-                .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -809,7 +810,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelDetails> syncPoller
-                = getDocumentModelAdminClient(httpClient, serviceVersion).beginBuildModel(trainingFilesUrl,
+                = getDocumentModelAdminClient(httpClient, serviceVersion).beginBuildModel(new AzureBlobContentSource(trainingFilesUrl),
                     DocumentModelBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -878,7 +879,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             buildModelRunner((trainingFilesUrl -> {
                 SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller
                     = adminClient
-                    .beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                    .beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
                 buildModelPoller.waitForCompletion();
                 String modelId = buildModelPoller.getFinalResult().getModelId();
@@ -905,7 +906,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             client = getDocumentAnalysisClient(httpClient, serviceVersion);
 
             SyncPoller<DocumentOperationResult, DocumentModelDetails> buildModelPoller
-                = adminClient.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
+                = adminClient.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentModelBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
             String modelId = buildModelPoller.getFinalResult().getModelId();

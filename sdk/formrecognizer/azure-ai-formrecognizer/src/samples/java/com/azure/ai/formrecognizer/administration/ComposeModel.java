@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
@@ -42,19 +43,19 @@ public class ComposeModel {
         String model1TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_1}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModelDetails> model1Poller =
-            client.beginBuildModel(model1TrainingFiles, DocumentModelBuildMode.TEMPLATE);
+            client.beginBuildModel(new AzureBlobContentSource(model1TrainingFiles), DocumentModelBuildMode.TEMPLATE);
 
         // Build custom document analysis model
         String model2TrainingFiles = "{SAS_URL_of_your_container_in_blob_storage_for_model_2}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModelDetails> model2Poller =
-            client.beginBuildModel(model2TrainingFiles, DocumentModelBuildMode.TEMPLATE);
+            client.beginBuildModel(new AzureBlobContentSource(model2TrainingFiles), DocumentModelBuildMode.TEMPLATE);
 
         String labeledModelId1 = model1Poller.getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
         String composedModelId = "my-composed-model";
         final DocumentModelDetails documentModelDetails =
-            client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
+            client.beginComposeModel(Arrays.asList(labeledModelId1, labeledModelId2),
                     new ComposeModelOptions().setDescription("my composed model description"),
                     Context.NONE)
                 .setPollInterval(Duration.ofSeconds(5))

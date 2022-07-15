@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
@@ -58,12 +60,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(ContentSource, DocumentModelBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#ContentSource-DocumentModelBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE
+        documentModelAdministrationAsyncClient.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl),
+                DocumentModelBuildMode.TEMPLATE
             )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -78,26 +81,26 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#ContentSource-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(com.azure.ai.formrecognizer.administration.models.ContentSource, DocumentModelBuildMode, BuildModelOptions)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "model-id";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
+        documentModelAdministrationAsyncClient.beginBuildModel(
+            new AzureBlobContentSource(trainingFilesUrl).setPrefix("Invoice"),
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
                     .setDescription("model desc")
-                    .setPrefix("Invoice")
                     .setTags(attrs))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -114,7 +117,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions
     }
 
     /**

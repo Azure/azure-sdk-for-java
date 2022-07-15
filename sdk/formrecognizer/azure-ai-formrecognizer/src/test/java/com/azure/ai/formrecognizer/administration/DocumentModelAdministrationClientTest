@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
@@ -232,7 +233,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller =
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             DocumentModelInfo actualModel = syncPoller.getFinalResult();
@@ -270,7 +271,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
@@ -288,7 +289,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
             SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
 
@@ -308,8 +309,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
-                        new BuildModelOptions().setPrefix("invalidPrefix"), Context.NONE)
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl).setPrefix("invalidPrefix"), DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError  = (ResponseError) exception.getValue();
@@ -328,8 +328,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
-                        new BuildModelOptions().setPrefix("subfolders"), Context.NONE)
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl).setPrefix("subfolders"), DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError = (ResponseError) exception.getValue();
@@ -346,14 +345,14 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller1 =
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentBuildMode.TEMPLATE,
                     new BuildModelOptions().setModelId("sync_component_model_1" + UUID.randomUUID()), Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller1.waitForCompletion();
             DocumentModelInfo createdModel1 = syncPoller1.getFinalResult();
 
             SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller2 =
-                client.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE,
+                client.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl), DocumentBuildMode.TEMPLATE,
                     new BuildModelOptions().setModelId("sync_component_model_2" + UUID.randomUUID()), Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller2.waitForCompletion();

@@ -3,6 +3,8 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
+import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
@@ -16,6 +18,7 @@ import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
+import com.azure.ai.formrecognizer.implementation.models.BuildDocumentModelRequest;
 import com.azure.ai.formrecognizer.implementation.models.Error;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.GetInfoResponse;
@@ -614,6 +617,17 @@ public class Transforms {
         return documentModelOperationException;
     }
 
+    public static BuildDocumentModelRequest setContentSourceType(ContentSource contentSource) {
+        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest();
+        if (contentSource instanceof AzureBlobContentSource) {
+            final AzureBlobContentSource azureBlobContentSource =
+                ((AzureBlobContentSource) contentSource);
+            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSource()
+                .setContainerUrl(azureBlobContentSource.getContainerUrl())
+                .setPrefix(azureBlobContentSource.getPrefix()));
+        }
+        return buildDocumentModelRequest;
+    }
     private static ResponseError toResponseError(Error error) {
         if (error == null) {
             return null;
