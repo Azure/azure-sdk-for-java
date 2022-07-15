@@ -15,10 +15,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.IOUtils;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.TransferUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -95,7 +93,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
@@ -1566,22 +1563,19 @@ public class BlobAsyncClientBase {
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter = progressReceiver == null ? null : ProgressReporter.withProgressListener(
             progressReceiver);
-        DownloadRetryOptions finalDownloadRetryOptions = (downloadRetryOptions == null) ? new DownloadRetryOptions()
-            : downloadRetryOptions;
-        Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
 
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
-        BiFunction<BlobRange, BlobRequestConditions, Mono<StreamResponse>> downloadFunc =
-            (range, conditions) -> this.downloadRange(
-                range, conditions, conditions.getIfMatch(), getMD5, context);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
+            (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
+                rangeGetContentMd5, context);
 
-        return ChunkedDownloadUtils.streamFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
+        return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
             downloadFunc, true)
-            .flatMap(setupTuple4 -> {
-                long newCount = setupTuple4.getT1();
-                BlobRequestConditions finalConditions = setupTuple4.getT2();
+            .flatMap(setupTuple3 -> {
+                long newCount = setupTuple3.getT1();
+                BlobRequestConditions finalConditions = setupTuple3.getT2();
 
                 int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
                     finalParallelTransferOptions.getBlockSizeLong());
@@ -1589,66 +1583,51 @@ public class BlobAsyncClientBase {
                 // In case it is an empty blob, this ensures we still actually perform a download operation.
                 numChunks = numChunks == 0 ? 1 : numChunks;
 
-                StreamResponse initialResponse = setupTuple4.getT3();
-                BlobRange initialResponseRange = setupTuple4.getT4();
+                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .flatMap(chunkNum -> ChunkedDownloadUtils.streamChunk(chunkNum, initialResponse, initialResponseRange,
+                    .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
                         finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
-                            (response, range) -> writeBodyToFile(response, file, downloadFunc, chunkNum, finalParallelTransferOptions,
-                            progressReporter == null ? null : progressReporter.createChild(),
-                            finalDownloadRetryOptions, range, finalConditions
+                        response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
+                            progressReporter == null ? null : progressReporter.createChild()
                         ).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
-                    .then(Mono.fromCallable(() -> {
-                        BlobsDownloadHeaders blobsDownloadHeaders =
-                            ModelHelper.transformBlobDownloadHeaders(initialResponse.getHeaders());
-                        BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
-                            blobsDownloadHeaders, ModelHelper.getErrorCode(initialResponse.getHeaders()));
-                        return ModelHelper.buildBlobPropertiesResponse(initialResponse, blobDownloadHeaders);
-                    }));
+                    .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
             });
     }
 
-    private static Mono<Void> writeBodyToFile(
-        StreamResponse response, AsynchronousFileChannel file,
-        BiFunction<BlobRange, BlobRequestConditions, Mono<StreamResponse>> downloadFunc,
+    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
-        ProgressReporter progressReporter,
-        DownloadRetryOptions downloadRetryOptions,
-        BlobRange range, BlobRequestConditions requestConditions
-    ) {
+        ProgressReporter progressReporter) {
+
+        // Extract the body.
+        Flux<ByteBuffer> data = response.getValue();
+
+        // Report progress as necessary.
+        if (progressReporter != null) {
+            data = addProgressReporting(data, progressReporter);
+        }
+
         // Write to the file.
-        AsynchronousByteChannel byteChannel = IOUtils.toAsynchronousByteChannel(file,
-            chunkNum * finalParallelTransferOptions.getBlockSizeLong());
-        return TransferUtil.downloadToAsynchronousByteChannel(byteChannel, Mono.just(response),
-            (exception, offset) -> {
-                if (!(exception instanceof IOException || exception instanceof TimeoutException)) {
-                    return Mono.error(exception);
-                }
+        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+    }
 
-                long newCount = range.getCount() - (offset - range.getOffset());
+    // TODO (kasobol-msft) move this to FluxUtil.
+    private static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, ProgressReporter progressReporter) {
+        return Mono.just(progressReporter).flatMapMany(reporter -> {
+                /*
+                Each time there is a new subscription, we will rewind the progress. This is desirable specifically
+                for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
+                rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
+                expected.
+                 */
+            reporter.reset();
 
-                        /*
-                         It is possible that the network stream will throw an error after emitting all data but before
-                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
-                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
-                         of the stream.
-                         */
-                if (newCount == 0) {
-                    LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
-                        + "but before stream signaled completion. Returning success as all data was downloaded. "
-                        + "Exception message: " + exception.getMessage());
-                    return Mono.empty();
-                }
-
-                try {
-                    return downloadFunc.apply(
-                        new BlobRange(offset, newCount), requestConditions);
-                } catch (Exception e) {
-                    return Mono.error(e);
-                }
-            }, progressReporter, downloadRetryOptions.getMaxRetryRequests());
+                /*
+                Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
+                 */
+            return data.doOnNext(buffer -> reporter.reportProgress(buffer.remaining()));
+        });
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
