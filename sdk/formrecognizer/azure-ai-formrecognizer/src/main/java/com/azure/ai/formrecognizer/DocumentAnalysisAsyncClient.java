@@ -4,10 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeDocumentRequest;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeResultOperation;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
-import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;

@@ -5,10 +5,9 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
@@ -370,9 +369,9 @@ public class ReadmeSamples {
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
-        ResourceInfo resourceInfo = documentModelAdminClient.getResourceInfo();
+        ResourceDetails resourceDetails = documentModelAdminClient.getResourceDetails();
         System.out.printf("The resource has %s models, and we can have at most %s models",
-            resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
+            resourceDetails.getDocumentModelCount(), resourceDetails.getDocumentModelLimit());
 
         // Next, we get a paged list of all of our models
         PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();

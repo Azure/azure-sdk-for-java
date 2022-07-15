@@ -3,10 +3,8 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
@@ -18,14 +16,6 @@ import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
-import com.azure.ai.formrecognizer.implementation.models.BuildDocumentModelRequest;
-import com.azure.ai.formrecognizer.implementation.models.Error;
-import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.implementation.models.GetInfoResponse;
-import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
-import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
-import com.azure.ai.formrecognizer.implementation.models.ModelSummary;
-import com.azure.ai.formrecognizer.implementation.models.OperationInfo;
 import com.azure.ai.formrecognizer.models.AddressValue;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -289,23 +279,23 @@ public class Transforms {
         return copyAuthorization;
     }
 
-    public static ResourceInfo toAccountProperties(GetInfoResponse getInfoResponse) {
-        ResourceInfo resourceInfo = new ResourceInfo();
-        ResourceInfoHelper.setDocumentModelCount(resourceInfo,
+    public static ResourceDetails toAccountProperties(GetInfoResponse getInfoResponse) {
+        ResourceDetails resourceDetails = new ResourceDetails();
+        ResourceDetailsHelper.setDocumentModelCount(resourceDetails,
             getInfoResponse.getCustomDocumentModels().getCount());
-        ResourceInfoHelper.setDocumentModelLimit(resourceInfo,
+        ResourceDetailsHelper.setDocumentModelLimit(resourceDetails,
             getInfoResponse.getCustomDocumentModels().getLimit());
-        return resourceInfo;
+        return resourceDetails;
     }
 
     public static DocumentModelDetails toDocumentModel(ModelInfo modelInfo) {
         DocumentModelDetails documentModelDetails = new DocumentModelDetails();
-        DocumentModelInfoHelper.setModelId(documentModelDetails, modelInfo.getModelId());
-        DocumentModelInfoHelper.setDescription(documentModelDetails, modelInfo.getDescription());
+        DocumentModelDetailsHelper.setModelId(documentModelDetails, modelInfo.getModelId());
+        DocumentModelDetailsHelper.setDescription(documentModelDetails, modelInfo.getDescription());
         Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-        DocumentModelInfoHelper.setDocTypes(documentModelDetails, docTypeMap);
-        DocumentModelInfoHelper.setCreatedOn(documentModelDetails, modelInfo.getCreatedDateTime());
-        DocumentModelInfoHelper.setTags(documentModelDetails, modelInfo.getTags());
+        DocumentModelDetailsHelper.setDocTypes(documentModelDetails, docTypeMap);
+        DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelInfo.getCreatedDateTime());
+        DocumentModelDetailsHelper.setTags(documentModelDetails, modelInfo.getTags());
         return documentModelDetails;
     }
 
@@ -558,25 +548,25 @@ public class Transforms {
         ModelOperationDetails modelOperationDetails = new ModelOperationDetails();
         ModelInfo modelInfo = getOperationResponse.getResult();
         if (modelInfo != null) {
-            ModelOperationHelper.setModelId(modelOperationDetails, modelInfo.getModelId());
-            ModelOperationHelper.setDescription(modelOperationDetails, modelInfo.getDescription());
-            ModelOperationHelper.setCreatedOn(modelOperationDetails, modelInfo.getCreatedDateTime());
+            ModelOperationDetailsHelper.setModelId(modelOperationDetails, modelInfo.getModelId());
+            ModelOperationDetailsHelper.setDescription(modelOperationDetails, modelInfo.getDescription());
+            ModelOperationDetailsHelper.setCreatedOn(modelOperationDetails, modelInfo.getCreatedDateTime());
             Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
-            ModelOperationHelper.setDocTypes(modelOperationDetails, docTypeMap);
+            ModelOperationDetailsHelper.setDocTypes(modelOperationDetails, docTypeMap);
         }
-        ModelOperationHelper.setOperationId(modelOperationDetails, getOperationResponse.getOperationId());
-        ModelOperationHelper.setCreatedOn(modelOperationDetails, getOperationResponse.getCreatedDateTime());
-        ModelOperationHelper.setKind(modelOperationDetails,
+        ModelOperationDetailsHelper.setOperationId(modelOperationDetails, getOperationResponse.getOperationId());
+        ModelOperationDetailsHelper.setCreatedOn(modelOperationDetails, getOperationResponse.getCreatedDateTime());
+        ModelOperationDetailsHelper.setKind(modelOperationDetails,
             ModelOperationKind.fromString(getOperationResponse.getKind().toString()));
-        ModelOperationHelper.setLastUpdatedOn(modelOperationDetails, getOperationResponse.getLastUpdatedDateTime());
-        ModelOperationHelper.setPercentCompleted(modelOperationDetails,
+        ModelOperationDetailsHelper.setLastUpdatedOn(modelOperationDetails, getOperationResponse.getLastUpdatedDateTime());
+        ModelOperationDetailsHelper.setPercentCompleted(modelOperationDetails,
             getOperationResponse.getPercentCompleted() == null ? Integer.valueOf(0)
                 : getOperationResponse.getPercentCompleted());
-        ModelOperationHelper.setStatus(modelOperationDetails,
+        ModelOperationDetailsHelper.setStatus(modelOperationDetails,
             ModelOperationStatus.fromString(getOperationResponse.getStatus().toString()));
-        ModelOperationHelper.setResourceLocation(modelOperationDetails, getOperationResponse.getResourceLocation());
+        ModelOperationDetailsHelper.setResourceLocation(modelOperationDetails, getOperationResponse.getResourceLocation());
         DocumentModelOperationError error = toDocumentModelOperationError(getOperationResponse.getError());
-        ModelOperationHelper.setError(modelOperationDetails, error);
+        ModelOperationDetailsHelper.setError(modelOperationDetails, error);
         return modelOperationDetails;
     }
 
@@ -585,17 +575,17 @@ public class Transforms {
             .stream()
             .map(operationInfo -> {
                 ModelOperationSummary modelOperationSummary = new ModelOperationSummary();
-                ModelOperationInfoHelper.setOperationId(modelOperationSummary, operationInfo.getOperationId());
-                ModelOperationInfoHelper.setCreatedOn(modelOperationSummary, operationInfo.getCreatedDateTime());
-                ModelOperationInfoHelper.setKind(modelOperationSummary, operationInfo.getKind() == null
+                ModelOperationSummaryHelper.setOperationId(modelOperationSummary, operationInfo.getOperationId());
+                ModelOperationSummaryHelper.setCreatedOn(modelOperationSummary, operationInfo.getCreatedDateTime());
+                ModelOperationSummaryHelper.setKind(modelOperationSummary, operationInfo.getKind() == null
                     ? null : ModelOperationKind.fromString(operationInfo.getKind().toString()));
-                ModelOperationInfoHelper.setLastUpdatedOn(modelOperationSummary, operationInfo.getLastUpdatedDateTime());
-                ModelOperationInfoHelper.setPercentCompleted(modelOperationSummary,
+                ModelOperationSummaryHelper.setLastUpdatedOn(modelOperationSummary, operationInfo.getLastUpdatedDateTime());
+                ModelOperationSummaryHelper.setPercentCompleted(modelOperationSummary,
                     operationInfo.getPercentCompleted() == null ? Integer.valueOf(0)
                         : operationInfo.getPercentCompleted());
-                ModelOperationInfoHelper.setStatus(modelOperationSummary,
+                ModelOperationSummaryHelper.setStatus(modelOperationSummary,
                     ModelOperationStatus.fromString(operationInfo.getStatus().toString()));
-                ModelOperationInfoHelper.setResourceLocation(modelOperationSummary, operationInfo.getResourceLocation());
+                ModelOperationSummaryHelper.setResourceLocation(modelOperationSummary, operationInfo.getResourceLocation());
                 return modelOperationSummary;
             }).collect(Collectors.toList());
     }
@@ -615,18 +605,6 @@ public class Transforms {
         DocumentModelOperationException documentModelOperationException
             = new DocumentModelOperationException(documentModelOperationError);
         return documentModelOperationException;
-    }
-
-    public static BuildDocumentModelRequest setContentSourceType(ContentSource contentSource) {
-        BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest();
-        if (contentSource instanceof AzureBlobContentSource) {
-            final AzureBlobContentSource azureBlobContentSource =
-                ((AzureBlobContentSource) contentSource);
-            buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.implementation.models.AzureBlobContentSource()
-                .setContainerUrl(azureBlobContentSource.getContainerUrl())
-                .setPrefix(azureBlobContentSource.getPrefix()));
-        }
-        return buildDocumentModelRequest;
     }
     private static ResponseError toResponseError(Error error) {
         if (error == null) {

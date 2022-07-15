@@ -15,16 +15,16 @@ import java.util.Map;
 /**
  * The helper class to set the non-public properties of an {@link ModelOperationDetails} instance.
  */
-public final class ModelOperationHelper {
-    private static ModelOperationAccessor accessor;
+public final class ModelOperationDetailsHelper {
+    private static ModelOperationDetailsAccessor accessor;
 
-    private ModelOperationHelper() {
+    private ModelOperationDetailsHelper() {
     }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ModelOperationDetails} instance.
      */
-    public interface ModelOperationAccessor {
+    public interface ModelOperationDetailsAccessor {
 
         void setModelId(ModelOperationDetails modelOperationDetails, String modelId);
 
@@ -52,10 +52,10 @@ public final class ModelOperationHelper {
     /**
      * The method called from {@link ModelOperationDetails} to set it's accessor.
      *
-     * @param modelOperationAccessor The accessor.
+     * @param modelOperationDetailsAccessor The accessor.
      */
-    public static void setAccessor(final ModelOperationHelper.ModelOperationAccessor modelOperationAccessor) {
-        accessor = modelOperationAccessor;
+    public static void setAccessor(final ModelOperationDetailsAccessor modelOperationDetailsAccessor) {
+        accessor = modelOperationDetailsAccessor;
     }
 
     static void setModelId(ModelOperationDetails modelOperationDetails, String modelId) {

@@ -14,6 +14,12 @@ import java.util.Map;
 public final class BuildModelOptions {
     private String description;
 
+    /*
+     * A case-sensitive prefix string to filter documents in the source path
+     * for training.
+     */
+    private String prefix;
+
     private Map<String, String> tags;
 
     private String modelId;
@@ -35,6 +41,27 @@ public final class BuildModelOptions {
      */
     public BuildModelOptions setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the case-sensitive prefix string to filter
+     * documents in the source path for training.
+     *
+     * @return the case-sensitive prefix string to filter documents for training.
+     */
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+    /**
+     * Set the case-sensitive prefix string to filter documents in the source path for training.
+     *
+     * @param prefix the prefix value to set.
+     * @return the BuildModelOptions object itself.
+     */
+    public BuildModelOptions setPrefix(String prefix) {
+        this.prefix = prefix;
         return this;
     }
 

@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
@@ -15,8 +14,7 @@ import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
-import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
@@ -84,11 +82,11 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildModel&#40;new AzureBlobContentSource&#40;trainingFilesUrl&#41;,
+     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
      *         DocumentModelBuildMode.TEMPLATE&#41;
      *     .getFinalResult&#40;&#41;;
      *
@@ -102,9 +100,9 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode -->
      *
-     * @param contentSource an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
@@ -117,8 +115,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginBuildModel(
-        ContentSource contentSource, DocumentModelBuildMode buildMode) {
-        return beginBuildModel(contentSource, buildMode, null, Context.NONE);
+        String trainingFilesUrl, DocumentModelBuildMode buildMode) {
+        return beginBuildModel(trainingFilesUrl, buildMode, null, Context.NONE);
     }
 
     /**
@@ -131,7 +129,7 @@ public final class DocumentModelAdministrationClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions-Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context -->
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String modelId = &quot;custom-model-id&quot;;
@@ -140,12 +138,12 @@ public final class DocumentModelAdministrationClient {
      * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * DocumentModelDetails documentModelDetails
-     *     = documentModelAdministrationClient.beginBuildModel&#40;
-     *         new AzureBlobContentSource&#40;trainingFilesUrl&#41;.setPrefix&#40;prefix&#41;,
+     *     = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
      *         DocumentModelBuildMode.TEMPLATE,
      *         new BuildModelOptions&#40;&#41;
      *             .setModelId&#40;modelId&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
+     *             .setPrefix&#40;prefix&#41;
      *             .setTags&#40;attrs&#41;,
      *         Context.NONE&#41;
      *     .getFinalResult&#40;&#41;;
@@ -162,9 +160,9 @@ public final class DocumentModelAdministrationClient {
      *     &#125;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions-Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context -->
      *
-     * @param contentSource an Azure Storage blob container's SAS URI. A container URI (without SAS)
+     * @param trainingFilesUrl an Azure Storage blob container's SAS URI. A container URI (without SAS)
      * can be used if the container is public or has a managed identity configured. For more information on
      * setting up a training data set, see: <a href="https://aka.ms/azsdk/formrecognizer/buildcustommodel">here</a>.
      * @param buildMode the preferred technique for creating models. For faster training of models use
@@ -173,6 +171,7 @@ public final class DocumentModelAdministrationClient {
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModelDetails custom document analysis model}.
      * @throws DocumentModelOperationException If building the model fails with {@link OperationStatus#FAILED} is created.
@@ -180,10 +179,10 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginBuildModel(
-        ContentSource contentSource, DocumentModelBuildMode buildMode,
+        String trainingFilesUrl, DocumentModelBuildMode buildMode,
         BuildModelOptions buildModelOptions,
         Context context) {
-        return client.beginBuildModel(contentSource, buildMode, buildModelOptions, context)
+        return client.beginBuildModel(trainingFilesUrl, buildMode, buildModelOptions, context)
             .getSyncPoller();
     }
 
@@ -191,21 +190,21 @@ public final class DocumentModelAdministrationClient {
      * Get information about the current Form Recognizer resource.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetails -->
      * <pre>
-     * ResourceInfo resourceInfo = documentModelAdministrationClient.getResourceInfo&#40;&#41;;
+     * ResourceDetails resourceDetails = documentModelAdministrationClient.getResourceDetails&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *     resourceInfo.getDocumentModelLimit&#40;&#41;&#41;;
+     *     resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *     resourceInfo.getDocumentModelCount&#40;&#41;&#41;;
+     *     resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetails -->
      *
      * @return The requested resource information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceInfo getResourceInfo() {
-        return getResourceInfoWithResponse(Context.NONE).getValue();
+    public ResourceDetails getResourceDetails() {
+        return getResourceDetailsWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -213,26 +212,26 @@ public final class DocumentModelAdministrationClient {
      * specified {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context -->
+     * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context -->
      * <pre>
-     * Response&lt;ResourceInfo&gt; response =
-     *     documentModelAdministrationClient.getResourceInfoWithResponse&#40;Context.NONE&#41;;
+     * Response&lt;ResourceDetails&gt; response =
+     *     documentModelAdministrationClient.getResourceDetailsWithResponse&#40;Context.NONE&#41;;
      * System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * ResourceInfo resourceInfo = response.getValue&#40;&#41;;
+     * ResourceDetails resourceDetails = response.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Max number of models that can be build for this account: %d%n&quot;,
-     *     resourceInfo.getDocumentModelLimit&#40;&#41;&#41;;
+     *     resourceDetails.getDocumentModelLimit&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Current count of built document analysis models: %d%n&quot;,
-     *     resourceInfo.getDocumentModelCount&#40;&#41;&#41;;
+     *     resourceDetails.getDocumentModelCount&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context -->
+     * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The requested resource information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceInfo> getResourceInfoWithResponse(Context context) {
-        return client.getResourceInfoWithResponse(context).block();
+    public Response<ResourceDetails> getResourceDetailsWithResponse(Context context) {
+        return client.getResourceDetailsWithResponse(context).block();
     }
 
     /**
@@ -470,7 +469,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization -->
      *
-     * @param sourceModelId Model identifier of the model to copy to target resource.
+     * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}
      *
@@ -478,9 +477,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
-                                                                                      CopyAuthorization target) {
-        return beginCopyModelTo(sourceModelId, target, Context.NONE);
+    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+        CopyAuthorization target) {
+        return beginCopyModelTo(modelId, target, Context.NONE);
     }
 
     /**
@@ -509,7 +508,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCopyModelTo#string-copyAuthorization-Context -->
      *
-     * @param sourceModelId Model identifier of the model to copy to target resource.
+     * @param modelId Model identifier of the model to copy to target resource.
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
      * generated from the target resource's call to {@link DocumentModelAdministrationClient#getCopyAuthorization()}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -518,9 +517,9 @@ public final class DocumentModelAdministrationClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String sourceModelId,
-                                                                                      CopyAuthorization target, Context context) {
-        return client.beginCopyModelTo(sourceModelId, target, context).getSyncPoller();
+    public SyncPoller<DocumentOperationResult, DocumentModelDetails> beginCopyModelTo(String modelId,
+        CopyAuthorization target, Context context) {
+        return client.beginCopyModelTo(modelId, target, context).getSyncPoller();
     }
 
     /**
@@ -706,14 +705,14 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * PagedIterable&lt;ModelOperationSummary&gt;
      *     modelOperationInfo = documentModelAdministrationClient.listOperations&#40;&#41;;
-     * modelOperationInfo.forEach&#40;modelOperation -&gt; &#123;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperation.getStatus&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Created on: %s%n&quot;, modelOperation.getCreatedOn&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Percent completed: %d%n&quot;, modelOperation.getPercentCompleted&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Last updated on: %s%n&quot;, modelOperation.getLastUpdatedOn&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperation.getResourceLocation&#40;&#41;&#41;;
+     * modelOperationInfo.forEach&#40;modelOperationSummary -&gt; &#123;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationSummary.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationSummary.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Created on: %s%n&quot;, modelOperationSummary.getCreatedOn&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Percent completed: %d%n&quot;, modelOperationSummary.getPercentCompleted&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationSummary.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Last updated on: %s%n&quot;, modelOperationSummary.getLastUpdatedOn&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperationSummary.getResourceLocation&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations -->
@@ -734,14 +733,14 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * PagedIterable&lt;ModelOperationSummary&gt;
      *     modelOperationInfo = documentModelAdministrationClient.listOperations&#40;Context.NONE&#41;;
-     * modelOperationInfo.forEach&#40;modelOperation -&gt; &#123;
-     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperation.getOperationId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperation.getStatus&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Created on: %s%n&quot;, modelOperation.getCreatedOn&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Percent completed: %d%n&quot;, modelOperation.getPercentCompleted&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperation.getKind&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation Last updated on: %s%n&quot;, modelOperation.getLastUpdatedOn&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperation.getResourceLocation&#40;&#41;&#41;;
+     * modelOperationInfo.forEach&#40;modelOperationSummary -&gt; &#123;
+     *     System.out.printf&#40;&quot;Operation ID: %s%n&quot;, modelOperationSummary.getOperationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Status: %s%n&quot;, modelOperationSummary.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Created on: %s%n&quot;, modelOperationSummary.getCreatedOn&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Percent completed: %d%n&quot;, modelOperationSummary.getPercentCompleted&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Kind: %s%n&quot;, modelOperationSummary.getKind&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation Last updated on: %s%n&quot;, modelOperationSummary.getLastUpdatedOn&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Operation resource location: %s%n&quot;, modelOperationSummary.getResourceLocation&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations#Context -->

@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.ModelOperationInfoHelper;
+import com.azure.ai.formrecognizer.implementation.util.ModelOperationSummaryHelper;
 
 import java.time.OffsetDateTime;
 
@@ -57,7 +57,6 @@ public class ModelOperationSummary {
      * Set the operationId property: Operation ID.
      *
      * @param operationId the operationId value to set.
-     * @return the OperationInfo object itself.
      */
     void setOperationId(String operationId) {
         this.operationId = operationId;
@@ -76,7 +75,6 @@ public class ModelOperationSummary {
      * Set the status property: Operation status.
      *
      * @param status the status value to set.
-     * @return the OperationInfo object itself.
      */
     void setStatus(ModelOperationStatus status) {
         this.status = status;
@@ -95,7 +93,6 @@ public class ModelOperationSummary {
      * Set the percentCompleted property: Operation progress (0-100).
      *
      * @param percentCompleted the percentCompleted value to set.
-     * @return the OperationInfo object itself.
      */
     void setPercentCompleted(Integer percentCompleted) {
         this.percentCompleted = percentCompleted;
@@ -114,7 +111,6 @@ public class ModelOperationSummary {
      * Set the createdDateTime property: Date and time (UTC) when the operation was created.
      *
      * @param createdOn the createdDateTime value to set.
-     * @return the OperationInfo object itself.
      */
     void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
@@ -133,7 +129,6 @@ public class ModelOperationSummary {
      * Set the lastUpdatedDateTime property: Date and time (UTC) when the status was last updated.
      *
      * @param lastUpdatedOn the lastUpdatedDateTime value to set.
-     * @return the OperationInfo object itself.
      */
     void setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
@@ -152,7 +147,6 @@ public class ModelOperationSummary {
      * Set the kind property: Type of operation.
      *
      * @param kind the kind value to set.
-     * @return the OperationInfo object itself.
      */
     void setKind(ModelOperationKind kind) {
         this.kind = kind;
@@ -171,14 +165,13 @@ public class ModelOperationSummary {
      * Set the resourceLocation property: URL of the resource targeted by this operation.
      *
      * @param resourceLocation the resourceLocation value to set.
-     * @return the OperationInfo object itself.
      */
     void setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
     }
 
     static {
-        ModelOperationInfoHelper.setAccessor(new ModelOperationInfoHelper.ModelOperationInfoAccessor() {
+        ModelOperationSummaryHelper.setAccessor(new ModelOperationSummaryHelper.ModelOperationSummaryAccessor() {
             @Override
             public void setOperationId(ModelOperationSummary modelOperationSummary, String operationId) {
                 modelOperationSummary.setOperationId(operationId);

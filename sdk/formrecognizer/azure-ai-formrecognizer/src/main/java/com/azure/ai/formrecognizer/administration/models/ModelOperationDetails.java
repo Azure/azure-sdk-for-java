@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.administration.models;
 
 
-import com.azure.ai.formrecognizer.implementation.util.ModelOperationHelper;
+import com.azure.ai.formrecognizer.implementation.util.ModelOperationDetailsHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -162,7 +162,7 @@ public final class ModelOperationDetails extends ModelOperationSummary {
     }
 
     static {
-        ModelOperationHelper.setAccessor(new ModelOperationHelper.ModelOperationAccessor() {
+        ModelOperationDetailsHelper.setAccessor(new ModelOperationDetailsHelper.ModelOperationDetailsAccessor() {
             @Override
             public void setModelId(ModelOperationDetails modelOperationDetails, String modelId) {
                 modelOperationDetails.setModelId(modelId);

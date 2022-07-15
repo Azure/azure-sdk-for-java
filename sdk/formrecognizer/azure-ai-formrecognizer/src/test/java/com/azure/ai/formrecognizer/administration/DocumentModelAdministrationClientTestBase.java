@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.TestUtils;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.models.DocumentAnalysisAudience;
@@ -99,9 +99,9 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         assertNotNull(actualResult.getTargetResourceId());
     }
 
-    static void validateResourceInfo(ResourceInfo actualResourceInfo) {
-        assertNotNull(actualResourceInfo.getDocumentModelLimit());
-        assertNotNull(actualResourceInfo.getDocumentModelCount());
+    static void validateResourceInfo(ResourceDetails actualResourceDetails) {
+        assertNotNull(actualResourceDetails.getDocumentModelLimit());
+        assertNotNull(actualResourceDetails.getDocumentModelCount());
     }
 
     void validateDocumentModelData(DocumentModelDetails actualCustomModel) {

@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.administration.models;
 
-import com.azure.ai.formrecognizer.implementation.util.DocumentModelInfoHelper;
+import com.azure.ai.formrecognizer.implementation.util.DocumentModelDetailsHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -102,7 +102,7 @@ public final class DocumentModelDetails {
     }
 
     static {
-        DocumentModelInfoHelper.setAccessor(new DocumentModelInfoHelper.DocumentModelInfoAccessor() {
+        DocumentModelDetailsHelper.setAccessor(new DocumentModelDetailsHelper.DocumentModelDetailsAccessor() {
             @Override
             public void setModelId(DocumentModelDetails documentModelDetails, String modelId) {
                 documentModelDetails.setModelId(modelId);

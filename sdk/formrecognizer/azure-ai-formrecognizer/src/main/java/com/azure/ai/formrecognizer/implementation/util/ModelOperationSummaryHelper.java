@@ -12,16 +12,16 @@ import java.time.OffsetDateTime;
 /**
  * The helper class to set the non-public properties of an {@link ModelOperationSummary} instance.
  */
-public final class ModelOperationInfoHelper {
-    private static ModelOperationInfoAccessor accessor;
+public final class ModelOperationSummaryHelper {
+    private static ModelOperationSummaryAccessor accessor;
 
-    private ModelOperationInfoHelper() {
+    private ModelOperationSummaryHelper() {
     }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ModelOperationSummary} instance.
      */
-    public interface ModelOperationInfoAccessor {
+    public interface ModelOperationSummaryAccessor {
 
         void setOperationId(ModelOperationSummary modelOperationSummary, String operationId);
 
@@ -41,11 +41,11 @@ public final class ModelOperationInfoHelper {
     /**
      * The method called from {@link ModelOperationSummary} to set it's accessor.
      *
-     * @param modelOperationInfoAccessor The accessor.
+     * @param modelOperationSummaryAccessor The accessor.
      */
     public static void setAccessor(
-        final ModelOperationInfoHelper.ModelOperationInfoAccessor modelOperationInfoAccessor) {
-        accessor = modelOperationInfoAccessor;
+        final ModelOperationSummaryAccessor modelOperationSummaryAccessor) {
+        accessor = modelOperationSummaryAccessor;
     }
 
     static void setOperationId(ModelOperationSummary modelOperationSummary, String operationId) {

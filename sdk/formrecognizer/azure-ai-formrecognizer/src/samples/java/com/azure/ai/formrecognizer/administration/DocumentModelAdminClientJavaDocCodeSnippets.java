@@ -3,12 +3,10 @@
 
 package com.azure.ai.formrecognizer.administration;
 
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.administration.models.ContentSource;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
-import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
+import com.azure.ai.formrecognizer.administration.models.ResourceDetails;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
@@ -43,13 +41,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(com.azure.ai.formrecognizer.administration.models.ContentSource, DocumentModelBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentModelBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(new AzureBlobContentSource(trainingFilesUrl),
+            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
                 DocumentModelBuildMode.TEMPLATE)
             .getFinalResult();
 
@@ -62,15 +60,15 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(ContentSource, DocumentModelBuildMode, BuildModelOptions, Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions, Context)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions-Context
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "custom-model-id";
         String prefix = "Invoice";
@@ -78,12 +76,12 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         attrs.put("createdBy", "sample");
 
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildModel(
-                new AzureBlobContentSource(trainingFilesUrl).setPrefix(prefix),
+            = documentModelAdministrationClient.beginBuildModel(trainingFilesUrl,
                 DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
                     .setDescription("model desc")
+                    .setPrefix(prefix)
                     .setTags(attrs),
                 Context.NONE)
             .getFinalResult();
@@ -99,36 +97,36 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
                 System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
             });
         });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#ContentSource-DocumentModelBuildMode-BuildModelOptions-Context
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions-Context
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfo()}
+     * Code snippet for {@link DocumentModelAdministrationClient#getResourceDetails()}
      */
-    public void getAccountProperties() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo
-        ResourceInfo resourceInfo = documentModelAdministrationClient.getResourceInfo();
+    public void getResourceInfo() {
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetails
+        ResourceDetails resourceDetails = documentModelAdministrationClient.getResourceDetails();
         System.out.printf("Max number of models that can be build for this account: %d%n",
-            resourceInfo.getDocumentModelLimit());
+            resourceDetails.getDocumentModelLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
-            resourceInfo.getDocumentModelCount());
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfo
+            resourceDetails.getDocumentModelCount());
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetails
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfoWithResponse(Context)}
+     * Code snippet for {@link DocumentModelAdministrationClient#getResourceDetailsWithResponse(Context)}
      */
-    public void getAccountPropertiesWithResponse() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context
-        Response<ResourceInfo> response =
-            documentModelAdministrationClient.getResourceInfoWithResponse(Context.NONE);
+    public void getResourceInfoWithResponse() {
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context
+        Response<ResourceDetails> response =
+            documentModelAdministrationClient.getResourceDetailsWithResponse(Context.NONE);
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
-        ResourceInfo resourceInfo = response.getValue();
+        ResourceDetails resourceDetails = response.getValue();
         System.out.printf("Max number of models that can be build for this account: %d%n",
-            resourceInfo.getDocumentModelLimit());
+            resourceDetails.getDocumentModelLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
-            resourceInfo.getDocumentModelCount());
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceInfoWithResponse#Context
+            resourceDetails.getDocumentModelCount());
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getResourceDetailsWithResponse#Context
     }
 
     /**
@@ -412,14 +410,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations
         PagedIterable<ModelOperationSummary>
             modelOperationInfo = documentModelAdministrationClient.listOperations();
-        modelOperationInfo.forEach(modelOperation -> {
-            System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-            System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-            System.out.printf("Operation Created on: %s%n", modelOperation.getCreatedOn());
-            System.out.printf("Operation Percent completed: %d%n", modelOperation.getPercentCompleted());
-            System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-            System.out.printf("Operation Last updated on: %s%n", modelOperation.getLastUpdatedOn());
-            System.out.printf("Operation resource location: %s%n", modelOperation.getResourceLocation());
+        modelOperationInfo.forEach(modelOperationSummary -> {
+            System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
+            System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
+            System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedOn());
+            System.out.printf("Operation Percent completed: %d%n", modelOperationSummary.getPercentCompleted());
+            System.out.printf("Operation Kind: %s%n", modelOperationSummary.getKind());
+            System.out.printf("Operation Last updated on: %s%n", modelOperationSummary.getLastUpdatedOn());
+            System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations
     }
@@ -431,14 +429,14 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations#Context
         PagedIterable<ModelOperationSummary>
             modelOperationInfo = documentModelAdministrationClient.listOperations(Context.NONE);
-        modelOperationInfo.forEach(modelOperation -> {
-            System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-            System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-            System.out.printf("Operation Created on: %s%n", modelOperation.getCreatedOn());
-            System.out.printf("Operation Percent completed: %d%n", modelOperation.getPercentCompleted());
-            System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-            System.out.printf("Operation Last updated on: %s%n", modelOperation.getLastUpdatedOn());
-            System.out.printf("Operation resource location: %s%n", modelOperation.getResourceLocation());
+        modelOperationInfo.forEach(modelOperationSummary -> {
+            System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
+            System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
+            System.out.printf("Operation Created on: %s%n", modelOperationSummary.getCreatedOn());
+            System.out.printf("Operation Percent completed: %d%n", modelOperationSummary.getPercentCompleted());
+            System.out.printf("Operation Kind: %s%n", modelOperationSummary.getKind());
+            System.out.printf("Operation Last updated on: %s%n", modelOperationSummary.getLastUpdatedOn());
+            System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.listOperations#Context
     }

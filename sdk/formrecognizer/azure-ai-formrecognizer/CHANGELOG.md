@@ -10,8 +10,10 @@
 - Renamed `CreateComposedModelOptions` model to `ComposeModelOptions`
 - Renamed `DocumentModelInfo` model to `DocumentModelSummary`
 - Renamed `DocumentModel` model to `DocumentModelInfo`
+- Renamed `ModelOperation` model to `ModelOperationDetails`
+- Renamed `ModelOperationInfo` model to `ModelOperationSummary`
 - Renamed `getAccountProperties` method to `getResourceInfo`
-- Renamed `AccountProperties` model to `ResourceInfo`
+- Renamed `AccountProperties` model to `ResourceDetails`
 
 ### Bugs Fixed
 

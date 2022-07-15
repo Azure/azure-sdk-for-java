@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.administration;
 import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.TestUtils;
-import com.azure.ai.formrecognizer.administration.models.AzureBlobContentSource;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
@@ -89,7 +88,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void validGetResourceInfo(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getResourceInfo())
+        StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
             .verifyComplete();
     }
@@ -102,7 +101,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void validGetResourceInfoWithResponse(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getResourceInfo())
+        StepVerifier.create(client.getResourceDetails())
             .assertNext(DocumentModelAdministrationClientTestBase::validateResourceInfo)
             .verifyComplete();
     }
@@ -498,9 +497,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
         if (!CoreUtils.isNullOrEmpty(operationIdList)) {
             operationIdList.forEach(operationId -> StepVerifier.create(client.getOperation(operationId))
-                .assertNext(modelOperation -> {
-                    assertNotNull(modelOperation.getOperationId());
-                    assertNotNull(modelOperation.getCreatedOn());
+                .assertNext(modelOperationDetails -> {
+                    assertNotNull(modelOperationDetails.getOperationId());
+                    assertNotNull(modelOperationDetails.getCreatedOn());
                 })
                 .verifyComplete());
         }

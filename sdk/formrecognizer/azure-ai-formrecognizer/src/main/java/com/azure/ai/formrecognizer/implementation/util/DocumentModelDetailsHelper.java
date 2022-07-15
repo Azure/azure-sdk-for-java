@@ -12,16 +12,16 @@ import java.util.Map;
 /**
  * The helper class to set the non-public properties of an {@link DocumentModelDetails} instance.
  */
-public final class DocumentModelInfoHelper {
-    private static DocumentModelInfoAccessor accessor;
+public final class DocumentModelDetailsHelper {
+    private static DocumentModelDetailsAccessor accessor;
 
-    private DocumentModelInfoHelper() {
+    private DocumentModelDetailsHelper() {
     }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link DocumentModelDetails} instance.
      */
-    public interface DocumentModelInfoAccessor {
+    public interface DocumentModelDetailsAccessor {
 
         void setModelId(DocumentModelDetails documentModelDetails, String modelId);
 
@@ -37,10 +37,10 @@ public final class DocumentModelInfoHelper {
     /**
      * The method called from {@link DocumentModelDetails} to set it's accessor.
      *
-     * @param documentModelInfoAccessor The accessor.
+     * @param documentModelDetailsAccessor The accessor.
      */
-    public static void setAccessor(final DocumentModelInfoAccessor documentModelInfoAccessor) {
-        accessor = documentModelInfoAccessor;
+    public static void setAccessor(final DocumentModelDetailsAccessor documentModelDetailsAccessor) {
+        accessor = documentModelDetailsAccessor;
     }
 
     static void setModelId(DocumentModelDetails documentModelDetails, String modelId) {
