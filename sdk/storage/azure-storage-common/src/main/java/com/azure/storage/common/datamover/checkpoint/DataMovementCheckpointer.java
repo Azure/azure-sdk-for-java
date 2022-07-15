@@ -3,6 +3,8 @@
 
 package com.azure.storage.common.datamover.checkpoint;
 
+import java.util.stream.Stream;
+
 /**
  * Can checkpoint transfers.
  */
@@ -12,7 +14,7 @@ public interface DataMovementCheckpointer {
      * List transfers.
      * @return transfers
      */
-    Iterable<DataTransferState> listTransfers();
+    Stream<DataTransferState> listTransfers();
 
     /**
      * Adds transfer.

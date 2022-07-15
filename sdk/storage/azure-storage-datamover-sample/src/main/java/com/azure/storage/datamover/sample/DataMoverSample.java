@@ -8,6 +8,7 @@ import com.azure.storage.blob.resource.BlobStorageResources;
 import com.azure.storage.common.datamover.DataMover;
 import com.azure.storage.common.datamover.DataMoverBuilder;
 import com.azure.storage.common.datamover.DataTransfer;
+import com.azure.storage.common.datamover.checkpoint.InMemoryDataMovementCheckpointer;
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
 import com.azure.storage.common.resource.filesystem.LocalFileSystemStorageResources;
@@ -170,6 +171,17 @@ public class DataMoverSample {
         DataTransfer dataTransfer = dataMover.startTransfer(share, blobContainer);
 
         dataTransfer.awaitCompletion();
+    }
+
+    private static void configureCheckpointing(BlobServiceClient blobServiceClient) {
+        DataMover dataMover1 = new DataMoverBuilder()
+            .checkpointer(new InMemoryDataMovementCheckpointer())
+            .build();
+
+        BlobContainerClient checkpointingContainer = blobServiceClient.getBlobContainerClient("checkpointingContainer");
+        DataMover dataMover2 = new DataMoverBuilder()
+            .checkpointer(new BlobDataMovementCheckpointer(checkpointingContainer))
+            .build();
     }
 
     private static void cleanup(BlobServiceClient blobServiceClient, ShareServiceClient shareServiceClient) {

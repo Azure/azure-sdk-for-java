@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.storage.common.datamover.checkpoint;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * In memory DataMovementCheckpointer
@@ -11,8 +14,8 @@ public class InMemoryDataMovementCheckpointer implements DataMovementCheckpointe
     private final ConcurrentHashMap<String, DataTransferState> map = new ConcurrentHashMap<>();
 
     @Override
-    public Iterable<DataTransferState> listTransfers() {
-        return map.values();
+    public Stream<DataTransferState> listTransfers() {
+        return map.values().stream();
     }
 
     @Override

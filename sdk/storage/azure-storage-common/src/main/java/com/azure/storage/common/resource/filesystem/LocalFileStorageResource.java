@@ -51,7 +51,15 @@ class LocalFileStorageResource implements StorageResource {
 
     @Override
     public void consumeReadableByteChannel(ReadableByteChannel channel, long length) {
-        path.getParent().toFile().mkdirs();
+        Path parent = path.getParent();
+        if (parent != null) {
+            if (!parent.toFile().exists()) {
+                boolean created = parent.toFile().mkdirs();
+                if (!created) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(new IOException("Unable to create dir")));
+                }
+            }
+        }
         try (OutputStream fos = new FileOutputStream(path.toFile())) {
             transfer(Channels.newInputStream(channel), fos);
         } catch (IOException e) {
