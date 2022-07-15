@@ -526,6 +526,21 @@ class RxGatewayStoreModel implements RxStoreModel {
         return Flux.empty();
     }
 
+    public void prepareRequestForAuth(RxDocumentServiceRequest request, String resourceName) {
+        int documentIdPrefixPosition = -1;
+        boolean needToChangeIdEncoding = request.getResourceType() == ResourceType.Document &&
+            (documentIdPrefixPosition = resourceName.indexOf("/docs/")) > 0;
+
+        if (needToChangeIdEncoding) {
+            String encodedResourceName = resourceName.substring(0, documentIdPrefixPosition + 6) +
+                Strings.encodeURIComponent(resourceName.substring(documentIdPrefixPosition + 6));
+
+            if (!resourceName.equals(encodedResourceName)) {
+                request.setResourceAddress(encodedResourceName);
+            }
+        }
+    }
+
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
         if (request.getResourceType() == ResourceType.DocumentCollection &&
             request.getOperationType() == OperationType.Delete) {
