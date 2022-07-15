@@ -169,7 +169,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -368,7 +368,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                             apiVersion,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -720,7 +720,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

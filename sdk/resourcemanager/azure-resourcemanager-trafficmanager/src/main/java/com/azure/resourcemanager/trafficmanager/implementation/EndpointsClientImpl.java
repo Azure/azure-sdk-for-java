@@ -189,7 +189,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -391,7 +391,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -575,7 +575,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getSubscriptionId(),
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -782,7 +782,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

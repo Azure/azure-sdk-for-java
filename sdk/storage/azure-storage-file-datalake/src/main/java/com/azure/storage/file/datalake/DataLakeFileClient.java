@@ -363,7 +363,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         Context context) {
         Objects.requireNonNull(options);
         Mono<Response<PathInfo>> upload = this.dataLakeFileAsyncClient.uploadWithResponse(options)
-            .subscriberContext(FluxUtil.toReactorContext(context));
+            .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

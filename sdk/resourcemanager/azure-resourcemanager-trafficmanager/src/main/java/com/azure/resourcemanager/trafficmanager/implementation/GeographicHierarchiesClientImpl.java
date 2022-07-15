@@ -78,7 +78,7 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
         }
         return FluxUtil
             .withContext(context -> service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

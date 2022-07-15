@@ -131,7 +131,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -290,7 +290,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                             apiVersion,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

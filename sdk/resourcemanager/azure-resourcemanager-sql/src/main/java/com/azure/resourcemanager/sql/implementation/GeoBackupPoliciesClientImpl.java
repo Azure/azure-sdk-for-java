@@ -178,7 +178,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
                             geoBackupPolicyName,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -390,7 +390,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
                             databaseName,
                             geoBackupPolicyName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -578,7 +578,7 @@ public final class GeoBackupPoliciesClientImpl implements GeoBackupPoliciesClien
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

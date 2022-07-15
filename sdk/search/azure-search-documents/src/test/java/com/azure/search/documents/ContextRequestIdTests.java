@@ -56,11 +56,11 @@ public class ContextRequestIdTests extends SearchTestBase {
         String expectedRequestId = testResourceNamer.randomUuid();
         HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
 
-        reactor.util.context.Context subscriberContext = reactor.util.context.Context
+        reactor.util.context.Context contextWrite = reactor.util.context.Context
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         Mono<String> request = client.getDocumentCountWithResponse()
-            .contextWrite(subscriberContext)
+            .contextWrite(contextWrite)
             .map(ContextRequestIdTests::extractFromResponse)
             .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
             .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
@@ -91,11 +91,11 @@ public class ContextRequestIdTests extends SearchTestBase {
         String expectedRequestId = testResourceNamer.randomUuid();
         HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
 
-        reactor.util.context.Context subscriberContext = reactor.util.context.Context
+        reactor.util.context.Context contextWrite = reactor.util.context.Context
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         Mono<String> request = client.getIndexStatisticsWithResponse("index")
-            .contextWrite(subscriberContext)
+            .contextWrite(contextWrite)
             .map(ContextRequestIdTests::extractFromResponse)
             .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
             .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
@@ -126,11 +126,11 @@ public class ContextRequestIdTests extends SearchTestBase {
         String expectedRequestId = testResourceNamer.randomUuid();
         HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
 
-        reactor.util.context.Context subscriberContext = reactor.util.context.Context
+        reactor.util.context.Context contextWrite = reactor.util.context.Context
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         Mono<String> request = client.getIndexerWithResponse("indexer")
-            .contextWrite(subscriberContext)
+            .contextWrite(contextWrite)
             .map(ContextRequestIdTests::extractFromResponse)
             .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
             .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);

@@ -147,7 +147,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                             databaseName,
                             serviceTierAdvisorName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -337,7 +337,7 @@ public final class ServiceTierAdvisorsClientImpl implements ServiceTierAdvisorsC
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

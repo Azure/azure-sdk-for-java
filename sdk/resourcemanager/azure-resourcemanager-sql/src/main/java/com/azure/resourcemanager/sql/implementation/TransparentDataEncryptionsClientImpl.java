@@ -159,7 +159,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                             transparentDataEncryptionName,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -408,7 +408,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
                             databaseName,
                             transparentDataEncryptionName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

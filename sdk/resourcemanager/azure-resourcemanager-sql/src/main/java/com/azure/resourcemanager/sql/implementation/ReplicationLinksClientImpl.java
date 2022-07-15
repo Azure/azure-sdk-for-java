@@ -219,7 +219,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -389,7 +389,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -568,7 +568,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -849,7 +849,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1144,7 +1144,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             linkId,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1502,7 +1502,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

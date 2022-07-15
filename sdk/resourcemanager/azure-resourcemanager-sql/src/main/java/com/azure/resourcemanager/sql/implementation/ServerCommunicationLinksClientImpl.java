@@ -179,7 +179,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             serverName,
                             communicationLinkName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -338,7 +338,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             serverName,
                             communicationLinkName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -510,7 +510,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             communicationLinkName,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -861,7 +861,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

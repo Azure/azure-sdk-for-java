@@ -133,7 +133,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
                             certificateRequest,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

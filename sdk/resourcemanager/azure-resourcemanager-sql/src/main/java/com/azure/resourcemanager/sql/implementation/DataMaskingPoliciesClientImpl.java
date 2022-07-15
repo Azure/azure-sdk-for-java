@@ -148,7 +148,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
                             dataMaskingPolicyName,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -338,7 +338,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
                             databaseName,
                             dataMaskingPolicyName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
