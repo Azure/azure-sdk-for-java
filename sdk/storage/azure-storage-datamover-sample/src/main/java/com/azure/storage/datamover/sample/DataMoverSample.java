@@ -18,13 +18,16 @@ import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.resource.ShareStorageResources;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DataMoverSample {
 
     private static final String STORAGE_CONNECTION_STRING = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
     private static final long timestamp = System.currentTimeMillis();
+    private static final AtomicInteger counter = new AtomicInteger(1);
 
     public static void main(String[] args) throws Exception {
         DataMover dataMover = new DataMoverBuilder().build();
@@ -41,6 +44,9 @@ public class DataMoverSample {
         transferFileToBlob(dataMover, blobServiceClient);
         BlobContainerClient blobContainerClient = transferDirectoryToBlobContainer(dataMover, blobServiceClient);
 
+        BlobContainerClient blobContainerClient2 = uploadDirectoryToBlobContainerWithSDK(blobServiceClient);
+        downloadBlobContainerToDirectory(blobContainerClient2);
+
         transferFileToShareFile(dataMover, shareServiceClient);
         ShareClient shareClient = transferDirectoryToShare(dataMover, shareServiceClient);
         transferDirectoryToShareDirectory(dataMover, shareServiceClient);
@@ -51,7 +57,7 @@ public class DataMoverSample {
     }
 
     private static BlobClient transferFileToBlob(DataMover dataMover, BlobServiceClient blobServiceClient) throws Exception {
-        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-01-filetoblob");
+        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-" + counter.incrementAndGet() + "-filetoblob");
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
 
@@ -67,7 +73,7 @@ public class DataMoverSample {
     }
 
     private static BlobContainerClient transferDirectoryToBlobContainer(DataMover dataMover, BlobServiceClient blobServiceClient) throws Exception {
-        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-02-directorytoblobcontainer");
+        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-" + counter.incrementAndGet() + "-directorytoblobcontainer");
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
@@ -81,8 +87,26 @@ public class DataMoverSample {
         return containerClient;
     }
 
+    private static BlobContainerClient uploadDirectoryToBlobContainerWithSDK(BlobServiceClient blobServiceClient) throws Exception {
+
+        Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
+
+        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-" + counter.incrementAndGet() + "-directorytoblobcontainersdk");
+
+        containerClient.uploadDirectory(sampleDirectory.toString());
+
+        return containerClient;
+    }
+
+    private static void downloadBlobContainerToDirectory(BlobContainerClient blobContainerClient) throws Exception {
+
+        Path tempDirectory = Files.createTempDirectory("downloadBlobContainerToDirectory");
+
+        blobContainerClient.downloadTo(tempDirectory.toString());
+    }
+
     private static void transferFileToShareFile(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
-        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-03-filetosharefile");
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-" + counter.incrementAndGet() + "filetosharefile");
         ShareFileClient fileClient = shareClient.getFileClient("samplefile.txt");
 
         Path sampleFile = Paths.get(DataMoverSample.class.getResource("/samplefile.txt").toURI());
@@ -96,7 +120,7 @@ public class DataMoverSample {
     }
 
     private static ShareClient transferDirectoryToShare(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
-        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-04-directorytoshare");
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-" + counter.incrementAndGet() + "-directorytoshare");
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
 
@@ -111,7 +135,7 @@ public class DataMoverSample {
     }
 
     private static void transferDirectoryToShareDirectory(DataMover dataMover, ShareServiceClient shareServiceClient) throws Exception {
-        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-05-directorytosharedirectory");
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-" + counter.incrementAndGet() + "-directorytosharedirectory");
         ShareDirectoryClient shareDirectoryClient = shareClient.createDirectory("foo");
 
         Path sampleDirectory = Paths.get(DataMoverSample.class.getResource("/samplefiles").toURI());
@@ -127,7 +151,7 @@ public class DataMoverSample {
     private static void transferBlobContainerToShare(
         DataMover dataMover, BlobContainerClient blobContainerClient, ShareServiceClient shareServiceClient) throws Exception {
 
-        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-06-blobcontainertoshare");
+        ShareClient shareClient = shareServiceClient.createShare("a" + timestamp + "-" + counter.incrementAndGet() + "-blobcontainertoshare");
 
         StorageResourceContainer blobContainer = BlobStorageResources.blobContainer(blobContainerClient);
         StorageResourceContainer share = ShareStorageResources.share(shareClient);
@@ -138,7 +162,7 @@ public class DataMoverSample {
     }
 
     private static void transferShareToBlobContainer(DataMover dataMover, ShareClient shareClient, BlobServiceClient blobServiceClient) throws Exception{
-        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-07-sharetoblobcontainer");
+        BlobContainerClient containerClient = blobServiceClient.createBlobContainerIfNotExists("a" +timestamp + "-" + counter.incrementAndGet() + "-sharetoblobcontainer");
 
         StorageResourceContainer share = ShareStorageResources.share(shareClient);
         StorageResourceContainer blobContainer = BlobStorageResources.blobContainer(containerClient);

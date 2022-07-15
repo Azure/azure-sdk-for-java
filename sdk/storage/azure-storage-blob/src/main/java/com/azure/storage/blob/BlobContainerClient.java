@@ -23,11 +23,17 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
+import com.azure.storage.blob.resource.BlobStorageResources;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.datamover.DataMover;
+import com.azure.storage.common.datamover.DataMoverBuilder;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.resource.StorageResourceContainer;
+import com.azure.storage.common.resource.filesystem.LocalFileSystemStorageResources;
 import reactor.core.publisher.Mono;
 
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -1049,6 +1055,34 @@ public final class BlobContainerClient {
         Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+
+    // TODO (kasobol-msft) This should be shared instance like default httptransport in .NET
+    private static final DataMover DATA_MOVER = new DataMoverBuilder().build();
+
+    /**
+     * Downloads container to directory.
+     * @param directoryPath path of directory.
+     */
+    public void downloadTo(String directoryPath) {
+        StorageResourceContainer destination = LocalFileSystemStorageResources.directory(
+            Path.of(directoryPath));
+        StorageResourceContainer source = BlobStorageResources.blobContainer(this);
+
+        DATA_MOVER.startTransfer(source, destination).awaitCompletion();
+    }
+
+    /**
+     * Uploads directory.
+     * @param directoryPath path of directory.
+     */
+    public void uploadDirectory(String directoryPath) {
+        StorageResourceContainer source = LocalFileSystemStorageResources.directory(
+            Path.of(directoryPath));
+        StorageResourceContainer destination = BlobStorageResources.blobContainer(this);
+
+        DATA_MOVER.startTransfer(source, destination).awaitCompletion();
     }
 
 //    /**

@@ -29,6 +29,7 @@ public interface StorageResource {
     /**
      * A flag indicating that the storage resource can consume an {@link ReadableByteChannel}. I.e., it can
      * transfer bytes from the {@link ReadableByteChannel} to itself.
+     *
      * @return A flag indicating that the storage resource can consume an {@link ReadableByteChannel}.
      */
     boolean canConsumeReadableByteChannel();
@@ -57,6 +58,9 @@ public interface StorageResource {
 
     /**
      * Opens an {@link ReadableByteChannel} to access bytes stored by this storage resource.
+     *
+     * TODO (kasobol-msft) In .NET look at System.IO.Pipes
+     *
      * @return An {@link ReadableByteChannel} to access bytes stored by this storage resource.
      * @throws UnsupportedOperationException If {@link #canProduceReadableByteChannel()} returns {@code false}.
      */

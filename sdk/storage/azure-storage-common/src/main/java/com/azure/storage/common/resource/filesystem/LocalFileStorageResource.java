@@ -28,7 +28,7 @@ class LocalFileStorageResource implements StorageResource {
     private final List<String> abstractPath;
 
     LocalFileStorageResource(Path path, List<String> abstractPath) {
-        if (!path.toFile().isFile()) {
+        if (path.toFile().exists() && !path.toFile().isFile()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("provided path isn't file"));
         }
         this.path = path;
@@ -51,6 +51,7 @@ class LocalFileStorageResource implements StorageResource {
 
     @Override
     public void consumeReadableByteChannel(ReadableByteChannel channel, long length) {
+        path.getParent().toFile().mkdirs();
         try (OutputStream fos = new FileOutputStream(path.toFile())) {
             transfer(Channels.newInputStream(channel), fos);
         } catch (IOException e) {
