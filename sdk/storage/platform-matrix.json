@@ -10,19 +10,19 @@
       "Agent": { "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" } },
       "JavaTestVersion": "1.8",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false
+      "TestFromSource": true
     },
     {
       "Agent": { "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" } },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "okhttp",
-      "TestFromSource": false
+      "TestFromSource": true
     },
     {
       "Agent": { "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" } },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false
+      "TestFromSource": true
     },
     {
       "Agent": {
@@ -30,7 +30,7 @@
       },
       "JavaTestVersion": ["1.8", "1.11"],
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
+      "TestFromSource": true,
       "StorageRunStressScenarios" : "true",
       "TestOptions": "-DskipTests"
     }

@@ -35,7 +35,7 @@ variables:
   # has been processed. Without a default value it'll be treated as a string literal
   # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
   # matrix has been processed
-  TestFromSource: false
+  TestFromSource: true
   AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true

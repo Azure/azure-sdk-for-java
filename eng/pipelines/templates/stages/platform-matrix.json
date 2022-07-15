@@ -10,7 +10,7 @@
     },
     "JavaTestVersion": [ "1.8", "1.17" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
-    "TestFromSource": false,
+    "TestFromSource": true,
     "TestGoals": "surefire:test",
     "TestOptions": ""
   },
@@ -37,7 +37,7 @@
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
+      "TestFromSource": true,
       "TestGoals": "verify",
       "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     },
@@ -47,7 +47,7 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
+      "TestFromSource": true,
       "TestGoals": "surefire:test",
       "TestOptions": ""
     }
