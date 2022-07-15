@@ -19,7 +19,6 @@
       <module>azure-storage-file-datalake</module>
       <module>azure-storage-internal-avro</module>
       <module>azure-storage-queue</module>
-      <module>azure-storage-datamover</module>
       <module>azure-storage-datamover-s3</module>
       <module>azure-storage-datamover-sample</module>
         <module>azure-storage-perf</module>

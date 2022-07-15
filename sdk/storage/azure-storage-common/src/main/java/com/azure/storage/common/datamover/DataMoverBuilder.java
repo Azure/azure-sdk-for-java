@@ -1,4 +1,4 @@
-package com.azure.storage.datamover;
+package com.azure.storage.common.datamover;
 
 public class DataMoverBuilder {
 

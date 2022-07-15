@@ -1,4 +1,4 @@
-package com.azure.storage.datamover;
+package com.azure.storage.common.datamover;
 
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
