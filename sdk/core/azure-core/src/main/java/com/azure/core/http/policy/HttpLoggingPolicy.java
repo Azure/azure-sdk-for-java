@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
@@ -115,7 +116,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-
         final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
@@ -124,6 +124,30 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .flatMap(response -> responseLogger.logResponse(logger,
                 getResponseLoggingOptions(response, startNs, context)))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        // No logging will be performed, trigger a no-op.
+        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
+            return next.processSync();
+        }
+
+        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final long startNs = System.nanoTime();
+
+        requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
+        try {
+            HttpResponse response = next.processSync();
+            if (response != null) {
+                response = responseLogger.logResponseSync(
+                    logger, getResponseLoggingOptions(response, startNs, context));
+            }
+            return response;
+        } catch (RuntimeException e) {
+            logger.warning("<-- HTTP FAILED: ", e);
+            throw logger.logExceptionAsWarning(e);
+        }
     }
 
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
@@ -148,6 +172,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             return Mono.empty();
+        }
+
+        @Override
+        public void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+            if (logger.canLogAtLevel(logLevel)) {
+                log(logLevel, logger, loggingOptions);
+            }
         }
 
         private void log(LogLevel logLevel, ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
@@ -217,21 +249,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
 
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
-            String contentLengthString = response.getHeaderValue("Content-Length");
-            if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
-                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
-            }
 
-            if (httpLogDetailLevel.shouldLogUrl()) {
-                logBuilder
-                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
-                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
-            }
+            logContentLength(response, logBuilder);
 
-            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
-            }
+            logUrl(loggingOptions, response, logBuilder);
+
+            logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue("Content-Type");
@@ -244,6 +267,58 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             logBuilder.log(RESPONSE_LOG_MESSAGE);
             return Mono.just(response);
+        }
+
+        private void logHeaders(ClientLogger logger, HttpResponse response, LoggingEventBuilder logBuilder) {
+            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
+            }
+        }
+
+        private void logUrl(HttpResponseLoggingContext loggingOptions, HttpResponse response,
+                               LoggingEventBuilder logBuilder) {
+            if (httpLogDetailLevel.shouldLogUrl()) {
+                logBuilder
+                    .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
+                    .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                    .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
+            }
+        }
+
+        private void logContentLength(HttpResponse response, LoggingEventBuilder logBuilder) {
+            String contentLengthString = response.getHeaderValue("Content-Length");
+            if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
+                logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
+            }
+        }
+
+        @Override
+        public HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+            final HttpResponse response = loggingOptions.getHttpResponse();
+
+            if (!logger.canLogAtLevel(logLevel)) {
+                return response;
+            }
+            LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
+
+            logContentLength(response, logBuilder);
+
+            logUrl(loggingOptions, response, logBuilder);
+
+            logHeaders(logger, response, logBuilder);
+
+            if (httpLogDetailLevel.shouldLogBody()) {
+                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                long contentLength = getContentLength(logger, response.getHeaders());
+                if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                    return new LoggingHttpResponse(response, logBuilder, logger,
+                        (int) contentLength, contentTypeHeader, prettyPrintBody);
+                }
+            }
+
+            logBuilder.log(RESPONSE_LOG_MESSAGE);
+            return response;
         }
     }
 
@@ -385,7 +460,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     /*
      * Gets the request retry count to include in logging.
      *
-     * If there is no value set or it isn't a valid number null will be returned indicating that retry count won't be
+     * If there is no value set, or it isn't a valid number null will be returned indicating that retry count won't be
      * logged.
      */
     private static Integer getRequestRetryCount(Context context) {

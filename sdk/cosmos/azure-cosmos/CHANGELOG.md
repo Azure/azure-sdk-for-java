@@ -1,8 +1,18 @@
 ## Release History
 
+### 4.33.0 (2022-07-14)
+#### Other Changes
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
+
+### 4.32.1 (2022-06-30)
+
+#### Bugs Fixed
+* Added a fix for `CloneNotSupportedException` when trying to instantiate a `Cosmos(Async)Client` and using a MAC provider which would not support cloning. Instead, this should be handled gracefully (less ideal perf is expected - but functionally it should work.) - See [PR 29719](https://github.com/Azure/azure-sdk-for-java/pull/29719)
+
 ### 4.32.0 (2022-06-27)
 #### Other Changes
-* Remove requires `io.netty.transport.epoll` from `module-info`.
+* Remove requires `io.netty.transport.epoll` from `module-info` - See [PR 29509](https://github.com/Azure/azure-sdk-for-java/pull/29509)
 * Converted from `durationInMicroSec` to `durationInMilliSecs` in `CosmosDiagnostics` - See [PR 29643](https://github.com/Azure/azure-sdk-for-java/pull/29643)
 
 ### 4.31.0 (2022-06-08)

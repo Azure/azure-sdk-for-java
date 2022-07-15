@@ -26,7 +26,10 @@ public interface PrivateEndpointConnections {
      * @return a specific private endpoint connection under a topic, domain, or partner namespace.
      */
     PrivateEndpointConnection get(
-        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
+        String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType,
+        String parentName,
+        String privateEndpointConnectionName);
 
     /**
      * Get a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -46,7 +49,7 @@ public interface PrivateEndpointConnections {
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -68,7 +71,7 @@ public interface PrivateEndpointConnections {
      */
     PrivateEndpointConnection update(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
@@ -91,7 +94,7 @@ public interface PrivateEndpointConnections {
      */
     PrivateEndpointConnection update(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection,
@@ -111,7 +114,10 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(
-        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
+        String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType,
+        String parentName,
+        String privateEndpointConnectionName);
 
     /**
      * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -129,7 +135,7 @@ public interface PrivateEndpointConnections {
      */
     void delete(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -149,7 +155,7 @@ public interface PrivateEndpointConnections {
      *     {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByResource(
-        String resourceGroupName, ParentType parentType, String parentName);
+        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName);
 
     /**
      * Get all private endpoint connections under a topic, domain, or partner namespace.
@@ -176,7 +182,7 @@ public interface PrivateEndpointConnections {
      */
     PagedIterable<PrivateEndpointConnection> listByResource(
         String resourceGroupName,
-        ParentType parentType,
+        PrivateEndpointConnectionsParentType parentType,
         String parentName,
         String filter,
         Integer top,

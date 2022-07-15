@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.GatewaysClient;
 import com.azure.resourcemanager.loganalytics.models.Gateways;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GatewaysImpl implements Gateways {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewaysImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GatewaysImpl.class);
 
     private final GatewaysClient innerClient;
 

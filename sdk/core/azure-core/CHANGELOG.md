@@ -1,6 +1,16 @@
 # Release History
 
-## 1.30.0-beta.1 (Unreleased)
+## 1.31.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.30.0 (2022-06-30)
 
 ### Features Added
 
@@ -17,8 +27,6 @@
   - Added ability to get and set `ProgressReporter` on `Context`.
 - Added `HttpPipelineCallContext.getContext()`.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
@@ -26,6 +34,11 @@
 - Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.17` to `3.4.19`.
+- Upgraded Jackson from `2.13.2.2` to `2.13.3`.
 
 ## 1.29.1 (2022-06-03)
 

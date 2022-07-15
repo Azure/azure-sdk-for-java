@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SpatialSpec model. */
 @Fluent
 public final class SpatialSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SpatialSpec.class);
-
     /*
      * The path for which the indexing behavior applies to. Index paths
      * typically start with root and end with wildcard (/path/*)

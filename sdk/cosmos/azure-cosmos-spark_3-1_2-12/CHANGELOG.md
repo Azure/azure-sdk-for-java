@@ -1,14 +1,14 @@
 ## Release History
 
-### 4.12.0-beta.1 (Unreleased)
+### 4.12.0 (2022-07-14)
 
 #### Features Added
-
-#### Breaking Changes
+* Added a new config option `spark.cosmos.changeFeed.batchCheckpointLocation` that allows to also proceed a change feed batch query from a checkpoint/offset - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+* Added an option to also restrict the memory consumption for batch change feed queries (via the `spark.cosmos.changeFeed.itemCountPerTriggerHint` config option) - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
+* Added a UDF `CreateChangeFeedOffsetFromSpark2` that allows creating a Spark 3.* offset/checkpoint from a Spark 2.4 checkpoint - See [PR 29771](https://github.com/Azure/azure-sdk-for-java/pull/29771)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed a bug preventing use patch on container not partitioned by `id`. - See [PR 29883](https://github.com/Azure/azure-sdk-for-java/pull/29883)
 
 ### 4.11.2 (2022-06-17)
 

@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -55,6 +56,28 @@ public final class PageBlobsGetPageRangesDiffHeaders {
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PageBlobsGetPageRangesDiffHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PageBlobsGetPageRangesDiffHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        if (rawHeaders.getValue("x-ms-blob-content-length") != null) {
+            this.xMsBlobContentLength = Long.parseLong(rawHeaders.getValue("x-ms-blob-content-length"));
+        }
+        this.eTag = rawHeaders.getValue("ETag");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

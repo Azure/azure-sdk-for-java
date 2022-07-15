@@ -1,5 +1,10 @@
 ## Release History
 
+### 3.24.0 (2022-07-14)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.33.0`.
+
 ### 3.23.0 (2022-06-27)
 > [!IMPORTANT]
 > This release supports Spring Boot version 2.7.x and above.
