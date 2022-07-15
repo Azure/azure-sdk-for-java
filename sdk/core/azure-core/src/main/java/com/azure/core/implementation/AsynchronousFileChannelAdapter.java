@@ -15,8 +15,8 @@ import java.nio.channels.WritePendingException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}
@@ -26,97 +26,51 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     private static final ClientLogger LOGGER = new ClientLogger(AsynchronousFileChannelAdapter.class);
 
     private final AsynchronousFileChannel fileChannel;
-    private final AtomicLong position;
+
+    private static final AtomicLongFieldUpdater<AsynchronousFileChannelAdapter> POSITION_ATOMIC_UPDATER =
+        AtomicLongFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, "position");
+    private volatile long position;
 
     // AsynchronousByteChannel implementation may disallow concurrent reads and writes.
-    private final AtomicReference<Operation> pendingOperation = new AtomicReference<>();
+    private static final AtomicReferenceFieldUpdater<AsynchronousFileChannelAdapter, Operation> PENDING_OPERATION_ATOMIC_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(
+            AsynchronousFileChannelAdapter.class, Operation.class, "pendingOperation");
+    private volatile Operation pendingOperation = null;
 
     public AsynchronousFileChannelAdapter(AsynchronousFileChannel fileChannel, long position) {
         this.fileChannel = Objects.requireNonNull(fileChannel);
-        this.position = new AtomicLong(position);
+        this.position = position;
     }
 
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
         beginOperation(Operation.READ);
-        fileChannel.read(dst, position.get(), attachment, new CompletionHandler<Integer, A>() {
-            @Override
-            public void completed(Integer result, A attachment) {
-                if (result >= 0) {
-                    position.addAndGet(result);
-                }
-                endOperation(Operation.READ);
-                handler.completed(result, attachment);
-            }
-
-            @Override
-            public void failed(Throwable exc, A attachment) {
-                endOperation(Operation.READ);
-                handler.failed(exc, attachment);
-            }
-        });
+        fileChannel.read(dst, POSITION_ATOMIC_UPDATER.get(this), attachment,
+            new DelegatingCompletionHandler<>(handler, Operation.READ));
     }
 
     @Override
     public Future<Integer> read(ByteBuffer dst) {
         beginOperation(Operation.READ);
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        fileChannel.read(dst, position.get(), dst, new CompletionHandler<Integer, ByteBuffer>() {
-            @Override
-            public void completed(Integer result, ByteBuffer attachment) {
-                if (result >= 0) {
-                    position.addAndGet(result);
-                }
-                endOperation(Operation.READ);
-                future.complete(result);
-            }
-
-            @Override
-            public void failed(Throwable exc, ByteBuffer attachment) {
-                endOperation(Operation.READ);
-                future.completeExceptionally(exc);
-            }
-        });
+        fileChannel.read(dst, POSITION_ATOMIC_UPDATER.get(this), dst,
+            new DelegatingCompletionHandler<>(future, Operation.READ));
         return future;
     }
 
     @Override
     public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
         beginOperation(Operation.WRITE);
-        fileChannel.write(src, position.get(), attachment, new CompletionHandler<Integer, A>() {
-            @Override
-            public void completed(Integer result, A attachment) {
-                position.addAndGet(result);
-                endOperation(Operation.WRITE);
-                handler.completed(result, attachment);
-            }
-
-            @Override
-            public void failed(Throwable exc, A attachment) {
-                endOperation(Operation.WRITE);
-                handler.failed(exc, attachment);
-            }
-        });
+        fileChannel.write(src, POSITION_ATOMIC_UPDATER.get(this), attachment,
+            new DelegatingCompletionHandler<>(handler, Operation.WRITE));
     }
 
     @Override
     public Future<Integer> write(ByteBuffer src) {
         beginOperation(Operation.WRITE);
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        fileChannel.write(src, position.get(), src, new CompletionHandler<Integer, ByteBuffer>() {
-            @Override
-            public void completed(Integer result, ByteBuffer attachment) {
-                position.addAndGet(result);
-                endOperation(Operation.WRITE);
-                future.complete(result);
-            }
-
-            @Override
-            public void failed(Throwable exc, ByteBuffer attachment) {
-                endOperation(Operation.WRITE);
-                future.completeExceptionally(exc);
-            }
-        });
+        fileChannel.write(src, POSITION_ATOMIC_UPDATER.get(this), src,
+            new DelegatingCompletionHandler<>(future, Operation.WRITE));
         return future;
     }
 
@@ -131,8 +85,8 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     }
 
     private void beginOperation(Operation operation) {
-        if (!pendingOperation.compareAndSet(null, operation)) {
-            switch (pendingOperation.get()) {
+        if (!PENDING_OPERATION_ATOMIC_UPDATER.compareAndSet(this, null, operation)) {
+            switch (PENDING_OPERATION_ATOMIC_UPDATER.get(this)) {
                 case READ:
                     throw LOGGER.logExceptionAsError(new ReadPendingException());
                 case WRITE:
@@ -144,12 +98,53 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     }
 
     private void endOperation(Operation operation) {
-        if (!pendingOperation.compareAndSet(operation, null)) {
+        if (!PENDING_OPERATION_ATOMIC_UPDATER.compareAndSet(this, operation, null)) {
             throw new IllegalStateException("There's no pending " + operation);
         }
     }
 
     private enum Operation {
         READ, WRITE
+    }
+
+    private final class DelegatingCompletionHandler<T> implements CompletionHandler<Integer, T> {
+        private final CompletionHandler<Integer, ? super T> handler;
+        private final CompletableFuture<Integer> future;
+        private final Operation operation;
+
+        private DelegatingCompletionHandler(CompletionHandler<Integer, ? super T> handler, Operation operation) {
+            this.handler = handler;
+            this.future = null;
+            this.operation = operation;
+        }
+
+        private DelegatingCompletionHandler(CompletableFuture<Integer> future, Operation operation) {
+            this.handler = null;
+            this.future = future;
+            this.operation = operation;
+        }
+
+        @Override
+        public void completed(Integer result, T attachment) {
+            if (result > 0) {
+                POSITION_ATOMIC_UPDATER.addAndGet(AsynchronousFileChannelAdapter.this, result);
+            }
+            endOperation(this.operation);
+            if (handler != null) {
+                handler.completed(result, attachment);
+            } else if (future != null) {
+                future.complete(result);
+            }
+        }
+
+        @Override
+        public void failed(Throwable exc, T attachment) {
+            endOperation(this.operation);
+            if (handler != null) {
+                handler.failed(exc, attachment);
+            } else if (future != null) {
+                future.completeExceptionally(exc);
+            }
+        }
     }
 }
