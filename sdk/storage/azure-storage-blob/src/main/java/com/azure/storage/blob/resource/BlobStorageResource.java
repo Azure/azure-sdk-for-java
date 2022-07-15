@@ -6,7 +6,8 @@ import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.resource.StorageResource;
 
-import java.io.InputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +22,8 @@ class BlobStorageResource implements StorageResource {
     }
 
     @Override
-    public InputStream openInputStream() {
-        return blobClient.openInputStream();
+    public ReadableByteChannel openReadableByteChannel() {
+        return Channels.newChannel(blobClient.openInputStream());
     }
 
     @Override
@@ -31,8 +32,8 @@ class BlobStorageResource implements StorageResource {
     }
 
     @Override
-    public void consumeInputStream(InputStream inputStream, long length) {
-        blobClient.upload(inputStream, length);
+    public void consumeReadableByteChannel(ReadableByteChannel channel, long length) {
+        blobClient.upload(Channels.newInputStream(channel), length);
     }
 
     @Override
@@ -54,12 +55,12 @@ class BlobStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeInputStream() {
+    public boolean canConsumeReadableByteChannel() {
         return true;
     }
 
     @Override
-    public boolean canProduceInputStream() {
+    public boolean canProduceReadableByteChannel() {
         return true;
     }
 

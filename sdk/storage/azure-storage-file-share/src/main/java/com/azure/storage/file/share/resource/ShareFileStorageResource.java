@@ -9,7 +9,8 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
-import java.io.InputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -33,8 +34,8 @@ class ShareFileStorageResource implements StorageResource {
     }
 
     @Override
-    public InputStream openInputStream() {
-        return shareFileClient.openInputStream();
+    public ReadableByteChannel openReadableByteChannel() {
+        return Channels.newChannel(shareFileClient.openInputStream());
     }
 
     @Override
@@ -43,7 +44,7 @@ class ShareFileStorageResource implements StorageResource {
     }
 
     @Override
-    public void consumeInputStream(InputStream inputStream, long length) {
+    public void consumeReadableByteChannel(ReadableByteChannel channel, long length) {
         try {
             if (!shareFileClient.exists()) {
                 shareFileClient.create(length);
@@ -61,7 +62,7 @@ class ShareFileStorageResource implements StorageResource {
                 throw e;
             }
         }
-        shareFileClient.upload(inputStream, length, new ParallelTransferOptions());
+        shareFileClient.upload(Channels.newInputStream(channel), length, new ParallelTransferOptions());
     }
 
     @Override
@@ -106,12 +107,12 @@ class ShareFileStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeInputStream() {
+    public boolean canConsumeReadableByteChannel() {
         return true;
     }
 
     @Override
-    public boolean canProduceInputStream() {
+    public boolean canProduceReadableByteChannel() {
         return true;
     }
 

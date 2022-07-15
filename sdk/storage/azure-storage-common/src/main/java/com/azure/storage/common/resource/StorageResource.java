@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.resource;
 
-import java.io.InputStream;
+import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 
 /**
@@ -27,18 +27,18 @@ public interface StorageResource {
     List<String> getPath();
 
     /**
-     * A flag indicating that the storage resource can consume an {@link InputStream}. I.e., it can
-     * transfer bytes from the {@link InputStream} to itself.
-     * @return A flag indicating that the storage resource can consume an {@link InputStream}.
+     * A flag indicating that the storage resource can consume an {@link ReadableByteChannel}. I.e., it can
+     * transfer bytes from the {@link ReadableByteChannel} to itself.
+     * @return A flag indicating that the storage resource can consume an {@link ReadableByteChannel}.
      */
-    boolean canConsumeInputStream();
+    boolean canConsumeReadableByteChannel();
 
     /**
-     * A flag indicating that the storage resource can produce an {@link InputStream}. I.e., the caller
-     * can obtain an {@link InputStream} that returns bytes stored by this storage resource.
-     * @return A flag indicating that the storage resource can produce an {@link InputStream}.
+     * A flag indicating that the storage resource can produce an {@link ReadableByteChannel}. I.e., the caller
+     * can obtain an {@link ReadableByteChannel} that returns bytes stored by this storage resource.
+     * @return A flag indicating that the storage resource can produce an {@link ReadableByteChannel}.
      */
-    boolean canProduceInputStream();
+    boolean canProduceReadableByteChannel();
     /**
      * A flag indicating that the storage resource can consume a URL. I.e., it can
      * transfer bytes from remote storage resource using provided URL.
@@ -56,18 +56,18 @@ public interface StorageResource {
     boolean canProduceUrl();
 
     /**
-     * Opens an {@link InputStream} to access bytes stored by this storage resource.
-     * @return An {@link InputStream} to access bytes stored by this storage resource.
-     * @throws UnsupportedOperationException If {@link #canProduceInputStream()} returns {@code false}.
+     * Opens an {@link ReadableByteChannel} to access bytes stored by this storage resource.
+     * @return An {@link ReadableByteChannel} to access bytes stored by this storage resource.
+     * @throws UnsupportedOperationException If {@link #canProduceReadableByteChannel()} returns {@code false}.
      */
-    InputStream openInputStream();
+    ReadableByteChannel openReadableByteChannel();
     /**
-     * Writes bytes from provided {@link InputStream} to itself.
-     * @param inputStream An {@link InputStream} with bytes to write.
+     * Writes bytes from provided {@link ReadableByteChannel} to itself.
+     * @param channel An {@link ReadableByteChannel} with bytes to write.
      * @param length The length of the {@code inputStream}.
-     * @throws UnsupportedOperationException If {@link #canConsumeInputStream()} ()} returns {@code false}.
+     * @throws UnsupportedOperationException If {@link #canConsumeReadableByteChannel()} ()} returns {@code false}.
      */
-    void consumeInputStream(InputStream inputStream, long length);
+    void consumeReadableByteChannel(ReadableByteChannel channel, long length);
 
     /**
      * Returns a URL that can be used to access this resource with GET request.

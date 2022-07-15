@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +36,9 @@ class LocalFileStorageResource implements StorageResource {
     }
 
     @Override
-    public InputStream openInputStream() {
+    public ReadableByteChannel openReadableByteChannel() {
         try {
-            return new FileInputStream(path.toFile());
+            return new FileInputStream(path.toFile()).getChannel();
         } catch (FileNotFoundException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -48,9 +50,9 @@ class LocalFileStorageResource implements StorageResource {
     }
 
     @Override
-    public void consumeInputStream(InputStream inputStream, long length) {
+    public void consumeReadableByteChannel(ReadableByteChannel channel, long length) {
         try (OutputStream fos = new FileOutputStream(path.toFile())) {
-            transfer(inputStream, fos);
+            transfer(Channels.newInputStream(channel), fos);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -88,12 +90,12 @@ class LocalFileStorageResource implements StorageResource {
     }
 
     @Override
-    public boolean canConsumeInputStream() {
+    public boolean canConsumeReadableByteChannel() {
         return true;
     }
 
     @Override
-    public boolean canProduceInputStream() {
+    public boolean canProduceReadableByteChannel() {
         return true;
     }
 

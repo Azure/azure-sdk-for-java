@@ -31,7 +31,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
         outStream.close()
 
         then:
-        StorageFileInputStream inputStream = fileClient.openInputStream()
+        StorageFileInputStream inputStream = fileClient.openReadableByteChannel()
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {
@@ -58,7 +58,7 @@ class StorageFileInputOutputStreamTests extends APISpec {
         outStream.close()
 
         then:
-        StorageFileInputStream inputStream = fileClient.openInputStream()
+        StorageFileInputStream inputStream = fileClient.openReadableByteChannel()
         byte[] b = new byte[length]
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {

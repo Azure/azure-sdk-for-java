@@ -4,8 +4,8 @@ import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.channels.ReadableByteChannel;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ public class DataMover {
 
         if (from.canProduceUrl() && to.canConsumeUrl()) {
             return transferViaUri(from, to);
-        } else if (from.canProduceInputStream() && to.canConsumeInputStream()) {
+        } else if (from.canProduceReadableByteChannel() && to.canConsumeReadableByteChannel()) {
             return transferViaStreams(from, to);
         }
 
@@ -74,8 +74,8 @@ public class DataMover {
     private DataTransfer transferViaStreams(StorageResource from, StorageResource to) {
         DataTransfer dataTransfer = new DataTransfer();
         long length = from.getLength();
-        try (InputStream is = from.openInputStream()) {
-            to.consumeInputStream(is, length);
+        try (ReadableByteChannel channel = from.openReadableByteChannel()) {
+            to.consumeReadableByteChannel(channel, length);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
