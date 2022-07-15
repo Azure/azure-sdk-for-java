@@ -235,7 +235,7 @@ demonstrate the new API.
 - ConfigurationClientBuilder was made instantiable, static builder method removed from ConfigurationClient and ConfigurationAsyncClient.
 - Builder method credentials renamed to credential and serviceEndpoint to endpoint.
 - Listing operations return PagedFlux and PagedIterable in their respective clients.
-- Asynchronous calls check subscriberContext for tracing context.
+- Asynchronous calls check contextWrite for tracing context.
 - Synchronous calls support passing tracing context in maximal overloads.
 
 **Breaking changes: New API Design**
