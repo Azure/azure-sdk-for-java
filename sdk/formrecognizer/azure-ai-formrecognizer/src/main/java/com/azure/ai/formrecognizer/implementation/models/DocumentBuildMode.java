@@ -8,19 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DocumentBuildMode. */
+/** Defines values for DocumentModelBuildMode. */
 public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildMode> {
-    /** Static value template for DocumentBuildMode. */
+    /** Static value template for DocumentModelBuildMode. */
     public static final DocumentBuildMode TEMPLATE = fromString("template");
 
-    /** Static value neural for DocumentBuildMode. */
+    /** Static value neural for DocumentModelBuildMode. */
     public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
-     * Creates or finds a DocumentBuildMode from its string representation.
+     * Creates or finds a DocumentModelBuildMode from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding DocumentBuildMode.
+     * @return the corresponding DocumentModelBuildMode.
      */
     @JsonCreator
     public static DocumentBuildMode fromString(String name) {
@@ -28,9 +28,9 @@ public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildM
     }
 
     /**
-     * Gets known DocumentBuildMode values.
+     * Gets known DocumentModelBuildMode values.
      *
-     * @return known DocumentBuildMode values.
+     * @return known DocumentModelBuildMode values.
      */
     public static Collection<DocumentBuildMode> values() {
         return values(DocumentBuildMode.class);

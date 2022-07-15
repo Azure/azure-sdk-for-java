@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Information about the document model.
  */
-public final class DocumentModelInfo {
+public final class DocumentModelDetails {
 
     /*
      * Unique model identifier.
@@ -104,28 +104,28 @@ public final class DocumentModelInfo {
     static {
         DocumentModelInfoHelper.setAccessor(new DocumentModelInfoHelper.DocumentModelInfoAccessor() {
             @Override
-            public void setModelId(DocumentModelInfo documentModelInfo, String modelId) {
-                documentModelInfo.setModelId(modelId);
+            public void setModelId(DocumentModelDetails documentModelDetails, String modelId) {
+                documentModelDetails.setModelId(modelId);
             }
 
             @Override
-            public void setDescription(DocumentModelInfo documentModelInfo, String description) {
-                documentModelInfo.setDescription(description);
+            public void setDescription(DocumentModelDetails documentModelDetails, String description) {
+                documentModelDetails.setDescription(description);
             }
 
             @Override
-            public void setCreatedOn(DocumentModelInfo documentModelInfo, OffsetDateTime createdOn) {
-                documentModelInfo.setCreatedOn(createdOn);
+            public void setCreatedOn(DocumentModelDetails documentModelDetails, OffsetDateTime createdOn) {
+                documentModelDetails.setCreatedOn(createdOn);
             }
 
             @Override
-            public void setDocTypes(DocumentModelInfo documentModelInfo, Map<String, DocTypeInfo> docTypes) {
-                documentModelInfo.setDocTypes(docTypes);
+            public void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocTypeInfo> docTypes) {
+                documentModelDetails.setDocTypes(docTypes);
             }
 
             @Override
-            public void setTags(DocumentModelInfo documentModelInfo, Map<String, String> tags) {
-                documentModelInfo.setTags(tags);
+            public void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags) {
+                documentModelDetails.setTags(tags);
             }
         });
     }

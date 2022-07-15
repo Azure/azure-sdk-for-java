@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorizationOptions;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
@@ -58,12 +58,12 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode)}
      */
     public void beginBuildModel() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE
+        documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE
             )
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -78,22 +78,22 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentBuildMode, BuildModelOptions)}
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildModel(String, DocumentModelBuildMode, BuildModelOptions)}
      * with options
      */
     public void beginBuildModelWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions
+        // BEGIN: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
         String trainingFilesUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         String modelId = "model-id";
         Map<String, String> attrs = new HashMap<String, String>();
         attrs.put("createdBy", "sample");
 
         documentModelAdministrationAsyncClient.beginBuildModel(trainingFilesUrl,
-                DocumentBuildMode.TEMPLATE,
+                DocumentModelBuildMode.TEMPLATE,
                 new BuildModelOptions()
                     .setModelId(modelId)
                     .setDescription("model desc")
@@ -114,7 +114,7 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                     });
                 });
             });
-        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentBuildMode-BuildModelOptions
+        // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginBuildModel#String-DocumentModelBuildMode-BuildModelOptions
     }
 
     /**
@@ -345,11 +345,11 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         documentModelAdministrationAsyncClient.getModelWithResponse(modelId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            DocumentModelInfo documentModelInfo = response.getValue();
-            System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
-            System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
-            System.out.printf("Model Created on: %s%n", documentModelInfo.getCreatedOn());
-            documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
+            DocumentModelDetails documentModelDetails = response.getValue();
+            System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
+            System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
+            System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedOn());
+            documentModelDetails.getDocTypes().forEach((key, docTypeInfo) -> {
                 docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
                     System.out.printf("Field: %s", field);
                     System.out.printf("Field type: %s", documentFieldSchema.getType());
@@ -386,13 +386,13 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
         String operationId = "{operation_Id}";
         documentModelAdministrationAsyncClient.getOperationWithResponse(operationId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            ModelOperation modelOperation = response.getValue();
-            System.out.printf("Operation ID: %s%n", modelOperation.getOperationId());
-            System.out.printf("Operation Kind: %s%n", modelOperation.getKind());
-            System.out.printf("Operation Status: %s%n", modelOperation.getStatus());
-            System.out.printf("Model ID created with this operation: %s%n", modelOperation.getModelId());
-            if (ModelOperationStatus.FAILED.equals(modelOperation.getStatus())) {
-                System.out.printf("Operation fail error: %s%n", modelOperation.getError().getMessage());
+            ModelOperationDetails modelOperationDetails = response.getValue();
+            System.out.printf("Operation ID: %s%n", modelOperationDetails.getOperationId());
+            System.out.printf("Operation Kind: %s%n", modelOperationDetails.getKind());
+            System.out.printf("Operation Status: %s%n", modelOperationDetails.getStatus());
+            System.out.printf("Model ID created with this operation: %s%n", modelOperationDetails.getModelId());
+            if (ModelOperationStatus.FAILED.equals(modelOperationDetails.getStatus())) {
+                System.out.printf("Operation fail error: %s%n", modelOperationDetails.getError().getMessage());
             }
         });
         // END: com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.getOperationWithResponse#string

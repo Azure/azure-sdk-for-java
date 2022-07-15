@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
@@ -45,7 +45,7 @@ public class ManageCustomModels {
 
             // get custom document analysis model info
             modelId.set(documentModelInfo.getModelId());
-            DocumentModelInfo documentModel = client.getModel(documentModelInfo.getModelId());
+            DocumentModelDetails documentModel = client.getModel(documentModelInfo.getModelId());
             System.out.printf("Model ID: %s%n", documentModel.getModelId());
             System.out.printf("Model Description: %s%n", documentModel.getDescription());
             System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());

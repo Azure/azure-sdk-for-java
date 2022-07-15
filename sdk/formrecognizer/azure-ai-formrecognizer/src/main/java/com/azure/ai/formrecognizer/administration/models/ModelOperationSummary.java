@@ -7,8 +7,8 @@ import com.azure.ai.formrecognizer.implementation.util.ModelOperationInfoHelper;
 
 import java.time.OffsetDateTime;
 
-/** ModelOperationInfo. */
-public class ModelOperationInfo {
+/** ModelOperationSummary. */
+public class ModelOperationSummary {
     /*
      * Operation ID
      */
@@ -180,38 +180,38 @@ public class ModelOperationInfo {
     static {
         ModelOperationInfoHelper.setAccessor(new ModelOperationInfoHelper.ModelOperationInfoAccessor() {
             @Override
-            public void setOperationId(ModelOperationInfo modelOperationInfo, String operationId) {
-                modelOperationInfo.setOperationId(operationId);
+            public void setOperationId(ModelOperationSummary modelOperationSummary, String operationId) {
+                modelOperationSummary.setOperationId(operationId);
             }
 
             @Override
-            public void setStatus(ModelOperationInfo modelOperationInfo, ModelOperationStatus status) {
-                modelOperationInfo.setStatus(status);
+            public void setStatus(ModelOperationSummary modelOperationSummary, ModelOperationStatus status) {
+                modelOperationSummary.setStatus(status);
             }
 
             @Override
-            public void setPercentCompleted(ModelOperationInfo modelOperationInfo, Integer percentCompleted) {
-                modelOperationInfo.setPercentCompleted(percentCompleted);
+            public void setPercentCompleted(ModelOperationSummary modelOperationSummary, Integer percentCompleted) {
+                modelOperationSummary.setPercentCompleted(percentCompleted);
             }
 
             @Override
-            public void setCreatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime createdOn) {
-                modelOperationInfo.setCreatedOn(createdOn);
+            public void setCreatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime createdOn) {
+                modelOperationSummary.setCreatedOn(createdOn);
             }
 
             @Override
-            public void setLastUpdatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn) {
-                modelOperationInfo.setLastUpdatedOn(lastUpdatedOn);
+            public void setLastUpdatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime lastUpdatedOn) {
+                modelOperationSummary.setLastUpdatedOn(lastUpdatedOn);
             }
 
             @Override
-            public void setKind(ModelOperationInfo modelOperationInfo, ModelOperationKind kind) {
-                modelOperationInfo.setKind(kind);
+            public void setKind(ModelOperationSummary modelOperationSummary, ModelOperationKind kind) {
+                modelOperationSummary.setKind(kind);
             }
 
             @Override
-            public void setResourceLocation(ModelOperationInfo modelOperationInfo, String resourceLocation) {
-                modelOperationInfo.setResourceLocation(resourceLocation);
+            public void setResourceLocation(ModelOperationSummary modelOperationSummary, String resourceLocation) {
+                modelOperationSummary.setResourceLocation(resourceLocation);
             }
         });
     }

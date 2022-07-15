@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
-import com.azure.ai.formrecognizer.administration.models.ModelOperation;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationDetails;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 
@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The helper class to set the non-public properties of an {@link ModelOperation} instance.
+ * The helper class to set the non-public properties of an {@link ModelOperationDetails} instance.
  */
 public final class ModelOperationHelper {
     private static ModelOperationAccessor accessor;
@@ -22,35 +22,35 @@ public final class ModelOperationHelper {
     }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ModelOperation} instance.
+     * Type defining the methods to set the non-public properties of an {@link ModelOperationDetails} instance.
      */
     public interface ModelOperationAccessor {
 
-        void setModelId(ModelOperation modelOperation, String modelId);
+        void setModelId(ModelOperationDetails modelOperationDetails, String modelId);
 
-        void setDescription(ModelOperation modelOperation, String description);
+        void setDescription(ModelOperationDetails modelOperationDetails, String description);
 
-        void setCreatedOn(ModelOperation modelOperation, OffsetDateTime createdOn);
+        void setCreatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime createdOn);
 
-        void setDocTypes(ModelOperation modelOperation, Map<String, DocTypeInfo> docTypes);
+        void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes);
 
-        void setError(ModelOperation modelOperation, DocumentModelOperationError error);
+        void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError error);
 
-        void setOperationId(ModelOperation modelOperation, String operationId);
+        void setOperationId(ModelOperationDetails modelOperationDetails, String operationId);
 
-        void setStatus(ModelOperation modelOperation, ModelOperationStatus status);
+        void setStatus(ModelOperationDetails modelOperationDetails, ModelOperationStatus status);
 
-        void setPercentCompleted(ModelOperation modelOperation, Integer percentCompleted);
+        void setPercentCompleted(ModelOperationDetails modelOperationDetails, Integer percentCompleted);
 
-        void setLastUpdatedOn(ModelOperation modelOperation, OffsetDateTime lastUpdatedOn);
+        void setLastUpdatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime lastUpdatedOn);
 
-        void setKind(ModelOperation modelOperation, ModelOperationKind kind);
+        void setKind(ModelOperationDetails modelOperationDetails, ModelOperationKind kind);
 
-        void setResourceLocation(ModelOperation modelOperation, String resourceLocation);
+        void setResourceLocation(ModelOperationDetails modelOperationDetails, String resourceLocation);
     }
 
     /**
-     * The method called from {@link ModelOperation} to set it's accessor.
+     * The method called from {@link ModelOperationDetails} to set it's accessor.
      *
      * @param modelOperationAccessor The accessor.
      */
@@ -58,47 +58,47 @@ public final class ModelOperationHelper {
         accessor = modelOperationAccessor;
     }
 
-    static void setModelId(ModelOperation modelOperation, String modelId) {
-        accessor.setModelId(modelOperation, modelId);
+    static void setModelId(ModelOperationDetails modelOperationDetails, String modelId) {
+        accessor.setModelId(modelOperationDetails, modelId);
     }
 
-    static void setDescription(ModelOperation modelOperation, String description) {
-        accessor.setDescription(modelOperation, description);
+    static void setDescription(ModelOperationDetails modelOperationDetails, String description) {
+        accessor.setDescription(modelOperationDetails, description);
     }
 
-    static void setCreatedOn(ModelOperation modelOperation, OffsetDateTime createdOn) {
-        accessor.setCreatedOn(modelOperation, createdOn);
+    static void setCreatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime createdOn) {
+        accessor.setCreatedOn(modelOperationDetails, createdOn);
     }
 
-    static void setDocTypes(ModelOperation modelOperation, Map<String, DocTypeInfo> docTypes) {
-        accessor.setDocTypes(modelOperation, docTypes);
+    static void setDocTypes(ModelOperationDetails modelOperationDetails, Map<String, DocTypeInfo> docTypes) {
+        accessor.setDocTypes(modelOperationDetails, docTypes);
     }
 
-    static void setError(ModelOperation modelOperation, DocumentModelOperationError documentModelOperationError) {
-        accessor.setError(modelOperation, documentModelOperationError);
+    static void setError(ModelOperationDetails modelOperationDetails, DocumentModelOperationError documentModelOperationError) {
+        accessor.setError(modelOperationDetails, documentModelOperationError);
     }
 
-    static void setOperationId(ModelOperation modelOperation, String operationId) {
-        accessor.setOperationId(modelOperation, operationId);
+    static void setOperationId(ModelOperationDetails modelOperationDetails, String operationId) {
+        accessor.setOperationId(modelOperationDetails, operationId);
     }
 
-    static void setStatus(ModelOperation modelOperation, ModelOperationStatus status) {
-        accessor.setStatus(modelOperation, status);
+    static void setStatus(ModelOperationDetails modelOperationDetails, ModelOperationStatus status) {
+        accessor.setStatus(modelOperationDetails, status);
     }
 
-    static void setPercentCompleted(ModelOperation modelOperation, Integer percentCompleted) {
-        accessor.setPercentCompleted(modelOperation, percentCompleted);
+    static void setPercentCompleted(ModelOperationDetails modelOperationDetails, Integer percentCompleted) {
+        accessor.setPercentCompleted(modelOperationDetails, percentCompleted);
     }
 
-    static void setLastUpdatedOn(ModelOperation modelOperation, OffsetDateTime lastUpdatedOn) {
-        accessor.setLastUpdatedOn(modelOperation, lastUpdatedOn);
+    static void setLastUpdatedOn(ModelOperationDetails modelOperationDetails, OffsetDateTime lastUpdatedOn) {
+        accessor.setLastUpdatedOn(modelOperationDetails, lastUpdatedOn);
     }
 
-    static void setKind(ModelOperation modelOperation, ModelOperationKind kind) {
-        accessor.setKind(modelOperation, kind);
+    static void setKind(ModelOperationDetails modelOperationDetails, ModelOperationKind kind) {
+        accessor.setKind(modelOperationDetails, kind);
     }
 
-    static void setResourceLocation(ModelOperation modelOperation, String resourceLocation) {
-        accessor.setResourceLocation(modelOperation, resourceLocation);
+    static void setResourceLocation(ModelOperationDetails modelOperationDetails, String resourceLocation) {
+        accessor.setResourceLocation(modelOperationDetails, resourceLocation);
     }
 }

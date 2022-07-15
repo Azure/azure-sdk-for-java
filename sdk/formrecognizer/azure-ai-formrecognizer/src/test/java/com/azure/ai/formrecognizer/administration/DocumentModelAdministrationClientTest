@@ -9,9 +9,9 @@ import com.azure.ai.formrecognizer.administration.models.ResourceInfo;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.ComposeModelOptions;
-import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelSummary;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
@@ -94,13 +94,13 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     public void getModelWithResponse(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingDataSasUrl) -> {
-            DocumentModelInfo documentModelInfo =
+            DocumentModelInfo documentModelDetails =
                 client.beginBuildModel(trainingDataSasUrl, DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode).getFinalResult();
             Response<DocumentModelInfo> documentModelResponse =
-                client.getModelWithResponse(documentModelInfo.getModelId(),
+                client.getModelWithResponse(documentModelDetails.getModelId(),
                     Context.NONE);
-            client.deleteModel(documentModelInfo.getModelId());
+            client.deleteModel(documentModelDetails.getModelId());
 
             assertEquals(documentModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
             validateDocumentModelData(documentModelResponse.getValue());

@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
+import com.azure.ai.formrecognizer.administration.models.ModelOperationSummary;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
 
 import java.time.OffsetDateTime;
 
 /**
- * The helper class to set the non-public properties of an {@link ModelOperationInfo} instance.
+ * The helper class to set the non-public properties of an {@link ModelOperationSummary} instance.
  */
 public final class ModelOperationInfoHelper {
     private static ModelOperationInfoAccessor accessor;
@@ -19,27 +19,27 @@ public final class ModelOperationInfoHelper {
     }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ModelOperationInfo} instance.
+     * Type defining the methods to set the non-public properties of an {@link ModelOperationSummary} instance.
      */
     public interface ModelOperationInfoAccessor {
 
-        void setOperationId(ModelOperationInfo modelOperationInfo, String operationId);
+        void setOperationId(ModelOperationSummary modelOperationSummary, String operationId);
 
-        void setStatus(ModelOperationInfo modelOperationInfo, ModelOperationStatus status);
+        void setStatus(ModelOperationSummary modelOperationSummary, ModelOperationStatus status);
 
-        void setPercentCompleted(ModelOperationInfo modelOperationInfo, Integer percentCompleted);
+        void setPercentCompleted(ModelOperationSummary modelOperationSummary, Integer percentCompleted);
 
-        void setCreatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime createdOn);
+        void setCreatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime createdOn);
 
-        void setLastUpdatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn);
+        void setLastUpdatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime lastUpdatedOn);
 
-        void setKind(ModelOperationInfo modelOperationInfo, ModelOperationKind kind);
+        void setKind(ModelOperationSummary modelOperationSummary, ModelOperationKind kind);
 
-        void setResourceLocation(ModelOperationInfo modelOperationInfo, String resourceLocation);
+        void setResourceLocation(ModelOperationSummary modelOperationSummary, String resourceLocation);
     }
 
     /**
-     * The method called from {@link ModelOperationInfo} to set it's accessor.
+     * The method called from {@link ModelOperationSummary} to set it's accessor.
      *
      * @param modelOperationInfoAccessor The accessor.
      */
@@ -48,31 +48,31 @@ public final class ModelOperationInfoHelper {
         accessor = modelOperationInfoAccessor;
     }
 
-    static void setOperationId(ModelOperationInfo modelOperationInfo, String operationId) {
-        accessor.setOperationId(modelOperationInfo, operationId);
+    static void setOperationId(ModelOperationSummary modelOperationSummary, String operationId) {
+        accessor.setOperationId(modelOperationSummary, operationId);
     }
 
-    static void setStatus(ModelOperationInfo modelOperationInfo, ModelOperationStatus status) {
-        accessor.setStatus(modelOperationInfo, status);
+    static void setStatus(ModelOperationSummary modelOperationSummary, ModelOperationStatus status) {
+        accessor.setStatus(modelOperationSummary, status);
     }
 
-    static void setPercentCompleted(ModelOperationInfo modelOperationInfo, Integer percentCompleted) {
-        accessor.setPercentCompleted(modelOperationInfo, percentCompleted);
+    static void setPercentCompleted(ModelOperationSummary modelOperationSummary, Integer percentCompleted) {
+        accessor.setPercentCompleted(modelOperationSummary, percentCompleted);
     }
 
-    static void setCreatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime createdOn) {
-        accessor.setCreatedOn(modelOperationInfo, createdOn);
+    static void setCreatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime createdOn) {
+        accessor.setCreatedOn(modelOperationSummary, createdOn);
     }
 
-    static void setLastUpdatedOn(ModelOperationInfo modelOperationInfo, OffsetDateTime lastUpdatedOn) {
-        accessor.setLastUpdatedOn(modelOperationInfo, lastUpdatedOn);
+    static void setLastUpdatedOn(ModelOperationSummary modelOperationSummary, OffsetDateTime lastUpdatedOn) {
+        accessor.setLastUpdatedOn(modelOperationSummary, lastUpdatedOn);
     }
 
-    static void setKind(ModelOperationInfo modelOperationInfo, ModelOperationKind kind) {
-        accessor.setKind(modelOperationInfo, kind);
+    static void setKind(ModelOperationSummary modelOperationSummary, ModelOperationKind kind) {
+        accessor.setKind(modelOperationSummary, kind);
     }
 
-    static void setResourceLocation(ModelOperationInfo modelOperationInfo, String resourceLocation) {
-        accessor.setResourceLocation(modelOperationInfo, resourceLocation);
+    static void setResourceLocation(ModelOperationSummary modelOperationSummary, String resourceLocation) {
+        accessor.setResourceLocation(modelOperationSummary, resourceLocation);
     }
 }
