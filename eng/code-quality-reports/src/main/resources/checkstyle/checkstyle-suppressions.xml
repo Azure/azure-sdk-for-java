@@ -301,7 +301,6 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
-<!--  <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.(RoleAssignmentsImpl|RoleDefinitionsImpl)"/>-->
   <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>

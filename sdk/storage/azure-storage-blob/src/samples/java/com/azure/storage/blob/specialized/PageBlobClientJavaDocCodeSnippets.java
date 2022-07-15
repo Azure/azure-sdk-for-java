@@ -147,8 +147,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesWithResponse(pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context)
-            .getValue();
+            .uploadPagesWithResponse(pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context).getValue();
 
         System.out.printf("Uploaded page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageRange-InputStream-byte-PageBlobRequestConditions-Duration-Context
@@ -421,8 +420,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageList pageList = client
-            .getPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context)
-            .getValue();
+            .getPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context).getValue();
 
         System.out.println("Valid Page Ranges are:");
         for (PageRange pageRange : pageList.getPageRange()) {
@@ -549,9 +547,8 @@ public class PageBlobClientJavaDocCodeSnippets {
     public void copyIncrementalWithResponseCodeSnippet2() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
         final String snapshot = "copy snapshot";
-        PageBlobCopyIncrementalRequestConditions destinationRequestConditions =
-            new PageBlobCopyIncrementalRequestConditions()
-                .setIfNoneMatch("snapshotMatch");
+        PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions()
+            .setIfNoneMatch("snapshotMatch");
         Context context = new Context(key, value);
 
         CopyStatusType statusType = client

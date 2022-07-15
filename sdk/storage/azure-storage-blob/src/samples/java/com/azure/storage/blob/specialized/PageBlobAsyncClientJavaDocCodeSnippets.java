@@ -37,9 +37,9 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     private PageBlobAsyncClient client = new SpecializedBlobClientBuilder().buildPageBlobAsyncClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
     private Map<String, String> tags = Collections.singletonMap("tag", "value");
-    private ByteBuffer[] bufferData = new ByteBuffer[] {
-        ByteBuffer.wrap(new byte[] {1}),
-        ByteBuffer.wrap(new byte[] {2})
+    private ByteBuffer[] bufferData = new ByteBuffer[]{
+        ByteBuffer.wrap(new byte[]{1}),
+        ByteBuffer.wrap(new byte[]{2})
     };
     private Flux<ByteBuffer> body = Flux.fromArray(bufferData);
     private long size = 1024;
@@ -99,7 +99,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         client.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-                .setHeaders(headers).setMetadata(metadata).setTags(tags).setRequestConditions(blobRequestConditions))
+            .setHeaders(headers).setMetadata(metadata).setTags(tags).setRequestConditions(blobRequestConditions))
             .subscribe(response -> System.out.printf(
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
 
@@ -192,9 +192,9 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url)
-                .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMD5)
-                .setDestinationRequestConditions(pageBlobRequestConditions)
-                .setSourceRequestConditions(sourceRequestConditions))
+            .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMD5)
+            .setDestinationRequestConditions(pageBlobRequestConditions)
+            .setSourceRequestConditions(sourceRequestConditions))
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions
@@ -336,7 +336,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         System.out.println("Valid Page Ranges are:");
         client.listPageRangesDiff(blobRange, prevSnapshot).subscribe(rangeItem ->
             System.out.printf("Offset: %s, Length: %s, isClear: %s%n",
-                rangeItem.getRange().getOffset(), rangeItem.getRange().getLength(), rangeItem.isClear()));
+            rangeItem.getRange().getOffset(), rangeItem.getRange().getLength(), rangeItem.isClear()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String
 
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#ListPageRangesDiffOptions
@@ -501,12 +501,11 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     public void copyIncrementalWithResponseCodeSnippet2() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions
         final String snapshot = "copy snapshot";
-        PageBlobCopyIncrementalRequestConditions destinationRequestConditions =
-            new PageBlobCopyIncrementalRequestConditions()
-                .setIfNoneMatch("snapshotMatch");
+        PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions()
+            .setIfNoneMatch("snapshotMatch");
 
         client.copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
-                .setRequestConditions(destinationRequestConditions))
+            .setRequestConditions(destinationRequestConditions))
             .subscribe(response -> {
                 CopyStatusType statusType = response.getValue();
 

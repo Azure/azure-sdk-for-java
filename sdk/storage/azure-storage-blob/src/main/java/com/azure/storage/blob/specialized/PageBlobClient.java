@@ -384,8 +384,7 @@ public final class PageBlobClient extends BlobClientBase {
      * Context context = new Context&#40;key, value&#41;;
      *
      * PageBlobItem pageBlob = client
-     *     .uploadPagesWithResponse&#40;pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context&#41;
-     *     .getValue&#40;&#41;;
+     *     .uploadPagesWithResponse&#40;pageRange, dataStream, md5, pageBlobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Uploaded page blob with sequence number %s%n&quot;, pageBlob.getBlobSequenceNumber&#40;&#41;&#41;;
      * </pre>
@@ -962,8 +961,7 @@ public final class PageBlobClient extends BlobClientBase {
      * Context context = new Context&#40;key, value&#41;;
      *
      * PageList pageList = client
-     *     .getPageRangesDiffWithResponse&#40;blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context&#41;
-     *     .getValue&#40;&#41;;
+     *     .getPageRangesDiffWithResponse&#40;blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context&#41;.getValue&#40;&#41;;
      *
      * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
      * for &#40;PageRange pageRange : pageList.getPageRange&#40;&#41;&#41; &#123;
@@ -1218,9 +1216,8 @@ public final class PageBlobClient extends BlobClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context -->
      * <pre>
      * final String snapshot = &quot;copy snapshot&quot;;
-     * PageBlobCopyIncrementalRequestConditions destinationRequestConditions =
-     *     new PageBlobCopyIncrementalRequestConditions&#40;&#41;
-     *         .setIfNoneMatch&#40;&quot;snapshotMatch&quot;&#41;;
+     * PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions&#40;&#41;
+     *     .setIfNoneMatch&#40;&quot;snapshotMatch&quot;&#41;;
      * Context context = new Context&#40;key, value&#41;;
      *
      * CopyStatusType statusType = client

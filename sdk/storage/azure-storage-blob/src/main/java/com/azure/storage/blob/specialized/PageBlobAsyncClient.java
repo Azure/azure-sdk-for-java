@@ -294,7 +294,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
      *
      * client.createWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
-     *         .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setRequestConditions&#40;blobRequestConditions&#41;&#41;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setRequestConditions&#40;blobRequestConditions&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;
      *         &quot;Created page blob with sequence number %s%n&quot;, response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
      *
@@ -394,12 +394,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * client.createIfNotExistsWithResponse&#40;new PageBlobCreateOptions&#40;size&#41;.setSequenceNumber&#40;sequenceNumber&#41;
      *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;.subscribe&#40;response -&gt; &#123;
-     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
-     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
-     *     &#125; else &#123;
-     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
-     *     &#125;
-     * &#125;&#41;;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.createIfNotExistsWithResponse#PageBlobCreateOptions -->
      *
@@ -660,9 +660,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.uploadPagesFromUrlWithResponse&#40;new PageBlobUploadPagesFromUrlOptions&#40;pageRange, url&#41;
-     *         .setSourceOffset&#40;sourceOffset&#41;.setSourceContentMd5&#40;sourceContentMD5&#41;
-     *         .setDestinationRequestConditions&#40;pageBlobRequestConditions&#41;
-     *         .setSourceRequestConditions&#40;sourceRequestConditions&#41;&#41;
+     *     .setSourceOffset&#40;sourceOffset&#41;.setSourceContentMd5&#40;sourceContentMD5&#41;
+     *     .setDestinationRequestConditions&#40;pageBlobRequestConditions&#41;
+     *     .setSourceRequestConditions&#40;sourceRequestConditions&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;
      *         &quot;Uploaded page blob from URL with sequence number %s%n&quot;, response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1124,7 +1124,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * System.out.println&#40;&quot;Valid Page Ranges are:&quot;&#41;;
      * client.listPageRangesDiff&#40;blobRange, prevSnapshot&#41;.subscribe&#40;rangeItem -&gt;
      *     System.out.printf&#40;&quot;Offset: %s, Length: %s, isClear: %s%n&quot;,
-     *         rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
+     *     rangeItem.getRange&#40;&#41;.getOffset&#40;&#41;, rangeItem.getRange&#40;&#41;.getLength&#40;&#41;, rangeItem.isClear&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.listPageRangesDiff#BlobRange-String -->
      *
@@ -1629,12 +1629,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions -->
      * <pre>
      * final String snapshot = &quot;copy snapshot&quot;;
-     * PageBlobCopyIncrementalRequestConditions destinationRequestConditions =
-     *     new PageBlobCopyIncrementalRequestConditions&#40;&#41;
-     *         .setIfNoneMatch&#40;&quot;snapshotMatch&quot;&#41;;
+     * PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions&#40;&#41;
+     *     .setIfNoneMatch&#40;&quot;snapshotMatch&quot;&#41;;
      *
      * client.copyIncrementalWithResponse&#40;new PageBlobCopyIncrementalOptions&#40;url, snapshot&#41;
-     *         .setRequestConditions&#40;destinationRequestConditions&#41;&#41;
+     *     .setRequestConditions&#40;destinationRequestConditions&#41;&#41;
      *     .subscribe&#40;response -&gt; &#123;
      *         CopyStatusType statusType = response.getValue&#40;&#41;;
      *
