@@ -15,6 +15,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IOUtils;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.TransferUtil;
@@ -1567,8 +1568,6 @@ public class BlobAsyncClientBase {
             progressReceiver);
         DownloadRetryOptions finalDownloadRetryOptions = (downloadRetryOptions == null) ? new DownloadRetryOptions()
             : downloadRetryOptions;
-        BlobRequestConditions finalRequestConditions =
-            requestConditions == null ? new BlobRequestConditions() : requestConditions;
         Boolean getMD5 = rangeGetContentMd5 ? rangeGetContentMd5 : null;
 
         /*
@@ -1620,7 +1619,7 @@ public class BlobAsyncClientBase {
         BlobRange range, BlobRequestConditions requestConditions
     ) {
         // Write to the file.
-        AsynchronousByteChannel byteChannel = FluxUtil.toAsynchronousByteChannel(file,
+        AsynchronousByteChannel byteChannel = IOUtils.toAsynchronousByteChannel(file,
             chunkNum * finalParallelTransferOptions.getBlockSizeLong());
         return TransferUtil.downloadToAsynchronousByteChannel(byteChannel, Mono.just(response),
             (exception, offset) -> {

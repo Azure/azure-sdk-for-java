@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
@@ -41,7 +42,7 @@ public class AsynchronousByteChannelWriteSubscriberTests {
         MonoSink<Void> sink = (MonoSink<Void>) mock(MonoSink.class);
 
         AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
-            new AsynchronousFileChannelAdapter(channel, 0), sink);
+            IOUtils.toAsynchronousByteChannel(channel, 0), sink);
         Subscription subscription1 = mock(Subscription.class);
         Subscription subscription2 = mock(Subscription.class);
 

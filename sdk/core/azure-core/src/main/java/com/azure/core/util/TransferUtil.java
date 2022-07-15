@@ -8,6 +8,7 @@ import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
 import com.azure.core.implementation.ByteCountingWritableByteChannel;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.function.BiFunction;
@@ -74,13 +75,14 @@ public final class TransferUtil {
      *                              downloading when an error occurs.
      * @param progressReporter The {@link ProgressReporter}.
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
+     * @throws IOException When I/O operation fails.
      */
     public static void downloadToWritableByteChannel(
         WritableByteChannel channel,
         StreamResponse response,
         BiFunction<Exception, Long, StreamResponse> onDownloadErrorResume,
         ProgressReporter progressReporter,
-        int maxRetries) {
+        int maxRetries) throws IOException {
 
         downloadToWritableByteChannel(
             new ByteCountingWritableByteChannel(channel, progressReporter), response, onDownloadErrorResume, maxRetries, 0);
@@ -90,11 +92,11 @@ public final class TransferUtil {
         ByteCountingWritableByteChannel channel,
         StreamResponse response,
         BiFunction<Exception, Long, StreamResponse> onDownloadErrorResume,
-        int maxRetries, int retryCount) {
+        int maxRetries, int retryCount) throws IOException {
 
         try {
             response.transferContentTo(channel);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | IOException e) {
             int updatedRetryCount = retryCount + 1;
 
             if (updatedRetryCount > maxRetries) {

@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
-import com.azure.core.implementation.AsynchronousFileChannelAdapter;
 import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
@@ -503,6 +502,8 @@ public final class FluxUtil {
      * @param outFile The {@link AsynchronousFileChannel}.
      * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
      * AsynchronousFileChannel}.
+     * @throws NullPointerException When {@code content} is null.
+     * @throws NullPointerException When {@code outFile} is null.
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile) {
         return writeFile(content, outFile, 0);
@@ -523,6 +524,9 @@ public final class FluxUtil {
      * @param position The position in the file to begin writing the {@code content}.
      * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
      * AsynchronousFileChannel}.
+     * @throws NullPointerException When {@code content} is null.
+     * @throws NullPointerException When {@code outFile} is null.
+     * @throws IllegalArgumentException When {@code position} is negative.
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
         if (content == null && outFile == null) {
@@ -535,18 +539,7 @@ public final class FluxUtil {
             return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
         }
 
-        return writeToAsynchronousByteChannel(content, toAsynchronousByteChannel(outFile, position));
-    }
-
-    /**
-     * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
-     * @param fileChannel The {@link AsynchronousFileChannel}.
-     * @param position The position in the file to begin writing or reading the {@code content}.
-     * @return A {@link AsynchronousByteChannel} that delegates to {@code fileChannel}.
-     */
-    public static AsynchronousByteChannel toAsynchronousByteChannel(
-        AsynchronousFileChannel fileChannel, long position) {
-        return new AsynchronousFileChannelAdapter(fileChannel, position);
+        return writeToAsynchronousByteChannel(content, IOUtils.toAsynchronousByteChannel(outFile, position));
     }
 
     /**
@@ -561,6 +554,8 @@ public final class FluxUtil {
      * @param channel The {@link AsynchronousByteChannel}.
      * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
      * AsynchronousByteChannel}.
+     * @throws NullPointerException When {@code content} is null.
+     * @throws NullPointerException When {@code channel} is null.
      */
     public static Mono<Void> writeToAsynchronousByteChannel(Flux<ByteBuffer> content, AsynchronousByteChannel channel) {
         if (content == null && channel == null) {
@@ -587,6 +582,8 @@ public final class FluxUtil {
      * @param channel The {@link WritableByteChannel}.
      * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
      * WritableByteChannel}.
+     * @throws NullPointerException When {@code content} is null.
+     * @throws NullPointerException When {@code channel} is null.
      */
     public static Mono<Void> writeToWritableByteChannel(Flux<ByteBuffer> content, WritableByteChannel channel) {
         if (content == null && channel == null) {

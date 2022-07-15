@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -79,8 +80,9 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     /**
      * Transfers content bytes to the {@link WritableByteChannel}.
      * @param channel The destination {@link WritableByteChannel}.
+     * @throws IOException When I/O operation fails.
      */
-    public void transferContentTo(WritableByteChannel channel) {
+    public void transferContentTo(WritableByteChannel channel) throws IOException {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (response == null) {
             FluxUtil.writeToWritableByteChannel(getValue(), channel).block();

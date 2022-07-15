@@ -33,6 +33,9 @@
   <!-- Star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
   <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
 
+  <!-- Nested blocks are useful in tests, e.g. when lambdas require effectively final variables. -->
+  <suppress checks="AvoidNestedBlocks" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
