@@ -3,7 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.communication.jobrouter.implementation.models.QueueSelectorAttachment;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
