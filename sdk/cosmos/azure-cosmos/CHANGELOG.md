@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.34.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.33.0 (2022-07-14)
 #### Other Changes
 * Updated netty library version to `4.1.78.Final`.
