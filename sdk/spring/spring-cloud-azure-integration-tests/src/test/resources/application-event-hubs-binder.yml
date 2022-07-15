@@ -2,11 +2,15 @@ spring:
   cloud:
     azure:
       eventhubs:
-        connection-string: ${EVENTHUB_CONNECTION_STRING_TEST_EVENTHUB}
+        credential:
+          client-id: ${AZURE_SPRING_CLIENT_ID}
+          client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+        profile:
+          tenant-id: ${AZURE_SPRING_TENANT_ID}
+        namespace: ${AZURE_EVENTHUBS_NAMESPACE}
         processor:
           checkpoint-store:
             account-name: ${STORAGE_ACCOUNT_TEST_EVENTHUB}
-            account-key: ${STORAGE_ACCOUNT_KEY_TEST_EVENTHUB}
             endpoint: ${PRIMARY_STORAGE_BLOB_ENDPOINT}
     stream:
       function:

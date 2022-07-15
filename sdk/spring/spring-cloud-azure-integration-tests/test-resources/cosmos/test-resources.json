@@ -154,6 +154,10 @@
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
     "AZURE_COSMOS_ENDPOINT": {
       "type": "string",
       "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
