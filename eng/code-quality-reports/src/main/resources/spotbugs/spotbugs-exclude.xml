@@ -2764,4 +2764,9 @@
     <Method name="locateExceptionConstructor"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
+
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
 </FindBugsFilter>
