@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.datamover;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.resource.StorageResource;
 import com.azure.storage.common.resource.StorageResourceContainer;
 
@@ -16,6 +17,8 @@ import java.util.List;
  */
 public class DataMover {
 
+    private static final ClientLogger LOGGER = new ClientLogger(DataMover.class);
+
     DataMover() {
 
     }
@@ -25,6 +28,7 @@ public class DataMover {
      * @param from a source storage resource.
      * @param to a destination storage resource.
      * @return A {@link DataTransfer} that can be used to monitor the transfer.
+     * @throws IllegalArgumentException If illegal argument is provided.
      */
     public DataTransfer startTransfer(StorageResource from, StorageResource to) {
 
@@ -34,7 +38,7 @@ public class DataMover {
             return transferViaStreams(from, to);
         }
 
-        throw new IllegalArgumentException("Can't transfer");
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Can't transfer"));
     }
 
     /**
@@ -80,7 +84,7 @@ public class DataMover {
         try (ReadableByteChannel channel = from.openReadableByteChannel()) {
             to.consumeReadableByteChannel(channel, length);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
         dataTransfer.latch.countDown();
         return dataTransfer;
