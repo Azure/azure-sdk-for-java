@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
 
 #### Other Changes
 
