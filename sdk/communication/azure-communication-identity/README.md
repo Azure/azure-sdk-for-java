@@ -136,6 +136,22 @@ System.out.println("User token value: " + userToken.getToken());
 System.out.println("Expires at: " + userToken.getExpiresAt());
 ```
 
+It's also possible to create token with custom expiration. Bounds are 1 - 24 hours. Default expiration is 24 hours.
+```java readme-sample-issueUserTokenWithCustomExpiration
+// Define a list of communication token scopes
+List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+// Create options to hold request parameters and set custom expiration
+GetTokenOptions getTokenOptions = new GetTokenOptions(user, scopes);
+Duration customExpiration = Duration.ofMinutes(60);
+getTokenOptions.setExpiresInMinutes(customExpiration);
+
+AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
+System.out.println("User token value: " + userToken.getToken());
+System.out.println("Expires at: " + userToken.getExpiresAt());
+```
+
+
 ### Create a new user and token in a single request
 For convenience, use `createUserAndToken` to create a new user and issue a token with one function call. This translates into a single web request as opposed to creating a user first and then issuing a token.
 

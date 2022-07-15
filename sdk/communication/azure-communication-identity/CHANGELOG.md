@@ -1,5 +1,16 @@
 # Release History
 
+## 1.2.0
+### Features Added
+- Added support for token custom expiration:
+    - Added `GetTokenOptions` options bag to contain mandatory arguments used to get a token together with optional argument for custom expiration.
+    - Added methods that provide the ability to create token with custom expiration:
+      - `CommunicationIdentityClient.getToken(GetTokenOptions getTokenOptions)`
+      - `CommunicationIdentityAsyncClient.getToken(GetTokenOptions getTokenOptions)`
+      - `CommunicationIdentityClient.getTokenWithResponse(GetTokenOptions getTokenOptions, Context context)`
+      - `CommunicationIdentityAsyncClient.getTokenWithResponse(GetTokenOptions getTokenOptions)`
+    - Added a new API version `CommunicationIdentityServiceVersion.V2022_10_01` that is now the default API version.
+
 ## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added

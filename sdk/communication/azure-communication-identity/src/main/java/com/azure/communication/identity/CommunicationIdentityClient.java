@@ -18,6 +18,7 @@ import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.identity.models.GetTokenOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -188,6 +189,32 @@ public final class CommunicationIdentityClient {
     /**
      * Gets a token for an identity.
      *
+     * @param getTokenOptions {@link GetTokenOptions} request options used to get a token for communication user.
+     * @return the token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessToken getToken(GetTokenOptions getTokenOptions) {
+        Objects.requireNonNull(getTokenOptions.getCommunicationUser());
+        Objects.requireNonNull(getTokenOptions.getScopes());
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(getTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+        CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
+        tokenRequest.setScopes(scopesInput);
+
+        if (getTokenOptions.getExpiresInMinutes() != null) {
+            Integer expiresInMinutes = Math.toIntExact(getTokenOptions.getExpiresInMinutes().toMinutes());
+            tokenRequest.setExpiresInMinutes(expiresInMinutes);
+        }
+
+        CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
+            getTokenOptions.getCommunicationUser().getId(),
+            tokenRequest);
+        return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
+    }
+
+    /**
+     * Gets a token for an identity.
+     *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
      * @return the token.
@@ -197,11 +224,47 @@ public final class CommunicationIdentityClient {
         Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-        CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
-            communicationUser.getId(),
-            new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput));
-        return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
+
+        GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
+        return getToken(getTokenOptions);
+    }
+
+    /**
+     * Gets a token for an identity.
+     *
+     * @param getTokenOptions {@link GetTokenOptions} request options used to get a token for communication user.
+     * @param context the context of the request. Can also be null or
+     *                          Context.NONE.
+     * @return the token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessToken> getTokenWithResponse(GetTokenOptions getTokenOptions, Context context) {
+        Objects.requireNonNull(getTokenOptions.getCommunicationUser());
+        Objects.requireNonNull(getTokenOptions.getScopes());
+        context = context == null ? Context.NONE : context;
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(getTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+        CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
+        tokenRequest.setScopes(scopesInput);
+
+        if (getTokenOptions.getExpiresInMinutes() != null) {
+            Integer expiresInMinutes = Math.toIntExact(getTokenOptions.getExpiresInMinutes().toMinutes());
+            tokenRequest.setExpiresInMinutes(expiresInMinutes);
+        }
+
+        Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
+                getTokenOptions.getCommunicationUser().getId(),
+                tokenRequest,
+                context)
+            .block();
+
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+        }
+
+        return new SimpleResponse<AccessToken>(
+            response,
+            new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
 
     /**
@@ -218,21 +281,9 @@ public final class CommunicationIdentityClient {
         Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
+        GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
         context = context == null ? Context.NONE : context;
-        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-        Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
-            communicationUser.getId(),
-            new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput),
-            context)
-            .block();
-
-        if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
-        }
-
-        return new SimpleResponse<AccessToken>(
-            response,
-            new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+        return getTokenWithResponse(getTokenOptions, context);
     }
 
     private CommunicationUserIdentifierAndToken userWithAccessTokenResultConverter(

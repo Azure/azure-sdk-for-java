@@ -222,7 +222,7 @@ public final class CommunicationIdentityClientImplBuilder
             this.pipeline = createHttpPipeline();
         }
         if (apiVersion == null) {
-            this.apiVersion = "2022-06-01";
+            this.apiVersion = "2022-10-01";
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();

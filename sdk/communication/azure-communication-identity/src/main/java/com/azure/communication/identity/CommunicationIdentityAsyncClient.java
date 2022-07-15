@@ -11,11 +11,7 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
-import com.azure.communication.identity.models.IdentityError;
-import com.azure.communication.identity.models.IdentityErrorResponseException;
-import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.identity.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -230,6 +226,39 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Gets a token for an identity.
      *
+     * @param getTokenOptions {@link GetTokenOptions} request options used to get a token for communication user.
+     * @return the token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AccessToken> getToken(GetTokenOptions getTokenOptions) {
+        try {
+            Objects.requireNonNull(getTokenOptions.getCommunicationUser());
+            Objects.requireNonNull(getTokenOptions.getCommunicationUser());
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(getTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+            CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
+            tokenRequest.setScopes(scopesInput);
+
+            if (getTokenOptions.getExpiresInMinutes() != null) {
+                Integer expiresInMinutes = Math.toIntExact(getTokenOptions.getExpiresInMinutes().toMinutes());
+                tokenRequest.setExpiresInMinutes(expiresInMinutes);
+            }
+
+            return client.issueAccessTokenAsync(getTokenOptions.getCommunicationUser().getId(),
+                    tokenRequest
+                )
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .flatMap((CommunicationIdentityAccessToken rawToken) -> {
+                    return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Gets a token for an identity.
+     *
      * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
      * @return The access token.
@@ -237,15 +266,38 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
+        GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
+        return getToken(getTokenOptions);
+    }
+
+    /**
+     * Gets a token for an identity.
+     *
+     * @param getTokenOptions {@link GetTokenOptions} request options used to get a token for communication user.
+     * @return the token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AccessToken>> getTokenWithResponse(GetTokenOptions getTokenOptions) {
         try {
-            Objects.requireNonNull(communicationUser);
-            Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-            return client.issueAccessTokenAsync(communicationUser.getId(),
-                new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput))
+            Objects.requireNonNull(getTokenOptions.getCommunicationUser());
+            Objects.requireNonNull(getTokenOptions.getScopes());
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(getTokenOptions.getScopes().spliterator(), false).collect(Collectors.toList());
+
+            CommunicationIdentityAccessTokenRequest tokenRequest = new CommunicationIdentityAccessTokenRequest();
+            tokenRequest.setScopes(scopesInput);
+
+            if (getTokenOptions.getExpiresInMinutes() != null) {
+                Integer expiresInMinutes = Math.toIntExact(getTokenOptions.getExpiresInMinutes().toMinutes());
+                tokenRequest.setExpiresInMinutes(expiresInMinutes);
+            }
+
+            return client.issueAccessTokenWithResponseAsync(getTokenOptions.getCommunicationUser().getId(),
+                    tokenRequest
+                )
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                .flatMap((CommunicationIdentityAccessToken rawToken) -> {
-                    return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
+                .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
+                    AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
+                    return Mono.just(new SimpleResponse<AccessToken>(response, token));
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -262,20 +314,8 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessToken>> getTokenWithResponse(CommunicationUserIdentifier communicationUser,
         Iterable<CommunicationTokenScope> scopes) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
-            return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
-                new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput))
-                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
-                .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
-                    AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
-                    return Mono.just(new SimpleResponse<AccessToken>(response, token));
-                });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        GetTokenOptions getTokenOptions = new GetTokenOptions(communicationUser, scopes);
+        return getTokenWithResponse(getTokenOptions);
     }
 
     /**

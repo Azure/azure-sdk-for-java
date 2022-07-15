@@ -3,6 +3,7 @@
 package com.azure.communication.identity;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.identity.models.GetTokenOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -152,6 +154,32 @@ public class ReadmeSamples {
         System.out.println("User token value: " + userToken.getToken());
         System.out.println("Expires at: " + userToken.getExpiresAt());
         // END: readme-sample-issueUserToken
+
+        return userToken;
+    }
+
+    /**
+     * Sample code for issuing a user token with custom expiration
+     *
+     * @return the issued user token
+     */
+    public AccessToken issueUserTokenWithCustomExpiration() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+
+        // BEGIN: readme-sample-issueUserTokenWithCustomExpiration
+        // Define a list of communication token scopes
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
+
+        // Create options to hold request parameters and set custom expiration
+        GetTokenOptions getTokenOptions = new GetTokenOptions(user, scopes);
+        Duration customExpiration = Duration.ofMinutes(60);
+        getTokenOptions.setExpiresInMinutes(customExpiration);
+
+        AccessToken userToken = communicationIdentityClient.getToken(user, scopes);
+        System.out.println("User token value: " + userToken.getToken());
+        System.out.println("Expires at: " + userToken.getExpiresAt());
+        // END: readme-sample-issueUserTokenWithCustomExpiration
 
         return userToken;
     }
