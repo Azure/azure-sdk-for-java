@@ -6,14 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.concurrent.Exchanger;
 
 @SpringBootTest
 @ActiveProfiles("service-bus-jms")
 public class ServiceBusJmsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsIT.class);
     private final String data = "service bus jms test";
+    private final String QUEUE_NAME = "que001";
+    private final Exchanger<String> EXCHANGER = new Exchanger<>();
 
     @Autowired
     private JmsTemplate jmsTemplate;
@@ -21,11 +26,16 @@ public class ServiceBusJmsIT {
     @Test
     public void testServiceBusJmsOperation() throws InterruptedException {
         LOGGER.info("ServiceBusJmsIT begin.");
-        jmsTemplate.convertAndSend(ServiceBusJmsReceiver.QUEUE_NAME, data);
+        jmsTemplate.convertAndSend(QUEUE_NAME, data);
         LOGGER.info("Send message: {}",data);
-        String msg = ServiceBusJmsReceiver.EXCHANGER.exchange(null);
+        String msg = EXCHANGER.exchange(null);
         Assertions.assertEquals(msg, data);
         LOGGER.info("ServiceBusJmsIT end.");
     }
 
+    @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
+    public void receiveQueueMessage(String message) throws InterruptedException {
+        LOGGER.info("Received message from queue: {}", message);
+        EXCHANGER.exchange(message);
+    }
 }
