@@ -12,6 +12,6 @@ public class CountQueryGenerator extends AbstractQueryGenerator implements Query
 
     @Override
     public SqlQuerySpec generateCosmos(CosmosQuery query) {
-        return super.generateCosmosQuery(query, "SELECT VALUE COUNT(1) FROM r");
+        return super.generateCosmosCountQuery(query, "SELECT VALUE COUNT(1) FROM r");
     }
 }
