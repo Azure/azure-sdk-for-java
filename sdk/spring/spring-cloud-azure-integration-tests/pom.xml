@@ -27,7 +27,7 @@
 
   <properties>
     <skipSpringITs>true</skipSpringITs>
-    <spring-cloud-azure-dependencies>4.3.0-beta.1</spring-cloud-azure-dependencies> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
+    <spring-cloud-azure-dependencies>4.4.0-beta.1</spring-cloud-azure-dependencies> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-dependencies;current} -->
   </properties>
 
   <dependencies>
