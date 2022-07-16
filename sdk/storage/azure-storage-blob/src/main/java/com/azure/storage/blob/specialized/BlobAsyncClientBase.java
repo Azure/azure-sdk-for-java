@@ -15,6 +15,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IOUtils;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
@@ -128,7 +129,6 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 public class BlobAsyncClientBase {
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
-    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
     /**
      * Backing REST client for the blob client.
@@ -1282,14 +1282,12 @@ public class BlobAsyncClientBase {
                     finalCount = finalRange.getCount();
                 }
 
-                Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
-                    () -> response.getValue().timeout(TIMEOUT_VALUE),
-                    (throwable, offset) -> {
-                        if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
-                            return Flux.error(throwable);
-                        }
+                BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
+                    if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
+                        return Mono.error(throwable);
+                    }
 
-                        long newCount = finalCount - (offset - finalRange.getOffset());
+                    long newCount = finalCount - (offset - finalRange.getOffset());
 
                         /*
                          It is possible that the network stream will throw an error after emitting all data but before
@@ -1297,27 +1295,22 @@ public class BlobAsyncClientBase {
                          and offset values. Because we have read the intended amount of data, we can ignore the error at the end
                          of the stream.
                          */
-                        if (newCount == 0) {
-                            LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
-                                + "but before stream signaled completion. Returning success as all data was downloaded. "
-                                + "Exception message: " + throwable.getMessage());
-                            return Flux.empty();
-                        }
+                    if (newCount == 0) {
+                        LOGGER.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                            + "but before stream signaled completion. Returning success as all data was downloaded. "
+                            + "Exception message: " + throwable.getMessage());
+                        return Mono.empty();
+                    }
 
-                        try {
-                            return downloadRange(
-                                new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context)
-                                .flatMapMany(r -> r.getValue().timeout(TIMEOUT_VALUE));
-                        } catch (Exception e) {
-                            return Flux.error(e);
-                        }
-                    },
-                    finalOptions.getMaxRetryRequests(),
-                    finalRange.getOffset()
-                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
-
-                return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), bufferFlux, blobDownloadHeaders);
+                    try {
+                        return downloadRange(
+                            new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context);
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
+                };
+                return new BlobDownloadAsyncResponse(
+                    response, onDownloadErrorResume, finalRange.getOffset(), finalOptions.getMaxRetryRequests());
             });
     }
 
@@ -1600,34 +1593,8 @@ public class BlobAsyncClientBase {
         long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         ProgressReporter progressReporter) {
 
-        // Extract the body.
-        Flux<ByteBuffer> data = response.getValue();
-
-        // Report progress as necessary.
-        if (progressReporter != null) {
-            data = addProgressReporting(data, progressReporter);
-        }
-
-        // Write to the file.
-        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
-    }
-
-    // TODO (kasobol-msft) move this to FluxUtil.
-    private static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, ProgressReporter progressReporter) {
-        return Mono.just(progressReporter).flatMapMany(reporter -> {
-                /*
-                Each time there is a new subscription, we will rewind the progress. This is desirable specifically
-                for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
-                rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
-                expected.
-                 */
-            reporter.reset();
-
-                /*
-                Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
-                 */
-            return data.doOnNext(buffer -> reporter.reportProgress(buffer.remaining()));
-        });
+        long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
+        return response.transferContentToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

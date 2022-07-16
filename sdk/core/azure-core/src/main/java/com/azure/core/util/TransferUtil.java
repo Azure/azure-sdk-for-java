@@ -30,24 +30,28 @@ public final class TransferUtil {
      * @param onDownloadErrorResume A {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
      *                              downloading when an error occurs.
      * @param progressReporter The {@link ProgressReporter}.
+     * @param position The initial position.
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @return A {@link Mono} which completion indicates successful transfer.
      */
     public static Mono<Void> downloadToAsynchronousByteChannel(
         AsynchronousByteChannel channel,
         Mono<StreamResponse> responseMono,
-        BiFunction<Exception, Long, Mono<StreamResponse>> onDownloadErrorResume,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume,
         ProgressReporter progressReporter,
+        long position,
         int maxRetries) {
 
         return downloadToAsynchronousByteChannel(
-            new ByteCountingAsynchronousByteChannel(channel, progressReporter), responseMono, onDownloadErrorResume, maxRetries, 0);
+            new ByteCountingAsynchronousByteChannel(channel, progressReporter),
+            responseMono, onDownloadErrorResume, position, maxRetries, 0);
     }
 
     private static Mono<Void> downloadToAsynchronousByteChannel(
         ByteCountingAsynchronousByteChannel channel,
         Mono<StreamResponse> responseMono,
-        BiFunction<Exception, Long, Mono<StreamResponse>> onDownloadErrorResume,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume,
+        long position,
         int maxRetries, int retryCount) {
 
         return responseMono
@@ -60,8 +64,8 @@ public final class TransferUtil {
                 }
 
                 return downloadToAsynchronousByteChannel(
-                    channel, onDownloadErrorResume.apply(exception, channel.getBytesWritten()),
-                    onDownloadErrorResume, maxRetries, updatedRetryCount);
+                    channel, onDownloadErrorResume.apply(exception, position + channel.getBytesWritten()),
+                    onDownloadErrorResume, position, maxRetries, updatedRetryCount);
             });
     }
 
