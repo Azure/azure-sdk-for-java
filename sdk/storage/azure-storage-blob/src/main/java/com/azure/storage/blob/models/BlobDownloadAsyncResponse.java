@@ -68,7 +68,9 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
         long offset, int maxRetries) {
         super(initialResponse.getRequest(), initialResponse.getStatusCode(),
-            initialResponse.getHeaders(), null, extractHeaders(initialResponse));
+            initialResponse.getHeaders(),
+            createResponseFlux(initialResponse, onErrorResume, offset, maxRetries),
+            extractHeaders(initialResponse));
         this.initialResponse = initialResponse;
         this.onErrorResume = onErrorResume;
         this.offset = offset;
@@ -82,18 +84,16 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
             blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
     }
 
-    @Override
-    public Flux<ByteBuffer> getValue() {
-        if (initialResponse != null) {
-            return FluxUtil.createRetriableDownloadFlux(
-                    this.initialResponse::getValue,
-                    (throwable, offset) -> this.onErrorResume.apply(throwable, offset)
-                        .flatMapMany(StreamResponse::getValue),
-                    maxRetries, offset)
-                .switchIfEmpty(EMPTY_BUFFER_MONO).timeout(TIMEOUT_VALUE);
-        } else {
-            return super.getValue().switchIfEmpty(EMPTY_BUFFER_MONO);
-        }
+    private static Flux<ByteBuffer> createResponseFlux(
+        StreamResponse initialResponse,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+        long offset, int maxRetries) {
+        return FluxUtil.createRetriableDownloadFlux(
+                initialResponse::getValue,
+                (throwable, position) -> onErrorResume.apply(throwable, position)
+                    .flatMapMany(StreamResponse::getValue),
+                maxRetries, offset)
+            .switchIfEmpty(EMPTY_BUFFER_MONO).timeout(TIMEOUT_VALUE);
     }
 
     /**

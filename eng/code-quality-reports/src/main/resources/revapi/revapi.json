@@ -341,13 +341,6 @@
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com\\.azure\\.messaging\\.eventhubs\\..*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChangedCovariantly",
-          "old": "method T com.azure.core.http.rest.ResponseBase<H, T>::getValue() @ com.azure.storage.blob.models.BlobDownloadAsyncResponse",
-          "new": "method reactor.core.publisher.Flux<java.nio.ByteBuffer> com.azure.storage.blob.models.BlobDownloadAsyncResponse::getValue()",
-          "justification": "TODO (kasobol-msft) figure this out?"
         }
       ]
     }
