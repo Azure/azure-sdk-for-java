@@ -130,7 +130,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
             })
             /* Construct the BlobChangefeedPagedResponse. */
             .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()))
-            .contextWriteFluxUtil.toReactorContext(this.context));
+            .contextWrite(FluxUtil.toReactorContext(this.context));
     }
 
     @Override
