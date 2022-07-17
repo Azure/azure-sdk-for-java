@@ -22,20 +22,20 @@ Getting started explained in detail [here](https://github.com/Azure/azure-sdk-fo
 ## Examples
 
 ```java readme-sample-createClient
-ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-    .certificateClientEndpoint("https://identity.confidential-ledger.core.azure.com")
+ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder = new ConfidentialLedgerCertificateClientBuilder()
+    .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpClient(HttpClient.createDefault());
         
-ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
+ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient = confidentialLedgerCertificateClientbuilder.buildClient();
 
 String ledgerId = "java-tests";
-// this is a built in test of getLedgerIdentity
-Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+// this is a built in test of getLedgerCertificate
+Response<BinaryData> ledgerCertificateWithResponse = confidentialLedgerCertificateClient
     .getLedgerIdentityWithResponse(ledgerId, null);
-BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
 ObjectMapper mapper = new ObjectMapper();
-JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+JsonNode jsonNode = mapper.readTree(certificateResponse.toBytes());
 String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
 

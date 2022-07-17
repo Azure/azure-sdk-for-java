@@ -14,7 +14,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PostLedgerEntry {
+public class PostLedgerEntrySample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()

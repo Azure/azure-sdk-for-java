@@ -12,19 +12,20 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.confidentialledger.ConfidentialLedgerIdentityClient;
-import com.azure.security.confidentialledger.ConfidentialLedgerIdentityClientBuilder;
+import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
+import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
+
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 class ConfidentialLedgerIdentityClientTestBase extends TestBase {
-    protected ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient;
+    protected ConfidentialLedgerCertificateClient confidentialLedgerIdentityClient;
 
     @Override
     protected void beforeTest() {
-        ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder =
-                new ConfidentialLedgerIdentityClientBuilder()
-                        .certificateClientEndpoint(
+        ConfidentialLedgerCertificateClientBuilder confidentialLedgerIdentityClientbuilder =
+                new ConfidentialLedgerCertificateClientBuilder()
+                        .certificateEndpoint(
                                 Configuration.getGlobalConfiguration()
                                         .get("CERTIFICATECLIENTENDPOINT", "certificateclientendpoint"))
                         .httpClient(HttpClient.createDefault())

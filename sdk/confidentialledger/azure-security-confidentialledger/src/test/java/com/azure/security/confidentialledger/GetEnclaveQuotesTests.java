@@ -33,7 +33,7 @@ public final class GetEnclaveQuotesTests extends ConfidentialLedgerClientTestBas
        
         String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
         // this is a built in test of getLedgerIdentity
-        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
 
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();

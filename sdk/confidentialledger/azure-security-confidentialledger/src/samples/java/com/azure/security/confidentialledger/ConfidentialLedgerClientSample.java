@@ -11,30 +11,32 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
+import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 
-public class ConfidentialLedgerClientBase {
-    public ConfidentialLedgerClientBase() {
+public class ConfidentialLedgerClientSample {
+    public ConfidentialLedgerClientSample() {
         try {
             // BEGIN:readme-sample-createClient
-            ConfidentialLedgerIdentityClientBuilder confidentialLedgerIdentityClientbuilder = new ConfidentialLedgerIdentityClientBuilder()
-                .certificateClientEndpoint("https://identity.confidential-ledger.core.azure.com")
+            ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder = new ConfidentialLedgerCertificateClientBuilder()
+                .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
         
-            ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient = confidentialLedgerIdentityClientbuilder.buildClient();
+            ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient = confidentialLedgerCertificateClientbuilder.buildClient();
 
             String ledgerId = "java-tests";
-            // this is a built in test of getLedgerIdentity
-            Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+            // this is a built in test of getLedgerCertificate
+            Response<BinaryData> ledgerCertificateWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
-            BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
+            BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(identityResponse.toBytes());
+            JsonNode jsonNode = mapper.readTree(certificateResponse.toBytes());
             String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
 
