@@ -40,7 +40,6 @@ public class ServiceBusIT {
             return new ServiceBusRecordMessageListener() {
                 @Override
                 public void onMessage(ServiceBusReceivedMessageContext message) {
-
                     countDownLatch.countDown();
                 }
             };

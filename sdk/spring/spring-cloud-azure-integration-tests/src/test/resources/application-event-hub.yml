@@ -2,6 +2,10 @@ spring:
   cloud:
     azure:
       eventhubs:
+        processor:
+          checkpoint-store:
+            container-name: ${AZURE_EVENTHUBS_CONTAINER_NAME}
+            account-name: ${AZURE_EVENTHUBS_ACCOUNT_NAME}
         namespace: ${AZURE_EVENTHUBS_NAMESPACE}
         event-hub-name: ${AZURE_EVENT_HUB_NAME}
         consumer:
