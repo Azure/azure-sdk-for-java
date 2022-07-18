@@ -161,7 +161,6 @@ public abstract class HttpResponse implements Closeable {
      * @throws NullPointerException When {@code channel} is null.
      */
     public void transferBodyTo(WritableByteChannel channel) throws IOException {
-        Objects.requireNonNull(channel, "'channel' must not be null");
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
             FluxUtil.writeToWritableByteChannel(body, channel).block();

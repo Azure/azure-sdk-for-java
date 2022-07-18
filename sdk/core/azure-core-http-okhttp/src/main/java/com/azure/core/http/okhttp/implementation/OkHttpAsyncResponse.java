@@ -114,7 +114,11 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
 
     @Override
     public Mono<Void> transferBodyToAsync(AsynchronousByteChannel channel) {
-        return IOUtils.transferAsync(responseBody.source(), channel);
+        if (responseBody != null) {
+            return IOUtils.transferAsync(responseBody.source(), channel);
+        } else {
+            return Mono.empty();
+        }
     }
 
     @Override
