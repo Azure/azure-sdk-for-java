@@ -5,7 +5,7 @@ spring:
         processor:
           session-enabled: false
         namespace: ${AZURE_SERVICE_BUS_NAMESPACE}
-        entity-name: ${AZURE_SERVICE_BUS_ENTITY_NAME}
+        entity-name: que001
         entity-type: queue
         credential:
           client-id: ${AZURE_SPRING_CLIENT_ID}
