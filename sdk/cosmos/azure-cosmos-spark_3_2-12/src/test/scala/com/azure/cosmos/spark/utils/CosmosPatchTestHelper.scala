@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark.utils
 
 import com.azure.cosmos.CosmosAsyncContainer
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.PartitionKeyDefinition
 import com.azure.cosmos.spark.{BulkWriter, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, PointWriter}
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -18,14 +19,18 @@ import scala.collection.mutable.ListBuffer
 
 object CosmosPatchTestHelper {
  private val objectMapper = new ObjectMapper()
+ private val IdAttributeName = "id"
 
- def getPatchItemWithFullSchema(id: String): ObjectNode = {
-  getPatchItemWithSchema(id, getPatchFullTestSchema())
+ def getPatchItemWithFullSchema(id: String, partitionKeyPath: String): ObjectNode = {
+  getPatchItemWithSchema(id, partitionKeyPath, getPatchFullTestSchema())
  }
 
- def getPatchItemWithSchema(id: String, schema: StructType): ObjectNode = {
+ def getPatchItemWithSchema(id: String, partitionKeyPath: String, schema: StructType): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
-  objectNode.put("id", id)
+  objectNode.put(IdAttributeName, id)
+  if (partitionKeyPath != IdAttributeName) {
+   objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
+  }
 
   for (field <- schema.fields) {
    field.dataType match {
@@ -54,9 +59,10 @@ object CosmosPatchTestHelper {
 
  // Build the node based on the base node field values.
  // The goal here is to create a node with different value compared to base object
- def getPatchItemWithSchema(id: String, schema: StructType, baseObjectNode: ObjectNode): ObjectNode = {
+ def getPatchItemWithSchema(partitionKeyPath: String,
+                            schema: StructType,
+                            baseObjectNode: ObjectNode): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
-  objectNode.put("id", id)
 
   for (field <- schema.fields) {
    field.dataType match {
@@ -71,7 +77,9 @@ object CosmosPatchTestHelper {
     case BooleanType =>
      objectNode.put(field.name, !baseObjectNode.get(field.name).asBoolean())
     case StringType =>
-     objectNode.put(field.name, UUID.randomUUID().toString)
+     if (field.name != IdAttributeName && field.name != partitionKeyPath) {
+      objectNode.put(field.name, UUID.randomUUID().toString)
+     }
     case _: ArrayType =>
      val arrayNode = objectNode.putArray(field.name)
      arrayNode.add(UUID.randomUUID().toString)
@@ -79,6 +87,10 @@ object CosmosPatchTestHelper {
      throw new IllegalArgumentException(s"${field.dataType} is not supported")
    }
   }
+
+  // add id and partitionKey
+  objectNode.put(IdAttributeName, baseObjectNode.get(IdAttributeName).textValue())
+  objectNode.put(partitionKeyPath, baseObjectNode.get(partitionKeyPath).textValue())
 
   objectNode
  }
@@ -170,5 +182,16 @@ object CosmosPatchTestHelper {
 
   columnConfigString += s"op(${columnConfig.operationType})"
   columnConfigString
+ }
+
+ /***
+  * Get partition key path without "/" at the beginning
+  * @param partitionKeyDefinition the partition key definition
+  *
+  * @return the partition key path without
+  */
+  // TODO: Reexamine the logic here when hierarchical partitioning being supported
+ def getStrippedPartitionKeyPath(partitionKeyDefinition: PartitionKeyDefinition): String = {
+  StringUtils.join(partitionKeyDefinition.getPaths, "").substring(1)
  }
 }

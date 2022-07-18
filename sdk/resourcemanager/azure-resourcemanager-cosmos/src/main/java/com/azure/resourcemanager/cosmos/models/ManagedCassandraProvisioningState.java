@@ -39,7 +39,11 @@ public final class ManagedCassandraProvisioningState extends ExpandableStringEnu
         return fromString(name, ManagedCassandraProvisioningState.class);
     }
 
-    /** @return known ManagedCassandraProvisioningState values. */
+    /**
+     * Gets known ManagedCassandraProvisioningState values.
+     *
+     * @return known ManagedCassandraProvisioningState values.
+     */
     public static Collection<ManagedCassandraProvisioningState> values() {
         return values(ManagedCassandraProvisioningState.class);
     }

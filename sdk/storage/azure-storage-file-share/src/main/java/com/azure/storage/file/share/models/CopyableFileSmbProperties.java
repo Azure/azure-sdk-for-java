@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * SMB Properties to copy from the source file.
  */
 public enum CopyableFileSmbProperties {
-    /** Enum value none. */
-    NONE("none"),
     /** Enum value file attributes. */
     FILE_ATTRIBUTES("fileattributes"),
     /** Enum value available. */
@@ -19,9 +17,7 @@ public enum CopyableFileSmbProperties {
     /** Enum value last written on. */
     LAST_WRITTEN_ON("lastwrittenon"),
     /** Enum value changed on. */
-    CHANGED_ON("changedon"),
-    /** Enum value all. */
-    ALL("all");
+    CHANGED_ON("changedon");
 
     private final String value;
     CopyableFileSmbProperties(String value) {

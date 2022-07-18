@@ -33,7 +33,11 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
         return fromString(name, BackupPolicyMigrationStatus.class);
     }
 
-    /** @return known BackupPolicyMigrationStatus values. */
+    /**
+     * Gets known BackupPolicyMigrationStatus values.
+     *
+     * @return known BackupPolicyMigrationStatus values.
+     */
     public static Collection<BackupPolicyMigrationStatus> values() {
         return values(BackupPolicyMigrationStatus.class);
     }

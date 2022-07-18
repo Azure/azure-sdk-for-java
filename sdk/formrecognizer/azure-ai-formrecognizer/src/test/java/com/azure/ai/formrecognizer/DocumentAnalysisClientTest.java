@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
-import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -14,6 +14,7 @@ import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
@@ -24,7 +25,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -94,7 +94,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-receipt",
-                    data,
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -124,7 +124,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
 
             syncPoller.waitForCompletion();
@@ -142,7 +142,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validatePngReceiptData(syncPoller.getFinalResult());
@@ -159,7 +159,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBlankPdfData(syncPoller.getFinalResult());
@@ -173,7 +173,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
@@ -190,7 +190,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException
                 = Assertions.assertThrows(HttpResponseException.class,
-                    () -> client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
+                    () -> client.beginAnalyzeDocument("prebuilt-receipt", BinaryData.fromStream(data), dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
             ResponseError responseError =
@@ -296,7 +296,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
@@ -326,7 +326,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
@@ -344,7 +344,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBlankPdfData(syncPoller.getFinalResult());
@@ -358,7 +358,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
@@ -378,7 +378,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException errorResponseException
                 = Assertions.assertThrows(HttpResponseException.class,
-                    () -> client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                    () -> client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
             ResponseError responseError =
@@ -394,7 +394,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateSelectionMarkContentData(syncPoller.getFinalResult());
@@ -407,7 +407,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength,
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength,
                     new AnalyzeDocumentOptions().setPages(Collections.singletonList("1")), Context.NONE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -422,7 +422,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-layout", data, dataLength,
+                = client.beginAnalyzeDocument("prebuilt-layout", BinaryData.fromStream(data), dataLength,
                     new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "2")), Context.NONE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -550,7 +550,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             buildModelRunner((trainingFilesUrl) -> {
-                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+                SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
                     adminClient
                         .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
@@ -561,7 +561,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                     = client.beginAnalyzeDocument(
                         modelId,
-                        data,
+                        BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
@@ -582,7 +582,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             buildModelRunner((trainingFilesUrl) -> {
-                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+                SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
                     adminClient
                         .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
@@ -593,7 +593,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                     = client.beginAnalyzeDocument(
                         modelId,
-                        data,
+                        BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
@@ -615,7 +615,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             buildModelRunner((trainingFilesUrl) -> {
-                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+                SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
                     adminClient
                         .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
@@ -625,7 +625,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
                 Assertions.assertThrows(RuntimeException.class,
                     () -> client.beginAnalyzeDocument(modelId,
-                            (InputStream) null,
+                            (BinaryData) null,
                             dataLength)
                         .setPollInterval(durationTestMode));
                 adminClient.deleteModel(modelId);
@@ -644,7 +644,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         dataRunner((data, dataLength) -> {
             Exception ex = Assertions.assertThrows(RuntimeException.class, () -> client.beginAnalyzeDocument(
                     null,
-                    data,
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode));
             Assertions.assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
@@ -664,7 +664,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             buildModelRunner((trainingFilesUrl) -> {
-                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+                SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
                     adminClient
                         .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
@@ -675,7 +675,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                     = client.beginAnalyzeDocument(
                         modelId,
-                        data,
+                        BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
@@ -693,7 +693,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> multipageTrainingRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
+            SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller
                 = adminClient
                 .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
@@ -703,7 +703,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument(
                     modelId,
-                    data,
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -721,7 +721,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
             selectionMarkTrainingRunner((trainingFilesUrl) -> {
-                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+                SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller =
                     adminClient
                         .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                         .setPollInterval(durationTestMode);
@@ -732,7 +732,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                     = client.beginAnalyzeDocument(
                         modelId,
-                        data,
+                        BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode);
                 syncPoller.waitForCompletion();
@@ -753,7 +753,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         urlRunner((fileUrl) -> buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
+            SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller
                 = adminClient
                 .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
@@ -778,7 +778,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         testingContainerUrlRunner((fileUrl) -> multipageTrainingRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
+            SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller
                 = adminClient
                 .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
@@ -808,12 +808,12 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModel> syncPoller
+            SyncPoller<DocumentOperationResult, DocumentModelInfo> syncPoller
                 = getDocumentModelAdminClient(httpClient, serviceVersion).beginBuildModel(trainingFilesUrl,
                     DocumentBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            DocumentModel createdModel = syncPoller.getFinalResult();
+            DocumentModelInfo createdModel = syncPoller.getFinalResult();
 
             HttpResponseException httpResponseException = Assertions.assertThrows(
                 HttpResponseException.class,
@@ -876,7 +876,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) ->
             buildModelRunner((trainingFilesUrl -> {
-                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
+                SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller
                     = adminClient
                     .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
@@ -885,7 +885,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
                 HttpResponseException httpResponseException = Assertions.assertThrows(HttpResponseException.class,
                     () -> client.beginAnalyzeDocument(modelId,
-                            data,
+                            BinaryData.fromStream(data),
                             dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
@@ -904,7 +904,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         urlRunner(fileUrl -> selectionMarkTrainingRunner((trainingFilesUrl) -> {
             client = getDocumentAnalysisClient(httpClient, serviceVersion);
 
-            SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
+            SyncPoller<DocumentOperationResult, DocumentModelInfo> buildModelPoller
                 = adminClient.beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                 .setPollInterval(durationTestMode);
             buildModelPoller.waitForCompletion();
@@ -934,7 +934,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", data,
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -964,7 +964,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBusinessCardData(syncPoller.getFinalResult());
@@ -981,7 +981,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBusinessCardData(syncPoller.getFinalResult());
@@ -998,7 +998,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBlankPdfData(syncPoller.getFinalResult());
@@ -1015,7 +1015,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = Assertions.assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("prebuilt-businessCard", data, dataLength)
+                () -> client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
@@ -1032,7 +1032,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-businessCard", data,
+                = client.beginAnalyzeDocument("prebuilt-businessCard", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -1137,7 +1137,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", data,
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
@@ -1155,7 +1155,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateInvoiceData(syncPoller.getFinalResult());
@@ -1172,7 +1172,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBlankPdfData(syncPoller.getFinalResult());
@@ -1188,7 +1188,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = Assertions.assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("prebuilt-invoice", data, dataLength)
+                () -> client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
@@ -1206,7 +1206,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         // confirm if pageResults should be returned for prebuilt model recognition
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-invoice", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-invoice", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateMultipageInvoiceData(syncPoller.getFinalResult());
@@ -1289,7 +1289,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocument("prebuilt-invoice",
-                    data,
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode);
             validateInvoiceData(syncPoller.getFinalResult());
@@ -1305,7 +1305,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             AnalyzeResult analyzeResult = client.beginAnalyzeDocument("prebuilt-invoice",
-                    data,
+                    BinaryData.fromStream(data),
                     dataLength)
                 .setPollInterval(durationTestMode)
                 .getFinalResult();
@@ -1331,7 +1331,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-idDocument", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-idDocument", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
@@ -1360,7 +1360,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-idDocument", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-idDocument", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateIdentityData(syncPoller.getFinalResult());
@@ -1377,7 +1377,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> {
             SyncPoller<DocumentOperationResult, AnalyzeResult> syncPoller
-                = client.beginAnalyzeDocument("prebuilt-idDocument", data, dataLength)
+                = client.beginAnalyzeDocument("prebuilt-idDocument", BinaryData.fromStream(data), dataLength)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateBlankPdfData(syncPoller.getFinalResult());
@@ -1395,7 +1395,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         damagedPdfDataRunner((data, dataLength) -> {
             HttpResponseException httpResponseException = Assertions.assertThrows(HttpResponseException.class,
                 () -> client.beginAnalyzeDocument("prebuilt-idDocument",
-                        data,
+                        BinaryData.fromStream(data),
                         dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());

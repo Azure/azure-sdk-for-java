@@ -606,6 +606,14 @@
 
   <Match>
     <Or>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin"/>
+      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
@@ -2599,6 +2607,12 @@
   <!-- Generated implementation of Anomaly Detector is using an inline class -->
   <Match>
     <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Generated implementation of Personalizer is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 

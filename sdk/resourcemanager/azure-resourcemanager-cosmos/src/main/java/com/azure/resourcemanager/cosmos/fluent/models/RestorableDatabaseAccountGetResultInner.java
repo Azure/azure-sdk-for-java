@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ApiType;
 import com.azure.resourcemanager.cosmos.models.RestorableLocationResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** A Azure Cosmos DB restorable database account. */
 @Fluent
 public final class RestorableDatabaseAccountGetResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDatabaseAccountGetResultInner.class);
-
     /*
      * The properties of a restorable database account.
      */

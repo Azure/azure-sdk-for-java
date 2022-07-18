@@ -6,6 +6,8 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -14,6 +16,7 @@ import com.azure.storage.file.share.models.ShareRootSquash;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The SharesGetPropertiesHeaders model. */
@@ -139,6 +142,73 @@ public final class SharesGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-share-next-allowed-quota-downgrade-time")
     private DateTimeRfc1123 xMsShareNextAllowedQuotaDowngradeTime;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of SharesGetPropertiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public SharesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        if (rawHeaders.getValue("x-ms-share-provisioned-iops") != null) {
+            this.xMsShareProvisionedIops = Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-iops"));
+        }
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        if (rawHeaders.getValue("x-ms-lease-status") != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        }
+        if (rawHeaders.getValue("x-ms-lease-state") != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        }
+        if (rawHeaders.getValue("x-ms-root-squash") != null) {
+            this.xMsRootSquash = ShareRootSquash.fromString(rawHeaders.getValue("x-ms-root-squash"));
+        }
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        if (rawHeaders.getValue("x-ms-access-tier-change-time") != null) {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(rawHeaders.getValue("x-ms-access-tier-change-time"));
+        }
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            if (!header.getName().startsWith("x-ms-meta-")) {
+                continue;
+            }
+            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
+        }
+        this.xMsMeta = xMsMetaHeaderCollection;
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        if (rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps") != null) {
+            this.xMsShareProvisionedIngressMbps =
+                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps"));
+        }
+        if (rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps") != null) {
+            this.xMsShareProvisionedBandwidthMibps =
+                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps"));
+        }
+        if (rawHeaders.getValue("x-ms-share-quota") != null) {
+            this.xMsShareQuota = Integer.parseInt(rawHeaders.getValue("x-ms-share-quota"));
+        }
+        this.xMsAccessTier = rawHeaders.getValue("x-ms-access-tier");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.xMsEnabledProtocols = rawHeaders.getValue("x-ms-enabled-protocols");
+        if (rawHeaders.getValue("x-ms-lease-duration") != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsAccessTierTransitionState = rawHeaders.getValue("x-ms-access-tier-transition-state");
+        if (rawHeaders.getValue("x-ms-share-provisioned-egress-mbps") != null) {
+            this.xMsShareProvisionedEgressMbps =
+                    Integer.parseInt(rawHeaders.getValue("x-ms-share-provisioned-egress-mbps"));
+        }
+        if (rawHeaders.getValue("x-ms-share-next-allowed-quota-downgrade-time") != null) {
+            this.xMsShareNextAllowedQuotaDowngradeTime =
+                    new DateTimeRfc1123(rawHeaders.getValue("x-ms-share-next-allowed-quota-downgrade-time"));
+        }
+    }
 
     /**
      * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
