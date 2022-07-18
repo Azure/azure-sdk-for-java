@@ -4,6 +4,7 @@ package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Flux;
 
 import java.io.Closeable;
@@ -14,6 +15,7 @@ import java.nio.ByteBuffer;
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
     private volatile boolean consumed;
+    private final HttpResponse response;
 
     /**
      * Creates a {@link StreamResponse}.
@@ -22,9 +24,22 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      * @param statusCode The status code of the HTTP response.
      * @param headers The headers of the HTTP response.
      * @param value The content of the HTTP response.
+     * @deprecated Use {@link #StreamResponse(HttpResponse)}
      */
+    @Deprecated
     public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value) {
         super(request, statusCode, headers, value);
+        response = null;
+    }
+
+    /**
+     * Creates a {@link StreamResponse}.
+     *
+     * @param response The HTTP response.
+     */
+    public StreamResponse(HttpResponse response) {
+        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        this.response = response;
     }
 
     /**
@@ -34,7 +49,14 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      */
     @Override
     public Flux<ByteBuffer> getValue() {
-        return super.getValue().doFinally(t -> this.consumed = true);
+        if (response == null) {
+            return super.getValue().doFinally(t -> this.consumed = true);
+        } else {
+            return response.getBody().doFinally(t -> {
+                this.consumed = true;
+                this.response.close();
+            });
+        }
     }
 
     /**
@@ -46,7 +68,11 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
             return;
         }
         this.consumed = true;
-        final Flux<ByteBuffer> value = getValue();
-        value.subscribe().dispose();
+        if (response == null) {
+            final Flux<ByteBuffer> value = getValue();
+            value.subscribe().dispose();
+        } else {
+            response.close();
+        }
     }
 }

@@ -258,7 +258,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         this.isReactive = isReactiveMethod;
-        this.isStreamResponse = isStreamResponseType(returnType);
+        if (isReactiveMethod) {
+            this.isStreamResponse = isStreamResponseType(TypeUtil.getTypeArgument(returnType));
+        } else {
+            this.isStreamResponse = isStreamResponseType(returnType);
+        }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
     }
@@ -634,8 +638,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     boolean isStreamResponseType(Type type) {
-        //Note: StreamResponse will be added to sync flows in a follow-up PR. Currently, their reactive body types are handled in Async Rest Proxy.
-        return TypeUtil.isTypeOrSubTypeOf(type, StreamResponse.class);
+        return TypeUtil.getRawClass(type).equals(StreamResponse.class);
     }
 
     /**
