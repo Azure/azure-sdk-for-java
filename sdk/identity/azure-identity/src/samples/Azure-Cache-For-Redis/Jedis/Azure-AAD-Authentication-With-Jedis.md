@@ -2,40 +2,42 @@
 
 ### Table of contents
 
-- [Dependency Requirements](#dependency-requirements-jedis)
+- [Prerequisites](#prerequisites)
 - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 - [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
 - [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
 
-#### Dependency Requirements Jedis
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-identity</artifactId>
-    <version>1.5.0</version>
-</dependency>
 
-<dependency>
-    <groupId>redis.clients</groupId>
-    <artifactId>jedis</artifactId>
-    <version>4.0.1</version>
-</dependency>
-```
+#### Prerequisites
+ - Configuration of Role and Role Assignments is required before using the sample code in this document.
+ - **Dependency Requirements:**
+    ```xml
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>1.5.0</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>4.0.1</version>
+    </dependency>
+    ```
 
 #### Samples Guidance
 
 Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
 
-[Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
-This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
+* [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
+ - This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
-[Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
-This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
+* [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
+ - This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
-[Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
-This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
-
-**Note:** The below sample uses the Azure Identity library's `ClientCertificateCredential`. The credential can be replaced with any of the other `TokenCredential` implementations offered by the Azure Identity library.
+* [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
+ - This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
+ 
 
 #### Authenticate with Azure AD: Hello World
 This sample is intended to assist in authenticating with Azure AD via the Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Jedis instance.
@@ -58,10 +60,11 @@ boolean useSsl = true;
 String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
+// Note, Redis Cache Host Name and Port are required below
 Jedis jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
-        .password(token)
-        .user("<username>")
-        .ssl(useSsl)
+        .password(token) // Azure AD Token is required as password
+        .user("<username>") // Username is required
+        .ssl(useSsl) //Required to use SSL Conncections
         .build());
 
 // Set a value against your key in the Redis cache.
@@ -71,6 +74,16 @@ System.out.println(jedis.get("Az:key"));
 // Close the Jedis Client
 jedis.close();
 ```
+
+##### Supported Token Credentials for Azure AD Authentication
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch Azure AD Access Token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+* [Client Certificate Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
+* [Client Secret Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
+* [Managed Identity Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
+* [Username Password Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-user-auth#username-password-credential)
+* [Azure CLI Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
+* [Interactive Browser Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
+* [Device Code Credential](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-user-auth#device-code-credential)
 
 #### Authenticate with Azure AD: Handle Reauthentication
 This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance when its connection is broken in error/exception scenarios.
@@ -82,21 +95,18 @@ Integrate the logic in your application code to fetch an Azure AD access token v
 ```java
 
 //Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-    .clientId("YOUR-CLIENT-ID")
-    .pfxCertificate("YOUR-CERTIFICATE-PATH", "CERTIFICATE-PASSWORD")
-    .tenantId("YOUR-TENANT-ID")
-    .build();
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-AccessToken accessToken = getAccessToken(clientCertificateCredential, trc);
+AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
-// SSL connection is required for non 6379 ports.
+// SSL connection is required.
 boolean useSsl = true;
 String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
+// Note: Cache Host Name, Port, Username, Azure AD Access Token and ssl connections are required below.
 Jedis jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
 
 int maxTries = 3;
@@ -111,11 +121,15 @@ while (i < maxTries) {
     } catch (JedisException e) {
         // Handle The Exception as required in your application.
         e.printStackTrace();
+        
+        if (e.getMessage().contains("Invalid Username Password Pair")) {
+            
+        }   
 
         // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
-        if (jedis.isBroken() || accessToken.isExpired()) {
+        if (jedis.isBroken()) {
             jedis.close();
-            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", getAccessToken(clientCertificateCredential, trc), useSsl);
+            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", getAccessToken(defaultAzureCredential, trc), useSsl);
         }
     }
     i++;
@@ -179,24 +193,21 @@ The following table compares the capabilities of the Jedis and Azure Jedis clien
 
 See the following example of setting up the Azure Jedis client:
 
-The wrapper code located here requires to be added/integrated in your application code for the below sample to work.
+Note: The wrapper code located [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/src/samples/Azure-Cache-For-Redis/Jedis/java/com/azure/jedis) requires to be added/integrated in your application code for the below sample to work.
 
 
 ```java
-//Construct a Token Credential from Identity library, e.g. ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
-ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-        .clientId("<clientId>")
-        .pfxCertificate("<Cert-File-Path>", "<Cert-Password-if-Applicable>")
-        .tenantId("<tenantId>")
-        .build();
+//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / ClientCertificateCredential / ManagedIdentityCredential etc.
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
+
 
 //Create Jedis Client using the builder as follows.
 Jedis jedisClient = new AzureJedisClientBuilder()
-        .cacheHostName("<cache host name>")
-        .port(6380)
-        .useSSL(true)
-        .username("<username>")
-        .credential(clientCertificateCredential)
+        .cacheHostName("<cache host name>") // Cache Host Name is required.
+        .port(6380) // Port is requried.
+        .useSSL(true) // SSL Connections are required.
+        .username("<username>") // Username is required.
+        .credential(defaultAzureCredential) // A Token Credential is required to fetch Azure AD Access tokens.
         .build();
 
 // Set a value against your key in the Redis cache.
