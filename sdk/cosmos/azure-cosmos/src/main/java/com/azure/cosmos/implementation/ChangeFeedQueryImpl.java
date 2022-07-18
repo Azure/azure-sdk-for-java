@@ -146,7 +146,6 @@ class ChangeFeedQueryImpl<T> {
         if (this.operationContextAndListener == null) {
             return client.readFeed(request)
                          .map(rsp -> {
-                             logger.info("Response in executeRequestAsync headers are : {}", rsp.getResponseHeaders());
                              return BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass);
                          });
         } else {
@@ -159,7 +158,6 @@ class ChangeFeedQueryImpl<T> {
 
             return client.readFeed(request)
                          .map(rsp -> {
-                             logger.info("Response in executeRequestAsync headers are : {}", rsp.getResponseHeaders());
                              listener.responseListener(operationContext, rsp);
 
                              final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(

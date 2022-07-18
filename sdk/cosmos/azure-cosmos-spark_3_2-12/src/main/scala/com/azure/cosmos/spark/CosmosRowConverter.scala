@@ -3,14 +3,11 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{Constants, Utils}
-import com.azure.cosmos.spark.CosmosConfigNames.SerializationDateTimeConversionMode
-import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
+import com.azure.cosmos.spark.CosmosTableSchemaInferrer.{CurrentAttributeName, LsnAttributeName, MetadataAttributeName, MetadataLsnAttributeName, OperationTypeAttributeName, PreviousRawJsonBodyAttributeName}
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.annotation.JsonInclude.Include
-
-import java.sql.{Date, Timestamp}
-import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
+import com.fasterxml.jackson.databind.node._
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
@@ -19,18 +16,21 @@ import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMa
 import org.apache.spark.sql.catalyst.util.ArrayData
 
 import java.io.IOException
-import java.time.{Instant, LocalDate, OffsetDateTime, ZoneOffset}
+import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
+import java.time.{Instant, LocalDate, OffsetDateTime, ZoneOffset}
 import java.util.concurrent.TimeUnit
 import scala.collection.concurrent.TrieMap
 
 // scalastyle:off underscore.import
 import org.apache.spark.sql.types._
+
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 import org.apache.spark.unsafe.types.UTF8String
-import scala.util.{Try, Success, Failure}
+
+import scala.util.{Failure, Success, Try}
 
 // scalastyle:off
 private[cosmos] object CosmosRowConverter {
@@ -71,10 +71,6 @@ private[cosmos] class CosmosRowConverter(
 
     private val skipDefaultValues =
       serializationConfig.serializationInclusionMode == SerializationInclusionModes.NonDefault
-    private val FullFidelityChangeFeedMetadataPropertyName = "_metadata"
-    private val OperationTypePropertyName = "operationType"
-    private val PreviousImagePropertyName = "previousImage"
-    private val TimeToLiveExpiredPropertyName = "timeToLiveExpired"
 
     private val utcFormatter = DateTimeFormatter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
@@ -145,6 +141,24 @@ private[cosmos] class CosmosRowConverter(
         })
 
         objectNode
+      }
+    }
+
+    def getChangeFeedLsn(objectNode: ObjectNode): String = {
+      //  First try to get incremental change feed LSN
+      //  If it doesn't exist, get Full Fidelity change feed LSN
+      //  Ideally we should get them based on the change feed mode
+      objectNode.get(LsnAttributeName) match {
+        case lsnNode: JsonNode => lsnNode.asText()
+        case _ =>
+          getFullFidelityMetadata(objectNode) match {
+            case metadataNode: Some[ObjectNode] =>
+              metadataNode.get.get(MetadataLsnAttributeName) match {
+                case lsnNode: JsonNode => lsnNode.asText()
+                case _ => null
+              }
+            case _ => null
+          }
       }
     }
 
@@ -634,7 +648,7 @@ private[cosmos] class CosmosRowConverter(
       if (objectNode == null) {
         None
       } else {
-        val metadata = objectNode.get(FullFidelityChangeFeedMetadataPropertyName)
+        val metadata = objectNode.get(MetadataAttributeName)
         if (metadata != null && metadata.isObject) {
           Some(metadata.asInstanceOf[ObjectNode])
         } else {
@@ -643,48 +657,63 @@ private[cosmos] class CosmosRowConverter(
       }
     }
 
-    private def parsePreviousImage(objectNode: ObjectNode): String = {
-      getFullFidelityMetadata(objectNode)
-        match {
-        case metadataNode: Some[ObjectNode] =>
-          metadataNode.get.get(PreviousImagePropertyName) match {
-            case previousImageObjectNode: ObjectNode => Option(previousImageObjectNode).map(o => o.toString).orNull
-            case _ => null
-        }
+    private def parseMetadata(objectNode: ObjectNode): String = {
+      objectNode.get(MetadataAttributeName)
+      match {
+        case metadataNode: JsonNode =>
+          metadataNode.toString
         case _ => null
       }
     }
 
-  private def parseLsn(objectNode: ObjectNode): Long = {
-    objectNode.get(LsnAttributeName)
-    match {
-      case lsnNode: JsonNode =>
-        Option(lsnNode).fold(-1L)(v => v.asLong(-1))
-      case _ => -1L
+    private def parseLsn(objectNode: ObjectNode): Long = {
+      objectNode.get(LsnAttributeName)
+      match {
+        case lsnNode: JsonNode =>
+          Option(lsnNode).fold(-1L)(v => v.asLong(-1))
+        case _ => -1L
+      }
     }
-  }
 
-    private def parseTtlExpired(objectNode: ObjectNode): Boolean = {
-      getFullFidelityMetadata(objectNode) match {
-        case metadataNode: Some[ObjectNode] =>
-          metadataNode.get.get(TimeToLiveExpiredPropertyName) match {
-            case valueNode: JsonNode =>
-              Option(valueNode).fold(false)(v => v.asBoolean(false))
-            case _ => false
-          }
-        case _ => false
+    private def parseCurrent(objectNode: ObjectNode): String = {
+      objectNode.get(CurrentAttributeName)
+      match {
+        case currentNode: JsonNode =>
+          currentNode.toString
+        case _ => null
+      }
+    }
+
+    private def parsePrevious(objectNode: ObjectNode): String = {
+      objectNode.get(PreviousRawJsonBodyAttributeName)
+      match {
+        case previousNode: JsonNode =>
+          previousNode.toString
+        case _ => null
       }
     }
 
     private def parseOperationType(objectNode: ObjectNode): String = {
       getFullFidelityMetadata(objectNode) match {
         case metadataNode: Some[ObjectNode] =>
-          metadataNode.get.get(OperationTypePropertyName) match {
+          metadataNode.get.get(OperationTypeAttributeName) match {
             case valueNode: JsonNode =>
               Option(valueNode).fold(null: String)(v => v.asText(null))
             case _ => null
           }
         case _ => null
+      }
+    }
+
+    private def parseMetadataLsn(objectNode: ObjectNode): Long = {
+      getFullFidelityMetadata(objectNode) match {
+        case metadataNode: Some[ObjectNode] =>
+          metadataNode.get.get(MetadataLsnAttributeName) match {
+            case lsnNode: JsonNode =>
+              Option(lsnNode).fold(-1L)(v => v.asLong(-1))
+            case _ => -1L
+          }
+        case _ => -1L
       }
     }
 
@@ -694,12 +723,16 @@ private[cosmos] class CosmosRowConverter(
         schema.fields.map {
             case StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType, _, _) =>
                 objectNode.toString
+            case StructField(CosmosTableSchemaInferrer.CurrentAttributeName, StringType, _, _) =>
+              parseCurrent(objectNode)
             case StructField(CosmosTableSchemaInferrer.PreviousRawJsonBodyAttributeName, StringType, _, _) =>
-              parsePreviousImage(objectNode)
+              parsePrevious(objectNode)
+            case StructField(CosmosTableSchemaInferrer.MetadataAttributeName, StringType, _, _) =>
+              parseMetadata(objectNode)
             case StructField(CosmosTableSchemaInferrer.OperationTypeAttributeName, StringType, _, _) =>
               parseOperationType(objectNode)
-            case StructField(CosmosTableSchemaInferrer.TtlExpiredAttributeName, BooleanType, _, _) =>
-              parseTtlExpired(objectNode)
+            case StructField(CosmosTableSchemaInferrer.MetadataLsnAttributeName, LongType, _, _) =>
+              parseMetadataLsn(objectNode)
             case StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType, _, _) =>
               parseLsn(objectNode)
             case StructField(name, dataType, _, _) =>

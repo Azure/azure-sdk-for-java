@@ -34,10 +34,16 @@ private object CosmosTableSchemaInferrer
   private[spark] val SelfAttributeName = "_self"
   private[spark] val ResourceIdAttributeName = "_rid"
   private[spark] val AttachmentsAttributeName = "_attachments"
-  private[spark] val PreviousRawJsonBodyAttributeName = "_previousRawBody"
-  private[spark] val TtlExpiredAttributeName = "_ttlExpired"
-  private[spark] val OperationTypeAttributeName = "_operationType"
+  private[spark] val PreviousRawJsonBodyAttributeName = "previous"
+  private[spark] val OperationTypeAttributeName = "operationType"
   private[spark] val LsnAttributeName = "_lsn"
+  private[spark] val CurrentAttributeName = "current"
+  private[spark] val MetadataAttributeName = "metadata"
+  private[spark] val CrtsAttributeName = "crts"
+  private[spark] val MetadataLsnAttributeName = "lsn"
+  private[spark] val PreviousImageLsnAttributeName = "previousImageLSN"
+
+
 
   private val systemProperties = List(
     ETagAttributeName,

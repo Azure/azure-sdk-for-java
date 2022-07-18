@@ -38,9 +38,13 @@ private[spark] object ChangeFeedTable {
     StructField(IdAttributeName, StringType, nullable=false),
     StructField(TimestampAttributeName, LongType, nullable=false),
     StructField(ETagAttributeName, StringType, nullable=false),
-    StructField(OperationTypeAttributeName, StringType, nullable=false),
+    StructField(MetadataAttributeName, StringType, nullable=false),
     StructField(PreviousRawJsonBodyAttributeName, StringType, nullable=true),
-    StructField(TtlExpiredAttributeName, BooleanType, nullable=true)
+    StructField(CurrentAttributeName, StringType, nullable=false),
+    StructField(OperationTypeAttributeName, StringType, nullable=false),
+    StructField(CrtsAttributeName, LongType, nullable=false),
+    StructField(MetadataLsnAttributeName, LongType, nullable=false),
+    StructField(PreviousImageLsnAttributeName, LongType, nullable=true)
   ))
 }
 

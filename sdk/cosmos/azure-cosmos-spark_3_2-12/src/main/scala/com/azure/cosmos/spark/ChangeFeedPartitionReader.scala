@@ -4,14 +4,13 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation._
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import org.apache.spark.TaskContext
-import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
@@ -82,7 +81,9 @@ private case class ChangeFeedPartitionReader
             objectNode,
             readConfig.schemaConversionMode)
 
-          ChangeFeedSparkRowItem(row, objectNode.get(LsnPropertyName).asText())
+          // println("Change Feed Json Node is ", jsonNode.toPrettyString)
+
+          ChangeFeedSparkRowItem(row, cosmosRowConverter.getChangeFeedLsn(objectNode))
         })
   }
 
