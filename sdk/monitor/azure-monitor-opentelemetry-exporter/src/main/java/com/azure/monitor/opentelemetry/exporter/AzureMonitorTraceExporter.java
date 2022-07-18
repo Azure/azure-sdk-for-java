@@ -130,7 +130,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                 export(span, telemetryItems);
             }
             client.export(telemetryItems)
-                .subscriberContext(Context.of(Tracer.DISABLE_TRACING_KEY, true))
+                .contextWrite(Context.of(Tracer.DISABLE_TRACING_KEY, true))
                 .subscribe(ignored -> {
                 }, error -> completableResultCode.fail(), completableResultCode::succeed);
             return completableResultCode;
