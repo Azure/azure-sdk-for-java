@@ -277,6 +277,10 @@ stages:
           #      -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
           #      -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
 
+        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+          parameters:
+            ServiceDirectories: (($(ServiceDirectories) | ConvertFrom-Json) -join ',')
+
         - template: /eng/common/pipelines/templates/steps/verify-readme.yml
           parameters:
             # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of
@@ -295,10 +299,6 @@ stages:
         #    ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
         #      Directory: sdk/${{ parameters.ServiceDirectory }}
         #    CheckLinkGuidance: $true
-
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectories: (($(ServiceDirectories) | ConvertFrom-Json) -join ',')
 
         # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
         - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
