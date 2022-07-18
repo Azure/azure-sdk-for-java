@@ -55,21 +55,6 @@
       }
     },
     {
-      "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
-      "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('serviceBusNamespaceName'), '/default')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('serviceBusNamespaceName'))]"
-      ],
-      "properties": {
-        "publicNetworkAccess": "Enabled",
-        "defaultAction": "Allow",
-        "virtualNetworkRules": [],
-        "ipRules": []
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2022-01-01-preview",
       "name": "[concat(variables('serviceBusNamespaceName'), '/que001')]",
