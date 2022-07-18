@@ -93,7 +93,7 @@
       <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.0-beta.8</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+      <version>1.1.0-beta.9</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
