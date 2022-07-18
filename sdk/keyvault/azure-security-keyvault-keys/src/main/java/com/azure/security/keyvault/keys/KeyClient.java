@@ -834,7 +834,7 @@ public final class KeyClient {
      * System.out.printf&#40;&quot;Key delete date: %s%n&quot; + deletedKey.getDeletedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
      *
-     * &#47;&#47; Key is being deleted on server.
+     * &#47;&#47; Key is being deleted on the server.
      * deleteKeyPoller.waitForCompletion&#40;&#41;;
      * &#47;&#47; Key is deleted
      * </pre>
@@ -980,7 +980,7 @@ public final class KeyClient {
      * System.out.printf&#40;&quot;Recovered key name: %s%n&quot;, recoveredKey.getName&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Recovered key id: %s%n&quot;, recoveredKey.getId&#40;&#41;&#41;;
      *
-     * &#47;&#47; Key is being recovered on server.
+     * &#47;&#47; Key is being recovered on the server.
      * recoverKeyPoller.waitForCompletion&#40;&#41;;
      * &#47;&#47; Key is recovered
      * </pre>

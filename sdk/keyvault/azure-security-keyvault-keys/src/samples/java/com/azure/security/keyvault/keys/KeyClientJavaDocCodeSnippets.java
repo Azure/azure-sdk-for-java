@@ -153,7 +153,7 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key delete date: %s%n" + deletedKey.getDeletedOn());
         System.out.printf("Deleted key's recovery id: %s%n", deletedKey.getRecoveryId());
 
-        // Key is being deleted on server.
+        // Key is being deleted on the server.
         deleteKeyPoller.waitForCompletion();
         // Key is deleted
         // END: com.azure.security.keyvault.keys.KeyClient.deleteKey#String
@@ -350,7 +350,7 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Recovered key name: %s%n", recoveredKey.getName());
         System.out.printf("Recovered key id: %s%n", recoveredKey.getId());
 
-        // Key is being recovered on server.
+        // Key is being recovered on the server.
         recoverKeyPoller.waitForCompletion();
         // Key is recovered
         // END: com.azure.security.keyvault.keys.KeyClient.recoverDeletedKey#String

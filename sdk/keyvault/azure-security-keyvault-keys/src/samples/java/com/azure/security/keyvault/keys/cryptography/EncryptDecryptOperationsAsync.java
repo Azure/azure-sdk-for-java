@@ -12,22 +12,24 @@ import java.util.Random;
  * Sample demonstrates how to set, get, update and delete a key.
  */
 public class EncryptDecryptOperationsAsync {
-
     /**
      * Authenticates with the key vault and shows how to set, get, update and delete a key in the key vault.
      *
      * @param args Unused. Arguments to the program.
+     *
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException, IllegalArgumentException {
+        /* Instantiate a CryptographyAsyncClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. To make default credentials work, ensure that the environment variable
+        'AZURE_CLIENT_ID' is set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate a cryptography async client that will be used to perform crypto operations. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+        for links and instructions. */
         CryptographyAsyncClient cryptoAsyncClient = new CryptographyClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .keyIdentifier("<Your-Key-Id-From-Keyvault>")
+            .keyIdentifier("<your-key-id-from-keyvault>")
             .buildAsyncClient();
 
         byte[] plaintext = new byte[100];
@@ -38,9 +40,10 @@ public class EncryptDecryptOperationsAsync {
             .subscribe(encryptResult -> {
                 System.out.printf("Returned ciphertext size is %d bytes with algorithm %s\n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
-                //Let's decrypt the encrypted response.
+                // Let's decrypt the encrypted response.
                 cryptoAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptResult.getCipherText())
-                    .subscribe(decryptResult -> System.out.printf("Returned plaintext size is %d bytes\n", decryptResult.getPlainText().length));
+                    .subscribe(decryptResult -> System.out.printf("Returned plaintext size is %d bytes\n",
+                        decryptResult.getPlainText().length));
             });
 
         Thread.sleep(5000);

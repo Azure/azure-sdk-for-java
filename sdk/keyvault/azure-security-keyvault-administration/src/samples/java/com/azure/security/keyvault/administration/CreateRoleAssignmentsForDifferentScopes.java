@@ -20,11 +20,11 @@ public class CreateRoleAssignmentsForDifferentScopes {
      * @throws IllegalArgumentException when an invalid key vault URL is passed.
      */
     public static void main(String[] args) {
-        /* Instantiate a KeyVaultBackupAsyncClient that will be used to call the service. Notice that the client is
-        using default Azure credentials. To make default credentials work, ensure that environment variables
-        'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        /* Instantiate a KeyVaultAccessControlClient that will be used to call the service. Notice that the client is
+        using default Azure credentials. To make default credentials work, ensure that the environment variable
+        'AZURE_CLIENT_ID' is set with the principal ID of a managed identity that has been given access to your vault.
 
-        To get started, you'll need a URI to an 1Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")

@@ -17,7 +17,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import java.time.OffsetDateTime;
 
 /**
- * This class contains code samples for generating javadocs through doclets for {@link SecretClient}
+ * This class contains code samples for generating javadocs through doclets for {@link SecretClient}.
  */
 public final class SecretClientJavaDocCodeSnippets {
 

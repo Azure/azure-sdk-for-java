@@ -27,17 +27,19 @@ public class HelloWorldAsync {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException {
+        /* Instantiate a CertificateAsyncClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. To make default credentials work, ensure that the environment variable
+        'AZURE_CLIENT_ID' is set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate an async key client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        for links and instructions. */
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // Let's create a self signed certificate valid for 1 year. if the certificate
-        //   already exists in the key vault, then a new version of the certificate is created.
+        // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
+        // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
@@ -56,18 +58,18 @@ public class HelloWorldAsync {
 
         Thread.sleep(22000);
 
-        // Let's Get the latest version of the certificate from the key vault.
+        // Let's get the latest version of the certificate from the key vault.
         certificateAsyncClient.getCertificate("certificateName")
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
-                    certificateResponse.getSecretId()));
+                System.out.printf("Certificate is returned with name %s and secretId %s %n",
+                    certificateResponse.getProperties().getName(), certificateResponse.getSecretId()));
 
-        // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
-        // The update method can be used to update the enabled status of the certificate.
+        // After some time, we need to disable the certificate temporarily, so we update the enabled status of the
+        // certificate. The update method can be used to update the enabled status of the certificate.
         certificateAsyncClient.getCertificate("certificateName")
             .subscribe(certificateResponseValue -> {
                 KeyVaultCertificate certificate = certificateResponseValue;
-                //Update enabled status of the certificate
+                // Update enabled status of the certificate.
                 certificate.getProperties().setEnabled(false);
                 certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
                     .subscribe(certificateResponse ->
@@ -77,26 +79,23 @@ public class HelloWorldAsync {
 
         Thread.sleep(3000);
 
-
-        //Let's create a certificate issuer.
+        // Let's create a certificate issuer.
         certificateAsyncClient.createIssuer(new CertificateIssuer("myIssuer", "Test"))
-            .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProvider());
-            });
+            .subscribe(issuer ->
+                System.out.printf("Issuer created with %s and %s", issuer.getName(), issuer.getProvider()));
 
         Thread.sleep(2000);
-
 
         // Let's fetch the issuer we just created from the key vault.
         certificateAsyncClient.getIssuer("myIssuer")
-            .subscribe(issuer -> {
-                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProvider());
-            });
+            .subscribe(issuer ->
+                System.out.printf("Issuer returned with %s and %s", issuer.getName(), issuer.getProvider()));
 
         Thread.sleep(2000);
 
-        //Let's create a certificate signed by our issuer.
-        certificateAsyncClient.beginCreateCertificate("myCertificate", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
+        // Let's create a certificate signed by our issuer.
+        certificateAsyncClient.beginCreateCertificate("myCertificate",
+                new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
@@ -106,11 +105,11 @@ public class HelloWorldAsync {
 
         Thread.sleep(22000);
 
-        // Let's Get the latest version of our certificate from the key vault.
+        // Let's get the latest version of our certificate from the key vault.
         certificateAsyncClient.getCertificate("myCertificate")
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getProperties().getName(),
-                    certificateResponse.getSecretId()));
+                System.out.printf("Certificate is returned with name %s and secretId %s %n",
+                    certificateResponse.getProperties().getName(), certificateResponse.getSecretId()));
 
         Thread.sleep(2000);
 
@@ -133,10 +132,10 @@ public class HelloWorldAsync {
             .subscribe(deletedIssuerResponse ->
                 System.out.printf("Deleted issuer with name %s %n", deletedIssuerResponse.getValue().getName()));
 
-        // To ensure certificate is deleted on server side.
+        // To ensure the certificate is deleted server-side.
         Thread.sleep(50000);
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
+        // If the key vault is soft-delete enabled, then deleted certificates need to be purged for permanent deletion.
         certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));

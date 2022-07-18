@@ -27,17 +27,19 @@ public class ListOperationsAsync {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException {
+        /* Instantiate a CertificateAsyncClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. To make default credentials work, ensure that the environment variable
+        'AZURE_CLIENT_ID' is set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate an async key client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        for links and instructions. */
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // Let's create a self signed certificate valid for 1 year. if the certificate
-        //   already exists in the key vault, then a new version of the certificate is created.
+        // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
+        // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
@@ -45,7 +47,7 @@ public class ListOperationsAsync {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        certificateAsyncClient.beginCreateCertificate("certificatName", policy, true, tags)
+        certificateAsyncClient.beginCreateCertificate("myCertificate", policy, true, tags)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
@@ -55,16 +57,16 @@ public class ListOperationsAsync {
 
         Thread.sleep(22000);
 
-        //Let's create a certificate issuer.
+        // Let's create a certificate issuer.
         certificateAsyncClient.createIssuer(new CertificateIssuer("myIssuer", "Test"))
-            .subscribe(issuer -> {
-                System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProvider());
-            });
+            .subscribe(issuer ->
+                System.out.printf("Issuer created with %s and %s\n", issuer.getName(), issuer.getProvider()));
 
         Thread.sleep(2000);
 
-        //Let's create a certificate signed by our issuer.
-        certificateAsyncClient.beginCreateCertificate("myCert", new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
+        // Let's create a certificate signed by our issuer.
+        certificateAsyncClient.beginCreateCertificate("myCert",
+                new CertificatePolicy("myIssuer", "CN=IssuerSignedJavaPkcs12"), true, tags)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
@@ -76,49 +78,52 @@ public class ListOperationsAsync {
 
         // Let's list all the certificates in the key vault.
         certificateAsyncClient.listPropertiesOfCertificates()
-            .subscribe(certificateProperties -> certificateAsyncClient
-                .getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion())
-                .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s \n",
-                    certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
+            .subscribe(certificateProperties ->
+                certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
+                        certificateProperties.getVersion())
+                    .subscribe(certificateResponse ->
+                        System.out.printf("Received certificate with name %s and key id %s \n",
+                            certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
         Thread.sleep(5000);
 
         // Let's list all certificate versions of the certificate.
         certificateAsyncClient.listPropertiesOfCertificateVersions("myCertificate")
-            .subscribe(certificateProeprties -> certificateAsyncClient
-                .getCertificateVersion(certificateProeprties.getName(), certificateProeprties.getVersion())
-                .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s\n",
-                    certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
+            .subscribe(certificateProperties ->
+                certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
+                        certificateProperties.getVersion())
+                    .subscribe(certificateResponse ->
+                        System.out.printf("Received certificate with name %s and key id %s\n",
+                            certificateResponse.getProperties().getName(), certificateResponse.getKeyId())));
 
         Thread.sleep(5000);
 
-        //Let's list all certificate issuers in the key vault.
+        // Let's list all certificate issuers in the key vault.
         certificateAsyncClient.listPropertiesOfIssuers()
-            .subscribe(issuerProperties -> certificateAsyncClient.getIssuer(issuerProperties.getName())
-                .subscribe(issuerResponse -> System.out.printf("Received issuer with name %s and provider %s\n",
-                    issuerResponse.getName(), issuerResponse.getProvider())));
+            .subscribe(issuerProperties ->
+                certificateAsyncClient.getIssuer(issuerProperties.getName())
+                    .subscribe(issuerResponse ->
+                        System.out.printf("Received issuer with name %s and provider %s\n", issuerResponse.getName(),
+                            issuerResponse.getProvider())));
 
         Thread.sleep(5000);
 
         // Let's set certificate contacts on the Key vault.
         CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@example.com");
         certificateAsyncClient.setContacts(Collections.singletonList(contactToAdd)).subscribe(contact ->
-            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail())
-        );
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail()));
 
         Thread.sleep(3000);
 
         // Let's list all certificate contacts in the key vault.
         certificateAsyncClient.listContacts().subscribe(contact ->
-            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail())
-        );
+            System.out.printf("Contact name %s and email %s\n", contact.getName(), contact.getEmail()));
 
         Thread.sleep(3000);
 
         // Let's delete all certificate contacts in the key vault.
         certificateAsyncClient.listContacts().subscribe(contact ->
-            System.out.printf("Deleted Contact name %s and email %s\n", contact.getName(), contact.getEmail())
-        );
+            System.out.printf("Deleted Contact name %s and email %s\n", contact.getName(), contact.getEmail()));
 
         Thread.sleep(2000);
     }

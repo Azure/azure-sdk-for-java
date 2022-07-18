@@ -122,10 +122,10 @@ public class ReadmeSamples {
 
         // Deleted key is accessible as soon as polling begins.
         DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-        // Deletion date only works for a SoftDelete-enabled key vault.
+        // Deletion date only works for a soft-delete enabled key vault.
         System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
 
-        // Key is being deleted on server.
+        // The key is being deleted on the server.
         deletedKeyPoller.waitForCompletion();
         // END: readme-sample-deleteKey
     }

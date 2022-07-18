@@ -39,17 +39,19 @@ public class BackupAndRestoreOperations {
      * @throws IOException when writing backup to file is unsuccessful.
      */
     public static void main(String[] args) throws IOException, InterruptedException, IllegalArgumentException {
+        /* Instantiate a CertificateClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. To make default credentials work, ensure that the environment variable
+        'AZURE_CLIENT_ID' is set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate a certificate client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        for links and instructions. */
         CertificateClient certificateClient = new CertificateClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        // Let's create a self signed certificate valid for 1 year. if the certificate
-        //   already exists in the key vault, then a new version of the certificate is created.
+        // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
+        // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
@@ -58,7 +60,8 @@ public class BackupAndRestoreOperations {
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = certificateClient.beginCreateCertificate("certificateName", policy, true, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
+            certificateClient.beginCreateCertificate("certificateName", policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         KeyVaultCertificate cert = certificatePoller.getFinalResult();
@@ -67,7 +70,9 @@ public class BackupAndRestoreOperations {
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
         byte[] certificateBackup = certificateClient.backupCertificate("certificateName");
+
         System.out.printf("Backed up certificate with back up blob length %d", certificateBackup.length);
+
         writeBackupToFile(certificateBackup, backupFilePath);
 
         // The certificate is no longer in use, so you delete it.
@@ -75,35 +80,45 @@ public class BackupAndRestoreOperations {
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
+
         System.out.printf("Deleted certificate with name %s and recovery id %s", pollResponse.getValue().getName(),
             pollResponse.getValue().getRecoveryId());
+
         deletedCertificatePoller.waitForCompletion();
 
-        //To ensure certificate is deleted on server side.
+        // To ensure the certificate is deleted server-side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
         certificateClient.purgeDeletedCertificateWithResponse("certificateName", new Context("key1", "value1"));
 
-        //To ensure certificate is purged on server side.
+        // To ensure the certificate is purged server-side.
         Thread.sleep(15000);
 
-        // After sometime, the certificate is required again. We can use the backup value to restore it in the key vault.
+        // After sometime, the certificate is required again. We can use the backup value to restore it in the key
+        // vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
         KeyVaultCertificate restoredCertificate = certificateClient.restoreCertificateBackup(backupFromFile);
-        System.out.printf(" Restored certificate with name %s and id %s", restoredCertificate.getProperties().getName(), restoredCertificate.getProperties().getId());
+
+        System.out.printf(" Restored certificate with name %s and id %s", restoredCertificate.getProperties().getName(),
+            restoredCertificate.getProperties().getId());
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {
         try {
             File file = new File(filePath);
+
             if (file.exists()) {
                 file.delete();
             }
+
             file.createNewFile();
+
             OutputStream os = new FileOutputStream(file);
             os.write(bytes);
+
             System.out.println("Successfully wrote backup to file.");
+
             // Close the file
             os.close();
         } catch (IOException e) {

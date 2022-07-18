@@ -26,16 +26,18 @@ public class BackupAndRestoreOperationsAsync {
      * @throws IOException when writing backup to file is unsuccessful.
      */
     public static void main(String[] args) throws IOException, InterruptedException, IllegalArgumentException {
+        /* Instantiate a KeyAsyncClient that will be used to call the service. Notice that the client is using default
+        Azure credentials. To make default credentials work, ensure that the environment variable 'AZURE_CLIENT_ID' is
+        set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate async key client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+        for links and instructions. */
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // Let's create Cloud Rsa key valid for 1 year. if the key
+        // Let's create RSA key valid for 1 year. If the key
         // already exists in the key vault, then a new version of the key is created.
         keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))
@@ -55,7 +57,7 @@ public class BackupAndRestoreOperationsAsync {
 
         Thread.sleep(7000);
 
-        // The Cloud Rsa key is no longer in use, so you delete it.
+        // The RSA key is no longer in use, so you delete it.
         keyAsyncClient.beginDeleteKey("CloudRsaKey")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
@@ -63,14 +65,14 @@ public class BackupAndRestoreOperationsAsync {
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
 
-        //To ensure file is deleted on server side.
+        // To ensure file is deleted server-side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
         keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
             System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
-        //To ensure file is purged on server side.
+        // To ensure file is purged server-side.
         Thread.sleep(15000);
 
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
@@ -78,7 +80,7 @@ public class BackupAndRestoreOperationsAsync {
         keyAsyncClient.restoreKeyBackup(backupFromFile).subscribe(keyResponse ->
             System.out.printf("Restored Key with name %s %n", keyResponse.getName()));
 
-        //To ensure key is restored on server side.
+        // To ensure the key is restored server-side.
         Thread.sleep(15000);
     }
 

@@ -31,18 +31,19 @@ public class BackupAndRestoreOperationsAsync {
      * @throws IOException when writing backup to file is unsuccessful.
      */
     public static void main(String[] args) throws IOException, InterruptedException, IllegalArgumentException {
+        /* Instantiate a CertificateAsyncClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. To make default credentials work, ensure that the environment variable
+        'AZURE_CLIENT_ID' is set with the principal ID of a managed identity that has been given access to your vault.
 
-
-        // Instantiate an async key client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        for links and instructions. */
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // Let's create a self signed certificate valid for 1 year. if the certificate
-        // already exists in the key vault, then a new version of the certificate is created.
+        // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
+        // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
@@ -64,6 +65,7 @@ public class BackupAndRestoreOperationsAsync {
         // Backups are good to have, if in case certificates get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
+
         certificateAsyncClient.backupCertificate("certificateName")
             .subscribe(certificateBackupResponse -> {
                 writeBackupToFile(certificateBackupResponse, backupFilePath);
@@ -79,7 +81,8 @@ public class BackupAndRestoreOperationsAsync {
                 System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
                 System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
-        //To ensure certificate is deleted on server side.
+
+        // To ensure the certificate is deleted server-side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the certificate as well for permanent deletion.
@@ -87,29 +90,35 @@ public class BackupAndRestoreOperationsAsync {
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
-        //To ensure certificate is purged on server side.
+        // To ensure certificate is purged server-side.
         Thread.sleep(15000);
 
         // After sometime, the certificate is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
+
         certificateAsyncClient.restoreCertificateBackup(backupFromFile)
             .subscribe(certificateResponse -> System.out.printf("Restored Certificate with name %s and key id %s %n",
                 certificateResponse.getProperties().getName(), certificateResponse.getKeyId()));
 
-        //To ensure certificate is restored on server side.
+        // To ensure the certificate is restored server-side.
         Thread.sleep(15000);
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {
         try {
             File file = new File(filePath);
+
             if (file.exists()) {
                 file.delete();
             }
+
             file.createNewFile();
+
             OutputStream os = new FileOutputStream(file);
             os.write(bytes);
+
             System.out.println("Successfully wrote backup to file.");
+
             // Close the file
             os.close();
         } catch (IOException e) {

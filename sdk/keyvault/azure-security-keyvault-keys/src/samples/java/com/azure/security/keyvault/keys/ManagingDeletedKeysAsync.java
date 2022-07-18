@@ -14,43 +14,49 @@ import java.time.OffsetDateTime;
  */
 public class ManagingDeletedKeysAsync {
     /**
-     * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted keys in a soft-delete enabled key vault.
+     * Authenticates with the key vault and shows how to asynchronously list, recover and purge deleted keys in a
+     * soft-delete enabled key vault.
      *
      * @param args Unused. Arguments to the program.
+     *
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException {
+        /* NOTE: To manage deleted keys, your key vault needs to have soft-delete enabled. Soft-delete allows deleted
+        keys to be retained for a given retention period (90 days). During this period deleted keys can be recovered
+        and if a key needs to be permanently deleted then it needs to be purged.*/
 
-        // NOTE: To manage deleted keys, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
-        // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if
-        // a key needs to be permanently deleted then it needs to be purged.
+        /* Instantiate a KeyAsyncClient that will be used to call the service. Notice that the client is using default
+        Azure credentials. To make default credentials work, ensure that the environment variable 'AZURE_CLIENT_ID' is
+        set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md)
+        for links and instructions. */
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-                .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildAsyncClient();
+            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
 
-        // Let's create Ec and Rsa keys valid for 1 year. if the key
-        // already exists in the key vault, then a new version of the key is created.
+        // Let's create EC and RSA keys valid for 1 year. If the key already exists in the key vault, then a new version
+        // of the key is created.
         keyAsyncClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)))
-                .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyType()));
+            .subscribe(keyResponse ->
+                System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(),
+                    keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
         keyAsyncClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
                 .setExpiresOn(OffsetDateTime.now().plusYears(1)))
-                .subscribe(keyResponse ->
-                    System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(), keyResponse.getKeyType()));
+            .subscribe(keyResponse ->
+                System.out.printf("Key is created with name %s and type %s %n", keyResponse.getName(),
+                    keyResponse.getKeyType()));
 
         Thread.sleep(2000);
 
-        // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
+        // The RSA key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.beginDeleteKey("CloudEcKey")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
@@ -58,10 +64,10 @@ public class ManagingDeletedKeysAsync {
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
 
-        //To ensure key is deleted on server side.
+        // To ensure the key is deleted server-side.
         Thread.sleep(30000);
 
-        // We accidentally deleted Cloud Ec key. Let's recover it.
+        // We accidentally deleted the EC key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
         keyAsyncClient.beginRecoverDeletedKey("CloudEcKey")
             .subscribe(pollResponse -> {
@@ -70,10 +76,10 @@ public class ManagingDeletedKeysAsync {
                 System.out.println("Recover Key Type: " + pollResponse.getValue().getKeyType());
             });
 
-        //To ensure key is recovered on server side before moving forward.
+        // To ensure the key is recovered server-side before moving forward.
         Thread.sleep(10000);
 
-        // The Cloud Ec and Rsa keys are no longer needed, need to delete them from the key vault.
+        // The EC and RSA keys are no longer needed, need to delete them from the key vault.
         keyAsyncClient.beginDeleteKey("CloudEcKey")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
@@ -88,23 +94,26 @@ public class ManagingDeletedKeysAsync {
                 System.out.println("Key Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
 
-        // To ensure key is deleted on server side.
+        // To ensure the key is deleted server-side.
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
-        keyAsyncClient.listDeletedKeys().subscribe(deletedKey ->
-            System.out.printf("Deleted key's recovery Id %s %n", deletedKey.getRecoveryId()));
+        keyAsyncClient.listDeletedKeys()
+            .subscribe(deletedKey ->
+                System.out.printf("Deleted key's recovery Id %s %n", deletedKey.getRecoveryId()));
 
         Thread.sleep(15000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
-        keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey").subscribe(purgeResponse ->
-            System.out.printf("Storage account key purge status response %d %n", purgeResponse.getStatusCode()));
+        keyAsyncClient.purgeDeletedKeyWithResponse("CloudRsaKey")
+            .subscribe(purgeResponse ->
+                System.out.printf("Storage account key purge status response %d %n", purgeResponse.getStatusCode()));
 
-        keyAsyncClient.purgeDeletedKeyWithResponse("CloudEcKey").subscribe(purgeResponse ->
-            System.out.printf("Bank account key purge status response %d %n", purgeResponse.getStatusCode()));
+        keyAsyncClient.purgeDeletedKeyWithResponse("CloudEcKey")
+            .subscribe(purgeResponse ->
+                System.out.printf("Bank account key purge status response %d %n", purgeResponse.getStatusCode()));
 
-        // To ensure key is purged on server side.
+        // To ensure the key is purged server-side.
         Thread.sleep(15000);
     }
 }

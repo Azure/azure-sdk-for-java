@@ -30,17 +30,19 @@ public class BackupAndRestoreOperations {
      * @throws IOException when writing backup to file is unsuccessful.
      */
     public static void main(String[] args) throws IOException, InterruptedException, IllegalArgumentException {
+        /* Instantiate a SecretClient that will be used to call the service. Notice that the client is using default
+        Azure credentials. To make default credentials work, ensure that the environment variable 'AZURE_CLIENT_ID' is
+        set with the principal ID of a managed identity that has been given access to your vault.
 
-        // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md)
+        for links and instructions. */
         SecretClient client = new SecretClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        // Let's create secrets holding storage account credentials valid for 1 year. if the secret
-        // already exists in the key vault, then a new version of the secret is created.
+        // Let's create secrets holding storage account credentials valid for 1 year. If the secret already exists in
+        // the key vault, then a new version of the secret is created.
         client.setSecret(new KeyVaultSecret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .setProperties(new SecretProperties()
                 .setExpiresOn(OffsetDateTime.now().plusYears(1))));
@@ -49,30 +51,28 @@ public class BackupAndRestoreOperations {
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
         byte[] secretBackup = client.backupSecret("StorageAccountPassword");
+
         writeBackupToFile(secretBackup, backupFilePath);
 
         // The storage account secret is no longer in use, so you delete it.
-        SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller
-                = client.beginDeleteSecret("StorageAccountPassword");
-
+        SyncPoller<DeletedSecret, Void> deletedStorageSecretPoller =
+            client.beginDeleteSecret("StorageAccountPassword");
         PollResponse<DeletedSecret>  pollResponse = deletedStorageSecretPoller.poll();
-
-
         DeletedSecret deletedStorageSecret = pollResponse.getValue();
+
         System.out.println("Deleted Date %s" + deletedStorageSecret.getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedStorageSecret.getRecoveryId());
 
-        // Key is being deleted on server.
+        // Secret is being deleted on server.
         deletedStorageSecretPoller.waitForCompletion();
 
-
-        //To ensure secret is deleted on server side.
+        //To ensure the secret is deleted server-side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the secret as well for permanent deletion.
         client.purgeDeletedSecret("StorageAccountPassword");
 
-        //To ensure secret is purged on server side.
+        // To ensure the secret is purged server-side.
         Thread.sleep(15000);
 
         // After sometime, the secret is required again. We can use the backup value to restore it in the key vault.
@@ -83,13 +83,18 @@ public class BackupAndRestoreOperations {
     private static void writeBackupToFile(byte[] bytes, String filePath) {
         try {
             File file = new File(filePath);
+
             if (file.exists()) {
                 file.delete();
             }
+
             file.createNewFile();
+
             OutputStream os = new FileOutputStream(file);
             os.write(bytes);
+
             System.out.println("Successfully wrote backup to file.");
+
             // Close the file
             os.close();
         } catch (IOException e) {

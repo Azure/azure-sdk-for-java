@@ -19,7 +19,7 @@ import reactor.util.context.Context;
 import java.time.OffsetDateTime;
 
 /**
- * This class contains code samples for generating javadocs through doclets for {@link SecretClient}
+ * This class contains code samples for generating javadocs through doclets for {@link SecretAsyncClient}.
  */
 public final class SecretAsyncClientJavaDocCodeSnippets {
 

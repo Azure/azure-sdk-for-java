@@ -257,7 +257,7 @@ public class KeyClientTest extends KeyClientTestBase {
             PollResponse<DeletedKey> pollResponse = deletedKeyPoller.poll();
             DeletedKey deletedKey = pollResponse.getValue();
 
-            // Key is being deleted on server.
+            // Key is being deleted on the server.
             while (!pollResponse.getStatus().isComplete()) {
                 sleepInRecordMode(10000);
 
