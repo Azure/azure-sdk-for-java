@@ -7,7 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. - See [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed `ForbiddnException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [#30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
 
 #### Other Changes
 

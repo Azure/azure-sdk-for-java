@@ -125,8 +125,8 @@ public class ReactorNettyClient implements HttpClient {
         if (this.httpClientConfig.getProxy() != null) {
             this.httpClient = this.httpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP)
                 .address(this.httpClientConfig.getProxy().getAddress())
-                    .username(this.httpClientConfig.getProxy().getUsername())
-                    .password(userName -> this.httpClientConfig.getProxy().getPassword())
+                .username(this.httpClientConfig.getProxy().getUsername())
+                .password(userName -> this.httpClientConfig.getProxy().getPassword())
             );
         }
 
