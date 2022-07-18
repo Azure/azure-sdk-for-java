@@ -12,28 +12,31 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(classes = EventHubIT.TestConfig.class)
-@ActiveProfiles("event-hub")
+@ActiveProfiles(profiles = {"event-hub","service-bus-jms"})
 public class EventHubIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubIT.class);
     private final String data = "eventhub test";
-    private static CountDownLatch countDownLatch = new CountDownLatch(1);
 
     @Autowired
     private EventHubProducerClient producerClient;
@@ -53,9 +56,7 @@ public class EventHubIT {
         EventHubsRecordMessageListener messageListener() {
             return new EventHubsRecordMessageListener() {
                 @Override
-                public void onMessage(EventContext message) {
-                    countDownLatch.countDown();
-                }
+                public void onMessage(EventContext message) { }
             };
         }
         @Bean
@@ -76,9 +77,9 @@ public class EventHubIT {
             Assertions.assertEquals(data, event.getData().getBodyAsString());
         }
         processorClient.start();
-        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
+        Assertions.assertTrue(processorClient.isRunning());
         processorClient.stop();
-        Assertions.assertTrue(success);
+        Assertions.assertFalse(processorClient.isRunning());
     }
 
 }
