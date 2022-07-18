@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigur
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -524,6 +523,21 @@ class RxGatewayStoreModel implements RxStoreModel {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         return Flux.empty();
+    }
+
+    public void prepareRequestForAuth(RxDocumentServiceRequest request, String resourceName) {
+        int documentIdPrefixPosition = -1;
+        boolean needToChangeIdEncoding = request.getResourceType() == ResourceType.Document &&
+            (documentIdPrefixPosition = resourceName.indexOf("/docs/")) > 0;
+
+        if (needToChangeIdEncoding) {
+            String encodedResourceName = resourceName.substring(0, documentIdPrefixPosition + 6) +
+                Strings.encodeURIComponent(resourceName.substring(documentIdPrefixPosition + 6));
+
+            if (!resourceName.equals(encodedResourceName)) {
+                request.setResourceAddress(encodedResourceName);
+            }
+        }
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
