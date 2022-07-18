@@ -18,6 +18,10 @@ public class FunctionRuntimeStack {
     public static final FunctionRuntimeStack JAVA_11 = new FunctionRuntimeStack("java", "~3",
         "java|11");
 
+    /** JAVA 17. */
+    public static final FunctionRuntimeStack JAVA_17 = new FunctionRuntimeStack("java", "~3",
+        "java|17");
+
     private final String runtime;
     private final String version;
 

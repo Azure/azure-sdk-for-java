@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -21,10 +22,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.StorageManager;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
@@ -365,6 +363,24 @@ public class FunctionAppsTests extends AppServiceTest {
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersion());
     }
 
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canCRUDLinuxFunctionAppJava17() throws Exception {
+        rgName2 = null;
+
+        // function app with consumption plan
+        FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName1)
+            .withNewLinuxAppServicePlan(PricingTier.PREMIUM_P1V3)
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_17)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+            .create();
+        Assertions.assertNotNull(functionApp1);
+        assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17.getLinuxFxVersion());
+    }
+
     private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {
         Assertions.assertEquals(linuxFxVersion, functionApp.linuxFxVersion());
         Assertions
@@ -428,17 +444,5 @@ public class FunctionAppsTests extends AppServiceTest {
         }
 
         return resource;
-    }
-
-    private static String readLine(InputStream in) throws IOException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        int c;
-        for (c = in.read(); c != '\n' && c >= 0; c = in.read()) {
-            stream.write(c);
-        }
-        if (c == -1 && stream.size() == 0) {
-            return null;
-        }
-        return stream.toString("UTF-8");
     }
 }
