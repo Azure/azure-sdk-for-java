@@ -102,6 +102,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
 
     /**
+     * Password for a PEM certificate used when performing service principal authentication with Azure.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD = "AZURE_CLIENT_CERTIFICATE_PASSWORD";
+
+    /**
      * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
      */
     public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
