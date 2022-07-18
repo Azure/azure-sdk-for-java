@@ -34,7 +34,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     static final byte[] PARTITION_OWNERSHIP = "partitionOwnership".getBytes(StandardCharsets.UTF_8);
     private final JedisPool jedisPool;
 
-    JedisRedisCheckpointStore(JedisPool jedisPool) {
+    public JedisRedisCheckpointStore(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
 

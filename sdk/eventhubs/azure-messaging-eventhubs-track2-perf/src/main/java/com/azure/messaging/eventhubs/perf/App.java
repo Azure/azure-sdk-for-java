@@ -22,7 +22,8 @@ public class App {
             SendEventDataBatchTest.class,
             EventProcessorTest.class,
             GetPartitionInformationTest.class,
-            ReactorReceiveEventsTest.class
+            ReactorReceiveEventsTest.class,
+            EventProcessorJedisTest.class
         };
 
         PerfStressProgram.run(testClasses, args);
