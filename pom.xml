@@ -60,6 +60,7 @@
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
         <module>sdk/core/azure-json</module>
         <module>sdk/core/azure-json-gson</module>
+        <module>sdk/core/azure-xml</module>
 
         <!-- Cosmos -->
 <!--        <module>sdk/cosmos/azure-cosmos</module>-->
@@ -227,6 +228,7 @@
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
         <module>sdk/core/azure-json</module>
         <module>sdk/core/azure-json-gson</module>
+        <module>sdk/core/azure-xml</module>
 
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>
@@ -433,6 +435,10 @@
                   <group>
                     <title>Azure JSON - GSON</title>
                     <packages>com.azure.json.gson*</packages>
+                  </group>
+                  <group>
+                    <title>Azure XML</title>
+                    <package>com.azure.xml*</package>
                   </group>
                   <group>
                     <title>Azure Anomaly Detector</title>

@@ -28,5 +28,6 @@
     <module>azure-core-jackson-tests</module>
     <module>azure-json</module>
     <module>azure-json-gson</module>
+    <module>azure-xml</module>
   </modules>
 </project>
