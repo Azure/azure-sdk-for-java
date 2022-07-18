@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2022-07-19)
+## 1.0.0 (2022-05-13)
 - GA ("Generally Available") release for 2022-05-13 service version. 
 ### New Features
 - Pageable collections and consortium endpoints

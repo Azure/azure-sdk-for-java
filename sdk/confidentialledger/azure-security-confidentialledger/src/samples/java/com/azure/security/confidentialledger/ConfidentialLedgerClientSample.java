@@ -37,11 +37,11 @@ public class ConfidentialLedgerClientSample {
             BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(certificateResponse.toBytes());
-            String ledgerTslCertificate = jsonNode.get("ledgerTlsCertificate").asText();
+            String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
 
             SslContext sslContext = SslContextBuilder.forClient()
-                .trustManager(new ByteArrayInputStream(ledgerTslCertificate.getBytes(StandardCharsets.UTF_8))).build();
+                .trustManager(new ByteArrayInputStream(ledgerTlsCertificate.getBytes(StandardCharsets.UTF_8))).build();
             reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
                 .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
             HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
