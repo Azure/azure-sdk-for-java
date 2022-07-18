@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -361,6 +362,8 @@ public class FunctionAppsTests extends AppServiceTest {
             .create();
         Assertions.assertNotNull(functionApp1);
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersion());
+
+        assertRunning(functionApp1);
     }
 
     @Test
@@ -379,6 +382,23 @@ public class FunctionAppsTests extends AppServiceTest {
             .create();
         Assertions.assertNotNull(functionApp1);
         assertLinuxJava(functionApp1, FunctionRuntimeStack.JAVA_17.getLinuxFxVersion());
+
+        assertRunning(functionApp1);
+    }
+
+    private void assertRunning(FunctionApp functionApp) {
+        if (!isPlaybackMode()) {
+            // wait
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+            String name = "linux_function_app";
+            Response<String> response = curl("https://" + functionApp.defaultHostname() +
+                "/api/HttpTrigger-Java?name=" + name);
+            Assertions.assertEquals(200, response.getStatusCode());
+            String body = response.getValue();
+            Assertions.assertNotNull(body);
+            Assertions.assertTrue(body.contains("Hello, " + name));
+        }
     }
 
     private static Map<String, AppSetting> assertLinuxJava(FunctionApp functionApp, String linuxFxVersion) {
