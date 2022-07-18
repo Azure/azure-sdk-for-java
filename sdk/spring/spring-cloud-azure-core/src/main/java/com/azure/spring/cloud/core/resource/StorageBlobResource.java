@@ -112,7 +112,9 @@ public final class StorageBlobResource extends AzureStorageResource {
     @Override
     public OutputStream getOutputStream() throws IOException {
         try {
-            this.blobContainerClient.createIfNotExists();
+            if (this.autoCreateFiles) {
+                this.blobContainerClient.createIfNotExists();
+            }
             BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions();
             if (StringUtils.hasText(contentType)) {
                 BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
@@ -213,18 +215,13 @@ public final class StorageBlobResource extends AzureStorageResource {
         return sb.toString();
     }
 
-    /**
-     * Opens a blob input stream to download the blob.
-     *
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
-     * @throws IOException If a storage service error occurred or not existed.
-     */
     @Override
     public InputStream getInputStream() throws IOException {
         try {
             return this.blockBlobClient.openInputStream();
         } catch (BlobStorageException e) {
-            if(e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND){
+            if (e.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND
+                || e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND) {
                 throw new FileNotFoundException("Blob or container not existed.");
             } else {
                 throw new IOException(MSG_FAIL_OPEN_INPUT, e);

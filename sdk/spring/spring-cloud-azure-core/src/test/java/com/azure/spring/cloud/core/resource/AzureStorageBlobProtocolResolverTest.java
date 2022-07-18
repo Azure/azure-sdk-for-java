@@ -6,7 +6,9 @@ package com.azure.spring.cloud.core.resource;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,43 +44,15 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
     protected void initializeSDKClient() {
         blobServiceClient = mock(BlobServiceClient.class);
 
-        // azure-blob://container/blob
-        // mock sdk client to return an existing blob information
-        blobContainerClient = mock(BlobContainerClient.class);
-        blobClient = mock(BlobClient.class);
-        blockBlobClient = mock(BlockBlobClient.class);
+        Tuple3<BlobContainerClient, BlobClient, BlockBlobClient> clientTuple3 =
+            mockClientsForExistingContainerAndBlob(this.blobServiceClient, CONTAINER_NAME, EXISTING_ITEM_NAME);
 
-        when(blobServiceClient.getBlobContainerClient(eq(CONTAINER_NAME))).thenReturn(blobContainerClient);
-        when(blobContainerClient.getBlobClient(eq(EXISTING_ITEM_NAME))).thenReturn(blobClient);
-        when(blobClient.getBlockBlobClient()).thenReturn(blockBlobClient);
+        this.blobContainerClient = clientTuple3.getT1();
+        this.blobClient = clientTuple3.getT2();
+        this.blockBlobClient = clientTuple3.getT3();
 
-
-        when(blobContainerClient.exists()).thenReturn(true);
-        when(blockBlobClient.exists()).thenReturn(true);
-        BlobProperties blobProperties = mock(BlobProperties.class);
-        when(blockBlobClient.getProperties()).thenReturn(blobProperties);
-        when(blobProperties.getBlobSize()).thenReturn(CONTENT_LENGTH);
-
-        when(blobContainerClient.getBlobContainerName()).thenReturn(CONTAINER_NAME);
-        when(blockBlobClient.getContainerName()).thenReturn(CONTAINER_NAME);
-        when(blockBlobClient.getBlobName()).thenReturn(EXISTING_ITEM_NAME);
-        when(blockBlobClient.openInputStream(any(BlobInputStreamOptions.class))).thenReturn(mock(BlobInputStream.class));
-        when(blockBlobClient.getBlobOutputStream(any(BlockBlobOutputStreamOptions.class))).thenReturn(mock(BlobOutputStream.class));
-
-        // azure-blob://non-existing/non-existing
-        //mock sdk to return a non-existing blob (neither container nor blob exist)
-        BlobContainerClient nonExistingBlobContainer = mock(BlobContainerClient.class);
-        BlobClient nonExistingBlob = mock(BlobClient.class);
-        BlockBlobClient nonExistingBlockBlob = mock(BlockBlobClient.class);
-
-        when(blobServiceClient.getBlobContainerClient(eq(NON_EXISTING))).thenReturn(nonExistingBlobContainer);
-        when(blobContainerClient.getBlobClient(eq(NON_EXISTING))).thenReturn(nonExistingBlob);
-        when(nonExistingBlobContainer.getBlobClient(anyString())).thenReturn(nonExistingBlob);
-        when(nonExistingBlob.getBlockBlobClient()).thenReturn(nonExistingBlockBlob);
-        when(nonExistingBlobContainer.exists()).thenReturn(false);
-        when(nonExistingBlockBlob.exists()).thenReturn(false);
-        when(nonExistingBlockBlob.getBlobName()).thenReturn(NON_EXISTING);
-
+        mockClientsForNonExistingContainerAndBlob(this.blobServiceClient, NON_EXISTING_CONTAINER_NAME, NON_EXISTING_ITEM_NAME);
+        mockClientsForNonExistingBlob(this.blobContainerClient, CONTAINER_NAME, NON_EXISTING_ITEM_NAME);
     }
 
     @Override
@@ -96,7 +72,6 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
     @Test
     void testGetResourceWithExistingResource() {
         super.testGetResourceWithExistingResource();
-        verify(blobContainerClient, times(1)).exists();
         verify(blockBlobClient, times(1)).exists();
     }
 
@@ -125,5 +100,68 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         String[] locations = new String[]{"azureblob:test/test", "otherblob:test/test2"};
         Resource[] resources = getResources(locations);
         assertEquals(0, resources.length, "No resolved resources found");
+    }
+
+    private Tuple3<BlobContainerClient, BlobClient, BlockBlobClient> mockClientsForExistingContainerAndBlob(
+        BlobServiceClient blobServiceClient, String containerName, String blobName) {
+        BlobContainerClient blobContainerClient = mock(BlobContainerClient.class);
+        BlobClient blobClient = mock(BlobClient.class);
+        BlockBlobClient blockBlobClient = mock(BlockBlobClient.class);
+
+        when(blobServiceClient.getBlobContainerClient(eq(containerName))).thenReturn(blobContainerClient);
+        when(blobContainerClient.getBlobClient(eq(blobName))).thenReturn(blobClient);
+        when(blobClient.getBlockBlobClient()).thenReturn(blockBlobClient);
+
+        when(blobContainerClient.exists()).thenReturn(true);
+        when(blobContainerClient.getBlobContainerName()).thenReturn(containerName);
+
+        when(blockBlobClient.getContainerName()).thenReturn(containerName);
+        when(blockBlobClient.getBlobName()).thenReturn(blobName);
+        when(blockBlobClient.openInputStream(any(BlobInputStreamOptions.class))).thenReturn(mock(BlobInputStream.class));
+        when(blockBlobClient.getBlobOutputStream(any(BlockBlobOutputStreamOptions.class))).thenReturn(mock(BlobOutputStream.class));
+        when(blockBlobClient.exists()).thenReturn(true);
+
+        BlobProperties blobProperties = mock(BlobProperties.class);
+        when(blobProperties.getBlobSize()).thenReturn(CONTENT_LENGTH);
+        when(blockBlobClient.getProperties()).thenReturn(blobProperties);
+        return Tuples.of(blobContainerClient, blobClient, blockBlobClient);
+    }
+
+    private void mockClientsForNonExistingContainerAndBlob(BlobServiceClient blobServiceClient,
+                                                           String containerName,
+                                                           String blobName) {
+        BlobContainerClient nonExistingBlobContainer = mock(BlobContainerClient.class);
+        BlobClient nonExistingBlob = mock(BlobClient.class);
+        BlockBlobClient nonExistingBlockBlob = mock(BlockBlobClient.class);
+
+        when(blobServiceClient.getBlobContainerClient(eq(containerName))).thenReturn(nonExistingBlobContainer);
+        when(nonExistingBlobContainer.getBlobClient(eq(blobName))).thenReturn(nonExistingBlob);
+        when(nonExistingBlob.getBlockBlobClient()).thenReturn(nonExistingBlockBlob);
+
+        when(nonExistingBlobContainer.exists()).thenReturn(false);
+
+        when(nonExistingBlockBlob.exists()).thenReturn(false);
+        when(nonExistingBlockBlob.getContainerName()).thenReturn(containerName);
+        when(nonExistingBlockBlob.getBlobName()).thenReturn(blobName);
+
+        BlobStorageException blobStorageException = mock(BlobStorageException.class);
+        when(blobStorageException.getErrorCode()).thenReturn(BlobErrorCode.CONTAINER_NOT_FOUND);
+        when(nonExistingBlockBlob.openInputStream()).thenThrow(blobStorageException);
+    }
+
+    private void mockClientsForNonExistingBlob(BlobContainerClient blobContainerClient, String containerName, String blobName) {
+        BlobClient nonExistingBlob = mock(BlobClient.class);
+        BlockBlobClient nonExistingBlockBlob = mock(BlockBlobClient.class);
+
+        when(blobContainerClient.getBlobClient(eq(blobName))).thenReturn(nonExistingBlob);
+        when(nonExistingBlob.getBlockBlobClient()).thenReturn(nonExistingBlockBlob);
+
+        when(nonExistingBlockBlob.exists()).thenReturn(false);
+        when(nonExistingBlockBlob.getContainerName()).thenReturn(containerName);
+        when(nonExistingBlockBlob.getBlobName()).thenReturn(blobName);
+
+        BlobStorageException blobStorageException = mock(BlobStorageException.class);
+        when(blobStorageException.getErrorCode()).thenReturn(BlobErrorCode.BLOB_NOT_FOUND);
+        when(nonExistingBlockBlob.openInputStream()).thenThrow(blobStorageException);
     }
 }
