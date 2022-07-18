@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported Java SE 17 in `FunctionRuntimeStack` for `FunctionApp`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
