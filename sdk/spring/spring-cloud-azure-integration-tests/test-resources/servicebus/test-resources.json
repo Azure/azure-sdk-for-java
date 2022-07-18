@@ -61,7 +61,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "Azure Service Bus Data Owner",
+      "name": "[guid(concat(resourceGroup().id, variables('serviceBusNamespaceName'), parameters('baseName')))],
       "properties": {
         "roleDefinitionId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419",
         "principalId": "[parameters('tenantId')]"
