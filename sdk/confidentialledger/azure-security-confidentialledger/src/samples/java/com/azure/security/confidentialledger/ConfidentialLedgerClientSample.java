@@ -20,7 +20,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 
 public class ConfidentialLedgerClientSample {
-    public ConfidentialLedgerClientSample() {
+    public static void main(String[] args) {
         try {
             // BEGIN:readme-sample-createClient
             ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder = new ConfidentialLedgerCertificateClientBuilder()
@@ -31,7 +31,6 @@ public class ConfidentialLedgerClientSample {
             ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient = confidentialLedgerCertificateClientbuilder.buildClient();
 
             String ledgerId = "java-tests";
-            // this is a built in test of getLedgerCertificate
             Response<BinaryData> ledgerCertificateWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
             BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
