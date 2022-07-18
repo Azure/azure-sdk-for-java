@@ -53,7 +53,7 @@ public class ReadmeSamples {
     public void createAccessControlClient() {
         // BEGIN: readme-sample-createAccessControlClient
         KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-            .vaultUrl("<your-key-vault-url>")
+            .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: readme-sample-createAccessControlClient

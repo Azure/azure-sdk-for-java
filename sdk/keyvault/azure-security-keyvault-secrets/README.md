@@ -9,10 +9,8 @@ Use the Azure Key Vault Secrets client library to create and manage secrets.
 
 ## Getting started
 ### Include the package
-
 #### Include the BOM file
-
-Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
 To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
@@ -28,6 +26,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
+
 and then include the direct dependency in the dependencies section without the version tag as shown below.
 
 ```xml
@@ -40,8 +39,7 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
+If you want to take dependency on a particular version of the library that is not present in the BOM, add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
@@ -56,68 +54,40 @@ add the direct dependency to your project as follows.
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-- [Azure Subscription][azure_subscription]
-- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
+- An [Azure Subscription][azure_subscription].
+- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-key-vault-name>` and `<your-resource-group-name>` with your own, unique names:
 
 ```bash
-az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+az keyvault create --name "<your-key-vault-name>" --resource-group "<your-resource-group-name>"
 ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](#create-secret-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Key Vault service, you'll need to create an instance of the [`SecretClient`](#create-secret-client) class. You would need a **vault url** and **[a managed identity][managed_identity]** to instantiate a client object using the `DefaultAzureCredential` examples shown in this document.
 
-The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+The `DefaultAzureCredential` way of authentication with a system-assigned managed identity is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
-#### Create/Get credentials
-To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell][azure_cloud_shell]
+#### Give a managed identity access to your key vault
+To give a managed identity access to your key vault you can use the [Azure Portal][azure_portal_managed_identity], [Azure CLI][azure_cli_managed_identity] or [Azure Cloud Shell][azure_cloud_shell].
 
-Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to 
-
- * Create a service principal and configure its access to Azure resources:
+Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to do just that:
 
 ```bash
-az ad sp create-for-rbac -n <your-application-name> --skip-assignment
-```
-
-Output:
-
-```json
-{
-    "appId": "generated-app-ID",
-    "displayName": "dummy-app-name",
-    "name": "http://dummy-app-name",
-    "password": "random-password",
-    "tenant": "tenant-ID"
-}
-```
-
-* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenant) environment variables. The following example shows a way to do this in Bash:
-
-```bash
-export AZURE_CLIENT_ID="generated-app-ID"
-export AZURE_CLIENT_SECRET="random-password"
-export AZURE_TENANT_ID="tenant-ID"
-````
-
-* Grant the aforementioned application authorization to perform secret operations on the Key Vault:
-
-```bash
-az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --secret-permissions backup delete get list set
+az keyvault set-policy --name "<your-key-vault-name>" --object-id "<your-managed-identity-principal-id>" --key-permissions backup delete get list create update encrypt decrypt
 ```
 
 > --secret-permissions:
 > Accepted values: backup, delete, get, list, purge, recover, restore, set
 
-If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
+If you have enabled Role-Based Access Control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
 
-* Use the aforementioned Key Vault name to retrieve details of your Vault, which also contain your Key Vault URL:
+Use the aforementioned key vault name to retrieve details of your key vault, which also contain your key vault URL:
 
 ```bash
-az keyvault show --name <your-key-vault-name> 
+az keyvault show --name "<your-key-vault-name>" --query properties.vaultUri --output tsv
 ```
 
 #### Create secret client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the SecretClient:
+Once you have given a system-assigned managed identity access to your key vault and replaced **your-key-vault-url** with the URL returned above, you can create the `SecretClient`:
 
 ```java readme-sample-createSecretClient
 SecretClient secretClient = new SecretClientBuilder()
@@ -126,7 +96,7 @@ SecretClient secretClient = new SecretClientBuilder()
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use SecretAsyncClient instead of SecretClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `SecretAsyncClient` instead of `SecretClient` and call `buildAsyncClient()`.
 
 ## Key concepts
 ### Secret
@@ -138,7 +108,7 @@ A secret is the fundamental resource within Azure Key Vault. From a developer's 
 * updated: Indicates when this version of the secret was updated.
 
 ### Secret client:
-The secret client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing secrets and its versions. Asynchronous (SecretAsyncClient) and synchronous (SecretClient) clients exist in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a secret, you can interact with the primary resource types in Key Vault.
+The secret client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and listing secrets and its versions. Asynchronous (`SecretAsyncClient`) and synchronous (`SecretClient`) clients exist in the SDK allowing for selection of a client based on an application's use case. Once you've initialized a secret, you can interact with the primary resource types in Key Vault.
 
 ## Examples
 ### Sync API

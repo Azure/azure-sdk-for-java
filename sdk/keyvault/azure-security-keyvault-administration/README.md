@@ -7,11 +7,8 @@ The Azure Key Vault Administration library clients support administrative tasks 
 
 ## Getting started
 ### Include the package
-
 #### Include the BOM file
-
-Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+Please include the `azure-sdk-bom` to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number. To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
 <dependencyManagement>
@@ -26,6 +23,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
+
 and then include the direct dependency in the dependencies section without the version tag as shown below.
 
 ```xml
@@ -38,8 +36,7 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
+If you want to take dependency on a particular version of the library that is not present in the BOM,  add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-administration;current})
 ```xml
@@ -53,71 +50,35 @@ add the direct dependency to your project as follows.
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-- [Azure Subscription][azure_subscription]
+- An [Azure Subscription][azure_subscription].
 - An existing [Azure Key Vault Managed HSM][azure_keyvault_mhsm]. If you need to create a Managed HSM, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-mhsm-name>` with your own, unique names:
 
 ```bash
-az keyvault create --hsm-name <your-key-vault-mhsm-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
+az keyvault create --hsm-name "<your-key-vault-mhsm-name>" --resource-group "<your-resource-group-name>" --administrators "<your-service-principal-object-id>" --location "<your-azure-location>"
 ```
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you'll need to either create an instance of the [KeyVaultAccessControlClient](#create-an-access-control-client) or an instance of the class [KeyVaultBackupClient](#create-a-backup-client). You would need a **vault url**, which you may see as "DNS Name" in the portal, and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Key Vault service, you will need to either create an instance of the [`KeyVaultAccessControlClient`](#create-an-access-control-client) or an instance of the class [`KeyVaultBackupClient`](#create-a-backup-client). You will need a **vault url**, which you may see as "DNS Name" in the portal, and **[a managed identity][managed_identity]** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
 
-The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+The `DefaultAzureCredential` way of authentication with a system-assigned managed identity is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
-#### Create/Get credentials
-To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell][azure_cloud_shell].
+#### Give a managed identity access to your managed HSM
+To give a managed identity access to your managed HSM you can use the [Azure Portal][azure_portal_managed_identity], [Azure CLI][azure_cli_managed_identity] or [Azure Cloud Shell][azure_cloud_shell].
 
-Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
+The following example shows how to do this using the [Azure Cloud Shell][azure_cloud_shell]: 
 
- * Create a service principal and configure its access to Azure resources:
- 
-```bash
-az ad sp create-for-rbac -n <your-application-name> --skip-assignment
-```
-
-Output:
-
-```json
-{
-    "appId": "generated-app-ID",
-    "displayName": "some-app-name",
-    "name": "https://some-app-name",
-    "password": "random-password",
-    "tenant": "tenant-ID"
-}
-```
-
-* Take note of the service principal objectId
-```bash
-az ad sp show --id <appId> --query objectId
-```
-
-Output:
-```
-"<your-service-principal-object-id>"
-```
-
-* Use the returned credentials above to set the **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
-
-```bash
-export AZURE_CLIENT_ID="generated-app-ID"
-export AZURE_CLIENT_SECRET="random-password"
-export AZURE_TENANT_ID="tenant-ID"
-```
-
-* Create the Managed HSM and grant the above mentioned service principal authorization to perform administrative operations on the Managed HSM (replace `<your-resource-group-name>` and `<your-key-vault-mhsm-name>` with your own, unique names and `<your-service-principal-object-id>` with the value from above):
+* Create the Managed HSM and grant the above mentioned managed identity authorization to perform administrative operations on the Managed HSM (replace `<your-resource-group-name>` and `<your-managed-hsm-name>` with your own, unique names):
     
 ```bash
-az keyvault create --hsm-name <your-key-vault-mhsm-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
+az keyvault create --hsm-name "<your-managed-hsm-name>" --resource-group "<your-resource-group-name>" --administrators "<your-managed-identity-principal-id>" --location "<your-azure-location>"
 ```
   
-  This service principal is automatically added to the "Managed HSM Administrators" [built-in role][built_in_roles].
+  This managed identity is automatically added to the "Managed HSM Administrators" [built-in role][built_in_roles].
 
-* Use the aforementioned Azure Key Vault name to retrieve details of your Key Vault, which also contain your Azure Key Vault URL:
+* Use the aforementioned Managed HSM name to retrieve details of your managed HSM, which also contain your Managed HSM URL:
 
 ```bash
-az keyvault show --name <your-key-vault-mhsm-name>
+    az keyvault show --name "<your-managed-hsm-name>" --query properties.hsmUri --output tsv
 ```
 
 #### Activate your managed HSM
@@ -129,7 +90,7 @@ To activate your HSM you need:
 
 To activate the HSM you send at least 3 (maximum 10) RSA public keys to the HSM, the HSM encrypts the security domain with these keys and sends it back. Once this security domain is successfully downloaded, your HSM is ready to use. You also need to specify quorum, which is the minimum number of private keys required to decrypt the security domain.
 
-The example below shows how to use openssl to generate 3 self signed certificate.
+The example below shows how to use openssl to generate 3 self-signed certificates.
 
 ```bash
 openssl req -newkey rsa:2048 -nodes -keyout cert_0.key -x509 -days 365 -out cert_0.cer
@@ -137,12 +98,10 @@ openssl req -newkey rsa:2048 -nodes -keyout cert_1.key -x509 -days 365 -out cert
 openssl req -newkey rsa:2048 -nodes -keyout cert_2.key -x509 -days 365 -out cert_2.cer
 ```
 
-Use the `az keyvault security-domain download` command to download the security domain and activate your managed HSM.
-
-The example below, uses 3 RSA key pairs (only public keys are needed for this command) and sets the quorum to 2.
+Use the `az keyvault security-domain download` command to download the security domain and activate your managed HSM.  The example below, uses 3 RSA key pairs (only public keys are needed for this command) and sets the quorum to 2.
 
 ```bash
-az keyvault security-domain download --hsm-name <your-key-vault-mhsm-name> --sd-wrapping-keys ./certs/cert_0.cer ./certs/cert_1.cer ./certs/cert_2.cer --sd-quorum 2 --security-domain-file ContosoMHSM-SD.json
+az keyvault security-domain download --hsm-name "<your-managed-hsm-name>" --sd-wrapping-keys ./certs/cert_0.cer ./certs/cert_1.cer ./certs/cert_2.cer --sd-quorum 2 --security-domain-file ContosoMHSM-SD.json
 ```
 
 #### Controlling access to your managed HSM
@@ -151,14 +110,14 @@ The designated administrators assigned during creation are automatically added t
 To perform other actions on keys, you need to assign principals to other roles such as "Managed HSM Crypto User", which can perform non-destructive key operations:
 
 ```PowerShell
-az keyvault role assignment create --hsm-name <your-key-vault-mhsm-name> --role "Managed HSM Crypto User" --scope / --assignee-object-id <principal-or-user-object-ID> --assignee-principal-type <principal-type>
+az keyvault role assignment create --hsm-name "<your-managed-hsm-name>" --role "Managed HSM Crypto User" --scope / --assignee-object-id "<principal-or-user-object-id>" --assignee-principal-type "<principal-type>"
 ```
 
 Please read [best practices][best_practices] for properly securing your managed HSM.
 
 ## Key concepts
 ### Key Vault Access Control client:
-The Key Vault Access Control client performs the interactions with the Azure Key Vault service for getting, setting, deleting, and listing role assignments, as well as listing role definitions. Asynchronous (KeyVaultAccessControlAsyncClient) and synchronous (KeyVaultAccessControlClient) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you've initialized a role assignment, you can interact with the primary resource types in Key Vault.
+The Key Vault Access Control client performs the interactions with the Azure Key Vault service for getting, setting, deleting, and listing role assignments, as well as listing role definitions. Asynchronous (`KeyVaultAccessControlAsyncClient`) and synchronous (`KeyVaultAccessControlClient`) clients exist in the SDK allowing for the selection of a client based on an application's use case. Once you've initialized a role assignment, you can interact with the primary resource types in Key Vault.
 
 ### Role Definition
 A role definition is a collection of permissions. It defines the operations that can be performed, such as read, write, and delete. It can also define the operations that are excluded from allowed operations.
@@ -169,9 +128,9 @@ Role definitions can be listed and specified as part of a role assignment.
 A role assignment is the association of a role definition to a service principal. They can be created, listed, fetched individually, and deleted.
 
 ### Key Vault Backup client
-The Key Vault Backup Client provides both synchronous and asynchronous operations for performing full key backups, full key restores, and selective key restores. Asynchronous (KeyVaultBackupAsyncClient) and synchronous (KeyVaultBackupClient) clients exist in the SDK allowing for the selection of a client based on an application's use case.
+The Key Vault Backup Client provides both synchronous and asynchronous operations for performing full key backups, full key restores, and selective key restores. Asynchronous (`KeyVaultBackupAsyncClient`) and synchronous (`KeyVaultBackupClient`) clients exist in the SDK allowing for the selection of a client based on an application's use case.
 
-> NOTE: The backing store for key backups is a blob storage container using Shared Access Signature authentication. For more details on creating a SAS token using the BlobServiceClient, see the [Azure Storage Blobs client README][storage_readme_sas_token]. Alternatively, it is possible to [generate a SAS token in Storage Explorer][portal_sas_token].
+> NOTE: The backing store for key backups is a blob storage container using Shared Access Signature authentication. For more details on creating a SAS token using the `BlobServiceClient`, see the [Azure Storage Blobs client README][storage_readme_sas_token]. Alternatively, it is possible to [generate a SAS token in Storage Explorer][portal_sas_token].
 
 ### Backup Operation
 A backup operation represents a long-running operation for a full key backup.
@@ -179,17 +138,17 @@ A backup operation represents a long-running operation for a full key backup.
 ### Restore Operation
 A restore operation represents a long-running operation for both a full key and selective key restore.
 
-## Create an Access Control client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyVaultAccessControlClient`:
+## Create an access control client
+Once you have given a system-assigned managed identity access to your managed HSM and replaced **your-managed-hsm-url** with the URL returned above, you can create the `KeyVaultAccessControlClient`:
 
 ```java readme-sample-createAccessControlClient
 KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
-    .vaultUrl("<your-key-vault-url>")
+    .vaultUrl("<your-managed-hsm-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use `KeyVaultAccessControlAsyncClient` instead of `KeyVaultAccessControlClient` and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `KeyVaultAccessControlAsyncClient` instead of `KeyVaultAccessControlClient` and call `buildAsyncClient()`.
 
 ## Examples
 ### Sync API
@@ -406,12 +365,12 @@ keyVaultAccessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, 
         System.out.printf("Deleted role assignment with name '%s'.%n", roleAssignmentName));
 ```
 
-### Create a Backup client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyVaultBackupClient`:
+### Create a backup client
+Once you have given a system-assigned managed identity access to your managed HSM and replaced **your-managed-hsm-url** with the URL returned above, you can create the `KeyVaultBackupClient`:
 
 ```java readme-sample-createBackupClient
 KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
-    .vaultUrl("<your-key-vault-url>")
+    .vaultUrl("<your-managed-hsm-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -609,9 +568,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [rest_api]: https://docs.microsoft.com/rest/api/keyvault/
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
-[azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
+[azure_portal_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/howto-assign-access-portal
+[azure_cli_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/howto-assign-access-cli
 [administration_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/src/samples/java/com/azure/security/keyvault/administration
 [access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
 [best_practices]: https://docs.microsoft.com/azure/key-vault/managed-hsm/best-practices
