@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Adds algorithm for mapping partition keys to partition ids.
+
 ### Breaking Changes
 
 ### Bugs Fixed
