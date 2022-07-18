@@ -8,12 +8,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class GetLedgerEntries {
+public class GetLedgerEntriesSample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
 
         // If you can't find a transaction, make sure you are adding a query parameter for the collection the transaction

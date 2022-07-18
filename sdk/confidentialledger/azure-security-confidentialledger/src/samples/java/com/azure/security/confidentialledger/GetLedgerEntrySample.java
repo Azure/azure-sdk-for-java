@@ -5,19 +5,18 @@ package com.azure.security.confidentialledger;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class DeleteUser {
+public class GetLedgerEntrySample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        
-        // you can retrieve your object id by going to Azure Active Directory and finding your profile
-        String aadObjectId = "<YOUR AAD ID>";
-        Response<Void> response = confidentialLedgerClient.deleteUserWithResponse(aadObjectId, requestOptions);
+        // the transactionId can be retrieved after posting to a ledger (see PostLedgerEntry.java)
+        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("3.14", requestOptions);
     }
 }
