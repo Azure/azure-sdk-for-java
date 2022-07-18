@@ -16,7 +16,7 @@ import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.time.{Instant, LocalDate, LocalDateTime, OffsetDateTime, ZoneOffset}
-import java.util.UUID
+import java.util.{TimeZone, UUID}
 import scala.util.Random
 
 // scalastyle:off underscore.import
@@ -40,7 +40,15 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     CosmosRowConverter.get(
       new CosmosSerializationConfig(
         SerializationInclusionModes.Always,
-        SerializationDateTimeConversionModes.AlwaysEpochMilliseconds
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone
+      )
+    )
+
+  private[this] val alwaysEpochMsRowConverterWithSystemDefaultTimezone =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone
       )
     )
 
@@ -48,7 +56,15 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     CosmosRowConverter.get(
       new CosmosSerializationConfig(
         SerializationInclusionModes.NonNull,
-        SerializationDateTimeConversionModes.AlwaysEpochMilliseconds
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithUtcTimezone
+      )
+    )
+
+  private[this] val alwaysEpochMsRowConverterNonNullWithSystemDefaultTimezone =
+    CosmosRowConverter.get(
+      new CosmosSerializationConfig(
+        SerializationInclusionModes.NonNull,
+        SerializationDateTimeConversionModes.AlwaysEpochMillisecondsWithSystemDefaultTimezone
       )
     )
 
@@ -505,9 +521,36 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
     objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
 
+    val originalDefaultTimezone = java.time.ZoneId.systemDefault
+    try {
+      TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"))
+      java.time.ZoneId.systemDefault().getId shouldEqual "America/Los_Angeles"
+      objectNode = alwaysEpochMsRowConverterWithSystemDefaultTimezone.fromRowToObjectNode(row)
+      objectNode.get(colName1).asLong() shouldEqual testDate
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(Instant.now))
+        .toEpochMilli
+      objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+    } finally {
+      TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
+    }
+
     objectNode = alwaysEpochMsRowConverterNonNull.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual testDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli
     objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+
+    try {
+      TimeZone.setDefault(TimeZone.getTimeZone("America/Los_Angeles"))
+      java.time.ZoneId.systemDefault().getId shouldEqual "America/Los_Angeles"
+      objectNode = alwaysEpochMsRowConverterNonNullWithSystemDefaultTimezone.fromRowToObjectNode(row)
+      objectNode.get(colName1).asLong() shouldEqual testDate
+        .atStartOfDay()
+        .toInstant(TimeZone.getTimeZone("America/Los_Angeles").toZoneId.getRules.getOffset(Instant.now))
+        .toEpochMilli
+      objectNode.get(colName2).asLong() shouldEqual testTimestamp.toEpochMilli
+    } finally {
+      TimeZone.setDefault(TimeZone.getTimeZone(originalDefaultTimezone.getId))
+    }
   }
 
   "numeric types in spark row" should "translate to ObjectNode" in {
