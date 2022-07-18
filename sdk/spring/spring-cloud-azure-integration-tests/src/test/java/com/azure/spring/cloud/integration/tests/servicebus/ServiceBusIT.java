@@ -64,8 +64,10 @@ public class ServiceBusIT {
             Assertions.assertEquals(data, message.getBody().toString());
         }
         processorClient.start();
+        Assertions.assertTrue(processorClient.isRunning());
         boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
         processorClient.close();
+        Assertions.assertFalse(processorClient.isRunning());
         Assertions.assertTrue(success);
         LOGGER.info("ServiceBusIT end.");
     }
