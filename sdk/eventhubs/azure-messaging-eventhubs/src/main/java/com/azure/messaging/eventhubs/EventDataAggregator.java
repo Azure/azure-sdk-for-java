@@ -23,6 +23,14 @@ import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+/**
+ * Aggregates {@link EventData} into {@link EventDataBatch} and pushes them downstream when:
+ *
+ * <ul>
+ *     <li>{@link BufferedProducerClientOptions#getMaxWaitTime()} elapses between events.</li>
+ *     <li>{@link EventDataBatch} cannot hold any more events.</li>
+ * </ul>
+ */
 class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregator.class);
     private final AtomicReference<EventDataAggregatorMain> downstreamSubscription = new AtomicReference<>();
@@ -44,6 +52,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         this.options = options;
     }
 
+    /**
+     * Subscribes to events from this operator.  Downstream subscribers invoke this method and subscribe to events from
+     * it.
+     *
+     * @param actual Downstream subscriber.
+     */
     @Override
     public void subscribe(CoreSubscriber<? super EventDataBatch> actual) {
         final EventDataAggregatorMain subscription = new EventDataAggregatorMain(actual, namespace, options,
@@ -53,8 +67,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             throw new IllegalArgumentException("Cannot resubscribe to multiple upstreams.");
         }
 
-        source.subscribeWith(subscription);
-        actual.onSubscribe(subscription);
+        source.subscribe(subscription);
     }
 
     /**
@@ -129,6 +142,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             // Do not keep requesting more events upstream
             subscription.cancel();
 
+            updateOrPublishBatch(null, true);
+            downstream.onComplete();
             disposable.dispose();
         }
 
@@ -161,6 +176,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 return;
             }
 
+            updateOrPublishBatch(null, true);
             downstream.onError(t);
         }
 
@@ -170,6 +186,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         @Override
         public void onComplete() {
             if (isCompleted.compareAndSet(false, true)) {
+                updateOrPublishBatch(null, true);
                 downstream.onComplete();
             }
         }
