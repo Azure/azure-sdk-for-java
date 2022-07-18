@@ -100,7 +100,11 @@ public final class IOUtils {
                     try {
                         // This is not a classic recursion.
                         // I.e. it happens in completion handler not on call stack.
-                        transferAsynchronously(source, destination, buffer, sink);
+                        if (buffer.hasRemaining()) {
+                            destination.write(buffer, buffer, this);
+                        } else {
+                            transferAsynchronously(source, destination, buffer, sink);
+                        }
                     } catch (IOException e) {
                         sink.error(e);
                     }
