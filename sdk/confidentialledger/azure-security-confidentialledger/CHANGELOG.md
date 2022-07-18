@@ -1,7 +1,11 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
+## 1.0.0 (2022-05-13)
+- GA ("Generally Available") release for 2022-05-13 service version. 
+### New Features
+- Pageable collections and consortium endpoints
+- Renaming ledgerUri to ledgerEndpoint
+- postLedgerEntry changed to createLedgerEntry
 
 ## 1.0.0-beta.2 (2021-06-08)
 

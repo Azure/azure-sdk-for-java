@@ -40,7 +40,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private boolean isMedia = false;
     private final boolean isNameBased;
     private final OperationType operationType;
-    private final String resourceAddress;
+    private String resourceAddress;
     public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
     private final UUID activityId;
@@ -85,6 +85,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                 || this.operationType == OperationType.Query
                 || this.operationType == OperationType.SqlQuery
                 || this.operationType == OperationType.QueryPlan;
+    }
+
+    public void setResourceAddress(String newAddress) {
+        this.resourceAddress = newAddress;
     }
 
     public boolean isReadOnlyScript() {

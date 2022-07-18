@@ -8,14 +8,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class GetCollectionIds {
+public class CreateOrUpdateUserSample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
+        BinaryData userDetails = BinaryData.fromString("{\"assignedRole\":\"Reader\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.listCollectionsWithResponse(requestOptions);
+        String aadObjectId = "AAD OBJECT ID";
+        Response<BinaryData> response =
+                confidentialLedgerClient.createOrUpdateUserWithResponse(aadObjectId, userDetails, requestOptions);
     }
 }

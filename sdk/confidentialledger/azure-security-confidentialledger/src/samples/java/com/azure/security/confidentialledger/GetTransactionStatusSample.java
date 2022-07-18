@@ -8,14 +8,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class GetConsortiumMembers {
+public class GetTransactionStatusSample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerUri("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getConsortiumMembersWithResponse(requestOptions);
+        // the transactionId can be retrieved after posting to a ledger (see PostLedgerEntry.java)
+        Response<BinaryData> response =
+                confidentialLedgerClient.getTransactionStatusWithResponse("4.2", requestOptions);
     }
 }

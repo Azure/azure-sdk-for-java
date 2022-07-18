@@ -5,9 +5,10 @@
 package com.azure.security.confidentialledger;
 
 import com.azure.core.test.TestBase;
+import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 
-class ConfidentialLedgerIdentityClientTestBase extends TestBase {
-    protected ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient;
+class ConfidentialLedgerCertificateClientTestBase extends TestBase {
+    protected ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient;
 
     @Override
     protected void beforeTest() {

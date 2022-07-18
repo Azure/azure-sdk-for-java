@@ -1,14 +1,20 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
+### 4.34.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
 
 #### Other Changes
+
+### 4.33.0 (2022-07-14)
+#### Other Changes
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
 
 ### 4.32.1 (2022-06-30)
 

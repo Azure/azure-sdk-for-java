@@ -8,16 +8,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class GetLedgerIdentity {
+public class GetCurrentLedgerEntrySample {
     public static void main(String[] args) {
-        ConfidentialLedgerIdentityClient confidentialLedgerIdentityClient =
-                new ConfidentialLedgerIdentityClientBuilder()
+        ConfidentialLedgerClient confidentialLedgerClient =
+                new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .identityServiceUri("identity.accledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        String ledgerId = "your_ledger_name";
-        Response<BinaryData> response =
-                confidentialLedgerIdentityClient.getLedgerIdentityWithResponse(ledgerId, requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
     }
 }
