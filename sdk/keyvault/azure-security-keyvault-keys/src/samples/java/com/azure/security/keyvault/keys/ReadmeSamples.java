@@ -74,10 +74,10 @@ public class ReadmeSamples {
 
     public void createCryptographyClient() {
         // BEGIN: readme-sample-createCryptographyClient
-        // Create client with key identifier from key vault.
+        // Create client with key identifier from Key Vault.
         CryptographyClient cryptoClient = new CryptographyClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
             .keyIdentifier("<your-key-id-from-key-vault>")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: readme-sample-createCryptographyClient
     }
@@ -122,7 +122,7 @@ public class ReadmeSamples {
 
         // Deleted key is accessible as soon as polling begins.
         DeletedKey deletedKey = deletedKeyPollResponse.getValue();
-        // Deletion date only works for a SoftDelete-enabled Key Vault.
+        // Deletion date only works for a SoftDelete-enabled key vault.
         System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
 
         // Key is being deleted on server.
