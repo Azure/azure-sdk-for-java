@@ -21,10 +21,6 @@ class SparkE2EChangeFeedSplitITest
  //scalastyle:off multiple.string.literals
  //scalastyle:off magic.number
 
- override def afterEach(): Unit = {
-  this.reinitializeContainer()
- }
-
  "spark change feed query (incremental)" should "honor checkpoint location and read limit after partition split" in {
   val cosmosEndpoint = TestConfigurations.HOST
   val cosmosMasterKey = TestConfigurations.MASTER_KEY
