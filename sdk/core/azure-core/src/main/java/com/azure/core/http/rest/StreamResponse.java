@@ -5,10 +5,16 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
+import java.util.Objects;
 
 /**
  * REST response with a streaming content.
@@ -56,6 +62,34 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
                 this.consumed = true;
                 this.response.close();
             });
+        }
+    }
+
+    /**
+     * Transfers content bytes to the {@link AsynchronousByteChannel}.
+     * @param channel The destination {@link AsynchronousByteChannel}.
+     * @return A {@link Mono} that completes when transfer is completed.
+     */
+    public Mono<Void> transferValueToAsync(AsynchronousByteChannel channel) {
+        Objects.requireNonNull(channel, "'channel' must not be null");
+        if (response == null) {
+            return FluxUtil.writeToAsynchronousByteChannel(getValue(), channel);
+        } else {
+            return response.transferBodyToAsync(channel);
+        }
+    }
+
+    /**
+     * Transfers content bytes to the {@link WritableByteChannel}.
+     * @param channel The destination {@link WritableByteChannel}.
+     * @throws IOException When I/O operation fails.
+     */
+    public void transferValueTo(WritableByteChannel channel) throws IOException {
+        Objects.requireNonNull(channel, "'channel' must not be null");
+        if (response == null) {
+            FluxUtil.writeToWritableByteChannel(getValue(), channel).block();
+        } else {
+            response.transferBodyTo(channel);
         }
     }
 
