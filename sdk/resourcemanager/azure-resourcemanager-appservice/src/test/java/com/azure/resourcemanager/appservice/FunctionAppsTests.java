@@ -392,8 +392,8 @@ public class FunctionAppsTests extends AppServiceTest {
             ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
             String name = "linux_function_app";
-            Response<String> response = curl("https://" + functionApp.defaultHostname() +
-                "/api/HttpTrigger-Java?name=" + name);
+            Response<String> response = curl("https://" + functionApp.defaultHostname()
+                + "/api/HttpTrigger-Java?name=" + name);
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
