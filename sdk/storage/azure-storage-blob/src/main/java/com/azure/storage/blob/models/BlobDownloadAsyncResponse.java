@@ -33,7 +33,6 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static final Mono<ByteBuffer> EMPTY_BUFFER_MONO = Mono.just(ByteBuffer.allocate(0));
     private final StreamResponse initialResponse;
     private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
-    private final long offset;
     private final int maxRetries;
 
 
@@ -51,7 +50,6 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         super(request, statusCode, headers, value, deserializedHeaders);
         this.initialResponse = null;
         this.onErrorResume = null;
-        this.offset = 0;
         this.maxRetries = 0;
     }
 
@@ -60,20 +58,18 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      *
      * @param initialResponse The initial Stream Response
      * @param onErrorResume Function used to resume.
-     * @param offset Initial offset.
      * @param maxRetries Max retries.
      */
     public BlobDownloadAsyncResponse(
         StreamResponse initialResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        long offset, int maxRetries) {
+        int maxRetries) {
         super(initialResponse.getRequest(), initialResponse.getStatusCode(),
             initialResponse.getHeaders(),
-            createResponseFlux(initialResponse, onErrorResume, offset, maxRetries),
+            createResponseFlux(initialResponse, onErrorResume, maxRetries),
             extractHeaders(initialResponse));
         this.initialResponse = initialResponse;
         this.onErrorResume = onErrorResume;
-        this.offset = offset;
         this.maxRetries = maxRetries;
     }
 
@@ -87,12 +83,12 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static Flux<ByteBuffer> createResponseFlux(
         StreamResponse initialResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        long offset, int maxRetries) {
+        int maxRetries) {
         return FluxUtil.createRetriableDownloadFlux(
                 initialResponse::getValue,
                 (throwable, position) -> onErrorResume.apply(throwable, position)
                     .flatMapMany(StreamResponse::getValue),
-                maxRetries, offset)
+                maxRetries)
             .switchIfEmpty(EMPTY_BUFFER_MONO).timeout(TIMEOUT_VALUE);
     }
 
@@ -108,7 +104,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
             return FluxUtil.writeToAsynchronousByteChannel(super.getValue(), channel);
         } else {
             return TransferUtil.downloadToAsynchronousByteChannel(channel, Mono.just(initialResponse),
-                onErrorResume, progressReporter, offset, maxRetries);
+                onErrorResume, progressReporter, maxRetries);
         }
     }
 

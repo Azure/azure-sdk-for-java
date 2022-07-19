@@ -1287,7 +1287,7 @@ public class BlobAsyncClientBase {
                         return Mono.error(throwable);
                     }
 
-                    long newCount = finalCount - (offset - finalRange.getOffset());
+                    long newCount = finalCount - (finalRange.getOffset() + offset - finalRange.getOffset());
 
                         /*
                          It is possible that the network stream will throw an error after emitting all data but before
@@ -1304,13 +1304,13 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(
-                            new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context);
+                            new BlobRange(finalRange.getOffset() + offset, newCount), finalRequestConditions, eTag, getMD5, context);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
                 return new BlobDownloadAsyncResponse(
-                    response, onDownloadErrorResume, finalRange.getOffset(), finalOptions.getMaxRetryRequests());
+                    response, onDownloadErrorResume, finalOptions.getMaxRetryRequests());
             });
     }
 
