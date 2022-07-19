@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("AzureActiveDirectory")
 @Fluent
 public final class ResourceCertificateAndAadDetails extends ResourceCertificateDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceCertificateAndAadDetails.class);
-
     /*
      * AAD tenant authority.
      */
@@ -215,37 +212,39 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     public void validate() {
         super.validate();
         if (aadAuthority() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aadAuthority in model ResourceCertificateAndAadDetails"));
         }
         if (aadTenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aadTenantId in model ResourceCertificateAndAadDetails"));
         }
         if (servicePrincipalClientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalClientId in model"
                             + " ResourceCertificateAndAadDetails"));
         }
         if (servicePrincipalObjectId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalObjectId in model"
                             + " ResourceCertificateAndAadDetails"));
         }
         if (azureManagementEndpointAudience() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azureManagementEndpointAudience in model"
                             + " ResourceCertificateAndAadDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceCertificateAndAadDetails.class);
 }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservices.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.PatchVault;
@@ -19,7 +18,7 @@ import java.util.Map;
 public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
     private VaultInner innerObject;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -66,11 +65,15 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VaultInner innerModel() {
         return this.innerObject;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -105,7 +108,7 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
         return this;
     }
 
-    VaultImpl(String name, RecoveryServicesManager serviceManager) {
+    VaultImpl(String name, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = new VaultInner();
         this.serviceManager = serviceManager;
         this.vaultName = name;
@@ -136,7 +139,8 @@ public final class VaultImpl implements Vault, Vault.Definition, Vault.Update {
         return this;
     }
 
-    VaultImpl(VaultInner innerObject, RecoveryServicesManager serviceManager) {
+    VaultImpl(
+        VaultInner innerObject, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
