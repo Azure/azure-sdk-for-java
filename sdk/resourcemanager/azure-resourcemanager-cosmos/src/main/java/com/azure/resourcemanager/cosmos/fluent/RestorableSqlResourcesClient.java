@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
+import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlResourcesGetResultInner;
 
 /** An instance of this class provides access to all the operations defined in RestorableSqlResourcesClient. */
 public interface RestorableSqlResourcesClient {
@@ -25,10 +25,11 @@ public interface RestorableSqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable SQL resources.
+     * @return the List operation response, that contains the restorable SQL resources as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseRestoreResourceInner> listAsync(
+    PagedFlux<RestorableSqlResourcesGetResultInner> listAsync(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc);
 
     /**
@@ -41,10 +42,11 @@ public interface RestorableSqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable SQL resources.
+     * @return the List operation response, that contains the restorable SQL resources as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseRestoreResourceInner> listAsync(String location, String instanceId);
+    PagedFlux<RestorableSqlResourcesGetResultInner> listAsync(String location, String instanceId);
 
     /**
      * Return a list of database and container combo that exist on the account at the given timestamp and location. This
@@ -56,10 +58,11 @@ public interface RestorableSqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable SQL resources.
+     * @return the List operation response, that contains the restorable SQL resources as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseRestoreResourceInner> list(String location, String instanceId);
+    PagedIterable<RestorableSqlResourcesGetResultInner> list(String location, String instanceId);
 
     /**
      * Return a list of database and container combo that exist on the account at the given timestamp and location. This
@@ -74,9 +77,10 @@ public interface RestorableSqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable SQL resources.
+     * @return the List operation response, that contains the restorable SQL resources as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseRestoreResourceInner> list(
+    PagedIterable<RestorableSqlResourcesGetResultInner> list(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context);
 }

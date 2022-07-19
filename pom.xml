@@ -103,6 +103,9 @@
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
 
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
+
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
         <module>sdk/purview/azure-analytics-purview-scanning</module>
@@ -267,6 +270,9 @@
         <!-- Azure Monitor -->
         <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
         <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Personalizer -->
+        <module>sdk/personalizer/azure-ai-personalizer</module>
 
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
@@ -477,6 +483,10 @@
                   <group>
                     <title>Azure Security Attestation</title>
                     <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Personalizer</title>
+                    <packages>com.azure.ai.personalizer*</packages>
                   </group>
                   <group>
                     <title>Azure Purview Catalog</title>
@@ -948,6 +958,7 @@
         <module>sdk/orbital</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>
+        <module>sdk/personalizer</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>

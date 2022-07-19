@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for MongoDBResources CreateUpdateMongoDBDatabase. */
 public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBDatabaseCreateUpdate.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlResources GetSqlDatabaseThroughput. */
 public final class SqlResourcesGetSqlDatabaseThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlDatabaseThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBSqlDatabaseThroughputGet.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseThroughputGet.
