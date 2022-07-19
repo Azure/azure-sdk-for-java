@@ -62,6 +62,9 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+- name: LiveTestsStages
+  type: stageList
+  default: []
 
 stages:
   - stage: Build
@@ -102,6 +105,9 @@ stages:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
+
+  - ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+    - ${{ parameters.LiveTestsStages }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
