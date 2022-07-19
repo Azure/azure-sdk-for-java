@@ -112,6 +112,16 @@ stages:
             pip install markdown2 BeautifulSoup4
           displayName: 'pip install markdown2 and BeautifulSoup4'
 
+        # Why is this necessary? Normal build and release jobs don't install reporting tools prior
+        # to building however they're still able to find the the build tools through the root aggregate
+        # pom file. The ClientFromSourcePom only contains what is necessary for the list of libraries
+        # and needs to have them installed explicitly otherwise the checkstyle plugin will fail to find
+        # com.azure:sdk-build-tools which is a dependency. It does this in spite of the fact that we're
+        # not running actually running checkstyle, it loads it to skip it...well done.
+        - template: ../steps/install-reporting-tools.yml
+          parameters:
+            JdkVersion: ${{ parameters.JavaBuildVersion }}
+
         - task: Maven@3
           displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
           inputs:
