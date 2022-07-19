@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -131,7 +132,9 @@ public class SyncRestProxy extends RestProxyBase {
     private Object handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
                                                 final SwaggerMethodParser methodParser,
                                                 final Type entityType) {
-        if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
+        if (methodParser.isStreamResponse()) {
+            return new StreamResponse(response.getSourceResponse());
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 response.getSourceResponse().close();

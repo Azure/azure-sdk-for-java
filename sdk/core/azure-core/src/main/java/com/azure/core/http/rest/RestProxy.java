@@ -81,11 +81,10 @@ public final class RestProxy implements InvocationHandler {
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
         boolean isReactive = methodParser.isReactive();
-        boolean isStreamResponseType = methodParser.isStreamResponse();
         boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE).orElse(false);
 
 
-        if (isReactive || isStreamResponseType || !syncRestProxyEnabled) {
+        if (isReactive || !syncRestProxyEnabled) {
             return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                 options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
         } else {
