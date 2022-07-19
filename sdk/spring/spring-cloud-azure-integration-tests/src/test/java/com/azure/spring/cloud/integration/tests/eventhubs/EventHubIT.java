@@ -54,17 +54,11 @@ public class EventHubIT {
     static class TestConfig {
         @Bean
         EventHubsRecordMessageListener messageListener() {
-            return new EventHubsRecordMessageListener() {
-                @Override
-                public void onMessage(EventContext message) { }
-            };
+            return message -> {};
         }
         @Bean
         EventHubsErrorHandler errorHandler() {
-            return new EventHubsErrorHandler() {
-                @Override
-                public void accept(ErrorContext errorContext) { }
-            };
+            return errorContext -> {};
         }
     }
     @Test
@@ -80,6 +74,7 @@ public class EventHubIT {
         Assertions.assertTrue(processorClient.isRunning());
         processorClient.stop();
         Assertions.assertFalse(processorClient.isRunning());
+        LOGGER.info("EventHubIT end.");
     }
 
 }

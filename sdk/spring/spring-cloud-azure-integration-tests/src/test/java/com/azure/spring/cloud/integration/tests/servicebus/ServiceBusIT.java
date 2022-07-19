@@ -33,22 +33,16 @@ public class ServiceBusIT {
     static class TestConfig {
         @Bean
         ServiceBusRecordMessageListener messageListener() {
-            return new ServiceBusRecordMessageListener() {
-                @Override
-                public void onMessage(ServiceBusReceivedMessageContext message) { }
-            };
+            return message -> {};
         };
         @Bean
         ServiceBusErrorHandler errorHandler() {
-            return new ServiceBusErrorHandler() {
-                @Override
-                public void accept(ServiceBusErrorContext context) { }
-            };
+            return errorContext -> {};
         }
     }
 
     @Test
-    public void testServiceBusOperation() throws InterruptedException {
+    public void testServiceBusOperation() {
         LOGGER.info("ServiceBusIT begin.");
         senderClient.sendMessage(new ServiceBusMessage(data));
         senderClient.close();
