@@ -8,15 +8,27 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.secrets.implementation.SecretRequestAttributes;
+import com.azure.security.keyvault.secrets.implementation.SecretRequestParameters;
 import com.azure.security.keyvault.secrets.implementation.SecretService;
+import com.azure.security.keyvault.secrets.implementation.SecretSyncService;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
+
+import java.net.URL;
+import java.time.Duration;
+import java.util.Objects;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * The SecretClient provides synchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The client
@@ -40,24 +52,56 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  */
 @ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretService.class)
 public final class SecretClient {
-    private final SecretAsyncClient client;
+//    private final SecretAsyncClient client;
+
+    private final String apiVersion;
+    static final String ACCEPT_LANGUAGE = "en-US";
+    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
+    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
+
+    private final String vaultUrl;
+    private final SecretSyncService service;
+    private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
+    private final HttpPipeline pipeline;
+    private SecretAsyncClient client;
 
     /**
      * Gets the vault endpoint url to which service requests are sent to.
      * @return the vault endpoint url.
      */
     public String getVaultUrl() {
-        return client.getVaultUrl();
+        return this.vaultUrl;
     }
 
     /**
-     * Creates a SecretClient that uses {@code pipeline} to service requests
+     * Creates a SecretAsyncClient that uses {@code pipeline} to service requests
      *
-     * @param client The {@link SecretAsyncClient} that the client routes its request through.
+     * @param vaultUrl URL for the Azure KeyVault service.
+     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param version {@link SecretServiceVersion} of the service to be used when making requests.
      */
-    SecretClient(SecretAsyncClient client) {
-        this.client = client;
+    SecretClient(URL vaultUrl, HttpPipeline pipeline, SecretServiceVersion version) {
+        Objects.requireNonNull(vaultUrl,
+            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        this.vaultUrl = vaultUrl.toString();
+        this.service = RestProxy.create(SecretSyncService.class, pipeline);
+        this.pipeline = pipeline;
+        apiVersion = version.getVersion();
     }
+
+//    /**
+//     * Creates a SecretClient that uses {@code pipeline} to service requests
+//     *
+//     * @param client The {@link SecretAsyncClient} that the client routes its request through.
+//     */
+//    SecretClient(SecretAsyncClient client) {
+//        this.client = client;
+//    }
 
     /**
      * Adds a secret to the key vault if it does not exist. If the named secret exists, a new version of the secret is
@@ -144,7 +188,16 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, Context context) {
-        return client.setSecretWithResponse(secret, context).block();
+        Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
+        SecretRequestParameters parameters = new SecretRequestParameters()
+            .setValue(secret.getValue())
+            .setTags(secret.getProperties().getTags())
+            .setContentType(secret.getProperties().getContentType())
+            .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
+
+        return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
     }
 
     /**
