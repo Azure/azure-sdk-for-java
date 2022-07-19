@@ -181,3 +181,12 @@ directive:
   transform: >
     $.name = "CallConnectionStateModelInternal";
 ```
+
+### Rename RecordingStatus to RecordingStatusInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStatus["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStatusInternal";
+```

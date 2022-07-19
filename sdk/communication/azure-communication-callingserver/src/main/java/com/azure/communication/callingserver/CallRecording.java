@@ -10,7 +10,7 @@ import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
-import com.azure.communication.callingserver.models.RecordingIdResponse;
+import com.azure.communication.callingserver.models.StartRecordingResponse;
 import com.azure.communication.callingserver.models.RecordingStateResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.core.annotation.ReturnType;
@@ -47,7 +47,7 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingIdResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+    public StartRecordingResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
         return callRecordingAsync.startRecording(callLocator, recordingStateCallbackUri).block();
     }
 
@@ -66,7 +66,7 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingIdResponse> startRecordingWithResponse(
+    public Response<StartRecordingResponse> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
         RecordingContent content,

@@ -20,7 +20,7 @@ public final class RecordingStatusResponse {
      * The recordingStatus property.
      */
     @JsonProperty(value = "recordingStatus")
-    private RecordingStatus recordingStatus;
+    private RecordingStatusInternal recordingStatus;
 
     /**
      * Get the recordingId property: The recordingId property.
@@ -47,7 +47,7 @@ public final class RecordingStatusResponse {
      *
      * @return the recordingStatus value.
      */
-    public RecordingStatus getRecordingStatus() {
+    public RecordingStatusInternal getRecordingStatus() {
         return this.recordingStatus;
     }
 
@@ -57,7 +57,7 @@ public final class RecordingStatusResponse {
      * @param recordingStatus the recordingStatus value to set.
      * @return the RecordingStatusResponse object itself.
      */
-    public RecordingStatusResponse setRecordingStatus(RecordingStatus recordingStatus) {
+    public RecordingStatusResponse setRecordingStatus(RecordingStatusInternal recordingStatus) {
         this.recordingStatus = recordingStatus;
         return this;
     }

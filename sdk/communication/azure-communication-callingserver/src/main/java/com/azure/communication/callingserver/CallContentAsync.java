@@ -127,7 +127,7 @@ public class CallContentAsync {
                     .collect(Collectors.toList()));
 
             return contentsInternal.playWithResponseAsync(callConnectionId, request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
