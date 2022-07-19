@@ -256,7 +256,13 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     });
 
                     logger.verbose("Batch published. Requested batches left: {}", batchesLeft);
-                    this.currentBatch = batchSupplier.get();
+
+                    if (!isCompleted.get()) {
+                        this.currentBatch = batchSupplier.get();
+                    } else {
+                        logger.verbose("Aggregator is completed. Not setting another batch.");
+                        this.currentBatch = null;
+                    }
                 }
             } catch (Throwable e) {
                 final Throwable error = Operators.onNextError(previous, e, downstream.currentContext(), subscription);
