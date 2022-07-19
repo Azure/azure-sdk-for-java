@@ -5,7 +5,9 @@
 - [Prerequisites](#prerequisites)
 - [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
 - [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication)
+- [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache)
 - [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
+- [Troubleshooting](#troubleshooting)
 
 
 #### Prerequisites
@@ -35,6 +37,9 @@ Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/late
 * [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
  - This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
+* [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache)
+  - This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache caching a non expired Azure AD token.
+  
 * [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
  - This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
  
@@ -153,6 +158,17 @@ private static AccessToken getAccessToken(TokenCredential tokenCredential, Token
 }
 ```
 
+#### Authenticate with Azure AD: Using Token Cache
+This sample is intended to assist in authenticating with Azure AD via Jedis client library. It focuses on displaying the logic required to fetch an Azure AD access token using a Token cache and to use it as password when setting up the Jedis instance. It also shows how to recreate and authenticate the Jedis instance using the cached access token when the client's connection is broken in error/exception scenarios.
+
+##### Migration Guidance
+When migrating your existing your application code, you need to replace the password input with the Azure AD token.
+Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library and store it in a Token Cache as shown below and replace it with the password configuring/retrieving logic in your application code.
+
+```java
+
+```
+
 #### Authenticate with Azure AD: Azure Jedis Wrapper
 This sample is intended to assist in the migration from Jedis to `AzureJedisClientBuilder`. It focuses on side-by-side comparisons for similar operations between the two libraries.
 
@@ -216,3 +232,19 @@ jedisClient.set("Az:key", "sample");
 // Close the Jedis Client
 jedisClient.close();
 ```
+
+#### Troubleshooting
+
+##### Invalid Username Password Pair Error
+In this error scenario, the username provided and the access token used as password are not compatible.
+To mitigate this error, ensure that:
+* On Portal, Under your <Redis Cache Resource> -> RBAC Rules, you've assigned the required role to your user/service principal identity.
+* On Portal, Under your <Redis Cache Resource> -> Advanced settings -> AAD Access Authorization box is checked/enabled, if not enable it and press the Save button.
+
+##### Permissions not granted / NOPERM Error
+In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
+To mitigate this error, ensure that:
+* On Portal, Under your <Redis Cache Resource> -> RBAC Rules, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
+* In the event you're using a custom role, then ensure the permissions granted under your custom role include the one required for your target action.
+
+
