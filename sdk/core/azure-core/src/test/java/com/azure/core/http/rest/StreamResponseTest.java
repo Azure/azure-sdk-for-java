@@ -146,7 +146,7 @@ public class StreamResponseTest {
                 StepVerifier.create(
                     Mono.using(
                         () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                        streamResponse::transferValueToAsync,
+                        streamResponse::writeValueToAsync,
                         channel -> {
                             try {
                                 channel.close();
@@ -169,7 +169,7 @@ public class StreamResponseTest {
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             try {
-                streamResponse.transferValueTo(Channels.newChannel(bos));
+                streamResponse.writeValueTo(Channels.newChannel(bos));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
