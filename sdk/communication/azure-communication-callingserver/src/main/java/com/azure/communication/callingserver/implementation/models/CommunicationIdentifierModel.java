@@ -17,6 +17,12 @@ public final class CommunicationIdentifierModel {
     private String rawId;
 
     /*
+     * Type of CommunicationIdentifierModel.
+     */
+    @JsonProperty(value = "kind")
+    private CommunicationIdentifierModelKind kind;
+
+    /*
      * The communication user.
      */
     @JsonProperty(value = "communicationUser")
@@ -51,6 +57,26 @@ public final class CommunicationIdentifierModel {
      */
     public CommunicationIdentifierModel setRawId(String rawId) {
         this.rawId = rawId;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Type of CommunicationIdentifierModel.
+     *
+     * @return the kind value.
+     */
+    public CommunicationIdentifierModelKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Type of CommunicationIdentifierModel.
+     *
+     * @param kind the kind value to set.
+     * @return the CommunicationIdentifierModel object itself.
+     */
+    public CommunicationIdentifierModel setKind(CommunicationIdentifierModelKind kind) {
+        this.kind = kind;
         return this;
     }
 

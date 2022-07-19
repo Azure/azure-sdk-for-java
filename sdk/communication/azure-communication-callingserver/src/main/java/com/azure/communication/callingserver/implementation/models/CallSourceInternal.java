@@ -18,7 +18,7 @@ public final class CallSourceInternal {
     private PhoneNumberIdentifierModel callerId;
 
     /*
-     * The identifier property.
+     * The identifier of the source of the call
      */
     @JsonProperty(value = "identifier", required = true)
     private CommunicationIdentifierModel identifier;
@@ -44,7 +44,7 @@ public final class CallSourceInternal {
     }
 
     /**
-     * Get the identifier property: The identifier property.
+     * Get the identifier property: The identifier of the source of the call.
      *
      * @return the identifier value.
      */
@@ -53,7 +53,7 @@ public final class CallSourceInternal {
     }
 
     /**
-     * Set the identifier property: The identifier property.
+     * Set the identifier property: The identifier of the source of the call.
      *
      * @param identifier the identifier value to set.
      * @return the CallSourceInternal object itself.

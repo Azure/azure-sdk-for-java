@@ -114,6 +114,9 @@ directive:
 - rename-model:
     from: PlaySource
     to: PlaySourceInternal
+- rename-model:
+    from: FileSource
+    to: FileSourceInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

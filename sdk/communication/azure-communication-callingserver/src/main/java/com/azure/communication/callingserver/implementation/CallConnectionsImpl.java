@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.implementation.models.AcsCallPartic
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
-import com.azure.communication.callingserver.implementation.models.GetParticipantRequestInternal;
+import com.azure.communication.callingserver.implementation.models.GetParticipantsResponse;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsResponseInternal;
 import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
@@ -32,7 +32,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CallConnections. */
@@ -103,7 +102,7 @@ public final class CallConnectionsImpl {
         @Get("/calling/callConnections/{callConnectionId}/participants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<List<AcsCallParticipantInternal>>> getParticipants(
+        Mono<Response<GetParticipantsResponse>> getParticipants(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -132,14 +131,14 @@ public final class CallConnectionsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/callConnections/{callConnectionId}/participants:get")
+        @Get("/calling/callConnections/{callConnectionId}/participants/{participantMri}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<AcsCallParticipantInternal>> getParticipant(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
+                @PathParam("participantMri") String participantMri,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") GetParticipantRequestInternal getParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -583,7 +582,7 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AcsCallParticipantInternal>>> getParticipantsWithResponseAsync(String callConnectionId) {
+    public Mono<Response<GetParticipantsResponse>> getParticipantsWithResponseAsync(String callConnectionId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -606,7 +605,7 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AcsCallParticipantInternal>>> getParticipantsWithResponseAsync(
+    public Mono<Response<GetParticipantsResponse>> getParticipantsWithResponseAsync(
             String callConnectionId, Context context) {
         final String accept = "application/json";
         return service.getParticipants(
@@ -623,10 +622,10 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AcsCallParticipantInternal>> getParticipantsAsync(String callConnectionId) {
+    public Mono<GetParticipantsResponse> getParticipantsAsync(String callConnectionId) {
         return getParticipantsWithResponseAsync(callConnectionId)
                 .flatMap(
-                        (Response<List<AcsCallParticipantInternal>> res) -> {
+                        (Response<GetParticipantsResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -646,10 +645,10 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AcsCallParticipantInternal>> getParticipantsAsync(String callConnectionId, Context context) {
+    public Mono<GetParticipantsResponse> getParticipantsAsync(String callConnectionId, Context context) {
         return getParticipantsWithResponseAsync(callConnectionId, context)
                 .flatMap(
-                        (Response<List<AcsCallParticipantInternal>> res) -> {
+                        (Response<GetParticipantsResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -668,7 +667,7 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AcsCallParticipantInternal> getParticipants(String callConnectionId) {
+    public GetParticipantsResponse getParticipants(String callConnectionId) {
         return getParticipantsAsync(callConnectionId).block();
     }
 
@@ -683,8 +682,7 @@ public final class CallConnectionsImpl {
      * @return participants from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AcsCallParticipantInternal>> getParticipantsWithResponse(
-            String callConnectionId, Context context) {
+    public Response<GetParticipantsResponse> getParticipantsWithResponse(String callConnectionId, Context context) {
         return getParticipantsWithResponseAsync(callConnectionId, context).block();
     }
 
@@ -951,68 +949,67 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participant from a call.
+     * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param getParticipantsRequest The get participant request.
+     * @param participantMri MRI of the participants to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participant from a call.
+     * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(
-            String callConnectionId, GetParticipantRequestInternal getParticipantsRequest) {
+            String callConnectionId, String participantMri) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getParticipant(
                                 this.client.getEndpoint(),
                                 callConnectionId,
+                                participantMri,
                                 this.client.getApiVersion(),
-                                getParticipantsRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Get a participant from a call.
+     * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param getParticipantsRequest The get participant request.
+     * @param participantMri MRI of the participants to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participant from a call.
+     * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcsCallParticipantInternal>> getParticipantWithResponseAsync(
-            String callConnectionId, GetParticipantRequestInternal getParticipantsRequest, Context context) {
+            String callConnectionId, String participantMri, Context context) {
         final String accept = "application/json";
         return service.getParticipant(
                 this.client.getEndpoint(),
                 callConnectionId,
+                participantMri,
                 this.client.getApiVersion(),
-                getParticipantsRequest,
                 accept,
                 context);
     }
 
     /**
-     * Get a participant from a call.
+     * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param getParticipantsRequest The get participant request.
+     * @param participantMri MRI of the participants to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participant from a call.
+     * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcsCallParticipantInternal> getParticipantAsync(
-            String callConnectionId, GetParticipantRequestInternal getParticipantsRequest) {
-        return getParticipantWithResponseAsync(callConnectionId, getParticipantsRequest)
+    public Mono<AcsCallParticipantInternal> getParticipantAsync(String callConnectionId, String participantMri) {
+        return getParticipantWithResponseAsync(callConnectionId, participantMri)
                 .flatMap(
                         (Response<AcsCallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1024,20 +1021,20 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participant from a call.
+     * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param getParticipantsRequest The get participant request.
+     * @param participantMri MRI of the participants to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participant from a call.
+     * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcsCallParticipantInternal> getParticipantAsync(
-            String callConnectionId, GetParticipantRequestInternal getParticipantsRequest, Context context) {
-        return getParticipantWithResponseAsync(callConnectionId, getParticipantsRequest, context)
+            String callConnectionId, String participantMri, Context context) {
+        return getParticipantWithResponseAsync(callConnectionId, participantMri, context)
                 .flatMap(
                         (Response<AcsCallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1049,35 +1046,34 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Get a participant from a call.
+     * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param getParticipantsRequest The get participant request.
+     * @param participantMri MRI of the participants to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participant from a call.
+     * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcsCallParticipantInternal getParticipant(
-            String callConnectionId, GetParticipantRequestInternal getParticipantsRequest) {
-        return getParticipantAsync(callConnectionId, getParticipantsRequest).block();
+    public AcsCallParticipantInternal getParticipant(String callConnectionId, String participantMri) {
+        return getParticipantAsync(callConnectionId, participantMri).block();
     }
 
     /**
-     * Get a participant from a call.
+     * Get participant from a call.
      *
      * @param callConnectionId The call connection Id.
-     * @param getParticipantsRequest The get participant request.
+     * @param participantMri MRI of the participants to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a participant from a call.
+     * @return participant from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcsCallParticipantInternal> getParticipantWithResponse(
-            String callConnectionId, GetParticipantRequestInternal getParticipantsRequest, Context context) {
-        return getParticipantWithResponseAsync(callConnectionId, getParticipantsRequest, context).block();
+            String callConnectionId, String participantMri, Context context) {
+        return getParticipantWithResponseAsync(callConnectionId, participantMri, context).block();
     }
 }

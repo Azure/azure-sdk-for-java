@@ -27,14 +27,7 @@ public final class CallConnectionPropertiesInternal {
      * The source of the call.
      */
     @JsonProperty(value = "source")
-    private CommunicationIdentifierModel source;
-
-    /*
-     * The alternate identity of the source of the call if dialing out to a
-     * pstn number
-     */
-    @JsonProperty(value = "alternateCallerId")
-    private PhoneNumberIdentifierModel alternateCallerId;
+    private CallSourceInternal source;
 
     /*
      * The targets of the call.
@@ -46,7 +39,7 @@ public final class CallConnectionPropertiesInternal {
      * The state of the call connection.
      */
     @JsonProperty(value = "callConnectionState")
-    private CallConnectionStateModel callConnectionState;
+    private CallConnectionStateModelInternal callConnectionState;
 
     /*
      * The subject.
@@ -105,7 +98,7 @@ public final class CallConnectionPropertiesInternal {
      *
      * @return the source value.
      */
-    public CommunicationIdentifierModel getSource() {
+    public CallSourceInternal getSource() {
         return this.source;
     }
 
@@ -115,30 +108,8 @@ public final class CallConnectionPropertiesInternal {
      * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setSource(CommunicationIdentifierModel source) {
+    public CallConnectionPropertiesInternal setSource(CallSourceInternal source) {
         this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
-     * number.
-     *
-     * @return the alternateCallerId value.
-     */
-    public PhoneNumberIdentifierModel getAlternateCallerId() {
-        return this.alternateCallerId;
-    }
-
-    /**
-     * Set the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
-     * number.
-     *
-     * @param alternateCallerId the alternateCallerId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
-        this.alternateCallerId = alternateCallerId;
         return this;
     }
 
@@ -167,7 +138,7 @@ public final class CallConnectionPropertiesInternal {
      *
      * @return the callConnectionState value.
      */
-    public CallConnectionStateModel getCallConnectionState() {
+    public CallConnectionStateModelInternal getCallConnectionState() {
         return this.callConnectionState;
     }
 
@@ -177,7 +148,8 @@ public final class CallConnectionPropertiesInternal {
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionState(CallConnectionStateModel callConnectionState) {
+    public CallConnectionPropertiesInternal setCallConnectionState(
+            CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }

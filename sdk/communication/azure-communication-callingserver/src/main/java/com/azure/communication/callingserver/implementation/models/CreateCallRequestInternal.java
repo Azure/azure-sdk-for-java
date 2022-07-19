@@ -18,7 +18,7 @@ public final class CreateCallRequestInternal {
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The source property.
+     * The source of the call.
      */
     @JsonProperty(value = "source", required = true)
     private CallSourceInternal source;
@@ -56,7 +56,7 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the source property: The source property.
+     * Get the source property: The source of the call.
      *
      * @return the source value.
      */
@@ -65,7 +65,7 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Set the source property: The source property.
+     * Set the source property: The source of the call.
      *
      * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
