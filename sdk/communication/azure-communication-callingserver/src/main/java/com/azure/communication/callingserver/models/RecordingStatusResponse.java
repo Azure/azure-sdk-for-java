@@ -11,13 +11,7 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class RecordingStatusResponse {
     static {
-        RecordingStatusResponseConstructorProxy.setAccessor(
-            new RecordingStatusResponseConstructorProxy.RecordingStatusResponseConstructorAccessor() {
-                @Override
-                public RecordingStatusResponse create(RecordingStatusResponseInternal internalResponse) {
-                    return new RecordingStatusResponse(internalResponse);
-                }
-            });
+        RecordingStatusResponseConstructorProxy.setAccessor(RecordingStatusResponse::new);
     }
     /*
      * The recording id of the started recording
