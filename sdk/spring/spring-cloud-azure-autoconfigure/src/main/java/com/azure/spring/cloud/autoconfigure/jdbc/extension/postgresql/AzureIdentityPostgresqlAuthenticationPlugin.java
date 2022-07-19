@@ -7,9 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.jdbc.TokenCredentialProvider;
 import org.postgresql.plugin.AuthenticationPlugin;
@@ -25,13 +26,10 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
 
     private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
-
     /**
      * Stores the properties.
      */
     private Properties properties;
-
-    private final AzureJDBCProperties azureJDBCProperties;
 
     private TokenCredentialProvider tokenCredentialProvider;
 
@@ -45,9 +43,9 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
         this.properties = properties;
 
         //todo check
-        this.azureJDBCProperties = new AzureJDBCProperties();
-        AzureJDBCPropertiesUtils.convertPropertiesToAzureProperties(properties, azureJDBCProperties);
-        this.tokenCredentialProvider = new TokenCredentialProvider(azureJDBCProperties, true);
+        Map<String, String> map = new HashMap<>();
+        AzureJDBCPropertiesUtils.convertPropertiesToConfigMap(properties, map);
+        this.tokenCredentialProvider = new TokenCredentialProvider(map, true);
     }
 
     /**

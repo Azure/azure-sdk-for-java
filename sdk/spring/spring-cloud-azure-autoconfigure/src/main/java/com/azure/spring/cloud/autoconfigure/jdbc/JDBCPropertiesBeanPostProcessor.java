@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureSpringJDBCPropertiesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -96,7 +96,7 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
                     copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azureJDBCProperties.getCredential());
 
                     Map<String, String> configMap = new HashMap<>();
-                    AzureJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
+                    AzureSpringJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
                     configMap.putAll(ENHANCED_PROPERTIES.get(databaseType));
                     String enhancedUrl = connectionString.enhanceConnectionString(configMap);
                     LOGGER.debug("Enhanced url is " + enhancedUrl);
@@ -112,7 +112,7 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     @Override
     public void setEnvironment(Environment environment) {
-        this.environment = (ConfigurableEnvironment) environment;
+        this.environment = environment;
     }
 
     private boolean isDatabasePluginEnabled(DatabaseType databaseType){

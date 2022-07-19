@@ -2,188 +2,138 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
-import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.mysql.cj.conf.PropertySet;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 /**
  * Store the constants for customized Azure properties with JDBC.
  */
-public final class AzureJDBCPropertiesUtils {
-    private AzureJDBCPropertiesUtils() {
-    }
+public class AzureJDBCPropertiesUtils {
 
     private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
     static final String CREDENTIAL_PREFIX = "azure.credential.";
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
-    public static void convertPropertySetToAzureProperties(PropertySet source,
-                                                           AzureJDBCProperties target) {
+    public static void convertPropertySetToConfigMap(PropertySet source, Map<String, String> target) {
         for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(source.getProperty(m.propertyKey)).to(p -> m.setter.accept(target, p.getStringValue()));
+            PROPERTY_MAPPER.from(source.getProperty(m.propertyKey)).to(p -> target.putIfAbsent(m.propertyKey, p.getStringValue()));
         }
     }
 
-    public static void convertPropertiesToAzureProperties(Properties source,
-                                                          AzureJDBCProperties target) {
+    public static void convertPropertiesToConfigMap(Properties source, Map<String, String> target) {
         for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(source.getProperty(m.propertyKey)).to(p -> m.setter.accept(target, p));
+            PROPERTY_MAPPER.from(source.getProperty(m.propertyKey)).to(p -> target.putIfAbsent(m.propertyKey, p));
         }
     }
 
-    public static void convertAzurePropertiesToConfigMap(AzureJDBCProperties source, Map<String, String> target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
-        }
-    }
-
-    enum Mapping {
-
-        clientCertificatePassword(CREDENTIAL_PREFIX + "client-certificate-password",
-            p -> p.getCredential().getClientCertificatePassword(),
-            (p, s) -> p.getCredential().setClientCertificatePassword(s)),
-
-        clientCertificatePath(CREDENTIAL_PREFIX + "client-certificate-path",
-            p -> p.getCredential().getClientCertificatePath(),
-            (p, s) -> p.getCredential().setClientCertificatePath(s)),
-
-        clientId(CREDENTIAL_PREFIX + "client-id",
-            p -> p.getCredential().getClientId(),
-            (p, s) -> p.getCredential().setClientId(s)),
-
-        clientSecret(CREDENTIAL_PREFIX + "client-secret",
-            p -> p.getCredential().getClientSecret(),
-            (p, s) -> p.getCredential().setClientSecret(s)),
-
-        managedIdentityEnabled(CREDENTIAL_PREFIX + "managed-identity-enabled",
-            p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
-            (p, s) -> p.getCredential().setManagedIdentityEnabled(Boolean.valueOf(s))),
-
-        password(CREDENTIAL_PREFIX + "password",
-            p -> p.getCredential().getPassword(),
-            (p, s) -> p.getCredential().setPassword(s)),
-
-        username(CREDENTIAL_PREFIX + "username",
-            p -> p.getCredential().getUsername(),
-            (p, s) -> p.getCredential().setUsername(s)),
-
-        cloudType(PROFILE_PREFIX + "cloud-type", p -> p.getProfile().getCloudType().name(),
-            (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.get(s))),
-
-        activeDirectoryEndpoint(ENVIRONMENT_PREFIX + "active-directory-endpoint",
-            p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryEndpoint(s)),
-
-        activeDirectoryGraphApiVersion(ENVIRONMENT_PREFIX + "active-directory-graph-api-version",
-            p -> p.getProfile().getEnvironment().getActiveDirectoryGraphApiVersion(),
-            (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion(s)),
-
-        activeDirectoryGraphEndpoint(ENVIRONMENT_PREFIX + "active-directory-graph-endpoint",
-            p -> p.getProfile().getEnvironment().getActiveDirectoryGraphEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryGraphEndpoint(s)),
-
-        activeDirectoryResourceId(ENVIRONMENT_PREFIX + "active-directory-resource-id",
-            p -> p.getProfile().getEnvironment().getActiveDirectoryResourceId(),
-            (p, s) -> p.getProfile().getEnvironment().setActiveDirectoryResourceId(s)),
-
-        azureApplicationInsightsEndpoint(ENVIRONMENT_PREFIX + "azure-application-insights-endpoint",
-            p -> p.getProfile().getEnvironment().getAzureApplicationInsightsEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setAzureApplicationInsightsEndpoint(s)),
-
-        azureDataLakeAnalyticsCatalogAndJobEndpointSuffix(ENVIRONMENT_PREFIX + "azure-data-lake-analytics-catalog-and-job-endpoint-suffix",
-            p -> p.getProfile().getEnvironment().getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(),
-            (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(s)),
-
-        azureDataLakeStoreFileSystemEndpointSuffix(ENVIRONMENT_PREFIX + "azure-data-lake-store-file-system-endpoint-suffix",
-            p -> p.getProfile().getEnvironment().getAzureDataLakeStoreFileSystemEndpointSuffix(),
-            (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeStoreFileSystemEndpointSuffix(s)),
-
-        azureLogAnalyticsEndpoint(ENVIRONMENT_PREFIX + "azure-log-analytics-endpoint",
-            p -> p.getProfile().getEnvironment().getAzureLogAnalyticsEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setAzureLogAnalyticsEndpoint(s)),
-
-        dataLakeEndpointResourceId(ENVIRONMENT_PREFIX + "data-lake-endpoint-resource-id",
-            p -> p.getProfile().getEnvironment().getDataLakeEndpointResourceId(),
-            (p, s) -> p.getProfile().getEnvironment().setDataLakeEndpointResourceId(s)),
-
-        galleryEndpoint(ENVIRONMENT_PREFIX + "gallery-endpoint",
-            p -> p.getProfile().getEnvironment().getGalleryEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setGalleryEndpoint(s)),
-
-        keyVaultDnsSuffix(ENVIRONMENT_PREFIX + "key-vault-dns-suffix",
-            p -> p.getProfile().getEnvironment().getKeyVaultDnsSuffix(),
-            (p, s) -> p.getProfile().getEnvironment().setKeyVaultDnsSuffix(s)),
-
-        managementEndpoint(ENVIRONMENT_PREFIX + "management-endpoint",
-            p -> p.getProfile().getEnvironment().getManagementEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setManagementEndpoint(s)),
-
-        microsoftGraphEndpoint(ENVIRONMENT_PREFIX + "microsoft-graph-endpoint",
-            p -> p.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setMicrosoftGraphEndpoint(s)),
-
-        portal(ENVIRONMENT_PREFIX + "portal",
-            p -> p.getProfile().getEnvironment().getPortal(),
-            (p, s) -> p.getProfile().getEnvironment().setPortal(s)),
-
-        publishingProfile(ENVIRONMENT_PREFIX + "publishing-profile",
-            p -> p.getProfile().getEnvironment().getPublishingProfile(),
-            (p, s) -> p.getProfile().getEnvironment().setPublishingProfile(s)),
-
-        resourceManagerEndpoint(ENVIRONMENT_PREFIX + "resource-manager-endpoint",
-            p -> p.getProfile().getEnvironment().getResourceManagerEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setResourceManagerEndpoint(s)),
-
-        sqlManagementEndpoint(ENVIRONMENT_PREFIX + "sql-management-endpoint",
-            p -> p.getProfile().getEnvironment().getSqlManagementEndpoint(),
-            (p, s) -> p.getProfile().getEnvironment().setSqlManagementEndpoint(s)),
-
-        sqlServerHostnameSuffix(ENVIRONMENT_PREFIX + "sql-server-hostname-suffix",
-            p -> p.getProfile().getEnvironment().getSqlServerHostnameSuffix(),
-            (p, s) -> p.getProfile().getEnvironment().setSqlServerHostnameSuffix(s)),
-
-        storageEndpointSuffix(ENVIRONMENT_PREFIX + "storage-endpoint-suffix",
-            p -> p.getProfile().getEnvironment().getStorageEndpointSuffix(),
-            (p, s) -> p.getProfile().getEnvironment().setStorageEndpointSuffix(s)),
-
-        subscriptionId(PROFILE_PREFIX + "subscription-id",
-            p -> p.getProfile().getSubscriptionId(),
-            (p, s) -> p.getProfile().setSubscriptionId(s)),
-
-        tenantId(PROFILE_PREFIX + "tenant-id",
-            p -> p.getProfile().getTenantId(),
-            (p, s) -> p.getProfile().setTenantId(s));
+    public enum Mapping {
+        clientCertificatePassword(CREDENTIAL_PREFIX + "client-certificate-password"),
+        clientCertificatePath(CREDENTIAL_PREFIX + "client-certificate-path"),
+        clientId(CREDENTIAL_PREFIX + "client-id"),
+        clientSecret(CREDENTIAL_PREFIX + "client-secret"),
+        managedIdentityEnabled(CREDENTIAL_PREFIX + "managed-identity-enabled"),
+        password(CREDENTIAL_PREFIX + "password"),
+        username(CREDENTIAL_PREFIX + "username"),
+        cloudType(PROFILE_PREFIX + "cloud-type"),
+        activeDirectoryEndpoint(ENVIRONMENT_PREFIX + "active-directory-endpoint"),
+        activeDirectoryGraphApiVersion(ENVIRONMENT_PREFIX + "active-directory-graph-api-version"),
+        activeDirectoryGraphEndpoint(ENVIRONMENT_PREFIX + "active-directory-graph-endpoint"),
+        activeDirectoryResourceId(ENVIRONMENT_PREFIX + "active-directory-resource-id"),
+        azureApplicationInsightsEndpoint(ENVIRONMENT_PREFIX + "azure-application-insights-endpoint"),
+        azureDataLakeAnalyticsCatalogAndJobEndpointSuffix(ENVIRONMENT_PREFIX + "azure-data-lake-analytics-catalog-and-job-endpoint-suffix"),
+        azureDataLakeStoreFileSystemEndpointSuffix(ENVIRONMENT_PREFIX + "azure-data-lake-store-file-system-endpoint-suffix"),
+        azureLogAnalyticsEndpoint(ENVIRONMENT_PREFIX + "azure-log-analytics-endpoint"),
+        dataLakeEndpointResourceId(ENVIRONMENT_PREFIX + "data-lake-endpoint-resource-id"),
+        galleryEndpoint(ENVIRONMENT_PREFIX + "gallery-endpoint"),
+        keyVaultDnsSuffix(ENVIRONMENT_PREFIX + "key-vault-dns-suffix"),
+        managementEndpoint(ENVIRONMENT_PREFIX + "management-endpoint"),
+        microsoftGraphEndpoint(ENVIRONMENT_PREFIX + "microsoft-graph-endpoint"),
+        portal(ENVIRONMENT_PREFIX + "portal"),
+        publishingProfile(ENVIRONMENT_PREFIX + "publishing-profile"),
+        resourceManagerEndpoint(ENVIRONMENT_PREFIX + "resource-manager-endpoint"),
+        sqlManagementEndpoint(ENVIRONMENT_PREFIX + "sql-management-endpoint"),
+        sqlServerHostnameSuffix(ENVIRONMENT_PREFIX + "sql-server-hostname-suffix"),
+        storageEndpointSuffix(ENVIRONMENT_PREFIX + "storage-endpoint-suffix"),
+        subscriptionId(PROFILE_PREFIX + "subscription-id"),
+        tenantId(PROFILE_PREFIX + "tenant-id");
 
         private String propertyKey;
-        private Function<AzureProperties, String> getter;
-        private BiConsumer<AzureJDBCProperties, String> setter;
 
-        Mapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzureJDBCProperties,
-            String> setter) {
+        Mapping(String propertyKey) {
             this.propertyKey = propertyKey;
-            this.getter = getter;
-            this.setter = setter;
         }
 
-        String propertyKey() {
+        public String propertyKey() {
             return propertyKey;
         }
 
-        Function<AzureProperties, String> getter() {
-            return getter;
+    }
+
+    public static TokenCredential resolveTokenCredential(Map<String ,String > map) {
+        if (map == null) {
+            return null;
         }
 
-        BiConsumer<AzureJDBCProperties, String> setter() {
-            return setter;
+        final String tenantId = map.get(AzureJDBCPropertiesUtils.Mapping.tenantId.propertyKey());
+        final String clientId = map.get(AzureJDBCPropertiesUtils.Mapping.clientId.propertyKey());
+        final String clientSecret = map.get(AzureJDBCPropertiesUtils.Mapping.clientSecret.propertyKey());
+
+        final boolean isClientIdSet = StringUtils.hasText(clientId);
+        if (StringUtils.hasText(tenantId)) {
+
+            if (isClientIdSet && StringUtils.hasText(clientSecret)) {
+                return new ClientSecretCredentialBuilder().clientId(clientId)
+                    .clientSecret(clientSecret)
+                    .tenantId(tenantId)
+                    .build();
+            }
+
+            final String clientCertificatePath = map.get(AzureJDBCPropertiesUtils.Mapping.clientCertificatePath.propertyKey());
+            final String clientCertificatePassword = map.get(AzureJDBCPropertiesUtils.Mapping.clientCertificatePassword.propertyKey());
+            if (StringUtils.hasText(clientCertificatePath)) {
+                ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder().tenantId(tenantId)
+                    .clientId(clientId);
+
+                if (StringUtils.hasText(clientCertificatePassword)) {
+                    builder.pfxCertificate(clientCertificatePath, clientCertificatePassword);
+                } else {
+                    builder.pemCertificate(clientCertificatePath);
+                }
+
+                return builder.build();
+            }
         }
 
+        final String username = map.get(AzureJDBCPropertiesUtils.Mapping.username.propertyKey());
+        final String password = map.get(AzureJDBCPropertiesUtils.Mapping.password.propertyKey());
+        if (isClientIdSet && StringUtils.hasText(username)
+            && StringUtils.hasText(password)) {
+            return new UsernamePasswordCredentialBuilder().username(username)
+                .password(password)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
+        }
+        final String managedIdentityEnabled = map.get(AzureJDBCPropertiesUtils.Mapping.managedIdentityEnabled.propertyKey());
+
+        if ("true".equals(managedIdentityEnabled)) {
+            ManagedIdentityCredentialBuilder builder = new ManagedIdentityCredentialBuilder();
+            if (isClientIdSet) {
+                builder.clientId(clientId);
+            }
+            return builder.build();
+        }
+        return null;
     }
 
 }

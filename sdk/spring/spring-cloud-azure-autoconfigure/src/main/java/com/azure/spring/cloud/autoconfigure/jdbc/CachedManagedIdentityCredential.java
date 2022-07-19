@@ -32,9 +32,9 @@ public class CachedManagedIdentityCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
         // todo
-        String key = tokenRequestContext.getClaims()
-            + tokenRequestContext.getTenantId()
-            + tokenRequestContext.getScopes();
+        String key = credential.getClass().getSimpleName() + ":"
+            + tokenRequestContext.getScopes() + ":"
+            + tokenRequestContext.getClaims();
         if (accessTokenMap.get(key) != null) {
             Mono<AccessToken> monoAccessToken = accessTokenMap.get(key);
             AccessToken accessToken = monoAccessToken.block(Duration.ofSeconds(30));

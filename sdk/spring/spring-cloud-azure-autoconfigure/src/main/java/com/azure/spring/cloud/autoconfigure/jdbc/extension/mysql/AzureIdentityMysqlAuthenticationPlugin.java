@@ -4,7 +4,9 @@ package com.azure.spring.cloud.autoconfigure.jdbc.extension.mysql;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
@@ -66,17 +68,9 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     @Override
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
-
-        //todo check
-        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
-        this.tokenCredentialProvider = new TokenCredentialProvider(azureJDBCProperties, true);
-
-//        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
-//        AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
-//        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureJDBCProperties);
-//        if (tokenCredential != null) {
-//            this.tokenCredentialProvider.addTokenCredentialFirst(new CachedTokenCredential(tokenCredential));
-//        }
+        Map<String, String> map = new HashMap<>();
+        AzureJDBCPropertiesUtils.convertPropertySetToConfigMap(protocol.getPropertySet(), map);
+        this.tokenCredentialProvider = new TokenCredentialProvider(map, true);
     }
 
     @Override

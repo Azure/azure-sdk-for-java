@@ -2,8 +2,8 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
+import java.util.Map;
 
 
 public class TokenCredentialProvider {
@@ -14,14 +14,9 @@ public class TokenCredentialProvider {
         this.chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
     }
 
-    public TokenCredentialProvider(AzureProperties azureProperties) {
-        this(azureProperties, false);
-    }
-
-    public TokenCredentialProvider(AzureProperties azureProperties, boolean cached) {
+    public TokenCredentialProvider(Map<String, String> map, boolean cached) {
         this.chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
-        AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
-        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureProperties);
+        TokenCredential tokenCredential = AzureJDBCPropertiesUtils.resolveTokenCredential(map);
 
         if (tokenCredential != null) {
             if (cached) {
@@ -41,7 +36,6 @@ public class TokenCredentialProvider {
         return this;
     }
 
-
     public TokenCredentialProvider addTokenCredentialLast(TokenCredential tokenCredential) {
         chainedTokenCredentialBuilder.addLast(tokenCredential);
         return this;
@@ -49,6 +43,5 @@ public class TokenCredentialProvider {
     // customize chain
     // ChainedTokenCredential -> chained
     // TokenCredential specific
-
 
 }
