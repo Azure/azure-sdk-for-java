@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.ServiceObjectivesClient;
 import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceObjectivesClient. */
 public final class ServiceObjectivesClientImpl implements ServiceObjectivesClient {
-    private final ClientLogger logger = new ClientLogger(ServiceObjectivesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServiceObjectivesService service;
 
@@ -58,7 +56,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     private interface ServiceObjectivesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/serviceObjectives/{serviceObjectiveName}")
@@ -71,9 +69,10 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("serviceObjectiveName") String serviceObjectiveName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/serviceObjectives")
@@ -85,6 +84,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -98,7 +98,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceObjectiveInner>> getWithResponseAsync(
@@ -127,6 +127,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
                 .error(new IllegalArgumentException("Parameter serviceObjectiveName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -138,8 +139,9 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
                             resourceGroupName,
                             serverName,
                             serviceObjectiveName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -153,7 +155,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceObjectiveInner>> getWithResponseAsync(
@@ -182,6 +184,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
                 .error(new IllegalArgumentException("Parameter serviceObjectiveName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -191,6 +194,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
                 resourceGroupName,
                 serverName,
                 serviceObjectiveName,
+                accept,
                 context);
     }
 
@@ -204,20 +208,13 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceObjectiveInner> getAsync(
         String resourceGroupName, String serverName, String serviceObjectiveName) {
         return getWithResponseAsync(resourceGroupName, serverName, serviceObjectiveName)
-            .flatMap(
-                (Response<ServiceObjectiveInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -248,7 +245,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceObjectiveInner> getWithResponse(
@@ -265,7 +262,8 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceObjectiveInner>> listByServerSinglePageAsync(
@@ -290,6 +288,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -300,12 +299,13 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
+                            accept,
                             context))
             .<PagedResponse<ServiceObjectiveInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -318,7 +318,8 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceObjectiveInner>> listByServerSinglePageAsync(
@@ -343,6 +344,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -351,6 +353,7 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
+                accept,
                 context)
             .map(
                 res ->
@@ -367,7 +370,8 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceObjectiveInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -384,7 +388,8 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServiceObjectiveInner> listByServerAsync(
@@ -401,7 +406,8 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceObjectiveInner> listByServer(String resourceGroupName, String serverName) {
@@ -418,7 +424,8 @@ public final class ServiceObjectivesClientImpl implements ServiceObjectivesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceObjectiveInner> listByServer(

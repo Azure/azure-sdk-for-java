@@ -5,49 +5,28 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.AdministratorType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Azure Active Directory administrator. */
-@JsonFlatten
 @Fluent
-public class ServerAzureADAdministratorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAzureADAdministratorInner.class);
-
+public final class ServerAzureADAdministratorInner extends ProxyResource {
     /*
-     * Type of the sever administrator.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.administratorType")
-    private AdministratorType administratorType;
+    @JsonProperty(value = "properties")
+    private AdministratorProperties innerProperties;
 
-    /*
-     * Login name of the server administrator.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.login")
-    private String login;
-
-    /*
-     * SID (object ID) of the server administrator.
-     */
-    @JsonProperty(value = "properties.sid")
-    private UUID sid;
-
-    /*
-     * Tenant ID of the administrator.
-     */
-    @JsonProperty(value = "properties.tenantId")
-    private UUID tenantId;
-
-    /*
-     * Azure Active Directory only Authentication enabled.
-     */
-    @JsonProperty(value = "properties.azureADOnlyAuthentication")
-    private Boolean azureADOnlyAuthentication;
+    private AdministratorProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the administratorType property: Type of the sever administrator.
@@ -55,7 +34,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the administratorType value.
      */
     public AdministratorType administratorType() {
-        return this.administratorType;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorType();
     }
 
     /**
@@ -65,7 +44,10 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the ServerAzureADAdministratorInner object itself.
      */
     public ServerAzureADAdministratorInner withAdministratorType(AdministratorType administratorType) {
-        this.administratorType = administratorType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdministratorProperties();
+        }
+        this.innerProperties().withAdministratorType(administratorType);
         return this;
     }
 
@@ -75,7 +57,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the login value.
      */
     public String login() {
-        return this.login;
+        return this.innerProperties() == null ? null : this.innerProperties().login();
     }
 
     /**
@@ -85,7 +67,10 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the ServerAzureADAdministratorInner object itself.
      */
     public ServerAzureADAdministratorInner withLogin(String login) {
-        this.login = login;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdministratorProperties();
+        }
+        this.innerProperties().withLogin(login);
         return this;
     }
 
@@ -95,7 +80,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the sid value.
      */
     public UUID sid() {
-        return this.sid;
+        return this.innerProperties() == null ? null : this.innerProperties().sid();
     }
 
     /**
@@ -105,7 +90,10 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the ServerAzureADAdministratorInner object itself.
      */
     public ServerAzureADAdministratorInner withSid(UUID sid) {
-        this.sid = sid;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdministratorProperties();
+        }
+        this.innerProperties().withSid(sid);
         return this;
     }
 
@@ -115,7 +103,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the tenantId value.
      */
     public UUID tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -125,7 +113,10 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the ServerAzureADAdministratorInner object itself.
      */
     public ServerAzureADAdministratorInner withTenantId(UUID tenantId) {
-        this.tenantId = tenantId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdministratorProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
         return this;
     }
 
@@ -135,7 +126,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
-        return this.azureADOnlyAuthentication;
+        return this.innerProperties() == null ? null : this.innerProperties().azureADOnlyAuthentication();
     }
 
     /**
@@ -145,7 +136,10 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @return the ServerAzureADAdministratorInner object itself.
      */
     public ServerAzureADAdministratorInner withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
-        this.azureADOnlyAuthentication = azureADOnlyAuthentication;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdministratorProperties();
+        }
+        this.innerProperties().withAzureADOnlyAuthentication(azureADOnlyAuthentication);
         return this;
     }
 
@@ -155,5 +149,8 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

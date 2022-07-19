@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.MetricAvailability;
 import com.azure.resourcemanager.sql.models.MetricName;
 import com.azure.resourcemanager.sql.models.PrimaryAggregationType;
 import com.azure.resourcemanager.sql.models.UnitDefinitionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A database metric definition. */
 @Immutable
 public final class MetricDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionInner.class);
-
     /*
      * The name information for the metric.
      */
