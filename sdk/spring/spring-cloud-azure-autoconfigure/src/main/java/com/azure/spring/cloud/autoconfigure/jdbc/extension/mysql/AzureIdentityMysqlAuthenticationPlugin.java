@@ -11,9 +11,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
-import com.azure.spring.cloud.autoconfigure.jdbc.CachedTokenCredential;
 import com.azure.spring.cloud.autoconfigure.jdbc.TokenCredentialProvider;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.mysql.cj.callback.MysqlCallbackHandler;
 import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
@@ -35,8 +33,6 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
 
     private final AzureJDBCProperties azureJDBCProperties;
 
-    private final AzureTokenCredentialResolver tokenCredentialResolver;
-
     private TokenCredentialProvider tokenCredentialProvider;
     /**
      * Stores the callback handler.
@@ -50,12 +46,11 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     private String sourceOfAuthData;
 
     public AzureIdentityMysqlAuthenticationPlugin() {
-        this(new AzureJDBCProperties(), new AzureTokenCredentialResolver());
+        this(new AzureJDBCProperties());
     }
 
-    public AzureIdentityMysqlAuthenticationPlugin(AzureJDBCProperties azureJDBCProperties, AzureTokenCredentialResolver tokenCredentialResolver) {
+    public AzureIdentityMysqlAuthenticationPlugin(AzureJDBCProperties azureJDBCProperties) {
         this.azureJDBCProperties = azureJDBCProperties;
-        this.tokenCredentialResolver = tokenCredentialResolver;
     }
 
     @Override

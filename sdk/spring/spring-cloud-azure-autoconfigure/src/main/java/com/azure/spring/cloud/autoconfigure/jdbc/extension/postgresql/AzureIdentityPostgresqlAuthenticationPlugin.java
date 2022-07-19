@@ -11,8 +11,7 @@ import java.util.Properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.jdbc.TokenCredentialProvider;
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
 import org.postgresql.util.PSQLException;
@@ -26,12 +25,6 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
 
     private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
 
-    /**
-     * Stores the access token.
-     */
-    private AccessToken accessToken;
-
-    private TokenCredential credential;
 
     /**
      * Stores the properties.
@@ -40,7 +33,8 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
 
     private final AzureJDBCProperties azureJDBCProperties;
 
-    private final AzureTokenCredentialResolver tokenCredentialResolver;
+    private TokenCredentialProvider tokenCredentialProvider;
+
 
     /**
      * Constructor with properties.
@@ -49,8 +43,11 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
         this.properties = properties;
+
+        //todo check
         this.azureJDBCProperties = new AzureJDBCProperties();
-        this.tokenCredentialResolver =  new AzureTokenCredentialResolver();
+        AzureJDBCPropertiesUtils.convertPropertiesToAzureProperties(properties, azureJDBCProperties);
+        this.tokenCredentialProvider = new TokenCredentialProvider(azureJDBCProperties, true);
     }
 
     /**
@@ -64,7 +61,7 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
     public char[] getPassword(AuthenticationRequestType art) throws PSQLException {
         char[] password;
 
-        accessToken = getAccessToken();
+        AccessToken accessToken = getAccessToken();
 
         if (accessToken != null) {
             password = accessToken.getToken().toCharArray();
@@ -75,29 +72,12 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
         return password;
     }
 
-
     private AccessToken getAccessToken() {
-        if (accessToken == null || accessToken.isExpired()) {
-            TokenCredential credential = getTokenCredential();
-            TokenRequestContext request = new TokenRequestContext();
-            ArrayList<String> scopes = new ArrayList<>();
-            scopes.add(OSSRDBMS_SCOPE);
-            request.setScopes(scopes);
-            accessToken = credential.getToken(request).block(Duration.ofSeconds(30));
-        }
-        return accessToken;
-    }
-
-    private TokenCredential getTokenCredential() {
-        if (credential == null) {
-            // Resolve the token credential when there is no credential passed from configs.
-            AzureJDBCPropertiesUtils.convertPropertiesToAzureProperties(properties, azureJDBCProperties);
-            credential = tokenCredentialResolver.resolve(azureJDBCProperties);
-            if (credential == null) {
-                // Create DefaultAzureCredential when no credential can be resolved from configs.
-                credential = new DefaultAzureCredentialBuilderFactory(azureJDBCProperties).build().build();
-            }
-        }
-        return credential;
+        TokenCredential credential = tokenCredentialProvider.getTokenCredential();
+        TokenRequestContext request = new TokenRequestContext();
+        ArrayList<String> scopes = new ArrayList<>();
+        scopes.add(OSSRDBMS_SCOPE);
+        request.setScopes(scopes);
+        return credential.getToken(request).block(Duration.ofSeconds(30));
     }
 }

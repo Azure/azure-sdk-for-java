@@ -29,6 +29,8 @@ public class CachedTokenCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
         // todo
+        String simpleName = tokenCredential.getClass().getSimpleName();
+        LOGGER.info("simpleName=" + simpleName);
         String key = tokenRequestContext.getClaims()
             + tokenRequestContext.getTenantId()
             + tokenRequestContext.getScopes();
