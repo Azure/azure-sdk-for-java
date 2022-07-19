@@ -562,7 +562,6 @@ public class CallRecordingAsync {
         }
     }
 
-
     private URL getUrlToSignRequestWith(String endpoint) {
         try {
             String path = new URL(endpoint).getPath();
