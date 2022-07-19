@@ -123,14 +123,18 @@ public class IOUtilsTest {
         AtomicInteger retries = new AtomicInteger();
         ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
         ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        HttpResponse httpResponse = new MockFluxHttpResponse(Mockito.mock(HttpRequest.class), fluxSupplier.apply(0));
+        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
+        HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
+            Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
+        responses.add(httpResponse);
         StreamResponse initialResponse = new StreamResponse(httpResponse);
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume = (throwable, offset) -> {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            HttpResponse newHttpResponse = new MockFluxHttpResponse(
-                Mockito.mock(HttpRequest.class), fluxSupplier.apply(offset.intValue()));
+            HttpResponse newHttpResponse = Mockito.spy(new MockFluxHttpResponse(
+                Mockito.mock(HttpRequest.class), fluxSupplier.apply(offset.intValue())));
+            responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
@@ -149,6 +153,9 @@ public class IOUtilsTest {
         assertEquals(3, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
         assertArrayEquals(data, Files.readAllBytes(tempFile));
+        // check that all responses are closed
+        assertEquals(4, responses.size());
+        responses.forEach(r -> Mockito.verify(r).close());
     }
 
     @Test
@@ -170,14 +177,18 @@ public class IOUtilsTest {
         AtomicInteger retries = new AtomicInteger();
         ConcurrentArrayQueue<Long> offsets = new ConcurrentArrayQueue<>();
         ConcurrentArrayQueue<Throwable> throwables = new ConcurrentArrayQueue<>();
-        HttpResponse httpResponse = new MockFluxHttpResponse(Mockito.mock(HttpRequest.class), fluxSupplier.apply(0));
+        ConcurrentArrayQueue<HttpResponse> responses = new ConcurrentArrayQueue<>();
+        HttpResponse httpResponse = Mockito.spy(new MockFluxHttpResponse(
+            Mockito.mock(HttpRequest.class), fluxSupplier.apply(0)));
+        responses.add(httpResponse);
         StreamResponse initialResponse = new StreamResponse(httpResponse);
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume = (throwable, offset) -> {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            HttpResponse newHttpResponse = new MockFluxHttpResponse(
-                Mockito.mock(HttpRequest.class), fluxSupplier.apply(offset.intValue()));
+            HttpResponse newHttpResponse = Mockito.spy(new MockFluxHttpResponse(
+                Mockito.mock(HttpRequest.class), fluxSupplier.apply(offset.intValue())));
+            responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
@@ -198,5 +209,8 @@ public class IOUtilsTest {
         assertEquals(2, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
         assertArrayEquals(Arrays.copyOfRange(data, 0, 1024), Files.readAllBytes(tempFile));
+        // check that all responses are closed
+        assertEquals(3, responses.size());
+        responses.forEach(r -> Mockito.verify(r).close());
     }
 }

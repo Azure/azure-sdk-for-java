@@ -154,7 +154,9 @@ public final class IOUtils {
         int maxRetries, int retryCount) {
 
         return response.writeValueToAsync(channel)
+            .doFinally(ignored -> response.close())
             .onErrorResume(Exception.class, exception -> {
+
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
