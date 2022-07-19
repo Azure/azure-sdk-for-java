@@ -18,7 +18,6 @@ import reactor.util.concurrent.Queues;
 import reactor.util.retry.Retry;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -33,9 +32,15 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final BufferedProducerClientOptions options;
     private final AmqpErrorContext errorContext;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
-    private final Mono<Integer> linkSizeMono;
     private final Disposable publishSubscription;
     private final Sinks.Many<EventData> eventSink;
+    private final Retry retryWhenPolicy = Retry.from(signal -> {
+        if (isClosed.get()) {
+            return Mono.empty();
+        } else {
+            return Mono.just(true);
+        }
+    });
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options) {
@@ -43,41 +48,37 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.partitionId = partitionId;
         this.options = options;
         this.errorContext = new AmqpErrorContext(client.getFullyQualifiedNamespace());
-        this.linkSizeMono = client.createBatch().map(batch -> batch.getMaxSizeInBytes())
-            .publishOn(Schedulers.boundedElastic())
-            .cache(value -> Duration.ofMillis(Long.MAX_VALUE),
-                error -> {
-                return Duration.ZERO;
-            }, () -> Duration.ZERO);
 
         this.logger = new ClientLogger(EventHubBufferedPartitionProducer.class + "-" + partitionId);
 
         final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
         this.eventSink = Sinks.many().unicast().onBackpressureBuffer(queueSupplier.get());
 
-
-        final EventDataAggregator eventDataBatchFlux = new EventDataAggregator(eventSink.asFlux(),
-            () -> client.createBatch().subscribeOn(Schedulers.boundedElastic()).block(),
-            client.getFullyQualifiedNamespace(), options);
+        final Flux<EventDataBatch> eventDataBatchFlux = Flux.defer(() -> {
+            return new EventDataAggregator(eventSink.asFlux(),
+                () -> {
+                    return client.createBatch().subscribeOn(Schedulers.boundedElastic()).block();
+                },
+                client.getFullyQualifiedNamespace(), options);
+        }).retryWhen(retryWhenPolicy);
 
         this.publishSubscription = publishEvents(eventDataBatchFlux)
             .publishOn(Schedulers.boundedElastic())
             .subscribe(result -> {
-                if (result.error == null) {
-                    options.getSendSucceededContext().accept(new SendBatchSucceededContext(result.batch.getEvents(),
-                        partitionId));
-                } else {
-                    options.getSendFailedContext().accept(new SendBatchFailedContext(result.batch.getEvents(),
-                        partitionId, result.error));
-                }
-            }, error -> {
-                logger.error("Publishing subscription completed and ended in an error.", error);
-                options.getSendFailedContext().accept(new SendBatchFailedContext(null, partitionId, error));
-            },
-            () -> {
-                logger.info("Publishing subscription completed.");
-            });
-
+                    if (result.error == null) {
+                        options.getSendSucceededContext().accept(new SendBatchSucceededContext(result.batch.getEvents(),
+                            partitionId));
+                    } else {
+                        options.getSendFailedContext().accept(new SendBatchFailedContext(result.batch.getEvents(),
+                            partitionId, result.error));
+                    }
+                }, error -> {
+                    logger.error("Publishing subscription completed and ended in an error.", error);
+                    options.getSendFailedContext().accept(new SendBatchFailedContext(null, partitionId, error));
+                },
+                () -> {
+                    logger.info("Publishing subscription completed.");
+                });
     }
 
     Mono<Void> enqueueEvent(EventData eventData) {
@@ -111,6 +112,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
      * @return A stream of published results.
      */
     Flux<PublishResult> publishEvents(Flux<EventDataBatch> upstream) {
+
         return Flux.defer(() -> {
             return upstream.flatMap(batch -> {
                 return client.send(batch).thenReturn(new PublishResult(batch, null))
@@ -118,13 +120,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
                     // so it doesn't stop publishing.
                     .onErrorResume(error -> Mono.just(new PublishResult(null, error)));
             });
-        }).retryWhen(Retry.from(signal -> {
-            if (isClosed.get()) {
-                return Mono.empty();
-            } else {
-                return Mono.just(true);
-            }
-        }));
+        }).retryWhen(retryWhenPolicy);
     }
 
     @Override
