@@ -8,8 +8,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IOUtils;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.TransferUtil;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Flux;
@@ -33,7 +33,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static final Mono<ByteBuffer> EMPTY_BUFFER_MONO = Mono.just(ByteBuffer.allocate(0));
     private final StreamResponse initialResponse;
     private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
-    private final int maxRetries;
+    private final DownloadRetryOptions retryOptions;
 
 
     /**
@@ -50,7 +50,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         super(request, statusCode, headers, value, deserializedHeaders);
         this.initialResponse = null;
         this.onErrorResume = null;
-        this.maxRetries = 0;
+        this.retryOptions = null;
     }
 
     /**
@@ -58,19 +58,19 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      *
      * @param initialResponse The initial Stream Response
      * @param onErrorResume Function used to resume.
-     * @param maxRetries Max retries.
+     * @param retryOptions Retry options.
      */
     public BlobDownloadAsyncResponse(
         StreamResponse initialResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        int maxRetries) {
+        DownloadRetryOptions retryOptions) {
         super(initialResponse.getRequest(), initialResponse.getStatusCode(),
             initialResponse.getHeaders(),
-            createResponseFlux(initialResponse, onErrorResume, maxRetries),
+            createResponseFlux(initialResponse, onErrorResume, retryOptions),
             extractHeaders(initialResponse));
-        this.initialResponse = initialResponse;
-        this.onErrorResume = onErrorResume;
-        this.maxRetries = maxRetries;
+        this.initialResponse = Objects.requireNonNull(initialResponse, "'initialResponse' must not be null");
+        this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
     }
 
     private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
@@ -83,28 +83,30 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static Flux<ByteBuffer> createResponseFlux(
         StreamResponse initialResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        int maxRetries) {
+        DownloadRetryOptions retryOptions) {
         return FluxUtil.createRetriableDownloadFlux(
                 initialResponse::getValue,
                 (throwable, position) -> onErrorResume.apply(throwable, position)
                     .flatMapMany(StreamResponse::getValue),
-                maxRetries)
+                retryOptions.getMaxRetryRequests())
             .switchIfEmpty(EMPTY_BUFFER_MONO).timeout(TIMEOUT_VALUE);
     }
 
     /**
      * Transfers content bytes to the {@link AsynchronousByteChannel}.
      * @param channel The destination {@link AsynchronousByteChannel}.
-     * @param progressReporter The progress reporter.
+     * @param progressReporter Optional {@link ProgressReporter}.
      * @return A {@link Mono} that completes when transfer is completed.
      */
-    public Mono<Void> transferContentToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
+    public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (initialResponse == null) {
-            return FluxUtil.writeToAsynchronousByteChannel(super.getValue(), channel);
+            return FluxUtil.writeToAsynchronousByteChannel(
+                FluxUtil.addProgressReporting(super.getValue(), progressReporter),
+                channel);
         } else {
-            return TransferUtil.downloadToAsynchronousByteChannel(channel, Mono.just(initialResponse),
-                onErrorResume, progressReporter, maxRetries);
+            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse,
+                onErrorResume, progressReporter, retryOptions.getMaxRetryRequests());
         }
     }
 

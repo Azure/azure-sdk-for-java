@@ -1275,19 +1275,22 @@ public class BlobAsyncClientBase {
                     from the response for better book-keeping towards the end.
                 */
                 long finalCount;
+                long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
                     long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
-                    finalCount = blobLength - finalRange.getOffset();
+                    finalCount = blobLength - initialOffset;
                 } else {
                     finalCount = finalRange.getCount();
                 }
 
+                // The resume function takes throwable and offset at the destination.
+                // I.e. offset is relative to the starting point.
                 BiFunction<Throwable, Long, Mono<StreamResponse>> onDownloadErrorResume = (throwable, offset) -> {
                     if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                         return Mono.error(throwable);
                     }
 
-                    long newCount = finalCount - (finalRange.getOffset() + offset - finalRange.getOffset());
+                    long newCount = finalCount - offset;
 
                         /*
                          It is possible that the network stream will throw an error after emitting all data but before
@@ -1304,13 +1307,13 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(
-                            new BlobRange(finalRange.getOffset() + offset, newCount), finalRequestConditions, eTag, getMD5, context);
+                            new BlobRange(initialOffset + offset, newCount), finalRequestConditions, eTag, getMD5, context);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
                 return new BlobDownloadAsyncResponse(
-                    response, onDownloadErrorResume, finalOptions.getMaxRetryRequests());
+                    response, onDownloadErrorResume, finalOptions);
             });
     }
 
@@ -1594,7 +1597,7 @@ public class BlobAsyncClientBase {
         ProgressReporter progressReporter) {
 
         long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
-        return response.transferContentToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
+        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
