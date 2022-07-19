@@ -17,7 +17,6 @@ import java.util.function.Consumer;
 
 public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOptions> {
 
-    //TODO 1: Add expected behavior to all consumer methods
     private EventProcessorClient eventProcessorClient;
     /**
      * Creates an instance of performance test.
@@ -33,7 +32,7 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
         JedisPool jedisPool = new JedisPool(options.getHostName(), 6380, options.getUserName(), options.getPassword());
         JedisRedisCheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
 
-        Consumer<ErrorContext> errorProcessor = errorContext -> super.errorRaised(errorContext.getThrowable());;
+        Consumer<ErrorContext> errorProcessor = errorContext -> super.errorRaised(errorContext.getThrowable());
         Consumer<EventContext> eventProcessor = eventContext -> {
             super.eventRaised();
             eventContext.updateCheckpoint();
@@ -47,7 +46,6 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
             .buildEventProcessorClient();
     }
 
-    //TODO 2: setUpAsync
     @Override
     public Mono<Void> setupAsync() {
         return super.setupAsync().then( Mono.defer(() -> {
@@ -56,7 +54,6 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
             }));
     }
 
-    //TODO 3: cleanUpAsync
     @Override
     public Mono<Void> cleanupAsync() {
         return Mono.defer(() -> {
