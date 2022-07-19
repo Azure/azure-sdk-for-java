@@ -7,11 +7,12 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. - See [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
-* Fixed `ForbiddnException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [#30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed `ForbiddnException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
 
 #### Other Changes
-* Supported username and password to be used in `GatewayConnectionConfig.setProxy` . - See [#30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
+* Supported username and password to be used in `GatewayConnectionConfig.setProxy` . - See [PR 30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
 
 ### 4.33.0 (2022-07-14)
 #### Other Changes
