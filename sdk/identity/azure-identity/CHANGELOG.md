@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`. 
+
 ### Breaking Changes
 
 ### Bugs Fixed

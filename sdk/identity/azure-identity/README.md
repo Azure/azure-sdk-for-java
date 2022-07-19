@@ -453,7 +453,11 @@ Credentials can be chained together to be tried in turn until one succeeds using
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
-      <td>path to a PEM-encoded certificate file including private key (without password protection)</td>
+      <td>path to a PEM-encoded certificate file including private key</td>
+    </tr>
+    <tr>
+        <td><code>AZURE_CLIENT_CERTIFICATE_PASSWORD</code></td>
+        <td>(optional) password for certificate. If not specified, certificate cannot be password protected.</td>
     </tr>
   </tbody>
 </table>
