@@ -3,43 +3,34 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantsResponseInternal;
 import com.azure.core.annotation.Immutable;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** The AddParticipantsResponse model. */
 @Immutable
 public final class AddParticipantsResponse {
     /*
-     * The operation id.
+     * The participants property.
      */
-    private final String operationId;
-
-    /*
-     * The status of the operation
-     */
-    private final CallingOperationStatus status;
+    private List<CallParticipant> participants;
 
     /*
      * The operation context provided by client.
      */
     private final String operationContext;
 
-    /*
-     * The result info for the operation.
-     */
-    private final CallingOperationResultDetails resultDetails;
-
     /**
      * Public constructor.
      *
      */
     public AddParticipantsResponse() {
-        this.operationId = null;
-        this.status = null;
+        this.participants = null;
         this.operationContext = null;
-        this.resultDetails = null;
     }
 
     /**
@@ -50,28 +41,20 @@ public final class AddParticipantsResponse {
     AddParticipantsResponse(AddParticipantsResponseInternal addParticipantsResponseInternal) {
         Objects.requireNonNull(addParticipantsResponseInternal, "addParticipantsResponseInternal must not be null");
 
-        this.operationId = addParticipantsResponseInternal.getOperationId();
-        this.status = CallingOperationStatus.fromString(addParticipantsResponseInternal.getStatus().toString());
+        this.participants = addParticipantsResponseInternal.getParticipants()
+            .stream()
+            .map(CallParticipantConverter::convert)
+            .collect(Collectors.toList());
         this.operationContext = addParticipantsResponseInternal.getOperationContext();
-        this.resultDetails = new CallingOperationResultDetails(addParticipantsResponseInternal.getResultDetails());
     }
 
     /**
-     * Get the operationId property: The operation id.
+     * Get the participants property: The participants property.
      *
-     * @return the operationId value.
+     * @return the participants value.
      */
-    public String getOperationId() {
-        return this.operationId;
-    }
-
-    /**
-     * Get the status property: The status of the operation.
-     *
-     * @return the status value.
-     */
-    public CallingOperationStatus getStatus() {
-        return this.status;
+    public List<CallParticipant> getParticipants() {
+        return this.participants;
     }
 
     /**
@@ -81,14 +64,5 @@ public final class AddParticipantsResponse {
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    /**
-     * Get the resultDetails property: The result info for the operation.
-     *
-     * @return the resultDetails value.
-     */
-    public CallingOperationResultDetails getResultDetails() {
-        return this.resultDetails;
     }
 }

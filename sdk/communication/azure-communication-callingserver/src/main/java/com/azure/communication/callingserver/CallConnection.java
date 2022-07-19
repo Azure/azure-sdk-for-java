@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.models.AddParticipantsOptions;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.ListParticipantsResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
 import com.azure.communication.callingserver.models.TransferToParticipantCallOptions;
@@ -108,29 +109,28 @@ public class CallConnection {
     /**
      * Get a specific participant.
      *
-     * @param participant The participant.
+     * @param participantMri The participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallParticipant getParticipant(CommunicationIdentifier participant) {
-        return callConnectionAsync.getParticipant(participant).block();
+    public CallParticipant getParticipant(String participantMri) {
+        return callConnectionAsync.getParticipant(participantMri).block();
     }
 
     /**
      * Get all participants.
      *
-     * @param participant The participant.
+     * @param participantMri The participant.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier participant,
-                                                                Context context) {
-        return callConnectionAsync.getParticipantWithResponseInternal(participant, context).block();
+    public Response<CallParticipant> getParticipantWithResponse(String participantMri, Context context) {
+        return callConnectionAsync.getParticipantWithResponseInternal(participantMri, context).block();
     }
 
     /**
@@ -141,7 +141,7 @@ public class CallConnection {
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CallParticipant> listParticipants() {
+    public ListParticipantsResponse listParticipants() {
         return callConnectionAsync.listParticipants().block();
     }
 
@@ -154,7 +154,7 @@ public class CallConnection {
      * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CallParticipant>> listParticipantsWithResponse(Context context) {
+    public Response<ListParticipantsResponse> listParticipantsWithResponse(Context context) {
         return callConnectionAsync.listParticipantsWithResponseInternal(context).block();
     }
 

@@ -3,8 +3,9 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
+import com.azure.communication.callingserver.implementation.converters.CallSourceConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -12,8 +13,8 @@ import com.azure.core.annotation.Immutable;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Asynchronous client that supports call connection operations.
@@ -21,28 +22,51 @@ import java.util.List;
 @Immutable
 public final class CallConnectionProperties {
     private final String callConnectionId;
-    private final CommunicationIdentifier source;
-    private final PhoneNumberIdentifier alternateCallerId;
+    private final String serverCallId;
+    private final CallSource source;
     private final List<CommunicationIdentifier> targets;
     private final CallConnectionState callConnectionState;
     private final String subject;
     private final URI callbackUri;
 
+    static {
+        CallConnectionPropertiesConstructorProxy.setAccessor(
+            new CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor() {
+                @Override
+                public CallConnectionProperties create(CallConnectionPropertiesInternal internalHeaders) throws URISyntaxException {
+                    return new CallConnectionProperties(internalHeaders);
+                }
+            });
+    }
+
     /**
-     * Constructor of the class
+     * Public constructor.
      *
-     * @param callConnectionPropertiesDto The internal response of callConnectionProperties
+     */
+    public CallConnectionProperties() {
+        this.callConnectionId = null;
+        this.source = null;
+        this.serverCallId = null;
+        this.targets = null;
+        this.callConnectionState = null;
+        this.subject = null;
+        this.callbackUri = null;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally.
+     *
+     * @param callConnectionPropertiesInternal The internal response of callConnectionProperties
      * @throws URISyntaxException exception of invalid URI.
      */
-    public CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesDto) throws URISyntaxException {
-        this.callConnectionId = callConnectionPropertiesDto.getCallConnectionId();
-        this.source = CommunicationIdentifierConverter.convert(callConnectionPropertiesDto.getSource());
-        this.alternateCallerId = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesDto.getAlternateCallerId());
-        this.targets = new ArrayList<>();
-        callConnectionPropertiesDto.getTargets().forEach(target -> this.targets.add(CommunicationIdentifierConverter.convert(target)));
-        this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesDto.getCallConnectionState().toString());
-        this.subject = callConnectionPropertiesDto.getSubject();
-        this.callbackUri = new URI(callConnectionPropertiesDto.getCallbackUri());
+    CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) throws URISyntaxException {
+        this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
+        this.source = CallSourceConverter.convert(callConnectionPropertiesInternal.getSource());
+        this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
+        this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+        this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
+        this.subject = callConnectionPropertiesInternal.getSubject();
+        this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
     }
 
     /**
@@ -50,7 +74,7 @@ public final class CallConnectionProperties {
      *
      * @return source value.
      */
-    public CommunicationIdentifier getSource() {
+    public CallSource getSource() {
         return source;
     }
 
@@ -64,12 +88,12 @@ public final class CallConnectionProperties {
     }
 
     /**
-     * Get the alternateCallerId property.
+     * Get the server call Id.
      *
-     * @return alternateCallerId value.
+     * @return serverCallId value.
      */
-    public PhoneNumberIdentifier getAlternateCallerId() {
-        return alternateCallerId;
+    public String getServerCallId() {
+        return serverCallId;
     }
 
     /**
