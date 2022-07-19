@@ -243,7 +243,7 @@
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
     "args": "--tag=package-composite-v3",
-    "note": "Use commit id 9e49f0510fc57175d0c66460ba742c849ac01123 on spec"
+    "note": "Use commit id 9e49f0510fc57175d0c66460ba742c849ac01123 on azure-rest-api-specs"
   },
   "storage": {
     "dir": "azure-resourcemanager-storage",
