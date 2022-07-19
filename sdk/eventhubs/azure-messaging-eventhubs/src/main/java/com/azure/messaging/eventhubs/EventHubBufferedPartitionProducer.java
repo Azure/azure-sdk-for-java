@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * Keeps track of publishing events to a partition.
  */
-class EventHubPartitionPublisher implements Closeable {
+class EventHubBufferedPartitionProducer implements Closeable {
     private final ClientLogger logger;
     private final EventHubProducerAsyncClient client;
     private final String partitionId;
@@ -37,7 +37,7 @@ class EventHubPartitionPublisher implements Closeable {
     private final Disposable publishSubscription;
     private final Sinks.Many<EventData> eventSink;
 
-    EventHubPartitionPublisher(EventHubProducerAsyncClient client, String partitionId,
+    EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options) {
         this.client = client;
         this.partitionId = partitionId;
@@ -50,7 +50,7 @@ class EventHubPartitionPublisher implements Closeable {
                 return Duration.ZERO;
             }, () -> Duration.ZERO);
 
-        this.logger = new ClientLogger(EventHubPartitionPublisher.class + "-" + partitionId);
+        this.logger = new ClientLogger(EventHubBufferedPartitionProducer.class + "-" + partitionId);
 
         final Supplier<Queue<EventData>> queueSupplier = Queues.get(options.getMaxEventBufferLengthPerPartition());
         this.eventSink = Sinks.many().unicast().onBackpressureBuffer(queueSupplier.get());
