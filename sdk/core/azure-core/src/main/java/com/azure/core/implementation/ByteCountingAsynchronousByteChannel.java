@@ -12,7 +12,7 @@ import java.nio.channels.CompletionHandler;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 /**
  * Count bytes written and read to the target channel.
@@ -20,96 +20,50 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChannel {
 
     private final AsynchronousByteChannel channel;
-    private final AtomicLong bytesWritten = new AtomicLong();
-    private final AtomicLong bytesRead = new AtomicLong();
-    private final ProgressReporter progressReporter;
+    private final ProgressReporter readProgressReporter;
+    private final ProgressReporter writeProgressReporter;
 
-    public ByteCountingAsynchronousByteChannel(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
+    private static final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> BYTES_WRITTEN_ATOMIC_UPDATER =
+        AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesWritten");
+    private volatile long bytesWritten;
+    private static final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> BYTES_READ_ATOMIC_UPDATER =
+        AtomicLongFieldUpdater.newUpdater(ByteCountingAsynchronousByteChannel.class, "bytesRead");
+    private volatile long bytesRead;
+
+    public ByteCountingAsynchronousByteChannel(
+        AsynchronousByteChannel channel,
+        ProgressReporter readProgressReporter,
+        ProgressReporter writeProgressReporter) {
         this.channel = Objects.requireNonNull(channel, "'channel' must not be null");
-        this.progressReporter = progressReporter;
+        this.readProgressReporter = readProgressReporter;
+        this.writeProgressReporter = writeProgressReporter;
     }
 
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
-        this.channel.read(dst, attachment, new CompletionHandler<Integer, A>() {
-            @Override
-            public void completed(Integer result, A attachment) {
-                if (result > 0) {
-                    bytesRead.addAndGet(result);
-                    if (progressReporter != null) {
-                        progressReporter.reportProgress(result);
-                    }
-                }
-                handler.completed(result, attachment);
-            }
-
-            @Override
-            public void failed(Throwable exc, A attachment) {
-                handler.failed(exc, attachment);
-            }
-        });
+        this.channel.read(dst, attachment,
+            new DelegatingCompletionHandler<A>(handler, BYTES_READ_ATOMIC_UPDATER, readProgressReporter));
     }
 
     @Override
     public Future<Integer> read(ByteBuffer dst) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        channel.read(dst, dst, new CompletionHandler<Integer, ByteBuffer>() {
-            @Override
-            public void completed(Integer result, ByteBuffer attachment) {
-                if (result >= 0) {
-                    bytesRead.addAndGet(result);
-                    if (progressReporter != null) {
-                        progressReporter.reportProgress(result);
-                    }
-                }
-                future.complete(result);
-            }
-
-            @Override
-            public void failed(Throwable exc, ByteBuffer attachment) {
-                future.completeExceptionally(exc);
-            }
-        });
+        channel.read(dst, dst,
+            new DelegatingCompletionHandler<>(future, BYTES_READ_ATOMIC_UPDATER, readProgressReporter));
         return future;
     }
 
     @Override
     public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
-        this.channel.write(src, attachment, new CompletionHandler<Integer, A>() {
-            @Override
-            public void completed(Integer result, A attachment) {
-                bytesWritten.addAndGet(result);
-                if (progressReporter != null) {
-                    progressReporter.reportProgress(result);
-                }
-                handler.completed(result, attachment);
-            }
-
-            @Override
-            public void failed(Throwable exc, A attachment) {
-                handler.failed(exc, attachment);
-            }
-        });
+        this.channel.write(src, attachment,
+            new DelegatingCompletionHandler<A>(handler, BYTES_WRITTEN_ATOMIC_UPDATER, writeProgressReporter));
     }
 
     @Override
     public Future<Integer> write(ByteBuffer src) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        channel.write(src, src, new CompletionHandler<Integer, ByteBuffer>() {
-            @Override
-            public void completed(Integer result, ByteBuffer attachment) {
-                bytesWritten.addAndGet(result);
-                if (progressReporter != null) {
-                    progressReporter.reportProgress(result);
-                }
-                future.complete(result);
-            }
-
-            @Override
-            public void failed(Throwable exc, ByteBuffer attachment) {
-                future.completeExceptionally(exc);
-            }
-        });
+        channel.write(src, src,
+            new DelegatingCompletionHandler<>(future, BYTES_WRITTEN_ATOMIC_UPDATER, writeProgressReporter));
         return future;
     }
 
@@ -124,10 +78,61 @@ public class ByteCountingAsynchronousByteChannel implements AsynchronousByteChan
     }
 
     public long getBytesWritten() {
-        return bytesWritten.get();
+        return BYTES_WRITTEN_ATOMIC_UPDATER.get(this);
     }
 
     public long getBytesRead() {
-        return bytesRead.get();
+        return BYTES_READ_ATOMIC_UPDATER.get(this);
+    }
+
+    private final class DelegatingCompletionHandler<T> implements CompletionHandler<Integer, T> {
+        private final CompletionHandler<Integer, ? super T> handler;
+        private final CompletableFuture<Integer> future;
+        private final AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater;
+        private final ProgressReporter progressReporter;
+
+        private DelegatingCompletionHandler(
+            CompletionHandler<Integer, ? super T> handler,
+            AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
+            ProgressReporter progressReporter) {
+            this.handler = handler;
+            this.future = null;
+            this.atomicLongFieldUpdater = atomicLongFieldUpdater;
+            this.progressReporter = progressReporter;
+        }
+
+        private DelegatingCompletionHandler(
+            CompletableFuture<Integer> future,
+            AtomicLongFieldUpdater<ByteCountingAsynchronousByteChannel> atomicLongFieldUpdater,
+            ProgressReporter progressReporter) {
+            this.handler = null;
+            this.future = future;
+            this.atomicLongFieldUpdater = atomicLongFieldUpdater;
+            this.progressReporter = progressReporter;
+        }
+
+        @Override
+        public void completed(Integer result, T attachment) {
+            if (result > 0) {
+                atomicLongFieldUpdater.addAndGet(ByteCountingAsynchronousByteChannel.this, result);
+                if (progressReporter != null) {
+                    progressReporter.reportProgress(result);
+                }
+            }
+            if (handler != null) {
+                handler.completed(result, attachment);
+            } else if (future != null) {
+                future.complete(result);
+            }
+        }
+
+        @Override
+        public void failed(Throwable exc, T attachment) {
+            if (handler != null) {
+                handler.failed(exc, attachment);
+            } else if (future != null) {
+                future.completeExceptionally(exc);
+            }
+        }
     }
 }

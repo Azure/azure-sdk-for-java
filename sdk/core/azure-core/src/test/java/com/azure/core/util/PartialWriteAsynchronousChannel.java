@@ -17,7 +17,7 @@ public final class PartialWriteAsynchronousChannel implements AsynchronousByteCh
 
     private final AsynchronousByteChannel delegate;
 
-    PartialWriteAsynchronousChannel(AsynchronousByteChannel delegate) {
+    public PartialWriteAsynchronousChannel(AsynchronousByteChannel delegate) {
         this.delegate = Objects.requireNonNull(delegate);
     }
 

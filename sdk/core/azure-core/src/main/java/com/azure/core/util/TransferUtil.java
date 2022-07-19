@@ -43,7 +43,7 @@ public final class TransferUtil {
         int maxRetries) {
 
         return downloadToAsynchronousByteChannel(
-            new ByteCountingAsynchronousByteChannel(channel, progressReporter),
+            new ByteCountingAsynchronousByteChannel(channel, null, progressReporter),
             responseMono, onDownloadErrorResume, position, maxRetries, 0);
     }
 
