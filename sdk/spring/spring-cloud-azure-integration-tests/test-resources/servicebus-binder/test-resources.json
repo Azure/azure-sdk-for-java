@@ -235,17 +235,17 @@
     }
   ],
   "outputs": {
-    "SERVICEBUS1_BINDER_TEST_CONNECTION_STRING": {
+    "AZURE_SERVICE_BUS_NAMESPACE1": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard_1'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+      "value": "[variables('namespaces_name_standard_1')]"
     },
-    "SERVICEBUS2_BINDER_TEST_CONNECTION_STRING": {
+    "AZURE_SERVICE_BUS_NAMESPACE2": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard_2'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+      "value": "[variables('namespaces_name_standard_2')]"
     },
-    "SERVICEBUS3_BINDER_TEST_CONNECTION_STRING": {
+    "AZURE_SERVICE_BUS_NAMESPACE3": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard_3'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+      "value": "[variables('namespaces_name_standard_3')]"
     }
   }
 }

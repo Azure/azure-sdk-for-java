@@ -24,7 +24,7 @@ spring:
               cloud:
                 azure:
                   servicebus:
-                    connection-string: ${SERVICEBUS1_BINDER_TEST_CONNECTION_STRING}
+                    namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
                     entity-type: topic
         servicebus-2:
           type: servicebus
@@ -34,5 +34,11 @@ spring:
               cloud:
                 azure:
                   servicebus:
-                    connection-string: ${SERVICEBUS1_BINDER_TEST_CONNECTION_STRING}
+                    namespace: ${AZURE_SERVICE_BUS_NAMESPACE1}
                     entity-type: queue
+    azure:
+      credential:
+        client-id: ${AZURE_SPRING_CLIENT_ID}
+        client-secret: ${AZURE_SPRING_CLIENT_SECRET}
+      profile:
+        tenant-id: ${AZURE_SPRING_TENANT_ID}
