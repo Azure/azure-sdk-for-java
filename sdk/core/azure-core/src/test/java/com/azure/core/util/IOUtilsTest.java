@@ -9,19 +9,15 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
-import java.nio.channels.CompletionHandler;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -90,88 +86,5 @@ public class IOUtilsTest {
         }
 
         assertArrayEquals(data, Files.readAllBytes(tempFile));
-    }
-
-    /**
-     * This channel simulates cases where channel won't consume whole buffer.
-     */
-    private static final class PartialWriteChannel implements WritableByteChannel {
-        private final WritableByteChannel delegate;
-
-        private PartialWriteChannel(WritableByteChannel delegate) {
-            this.delegate = Objects.requireNonNull(delegate);
-        }
-
-        @Override
-        public int write(ByteBuffer src) throws IOException {
-            if (src.remaining() > 1) {
-                byte[] partialCopy = new byte[src.remaining() - 1];
-                src.get(partialCopy);
-                return delegate.write(ByteBuffer.wrap(partialCopy));
-            } else {
-                return delegate.write(src);
-            }
-        }
-
-        @Override
-        public boolean isOpen() {
-            return delegate.isOpen();
-        }
-
-        @Override
-        public void close() throws IOException {
-            delegate.close();
-        }
-    }
-
-    private static final class PartialWriteAsynchronousChannel implements AsynchronousByteChannel {
-
-        private final AsynchronousByteChannel delegate;
-
-        private PartialWriteAsynchronousChannel(AsynchronousByteChannel delegate) {
-            this.delegate = Objects.requireNonNull(delegate);
-        }
-
-        @Override
-        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public Future<Integer> read(ByteBuffer dst) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
-            if (src.remaining() > 1) {
-                byte[] partialCopy = new byte[src.remaining() - 1];
-                src.get(partialCopy);
-                delegate.write(ByteBuffer.wrap(partialCopy), attachment, handler);
-            } else {
-                delegate.write(src, attachment, handler);
-            }
-        }
-
-        @Override
-        public Future<Integer> write(ByteBuffer src) {
-            if (src.remaining() > 1) {
-                byte[] partialCopy = new byte[src.remaining() - 1];
-                src.get(partialCopy);
-                return delegate.write(ByteBuffer.wrap(partialCopy));
-            } else {
-                return delegate.write(src);
-            }
-        }
-
-        @Override
-        public boolean isOpen() {
-            return delegate.isOpen();
-        }
-
-        @Override
-        public void close() throws IOException {
-            delegate.close();
-        }
     }
 }

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 /**
  * Count bytes written to the target channel.
@@ -17,8 +17,11 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ByteCountingWritableByteChannel implements WritableByteChannel {
 
     private final WritableByteChannel channel;
-    private final AtomicLong bytesWritten = new AtomicLong();
     private final ProgressReporter progressReporter;
+
+    private static final AtomicLongFieldUpdater<ByteCountingWritableByteChannel> BYTES_WRITTEN_ATOMIC_UPDATER =
+        AtomicLongFieldUpdater.newUpdater(ByteCountingWritableByteChannel.class, "bytesWritten");
+    private volatile long bytesWritten;
 
     public ByteCountingWritableByteChannel(WritableByteChannel channel, ProgressReporter progressReporter) {
         this.channel = Objects.requireNonNull(channel, "'channel' must not be null");
@@ -28,7 +31,7 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
     @Override
     public int write(ByteBuffer src) throws IOException {
         int written = channel.write(src);
-        bytesWritten.addAndGet(written);
+        BYTES_WRITTEN_ATOMIC_UPDATER.addAndGet(this, written);
         if (progressReporter != null) {
             progressReporter.reportProgress(written);
         }
@@ -46,6 +49,6 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
     }
 
     public long getBytesWritten() {
-        return bytesWritten.get();
+        return BYTES_WRITTEN_ATOMIC_UPDATER.get(this);
     }
 }
