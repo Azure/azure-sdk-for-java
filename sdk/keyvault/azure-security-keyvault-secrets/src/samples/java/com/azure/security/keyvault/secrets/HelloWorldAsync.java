@@ -62,7 +62,7 @@ public class HelloWorldAsync {
                     .subscribe(updatedSecretResponse ->
                         System.out.printf("Secret's updated expiry time %s %n",
                             updatedSecretResponse.getExpiresOn().toString()));
-        });
+            });
 
         Thread.sleep(2000);
 
