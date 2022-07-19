@@ -48,10 +48,37 @@ public interface ConfigurationService {
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
 
+    @Get("kv/{key}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<ConfigurationSetting> getKeyValueSync(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @QueryParam("$select") String fields,
+        @HeaderParam("Accept-Datetime") String acceptDatetime,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
+
     @Put("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> setKey(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
+
+    @Put("kv/{key}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<ConfigurationSetting> setKeySync(
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
@@ -73,6 +100,18 @@ public interface ConfigurationService {
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
 
+    @Delete("kv/{key}")
+    @ExpectedResponses({200, 204})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<ConfigurationSetting> deleteSync(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
+
     @Put("locks/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -85,10 +124,34 @@ public interface ConfigurationService {
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
 
+    @Put("locks/{key}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<ConfigurationSetting> lockKeyValueSync(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
+
     @Delete("locks/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<ConfigurationSetting>> unlockKeyValue(
+        @HostParam("url") String url,
+        @PathParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @HeaderParam("If-Match") String ifMatch,
+        @HeaderParam("If-None-Match") String ifNoneMatch,
+        Context context);
+
+    @Delete("locks/{key}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    Response<ConfigurationSetting> unlockKeyValueSync(
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
@@ -110,6 +173,19 @@ public interface ConfigurationService {
         @HeaderParam("Accept-Datetime") String acceptDatetime,
         Context context);
 
+    @Get("kv")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(ConfigurationSettingPage.class)
+    PagedResponse<ConfigurationSetting> listKeyValuesSync(
+        @HostParam("url") String url,
+        @QueryParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @QueryParam("$select") String fields,
+        @HeaderParam("Accept-Datetime") String acceptDatetime,
+        Context context);
+
     @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -119,11 +195,34 @@ public interface ConfigurationService {
         @PathParam(value = "nextUrl", encoded = true) String nextUrl,
         Context context);
 
+    @Get("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(ConfigurationSettingPage.class)
+    PagedResponse<ConfigurationSetting> listKeyValuesSync(
+        @HostParam("url") String url,
+        @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+        Context context);
+
     @Get("revisions")
     @ExpectedResponses({200, 206})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
     Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisions(
+        @HostParam("url") String url,
+        @QueryParam("key") String key,
+        @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
+        @QueryParam("$select") String fields,
+        @HeaderParam("Accept-Datetime") String acceptDatetime,
+        @HeaderParam("Range") String range,
+        Context context);
+
+    @Get("revisions")
+    @ExpectedResponses({200, 206})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(ConfigurationSettingPage.class)
+    Mono<PagedResponse<ConfigurationSetting>> listKeyValueRevisionsSync(
         @HostParam("url") String url,
         @QueryParam("key") String key,
         @QueryParam("label") String label,

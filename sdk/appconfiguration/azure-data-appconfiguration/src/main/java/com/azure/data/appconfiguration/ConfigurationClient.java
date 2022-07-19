@@ -156,7 +156,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               Context context) {
-        return client.addConfigurationSetting(setting, context).block();
+        return client.addConfigurationSettingSync(setting, context);
     }
 
     /**
@@ -291,7 +291,7 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               boolean ifUnchanged,
                                                                               Context context) {
-        return client.setConfigurationSetting(setting, ifUnchanged, context).block();
+        return client.setConfigurationSettingSync(setting, ifUnchanged, context);
     }
 
     /**
@@ -428,7 +428,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context).block();
+        return client.getConfigurationSettingWithResponseSync(setting, acceptDateTime, ifChanged, context);
     }
 
     /**
@@ -538,7 +538,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        return client.deleteConfigurationSetting(setting, ifUnchanged, context).block();
+        return client.deleteConfigurationSettingWithResponseSync(setting, ifUnchanged, context);
     }
 
     /**
@@ -670,7 +670,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
                                                                   Context context) {
-        return client.setReadOnly(setting, isReadOnly, context).block();
+        return client.setReadOnlyWithResponseSync(setting, isReadOnly, context);
     }
 
     /**

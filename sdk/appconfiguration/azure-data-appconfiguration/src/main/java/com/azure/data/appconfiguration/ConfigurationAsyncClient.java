@@ -13,6 +13,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -214,7 +215,6 @@ public final class ConfigurationAsyncClient {
             return monoError(logger, ex);
         }
     }
-
     Mono<Response<ConfigurationSetting>> addConfigurationSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
@@ -240,6 +240,31 @@ public final class ConfigurationAsyncClient {
             .doOnSuccess(response -> logger.verbose("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addConfigurationSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
+    }
+
+    Response<ConfigurationSetting> addConfigurationSettingSync(ConfigurationSetting setting, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
+        // If the service finds any existing configuration settings, then its e-tag will match and the service will
+        // return an error.
+        try {
+            return service.setKeySync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
+                getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        } catch (HttpResponseException ex) {
+            final HttpResponse httpResponse = ex.getResponse();
+            if (httpResponse.getStatusCode() == 412) {
+                throw logger.logExceptionAsError(
+                    new ResourceExistsException("Setting was already present.", httpResponse,
+                        ex));
+            }
+            // Do we need this mapper?
+            // Throwable throwable = addConfigurationSettingExceptionMapper(ex);
+            // throw logger.logExceptionAsError(new RuntimeException(throwable));
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -400,6 +425,24 @@ public final class ConfigurationAsyncClient {
                    .doOnSubscribe(ignoredValue -> logger.verbose("Setting ConfigurationSetting - {}", setting))
                    .doOnSuccess(response -> logger.verbose("Set ConfigurationSetting - {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
+    }
+
+    Response<ConfigurationSetting> setConfigurationSettingSync(ConfigurationSetting setting, boolean ifUnchanged,
+                                                                 Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        // This service method call is similar to addConfigurationSetting except it will create or update a
+        // configuration setting.
+        // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
+        // service has a matching ETag then it matches, then its value is updated with what the user passed in.
+        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
+        // old value locally.
+        // If no ETag value was passed in, then the value is always added or updated.
+        return service.setKeySync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting,
+            ifMatchETag, null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -579,6 +622,30 @@ public final class ConfigurationAsyncClient {
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
     }
 
+    Response<ConfigurationSetting> getConfigurationSettingWithResponseSync(ConfigurationSetting setting,
+        OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
+        try {
+            return service.getKeyValueSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
+                acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        } catch (HttpResponseException ex) {
+            final HttpResponse httpResponse = ex.getResponse();
+            if (httpResponse.getStatusCode() == 304) {
+                return new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
+                    httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null);
+            } else if (httpResponse.getStatusCode() == 404) {
+                throw logger.logExceptionAsError(new ResourceNotFoundException("Setting not found.", httpResponse, ex));
+            }
+
+            throw logger.logExceptionAsError(ex);
+        }
+    }
+
     /**
      * Deletes the ConfigurationSetting with a matching {@code key} and optional {@code label} combination.
      *
@@ -716,6 +783,17 @@ public final class ConfigurationAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.verbose("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.verbose("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
+    }
+
+    Response<ConfigurationSetting> deleteConfigurationSettingWithResponseSync(ConfigurationSetting setting,
+        boolean ifUnchanged, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        return service.deleteSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -883,6 +961,20 @@ public final class ConfigurationAsyncClient {
         }
     }
 
+    Response<ConfigurationSetting> setReadOnlyWithResponseSync(ConfigurationSetting setting, boolean isReadOnly,
+        Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+        if (isReadOnly) {
+            return service.lockKeyValueSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
+                    null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        } else {
+            return service.unlockKeyValueSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
+                    null, null, context);
+        }
+    }
+
     /**
      * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
@@ -961,6 +1053,46 @@ public final class ConfigurationAsyncClient {
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+
+    }
+
+    PagedIterable<ConfigurationSetting> listConfigurationSettingsSync(SettingSelector selector, Context context) {
+        // return new PagedIterable<>(() -> listFirstPageSettingsSync(selector, context),
+        //     continuationToken -> listNextPageSettingsSync(context, continuationToken));
+        // add pageIterable to take iterable response type
+        return null;
+    }
+
+    private PagedResponse<ConfigurationSetting> listNextPageSettingsSync(Context context, String continuationToken) {
+        try {
+            if (continuationToken == null || continuationToken.isEmpty()) {
+                return null;
+            }
+
+            return service.listKeyValuesSync(serviceEndpoint, continuationToken,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
+    }
+
+    private PagedResponse<ConfigurationSetting> listFirstPageSettingsSync(SettingSelector selector, Context context) {
+        try {
+            if (selector == null) {
+                return service.listKeyValuesSync(serviceEndpoint, null, null, apiVersion, null, null,
+                        context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+            }
+
+            final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
+            final String keyFilter = selector.getKeyFilter();
+            final String labelFilter = selector.getLabelFilter();
+
+            return service.listKeyValuesSync(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
+                    selector.getAcceptDateTime(),
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        } catch (RuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
         }
 
     }
