@@ -416,7 +416,7 @@ public final class PageBlobClient extends BlobClientBase {
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange,
-            fbb.subscribeOn(Schedulers.elastic()), contentMd5, pageBlobRequestConditions, context);
+            fbb.subscribeOn(Schedulers.boundedElastic()), contentMd5, pageBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

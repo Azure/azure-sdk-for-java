@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.Permission;
 import com.azure.resourcemanager.cosmos.models.RoleDefinitionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An Azure Cosmos DB SQL Role Definition. */
 @Fluent
 public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleDefinitionGetResultsInner.class);
-
     /*
      * Properties related to the Role Definition.
      */

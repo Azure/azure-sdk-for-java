@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of the regional restorable account. */
 @Immutable
 public final class RestorableLocationResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableLocationResource.class);
-
     /*
      * The location of the regional restorable account.
      */

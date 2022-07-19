@@ -28,7 +28,11 @@ public final class ManagedCassandraResourceIdentityType
         return fromString(name, ManagedCassandraResourceIdentityType.class);
     }
 
-    /** @return known ManagedCassandraResourceIdentityType values. */
+    /**
+     * Gets known ManagedCassandraResourceIdentityType values.
+     *
+     * @return known ManagedCassandraResourceIdentityType values.
+     */
     public static Collection<ManagedCassandraResourceIdentityType> values() {
         return values(ManagedCassandraResourceIdentityType.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoadBalancerConfigurationProperties model. */
+/** Describes the properties of the load balancer configuration. */
 @Fluent
 public final class LoadBalancerConfigurationProperties {
     /*

@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The CassandraKeyspaceGetPropertiesOptions model. */
 @Fluent
 public final class CassandraKeyspaceGetPropertiesOptions extends OptionsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceGetPropertiesOptions.class);
-
     /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceGetPropertiesOptions withThroughput(Integer throughput) {

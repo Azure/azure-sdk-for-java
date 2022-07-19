@@ -94,19 +94,7 @@ stages:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageName: "azure-sdk-template"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageName: "azure-sdk-template-two"
-                ServiceDirectory: "template"
-                TestPipeline: ${{ parameters.TestPipeline }}
-
-            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-              parameters:
-                PackageName: "azure-sdk-template-three"
+                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
                 ServiceDirectory: "template"
                 TestPipeline: ${{ parameters.TestPipeline }}
 

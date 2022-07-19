@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The SqlContainerGetPropertiesOptions model. */
 @Fluent
 public final class SqlContainerGetPropertiesOptions extends OptionsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlContainerGetPropertiesOptions.class);
-
     /** {@inheritDoc} */
     @Override
     public SqlContainerGetPropertiesOptions withThroughput(Integer throughput) {

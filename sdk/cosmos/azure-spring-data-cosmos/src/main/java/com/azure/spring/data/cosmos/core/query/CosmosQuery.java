@@ -27,6 +27,8 @@ public class CosmosQuery {
 
     private int limit;
 
+    private long offset;
+
     /**
      * Initialization
      *
@@ -73,13 +75,50 @@ public class CosmosQuery {
     }
 
     /**
+     * To get offset number
+     *
+     * @return long offset
+     */
+    public long getOffset() {
+        return offset;
+    }
+
+    /**
+     * To set limit number
+     *
+     * @param limit int
+     * @deprecated use withLimit instead
+     */
+    @Deprecated
+    public void setLimit(int limit) {
+        if (this.limit == 0) {
+            this.limit = limit;
+        }
+    }
+
+    /**
      * To set limit number
      *
      * @param limit int
      */
-    public void setLimit(int limit) {
+    public void withLimit(int limit) {
         if (this.limit == 0) {
             this.limit = limit;
+        }
+    }
+
+    /**
+     * To set limit number and offset number
+     *
+     * @param offset long
+     * @param limit int
+     */
+    public void withOffsetAndLimit(long offset, int limit) {
+        if (this.limit == 0) {
+            this.limit = limit;
+        }
+        if (this.offset == 0) {
+            this.offset = offset;
         }
     }
 
