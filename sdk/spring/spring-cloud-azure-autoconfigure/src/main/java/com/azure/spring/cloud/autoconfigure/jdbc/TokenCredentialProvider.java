@@ -9,18 +9,25 @@ public class TokenCredentialProvider {
 
     private ChainedTokenCredentialBuilder chainedTokenCredentialBuilder;
 
-
     public TokenCredentialProvider() {
         this.chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
     }
 
     public TokenCredentialProvider(AzureProperties azureProperties) {
+        this(azureProperties, false);
+    }
+
+    public TokenCredentialProvider(AzureProperties azureProperties, boolean cached) {
         this.chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
         AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
         TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureProperties);
 
         if (tokenCredential != null) {
-            chainedTokenCredentialBuilder.addFirst(tokenCredential);
+            if (cached) {
+                chainedTokenCredentialBuilder.addFirst(new CachedTokenCredential(tokenCredential));
+            } else {
+                chainedTokenCredentialBuilder.addFirst(tokenCredential);
+            }
         }
     }
 

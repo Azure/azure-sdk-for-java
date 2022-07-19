@@ -72,14 +72,14 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
 
-        this.tokenCredentialProvider = new TokenCredentialProvider();
+        this.tokenCredentialProvider = new TokenCredentialProvider(azureJDBCProperties, true);
 
-        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
-        AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
-        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureJDBCProperties);
-        if (tokenCredential != null) {
-            this.tokenCredentialProvider.addTokenCredentialFirst(new CachedTokenCredential(tokenCredential));
-        }
+//        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
+//        AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
+//        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureJDBCProperties);
+//        if (tokenCredential != null) {
+//            this.tokenCredentialProvider.addTokenCredentialFirst(new CachedTokenCredential(tokenCredential));
+//        }
     }
 
     @Override
@@ -149,7 +149,7 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     }
 
     /**
-     * @return
+     * @return AccessToken
      */
     private AccessToken getAccessToken() {
         TokenCredential credential = tokenCredentialProvider.getTokenCredential();
