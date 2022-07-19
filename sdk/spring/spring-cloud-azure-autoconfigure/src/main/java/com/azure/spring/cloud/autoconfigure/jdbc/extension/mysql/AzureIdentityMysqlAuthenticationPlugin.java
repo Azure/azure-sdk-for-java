@@ -11,8 +11,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.jdbc.CachedTokenCredential;
+import com.azure.spring.cloud.autoconfigure.jdbc.TokenCredentialProvider;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.mysql.cj.callback.MysqlCallbackHandler;
 import com.mysql.cj.protocol.AuthenticationPlugin;
 import com.mysql.cj.protocol.Protocol;
@@ -31,13 +32,12 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     private static String PLUGIN_NAME = "mysql_clear_password";
 
     private static String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
+
     private final AzureJDBCProperties azureJDBCProperties;
+
     private final AzureTokenCredentialResolver tokenCredentialResolver;
-    /**
-     * Stores the access token.
-     */
-    private AccessToken accessToken;
-    private TokenCredential credential;
+
+    private TokenCredentialProvider tokenCredentialProvider;
     /**
      * Stores the callback handler.
      */
@@ -71,6 +71,15 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     @Override
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
+
+        this.tokenCredentialProvider = new TokenCredentialProvider();
+
+        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
+        AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
+        TokenCredential tokenCredential = tokenCredentialResolver.resolve(azureJDBCProperties);
+        if (tokenCredential != null) {
+            this.tokenCredentialProvider.addTokenCredentialFirst(new CachedTokenCredential(tokenCredential));
+        }
     }
 
     @Override
@@ -128,7 +137,6 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
 
     @Override
     public void reset() {
-        accessToken = null;
     }
 
     @Override
@@ -140,28 +148,15 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
         this.sourceOfAuthData = sourceOfAuthData;
     }
 
-    private TokenCredential getTokenCredential() {
-        if (credential == null) {
-            // Resolve the token credential when there is no credential passed from configs.
-            AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
-            credential = tokenCredentialResolver.resolve(azureJDBCProperties);
-            if (credential == null) {
-                // Create DefaultAzureCredential when no credential can be resolved from configs.
-                credential = new DefaultAzureCredentialBuilderFactory(azureJDBCProperties).build().build();
-            }
-        }
-        return credential;
-    }
-
+    /**
+     * @return
+     */
     private AccessToken getAccessToken() {
-        if (accessToken == null || accessToken.isExpired()) {
-            TokenCredential credential = getTokenCredential();
-            TokenRequestContext request = new TokenRequestContext();
-            ArrayList<String> scopes = new ArrayList<>();
-            scopes.add(OSSRDBMS_SCOPE);
-            request.setScopes(scopes);
-            accessToken = credential.getToken(request).block(Duration.ofSeconds(30));
-        }
-        return accessToken;
+        TokenCredential credential = tokenCredentialProvider.getTokenCredential();
+        TokenRequestContext request = new TokenRequestContext();
+        ArrayList<String> scopes = new ArrayList<>();
+        scopes.add(OSSRDBMS_SCOPE);
+        request.setScopes(scopes);
+        return credential.getToken(request).block(Duration.ofSeconds(30));
     }
 }

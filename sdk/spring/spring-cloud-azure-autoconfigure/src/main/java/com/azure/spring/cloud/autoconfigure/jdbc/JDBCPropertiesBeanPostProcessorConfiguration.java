@@ -2,17 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.sql.DataSource;
 
-@ConditionalOnClass(DataSource.class)
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(value = "spring.datasource.url", matchIfMissing = true)
 public class JDBCPropertiesBeanPostProcessorConfiguration {
+
     @Bean
-    static JDBCPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
-        return new JDBCPropertiesBeanPostProcessor();
+    static JDBCPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor(
+           AzureGlobalProperties azureGlobalProperties) {
+        return new JDBCPropertiesBeanPostProcessor(azureGlobalProperties);
     }
 }

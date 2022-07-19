@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJDBCPropertiesUtils;
 import org.slf4j.Logger;
@@ -13,11 +14,9 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -33,7 +32,7 @@ import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringProp
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_SSL_MODE;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_MYSQL_USE_SSL;
 import static com.azure.spring.cloud.autoconfigure.jdbc.JdbcConnectionStringPropertyConstants.VALUE_POSTGRESQL_SSL_MODE;
-
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
  */
@@ -41,8 +40,13 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JDBCPropertiesBeanPostProcessor.class);
 
-    ConfigurableEnvironment environment;
+    private final AzureGlobalProperties azureGlobalProperties;
 
+    private Environment environment;
+
+    public JDBCPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
+        this.azureGlobalProperties = azureGlobalProperties;
+    }
 
     private static final Map<String, String> POSTGRES_ENHANCED_PROPERTIES = new TreeMap<>();
     private static final Map<String, String> MYSQL_ENHANCED_PROPERTIES = new TreeMap<>();
@@ -63,7 +67,8 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        if (bean instanceof DataSource) {
+        if (bean instanceof DataSourceProperties) {
+            // what if this is sqlserver
             DataSourceProperties dataSourceProperties = Binder.get(environment).bindOrCreate("spring.datasource", DataSourceProperties.class);
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
 
@@ -87,16 +92,16 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             try {
                 if (ENHANCED_PROPERTIES.containsKey(databaseType)) {
                     AzureJDBCProperties azureJDBCProperties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJDBCProperties.class);
+                    copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azureJDBCProperties.getProfile());
+                    copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azureJDBCProperties.getCredential());
+
                     Map<String, String> configMap = new HashMap<>();
                     AzureJDBCPropertiesUtils.convertAzurePropertiesToConfigMap(azureJDBCProperties, configMap);
                     configMap.putAll(ENHANCED_PROPERTIES.get(databaseType));
                     String enhancedUrl = connectionString.enhanceConnectionString(configMap);
-                    LOGGER.info("Enhanced url is " + enhancedUrl);
+                    LOGGER.debug("Enhanced url is " + enhancedUrl);
 
-                    Map<String, Object> propertyMap = new HashMap<>();
-                    propertyMap.put("spring.datasource.url", enhancedUrl);
-
-                    environment.getPropertySources().addFirst(new MapPropertySource("AZURE_DATABASE", propertyMap));
+                    ((DataSourceProperties) bean).setUrl(enhancedUrl);
                 }
             } catch (IllegalStateException e) {
                 LOGGER.debug("Inconsistent properties detected, skip JDBCPropertiesBeanPostProcessor");
@@ -109,7 +114,6 @@ class JDBCPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     public void setEnvironment(Environment environment) {
         this.environment = (ConfigurableEnvironment) environment;
     }
-
 
     private boolean isDatabasePluginEnabled(DatabaseType databaseType){
         if (DatabaseType.POSTGRESQL.equals(databaseType)) {

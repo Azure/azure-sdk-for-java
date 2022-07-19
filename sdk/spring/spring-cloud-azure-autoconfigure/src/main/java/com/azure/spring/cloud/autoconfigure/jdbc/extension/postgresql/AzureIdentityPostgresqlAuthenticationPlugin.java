@@ -75,18 +75,6 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
         return password;
     }
 
-    private TokenCredential getTokenCredential() {
-        if (credential == null) {
-            // Resolve the token credential when there is no credential passed from configs.
-            AzureJDBCPropertiesUtils.convertPropertiesToAzureProperties(properties, azureJDBCProperties);
-            credential = tokenCredentialResolver.resolve(azureJDBCProperties);
-            if (credential == null) {
-                // Create DefaultAzureCredential when no credential can be resolved from configs.
-                credential = new DefaultAzureCredentialBuilderFactory(azureJDBCProperties).build().build();
-            }
-        }
-        return credential;
-    }
 
     private AccessToken getAccessToken() {
         if (accessToken == null || accessToken.isExpired()) {
@@ -98,5 +86,18 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
             accessToken = credential.getToken(request).block(Duration.ofSeconds(30));
         }
         return accessToken;
+    }
+
+    private TokenCredential getTokenCredential() {
+        if (credential == null) {
+            // Resolve the token credential when there is no credential passed from configs.
+            AzureJDBCPropertiesUtils.convertPropertiesToAzureProperties(properties, azureJDBCProperties);
+            credential = tokenCredentialResolver.resolve(azureJDBCProperties);
+            if (credential == null) {
+                // Create DefaultAzureCredential when no credential can be resolved from configs.
+                credential = new DefaultAzureCredentialBuilderFactory(azureJDBCProperties).build().build();
+            }
+        }
+        return credential;
     }
 }
