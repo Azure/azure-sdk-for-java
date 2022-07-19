@@ -3,12 +3,22 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.accesshelpers.StartRecordingResponseConstructorProxy;
 import com.azure.communication.callingserver.implementation.models.RecordingStatusResponse;
 import com.azure.core.annotation.Immutable;
 
 /** The response payload of start call recording operation. */
 @Immutable
 public final class StartRecordingResponse {
+    static {
+        StartRecordingResponseConstructorProxy.setAccessor(
+            new StartRecordingResponseConstructorProxy.StartRecordingResponseConstructorAccessor() {
+                @Override
+                public StartRecordingResponse create(RecordingStatusResponse internalResponse) {
+                    return new StartRecordingResponse(internalResponse);
+                }
+            });
+    }
     /*
      * The recording id of the started recording
      */
@@ -39,7 +49,7 @@ public final class StartRecordingResponse {
      *
      * @param recordingIdResponseInternal The internal response.
      */
-    public StartRecordingResponse(RecordingStatusResponse recordingIdResponseInternal) {
+    StartRecordingResponse(RecordingStatusResponse recordingIdResponseInternal) {
         this.recordingId = recordingIdResponseInternal.getRecordingId();
         this.recordingStatus = RecordingStatus.fromString(recordingIdResponseInternal.getRecordingStatus().toString());
     }

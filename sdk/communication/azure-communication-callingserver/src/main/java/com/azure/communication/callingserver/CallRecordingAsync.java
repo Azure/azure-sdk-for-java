@@ -6,6 +6,7 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
 import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
+import com.azure.communication.callingserver.implementation.accesshelpers.StartRecordingResponseConstructorProxy;
 import com.azure.communication.callingserver.implementation.models.CallLocatorInternal;
 import com.azure.communication.callingserver.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callingserver.implementation.models.RecordingChannelInternal;
@@ -99,7 +100,7 @@ public class CallRecordingAsync {
 
             return contentsInternal.recordingAsync(requestWithCallLocator, null)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .flatMap(result -> Mono.just(new StartRecordingResponse(result)));
+                .flatMap(result -> Mono.just(StartRecordingResponseConstructorProxy.create(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
