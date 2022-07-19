@@ -10,6 +10,8 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +26,15 @@ public final class CallConnectionProperties {
     private final List<CommunicationIdentifier> targets;
     private final CallConnectionState callConnectionState;
     private final String subject;
-    private final String callbackUri;
+    private final URI callbackUri;
 
     /**
      * Constructor of the class
      *
      * @param callConnectionPropertiesDto The internal response of callConnectionProperties
+     * @throws URISyntaxException exception of invalid URI.
      */
-    public CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesDto) {
+    public CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesDto) throws URISyntaxException {
         this.callConnectionId = callConnectionPropertiesDto.getCallConnectionId();
         this.source = CommunicationIdentifierConverter.convert(callConnectionPropertiesDto.getSource());
         this.alternateCallerId = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesDto.getAlternateCallerId());
@@ -39,7 +42,7 @@ public final class CallConnectionProperties {
         callConnectionPropertiesDto.getTargets().forEach(target -> this.targets.add(CommunicationIdentifierConverter.convert(target)));
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesDto.getCallConnectionState().toString());
         this.subject = callConnectionPropertiesDto.getSubject();
-        this.callbackUri = callConnectionPropertiesDto.getCallbackUri();
+        this.callbackUri = new URI(callConnectionPropertiesDto.getCallbackUri());
     }
 
     /**
@@ -92,7 +95,7 @@ public final class CallConnectionProperties {
      *
      * @return callbackUri value.
      */
-    public String getCallbackUri() {
+    public URI getCallbackUri() {
         return callbackUri;
     }
 

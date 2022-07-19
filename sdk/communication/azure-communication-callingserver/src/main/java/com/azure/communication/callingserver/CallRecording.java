@@ -27,13 +27,13 @@ import java.security.InvalidParameterException;
 import java.util.Objects;
 
 /**
- * CallRecordingClient.
+ * CallRecording.
  */
-public class CallRecordingClient {
-    private final CallRecordingAsyncClient callRecordingAsyncClient;
+public class CallRecording {
+    private final CallRecordingAsync callRecordingAsync;
 
-    CallRecordingClient(CallRecordingAsyncClient callRecordingAsyncClient) {
-        this.callRecordingAsyncClient = callRecordingAsyncClient;
+    CallRecording(CallRecordingAsync callRecordingAsync) {
+        this.callRecordingAsync = callRecordingAsync;
     }
 
     /**
@@ -48,7 +48,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecordingIdResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
-        return callRecordingAsyncClient.startRecording(callLocator, recordingStateCallbackUri).block();
+        return callRecordingAsync.startRecording(callLocator, recordingStateCallbackUri).block();
     }
 
     /**
@@ -73,7 +73,7 @@ public class CallRecordingClient {
         RecordingFormat format,
         RecordingChannel channel,
         Context context) {
-        return callRecordingAsyncClient.startRecordingWithResponse(
+        return callRecordingAsync.startRecordingWithResponse(
             callLocator,
             recordingStateCallbackUri,
             content,
@@ -91,7 +91,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stopRecording(String recordingId) {
-        callRecordingAsyncClient.stopRecording(recordingId).block();
+        callRecordingAsync.stopRecording(recordingId).block();
     }
 
     /**
@@ -105,7 +105,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
-        return callRecordingAsyncClient.stopRecordingWithResponse(recordingId, context).block();
+        return callRecordingAsync.stopRecordingWithResponse(recordingId, context).block();
     }
 
     /**
@@ -117,7 +117,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void pauseRecording(String recordingId) {
-        callRecordingAsyncClient.pauseRecording(recordingId).block();
+        callRecordingAsync.pauseRecording(recordingId).block();
     }
 
     /**
@@ -131,7 +131,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
-        return callRecordingAsyncClient.pauseRecordingWithResponse(recordingId, context).block();
+        return callRecordingAsync.pauseRecordingWithResponse(recordingId, context).block();
     }
 
     /**
@@ -143,7 +143,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resumeRecording(String recordingId) {
-        callRecordingAsyncClient.resumeRecording(recordingId).block();
+        callRecordingAsync.resumeRecording(recordingId).block();
     }
 
     /**
@@ -157,7 +157,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resumeRecordingWithResponse(String recordingId, final Context context) {
-        return callRecordingAsyncClient.resumeRecordingWithResponse(recordingId, context).block();
+        return callRecordingAsync.resumeRecordingWithResponse(recordingId, context).block();
     }
 
     /**
@@ -170,7 +170,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecordingStateResponse getRecordingState(String recordingId) {
-        return callRecordingAsyncClient.getRecordingState(recordingId).block();
+        return callRecordingAsync.getRecordingState(recordingId).block();
     }
 
     /**
@@ -184,7 +184,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
-        return callRecordingAsyncClient.getRecordingStateWithResponse(recordingId, context).block();
+        return callRecordingAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
     /**
@@ -217,7 +217,7 @@ public class CallRecordingClient {
                                                  final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callRecordingAsyncClient
+        return callRecordingAsync
             .downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
             .block();
     }
@@ -258,7 +258,7 @@ public class CallRecordingClient {
                                                  final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-        return callRecordingAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
+        return callRecordingAsync.downloadToWithResponse(sourceEndpoint, destinationPath,
             parallelDownloadOptions, overwrite, context).block();
     }
 
@@ -270,7 +270,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRecording(String deleteEndpoint, final Context context) {
-        callRecordingAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
+        callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 
     /**
@@ -282,7 +282,7 @@ public class CallRecordingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
-        return callRecordingAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
+        return callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 
 }

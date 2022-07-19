@@ -6,14 +6,13 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.List;
 
 /**
  * Synchronous client that supports calling server operations.
@@ -36,42 +35,28 @@ public final class CallingServerClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The source property.
-     * @param targets The targets of the call.
-     * @param callbackUri The call back URI.
-     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
-     *                       Required only when inviting a PSTN participant. Optional
-     * @param subject The subject. Optional
+     * @param createCallOptions Options bag for creating a new call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionProperties createCall(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
-                                               String callbackUri, String sourceCallerId, String subject) {
-        return callingServerAsyncClient.createCall(source, targets, callbackUri, sourceCallerId, subject).block();
+    public CallConnectionProperties createCall(CreateCallOptions createCallOptions) {
+        return callingServerAsyncClient.createCall(createCallOptions).block();
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The source property.
-     * @param targets The targets of the call.
-     * @param callbackUri The call back URI.
-     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
-     *                       Required only when inviting a PSTN participant. Optional
-     * @param subject The subject. Optional
+     * @param createCallOptions Options bag for creating a new call.
      * @param context The context to associate with this operation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> createCallWithResponse(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
-                                                                     String callbackUri, String sourceCallerId, String subject,
-                                                                     Context context) {
-        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, sourceCallerId,
-                subject, context).block();
+    public Response<CallConnectionProperties> createCallWithResponse(CreateCallOptions createCallOptions, Context context) {
+        return callingServerAsyncClient.createCallWithResponseInternal(createCallOptions, context).block();
     }
 
     /**
@@ -166,37 +151,37 @@ public final class CallingServerClient {
 
     //region Mid-call Actions
     /***
-     * Returns an object of CallConnectionClient
+     * Returns an object of CallConnection
      *
      * @param callConnectionId the id of the call connection
-     * @return a CallConnectionClient.
+     * @return a CallConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionClient getCallConnectionClient(String callConnectionId) {
-        return new CallConnectionClient(callingServerAsyncClient.getCallConnectionAsyncClient(callConnectionId));
+    public CallConnection getCallConnectionClient(String callConnectionId) {
+        return new CallConnection(callingServerAsyncClient.getCallConnectionAsyncClient(callConnectionId));
     }
     //endregion
 
     //region Recording Management actions
     /***
-     * Returns an object of CallContentClient
+     * Returns an object of CallContent
      *
      * @param callConnectionId the id of the call connection
-     * @return a CallContentAsyncClient.
+     * @return a CallContentAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallContentClient getCallContentClient(String callConnectionId) {
-        return new CallContentClient(callingServerAsyncClient.getCallContentAsyncClient(callConnectionId));
+    public CallContent getCallContentClient(String callConnectionId) {
+        return new CallContent(callingServerAsyncClient.getCallContentAsyncClient(callConnectionId));
     }
 
     /***
-     * Returns an object of CallRecordingClient
+     * Returns an object of CallRecording
      *
-     * @return a CallRecordingClient.
+     * @return a CallRecording.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingClient getCallRecordingClient() {
-        return new CallRecordingClient(callingServerAsyncClient.getCallRecordingAsyncClient());
+    public CallRecording getCallRecordingClient() {
+        return new CallRecording(callingServerAsyncClient.getCallRecordingAsyncClient());
     }
     //endregion
 }

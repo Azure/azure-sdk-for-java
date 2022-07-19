@@ -6,9 +6,9 @@ package com.azure.communication.callingserver.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 
-/** The AcsCallParticipant model. */
+/** The CallParticipant model. */
 @Immutable
-public final class AcsCallParticipant {
+public final class CallParticipant {
     /*
      * Communication identifier of the participant
      */
@@ -25,7 +25,7 @@ public final class AcsCallParticipant {
      * @param identifier The communication identifier
      * @param isMuted The value of isMuted
      */
-    public AcsCallParticipant(CommunicationIdentifier identifier, Boolean isMuted) {
+    public CallParticipant(CommunicationIdentifier identifier, Boolean isMuted) {
         this.identifier = identifier;
         this.isMuted = isMuted;
     }

@@ -58,9 +58,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * CallRecordingAsyncClient.
+ * CallRecordingAsync.
  */
-public class CallRecordingAsyncClient {
+public class CallRecordingAsync {
     private final ServerCallsImpl serverCallsInternal;
     private final ContentsImpl contentsInternal;
     private final ClientLogger logger;
@@ -68,14 +68,14 @@ public class CallRecordingAsyncClient {
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
-    CallRecordingAsyncClient(ServerCallsImpl serverCallsInternal, ContentsImpl contentsInternal,
-                             ContentDownloader contentDownloader, HttpPipeline httpPipelineInternal, String resourceEndpoint) {
+    CallRecordingAsync(ServerCallsImpl serverCallsInternal, ContentsImpl contentsInternal,
+                       ContentDownloader contentDownloader, HttpPipeline httpPipelineInternal, String resourceEndpoint) {
         this.serverCallsInternal = serverCallsInternal;
         this.contentsInternal = contentsInternal;
         this.contentDownloader = contentDownloader;
         this.httpPipelineInternal = httpPipelineInternal;
         this.resourceEndpoint = resourceEndpoint;
-        this.logger = new ClientLogger(CallRecordingAsyncClient.class);
+        this.logger = new ClientLogger(CallRecordingAsync.class);
     }
 
     /**

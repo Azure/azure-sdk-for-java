@@ -32,11 +32,22 @@ public final class AddParticipantsResponse {
     private final CallingOperationResultDetails resultDetails;
 
     /**
+     * Public constructor.
+     *
+     */
+    public AddParticipantsResponse() {
+        this.operationId = null;
+        this.status = null;
+        this.operationContext = null;
+        this.resultDetails = null;
+    }
+
+    /**
      * Constructor of the class
      *
      * @param addParticipantsResponseInternal The response from the addParticipant service
      */
-    public AddParticipantsResponse(AddParticipantsResponseInternal addParticipantsResponseInternal) {
+    AddParticipantsResponse(AddParticipantsResponseInternal addParticipantsResponseInternal) {
         Objects.requireNonNull(addParticipantsResponseInternal, "addParticipantsResponseInternal must not be null");
 
         this.operationId = addParticipantsResponseInternal.getOperationId();

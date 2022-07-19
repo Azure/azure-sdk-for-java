@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.callingserver;
+package com.azure.communication.callingserver.implementation;
 
 import java.net.URL;
 import java.nio.ByteBuffer;

@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.accesshelpers.TransferCallResponseConstructorProxy;
 import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
 import com.azure.core.annotation.Immutable;
 
@@ -31,12 +32,34 @@ public final class TransferCallResponse {
      */
     private final CallingOperationResultDetails resultDetails;
 
+    static {
+        TransferCallResponseConstructorProxy.setAccessor(
+            new TransferCallResponseConstructorProxy.TransferCallResponseConstructorAccessor() {
+                @Override
+                public TransferCallResponse create(TransferCallResponseInternal internalHeaders) {
+                    return new TransferCallResponse(internalHeaders);
+                }
+            });
+    }
+
     /**
-     * Constructor of the class
+     * Public constructor.
+     *
+     */
+    public TransferCallResponse() {
+        this.operationId = null;
+        this.status = null;
+        this.operationContext = null;
+        this.resultDetails = null;
+
+    }
+
+    /**
+     * Package-private constructor of the class, used internally only.
      *
      * @param transferCallResponseInternal The response from the service.
      */
-    public TransferCallResponse(TransferCallResponseInternal transferCallResponseInternal) {
+    TransferCallResponse(TransferCallResponseInternal transferCallResponseInternal) {
         Objects.requireNonNull(transferCallResponseInternal, "transferCallResponseInternal must not be null");
 
         this.operationId = transferCallResponseInternal.getOperationId();

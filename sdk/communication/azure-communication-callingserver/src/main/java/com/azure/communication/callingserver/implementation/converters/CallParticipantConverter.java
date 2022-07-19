@@ -4,27 +4,27 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.AcsCallParticipantInternal;
-import com.azure.communication.callingserver.models.AcsCallParticipant;
+import com.azure.communication.callingserver.models.CallParticipant;
 
 /**
- * A converter for {@link AcsCallParticipant}
+ * A converter for {@link CallParticipant}
  */
-public final class AcsCallParticipantConverter {
+public final class CallParticipantConverter {
 
     /**
-     * Converts to {@link AcsCallParticipant}.
+     * Converts to {@link CallParticipant}.
      */
-    public static AcsCallParticipant convert(
+    public static CallParticipant convert(
         AcsCallParticipantInternal acsCallParticipantDto) {
 
         if (acsCallParticipantDto == null) {
             return null;
         }
 
-        return new AcsCallParticipant(CommunicationIdentifierConverter.convert(acsCallParticipantDto.getIdentifier()),
+        return new CallParticipant(CommunicationIdentifierConverter.convert(acsCallParticipantDto.getIdentifier()),
             acsCallParticipantDto.isMuted());
     }
 
-    private AcsCallParticipantConverter() {
+    private CallParticipantConverter() {
     }
 }

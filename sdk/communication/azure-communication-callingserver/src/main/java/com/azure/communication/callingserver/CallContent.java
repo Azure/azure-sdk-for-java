@@ -16,13 +16,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * CallContentClient.
+ * CallContent.
  */
-public class CallContentClient {
-    private final CallContentAsyncClient callContentAsyncClient;
+public class CallContent {
+    private final CallContentAsync callContentAsync;
 
-    CallContentClient(CallContentAsyncClient callContentAsyncClient) {
-        this.callContentAsyncClient = callContentAsyncClient;
+    CallContent(CallContentAsync callContentAsync) {
+        this.callContentAsync = callContentAsync;
     }
 
     /**
@@ -37,7 +37,7 @@ public class CallContentClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayResponse play(PlaySourceType playSourceType, List<CommunicationIdentifier> playTo, String playSourceId) {
-        return callContentAsyncClient.play(playSourceType, playTo, playSourceId).block();
+        return callContentAsync.play(playSourceType, playTo, playSourceId).block();
     }
 
     /**
@@ -51,7 +51,7 @@ public class CallContentClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayResponse playAll(PlaySourceType playSourceType, String playSourceId) {
-        return callContentAsyncClient.playAll(playSourceType, playSourceId).block();
+        return callContentAsync.playAll(playSourceType, playSourceId).block();
     }
 
     /**
@@ -68,7 +68,7 @@ public class CallContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayResponse> playWithResponse(PlaySourceType playSourceType, List<CommunicationIdentifier> playTo,
                                                    String playSourceId, Context context) {
-        return callContentAsyncClient.playWithResponseInternal(playSourceType, playTo, playSourceId, context).block();
+        return callContentAsync.playWithResponseInternal(playSourceType, playTo, playSourceId, context).block();
     }
 
     /**
@@ -83,7 +83,7 @@ public class CallContentClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayResponse> playAllWithResponse(PlaySourceType playSourceType, String playSourceId, Context context) {
-        return callContentAsyncClient
+        return callContentAsync
             .playWithResponseInternal(playSourceType, Collections.emptyList(), playSourceId, context)
             .block();
     }
