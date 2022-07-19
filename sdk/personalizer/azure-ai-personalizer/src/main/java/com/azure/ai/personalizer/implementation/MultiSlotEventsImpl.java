@@ -70,7 +70,9 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * Post multi-slot Rewards.
+     *
+     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
@@ -78,7 +80,7 @@ public final class MultiSlotEventsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rewardWithResponseAsync(String eventId, MultiSlotRewardRequest body) {
@@ -88,7 +90,9 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * Post multi-slot Rewards.
+     *
+     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
@@ -97,7 +101,7 @@ public final class MultiSlotEventsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rewardWithResponseAsync(String eventId, MultiSlotRewardRequest body, Context context) {
@@ -106,7 +110,9 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * Post multi-slot Rewards.
+     *
+     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
@@ -114,15 +120,17 @@ public final class MultiSlotEventsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rewardAsync(String eventId, MultiSlotRewardRequest body) {
-        return rewardWithResponseAsync(eventId, body).flatMap((Response<Void> res) -> Mono.empty());
+        return rewardWithResponseAsync(eventId, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * Post multi-slot Rewards.
+     *
+     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
@@ -131,15 +139,17 @@ public final class MultiSlotEventsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rewardAsync(String eventId, MultiSlotRewardRequest body, Context context) {
-        return rewardWithResponseAsync(eventId, body, context).flatMap((Response<Void> res) -> Mono.empty());
+        return rewardWithResponseAsync(eventId, body, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * Post multi-slot Rewards.
+     *
+     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
@@ -154,7 +164,9 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * Post multi-slot Rewards.
+     *
+     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
      *
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
@@ -163,7 +175,7 @@ public final class MultiSlotEventsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rewardWithResponse(String eventId, MultiSlotRewardRequest body, Context context) {
@@ -171,14 +183,16 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
-     * it.
+     * Activate multi-slot Event.
+     *
+     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
+     * for it.
      *
      * @param eventId The event ID this activation applies to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId) {
@@ -187,15 +201,17 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
-     * it.
+     * Activate multi-slot Event.
+     *
+     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
+     * for it.
      *
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId, Context context) {
@@ -204,39 +220,45 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
-     * it.
+     * Activate multi-slot Event.
+     *
+     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
+     * for it.
      *
      * @param eventId The event ID this activation applies to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> activateAsync(String eventId) {
-        return activateWithResponseAsync(eventId).flatMap((Response<Void> res) -> Mono.empty());
+        return activateWithResponseAsync(eventId).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
-     * it.
+     * Activate multi-slot Event.
+     *
+     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
+     * for it.
      *
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> activateAsync(String eventId, Context context) {
-        return activateWithResponseAsync(eventId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return activateWithResponseAsync(eventId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
-     * it.
+     * Activate multi-slot Event.
+     *
+     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
+     * for it.
      *
      * @param eventId The event ID this activation applies to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,15 +271,17 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
-     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
-     * it.
+     * Activate multi-slot Event.
+     *
+     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
+     * for it.
      *
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateWithResponse(String eventId, Context context) {

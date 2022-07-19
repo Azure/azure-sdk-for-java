@@ -4,9 +4,9 @@
 
 package com.azure.ai.personalizer.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /** The aggregate total of the Offline Evaluation. */
-@Immutable
+@Fluent
 public final class PolicyResultTotalSummary extends PolicyResultSummary {
 }

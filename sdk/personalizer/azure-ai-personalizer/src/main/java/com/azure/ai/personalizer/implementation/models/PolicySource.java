@@ -36,7 +36,11 @@ public final class PolicySource extends ExpandableStringEnum<PolicySource> {
         return fromString(name, PolicySource.class);
     }
 
-    /** @return known PolicySource values. */
+    /**
+     * Gets known PolicySource values.
+     *
+     * @return known PolicySource values.
+     */
     public static Collection<PolicySource> values() {
         return values(PolicySource.class);
     }

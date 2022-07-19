@@ -30,7 +30,11 @@ public final class LearningMode extends ExpandableStringEnum<LearningMode> {
         return fromString(name, LearningMode.class);
     }
 
-    /** @return known LearningMode values. */
+    /**
+     * Gets known LearningMode values.
+     *
+     * @return known LearningMode values.
+     */
     public static Collection<LearningMode> values() {
         return values(LearningMode.class);
     }

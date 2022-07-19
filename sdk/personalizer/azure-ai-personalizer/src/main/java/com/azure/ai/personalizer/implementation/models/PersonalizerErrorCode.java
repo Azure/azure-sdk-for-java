@@ -148,7 +148,11 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
         return fromString(name, PersonalizerErrorCode.class);
     }
 
-    /** @return known PersonalizerErrorCode values. */
+    /**
+     * Gets known PersonalizerErrorCode values.
+     *
+     * @return known PersonalizerErrorCode values.
+     */
     public static Collection<PersonalizerErrorCode> values() {
         return values(PersonalizerErrorCode.class);
     }

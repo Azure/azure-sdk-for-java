@@ -15,7 +15,7 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --java --use:@autorest/java@4.0.x
+autorest --java --use:C:/work/autorest.java
 ```
 
 ### Code generation settings

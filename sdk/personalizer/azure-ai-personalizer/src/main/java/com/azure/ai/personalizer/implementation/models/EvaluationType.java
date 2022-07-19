@@ -27,7 +27,11 @@ public final class EvaluationType extends ExpandableStringEnum<EvaluationType> {
         return fromString(name, EvaluationType.class);
     }
 
-    /** @return known EvaluationType values. */
+    /**
+     * Gets known EvaluationType values.
+     *
+     * @return known EvaluationType values.
+     */
     public static Collection<EvaluationType> values() {
         return values(EvaluationType.class);
     }

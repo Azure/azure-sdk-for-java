@@ -233,7 +233,9 @@ public final class PersonalizerClientV1Preview3Impl {
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -241,7 +243,7 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RankResponse>> rankWithResponseAsync(RankRequest rankRequest) {
@@ -250,7 +252,9 @@ public final class PersonalizerClientV1Preview3Impl {
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -259,7 +263,7 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RankResponse>> rankWithResponseAsync(RankRequest rankRequest, Context context) {
@@ -268,7 +272,9 @@ public final class PersonalizerClientV1Preview3Impl {
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -276,23 +282,17 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RankResponse> rankAsync(RankRequest rankRequest) {
-        return rankWithResponseAsync(rankRequest)
-                .flatMap(
-                        (Response<RankResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return rankWithResponseAsync(rankRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -301,23 +301,17 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RankResponse> rankAsync(RankRequest rankRequest, Context context) {
-        return rankWithResponseAsync(rankRequest, context)
-                .flatMap(
-                        (Response<RankResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return rankWithResponseAsync(rankRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -333,7 +327,9 @@ public final class PersonalizerClientV1Preview3Impl {
     }
 
     /**
-     * Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
+     * Post Rank.
+     *
+     * <p>Submit a Personalizer rank request. Receives a context and a list of actions. Returns which of the provided
      * actions should be used by your application, in rewardActionId.
      *
      * @param rankRequest A Personalizer Rank request.
@@ -342,7 +338,7 @@ public final class PersonalizerClientV1Preview3Impl {
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns which action to use as rewardActionId, and additional information about each action as a result
-     *     of a Rank request.
+     *     of a Rank request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RankResponse> rankWithResponse(RankRequest rankRequest, Context context) {

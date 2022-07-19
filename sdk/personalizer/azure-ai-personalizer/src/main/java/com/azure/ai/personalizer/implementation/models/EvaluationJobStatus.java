@@ -42,7 +42,11 @@ public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJo
         return fromString(name, EvaluationJobStatus.class);
     }
 
-    /** @return known EvaluationJobStatus values. */
+    /**
+     * Gets known EvaluationJobStatus values.
+     *
+     * @return known EvaluationJobStatus values.
+     */
     public static Collection<EvaluationJobStatus> values() {
         return values(EvaluationJobStatus.class);
     }
