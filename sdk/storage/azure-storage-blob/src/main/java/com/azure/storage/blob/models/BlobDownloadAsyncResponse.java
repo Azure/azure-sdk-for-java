@@ -100,13 +100,15 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      */
     public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
-        if (initialResponse == null) {
+        if (initialResponse != null) {
+            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse,
+                onErrorResume, progressReporter, retryOptions.getMaxRetryRequests());
+        } else if (super.getValue() != null) {
             return FluxUtil.writeToAsynchronousByteChannel(
                 FluxUtil.addProgressReporting(super.getValue(), progressReporter),
                 channel);
         } else {
-            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse,
-                onErrorResume, progressReporter, retryOptions.getMaxRetryRequests());
+            return Mono.empty();
         }
     }
 
