@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "subscriptionId": {
+      "defaultValue": "[subscription().subscriptionId]",
+      "type": "string"
+    },
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
@@ -11,6 +18,7 @@
     "namespaces_name_standard_1": "[concat(parameters('baseName'), '-Standard-1')]",
     "namespaces_name_standard_2": "[concat(parameters('baseName'), '-Standard-2')]",
     "namespaces_name_standard_3": "[concat(parameters('baseName'), '-Standard-3')]",
+    "azureServiceBusDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419",
     "location": "[resourceGroup().location]"
   },
   "resources": [
@@ -231,6 +239,36 @@
         "status": "Active",
         "enableBatchedOperations": true,
         "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), 1))]",
+      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('namespaces_name_standard_1'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), 2))]",
+      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('namespaces_name_standard_2'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), 3))]",
+      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('namespaces_name_standard_3'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
       }
     }
   ],
