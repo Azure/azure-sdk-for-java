@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ImportImageParameters model. */
 @Fluent
 public final class ImportImageParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportImageParameters.class);
-
     /*
      * The source of the image.
      */
@@ -136,11 +133,13 @@ public final class ImportImageParameters {
      */
     public void validate() {
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property source in model ImportImageParameters"));
         } else {
             source().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportImageParameters.class);
 }
