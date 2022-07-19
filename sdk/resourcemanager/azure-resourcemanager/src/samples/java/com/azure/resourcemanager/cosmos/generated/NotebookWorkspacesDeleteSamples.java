@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 /** Samples for NotebookWorkspaces Delete. */
 public final class NotebookWorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBNotebookWorkspaceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBNotebookWorkspaceDelete.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceDelete.

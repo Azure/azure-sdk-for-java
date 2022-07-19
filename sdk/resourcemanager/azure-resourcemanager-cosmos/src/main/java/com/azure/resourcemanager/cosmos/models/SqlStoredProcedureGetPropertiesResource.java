@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SqlStoredProcedureGetPropertiesResource model. */
 @Fluent
 public final class SqlStoredProcedureGetPropertiesResource extends SqlStoredProcedureResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStoredProcedureGetPropertiesResource.class);
-
     /*
      * A system generated property. A unique identifier.
      */

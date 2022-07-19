@@ -5,8 +5,8 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** The results of a query operation and an optional continuation token. */
@@ -15,7 +15,7 @@ public final class QueryResult {
     /*
      * The query results.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private List<Object> value;
 
     /*
@@ -26,23 +26,22 @@ public final class QueryResult {
     private String continuationToken;
 
     /**
+     * Creates an instance of QueryResult class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public QueryResult(@JsonProperty(value = "value", required = true) List<Object> value) {
+        this.value = value;
+    }
+
+    /**
      * Get the value property: The query results.
      *
      * @return the value value.
      */
     public List<Object> getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The query results.
-     *
-     * @param value the value value to set.
-     * @return the QueryResult object itself.
-     */
-    public QueryResult setValue(List<Object> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -72,5 +71,9 @@ public final class QueryResult {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() { }
+    public void validate() {
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model QueryResult");
+        }
+    }
 }

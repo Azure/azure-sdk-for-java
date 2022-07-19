@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StorageTargets Get. */
 public final class StorageTargetsGetSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-01-01/examples/StorageTargets_Get.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_Get.json
      */
     /**
      * Sample code: StorageTargets_Get.

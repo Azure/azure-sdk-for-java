@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DatabaseAccounts ListConnectionStrings. */
 public final class DatabaseAccountsListConnectionStringsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStrings.
@@ -27,7 +27,7 @@ public final class DatabaseAccountsListConnectionStringsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStringsMongo.

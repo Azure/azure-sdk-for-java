@@ -83,8 +83,8 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">
- *     Azure Docs</a> for more information on file systems.
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure Docs</a> for more
+ * information on file systems.
  *
  * <p>
  * Note this client is an async client that returns reactive responses from Spring Reactor Core project
@@ -810,8 +810,8 @@ public class DataLakeFileSystemAsyncClient {
             });
     }
 
-    private Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> listDeletedPathsSegment(String marker,
-        String prefix, Integer maxResults, Duration timeout, Context context) {
+    private Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
+        listDeletedPathsSegment(String marker, String prefix, Integer maxResults, Duration timeout, Context context) {
         context = context == null ? Context.NONE : context;
 
         return StorageImplUtils.applyOptionalTimeout(

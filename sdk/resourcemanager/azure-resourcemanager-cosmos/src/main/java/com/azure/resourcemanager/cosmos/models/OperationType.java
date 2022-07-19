@@ -33,7 +33,11 @@ public final class OperationType extends ExpandableStringEnum<OperationType> {
         return fromString(name, OperationType.class);
     }
 
-    /** @return known OperationType values. */
+    /**
+     * Gets known OperationType values.
+     *
+     * @return known OperationType values.
+     */
     public static Collection<OperationType> values() {
         return values(OperationType.class);
     }

@@ -33,7 +33,11 @@ public final class SpatialType extends ExpandableStringEnum<SpatialType> {
         return fromString(name, SpatialType.class);
     }
 
-    /** @return known SpatialType values. */
+    /**
+     * Gets known SpatialType values.
+     *
+     * @return known SpatialType values.
+     */
     public static Collection<SpatialType> values() {
         return values(SpatialType.class);
     }

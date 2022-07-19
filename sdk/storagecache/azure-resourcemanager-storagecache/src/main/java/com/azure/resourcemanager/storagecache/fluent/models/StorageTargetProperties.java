@@ -69,6 +69,12 @@ public final class StorageTargetProperties {
     @JsonProperty(value = "blobNfs")
     private BlobNfsTarget blobNfs;
 
+    /*
+     * The percentage of cache space allocated for this storage target
+     */
+    @JsonProperty(value = "allocationPercentage", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer allocationPercentage;
+
     /**
      * Get the junctions property: List of Cache namespace junctions to target for namespace associations.
      *
@@ -217,6 +223,15 @@ public final class StorageTargetProperties {
     public StorageTargetProperties withBlobNfs(BlobNfsTarget blobNfs) {
         this.blobNfs = blobNfs;
         return this;
+    }
+
+    /**
+     * Get the allocationPercentage property: The percentage of cache space allocated for this storage target.
+     *
+     * @return the allocationPercentage value.
+     */
+    public Integer allocationPercentage() {
+        return this.allocationPercentage;
     }
 
     /**

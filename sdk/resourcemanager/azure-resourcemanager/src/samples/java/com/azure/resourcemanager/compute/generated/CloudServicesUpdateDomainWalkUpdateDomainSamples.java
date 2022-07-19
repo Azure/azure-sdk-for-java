@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServicesUpdateDomain WalkUpdateDomain. */
 public final class CloudServicesUpdateDomainWalkUpdateDomainSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/UpdateCloudServiceUpdateDomain.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceUpdateDomain_Update.json
      */
     /**
      * Sample code: Update Cloud Service to specified Domain.

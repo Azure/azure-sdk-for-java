@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for GremlinResources GetGremlinGraph. */
 public final class GremlinResourcesGetGremlinGraphSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBGremlinGraphGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGremlinGraphGet.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphGet.

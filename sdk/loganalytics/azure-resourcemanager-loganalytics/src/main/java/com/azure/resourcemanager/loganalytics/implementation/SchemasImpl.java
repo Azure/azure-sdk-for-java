@@ -12,10 +12,9 @@ import com.azure.resourcemanager.loganalytics.fluent.SchemasClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner;
 import com.azure.resourcemanager.loganalytics.models.Schemas;
 import com.azure.resourcemanager.loganalytics.models.SearchGetSchemaResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SchemasImpl implements Schemas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SchemasImpl.class);
 
     private final SchemasClient innerClient;
 

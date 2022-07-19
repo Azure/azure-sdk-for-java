@@ -24,7 +24,11 @@ public final class RestoreMode extends ExpandableStringEnum<RestoreMode> {
         return fromString(name, RestoreMode.class);
     }
 
-    /** @return known RestoreMode values. */
+    /**
+     * Gets known RestoreMode values.
+     *
+     * @return known RestoreMode values.
+     */
     public static Collection<RestoreMode> values() {
         return values(RestoreMode.class);
     }

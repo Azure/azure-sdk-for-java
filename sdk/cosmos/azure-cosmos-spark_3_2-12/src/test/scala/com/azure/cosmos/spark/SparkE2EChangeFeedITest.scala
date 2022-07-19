@@ -296,7 +296,7 @@ class SparkE2EChangeFeedITest
       container.createItem(objectNode).block()
     }
 
-    val checkpointLocation = "/checkpoints/" + UUID.randomUUID().toString
+    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
     val cfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
@@ -358,7 +358,7 @@ class SparkE2EChangeFeedITest
       container.createItem(objectNode).block()
     }
 
-    val checkpointLocation = "/checkpoints/" + UUID.randomUUID().toString
+    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
     val cfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
