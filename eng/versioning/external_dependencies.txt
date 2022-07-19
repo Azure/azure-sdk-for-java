@@ -302,8 +302,8 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.8
 org.jacoco:org.jacoco.agent;0.8.8
-org.mockito:mockito-core;4.5.1
-org.mockito:mockito-inline;4.5.1
+org.mockito:mockito-core;4.6.1
+org.mockito:mockito-inline;4.6.1
 org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
 org.revapi:revapi-reporter-json;0.4.5
