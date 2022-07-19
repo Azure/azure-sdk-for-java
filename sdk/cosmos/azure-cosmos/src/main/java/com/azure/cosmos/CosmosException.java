@@ -145,7 +145,7 @@ public class CosmosException extends AzureException {
     /***
      * All selectable replica status.
      */
-    private final List<String> replicaStatusList;
+    private final List<String> replicaStatusList = new ArrayList<>();
 
     /**
      * Creates a new instance of the CosmosException class.
@@ -168,8 +168,6 @@ public class CosmosException extends AzureException {
                 }
             }
         }
-
-        this.replicaStatusList = new ArrayList<>();
     }
 
     /**

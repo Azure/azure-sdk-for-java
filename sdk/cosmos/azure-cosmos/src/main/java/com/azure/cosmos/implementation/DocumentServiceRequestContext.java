@@ -42,11 +42,9 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled;
-    private final Set<Uri> failedEndpoints;
+    private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
 
-    public DocumentServiceRequestContext() {
-        this.failedEndpoints = ConcurrentHashMap.newKeySet();
-    }
+    public DocumentServiceRequestContext() {}
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -95,7 +93,7 @@ public class DocumentServiceRequestContext implements Cloneable {
             // If the exception eventually cause a forceRefresh gateway addresses, during that time, we are going to officially mark
             // the replica as unhealthy.
             // We started by only track 410 exceptions, but can add other exceptions based on the feedback and observations
-            if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.GONE) {
+            if (Exceptions.isGone(cosmosException)) {
                 this.failedEndpoints.add(address);
             }
         }

@@ -41,7 +41,7 @@ public class CosmosSchedulers {
 
     // Custom bounded elastic scheduler for open connections
     public final static Scheduler OPEN_CONNECTIONS_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
-            2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
             Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
             OPEN_CONNECTIONS_BOUNDED_ELASTIC_THREAD_NAME,
             TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
