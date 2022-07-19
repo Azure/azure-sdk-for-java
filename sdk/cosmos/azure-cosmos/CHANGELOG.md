@@ -11,6 +11,7 @@
 * Fixed `ForbiddnException` for azure instance metadata service requests if proxy is configured for client telemetry. - See [#30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
 
 #### Other Changes
+* Supported username and password to be used in `GatewayConnectionConfig.setProxy` . - See [#30004](https://github.com/Azure/azure-sdk-for-java/pull/30004)
 
 ### 4.33.0 (2022-07-14)
 #### Other Changes
