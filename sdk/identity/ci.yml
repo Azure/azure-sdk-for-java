@@ -47,9 +47,9 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
-        ServiceDirectory: identity
-        SupportedClouds: 'Public,UsGov,China'
-        Artifacts:
-          - name: azure-identity
-            groupId: com.azure
-            safeName: azureidentity
+          ServiceDirectory: identity
+          SupportedClouds: 'Public,UsGov,China'
+          Artifacts:
+            - name: azure-identity
+              groupId: com.azure
+              safeName: azureidentity
