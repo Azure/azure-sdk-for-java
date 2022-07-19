@@ -106,8 +106,8 @@ directive:
     from: RecordingIdResponse
     to: RecordingIdResponseInternal
 - rename-model:
-    from: RecordingStateResponse
-    to: RecordingStateResponseInternal
+    from: RecordingStatusResponse
+    to: RecordingStatusResponseInternal
 - rename-model:
     from: PlayResponse
     to: PlayResponseInternal

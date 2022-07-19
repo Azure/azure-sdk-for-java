@@ -11,7 +11,6 @@ import com.azure.communication.callingserver.models.RecordingChannel;
 import com.azure.communication.callingserver.models.RecordingContent;
 import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.StartRecordingResponse;
-import com.azure.communication.callingserver.models.RecordingStateResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -169,7 +168,7 @@ public class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponse getRecordingState(String recordingId) {
+    public RecordingStatusResponse getRecordingState(String recordingId) {
         return callRecordingAsync.getRecordingState(recordingId).block();
     }
 
@@ -183,7 +182,7 @@ public class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<RecordingStatusResponse> getRecordingStateWithResponse(String recordingId, Context context) {
         return callRecordingAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
