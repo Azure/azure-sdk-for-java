@@ -1,6 +1,7 @@
 ---
 page_type: sample
-languages: java
+languages: 
+  - java
 products:
   - azure
   - azure-cognitive-search
