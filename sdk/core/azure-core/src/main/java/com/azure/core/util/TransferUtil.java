@@ -52,7 +52,7 @@ public final class TransferUtil {
         int maxRetries, int retryCount) {
 
         return responseMono
-            .flatMap(response -> response.transferValueToAsync(channel))
+            .flatMap(response -> response.writeValueToAsync(channel))
             .onErrorResume(Exception.class, exception -> {
                 int updatedRetryCount = retryCount + 1;
 
@@ -96,7 +96,7 @@ public final class TransferUtil {
         int maxRetries, int retryCount) throws IOException {
 
         try {
-            response.transferValueTo(channel);
+            response.writeValueTo(channel);
         } catch (RuntimeException | IOException e) {
             int updatedRetryCount = retryCount + 1;
 
