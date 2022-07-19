@@ -7,8 +7,7 @@ package com.azure.resourcemanager.sql.generated;
 import com.azure.core.util.Context;
 
 /** Samples for ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies ListByRestorableDroppedDatabase. */
-public final
-class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseSamples {
+public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesListByRestorableDroppedDatabaseSamples {
     /*
      * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/GetListManagedShortTermRetentionPolicyRestorableDropped.json
      */
