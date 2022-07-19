@@ -72,6 +72,8 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
 
+        //todo check
+        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);
         this.tokenCredentialProvider = new TokenCredentialProvider(azureJDBCProperties, true);
 
 //        AzureJDBCPropertiesUtils.convertPropertySetToAzureProperties(protocol.getPropertySet(), azureJDBCProperties);

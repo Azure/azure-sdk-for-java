@@ -5,6 +5,7 @@ import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
+
 public class TokenCredentialProvider {
 
     private ChainedTokenCredentialBuilder chainedTokenCredentialBuilder;
