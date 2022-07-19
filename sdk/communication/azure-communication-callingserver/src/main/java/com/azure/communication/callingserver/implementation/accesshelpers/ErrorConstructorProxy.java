@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver.implementation.accesshelpers;
 
-import com.azure.communication.callingserver.implementation.converters.ErrorConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationError;
 import com.azure.communication.callingserver.models.CallingServerError;
 import com.azure.communication.callingserver.models.CallingServerErrorException;

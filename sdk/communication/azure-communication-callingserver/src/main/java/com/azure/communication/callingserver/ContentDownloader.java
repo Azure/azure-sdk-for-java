@@ -3,8 +3,10 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.Constants;
+import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -143,10 +145,11 @@ class ContentDownloader {
                 return response.getBody();
             case 416:   // Retriable with new HttpRange, potentially bytes=0-
                 return FluxUtil.fluxError(logger,
-                    new CallingServerErrorException(formatExceptionMessage(response), response));
+                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
+                );
             default:
                 throw logger.logExceptionAsError(
-                    new CallingServerErrorException(formatExceptionMessage(response), response)
+                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
                 );
         }
     }
