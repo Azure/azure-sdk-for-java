@@ -13,7 +13,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -67,6 +66,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
     serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationAsyncClient {
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -224,7 +225,8 @@ public final class ConfigurationAsyncClient {
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
-            getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
@@ -252,7 +254,8 @@ public final class ConfigurationAsyncClient {
         // return an error.
         try {
             return service.setKeySync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
-                getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
             if (httpResponse.getStatusCode() == 412) {
@@ -421,7 +424,8 @@ public final class ConfigurationAsyncClient {
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                    .doOnSubscribe(ignoredValue -> logger.verbose("Setting ConfigurationSetting - {}", setting))
                    .doOnSuccess(response -> logger.verbose("Set ConfigurationSetting - {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
@@ -442,7 +446,8 @@ public final class ConfigurationAsyncClient {
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
         return service.setKeySync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting,
-            ifMatchETag, null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+            ifMatchETag, null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     /**
@@ -603,7 +608,8 @@ public final class ConfigurationAsyncClient {
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
             acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
@@ -632,7 +638,8 @@ public final class ConfigurationAsyncClient {
         try {
             return service.getKeyValueSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
                 acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
             if (httpResponse.getStatusCode() == 304) {
@@ -779,7 +786,8 @@ public final class ConfigurationAsyncClient {
 
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
             .doOnSubscribe(ignoredValue -> logger.verbose("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.verbose("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
@@ -792,8 +800,14 @@ public final class ConfigurationAsyncClient {
         context = context == null ? Context.NONE : context;
 
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
-        return service.deleteSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+        return service.deleteSync(serviceEndpoint,
+            setting.getKey(),
+            setting.getLabel(),
+            apiVersion,
+            ifMatchETag,
+            null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     /**
@@ -945,7 +959,8 @@ public final class ConfigurationAsyncClient {
         context = context == null ? Context.NONE : context;
         if (isReadOnly) {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(response -> logger.verbose("Set read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
@@ -968,7 +983,8 @@ public final class ConfigurationAsyncClient {
         context = context == null ? Context.NONE : context;
         if (isReadOnly) {
             return service.lockKeyValueSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
-                    null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
+                    null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
         } else {
             return service.unlockKeyValueSync(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
                     null, null, context);
@@ -1019,7 +1035,8 @@ public final class ConfigurationAsyncClient {
             }
 
             return service.listKeyValues(serviceEndpoint, continuationToken,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                 .doOnSubscribe(
                     ignoredValue -> logger.verbose("Retrieving the next listing page - Page {}", continuationToken))
                 .doOnSuccess(response -> logger.verbose("Retrieved the next listing page - Page {}", continuationToken))
@@ -1035,7 +1052,8 @@ public final class ConfigurationAsyncClient {
         try {
             if (selector == null) {
                 return service.listKeyValues(serviceEndpoint, null, null, apiVersion, null, null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                     .doOnRequest(ignoredValue -> logger.verbose("Listing all ConfigurationSettings"))
                     .doOnSuccess(response -> logger.verbose("Listed all ConfigurationSettings"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
@@ -1047,52 +1065,13 @@ public final class ConfigurationAsyncClient {
 
             return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                 selector.getAcceptDateTime(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                 .doOnSubscribe(ignoredValue -> logger.verbose("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.verbose("Listed ConfigurationSettings - {}", selector))
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }
-
-    }
-
-    PagedIterable<ConfigurationSetting> listConfigurationSettingsSync(SettingSelector selector, Context context) {
-        // return new PagedIterable<>(() -> listFirstPageSettingsSync(selector, context),
-        //     continuationToken -> listNextPageSettingsSync(context, continuationToken));
-        // add pageIterable to take iterable response type
-        return null;
-    }
-
-    private PagedResponse<ConfigurationSetting> listNextPageSettingsSync(Context context, String continuationToken) {
-        try {
-            if (continuationToken == null || continuationToken.isEmpty()) {
-                return null;
-            }
-
-            return service.listKeyValuesSync(serviceEndpoint, continuationToken,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
-        } catch (RuntimeException ex) {
-            throw logger.logExceptionAsError(ex);
-        }
-    }
-
-    private PagedResponse<ConfigurationSetting> listFirstPageSettingsSync(SettingSelector selector, Context context) {
-        try {
-            if (selector == null) {
-                return service.listKeyValuesSync(serviceEndpoint, null, null, apiVersion, null, null,
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
-            }
-
-            final String fields = CoreUtils.arrayToString(selector.getFields(), SettingFields::toStringMapper);
-            final String keyFilter = selector.getKeyFilter();
-            final String labelFilter = selector.getLabelFilter();
-
-            return service.listKeyValuesSync(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
-                    selector.getAcceptDateTime(),
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE));
-        } catch (RuntimeException ex) {
-            throw logger.logExceptionAsError(ex);
         }
 
     }
@@ -1145,7 +1124,8 @@ public final class ConfigurationAsyncClient {
 
                 result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                     selector.getAcceptDateTime(), null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                     .doOnRequest(ignoredValue -> logger.verbose("Listing ConfigurationSetting revisions - {}",
                         selector))
                     .doOnSuccess(response -> logger.verbose("Listed ConfigurationSetting revisions - {}", selector))
@@ -1154,7 +1134,8 @@ public final class ConfigurationAsyncClient {
             } else {
                 result = service.listKeyValueRevisions(
                     serviceEndpoint, null, null, apiVersion, null, null, null,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                     .doOnRequest(ignoredValue -> logger.verbose("Listing ConfigurationSetting revisions"))
                     .doOnSuccess(response -> logger.verbose("Listed ConfigurationSetting revisions"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
@@ -1170,7 +1151,8 @@ public final class ConfigurationAsyncClient {
         try {
             return service
                 .listKeyValues(serviceEndpoint, nextPageLink,
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
                 .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
                 .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
                 .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -1189,7 +1171,8 @@ public final class ConfigurationAsyncClient {
 
     private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
