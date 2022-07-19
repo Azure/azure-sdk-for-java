@@ -39,7 +39,11 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
         return fromString(name, UsagesUnit.class);
     }
 
-    /** @return known UsagesUnit values. */
+    /**
+     * Gets known UsagesUnit values.
+     *
+     * @return known UsagesUnit values.
+     */
     public static Collection<UsagesUnit> values() {
         return values(UsagesUnit.class);
     }

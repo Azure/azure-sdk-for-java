@@ -27,7 +27,11 @@ public final class VaultPrivateEndpointState extends ExpandableStringEnum<VaultP
         return fromString(name, VaultPrivateEndpointState.class);
     }
 
-    /** @return known VaultPrivateEndpointState values. */
+    /**
+     * Gets known VaultPrivateEndpointState values.
+     *
+     * @return known VaultPrivateEndpointState values.
+     */
     public static Collection<VaultPrivateEndpointState> values() {
         return values(VaultPrivateEndpointState.class);
     }
