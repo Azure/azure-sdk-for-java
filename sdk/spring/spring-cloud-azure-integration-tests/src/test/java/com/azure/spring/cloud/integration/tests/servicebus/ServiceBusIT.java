@@ -14,15 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 @SpringBootTest(classes = ServiceBusIT.TestConfig.class)
 @ActiveProfiles(value = {"service-bus", "service-bus-jms"})
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private final String data = "service bus test";
-    private static CountDownLatch countDownLatch = new CountDownLatch(1);
 
     @Autowired
     private ServiceBusSenderClient senderClient;
@@ -39,9 +35,7 @@ public class ServiceBusIT {
         ServiceBusRecordMessageListener messageListener() {
             return new ServiceBusRecordMessageListener() {
                 @Override
-                public void onMessage(ServiceBusReceivedMessageContext message) {
-                    countDownLatch.countDown();
-                }
+                public void onMessage(ServiceBusReceivedMessageContext message) { }
             };
         };
         @Bean
@@ -65,10 +59,8 @@ public class ServiceBusIT {
         }
         processorClient.start();
         Assertions.assertTrue(processorClient.isRunning());
-        boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
         processorClient.close();
         Assertions.assertFalse(processorClient.isRunning());
-        Assertions.assertTrue(success);
         LOGGER.info("ServiceBusIT end.");
     }
 }
