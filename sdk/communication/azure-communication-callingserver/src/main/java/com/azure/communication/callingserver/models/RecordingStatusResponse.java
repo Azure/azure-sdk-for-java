@@ -45,12 +45,21 @@ public final class RecordingStatusResponse {
     }
 
     /**
-     * Public constructor
+     * Public constructor.
      *
-     * @param recordingIdResponseInternal The internal response.
      */
-    RecordingStatusResponse(RecordingStatusResponseInternal recordingIdResponseInternal) {
-        this.recordingId = recordingIdResponseInternal.getRecordingId();
-        this.recordingStatus = RecordingStatus.fromString(recordingIdResponseInternal.getRecordingStatus().toString());
+    public RecordingStatusResponse() {
+        this.recordingId = null;
+        this.recordingStatus = null;
+    }
+
+    /**
+     * Package-private constructor of the class, used internally only.
+     *
+     * @param  recordingStatusResponseInternal The response from the service
+     */
+    RecordingStatusResponse(RecordingStatusResponseInternal recordingStatusResponseInternal) {
+        this.recordingId = recordingStatusResponseInternal.getRecordingId();
+        this.recordingStatus = RecordingStatus.fromString(recordingStatusResponseInternal.getRecordingStatus().toString());
     }
 }
