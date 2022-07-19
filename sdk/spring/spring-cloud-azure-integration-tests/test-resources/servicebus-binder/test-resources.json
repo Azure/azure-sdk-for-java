@@ -58,15 +58,6 @@
       }
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), '2'))]",
-      "properties": {
-        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces",
       "apiVersion": "2018-01-01-preview",
       "name": "[variables('namespaces_name_standard_3')]",
@@ -77,15 +68,6 @@
       },
       "properties": {
         "zoneRedundant": false
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), '3'))]",
-      "properties": {
-        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
       }
     },
     {
