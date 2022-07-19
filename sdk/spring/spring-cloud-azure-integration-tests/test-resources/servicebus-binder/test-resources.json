@@ -38,7 +38,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), 1))]",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), '1'))]",
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
         "principalId": "[parameters('testApplicationOid')]"
@@ -60,7 +60,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), 2))]",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), '2'))]",
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
         "principalId": "[parameters('testApplicationOid')]"
@@ -82,7 +82,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), 3))]",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), '3'))]",
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
         "principalId": "[parameters('testApplicationOid')]"
@@ -267,7 +267,7 @@
         "enableBatchedOperations": true,
         "autoDeleteOnIdle": "P14D"
       }
-    },
+    }
   ],
   "outputs": {
     "AZURE_SERVICE_BUS_NAMESPACE1": {
