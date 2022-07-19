@@ -45,7 +45,6 @@ public class EventDataAggregatorTest {
     private final EventData event1 = new EventData("foo");
     private final EventData event2 = new EventData("bar");
     private final EventData event3 = new EventData("baz");
-    private final EventData event4 = new EventData("bart");
 
     @BeforeEach
     public void beforeEach() {
