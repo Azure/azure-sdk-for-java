@@ -73,8 +73,8 @@ directive:
     from: CommunicationCloudEnvironmentModel
     to: CommunicationCloudEnvironmentInternal
 - rename-model:
-    from: GetParticipantRequest
-    to: GetParticipantRequestInternal
+    from: GetParticipantsResponse
+    to: GetParticipantsResponseInternal
 - rename-model:
     from: RemoveParticipantsRequest
     to: RemoveParticipantsRequestInternal

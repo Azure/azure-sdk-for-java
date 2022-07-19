@@ -6,21 +6,16 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The AddParticipantsResponseInternal model. */
 @Fluent
 public final class AddParticipantsResponseInternal {
     /*
-     * The operation id.
+     * The participants property.
      */
-    @JsonProperty(value = "operationId")
-    private String operationId;
-
-    /*
-     * The status of the operation
-     */
-    @JsonProperty(value = "status", required = true)
-    private CallingOperationStatusDto status;
+    @JsonProperty(value = "participants")
+    private List<AcsCallParticipantInternal> participants;
 
     /*
      * The operation context provided by client.
@@ -28,49 +23,23 @@ public final class AddParticipantsResponseInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /*
-     * The result info for the operation.
-     */
-    @JsonProperty(value = "resultDetails")
-    private CallingOperationResultDetailsInternal resultDetails;
-
     /**
-     * Get the operationId property: The operation id.
+     * Get the participants property: The participants property.
      *
-     * @return the operationId value.
+     * @return the participants value.
      */
-    public String getOperationId() {
-        return this.operationId;
+    public List<AcsCallParticipantInternal> getParticipants() {
+        return this.participants;
     }
 
     /**
-     * Set the operationId property: The operation id.
+     * Set the participants property: The participants property.
      *
-     * @param operationId the operationId value to set.
+     * @param participants the participants value to set.
      * @return the AddParticipantsResponseInternal object itself.
      */
-    public AddParticipantsResponseInternal setOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
-    }
-
-    /**
-     * Get the status property: The status of the operation.
-     *
-     * @return the status value.
-     */
-    public CallingOperationStatusDto getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the operation.
-     *
-     * @param status the status value to set.
-     * @return the AddParticipantsResponseInternal object itself.
-     */
-    public AddParticipantsResponseInternal setStatus(CallingOperationStatusDto status) {
-        this.status = status;
+    public AddParticipantsResponseInternal setParticipants(List<AcsCallParticipantInternal> participants) {
+        this.participants = participants;
         return this;
     }
 
@@ -91,26 +60,6 @@ public final class AddParticipantsResponseInternal {
      */
     public AddParticipantsResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the resultDetails property: The result info for the operation.
-     *
-     * @return the resultDetails value.
-     */
-    public CallingOperationResultDetailsInternal getResultDetails() {
-        return this.resultDetails;
-    }
-
-    /**
-     * Set the resultDetails property: The result info for the operation.
-     *
-     * @param resultDetails the resultDetails value to set.
-     * @return the AddParticipantsResponseInternal object itself.
-     */
-    public AddParticipantsResponseInternal setResultDetails(CallingOperationResultDetailsInternal resultDetails) {
-        this.resultDetails = resultDetails;
         return this;
     }
 }

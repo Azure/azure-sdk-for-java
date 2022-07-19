@@ -13,24 +13,9 @@ import java.util.Objects;
 @Immutable
 public final class TransferCallResponse {
     /*
-     * The operation id.
-     */
-    private final String operationId;
-
-    /*
-     * The status of the operation
-     */
-    private final CallingOperationStatus status;
-
-    /*
      * The operation context provided by client.
      */
     private final String operationContext;
-
-    /*
-     * The result info for the operation.
-     */
-    private final CallingOperationResultDetails resultDetails;
 
     static {
         TransferCallResponseConstructorProxy.setAccessor(
@@ -47,11 +32,7 @@ public final class TransferCallResponse {
      *
      */
     public TransferCallResponse() {
-        this.operationId = null;
-        this.status = null;
         this.operationContext = null;
-        this.resultDetails = null;
-
     }
 
     /**
@@ -62,28 +43,7 @@ public final class TransferCallResponse {
     TransferCallResponse(TransferCallResponseInternal transferCallResponseInternal) {
         Objects.requireNonNull(transferCallResponseInternal, "transferCallResponseInternal must not be null");
 
-        this.operationId = transferCallResponseInternal.getOperationId();
-        this.status = CallingOperationStatus.fromString(transferCallResponseInternal.getStatus().toString());
         this.operationContext = transferCallResponseInternal.getOperationContext();
-        this.resultDetails = new CallingOperationResultDetails(transferCallResponseInternal.getResultDetails());
-    }
-
-    /**
-     * Get the operationId property: The operation id.
-     *
-     * @return the operationId value.
-     */
-    public String getOperationId() {
-        return this.operationId;
-    }
-
-    /**
-     * Get the status property: The status of the operation.
-     *
-     * @return the status value.
-     */
-    public CallingOperationStatus getStatus() {
-        return this.status;
     }
 
     /**
@@ -93,14 +53,5 @@ public final class TransferCallResponse {
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    /**
-     * Get the resultDetails property: The result info for the operation.
-     *
-     * @return the resultDetails value.
-     */
-    public CallingOperationResultDetails getResultDetails() {
-        return this.resultDetails;
     }
 }

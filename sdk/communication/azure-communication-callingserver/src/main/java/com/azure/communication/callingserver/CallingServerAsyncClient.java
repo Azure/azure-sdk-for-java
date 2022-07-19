@@ -8,8 +8,9 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ContentsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallingsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
+import com.azure.communication.callingserver.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
+import com.azure.communication.callingserver.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.ErrorConverter;
 import com.azure.communication.callingserver.implementation.models.CallSourceInternal;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -122,10 +123,10 @@ public final class CallingServerAsyncClient {
                 .setSubject(createCallOptions.getSubject());
 
             return serverCallingInternal.createCallWithResponseAsync(request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        return new SimpleResponse<>(response, new CallConnectionProperties(response.getValue()));
+                        return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
                     } catch (URISyntaxException e) {
                         logger.logExceptionAsError(new RuntimeException(e));
                         return null;
@@ -175,10 +176,10 @@ public final class CallingServerAsyncClient {
                 .setCallbackUri(callbackUri);
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
-                        return new SimpleResponse<>(response, new CallConnectionProperties(response.getValue()));
+                        return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
                     } catch (URISyntaxException e) {
                         logger.logExceptionAsError(new RuntimeException(e));
                         return null;
@@ -227,7 +228,7 @@ public final class CallingServerAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(target));
 
             return serverCallingInternal.redirectCallWithResponseAsync(request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -271,7 +272,7 @@ public final class CallingServerAsyncClient {
                 .setCallRejectReason(CallRejectReason.fromString(callRejectReason));
 
             return serverCallingInternal.rejectCallWithResponseAsync(request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConverter::translateException);
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

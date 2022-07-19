@@ -4,7 +4,7 @@
 
 package com.azure.communication.callingserver.implementation;
 
-import com.azure.communication.callingserver.implementation.models.RecordingStateResponseInternal;
+import com.azure.communication.callingserver.implementation.models.RecordingStatusResponse;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -54,7 +54,7 @@ public final class ServerCallsImpl {
         @Get("/calling/recordings/{recordingId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<RecordingStateResponseInternal>> getRecordingProperties(
+        Mono<Response<RecordingStatusResponse>> getRecordingProperties(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
@@ -62,7 +62,7 @@ public final class ServerCallsImpl {
                 Context context);
 
         @Delete("/calling/recordings/{recordingId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> stopRecording(
                 @HostParam("endpoint") String endpoint,
@@ -70,21 +70,21 @@ public final class ServerCallsImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/calling/recordings:pause")
-        @ExpectedResponses({200})
+        @Post("/calling/recordings/{recordingId}:pause")
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> pauseRecording(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("recordingId") String recordingId,
+                @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/calling/recordings:resume")
-        @ExpectedResponses({200})
+        @Post("/calling/recordings/{recordingId}:resume")
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resumeRecording(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("recordingId") String recordingId,
+                @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
     }
@@ -99,7 +99,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResponseInternal>> getRecordingPropertiesWithResponseAsync(String recordingId) {
+    public Mono<Response<RecordingStatusResponse>> getRecordingPropertiesWithResponseAsync(String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -118,7 +118,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResponseInternal>> getRecordingPropertiesWithResponseAsync(
+    public Mono<Response<RecordingStatusResponse>> getRecordingPropertiesWithResponseAsync(
             String recordingId, Context context) {
         final String accept = "application/json";
         return service.getRecordingProperties(
@@ -135,10 +135,10 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResponseInternal> getRecordingPropertiesAsync(String recordingId) {
+    public Mono<RecordingStatusResponse> getRecordingPropertiesAsync(String recordingId) {
         return getRecordingPropertiesWithResponseAsync(recordingId)
                 .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
+                        (Response<RecordingStatusResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -158,10 +158,10 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResponseInternal> getRecordingPropertiesAsync(String recordingId, Context context) {
+    public Mono<RecordingStatusResponse> getRecordingPropertiesAsync(String recordingId, Context context) {
         return getRecordingPropertiesWithResponseAsync(recordingId, context)
                 .flatMap(
-                        (Response<RecordingStateResponseInternal> res) -> {
+                        (Response<RecordingStatusResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -180,7 +180,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponseInternal getRecordingProperties(String recordingId) {
+    public RecordingStatusResponse getRecordingProperties(String recordingId) {
         return getRecordingPropertiesAsync(recordingId).block();
     }
 
@@ -195,8 +195,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResponseInternal> getRecordingPropertiesWithResponse(
-            String recordingId, Context context) {
+    public Response<RecordingStatusResponse> getRecordingPropertiesWithResponse(String recordingId, Context context) {
         return getRecordingPropertiesWithResponseAsync(recordingId, context).block();
     }
 

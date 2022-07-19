@@ -5,8 +5,7 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
-import com.azure.communication.callingserver.implementation.models.PlayResponseInternal;
-import com.azure.communication.callingserver.implementation.models.RecordingIdResponseInternal;
+import com.azure.communication.callingserver.implementation.models.RecordingStatusResponse;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -52,21 +51,29 @@ public final class ContentsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface ContentsService {
-        @Post("/calling/callConnections/{callConnectionId}/content:play")
-        @ExpectedResponses({201})
+        @Post("/calling/callConnections/{callConnectionId}:play")
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PlayResponseInternal>> play(
+        Mono<Response<Void>> play(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
-                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:cancelAllMediaOperations")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> cancelAllMediaOperations(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
                 Context context);
 
         @Post("/calling/recordings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<RecordingIdResponseInternal>> recording(
+        Mono<Response<RecordingStatusResponse>> recording(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StartCallRecordingRequest startCallRecording,
@@ -82,12 +89,10 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayResponseInternal>> playWithResponseAsync(
-            String callConnectionId, PlayRequest playRequest) {
-        final String accept = "application/json";
+    public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest) {
         return FluxUtil.withContext(
                 context ->
                         service.play(
@@ -95,7 +100,6 @@ public final class ContentsImpl {
                                 callConnectionId,
                                 this.client.getApiVersion(),
                                 playRequest,
-                                accept,
                                 context));
     }
 
@@ -108,14 +112,13 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayResponseInternal>> playWithResponseAsync(
+    public Mono<Response<Void>> playWithResponseAsync(
             String callConnectionId, PlayRequest playRequest, Context context) {
-        final String accept = "application/json";
         return service.play(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest, accept, context);
+                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest, context);
     }
 
     /**
@@ -126,19 +129,11 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResponseInternal> playAsync(String callConnectionId, PlayRequest playRequest) {
-        return playWithResponseAsync(callConnectionId, playRequest)
-                .flatMap(
-                        (Response<PlayResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> playAsync(String callConnectionId, PlayRequest playRequest) {
+        return playWithResponseAsync(callConnectionId, playRequest).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -150,19 +145,12 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayResponseInternal> playAsync(String callConnectionId, PlayRequest playRequest, Context context) {
+    public Mono<Void> playAsync(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context)
-                .flatMap(
-                        (Response<PlayResponseInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -173,11 +161,10 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayResponseInternal play(String callConnectionId, PlayRequest playRequest) {
-        return playAsync(callConnectionId, playRequest).block();
+    public void play(String callConnectionId, PlayRequest playRequest) {
+        playAsync(callConnectionId, playRequest).block();
     }
 
     /**
@@ -192,9 +179,100 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayResponseInternal> playWithResponse(
-            String callConnectionId, PlayRequest playRequest, Context context) {
+    public Response<Void> playWithResponse(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context).block();
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId) {
+        return FluxUtil.withContext(
+                context ->
+                        service.cancelAllMediaOperations(
+                                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context));
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId, Context context) {
+        return service.cancelAllMediaOperations(
+                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId) {
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId, Context context) {
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelAllMediaOperations(String callConnectionId) {
+        cancelAllMediaOperationsAsync(callConnectionId).block();
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelAllMediaOperationsWithResponse(String callConnectionId, Context context) {
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context).block();
     }
 
     /**
@@ -204,10 +282,10 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingIdResponseInternal>> recordingWithResponseAsync(
+    public Mono<Response<RecordingStatusResponse>> recordingWithResponseAsync(
             StartCallRecordingRequest startCallRecording) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -228,10 +306,10 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingIdResponseInternal>> recordingWithResponseAsync(
+    public Mono<Response<RecordingStatusResponse>> recordingWithResponseAsync(
             StartCallRecordingRequest startCallRecording, Context context) {
         final String accept = "application/json";
         return service.recording(
@@ -245,13 +323,13 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingIdResponseInternal> recordingAsync(StartCallRecordingRequest startCallRecording) {
+    public Mono<RecordingStatusResponse> recordingAsync(StartCallRecordingRequest startCallRecording) {
         return recordingWithResponseAsync(startCallRecording)
                 .flatMap(
-                        (Response<RecordingIdResponseInternal> res) -> {
+                        (Response<RecordingStatusResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -268,14 +346,13 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingIdResponseInternal> recordingAsync(
-            StartCallRecordingRequest startCallRecording, Context context) {
+    public Mono<RecordingStatusResponse> recordingAsync(StartCallRecordingRequest startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context)
                 .flatMap(
-                        (Response<RecordingIdResponseInternal> res) -> {
+                        (Response<RecordingStatusResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -291,10 +368,10 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingIdResponseInternal recording(StartCallRecordingRequest startCallRecording) {
+    public RecordingStatusResponse recording(StartCallRecordingRequest startCallRecording) {
         return recordingAsync(startCallRecording).block();
     }
 
@@ -306,10 +383,10 @@ public final class ContentsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingIdResponseInternal> recordingWithResponse(
+    public Response<RecordingStatusResponse> recordingWithResponse(
             StartCallRecordingRequest startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context).block();
     }
