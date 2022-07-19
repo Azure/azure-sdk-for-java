@@ -7,6 +7,7 @@ package com.azure.security.confidentialledger;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -33,7 +34,7 @@ public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTes
     public void testGetConsortiumMembersTests() throws Exception {
         String ledgerId = Configuration.getGlobalConfiguration().get("LEDGERID", "emily-java-sdk-tests");
         // this is a built in test of getLedgerIdentity
-        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerIdentityClient
+        Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
         ObjectMapper mapper = new ObjectMapper();
@@ -65,21 +66,24 @@ public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTes
         ConfidentialLedgerClient confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
         
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getConsortiumMembersWithResponse(requestOptions);
-        Assertions.assertEquals(200, response.getStatusCode());
-        
-        BinaryData parsedResponse = response.getValue();
+        PagedIterable<BinaryData> pagedIterableResponse = confidentialLedgerClient.listConsortiumMembers(requestOptions);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = null;
+        pagedIterableResponse.streamByPage().forEach(resp -> {
+            Assertions.assertEquals(200, resp.getStatusCode());
+            resp.getValue().forEach(item -> {
 
-        try {
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-        JsonNode enclaveQuotes = responseBodyJson.get("members");
-        Assertions.assertNotNull(enclaveQuotes.get(0).get("id"));
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseBodyJson = null;
+
+                try {
+                    responseBodyJson = objectMapper.readTree(item.toBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Assertions.assertTrue(false);
+                }
+
+                Assertions.assertNotNull(responseBodyJson.get("id"));
+            });
+        });
     }
 }

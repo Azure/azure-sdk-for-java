@@ -89,7 +89,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
         Response<Void> response = testInterface.testMethod(Flux.just(ByteBuffer.wrap(bytes)),
-            "application/json", (long) bytes.length)
+                "application/json", (long) bytes.length)
             .block();
         assertEquals(200, response.getStatusCode());
     }
@@ -238,7 +238,7 @@ public class RestProxyTests {
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
-        Map<Object, Object> expectedContextValues) {
+                                           Map<Object, Object> expectedContextValues) {
         Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());

@@ -20,7 +20,6 @@ import java.util.Objects;
  * REST response with a streaming content.
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
-
     private volatile boolean consumed;
     private final HttpResponse response;
 
@@ -36,7 +35,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
     @Deprecated
     public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value) {
         super(request, statusCode, headers, value);
-        this.response = null;
+        response = null;
     }
 
     /**
@@ -59,7 +58,10 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
         if (response == null) {
             return super.getValue().doFinally(t -> this.consumed = true);
         } else {
-            return response.getBody();
+            return response.getBody().doFinally(t -> {
+                this.consumed = true;
+                this.response.close();
+            });
         }
     }
 
@@ -68,7 +70,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      * @param channel The destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is completed.
      */
-    public Mono<Void> transferContentToAsync(AsynchronousByteChannel channel) {
+    public Mono<Void> transferValueToAsync(AsynchronousByteChannel channel) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (response == null) {
             return FluxUtil.writeToAsynchronousByteChannel(getValue(), channel);
@@ -82,7 +84,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      * @param channel The destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
      */
-    public void transferContentTo(WritableByteChannel channel) throws IOException {
+    public void transferValueTo(WritableByteChannel channel) throws IOException {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (response == null) {
             FluxUtil.writeToWritableByteChannel(getValue(), channel).block();
