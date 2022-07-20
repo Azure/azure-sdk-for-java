@@ -240,15 +240,15 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
         version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
         print('version_file=' + version_file)
         load_version_map_from_file(version_file, version_map)
-        if version_overrides:
-            load_version_overrides("eng/versioning/alternative_versions.yml", version_map, version_overrides)
 
     if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
         dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
         print('external_dependency_file=' + dependency_file)
         load_version_map_from_file(dependency_file, ext_dep_map)
-        if version_overrides:
-            load_version_overrides("eng/versioning/alternative_versions.yml", ext_dep_map, version_overrides)
+
+    if version_overrides:
+        load_version_overrides("eng/versioning/alternative_versions.yml", version_map, version_overrides)
+        load_version_overrides("eng/versioning/alternative_versions.yml", ext_dep_map, version_overrides)
 
     display_version_info(version_map)
     display_version_info(ext_dep_map)
