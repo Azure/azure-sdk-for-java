@@ -56,6 +56,7 @@ stages:
         - Name: version_overrides_tests
           Path: sdk/core/version-overrides-matrix.json
           Selection: all
+          GenerateVMJobs: true
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
