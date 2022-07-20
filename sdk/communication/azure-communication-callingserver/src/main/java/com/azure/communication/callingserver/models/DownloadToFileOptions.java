@@ -3,9 +3,12 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * The options for the downloadTo operations.
  */
+@Fluent
 public class DownloadToFileOptions {
 
     /**
