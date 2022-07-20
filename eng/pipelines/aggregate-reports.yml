@@ -79,7 +79,7 @@ stages:
         - task: Maven@3
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
-            mavenPomFile: agregate-pom.xml
+            mavenPomFile: aggregate-pom.xml
             options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Pjavadoc'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
