@@ -49,6 +49,7 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+
 jobs:
   - job: 'Test'
     dependsOn: ${{ parameters.DependsOn }}

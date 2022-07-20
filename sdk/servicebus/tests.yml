@@ -17,6 +17,6 @@ stages:
         AZURE_SUBSCRIPTION_ID: $(SERVICEBUS_SUBSCRIPTION_ID)
       AdditionalMatrixConfigs:
         - Name: version_overrides_tests
-          Path: sdk/core/version-overrides-matrix.json
+          Path: sdk/servicebus/version-overrides-matrix.json
           Selection: all
           GenerateVMJobs: true
