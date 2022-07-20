@@ -39,9 +39,6 @@ parameters:
 - name: PreGenerationSteps
   type: stepList
   default: []
-- name: VersionOverrides
-  type: string
-  default: null
 jobs:
 - job: ${{ parameters.GenerateJobName }}
   variables:
