@@ -351,6 +351,7 @@ public class CallRecordingAsync {
      * <p>This method supports downloads up to 2GB of data.
      * Use {@link #downloadStream(String)} ()} to download larger blobs.</p>
      *
+     * @param sourceEndpoint - URL where the content is located.
      * @return A reactive response containing the content data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
