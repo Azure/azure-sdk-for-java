@@ -48,7 +48,8 @@ public class AsyncClientFactory {
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
             .throttlingRetryOptions(DEFAULT_THROTTLING_RETRY_OPTIONS)
-            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
 
         // Configure the Direct/Gateway mode
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
@@ -72,12 +73,19 @@ public class AsyncClientFactory {
      */
     public static CosmosAsyncClient buildBulkLoadAsyncClient(final Configuration cfg) {
         Preconditions.checkNotNull(cfg, "The Workload configuration defining the parameters can not be null");
+
+        if (cfg.isClientTelemetryEnabled()) {
+            System.setProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT", cfg.getClientTelemetryEndpoint());
+            System.setProperty("COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS", String.valueOf(cfg.getClientTelemetrySchedulingInSeconds()));
+        }
+
         final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
             .consistencyLevel(ConsistencyLevel.EVENTUAL)
             .throttlingRetryOptions(BULKLOAD_THROTTLING_RETRY_OPTIONS)
-            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
 
         // Configure the Direct/Gateway mode
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
