@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SyncFullSchemaTable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.List;
 /** Properties of the database full schema. */
 @Immutable
 public final class SyncFullSchemaPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaPropertiesInner.class);
-
     /*
      * List of tables in the database full schema.
      */
