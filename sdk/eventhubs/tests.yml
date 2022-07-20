@@ -18,24 +18,8 @@ stages:
       SupportedClouds: 'Public,UsGov,China'
       EnvVars:
         AZURE_LOG_LEVEL: 2
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: eventhubs
-      Artifacts:
-        - name: azure-messaging-eventhubs
-          groupId: com.azure
-          safeName: azuremessagingeventhubs
-        - name: azure-messaging-eventhubs-checkpointstore-blob
-          groupId: com.azure
-          safeName: azuremessagingeventhubscheckpointstoreblob
-        - name: azure-messaging-eventhubs-checkpointstore-jedis
-          groupId: com.azure
-          safeName: azuremessagingeventhubscheckpointstorejedis
-      TimeoutInMinutes: 120
-      SupportedClouds: 'Public'
-      EnvVars:
-        AZURE_LOG_LEVEL: 2
-      TestName: 'reactor_35'
-      VersionOverrides: 'reactor_3.5'
-      MatrixFilters:
-        - TestFromSource=^$|true
+      AdditionalMatrixConfigs:
+        - Name: version_overrides_tests
+          Path: sdk/core/version-overrides-matrix.json
+          Selection: all
+          GenerateVMJobs: true

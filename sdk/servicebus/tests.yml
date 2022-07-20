@@ -15,21 +15,8 @@ stages:
         AZURE_TENANT_ID: $(SERVICEBUS_TENANT_ID)
         AZURE_CLIENT_SECRET: $(SERVICEBUS_CLIENT_SECRET)
         AZURE_SUBSCRIPTION_ID: $(SERVICEBUS_SUBSCRIPTION_ID)
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: servicebus
-      Artifacts:
-        - name: azure-messaging-servicebus
-          groupId: com.azure
-          safeName: azuremessagingservicebus
-      SupportedClouds: 'Public'
-      EnvVars:
-        AZURE_LOG_LEVEL: 2
-        AZURE_CLIENT_ID: $(SERVICEBUS_CLIENT_ID)
-        AZURE_TENANT_ID: $(SERVICEBUS_TENANT_ID)
-        AZURE_CLIENT_SECRET: $(SERVICEBUS_CLIENT_SECRET)
-        AZURE_SUBSCRIPTION_ID: $(SERVICEBUS_SUBSCRIPTION_ID)
-      TestName: 'reactor_35'
-      VersionOverrides: 'reactor_3.5'
-      MatrixFilters:
-        - TestFromSource=^$|true
+      AdditionalMatrixConfigs:
+        - Name: version_overrides_tests
+          Path: sdk/core/version-overrides-matrix.json
+          Selection: all
+          GenerateVMJobs: true

@@ -12,6 +12,8 @@
     "TestGoals": "surefire:test",
     "VersionOverrides": [
         "jackson_2.10",
+        "jackson_2.11",
+        "jackson_2.12",
         "reactor_3.5"
     ],
     "TestFromSource": true

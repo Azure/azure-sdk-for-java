@@ -107,9 +107,6 @@ parameters:
 - name: LtsVersion
   type: string
   default: $(JavaTestVersion)
-- name: VersionOverrides
-  type: string
-  default: ''
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
   - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
@@ -147,7 +144,6 @@ stages:
               TestGoals: ${{ parameters.TestGoals }}
               TestOptions: ${{ parameters.TestOptions }}
               AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
-              VersionOverrides: ${{ parameters.VersionOverrides }}
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
               - ${{ each config in parameters.MatrixConfigs }}:
