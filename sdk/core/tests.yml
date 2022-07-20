@@ -86,3 +86,12 @@ stages:
     parameters:
       AdditionalMatrixReplace:
         - TestFromSource=(.*)/true
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: core
+      Artifacts:
+        - name: azure-core
+          groupId: com.azure
+          safeName: azurecore
+      TestName: 'reactor_3.5'
+      VersionOverrides: 'reactor_3.5'
