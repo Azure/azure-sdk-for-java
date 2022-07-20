@@ -6,7 +6,7 @@ products:
   - azure
   - azure-blob-storage
   - azure-storage
-urlFragment: storage-blob-samples
+urlFragment: storage-blob-changefeed-samples
 ---
 
 # Azure Storage Blob Changefeed Samples client library for Java
