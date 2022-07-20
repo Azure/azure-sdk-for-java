@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.healthbot.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.fluent.models.OperationDetailInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Available operations of the service. */
 @Fluent
 public final class AvailableOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperations.class);
-
     /*
      * Collection of available operation details
      */

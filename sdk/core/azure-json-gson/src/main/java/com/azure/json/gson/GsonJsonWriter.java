@@ -6,16 +6,13 @@ package com.azure.json.gson;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
-import com.azure.json.implementation.CheckExceptionUtils;
-import com.azure.json.implementation.IoExceptionInvoker;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
-import static com.azure.json.implementation.CheckExceptionUtils.invokeWithWrappedIoException;
 
 /**
  * GSON-based implementation of {@link JsonWriter}.
@@ -35,7 +32,7 @@ public final class GsonJsonWriter extends JsonWriter {
      * @param stream The {@link OutputStream} that will be written.
      * @return An instance of {@link GsonJsonWriter}.
      */
-    public static JsonWriter fromStream(OutputStream stream) {
+    public static JsonWriter toStream(OutputStream stream) {
         return new GsonJsonWriter(new com.google.gson.stream.JsonWriter(
             new OutputStreamWriter(stream, StandardCharsets.UTF_8)));
     }
@@ -61,148 +58,326 @@ public final class GsonJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter flush() {
-        invokeWithWrappedIoException(writer::flush);
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeStartObject() {
-        validateAndUpdate(writer::beginObject, JsonToken.START_OBJECT, false);
+        context.validateToken(JsonToken.START_OBJECT);
+
+        try {
+            writer.beginObject();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.START_OBJECT);
         return this;
     }
 
     @Override
     public JsonWriter writeEndObject() {
-        validateAndUpdate(writer::endObject, JsonToken.END_OBJECT, false);
+        context.validateToken(JsonToken.END_OBJECT);
+
+        try {
+            writer.endObject();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.END_OBJECT);
         return this;
     }
 
     @Override
     public JsonWriter writeStartArray() {
-        validateAndUpdate(writer::beginArray, JsonToken.START_ARRAY, false);
+        context.validateToken(JsonToken.START_ARRAY);
+
+        try {
+            writer.beginArray();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.START_ARRAY);
         return this;
     }
 
     @Override
     public JsonWriter writeEndArray() {
-        validateAndUpdate(writer::endArray, JsonToken.END_ARRAY, false);
+        context.validateToken(JsonToken.END_ARRAY);
+
+        try {
+            writer.endArray();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.END_ARRAY);
         return this;
     }
 
     @Override
     public JsonWriter writeFieldName(String fieldName) {
-        validateAndUpdate(() -> writer.name(fieldName), JsonToken.FIELD_NAME, false);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
     }
 
     @Override
     public JsonWriter writeBinary(byte[] value) {
-        validateAndUpdate(() -> writeBinaryInternal(value), JsonToken.STRING, false);
+        context.validateToken(JsonToken.STRING);
+
+        try {
+            writeBinaryInternal(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.STRING);
         return this;
     }
 
     @Override
     public JsonWriter writeBoolean(boolean value) {
-        validateAndUpdate(() -> writer.value(value), JsonToken.BOOLEAN, false);
+        context.validateToken(JsonToken.BOOLEAN);
+
+        try {
+            writer.value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.BOOLEAN);
         return this;
     }
 
     @Override
     public JsonWriter writeDouble(double value) {
-        validateAndUpdate(() -> writer.value(value), JsonToken.NUMBER, false);
+        context.validateToken(JsonToken.NUMBER);
+
+        try {
+            writer.value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
     public JsonWriter writeFloat(float value) {
-        validateAndUpdate(() -> writer.value(value), JsonToken.NUMBER, false);
+        context.validateToken(JsonToken.NUMBER);
+
+        try {
+            writer.value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
     public JsonWriter writeInt(int value) {
-        validateAndUpdate(() -> writer.value(value), JsonToken.NUMBER, false);
+        context.validateToken(JsonToken.NUMBER);
+
+        try {
+            writer.value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
     public JsonWriter writeLong(long value) {
-        validateAndUpdate(() -> writer.value(value), JsonToken.NUMBER, false);
+        context.validateToken(JsonToken.NUMBER);
+
+        try {
+            writer.value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
 
     @Override
     public JsonWriter writeNull() {
-        validateAndUpdate(writer::nullValue, JsonToken.NULL, false);
+        context.validateToken(JsonToken.NULL);
+
+        try {
+            writer.nullValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.NULL);
         return this;
     }
 
     @Override
     public JsonWriter writeString(String value) {
-        validateAndUpdate(() -> writer.value(value), JsonToken.STRING, false);
+        context.validateToken(JsonToken.STRING);
+
+        try {
+            writer.value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.STRING);
         return this;
     }
 
     @Override
     public JsonWriter writeRawValue(String value) {
-        validateAndUpdate(() -> writer.jsonValue(value), JsonToken.STRING, false);
+        context.validateToken(JsonToken.STRING);
+
+        try {
+            writer.jsonValue(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        context = context.updateContext(JsonToken.STRING);
         return this;
     }
 
     @Override
     public JsonWriter writeBinaryField(String fieldName, byte[] value) {
-        validateAndUpdate(() -> {
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
             writer.name(fieldName);
             writeBinaryInternal(value);
-        }, JsonToken.FIELD_NAME, true);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeBooleanField(String fieldName, boolean value) {
-        validateAndUpdate(() -> writer.name(fieldName).value(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeDoubleField(String fieldName, double value) {
-        validateAndUpdate(() -> writer.name(fieldName).value(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeFloatField(String fieldName, float value) {
-        validateAndUpdate(() -> writer.name(fieldName).value(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeIntField(String fieldName, int value) {
-        validateAndUpdate(() -> writer.name(fieldName).value(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeLongField(String fieldName, long value) {
-        validateAndUpdate(() -> writer.name(fieldName).value(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeNullField(String fieldName) {
-        validateAndUpdate(() -> writer.name(fieldName).nullValue(), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).nullValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeStringField(String fieldName, String value) {
-        validateAndUpdate(() -> writer.name(fieldName).value(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).value(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
     @Override
     public JsonWriter writeRawField(String fieldName, String value) {
-        validateAndUpdate(() -> writer.name(fieldName).jsonValue(value), JsonToken.FIELD_NAME, true);
+        context.validateToken(JsonToken.FIELD_NAME);
+
+        try {
+            writer.name(fieldName).jsonValue(value);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
         return this;
     }
 
@@ -212,9 +387,5 @@ public final class GsonJsonWriter extends JsonWriter {
         } else {
             writer.value(Base64.getEncoder().encodeToString(value));
         }
-    }
-
-    private void validateAndUpdate(IoExceptionInvoker func, JsonToken token, boolean fieldAndValue) {
-        CheckExceptionUtils.validateAndUpdate(func, context1 -> context = context1, context, token, fieldAndValue);
     }
 }

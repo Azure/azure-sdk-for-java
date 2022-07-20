@@ -41,7 +41,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=package-2022-03-02 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+    "args": "--tag=package-2022-04-04 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "compute-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
@@ -242,7 +242,8 @@
     "dir": "azure-resourcemanager-sql",
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.sql",
-    "args": "--tag=package-composite-v3"
+    "args": "--tag=package-composite-v3",
+    "note": "Use commit id 9e49f0510fc57175d0c66460ba742c849ac01123 on azure-rest-api-specs"
   },
   "storage": {
     "dir": "azure-resourcemanager-storage",

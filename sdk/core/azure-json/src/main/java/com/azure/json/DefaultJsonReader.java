@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 
-import static com.azure.json.implementation.CheckExceptionUtils.callWithWrappedIoException;
-
 /**
  * Default {@link JsonReader} implementation.
  */
@@ -32,8 +30,11 @@ public final class DefaultJsonReader extends JsonReader {
      * {@code byte[]}.
      */
     public static JsonReader fromBytes(byte[] json) {
-        return callWithWrappedIoException(() ->
-            new DefaultJsonReader(FACTORY.createParser(json), true, json, null));
+        try {
+            return new DefaultJsonReader(FACTORY.createParser(json), true, json, null);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     /**
@@ -44,8 +45,11 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws UncheckedIOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON String.
      */
     public static JsonReader fromString(String json) {
-        return callWithWrappedIoException(() ->
-            new DefaultJsonReader(FACTORY.createParser(json), true, null, json));
+        try {
+            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     /**
@@ -57,8 +61,11 @@ public final class DefaultJsonReader extends JsonReader {
      * {@link InputStream}.
      */
     public static JsonReader fromStream(InputStream json) {
-        return callWithWrappedIoException(() ->
-            new DefaultJsonReader(FACTORY.createParser(json), false, null, null));
+        try {
+            return new DefaultJsonReader(FACTORY.createParser(json), true, null, null);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString) {
@@ -75,7 +82,11 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() {
-        return callWithWrappedIoException(() -> mapToken(parser.nextToken()));
+        try {
+            return mapToken(parser.nextToken());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
@@ -83,48 +94,84 @@ public final class DefaultJsonReader extends JsonReader {
         if (currentToken() == JsonToken.NULL) {
             return null;
         } else {
-            return callWithWrappedIoException(parser::getBinaryValue);
+            try {
+                return parser.getBinaryValue();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
         }
     }
 
     @Override
     public boolean getBooleanValue() {
-        return callWithWrappedIoException(parser::getBooleanValue);
+        try {
+            return parser.getBooleanValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public double getDoubleValue() {
-        return callWithWrappedIoException(parser::getDoubleValue);
+        try {
+            return parser.getDoubleValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public float getFloatValue() {
-        return callWithWrappedIoException(parser::getFloatValue);
+        try {
+            return parser.getFloatValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public int getIntValue() {
-        return callWithWrappedIoException(parser::getIntValue);
+        try {
+            return parser.getIntValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public long getLongValue() {
-        return callWithWrappedIoException(parser::getLongValue);
+        try {
+            return parser.getLongValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public String getStringValue() {
-        return callWithWrappedIoException(parser::getValueAsString);
+        try {
+            return parser.getValueAsString();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public String getFieldName() {
-        return callWithWrappedIoException(parser::currentName);
+        try {
+            return parser.currentName();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public void skipChildren() {
-        callWithWrappedIoException(parser::skipChildren);
+        try {
+            parser.skipChildren();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override

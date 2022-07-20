@@ -2514,10 +2514,7 @@
 
   <Match>
     <Bug pattern="EI_EXPOSE_REP"/>
-    <Or>
-      <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
-      <Class name="com.azure.json.implementation.AccessibleByteArrayOutputStream"/>
-    </Or>
+    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
   </Match>
 
   <!-- EventGrid swagger naming -->
@@ -2618,6 +2615,12 @@
   <!-- Generated implementation of Anomaly Detector is using an inline class -->
   <Match>
     <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Generated implementation of Personalizer is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 

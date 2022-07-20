@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CloudServiceOperatingSystems GetOSFamily. */
 public final class CloudServiceOperatingSystemsGetOSFamilySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/GetCloudServiceOSFamily.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceOSFamily_Get.json
      */
     /**
      * Sample code: Get Cloud Service OS Family.

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.WcfRelaysClient;
 import com.azure.resourcemanager.relay.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.relay.fluent.models.AuthorizationRuleInner;
@@ -19,29 +18,28 @@ import com.azure.resourcemanager.relay.models.AuthorizationRule;
 import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.relay.models.WcfRelay;
 import com.azure.resourcemanager.relay.models.WcfRelays;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WcfRelaysImpl implements WcfRelays {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WcfRelaysImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WcfRelaysImpl.class);
 
     private final WcfRelaysClient innerClient;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
-    public WcfRelaysImpl(WcfRelaysClient innerClient, RelayManager serviceManager) {
+    public WcfRelaysImpl(WcfRelaysClient innerClient, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WcfRelay> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<WcfRelayInner> inner = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
-        return inner.mapPage(inner1 -> new WcfRelayImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WcfRelayImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WcfRelay> listByNamespace(String resourceGroupName, String namespaceName, Context context) {
         PagedIterable<WcfRelayInner> inner =
             this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
-        return inner.mapPage(inner1 -> new WcfRelayImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WcfRelayImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String namespaceName, String relayName) {
@@ -81,14 +79,14 @@ public final class WcfRelaysImpl implements WcfRelays {
         String resourceGroupName, String namespaceName, String relayName) {
         PagedIterable<AuthorizationRuleInner> inner =
             this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, relayName);
-        return inner.mapPage(inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AuthorizationRule> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String relayName, Context context) {
         PagedIterable<AuthorizationRuleInner> inner =
             this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, relayName, context);
-        return inner.mapPage(inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
     }
 
     public AuthorizationRule createOrUpdateAuthorizationRule(
@@ -261,7 +259,7 @@ public final class WcfRelaysImpl implements WcfRelays {
     public WcfRelay getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -269,14 +267,14 @@ public final class WcfRelaysImpl implements WcfRelays {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String relayName = Utils.getValueFromIdByName(id, "wcfRelays");
         if (relayName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'wcfRelays'.", id)));
@@ -287,7 +285,7 @@ public final class WcfRelaysImpl implements WcfRelays {
     public Response<WcfRelay> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -295,14 +293,14 @@ public final class WcfRelaysImpl implements WcfRelays {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String relayName = Utils.getValueFromIdByName(id, "wcfRelays");
         if (relayName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'wcfRelays'.", id)));
@@ -313,7 +311,7 @@ public final class WcfRelaysImpl implements WcfRelays {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -321,25 +319,25 @@ public final class WcfRelaysImpl implements WcfRelays {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String relayName = Utils.getValueFromIdByName(id, "wcfRelays");
         if (relayName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'wcfRelays'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, namespaceName, relayName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, namespaceName, relayName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -347,14 +345,14 @@ public final class WcfRelaysImpl implements WcfRelays {
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String relayName = Utils.getValueFromIdByName(id, "wcfRelays");
         if (relayName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'wcfRelays'.", id)));
@@ -366,7 +364,7 @@ public final class WcfRelaysImpl implements WcfRelays {
         return this.innerClient;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 

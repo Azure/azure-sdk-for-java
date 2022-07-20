@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/emily-java-sdk-tests?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "8c7a5dc6-8fa5-4fd6-b855-e94f02c8b1b6"
+      "x-ms-client-request-id" : "03b69c7e-560f-43a9-9032-a0fc3e420c43"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-machineName" : "identityservice-6499ffbf45-jjspj",
+      "x-ms-machineName" : "identityservice-555869b65b-t46r5",
       "Server" : "Kestrel",
-      "x-ms-image-digest" : "sha256:7a76c9097c3450987501c23e71a3e16b89f727059ab6de727807ac97b808810e",
-      "x-ms-image-tag" : "1.0.01999.541-e02672ed644876c9cf10c5494e0203a0dc9da070",
+      "x-ms-image-digest" : "sha256:882aaa027c6a13390418cc070e29736d7255c85700ea0a3bde9eb7f85430c4b8",
+      "x-ms-image-tag" : "1.0.02013.15-4a5efc93f503a8000a23b4c5112a67c7be116764",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBejCCASCgAwIBAgIQMNwF270tS2Ex6jsW6jP46TAKBggqhkjOPQQDAjAWMRQw\\nEgYDVQQDDAtDQ0YgTmV0d29yazAeFw0yMjA3MDYyMTA0NDBaFw0yMjEwMDQyMTA0\\nMzlaMBYxFDASBgNVBAMMC0NDRiBOZXR3b3JrMFkwEwYHKoZIzj0CAQYIKoZIzj0D\\nAQcDQgAEDUWr/JYiEUnNS+4Ndfcci6yGRXhVWSnabgvShqrdxW4RBmsKZ+qsAWJP\\nnavsVjf8Zgd8gghMm1y4Zl4PoHzTxKNQME4wDAYDVR0TBAUwAwEB/zAdBgNVHQ4E\\nFgQUiIlVb/2YkHp4mXRhBuLaadG82zYwHwYDVR0jBBgwFoAUiIlVb/2YkHp4mXRh\\nBuLaadG82zYwCgYIKoZIzj0EAwIDSAAwRQIgfYFw63rQ8RrH0BBs6yWbYbm+OWCq\\nwyWR8oAT90gwHtACIQDNJ3eIewMJNDtUSJaRYhOIOu10evuW63wBLP/kftLAmw==\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"emily-java-sdk-tests\"}",
-      "Date" : "Thu, 07 Jul 2022 21:45:02 GMT",
-      "x-ms-correlation-request-id" : "fb64b4dc-2954-4b77-a406-7d669d130d27",
-      "x-ms-client-request-id" : "8c7a5dc6-8fa5-4fd6-b855-e94f02c8b1b6",
+      "Date" : "Thu, 14 Jul 2022 00:02:52 GMT",
+      "x-ms-correlation-request-id" : "5ba568ad-7ca5-4bca-b8ee-6e0617978a8d",
+      "x-ms-client-request-id" : "03b69c7e-560f-43a9-9032-a0fc3e420c43",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,17 +26,17 @@
     "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/users/ec667af1-0642-45f0-be8a-b76758a35dde?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "2646815b-932e-4b65-9318-45dab150fdbe"
+      "x-ms-client-request-id" : "c8e1da90-f4a3-48e2-b123-d888aab7c856"
     },
     "Response" : {
       "content-length" : "80",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11594",
+      "x-ms-ccf-transaction-id" : "2.16987",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1220545541",
+      "x-ms-request-id" : "532682674",
       "Body" : "{\"assignedRole\":\"Administrator\",\"userId\":\"ec667af1-0642-45f0-be8a-b76758a35dde\"}",
-      "x-ms-client-request-id" : "2646815b-932e-4b65-9318-45dab150fdbe"
+      "x-ms-client-request-id" : "c8e1da90-f4a3-48e2-b123-d888aab7c856"
     },
     "Exception" : null
   }, {
@@ -44,17 +44,17 @@
     "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/users/ec667af1-0642-45f0-be8a-b76758a35dde?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "2646815b-932e-4b65-9318-45dab150fdbe"
+      "x-ms-client-request-id" : "c8e1da90-f4a3-48e2-b123-d888aab7c856"
     },
     "Response" : {
       "content-length" : "80",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11594",
+      "x-ms-ccf-transaction-id" : "2.16987",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1220545541",
+      "x-ms-request-id" : "532682674",
       "Body" : "{\"assignedRole\":\"Administrator\",\"userId\":\"ec667af1-0642-45f0-be8a-b76758a35dde\"}",
-      "x-ms-client-request-id" : "2646815b-932e-4b65-9318-45dab150fdbe"
+      "x-ms-client-request-id" : "c8e1da90-f4a3-48e2-b123-d888aab7c856"
     },
     "Exception" : null
   } ],

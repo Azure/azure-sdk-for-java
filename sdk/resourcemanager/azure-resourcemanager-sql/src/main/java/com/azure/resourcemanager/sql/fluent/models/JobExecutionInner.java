@@ -5,100 +5,31 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.JobExecutionLifecycle;
 import com.azure.resourcemanager.sql.models.JobExecutionTarget;
 import com.azure.resourcemanager.sql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** An execution of a job. */
-@JsonFlatten
 @Fluent
-public class JobExecutionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobExecutionInner.class);
-
+public final class JobExecutionInner extends ProxyResource {
     /*
-     * The job version number.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.jobVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer jobVersion;
+    @JsonProperty(value = "properties")
+    private JobExecutionProperties innerProperties;
 
-    /*
-     * The job step name.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.stepName", access = JsonProperty.Access.WRITE_ONLY)
-    private String stepName;
-
-    /*
-     * The job step id.
-     */
-    @JsonProperty(value = "properties.stepId", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer stepId;
-
-    /*
-     * The unique identifier of the job execution.
-     */
-    @JsonProperty(value = "properties.jobExecutionId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID jobExecutionId;
-
-    /*
-     * The detailed state of the job execution.
-     */
-    @JsonProperty(value = "properties.lifecycle", access = JsonProperty.Access.WRITE_ONLY)
-    private JobExecutionLifecycle lifecycle;
-
-    /*
-     * The ARM provisioning state of the job execution.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The time that the job execution was created.
-     */
-    @JsonProperty(value = "properties.createTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createTime;
-
-    /*
-     * The time that the job execution started.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The time that the job execution completed.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * Number of times the job execution has been attempted.
-     */
-    @JsonProperty(value = "properties.currentAttempts")
-    private Integer currentAttempts;
-
-    /*
-     * Start time of the current attempt.
-     */
-    @JsonProperty(value = "properties.currentAttemptStartTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime currentAttemptStartTime;
-
-    /*
-     * The last status or error message.
-     */
-    @JsonProperty(value = "properties.lastMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastMessage;
-
-    /*
-     * The target that this execution is executed on.
-     */
-    @JsonProperty(value = "properties.target", access = JsonProperty.Access.WRITE_ONLY)
-    private JobExecutionTarget target;
+    private JobExecutionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the jobVersion property: The job version number.
@@ -106,7 +37,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the jobVersion value.
      */
     public Integer jobVersion() {
-        return this.jobVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().jobVersion();
     }
 
     /**
@@ -115,7 +46,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the stepName value.
      */
     public String stepName() {
-        return this.stepName;
+        return this.innerProperties() == null ? null : this.innerProperties().stepName();
     }
 
     /**
@@ -124,7 +55,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the stepId value.
      */
     public Integer stepId() {
-        return this.stepId;
+        return this.innerProperties() == null ? null : this.innerProperties().stepId();
     }
 
     /**
@@ -133,7 +64,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the jobExecutionId value.
      */
     public UUID jobExecutionId() {
-        return this.jobExecutionId;
+        return this.innerProperties() == null ? null : this.innerProperties().jobExecutionId();
     }
 
     /**
@@ -142,7 +73,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the lifecycle value.
      */
     public JobExecutionLifecycle lifecycle() {
-        return this.lifecycle;
+        return this.innerProperties() == null ? null : this.innerProperties().lifecycle();
     }
 
     /**
@@ -151,7 +82,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -160,7 +91,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
-        return this.createTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createTime();
     }
 
     /**
@@ -169,7 +100,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -178,7 +109,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -187,7 +118,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the currentAttempts value.
      */
     public Integer currentAttempts() {
-        return this.currentAttempts;
+        return this.innerProperties() == null ? null : this.innerProperties().currentAttempts();
     }
 
     /**
@@ -197,7 +128,10 @@ public class JobExecutionInner extends ProxyResource {
      * @return the JobExecutionInner object itself.
      */
     public JobExecutionInner withCurrentAttempts(Integer currentAttempts) {
-        this.currentAttempts = currentAttempts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobExecutionProperties();
+        }
+        this.innerProperties().withCurrentAttempts(currentAttempts);
         return this;
     }
 
@@ -207,7 +141,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the currentAttemptStartTime value.
      */
     public OffsetDateTime currentAttemptStartTime() {
-        return this.currentAttemptStartTime;
+        return this.innerProperties() == null ? null : this.innerProperties().currentAttemptStartTime();
     }
 
     /**
@@ -216,7 +150,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the lastMessage value.
      */
     public String lastMessage() {
-        return this.lastMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().lastMessage();
     }
 
     /**
@@ -225,7 +159,7 @@ public class JobExecutionInner extends ProxyResource {
      * @return the target value.
      */
     public JobExecutionTarget target() {
-        return this.target;
+        return this.innerProperties() == null ? null : this.innerProperties().target();
     }
 
     /**
@@ -234,8 +168,8 @@ public class JobExecutionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (target() != null) {
-            target().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -27,7 +27,11 @@ public final class BaseImageTriggerType extends ExpandableStringEnum<BaseImageTr
         return fromString(name, BaseImageTriggerType.class);
     }
 
-    /** @return known BaseImageTriggerType values. */
+    /**
+     * Gets known BaseImageTriggerType values.
+     *
+     * @return known BaseImageTriggerType values.
+     */
     public static Collection<BaseImageTriggerType> values() {
         return values(BaseImageTriggerType.class);
     }

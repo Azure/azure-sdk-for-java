@@ -50,17 +50,18 @@ public final class CloudServiceExtensionProperties {
      * XML setting for the extension.
      */
     @JsonProperty(value = "settings")
-    private String settings;
+    private Object settings;
 
     /*
      * Protected settings for the extension which are encrypted before sent to
      * the role instance.
      */
     @JsonProperty(value = "protectedSettings")
-    private String protectedSettings;
+    private Object protectedSettings;
 
     /*
-     * The protectedSettingsFromKeyVault property.
+     * Protected settings for the extension, referenced using KeyVault which
+     * are encrypted before sent to the role instance.
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
     private CloudServiceVaultAndSecretReference protectedSettingsFromKeyVault;
@@ -191,7 +192,7 @@ public final class CloudServiceExtensionProperties {
      *
      * @return the settings value.
      */
-    public String settings() {
+    public Object settings() {
         return this.settings;
     }
 
@@ -202,7 +203,7 @@ public final class CloudServiceExtensionProperties {
      * @param settings the settings value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
-    public CloudServiceExtensionProperties withSettings(String settings) {
+    public CloudServiceExtensionProperties withSettings(Object settings) {
         this.settings = settings;
         return this;
     }
@@ -213,7 +214,7 @@ public final class CloudServiceExtensionProperties {
      *
      * @return the protectedSettings value.
      */
-    public String protectedSettings() {
+    public Object protectedSettings() {
         return this.protectedSettings;
     }
 
@@ -224,13 +225,14 @@ public final class CloudServiceExtensionProperties {
      * @param protectedSettings the protectedSettings value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
-    public CloudServiceExtensionProperties withProtectedSettings(String protectedSettings) {
+    public CloudServiceExtensionProperties withProtectedSettings(Object protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }
 
     /**
-     * Get the protectedSettingsFromKeyVault property: The protectedSettingsFromKeyVault property.
+     * Get the protectedSettingsFromKeyVault property: Protected settings for the extension, referenced using KeyVault
+     * which are encrypted before sent to the role instance.
      *
      * @return the protectedSettingsFromKeyVault value.
      */
@@ -239,7 +241,8 @@ public final class CloudServiceExtensionProperties {
     }
 
     /**
-     * Set the protectedSettingsFromKeyVault property: The protectedSettingsFromKeyVault property.
+     * Set the protectedSettingsFromKeyVault property: Protected settings for the extension, referenced using KeyVault
+     * which are encrypted before sent to the role instance.
      *
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the CloudServiceExtensionProperties object itself.

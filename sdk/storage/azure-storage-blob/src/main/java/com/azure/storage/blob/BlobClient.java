@@ -300,7 +300,7 @@ public class BlobClient extends BlobClientBase {
         Context context) {
         Objects.requireNonNull(options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
-            .subscriberContext(FluxUtil.toReactorContext(context));
+            .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
@@ -467,7 +467,7 @@ public class BlobClient extends BlobClientBase {
         Context context) {
         Mono<Response<BlockBlobItem>> upload =
             this.client.uploadFromFileWithResponse(options)
-                .subscriberContext(FluxUtil.toReactorContext(context));
+                .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

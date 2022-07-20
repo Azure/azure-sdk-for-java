@@ -1180,7 +1180,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     public Mono<DedicatedHostInner> getAsync(
         String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand) {
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DedicatedHostInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1198,7 +1205,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostname) {
         final InstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<DedicatedHostInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1432,7 +1446,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1489,7 +1503,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1544,7 +1558,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1568,7 +1582,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1594,7 +1608,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1614,7 +1628,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1635,7 +1649,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1656,7 +1670,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1678,7 +1692,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -1696,7 +1710,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * Restart the dedicated host. The operation will complete successfully once the dedicated host has restarted and is
      * running. To determine the health of VMs deployed on the dedicated host after the restart check the Resource
      * Health Center in the Azure Portal. Please refer to
-     * https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview for more details.
+     * https://docs.microsoft.com/azure/service-health/resource-health-overview for more details.
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
