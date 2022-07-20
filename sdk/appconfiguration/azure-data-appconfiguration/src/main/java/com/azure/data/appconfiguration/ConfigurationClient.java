@@ -7,19 +7,31 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
 import com.azure.data.appconfiguration.implementation.ConfigurationService;
+import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.time.OffsetDateTime;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.data.appconfiguration.ConfigurationAsyncClient.APP_CONFIG_TRACING_NAMESPACE_VALUE;
+import static com.azure.data.appconfiguration.ConfigurationAsyncClient.ETAG_ANY;
+import static com.azure.data.appconfiguration.ConfigurationAsyncClient.HTTP_REST_PROXY_SYNC_PROXY_ENABLE;
+import static com.azure.data.appconfiguration.ConfigurationAsyncClient.getETagValue;
+import static com.azure.data.appconfiguration.ConfigurationAsyncClient.validateSetting;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -43,17 +55,36 @@ import java.time.OffsetDateTime;
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationClient {
-    private final ConfigurationAsyncClient client;
+    private final ConfigurationClientImpl serviceClient;
+
+    private final ConfigurationAsyncClient configurationAsyncClient;
+    private final SyncTokenPolicy syncTokenPolicy;
+
+    private final ClientLogger logger = new ClientLogger(ConfigurationClient.class);
 
     /**
      * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
      * service call goes through the {@code pipeline}.
      *
-     * @param client The {@link ConfigurationAsyncClient} that the client routes its request through.
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
+     * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
+     * service requests receive up-to-date values.
+     * @param configurationAsyncClient The {@link ConfigurationAsyncClient} that the client routes its request through.
      */
-    ConfigurationClient(ConfigurationAsyncClient client) {
-        this.client = client;
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy,
+        ConfigurationAsyncClient configurationAsyncClient) {
+        this.serviceClient = serviceClient;
+        this.syncTokenPolicy = syncTokenPolicy;
+        // remove async client once #30031 resolved.
+        this.configurationAsyncClient = configurationAsyncClient;
     }
+
+    /**
+     * Creates a ConfigurationClient that sends requests to the configuration service at {@code serviceEndpoint}. Each
+     * service call goes through the {@code pipeline}.
+     *
+     * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
+     */
 
     /**
      * Adds a configuration value in the service if that key does not exist. The {@code label} is optional.
@@ -156,7 +187,33 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               Context context) {
-        return client.addConfigurationSettingSync(setting, context);
+        return addConfigurationSetting(setting, context);
+    }
+
+    Response<ConfigurationSetting> addConfigurationSetting(ConfigurationSetting setting, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
+        // If the service finds any existing configuration settings, then its e-tag will match and the service will
+        // return an error.
+        try {
+            return this.serviceClient.setKeyWithResponse(setting.getKey(), setting.getLabel(), setting, null,
+                getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+        } catch (HttpResponseException ex) {
+            final HttpResponse httpResponse = ex.getResponse();
+            if (httpResponse.getStatusCode() == 412) {
+                throw logger.logExceptionAsError(
+                    new ResourceExistsException("Setting was already present.", httpResponse,
+                        ex));
+            }
+            // Do we need this mapper?
+            // Throwable throwable = addConfigurationSettingExceptionMapper(ex);
+            // throw logger.logExceptionAsError(new RuntimeException(throwable));
+            throw logger.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -291,7 +348,26 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
                                                                               boolean ifUnchanged,
                                                                               Context context) {
-        return client.setConfigurationSettingSync(setting, ifUnchanged, context);
+        return setConfigurationSetting(setting, ifUnchanged, context);
+    }
+
+    Response<ConfigurationSetting> setConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
+                                                           Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        // This service method call is similar to addConfigurationSetting except it will create or update a
+        // configuration setting.
+        // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
+        // service has a matching ETag then it matches, then its value is updated with what the user passed in.
+        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
+        // old value locally.
+        // If no ETag value was passed in, then the value is always added or updated.
+        return this.serviceClient.setKeyWithResponse(setting.getKey(), setting.getLabel(), setting,
+            ifMatchETag, null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     /**
@@ -350,9 +426,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting getConfigurationSetting(String key, String label, OffsetDateTime acceptDateTime) {
-        return client.getConfigurationSetting(
-            new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE)
-            .flatMap(FluxUtil::toMono).block();
+        return getConfigurationSetting(
+            new ConfigurationSetting().setKey(key).setLabel(label), acceptDateTime, false, Context.NONE).getValue();
     }
 
     /**
@@ -428,8 +503,34 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        return client.getConfigurationSettingWithResponseSync(setting, acceptDateTime, ifChanged, context);
+        return getConfigurationSetting(setting, acceptDateTime, ifChanged, context);
     }
+
+    Response<ConfigurationSetting> getConfigurationSetting(ConfigurationSetting setting,
+        OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
+        try {
+            return this.serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(), null,
+                acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+        } catch (HttpResponseException ex) {
+            final HttpResponse httpResponse = ex.getResponse();
+            if (httpResponse.getStatusCode() == 304) {
+                return new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
+                    httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null);
+            } else if (httpResponse.getStatusCode() == 404) {
+                throw logger.logExceptionAsError(new ResourceNotFoundException("Setting not found.", httpResponse, ex));
+            }
+
+            throw logger.logExceptionAsError(ex);
+        }
+    }
+
 
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@code key} and optional {@code label} combination.
@@ -538,7 +639,23 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        return client.deleteConfigurationSettingWithResponseSync(setting, ifUnchanged, context);
+        return deleteConfigurationSetting(setting, ifUnchanged, context);
+    }
+
+    Response<ConfigurationSetting> deleteConfigurationSetting(ConfigurationSetting setting,
+        boolean ifUnchanged, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        return this.serviceClient.deleteWithResponse(
+            setting.getKey(),
+            setting.getLabel(),
+            ifMatchETag,
+            null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
     }
 
     /**
@@ -670,7 +787,22 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
                                                                   Context context) {
-        return client.setReadOnlyWithResponseSync(setting, isReadOnly, context);
+        return setReadOnly(setting, isReadOnly, context);
+    }
+
+    Response<ConfigurationSetting> setReadOnly(ConfigurationSetting setting, boolean isReadOnly,
+                                                               Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+        if (isReadOnly) {
+            return this.serviceClient.lockKeyValueWithResponse(setting.getKey(), setting.getLabel(), null,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE)
+                    .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true));
+        } else {
+            return this.serviceClient.unlockKeyValueWithResponse(setting.getKey(), setting.getLabel(),
+                null, null, context);
+        }
     }
 
     /**
@@ -726,7 +858,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listConfigurationSettings(selector, context));
+        return new PagedIterable<>(configurationAsyncClient.listConfigurationSettings(selector, context));
     }
 
     /**
@@ -795,7 +927,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        return new PagedIterable<>(client.listRevisions(selector, context));
+        return new PagedIterable<>(configurationAsyncClient.listRevisions(selector, context));
     }
 
     /**
@@ -805,6 +937,6 @@ public final class ConfigurationClient {
      * @throws NullPointerException if the given token is null.
      */
     public void updateSyncToken(String token) {
-        client.updateSyncToken(token);
+        syncTokenPolicy.updateSyncToken(token);
     }
 }
