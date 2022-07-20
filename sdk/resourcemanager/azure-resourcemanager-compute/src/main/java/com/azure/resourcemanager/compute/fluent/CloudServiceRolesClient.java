@@ -19,8 +19,8 @@ public interface CloudServiceRolesClient {
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -34,8 +34,8 @@ public interface CloudServiceRolesClient {
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,8 +48,8 @@ public interface CloudServiceRolesClient {
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -62,8 +62,8 @@ public interface CloudServiceRolesClient {
      * Gets a role from a cloud service.
      *
      * @param roleName Name of the role.
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -78,8 +78,8 @@ public interface CloudServiceRolesClient {
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,8 +92,8 @@ public interface CloudServiceRolesClient {
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -106,8 +106,8 @@ public interface CloudServiceRolesClient {
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
      *
-     * @param resourceGroupName The resourceGroupName parameter.
-     * @param cloudServiceName The cloudServiceName parameter.
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

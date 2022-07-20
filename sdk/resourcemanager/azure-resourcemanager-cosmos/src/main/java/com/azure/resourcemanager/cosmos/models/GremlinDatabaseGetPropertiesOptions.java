@@ -5,14 +5,10 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The GremlinDatabaseGetPropertiesOptions model. */
 @Fluent
 public final class GremlinDatabaseGetPropertiesOptions extends OptionsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinDatabaseGetPropertiesOptions.class);
-
     /** {@inheritDoc} */
     @Override
     public GremlinDatabaseGetPropertiesOptions withThroughput(Integer throughput) {

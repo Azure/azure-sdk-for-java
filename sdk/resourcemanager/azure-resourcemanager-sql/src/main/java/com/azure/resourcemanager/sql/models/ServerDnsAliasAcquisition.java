@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A server DNS alias acquisition request. */
 @Fluent
 public final class ServerDnsAliasAcquisition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerDnsAliasAcquisition.class);
-
     /*
      * The id of the server alias that will be acquired to point to this server
      * instead.

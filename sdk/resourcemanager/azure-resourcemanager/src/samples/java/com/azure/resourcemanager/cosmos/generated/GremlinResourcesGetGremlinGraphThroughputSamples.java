@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for GremlinResources GetGremlinGraphThroughput. */
 public final class GremlinResourcesGetGremlinGraphThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBGremlinGraphThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-05-15/examples/CosmosDBGremlinGraphThroughputGet.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputGet.

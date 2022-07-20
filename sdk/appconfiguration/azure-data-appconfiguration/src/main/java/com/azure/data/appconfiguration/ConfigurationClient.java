@@ -15,6 +15,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.appconfiguration.implementation.ConfigurationService;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.time.OffsetDateTime;
@@ -87,6 +89,9 @@ public final class ConfigurationClient {
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
@@ -117,6 +122,9 @@ public final class ConfigurationClient {
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -191,6 +199,9 @@ public final class ConfigurationClient {
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
@@ -229,6 +240,9 @@ public final class ConfigurationClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * If {@link ConfigurationSetting#getETag() ETag} is specified, the configuration value is updated if the current
      * setting's ETag matches. If the ETag's value is equal to the wildcard character ({@code "*"}), the setting will
@@ -345,6 +359,9 @@ public final class ConfigurationClient {
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
@@ -375,6 +392,9 @@ public final class ConfigurationClient {
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -443,6 +463,9 @@ public final class ConfigurationClient {
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
@@ -475,6 +498,9 @@ public final class ConfigurationClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
@@ -558,6 +584,9 @@ public final class ConfigurationClient {
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
      *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
@@ -597,6 +626,9 @@ public final class ConfigurationClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
+     *
+     * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
+     * {@link SecretReferenceConfigurationSetting}.
      *
      * <p><strong>Code Samples</strong></p>
      *

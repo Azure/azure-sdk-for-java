@@ -5,11 +5,13 @@ package com.azure.core.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -20,13 +22,16 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Header;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
@@ -64,6 +69,14 @@ public class RestProxyTests {
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        StreamResponse testDownload();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        Mono<StreamResponse> testDownloadAsync();
     }
 
     @Test
@@ -76,9 +89,40 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
         Response<Void> response = testInterface.testMethod(Flux.just(ByteBuffer.wrap(bytes)),
-            "application/json", (long) bytes.length)
+                "application/json", (long) bytes.length)
             .block();
         assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void streamResponseShouldHaveHttpResponseReferenceSync() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StreamResponse streamResponse = testInterface.testDownload();
+        streamResponse.close();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        Mockito.verify(client.getLastResponseSpy()).close();
+    }
+
+    @Test
+    public void streamResponseShouldHaveHttpResponseReferenceAsync() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StepVerifier.create(
+                testInterface.testDownloadAsync()
+                    .doOnNext(StreamResponse::close))
+            .expectNextCount(1)
+            .verifyComplete();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        Mockito.verify(client.lastResponseSpy).close();
     }
 
     @ParameterizedTest
@@ -161,28 +205,40 @@ public class RestProxyTests {
     private static final class LocalHttpClient implements HttpClient {
 
         private volatile HttpRequest lastHttpRequest;
+        private volatile HttpResponse lastResponseSpy;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             lastHttpRequest = request;
-            boolean success = request.getHeaders()
-                .stream()
-                .filter(header -> header.getName().equals("Content-Type"))
-                .map(header -> header.getValue())
-                .anyMatch(contentType -> contentType.equals("application/json"));
+            boolean success = request.getUrl().getPath().equals("/my/url/path");
+            if (request.getHttpMethod().equals(HttpMethod.POST)) {
+                success = success && request.getHeaders()
+                    .stream()
+                    .filter(header -> header.getName().equals("Content-Type"))
+                    .map(Header::getValue)
+                    .anyMatch(contentType -> contentType.equals("application/json"));
+            } else {
+                success = success && request.getHttpMethod().equals(HttpMethod.GET);
+            }
             int statusCode = success ? 200 : 400;
-            return Mono.just(new MockHttpResponse(request, statusCode));
+            MockHttpResponse response = Mockito.spy(new MockHttpResponse(request, statusCode));
+            lastResponseSpy = response;
+            return Mono.just(response);
         }
 
         public HttpRequest getLastHttpRequest() {
             return lastHttpRequest;
+        }
+
+        public HttpResponse getLastResponseSpy() {
+            return lastResponseSpy;
         }
     }
 
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
-        Map<Object, Object> expectedContextValues) {
+                                           Map<Object, Object> expectedContextValues) {
         Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());

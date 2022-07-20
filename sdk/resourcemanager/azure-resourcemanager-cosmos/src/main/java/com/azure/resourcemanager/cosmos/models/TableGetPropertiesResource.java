@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TableGetPropertiesResource model. */
 @Fluent
 public final class TableGetPropertiesResource extends TableResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableGetPropertiesResource.class);
-
     /*
      * A system generated property. A unique identifier.
      */

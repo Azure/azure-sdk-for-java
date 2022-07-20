@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class SharedPrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceProperties.class);
-
     /*
      * The resource id of the resource the shared private link resource is for.
      */

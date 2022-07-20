@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbCollectionsClient;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbCollectionGetResultInner;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbCollectionsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableMongodbCollectionsClient. */
 public final class RestorableMongodbCollectionsClientImpl implements RestorableMongodbCollectionsClient {
-    private final ClientLogger logger = new ClientLogger(RestorableMongodbCollectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableMongodbCollectionsService service;
 
@@ -89,7 +86,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(
@@ -145,7 +143,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(
@@ -197,7 +196,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
@@ -215,7 +215,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(String location, String instanceId) {
@@ -235,7 +236,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
@@ -253,7 +255,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbCollectionGetResultInner> list(String location, String instanceId) {
@@ -273,7 +276,8 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB collection events and their properties.
+     * @return the List operation response, that contains the MongoDB collection events and their properties as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbCollectionGetResultInner> list(

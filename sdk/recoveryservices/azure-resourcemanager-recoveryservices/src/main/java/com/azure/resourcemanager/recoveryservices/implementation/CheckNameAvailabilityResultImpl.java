@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.recoveryservices.implementation;
 
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityResult;
 
 public final class CheckNameAvailabilityResultImpl implements CheckNameAvailabilityResult {
     private CheckNameAvailabilityResultInner innerObject;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
     CheckNameAvailabilityResultImpl(
-        CheckNameAvailabilityResultInner innerObject, RecoveryServicesManager serviceManager) {
+        CheckNameAvailabilityResultInner innerObject,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +35,7 @@ public final class CheckNameAvailabilityResultImpl implements CheckNameAvailabil
         return this.innerObject;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

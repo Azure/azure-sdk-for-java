@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB MongoDB database. */
 @Fluent
 public final class MongoDBDatabaseGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBDatabaseGetProperties.class);
-
     /*
      * The resource property.
      */

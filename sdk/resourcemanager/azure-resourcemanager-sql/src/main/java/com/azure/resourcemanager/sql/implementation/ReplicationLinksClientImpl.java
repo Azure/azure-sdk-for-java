@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ReplicationLinksClient;
@@ -41,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReplicationLinksClient. */
 public final class ReplicationLinksClientImpl implements ReplicationLinksClient {
-    private final ClientLogger logger = new ClientLogger(ReplicationLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReplicationLinksService service;
 
@@ -83,7 +81,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @PathParam("linkId") String linkId,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
@@ -97,6 +95,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("linkId") String linkId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -148,7 +147,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @BodyParam("application/json") UnlinkParameters parameters,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/replicationLinks")
@@ -161,6 +160,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -175,7 +175,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -219,7 +219,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -234,7 +234,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -289,12 +289,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
         return deleteWithResponseAsync(resourceGroupName, serverName, databaseName, linkId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -326,7 +326,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -345,7 +345,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReplicationLinkInner>> getWithResponseAsync(
@@ -376,6 +376,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -388,8 +389,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             serverName,
                             databaseName,
                             linkId,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -404,7 +406,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReplicationLinkInner>> getWithResponseAsync(
@@ -435,6 +437,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -445,6 +448,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                 serverName,
                 databaseName,
                 linkId,
+                accept,
                 context);
     }
 
@@ -459,20 +463,13 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationLinkInner> getAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, linkId)
-            .flatMap(
-                (Response<ReplicationLinkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -505,7 +502,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database replication link.
+     * @return a database replication link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicationLinkInner> getWithResponse(
@@ -524,7 +521,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -568,7 +565,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -583,7 +580,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -638,9 +635,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -663,9 +660,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
         context = this.client.mergeContext(context);
@@ -687,9 +684,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
@@ -707,9 +704,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
         return beginFailoverAsync(resourceGroupName, serverName, databaseName, linkId, context).getSyncPoller();
@@ -726,7 +723,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -747,7 +744,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> failoverAsync(
@@ -805,7 +802,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverAllowDataLossWithResponseAsync(
@@ -849,7 +846,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             databaseName,
                             linkId,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -865,7 +862,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> failoverAllowDataLossWithResponseAsync(
@@ -921,9 +918,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -947,9 +944,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFailoverAllowDataLossAsync(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
         context = this.client.mergeContext(context);
@@ -972,9 +969,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId) {
         return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId).getSyncPoller();
@@ -993,9 +990,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailoverAllowDataLoss(
         String resourceGroupName, String serverName, String databaseName, String linkId, Context context) {
         return beginFailoverAllowDataLossAsync(resourceGroupName, serverName, databaseName, linkId, context)
@@ -1014,7 +1011,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAllowDataLossAsync(
@@ -1037,7 +1034,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> failoverAllowDataLossAsync(
@@ -1093,15 +1090,15 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> unlinkWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1127,9 +1124,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
         if (linkId == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2014-04-01";
-        UnlinkParameters parameters = new UnlinkParameters();
-        parameters.withForcedTermination(forcedTermination);
         return FluxUtil
             .withContext(
                 context ->
@@ -1144,7 +1144,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             linkId,
                             parameters,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1155,12 +1155,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> unlinkWithResponseAsync(
@@ -1168,7 +1168,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1195,9 +1195,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
         if (linkId == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkId is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2014-04-01";
-        UnlinkParameters parameters = new UnlinkParameters();
-        parameters.withForcedTermination(forcedTermination);
         context = this.client.mergeContext(context);
         return service
             .unlink(
@@ -1220,17 +1223,17 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginUnlinkAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination);
+            unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, parameters);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1245,24 +1248,24 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUnlinkAsync(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context);
+            unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1276,16 +1279,16 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnlink(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).getSyncPoller();
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters) {
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, parameters).getSyncPoller();
     }
 
     /**
@@ -1296,22 +1299,22 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnlink(
         String resourceGroupName,
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context) {
-        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context)
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context)
             .getSyncPoller();
     }
 
@@ -1323,16 +1326,16 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> unlinkAsync(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination)
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters) {
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1345,12 +1348,12 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> unlinkAsync(
@@ -1358,9 +1361,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context) {
-        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context)
+        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1373,36 +1376,15 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> unlinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        final Boolean forcedTermination = null;
-        return beginUnlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unlink(
-        String resourceGroupName, String serverName, String databaseName, String linkId, Boolean forcedTermination) {
-        unlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).block();
+        String resourceGroupName, String serverName, String databaseName, String linkId, UnlinkParameters parameters) {
+        unlinkAsync(resourceGroupName, serverName, databaseName, linkId, parameters).block();
     }
 
     /**
@@ -1413,7 +1395,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database that has the replication link to be failed over.
      * @param linkId The ID of the replication link to be failed over.
-     * @param forcedTermination Determines whether link will be terminated in a forced or a friendly way.
+     * @param parameters The required parameters for unlinking replication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1425,27 +1407,9 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
         String serverName,
         String databaseName,
         String linkId,
-        Boolean forcedTermination,
+        UnlinkParameters parameters,
         Context context) {
-        unlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination, context).block();
-    }
-
-    /**
-     * Deletes a database replication link in forced or friendly way.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database that has the replication link to be failed over.
-     * @param linkId The ID of the replication link to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unlink(String resourceGroupName, String serverName, String databaseName, String linkId) {
-        final Boolean forcedTermination = null;
-        unlinkAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination).block();
+        unlinkAsync(resourceGroupName, serverName, databaseName, linkId, parameters, context).block();
     }
 
     /**
@@ -1458,7 +1422,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationLinkInner>> listByDatabaseSinglePageAsync(
@@ -1486,6 +1451,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1497,12 +1463,13 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                             resourceGroupName,
                             serverName,
                             databaseName,
+                            accept,
                             context))
             .<PagedResponse<ReplicationLinkInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1516,7 +1483,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationLinkInner>> listByDatabaseSinglePageAsync(
@@ -1544,6 +1512,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -1553,6 +1522,7 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
                 resourceGroupName,
                 serverName,
                 databaseName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1570,7 +1540,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ReplicationLinkInner> listByDatabaseAsync(
@@ -1589,7 +1560,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationLinkInner> listByDatabaseAsync(
@@ -1608,7 +1580,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> listByDatabase(
@@ -1627,7 +1600,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List database replication link request.
+     * @return represents the response to a List database replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationLinkInner> listByDatabase(
