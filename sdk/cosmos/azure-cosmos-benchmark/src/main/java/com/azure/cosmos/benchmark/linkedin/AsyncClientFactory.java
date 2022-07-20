@@ -74,11 +74,6 @@ public class AsyncClientFactory {
     public static CosmosAsyncClient buildBulkLoadAsyncClient(final Configuration cfg) {
         Preconditions.checkNotNull(cfg, "The Workload configuration defining the parameters can not be null");
 
-        if (cfg.isClientTelemetryEnabled()) {
-            System.setProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT", cfg.getClientTelemetryEndpoint());
-            System.setProperty("COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS", String.valueOf(cfg.getClientTelemetrySchedulingInSeconds()));
-        }
-
         final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
