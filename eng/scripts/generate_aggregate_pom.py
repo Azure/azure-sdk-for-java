@@ -25,7 +25,7 @@ from pom_helper import *
 valid_parents = ['com.azure:azure-client-sdk-parent']
 
 # List of parent POMs that should be retained as projects to create POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent']
 
 include_groups = []
 
@@ -234,8 +234,10 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/resourcemanagerhybrid
-        if 'resourcemanagerhybrid' in root:
+        # Ignore sdk/resourcemanagerhybrid, sdk/e2e and sdk/template
+        if 'resourcemanagerhybrid' in root \
+            or 'e2e' in root \
+            or 'template' in root:
             continue
 
         for file_name in files:
@@ -268,7 +270,8 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list):
     if not project_identifier in project_list_identifiers \
         or project_identifier in exclude_projects \
         or parent_pom not in valid_parents \
-        or group_id.text not in include_groups:
+        or group_id.text not in include_groups \
+        or project_identifier in parent_pom_identifiers :
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
