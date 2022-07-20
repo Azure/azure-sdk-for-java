@@ -38,9 +38,6 @@ parameters:
   - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
-  - name: VersionOverrides
-    type: string
-    default: ''
 
 steps:
   - task: Maven@3

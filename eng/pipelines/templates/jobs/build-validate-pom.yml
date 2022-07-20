@@ -8,9 +8,6 @@ parameters:
   - name: Artifacts
     type: object
     default: []
-  - name: VersionOverrides
-    type: string
-    default: ''
 
 jobs:
   - job: 'BuildAndValidate'

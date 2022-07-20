@@ -373,7 +373,6 @@ jobs:
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
-      VersionOverrides: ${{ parameters.VersionOverrides }}
       CloudConfig:
         Cloud: Public
       AdditionalParameters:
