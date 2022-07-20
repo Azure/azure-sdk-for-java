@@ -52,6 +52,13 @@ stages:
           safeName: azurejsongson
       MatrixReplace:
         - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
+      AdditionalMatrixConfigs:
+        - Name: version-overrides-matrix
+          Path: sdk/core/version-overrides-matrix.json
+          Selection: sparse
+          NonSparseParameters:
+            - VersionOverrides
+          GenerateVMJobs: true
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
@@ -86,14 +93,3 @@ stages:
     parameters:
       AdditionalMatrixReplace:
         - TestFromSource=(.*)/true
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: core
-      Artifacts:
-        - name: azure-core
-          groupId: com.azure
-          safeName: azurecore
-      TestName: 'reactor_35'
-      VersionOverrides: 'reactor_3.5'
-      MatrixFilters:
-        - TestFromSource=^$|true
