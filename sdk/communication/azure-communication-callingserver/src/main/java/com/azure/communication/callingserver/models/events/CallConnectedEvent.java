@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CallConnectedEvent model. */
 @Fluent
-public final class CallConnectedEvent {
+public final class CallConnectedEvent extends CallingServerEventBase {
     /*
      * The type property.
      */

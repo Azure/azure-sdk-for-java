@@ -13,7 +13,7 @@ import java.util.List;
 
 /** The AddParticipantsFailedEvent model. */
 @Fluent
-public final class AddParticipantsFailedEvent {
+public final class AddParticipantsFailedEvent extends CallingServerEventBase {
     /*
      * Operation context
      */

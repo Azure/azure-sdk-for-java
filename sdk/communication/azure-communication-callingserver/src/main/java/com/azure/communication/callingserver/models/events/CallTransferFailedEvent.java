@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CallTransferFailedEvent model. */
 @Fluent
-public final class CallTransferFailedEvent {
+public final class CallTransferFailedEvent extends CallingServerEventBase {
     /*
      * Operation context
      */

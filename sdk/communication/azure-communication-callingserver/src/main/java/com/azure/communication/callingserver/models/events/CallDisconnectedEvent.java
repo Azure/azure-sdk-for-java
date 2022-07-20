@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CallDisconnectedEvent model. */
 @Fluent
-public final class CallDisconnectedEvent {
+public final class CallDisconnectedEvent extends CallingServerEventBase{
     /*
      * The type property.
      */

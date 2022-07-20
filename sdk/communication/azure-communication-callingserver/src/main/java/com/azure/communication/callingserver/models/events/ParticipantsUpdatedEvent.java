@@ -12,7 +12,7 @@ import java.util.List;
 
 /** The ParticipantsUpdatedEvent model. */
 @Fluent
-public final class ParticipantsUpdatedEvent {
+public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /*
      * List of current participants in the call.
      */

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CallTransferAcceptedEvent model. */
 @Fluent
-public final class CallTransferAcceptedEvent {
+public final class CallTransferAcceptedEvent extends CallingServerEventBase {
     /*
      * Operation context
      */
