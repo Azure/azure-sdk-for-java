@@ -244,4 +244,17 @@ public class CallConnection {
                                                                                String operationContext, Context context) {
         return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove, operationContext, context).block();
     }
+
+    //region Content management Actions
+    /***
+     * Returns an object of CallContent
+     *
+     * @return a CallContentAsync.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallMedia getCallContentClient() {
+        return new CallMedia(callConnectionAsync.getCallContentAsyncClient());
+    }
+
+    //endregion
 }

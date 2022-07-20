@@ -3,20 +3,13 @@
 
 package com.azure.communication.callingserver.implementation.accesshelpers;
 
-import com.azure.communication.callingserver.implementation.converters.ErrorConverter;
-import com.azure.communication.callingserver.implementation.models.CommunicationError;
-import com.azure.communication.callingserver.models.CallingServerError;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.exception.HttpResponseException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Helper class to access private values of {@link CallingServerErrorException} across package boundaries.
  */
-public class ErrorConstructorProxy {
+public final class ErrorConstructorProxy {
     private static ErrorConstructorProxy.ErrorConstructorAccessor accessor;
 
     private ErrorConstructorProxy() { }

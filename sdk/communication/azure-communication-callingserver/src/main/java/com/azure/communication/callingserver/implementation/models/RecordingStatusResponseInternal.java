@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecordingStatusResponse model. */
+/** The RecordingStatusResponseInternal model. */
 @Fluent
-public final class RecordingStatusResponse {
+public final class RecordingStatusResponseInternal {
     /*
      * The recordingId property.
      */
@@ -20,7 +20,7 @@ public final class RecordingStatusResponse {
      * The recordingStatus property.
      */
     @JsonProperty(value = "recordingStatus")
-    private RecordingStatus recordingStatus;
+    private RecordingStatusInternal recordingStatus;
 
     /**
      * Get the recordingId property: The recordingId property.
@@ -35,9 +35,9 @@ public final class RecordingStatusResponse {
      * Set the recordingId property: The recordingId property.
      *
      * @param recordingId the recordingId value to set.
-     * @return the RecordingStatusResponse object itself.
+     * @return the RecordingStatusResponseInternal object itself.
      */
-    public RecordingStatusResponse setRecordingId(String recordingId) {
+    public RecordingStatusResponseInternal setRecordingId(String recordingId) {
         this.recordingId = recordingId;
         return this;
     }
@@ -47,7 +47,7 @@ public final class RecordingStatusResponse {
      *
      * @return the recordingStatus value.
      */
-    public RecordingStatus getRecordingStatus() {
+    public RecordingStatusInternal getRecordingStatus() {
         return this.recordingStatus;
     }
 
@@ -55,9 +55,9 @@ public final class RecordingStatusResponse {
      * Set the recordingStatus property: The recordingStatus property.
      *
      * @param recordingStatus the recordingStatus value to set.
-     * @return the RecordingStatusResponse object itself.
+     * @return the RecordingStatusResponseInternal object itself.
      */
-    public RecordingStatusResponse setRecordingStatus(RecordingStatus recordingStatus) {
+    public RecordingStatusResponseInternal setRecordingStatus(RecordingStatusInternal recordingStatus) {
         this.recordingStatus = recordingStatus;
         return this;
     }

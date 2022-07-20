@@ -6,7 +6,7 @@ package com.azure.communication.callingserver.implementation.accesshelpers;
 import com.azure.communication.callingserver.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callingserver.models.ListParticipantsResponse;
 
-public class ListParticipantsResponseConstructorProxy {
+public final class ListParticipantsResponseConstructorProxy {
     private static ListParticipantsResponseConstructorProxy.ListParticipantsResponseConstructorAccessor accessor;
 
     private ListParticipantsResponseConstructorProxy() { }

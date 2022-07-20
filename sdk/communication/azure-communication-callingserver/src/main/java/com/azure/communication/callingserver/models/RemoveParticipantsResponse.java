@@ -5,7 +5,6 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.accesshelpers.RemoveParticipantsResponseConstructorProxy;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsResponseInternal;
-import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
 import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;

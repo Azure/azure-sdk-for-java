@@ -7,7 +7,6 @@ import com.azure.communication.callingserver.implementation.accesshelpers.CallCo
 import com.azure.communication.callingserver.implementation.converters.CallSourceConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
-import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 

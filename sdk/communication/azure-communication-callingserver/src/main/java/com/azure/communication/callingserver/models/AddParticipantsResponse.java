@@ -17,7 +17,7 @@ public final class AddParticipantsResponse {
     /*
      * The participants property.
      */
-    private List<CallParticipant> participants;
+    private final List<CallParticipant> participants;
 
     /*
      * The operation context provided by client.

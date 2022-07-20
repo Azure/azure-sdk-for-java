@@ -5,19 +5,16 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.GroupCallLocator;
-import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.RecordingChannel;
-import com.azure.communication.callingserver.models.RecordingContent;
-import com.azure.communication.callingserver.models.RecordingFormat;
-import com.azure.communication.callingserver.models.RecordingIdResponse;
-import com.azure.communication.callingserver.models.RecordingStateResponse;
+import com.azure.communication.callingserver.models.RecordingStatusResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpRange;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
 import java.io.OutputStream;
@@ -47,18 +44,16 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingIdResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+    public RecordingStatusResponse startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
         return callRecordingAsync.startRecording(callLocator, recordingStateCallbackUri).block();
     }
 
     /**
-     * Start recording of the call.     *
+     * Start recording of the call.
      *
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param content Content Type.
-     * @param format Format Type.
-     * @param channel Channel Type
+     * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -66,19 +61,15 @@ public class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingIdResponse> startRecordingWithResponse(
+    public Response<RecordingStatusResponse> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
-        RecordingContent content,
-        RecordingFormat format,
-        RecordingChannel channel,
+        StartRecordingOptions options,
         Context context) {
         return callRecordingAsync.startRecordingWithResponse(
             callLocator,
             recordingStateCallbackUri,
-            content,
-            format,
-            channel,
+            options,
             context).block();
     }
 
@@ -169,7 +160,7 @@ public class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponse getRecordingState(String recordingId) {
+    public RecordingStatusResponse getRecordingState(String recordingId) {
         return callRecordingAsync.getRecordingState(recordingId).block();
     }
 
@@ -183,7 +174,7 @@ public class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<RecordingStatusResponse> getRecordingStateWithResponse(String recordingId, Context context) {
         return callRecordingAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
@@ -192,12 +183,10 @@ public class CallRecording {
      * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
-     *                  the whole content will be downloaded.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
-        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream) {
+        downloadToWithResponse(sourceEndpoint, destinationStream, null, null);
     }
 
     /**
@@ -214,7 +203,7 @@ public class CallRecording {
     public Response<Void> downloadToWithResponse(String sourceEndpoint,
                                                  OutputStream destinationStream,
                                                  HttpRange httpRange,
-                                                 final Context context) {
+                                                 Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         return callRecordingAsync
@@ -223,20 +212,32 @@ public class CallRecording {
     }
 
     /**
-     * Download the content located in {@code endpoint} into a file marked by {@code path}.
-     * This download will be done using parallel workers.
+     * Downloads the entire content.
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadTo(String, OutputStream)} to download larger blobs.</p>
+     *
      * @param sourceEndpoint - ACS URL where the content is located.
-     * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
+     * @return The content of the blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint,
-                           Path destinationPath,
-                           ParallelDownloadOptions parallelDownloadOptions,
-                           boolean overwrite) {
-        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+    public BinaryData downloadContent(String sourceEndpoint) {
+        return callRecordingAsync.downloadContent(sourceEndpoint).block();
+    }
+
+    /**
+     * Downloads the entire content.
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadToWithResponse(String, OutputStream, HttpRange, Context)} to download larger blobs.</p>
+     *
+     * @param sourceEndpoint ACS URL where the content is located.
+     * @param range An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @param context A {@link Context} representing the request context.
+     * @return The content of the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadContentWithResponse(String sourceEndpoint, HttpRange range, Context context) {
+        return callRecordingAsync.downloadContentWithResponse(sourceEndpoint, range, context).block();
     }
 
     /**
@@ -244,22 +245,43 @@ public class CallRecording {
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadTo(String sourceEndpoint,
+                           Path destinationPath) {
+        DownloadToFileOptions options = new DownloadToFileOptions();
+        downloadToWithResponse(sourceEndpoint, destinationPath, options, null);
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
+     *                 download will work.
      * @param context A {@link Context} representing the request context.
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadToWithResponse(String sourceEndpoint,
                                                  Path destinationPath,
-                                                 ParallelDownloadOptions parallelDownloadOptions,
-                                                 boolean overwrite,
+                                                 DownloadToFileOptions options,
                                                  final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         return callRecordingAsync.downloadToWithResponse(sourceEndpoint, destinationPath,
-            parallelDownloadOptions, overwrite, context).block();
+            options, context).block();
+    }
+
+    /**
+     * Delete the content located in the deleteEndpoint
+     *
+     * @param deleteEndpoint - ACS URL where the content is located.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRecording(String deleteEndpoint) {
+        deleteRecordingWithResponse(deleteEndpoint, null);
     }
 
     /**
@@ -267,21 +289,10 @@ public class CallRecording {
      *
      * @param deleteEndpoint - ACS URL where the content is located.
      * @param context A {@link Context} representing the request context.
+     * @return Response for successful delete request..
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRecording(String deleteEndpoint, final Context context) {
-        callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
-    }
-
-    /**
-     * Delete the content located in the deleteEndpoint
-     *
-     * @param deleteEndpoint - ACS URL where the content is located.
-     * @param context A {@link Context} representing the request context.
-     * @return Response containing the http response information from the download.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
+    public Response<Void> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
         return callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 

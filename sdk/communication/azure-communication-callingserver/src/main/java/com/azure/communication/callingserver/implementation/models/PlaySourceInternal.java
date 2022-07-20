@@ -26,7 +26,7 @@ public final class PlaySourceInternal {
      * Defines the file source info to be used for play
      */
     @JsonProperty(value = "fileSource")
-    private FileSource fileSource;
+    private FileSourceInternal fileSource;
 
     /**
      * Get the sourceType property: Defines the type of the play source.
@@ -73,7 +73,7 @@ public final class PlaySourceInternal {
      *
      * @return the fileSource value.
      */
-    public FileSource getFileSource() {
+    public FileSourceInternal getFileSource() {
         return this.fileSource;
     }
 
@@ -83,7 +83,7 @@ public final class PlaySourceInternal {
      * @param fileSource the fileSource value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setFileSource(FileSource fileSource) {
+    public PlaySourceInternal setFileSource(FileSourceInternal fileSource) {
         this.fileSource = fileSource;
         return this;
     }
