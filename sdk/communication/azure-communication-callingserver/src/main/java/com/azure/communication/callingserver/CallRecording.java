@@ -280,7 +280,7 @@ public class CallRecording {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
+    public Response<Void> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
         return callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 

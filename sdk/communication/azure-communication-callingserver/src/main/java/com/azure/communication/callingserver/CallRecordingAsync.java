@@ -543,7 +543,7 @@ public class CallRecordingAsync {
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HttpResponse>> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
+    public Mono<Response<Void>> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteEndpoint);
         URL urlToSignWith = getUrlToSignRequestWith(deleteEndpoint);
         Context finalContext;
