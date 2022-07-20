@@ -31,17 +31,17 @@
 
 Familiarity with the [Jedis](https://www.javadoc.io/doc/redis.clients/jedis/latest/index.html) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is assumed.
 
-* [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world)
- - This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
+* [Authenticate with Azure AD - Hello World](#authenticate-with-azure-ad-hello-world):
+    This sample is recommended for users getting started to use Azure AD authentication with Azure Cache for Redis.
 
-* [Authenticate with Azure AD - Handle Re-Authentication](#authenticate-with-azure-ad-handle-re-authentication)
- - This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
+* [Authenticate with Azure AD - Handle Reauthentication](#authenticate-with-azure-ad-handle-reauthentication):
+  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with Azure AD upon token expiry.
 
-* [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache)
-  - This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache caching a non expired Azure AD token.
+* [Authenticate with Azure AD - Using Token Cache](#authenticate-with-azure-ad-using-token-cache):
+  This sample is recommended to users looking to build long-running applications that would like to handle reauthenticating with a Token cache caching a non expired Azure AD token.
   
-* [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper)
- - This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
+* [Authenticate with Azure AD - Azure Jedis Wrapper](#authenticate-with-azure-ad-azure-jedis-wrapper):
+ This sample is recommended to users looking to build long-running applications that would like to integrate our recommended wrapper implementation in their application which handles reconnection and re-authentication on user's behalf.
  
 
 #### Authenticate with Azure AD: Hello World
@@ -129,9 +129,7 @@ while (i < maxTries) {
         // Handle The Exception as required in your application.
         e.printStackTrace();
         
-        if (e.getMessage().contains("Invalid Username Password Pair")) {
-            
-        }   
+        // DISCUSS: Catch Exceptions here containing Invalid Username Password / NOPERM errors and throw exception with link to troubleshooting section below.
 
         // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
         if (jedis.isBroken()) {
@@ -168,7 +166,107 @@ When migrating your existing your application code, you need to replace the pass
 Integrate the logic in your application code to fetch an Azure AD access token via the Azure Identity library and store it in a Token Cache as shown below and replace it with the password configuring/retrieving logic in your application code.
 
 ```java
+//Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
+// Fetch an Azure AD token to be used for authentication. This token will be used as the password.
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
+AccessToken accessToken = tokenRefreshCache.getAccessToken();
+
+// SSL connection is required for non 6379 ports.
+boolean useSsl = true;
+String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
+
+// Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
+Jedis jedis = createJedisClient(cacheHostname, 6380, "USERNAME", accessToken, useSsl);
+
+int maxTries = 3;
+int i = 0;
+
+while (i < maxTries) {
+    try {
+        // Set a value against your key in the Redis cache.
+        jedis.set("Az:key", "testValue");
+        System.out.println(jedis.get("Az:key"));
+        break;
+    } catch (JedisException e) {
+        // Handle The Exception as required in your application.
+        e.printStackTrace();
+
+        // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
+        if (jedis.isBroken()) {
+            jedis.close();
+            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", tokenRefreshCache.getAccessToken(), useSsl);
+        }
+    }
+    i++;
+}
+// Close the Jedis Client
+jedis.close();
+
+// Helper Code
+private static Jedis createJedisClient(String cacheHostname, int port, String username, AccessToken accessToken, boolean useSsl) {
+    return new Jedis(cacheHostname, port, DefaultJedisClientConfig.builder()
+        .password(accessToken.getToken())
+        .user(username)
+        .ssl(useSsl)
+        .build());
+}
+
+/**
+ * The Token Cache to store and proactively refresh the Access Token.
+ */
+public static class TokenRefreshCache {
+    private final TokenCredential tokenCredential;
+    private final TokenRequestContext tokenRequestContext;
+    private final Timer timer;
+    private volatile AccessToken accessToken;
+    private final Duration refreshOffset;
+
+    /**
+     * Creates an instance of TokenRefreshCache
+     * @param tokenCredential the token credential to be used for authentication.
+     * @param tokenRequestContext the token request context to be used for authentication.
+     * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
+     */
+    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+        this.tokenCredential = tokenCredential;
+        this.tokenRequestContext = tokenRequestContext;
+        this.timer = new Timer();
+        this.refreshOffset = refreshOffset;
+    }
+
+    /**
+     * Gets the cached access token.
+     * @return the {@link AccessToken}
+     */
+    public AccessToken getAccessToken() {
+        if (accessToken != null) {
+            return  accessToken;
+        } else {
+            TokenRefreshTask tokenRefreshTask = new TokenRefreshTask();
+            accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            timer.schedule(tokenRefreshTask, getTokenRefreshDelay());
+            return accessToken;
+        }
+    }
+
+    private class TokenRefreshTask extends TimerTask {
+        // Add your task here
+        public void run() {
+            accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
+            timer.schedule(new TokenRefreshTask(), getTokenRefreshDelay());
+        }
+    }
+
+    private long getTokenRefreshDelay() {
+        return ((accessToken.getExpiresAt()
+            .minusSeconds(refreshOffset.getSeconds()))
+            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+    }
+}
 ```
 
 #### Authenticate with Azure AD: Azure Jedis Wrapper
