@@ -4,22 +4,23 @@
 package com.azure.json;
 
 import com.azure.json.contract.JsonWriterContractTests;
-import com.azure.json.implementation.AccessibleByteArrayOutputStream;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
  * Tests {@link DefaultJsonWriter} against the contract required by {@link JsonWriter}.
  */
 public class DefaultJsonWriterContractTests extends JsonWriterContractTests {
-    private AccessibleByteArrayOutputStream outputStream;
+    private ByteArrayOutputStream outputStream;
     private JsonWriter writer;
 
     @BeforeEach
     public void beforeEach() {
-        this.outputStream = new AccessibleByteArrayOutputStream();
-        this.writer = DefaultJsonWriter.fromStream(outputStream);
+        this.outputStream = new ByteArrayOutputStream();
+        this.writer = DefaultJsonWriter.toStream(outputStream);
     }
 
     @Override
@@ -29,6 +30,10 @@ public class DefaultJsonWriterContractTests extends JsonWriterContractTests {
 
     @Override
     public String getJsonWriterContents() {
-        return outputStream.toString(StandardCharsets.UTF_8);
+        try {
+            return outputStream.toString(StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

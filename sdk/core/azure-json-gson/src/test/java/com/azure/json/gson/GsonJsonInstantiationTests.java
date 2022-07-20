@@ -28,7 +28,7 @@ public class GsonJsonInstantiationTests {
             () -> GsonJsonReader.fromString(null),
             () -> GsonJsonReader.fromStream(null),
 
-            () -> GsonJsonWriter.fromStream(null)
+            () -> GsonJsonWriter.toStream(null)
         );
     }
 }

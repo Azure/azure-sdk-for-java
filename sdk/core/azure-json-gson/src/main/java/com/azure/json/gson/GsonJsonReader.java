@@ -13,11 +13,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
-import static com.azure.json.implementation.CheckExceptionUtils.callWithWrappedIoException;
-import static com.azure.json.implementation.CheckExceptionUtils.invokeWithWrappedIoException;
 
 /**
  * GSON-based implementation of {@link JsonReader}
@@ -79,75 +77,115 @@ public final class GsonJsonReader extends JsonReader {
     public JsonToken nextToken() {
         // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
         // The contract of JsonReader implicitly overlooks these properties.
-        if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_OBJECT) {
-            invokeWithWrappedIoException(reader::beginObject);
-        } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_OBJECT) {
-            invokeWithWrappedIoException(reader::endObject);
-        } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_ARRAY) {
-            invokeWithWrappedIoException(reader::beginArray);
-        } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_ARRAY) {
-            invokeWithWrappedIoException(reader::endArray);
-        } else if (currentToken == JsonToken.NULL) {
-            invokeWithWrappedIoException(reader::nextNull);
-        }
+        try {
+            if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_OBJECT) {
+                reader.beginObject();
+            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_OBJECT) {
+                reader.endObject();
+            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.BEGIN_ARRAY) {
+                reader.beginArray();
+            } else if (gsonCurrentToken == com.google.gson.stream.JsonToken.END_ARRAY) {
+                reader.endArray();
+            } else if (currentToken == JsonToken.NULL) {
+                reader.nextNull();
+            }
 
-        gsonCurrentToken = callWithWrappedIoException(reader::peek);
-        currentToken = mapToken(gsonCurrentToken);
-        return currentToken;
+            gsonCurrentToken = reader.peek();
+            currentToken = mapToken(gsonCurrentToken);
+            return currentToken;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public byte[] getBinaryValue() {
-        if (currentToken == JsonToken.NULL) {
-            invokeWithWrappedIoException(reader::nextNull);
-            return null;
-        } else {
-            return Base64.getDecoder().decode(callWithWrappedIoException(reader::nextString));
+        try {
+            if (currentToken == JsonToken.NULL) {
+                reader.nextNull();
+                return null;
+            } else {
+                return Base64.getDecoder().decode(reader.nextString());
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
     @Override
     public boolean getBooleanValue() {
-        return callWithWrappedIoException(reader::nextBoolean);
+        try {
+            return reader.nextBoolean();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public double getDoubleValue() {
-        return callWithWrappedIoException(reader::nextDouble);
+        try {
+            return reader.nextDouble();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public float getFloatValue() {
-        return callWithWrappedIoException(reader::nextDouble).floatValue();
+        try {
+            return (float) reader.nextDouble();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public int getIntValue() {
-        return callWithWrappedIoException(reader::nextInt);
+        try {
+            return reader.nextInt();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public long getLongValue() {
-        return callWithWrappedIoException(reader::nextLong);
+        try {
+            return reader.nextLong();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public String getStringValue() {
-        if (currentToken == JsonToken.NULL) {
-            return null;
-        } else {
-            return callWithWrappedIoException(reader::nextString);
+        try {
+            if (currentToken == JsonToken.NULL) {
+                return null;
+            } else {
+                return reader.nextString();
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
     @Override
     public String getFieldName() {
-        return callWithWrappedIoException(reader::nextName);
+        try {
+            return reader.nextName();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
     public void skipChildren() {
-        invokeWithWrappedIoException(reader::skipValue);
+        try {
+            reader.skipValue();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
