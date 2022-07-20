@@ -7,8 +7,9 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [#29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
 * Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed a regression introduced in [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440) which causes an `IllegalArgumentException` for distinct queries when using POJO serialization. - See [PR 30025](https://github.com/Azure/azure-sdk-for-java/pull/30025)
 
 #### Other Changes
 
