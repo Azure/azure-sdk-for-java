@@ -95,3 +95,5 @@ stages:
           safeName: azurecore
       TestName: 'reactor_35'
       VersionOverrides: 'reactor_3.5'
+      MatrixFilters:
+        - TestFromSource=^$|true

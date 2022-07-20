@@ -41,6 +41,7 @@ parameters:
   default: []
 - name: VersionOverrides
   type: string
+  default: ''
 
 jobs:
 - job: ${{ parameters.GenerateJobName }}
