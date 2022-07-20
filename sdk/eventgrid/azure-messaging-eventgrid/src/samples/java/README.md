@@ -5,7 +5,7 @@ languages:
 products:
   - azure
   - azure-event-grid
-urlFragment: eventgrid-samples
+urlFragment: eventgrid-samples-java
 ---
 
 # Azure EventGrid Samples client library for Java
