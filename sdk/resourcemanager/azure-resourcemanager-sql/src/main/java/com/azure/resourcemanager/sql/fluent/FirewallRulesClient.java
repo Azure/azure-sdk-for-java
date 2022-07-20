@@ -22,11 +22,11 @@ public interface FirewallRulesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
-     * @param parameters Represents a server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FirewallRuleInner>> createOrUpdateWithResponseAsync(
@@ -39,11 +39,11 @@ public interface FirewallRulesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
-     * @param parameters Represents a server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FirewallRuleInner> createOrUpdateAsync(
@@ -56,7 +56,7 @@ public interface FirewallRulesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
-     * @param parameters Represents a server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,12 +73,12 @@ public interface FirewallRulesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the firewall rule.
-     * @param parameters Represents a server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a server firewall rule.
+     * @return represents a server firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FirewallRuleInner> createOrUpdateWithResponse(
@@ -98,7 +98,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName, String firewallRuleName);
@@ -113,7 +113,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName, String firewallRuleName);
@@ -143,7 +143,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -159,7 +159,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FirewallRuleInner>> getWithResponseAsync(
@@ -175,7 +175,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FirewallRuleInner> getAsync(String resourceGroupName, String serverName, String firewallRuleName);
@@ -206,7 +206,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FirewallRuleInner> getWithResponse(
@@ -221,7 +221,7 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Firewall Rules request.
+     * @return represents the response to a List Firewall Rules request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<FirewallRuleInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -235,7 +235,8 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Firewall Rules request.
+     * @return represents the response to a List Firewall Rules request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName);
@@ -250,7 +251,8 @@ public interface FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Firewall Rules request.
+     * @return represents the response to a List Firewall Rules request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<FirewallRuleInner> listByServer(String resourceGroupName, String serverName, Context context);

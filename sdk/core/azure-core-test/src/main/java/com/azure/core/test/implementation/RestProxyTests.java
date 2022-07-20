@@ -1683,7 +1683,7 @@ public abstract class RestProxyTests {
     public void streamResponseCanTransferBody(Context context) throws IOException {
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            streamResponse.transferValueTo(Channels.newChannel(bos));
+            streamResponse.writeValueTo(Channels.newChannel(bos));
             assertEquals(streamResponse.getHeaders().getValue("ETag"), MessageDigestUtils.md5(bos.toByteArray()));
         }
 
@@ -1692,7 +1692,7 @@ public abstract class RestProxyTests {
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
             StepVerifier.create(Mono.using(
                     () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                    streamResponse::transferValueToAsync,
+                    streamResponse::writeValueToAsync,
                     channel -> {
                         try {
                             channel.close();
@@ -1713,7 +1713,7 @@ public abstract class RestProxyTests {
                 .map(streamResponse -> {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     try {
-                        streamResponse.transferValueTo(Channels.newChannel(bos));
+                        streamResponse.writeValueTo(Channels.newChannel(bos));
                     } catch (IOException e) {
                         throw Exceptions.propagate(e);
                     } finally {
@@ -1729,7 +1729,7 @@ public abstract class RestProxyTests {
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
                 .flatMap(streamResponse -> Mono.using(
                         () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                        streamResponse::transferValueToAsync,
+                        streamResponse::writeValueToAsync,
                         channel -> {
                             try {
                                 channel.close();

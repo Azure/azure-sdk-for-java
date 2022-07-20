@@ -70,12 +70,12 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      * @param channel The destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is completed.
      */
-    public Mono<Void> transferValueToAsync(AsynchronousByteChannel channel) {
+    public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (response == null) {
             return FluxUtil.writeToAsynchronousByteChannel(getValue(), channel);
         } else {
-            return response.transferBodyToAsync(channel);
+            return response.writeBodyToAsync(channel);
         }
     }
 
@@ -84,12 +84,12 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      * @param channel The destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
      */
-    public void transferValueTo(WritableByteChannel channel) throws IOException {
+    public void writeValueTo(WritableByteChannel channel) throws IOException {
         Objects.requireNonNull(channel, "'channel' must not be null");
         if (response == null) {
             FluxUtil.writeToWritableByteChannel(getValue(), channel).block();
         } else {
-            response.transferBodyTo(channel);
+            response.writeBodyTo(channel);
         }
     }
 
