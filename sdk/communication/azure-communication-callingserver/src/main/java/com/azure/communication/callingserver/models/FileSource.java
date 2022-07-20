@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FileSource model. */
 @Fluent
-public final class FileSource {
+public final class FileSource extends PlaySource {
     /*
      * Uri for the audio file to be played
      */

@@ -12,6 +12,7 @@ import com.azure.communication.callingserver.implementation.models.PlaySourceInt
 import com.azure.communication.callingserver.implementation.models.PlaySourceTypeInternal;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.FileSource;
+import com.azure.communication.callingserver.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -32,88 +33,93 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * CallContent.
  */
-public class CallContentAsync {
+public class CallMediaAsync {
     private final ContentsImpl contentsInternal;
     private final String callConnectionId;
     private final ClientLogger logger;
 
-    CallContentAsync(String callConnectionId, ContentsImpl contentsInternal) {
+    CallMediaAsync(String callConnectionId, ContentsImpl contentsInternal) {
         this.callConnectionId = callConnectionId;
         this.contentsInternal = contentsInternal;
-        this.logger = new ClientLogger(CallContentAsync.class);
+        this.logger = new ClientLogger(CallMediaAsync.class);
     }
 
     /**
      * Play
      *
-     * @param fileSource type of the play source
-     * @param playTo the targets to be played
-     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @param playSource type of the play source
+     * @param playTo     the targets to play to
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Placeholder
+     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> play(FileSource fileSource, List<CommunicationIdentifier> playTo, String playSourceId) {
-        return playWithResponse(fileSource, playTo, playSourceId).flatMap(FluxUtil::toMono);
+    public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        return playWithResponse(playSource, playTo).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play to all participants
      *
-     * @param fileSource type of the play source
-     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @param playSource type of the play source
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Placeholder
+     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> playAll(FileSource fileSource, String playSourceId) {
-        return playAllWithResponse(fileSource, playSourceId).flatMap(FluxUtil::toMono);
+    public Mono<Void> playAll(PlaySource playSource) {
+        return playAllWithResponse(playSource).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play
      *
-     * @param fileSource type of the play source
-     * @param playTo the targets to be played
-     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @param playSource type of the play source
+     * @param playTo     the targets to play to
+     * @return Response
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Placeholder
+     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playWithResponse(FileSource fileSource, List<CommunicationIdentifier> playTo,
-                                                         String playSourceId) {
-        return withContext(context -> playWithResponseInternal(fileSource, playTo, playSourceId, context));
+    public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        return withContext(context -> playWithResponseInternal(playSource, playTo, context));
     }
 
     /**
      * Play to all participants
      *
-     * @param fileSource type of the play source
-     * @param playSourceId the identifier to be used for caching related media, Optional.
+     * @param playSource type of the play source
+     * @return Response
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Placeholder
+     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playAllWithResponse(FileSource fileSource, String playSourceId) {
+    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource) {
         return withContext(context ->
-            playWithResponseInternal(fileSource, Collections.emptyList(), playSourceId, context)
+            playWithResponseInternal(playSource, Collections.emptyList(), context)
         );
     }
 
-    Mono<Response<Void>> playWithResponseInternal(FileSource fileSource, List<CommunicationIdentifier> playTo,
-                                                  String playSourceId, Context context) {
+    Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
+                                                  Context context) {
         try {
-            PlayRequest request = new PlayRequest();
             context = context == null ? Context.NONE : context;
+            PlayRequest request = getPlayRequest(playSource, playTo);
+
+            return contentsInternal.playWithResponseAsync(callConnectionId, request, context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        if (playSource instanceof FileSource) {
+            FileSource fileSource = (FileSource) playSource;
+            PlayRequest request = new PlayRequest();
             FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(fileSource.getUri());
             PlaySourceInternal playSourceInternal = new PlaySourceInternal()
                 .setSourceType(PlaySourceTypeInternal.FILE)
                 .setFileSource(fileSourceInternal)
-                .setPlaySourceId(playSourceId);
+                .setPlaySourceId(fileSource.getPlaySourceId());
 
             request.setPlaySourceInfo(playSourceInternal);
             request.setPlayTo(
@@ -122,10 +128,9 @@ public class CallContentAsync {
                     .map(CommunicationIdentifierConverter::convert)
                     .collect(Collectors.toList()));
 
-            return contentsInternal.playWithResponseAsync(callConnectionId, request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return request;
         }
+
+        throw new IllegalArgumentException(playSource.getClass().getCanonicalName());
     }
 }
