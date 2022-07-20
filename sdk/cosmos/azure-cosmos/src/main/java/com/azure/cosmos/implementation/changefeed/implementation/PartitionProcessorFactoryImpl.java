@@ -105,7 +105,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
                     this.changeFeedProcessorOptions),
                 null);
         } else {
-            state = lease.getContinuationState(this.collectionResourceId, feedRange);
+            state = lease.getIncrementalContinuationState(this.collectionResourceId, feedRange);
         }
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)

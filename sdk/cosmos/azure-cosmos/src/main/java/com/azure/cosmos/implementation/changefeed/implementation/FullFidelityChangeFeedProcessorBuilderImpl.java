@@ -161,7 +161,7 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(
+                                lease.getFullFidelityContinuationState(
                                     this.collectionResourceId,
                                     feedRange));
                         options.setMaxItemCount(1);
@@ -242,7 +242,7 @@ public class FullFidelityChangeFeedProcessorBuilderImpl implements ChangeFeedPro
                         final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
                         final CosmosChangeFeedRequestOptions options =
                             ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
-                                lease.getContinuationState(
+                                lease.getFullFidelityContinuationState(
                                     this.collectionResourceId,
                                     feedRange));
                         options.setMaxItemCount(1);

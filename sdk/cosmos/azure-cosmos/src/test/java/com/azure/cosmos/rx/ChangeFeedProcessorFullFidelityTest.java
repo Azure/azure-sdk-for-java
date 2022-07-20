@@ -7,9 +7,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.FullFidelityChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,13 +16,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ChangeFeedProcessorFullFidelityTest {
 
-    private static final String databaseId = "testdb";
-    private static final String feedContainerId = "feedcontainer";
+    private static final String databaseId = "SampleDatabase";
+    private static final String feedContainerId = "GreenTaxiRecords";
     private static final String leaseContainerId = "leasecontainer";
     private static final String feedContainerPartitionKeyPath = "/myPk";
     private static final String leaseContainerPartitionKeyPath = "/id";
@@ -34,14 +38,25 @@ public class ChangeFeedProcessorFullFidelityTest {
     private static CosmosAsyncContainer feedContainer;
     private static CosmosAsyncContainer leaseContainer;
 
+    private static Map<String, List<JsonNode>> changeFeedMap = new ConcurrentHashMap<>();
+
 
     public static void main(String[] args) {
         setup();
-        //  runFullFidelityChangeFeedProcessorFromBeginning();
         runFullFidelityChangeFeedProcessorFromNow();
-        createItems();
-        updateItems();
-        deleteItems();
+//        createItems();
+//        updateItems();
+//        deleteItems();
+        ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
+        executorService.scheduleAtFixedRate(ChangeFeedProcessorFullFidelityTest::checkChangeFeedMapDetails,
+            30, 30, TimeUnit.SECONDS);
+    }
+
+    private static void checkChangeFeedMapDetails() {
+        logger.info("Change feed map details are");
+        changeFeedMap.forEach((key, value) -> {
+            logger.info("Operation type : {}, number of changes : {}", key, value.size());
+        });
     }
 
     private static void deleteItems() {
@@ -97,50 +112,26 @@ public class ChangeFeedProcessorFullFidelityTest {
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();
 
-        cosmosAsyncClient.createDatabaseIfNotExists(databaseId).block();
-        logger.info("Test database created if not existed");
+//        cosmosAsyncClient.createDatabaseIfNotExists(databaseId).block();
+//        logger.info("Test database created if not existed");
         testDatabase = cosmosAsyncClient.getDatabase(databaseId);
 
-        logger.info("Deleting feed container");
+//        logger.info("Deleting feed container");
         feedContainer = testDatabase.getContainer(feedContainerId);
-        feedContainer.delete().block();
+//        feedContainer.delete().block();
 
-        logger.info("Deleting lease container");
+//        logger.info("Deleting lease container");
         leaseContainer = testDatabase.getContainer(leaseContainerId);
-        leaseContainer.delete().block();
+//        leaseContainer.delete().block();
 
-        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId, feedContainerPartitionKeyPath);
-        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
-        testDatabase.createContainer(cosmosContainerProperties).block();
-        logger.info("Feed container created if not existed");
+//        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(feedContainerId,
+//            feedContainerPartitionKeyPath);
+//        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(5)));
+//        testDatabase.createContainer(cosmosContainerProperties).block();
+//        logger.info("Feed container created if not existed");
 
-        testDatabase.createContainer(leaseContainerId, leaseContainerPartitionKeyPath).block();
+        testDatabase.createContainerIfNotExists(leaseContainerId, leaseContainerPartitionKeyPath).block();
         logger.info("Lease container created if not existed");
-    }
-
-    private static void runFullFidelityChangeFeedProcessorFromBeginning() {
-        ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
-        changeFeedProcessorOptions.setStartFromBeginning(true);
-        ChangeFeedProcessor changeFeedProcessor = new FullFidelityChangeFeedProcessorBuilder()
-            .feedContainer(feedContainer)
-            .leaseContainer(leaseContainer)
-            .options(changeFeedProcessorOptions)
-            .hostName("example-host")
-            .handleChanges(jsonNodes -> {
-                for (JsonNode item : jsonNodes) {
-                    logger.info("BEGINNING : Received : {}", item);
-                }
-            }).buildChangeFeedProcessor();
-
-        logger.info("Starting change feed processor");
-        changeFeedProcessor.start().subscribe();
-        try {
-            logger.info("{} going to sleep for 10 seconds", Thread.currentThread().getName());
-            Thread.sleep(10 * 1000);
-        } catch (InterruptedException e) {
-            logger.error("Error occurred while sleeping", e);
-        }
-        logger.info("Finished starting change feed processor");
     }
 
     private static void runFullFidelityChangeFeedProcessorFromNow() {
@@ -152,7 +143,20 @@ public class ChangeFeedProcessorFullFidelityTest {
             .hostName("example-host")
             .handleChanges(jsonNodes -> {
                 for (JsonNode item : jsonNodes) {
-                    logger.info("NOW : Received : {}", item);
+                    try {
+                        String operationType = item.get("metadata").get("operationType").asText();
+                        if (!changeFeedMap.containsKey(operationType)) {
+                            changeFeedMap.put(operationType, new ArrayList<>());
+                        }
+                        changeFeedMap.get(operationType).add(item);
+                    }
+                    catch (Exception e) {
+                        if (item == null)  {
+                            logger.error("Received null item ", e);
+                        } else {
+                            logger.error("Error occurred for item : {}", item.toPrettyString(), e);
+                        }
+                    }
                 }
             }).buildChangeFeedProcessor();
 

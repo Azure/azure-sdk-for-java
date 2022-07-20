@@ -108,7 +108,21 @@ public class ServiceItemLease implements Lease {
         return this.ContinuationToken;
     }
 
-    public ChangeFeedState getContinuationState(
+    @Override
+    public ChangeFeedState getIncrementalContinuationState(String containerRid, FeedRangeInternal feedRange) {
+        checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
+            null);
+    }
+
+    @Override
+    public ChangeFeedState getFullFidelityContinuationState(
         String containerRid,
         FeedRangeInternal feedRange) {
 
@@ -118,7 +132,7 @@ public class ServiceItemLease implements Lease {
         return new ChangeFeedStateV1(
             containerRid,
             feedRange,
-            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedMode.FULL_FIDELITY,
             ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
             null);
     }

@@ -123,7 +123,7 @@ class FullFidelityPartitionProcessorFactoryImpl implements PartitionProcessorFac
                     this.changeFeedProcessorOptions),
                 null);
         } else {
-            state = lease.getContinuationState(this.collectionResourceId, feedRange);
+            state = lease.getFullFidelityContinuationState(this.collectionResourceId, feedRange);
         }
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)
