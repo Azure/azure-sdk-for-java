@@ -32,7 +32,7 @@ public class CachedTokenCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        // todo
+        // @todo
         String key = tokenCredential.getClass().getSimpleName() + ":"
             + tokenRequestContext.getScopes() + ":"
             + tokenRequestContext.getClaims();
@@ -41,11 +41,11 @@ public class CachedTokenCredential implements TokenCredential {
             Mono<AccessToken> monoAccessToken = accessTokenMap.get(key);
             AccessToken accessToken = monoAccessToken.block(Duration.ofSeconds(30));
             LOGGER.info("accessToken=" + accessToken);
+           // @todo corner case
             if (accessToken != null && !accessToken.isExpired()) {
                 return monoAccessToken;
             }
         }
-
         Mono<AccessToken> cacheToken = tokenCredential.getToken(tokenRequestContext).cache();
         accessTokenMap.put(key, cacheToken);
         return cacheToken;

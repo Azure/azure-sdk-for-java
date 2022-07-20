@@ -9,36 +9,46 @@ import java.util.Map;
 public class TokenCredentialProvider {
 
     private ChainedTokenCredentialBuilder chainedTokenCredentialBuilder;
-
-    public TokenCredentialProvider() {
-        this.chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
-    }
+    private TokenCredential tokenCredential;
 
     public TokenCredentialProvider(Map<String, String> map, boolean cached) {
-        this.chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
-        TokenCredential tokenCredential = AzureJDBCPropertiesUtils.resolveTokenCredential(map);
+        TokenCredential resolvedTokenCredential = AzureJDBCPropertiesUtils.resolveTokenCredential(map);
 
-        if (tokenCredential != null) {
+        if (resolvedTokenCredential != null) {
             if (cached) {
-                chainedTokenCredentialBuilder.addFirst(new CachedTokenCredential(tokenCredential));
+                tokenCredential = new CachedTokenCredential(resolvedTokenCredential);
             } else {
-                chainedTokenCredentialBuilder.addFirst(tokenCredential);
+                tokenCredential = resolvedTokenCredential;
             }
         }
     }
 
     public TokenCredential getTokenCredential() {
-        return chainedTokenCredentialBuilder.build();
+        if (chainedTokenCredentialBuilder == null) {
+            return tokenCredential;
+        } else {
+            return chainedTokenCredentialBuilder.build();
+        }
     }
 
     public TokenCredentialProvider addTokenCredentialFirst(TokenCredential tokenCredential) {
-        chainedTokenCredentialBuilder.addFirst(tokenCredential);
+        getChainedTokenCredentialBuilder().addFirst(tokenCredential);
         return this;
     }
 
     public TokenCredentialProvider addTokenCredentialLast(TokenCredential tokenCredential) {
-        chainedTokenCredentialBuilder.addLast(tokenCredential);
+        getChainedTokenCredentialBuilder().addLast(tokenCredential);
         return this;
+    }
+
+    private ChainedTokenCredentialBuilder getChainedTokenCredentialBuilder() {
+        if (chainedTokenCredentialBuilder == null) {
+            chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder();
+            if (tokenCredential != null) {
+                chainedTokenCredentialBuilder.addFirst(tokenCredential);
+            }
+        }
+        return chainedTokenCredentialBuilder;
     }
     // customize chain
     // ChainedTokenCredential -> chained

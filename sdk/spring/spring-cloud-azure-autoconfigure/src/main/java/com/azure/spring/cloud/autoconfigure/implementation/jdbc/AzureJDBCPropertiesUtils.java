@@ -126,7 +126,7 @@ public class AzureJDBCPropertiesUtils {
         }
         final String managedIdentityEnabled = map.get(AzureJDBCPropertiesUtils.Mapping.managedIdentityEnabled.propertyKey());
 
-        if ("true".equals(managedIdentityEnabled)) {
+        if ("true".equalsIgnoreCase(managedIdentityEnabled)) {
             ManagedIdentityCredentialBuilder builder = new ManagedIdentityCredentialBuilder();
             if (isClientIdSet) {
                 builder.clientId(clientId);
