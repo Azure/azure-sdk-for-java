@@ -38,10 +38,11 @@ private object CosmosTableSchemaInferrer
   private[spark] val OperationTypeAttributeName = "operationType"
   private[spark] val LsnAttributeName = "_lsn"
   private[spark] val CurrentAttributeName = "current"
-  private[spark] val MetadataAttributeName = "metadata"
+  private[spark] val MetadataJsonBodyAttributeName = "metadata"
   private[spark] val CrtsAttributeName = "crts"
   private[spark] val MetadataLsnAttributeName = "lsn"
   private[spark] val PreviousImageLsnAttributeName = "previousImageLSN"
+  private[spark] val TtlExpiredAttributeName = "_ttlExpired"
 
 
 

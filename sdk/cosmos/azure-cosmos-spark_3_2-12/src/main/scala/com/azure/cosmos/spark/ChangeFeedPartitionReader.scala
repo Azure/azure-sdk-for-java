@@ -3,13 +3,14 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation._
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.fasterxml.jackson.databind.JsonNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
@@ -57,6 +58,7 @@ private case class ChangeFeedPartitionReader
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+  private val cosmosChangeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
   private val changeFeedRequestOptions = {
 
@@ -69,22 +71,40 @@ private case class ChangeFeedPartitionReader
       .createForProcessingFromContinuation(this.partition.continuationState.get)
       .setMaxItemCount(readConfig.maxItemCount)
 
+    var factoryMethod: java.util.function.Function[JsonNode, _] = (_: JsonNode) => {}
+    cosmosChangeFeedConfig.changeFeedMode match {
+      case ChangeFeedModes.Incremental =>
+        factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethod(jsonNode)
+      case ChangeFeedModes.FullFidelity =>
+        factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethodV1(jsonNode)
+    }
+
     ImplementationBridgeHelpers
       .CosmosChangeFeedRequestOptionsHelper
       .getCosmosChangeFeedRequestOptionsAccessor
       .setItemFactoryMethod(
         options,
-        jsonNode => {
-          val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
+        factoryMethod)
+  }
 
-          val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-            objectNode,
-            readConfig.schemaConversionMode)
+  private def changeFeedItemFactoryMethod(jsonNode: JsonNode): ChangeFeedSparkRowItem = {
+    val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
-          // println("Change Feed Json Node is ", jsonNode.toPrettyString)
+    val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
+      objectNode,
+      readConfig.schemaConversionMode)
 
-          ChangeFeedSparkRowItem(row, cosmosRowConverter.getChangeFeedLsn(objectNode))
-        })
+    ChangeFeedSparkRowItem(row, objectNode.get(LsnPropertyName).asText())
+  }
+
+  private def changeFeedItemFactoryMethodV1(jsonNode: JsonNode): ChangeFeedSparkRowItem = {
+    val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
+
+    val row = cosmosRowConverter.fromObjectNodeToRowV1(readSchema,
+      objectNode,
+      readConfig.schemaConversionMode)
+
+    ChangeFeedSparkRowItem(row, cosmosRowConverter.getChangeFeedLsn(objectNode))
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)

@@ -30,20 +30,20 @@ private[spark] object ChangeFeedTable {
     StructField(RawJsonBodyAttributeName, StringType, nullable=false),
     StructField(IdAttributeName, StringType, nullable=false),
     StructField(TimestampAttributeName, LongType, nullable=false),
-    StructField(ETagAttributeName, StringType, nullable=false)
+    StructField(ETagAttributeName, StringType, nullable=false),
+    StructField(LsnAttributeName, LongType, nullable=false)
   ))
 
   private[spark] val defaultFullFidelityChangeFeedSchemaForInferenceDisabled = StructType(Seq(
-    StructField(RawJsonBodyAttributeName, StringType, nullable=false),
+    StructField(RawJsonBodyAttributeName, StringType, nullable=true),
     StructField(IdAttributeName, StringType, nullable=false),
     StructField(TimestampAttributeName, LongType, nullable=false),
     StructField(ETagAttributeName, StringType, nullable=false),
-    StructField(MetadataAttributeName, StringType, nullable=false),
+    StructField(LsnAttributeName, LongType, nullable=false),
+    StructField(MetadataJsonBodyAttributeName, StringType, nullable=false),
     StructField(PreviousRawJsonBodyAttributeName, StringType, nullable=true),
-    StructField(CurrentAttributeName, StringType, nullable=false),
     StructField(OperationTypeAttributeName, StringType, nullable=false),
     StructField(CrtsAttributeName, LongType, nullable=false),
-    StructField(MetadataLsnAttributeName, LongType, nullable=false),
     StructField(PreviousImageLsnAttributeName, LongType, nullable=true)
   ))
 }
