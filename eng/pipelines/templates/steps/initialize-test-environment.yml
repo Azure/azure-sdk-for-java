@@ -46,7 +46,7 @@ steps:
     displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--update-type library --build-type client --sr --vo "$(TestFromSource)"'
+      arguments: '--update-type library --build-type client --sr --vo "$(VersionOverrides)"'
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
