@@ -4,7 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.PlaySource;
+import com.azure.communication.callingserver.models.FileSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -27,7 +27,7 @@ public class CallContent {
     /**
      * Play
      *
-     * @param playSource type of the play source
+     * @param fileSource type of the play source
      * @param playTo the targets to be played
      * @param playSourceId the identifier to be used for caching related media, Optional.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -35,28 +35,28 @@ public class CallContent {
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void play(PlaySource playSource, List<CommunicationIdentifier> playTo, String playSourceId) {
-        return callContentAsync.play(playSource, playTo, playSourceId).block();
+    public Void play(FileSource fileSource, List<CommunicationIdentifier> playTo, String playSourceId) {
+        return callContentAsync.play(fileSource, playTo, playSourceId).block();
     }
 
     /**
      * Play to all participants
      *
-     * @param playSource type of the play source
+     * @param fileSource type of the play source
      * @param playSourceId the identifier to be used for caching related media
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void playAll(PlaySource playSource, String playSourceId) {
-        return callContentAsync.playAll(playSource, playSourceId).block();
+    public Void playAll(FileSource fileSource, String playSourceId) {
+        return callContentAsync.playAll(fileSource, playSourceId).block();
     }
 
     /**
      * PlayWithResponse
      *
-     * @param playSource type of the play source
+     * @param fileSource type of the play source
      * @param playTo the targets to be played
      * @param playSourceId the identifier to be used for caching related media, Optional.
      * @param context Place_holder
@@ -65,15 +65,15 @@ public class CallContent {
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
+    public Response<Void> playWithResponse(FileSource fileSource, List<CommunicationIdentifier> playTo,
                                                    String playSourceId, Context context) {
-        return callContentAsync.playWithResponseInternal(playSource, playTo, playSourceId, context).block();
+        return callContentAsync.playWithResponseInternal(fileSource, playTo, playSourceId, context).block();
     }
 
     /**
      * PlayAllWithResponse
      *
-     * @param playSourceType type of the play source
+     * @param fileSource type of the play source
      * @param playSourceId the identifier to be used for caching related media, Optional.
      * @param context Place_holder
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -81,9 +81,9 @@ public class CallContent {
      * @return PlayResponse
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playAllWithResponse(PlaySource playSourceType, String playSourceId, Context context) {
+    public Response<Void> playAllWithResponse(FileSource fileSource, String playSourceId, Context context) {
         return callContentAsync
-            .playWithResponseInternal(playSourceType, Collections.emptyList(), playSourceId, context)
+            .playWithResponseInternal(fileSource, Collections.emptyList(), playSourceId, context)
             .block();
     }
 }
