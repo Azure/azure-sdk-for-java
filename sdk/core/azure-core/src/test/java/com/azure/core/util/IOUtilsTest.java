@@ -10,9 +10,9 @@ import com.azure.core.http.MockFluxHttpResponse;
 import com.azure.core.http.rest.StreamResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 import wiremock.org.eclipse.jetty.util.ConcurrentArrayQueue;
 
 import java.io.ByteArrayInputStream;
@@ -35,7 +35,6 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IOUtilsTest {
 
@@ -144,7 +143,9 @@ public class IOUtilsTest {
             3,
             1024)) {
 
-            IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume, null, 5).block();
+            StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
+                    channel, initialResponse, onErrorResume, null, 5))
+                .verifyComplete();
         }
 
         assertEquals(3, retries.get());
@@ -198,9 +199,10 @@ public class IOUtilsTest {
             3,
             1024)) {
 
-            Exception exception = assertThrows(Exception.class,
-                () -> IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume, null, 2).block());
-            assertEquals("KABOOM", Exceptions.unwrap(exception).getMessage());
+            StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
+                    channel, initialResponse, onErrorResume, null, 2))
+                .expectErrorMessage("KABOOM")
+                .verify();
         }
 
         assertEquals(2, retries.get());
