@@ -1,8 +1,4 @@
 {
-  "displayNames": {
-    "jackson_2.10": "jackson_210",
-    "reactor_3.5": "reactor_35"
-  },
   "matrix": {
     "Agent": {
       "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
