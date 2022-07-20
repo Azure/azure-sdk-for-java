@@ -23,6 +23,7 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      *
      * param xmlWriter Where the object's XML will be written.
      *
+     * @param xmlWriter The {@link XmlWriter} being written to.
      * @return The {@link XmlWriter} where the JSON was written for chaining.
      */
     XmlWriter toXml(XmlWriter xmlWriter);

@@ -523,4 +523,8 @@ the main ServiceBusClientBuilder. -->
   <!-- azure-json doesn't have a dependency on azure-core -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.json..*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.json..*"/>
+
+  <!-- azure-xml doesn't have a dependency on azure-core -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.xml..*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.xml..*"/>
 </suppressions>
