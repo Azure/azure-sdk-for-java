@@ -23,7 +23,7 @@ public final class PlaySourceInternal {
     private String playSourceId;
 
     /*
-     * Defines the file source info to be used for play
+     * The fileSource property.
      */
     @JsonProperty(value = "fileSource")
     private FileSource fileSource;
@@ -69,7 +69,7 @@ public final class PlaySourceInternal {
     }
 
     /**
-     * Get the fileSource property: Defines the file source info to be used for play.
+     * Get the fileSource property: The fileSource property.
      *
      * @return the fileSource value.
      */
@@ -78,7 +78,7 @@ public final class PlaySourceInternal {
     }
 
     /**
-     * Set the fileSource property: Defines the file source info to be used for play.
+     * Set the fileSource property: The fileSource property.
      *
      * @param fileSource the fileSource value to set.
      * @return the PlaySourceInternal object itself.
