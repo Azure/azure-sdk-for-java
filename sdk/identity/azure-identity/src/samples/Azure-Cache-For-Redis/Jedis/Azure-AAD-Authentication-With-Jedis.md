@@ -60,9 +60,10 @@ String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
         .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
 
-// SSL connection is required for non 6379 ports. It is recommeded to use SSL connections.
+// SSL connection is required.
 boolean useSsl = true; 
-String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
+// TODO: Replace the host name with your Azure Cache for Redis Host Name.
+String cacheHostname = "<YOUR_HOST_NAME>";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 // Note, Redis Cache Host Name and Port are required below
@@ -108,7 +109,8 @@ AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // SSL connection is required.
 boolean useSsl = true;
-String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
+// TODO: Replace the host name with your Azure Cache for Redis Host Name.
+String cacheHostname = "<YOUR_HOST_NAME>";
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 // Note: Cache Host Name, Port, Username, Azure AD Access Token and ssl connections are required below.

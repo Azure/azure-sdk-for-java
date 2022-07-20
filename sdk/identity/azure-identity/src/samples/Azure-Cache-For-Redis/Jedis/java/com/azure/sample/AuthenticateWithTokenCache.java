@@ -67,11 +67,6 @@ public class AuthenticateWithTokenCache {
             .build());
     }
 
-    private static AccessToken getAccessToken(TokenCredential tokenCredential, TokenRequestContext trc) {
-        return tokenCredential.getToken(trc).block();
-    }
-
-
     /**
      * The Token Cache to store and proactively refresh the Access Token.
      */
