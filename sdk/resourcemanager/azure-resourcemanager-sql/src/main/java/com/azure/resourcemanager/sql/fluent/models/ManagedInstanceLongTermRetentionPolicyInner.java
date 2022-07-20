@@ -5,41 +5,26 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A long term retention policy. */
-@JsonFlatten
 @Fluent
-public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceLongTermRetentionPolicyInner.class);
-
+public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     /*
-     * The weekly retention policy for an LTR backup in an ISO 8601 format.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.weeklyRetention")
-    private String weeklyRetention;
+    @JsonProperty(value = "properties")
+    private BaseLongTermRetentionPolicyProperties innerProperties;
 
-    /*
-     * The monthly retention policy for an LTR backup in an ISO 8601 format.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.monthlyRetention")
-    private String monthlyRetention;
-
-    /*
-     * The yearly retention policy for an LTR backup in an ISO 8601 format.
-     */
-    @JsonProperty(value = "properties.yearlyRetention")
-    private String yearlyRetention;
-
-    /*
-     * The week of year to take the yearly backup in an ISO 8601 format.
-     */
-    @JsonProperty(value = "properties.weekOfYear")
-    private Integer weekOfYear;
+    private BaseLongTermRetentionPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
@@ -47,7 +32,7 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the weeklyRetention value.
      */
     public String weeklyRetention() {
-        return this.weeklyRetention;
+        return this.innerProperties() == null ? null : this.innerProperties().weeklyRetention();
     }
 
     /**
@@ -57,7 +42,10 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
     public ManagedInstanceLongTermRetentionPolicyInner withWeeklyRetention(String weeklyRetention) {
-        this.weeklyRetention = weeklyRetention;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withWeeklyRetention(weeklyRetention);
         return this;
     }
 
@@ -67,7 +55,7 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the monthlyRetention value.
      */
     public String monthlyRetention() {
-        return this.monthlyRetention;
+        return this.innerProperties() == null ? null : this.innerProperties().monthlyRetention();
     }
 
     /**
@@ -77,7 +65,10 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
     public ManagedInstanceLongTermRetentionPolicyInner withMonthlyRetention(String monthlyRetention) {
-        this.monthlyRetention = monthlyRetention;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withMonthlyRetention(monthlyRetention);
         return this;
     }
 
@@ -87,7 +78,7 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the yearlyRetention value.
      */
     public String yearlyRetention() {
-        return this.yearlyRetention;
+        return this.innerProperties() == null ? null : this.innerProperties().yearlyRetention();
     }
 
     /**
@@ -97,7 +88,10 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
     public ManagedInstanceLongTermRetentionPolicyInner withYearlyRetention(String yearlyRetention) {
-        this.yearlyRetention = yearlyRetention;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withYearlyRetention(yearlyRetention);
         return this;
     }
 
@@ -107,7 +101,7 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the weekOfYear value.
      */
     public Integer weekOfYear() {
-        return this.weekOfYear;
+        return this.innerProperties() == null ? null : this.innerProperties().weekOfYear();
     }
 
     /**
@@ -117,7 +111,10 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
     public ManagedInstanceLongTermRetentionPolicyInner withWeekOfYear(Integer weekOfYear) {
-        this.weekOfYear = weekOfYear;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaseLongTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withWeekOfYear(weekOfYear);
         return this;
     }
 
@@ -127,5 +124,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

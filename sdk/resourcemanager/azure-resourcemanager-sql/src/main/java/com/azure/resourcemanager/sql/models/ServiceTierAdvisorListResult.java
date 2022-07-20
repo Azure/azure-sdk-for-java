@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the response to a list service tier advisor request. */
 @Fluent
 public final class ServiceTierAdvisorListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTierAdvisorListResult.class);
-
     /*
      * The list of service tier advisors for specified database.
      */
@@ -49,7 +46,7 @@ public final class ServiceTierAdvisorListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model ServiceTierAdvisorListResult"));
@@ -57,4 +54,6 @@ public final class ServiceTierAdvisorListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTierAdvisorListResult.class);
 }

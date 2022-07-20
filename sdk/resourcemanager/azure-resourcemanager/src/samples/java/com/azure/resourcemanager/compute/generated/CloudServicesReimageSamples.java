@@ -11,14 +11,15 @@ import java.util.Arrays;
 /** Samples for CloudServices Reimage. */
 public final class CloudServicesReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-03-01/examples/ReimageCloudServiceRoleInstances.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-04-04/CloudServiceRP/examples/CloudServiceRoleInstance_Reimage_ByCloudService.json
      */
     /**
-     * Sample code: Reimage Cloud Service Role Instances.
+     * Sample code: Reimage Cloud Service Role Instances in a Cloud Service.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void reimageCloudServiceRoleInstances(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void reimageCloudServiceRoleInstancesInACloudService(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

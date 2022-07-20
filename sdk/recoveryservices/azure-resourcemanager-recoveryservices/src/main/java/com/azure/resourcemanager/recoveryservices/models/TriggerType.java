@@ -27,7 +27,11 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
         return fromString(name, TriggerType.class);
     }
 
-    /** @return known TriggerType values. */
+    /**
+     * Gets known TriggerType values.
+     *
+     * @return known TriggerType values.
+     */
     public static Collection<TriggerType> values() {
         return values(TriggerType.class);
     }

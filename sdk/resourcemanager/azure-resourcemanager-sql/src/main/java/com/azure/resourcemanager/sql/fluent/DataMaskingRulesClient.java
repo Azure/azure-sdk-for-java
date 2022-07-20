@@ -23,11 +23,12 @@ public interface DataMaskingRulesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
@@ -45,11 +46,11 @@ public interface DataMaskingRulesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DataMaskingRuleInner> createOrUpdateAsync(
@@ -67,7 +68,7 @@ public interface DataMaskingRulesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,12 +90,12 @@ public interface DataMaskingRulesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataMaskingRuleInner> createOrUpdateWithResponse(
@@ -115,7 +116,7 @@ public interface DataMaskingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(
@@ -131,7 +132,7 @@ public interface DataMaskingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMaskingRuleInner> listByDatabase(
@@ -148,7 +149,7 @@ public interface DataMaskingRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataMaskingRuleInner> listByDatabase(

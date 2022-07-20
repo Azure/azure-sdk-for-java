@@ -144,7 +144,7 @@ public abstract class HttpResponse implements Closeable {
      * @return A {@link Mono} that completes when transfer is completed.
      * @throws NullPointerException When {@code channel} is null.
      */
-    public Mono<Void> transferBodyToAsync(AsynchronousByteChannel channel) {
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         Objects.requireNonNull(channel, "'channel' must not be null");
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
@@ -160,7 +160,7 @@ public abstract class HttpResponse implements Closeable {
      * @throws IOException When I/O operation fails.
      * @throws NullPointerException When {@code channel} is null.
      */
-    public void transferBodyTo(WritableByteChannel channel) throws IOException {
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
             FluxUtil.writeToWritableByteChannel(body, channel).block();

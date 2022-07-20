@@ -33,7 +33,11 @@ public final class SyncGroupsType extends ExpandableStringEnum<SyncGroupsType> {
         return fromString(name, SyncGroupsType.class);
     }
 
-    /** @return known SyncGroupsType values. */
+    /**
+     * Gets known SyncGroupsType values.
+     *
+     * @return known SyncGroupsType values.
+     */
     public static Collection<SyncGroupsType> values() {
         return values(SyncGroupsType.class);
     }

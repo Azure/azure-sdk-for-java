@@ -41,17 +41,30 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.test.implementation.entities.HttpBinHeaders;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IOUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuples;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,6 +75,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -74,6 +88,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class RestProxyTests {
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -1619,20 +1634,125 @@ public abstract class RestProxyTests {
     @Host("http://localhost")
     @ServiceInterface(name = "DownloadService")
     interface DownloadService {
+
         @Get("/bytes/30720")
-        StreamResponse getBytes();
+        StreamResponse getBytes(Context context);
+
+        @Get("/bytes/30720")
+        Mono<StreamResponse> getBytesAsync(Context context);
 
         @Get("/bytes/30720")
         Flux<ByteBuffer> getBytesFlux();
     }
 
-    @Test
-    public void simpleDownloadTest() {
-        StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(),
+    @ParameterizedTest
+    @MethodSource("downloadTestArgumentProvider")
+    public void simpleDownloadTest(Context context) {
+        StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(context),
                 response -> response.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum),
                 StreamResponse::close))
             .assertNext(count -> assertEquals(30720, count))
             .verifyComplete();
+
+        StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(context),
+                response -> Mono.zip(MessageDigestUtils.md5(response.getValue()), Mono.just(response.getHeaders().getValue("ETag"))),
+                StreamResponse::close))
+            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("downloadTestArgumentProvider")
+    public void simpleDownloadTestAsync(Context context) {
+        StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
+                .flatMap(response -> response.getValue().map(ByteBuffer::remaining)
+                    .reduce(0, Integer::sum)
+                    .doFinally(ignore -> response.close())))
+            .assertNext(count -> assertEquals(30720, count))
+            .verifyComplete();
+
+        StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
+                .flatMap(response -> Mono.zip(MessageDigestUtils.md5(response.getValue()), Mono.just(response.getHeaders().getValue("ETag")))
+                    .doFinally(ignore -> response.close())))
+            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("downloadTestArgumentProvider")
+    public void streamResponseCanTransferBody(Context context) throws IOException {
+        try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            streamResponse.writeValueTo(Channels.newChannel(bos));
+            assertEquals(streamResponse.getHeaders().getValue("ETag"), MessageDigestUtils.md5(bos.toByteArray()));
+        }
+
+        Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
+        tempFile.toFile().deleteOnExit();
+        try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
+            StepVerifier.create(Mono.using(
+                    () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                    streamResponse::writeValueToAsync,
+                    channel -> {
+                        try {
+                            channel.close();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
+                .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue("ETag"), hash))
+                .verifyComplete();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("downloadTestArgumentProvider")
+    public void streamResponseCanTransferBodyAsync(Context context) throws IOException {
+        StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
+                .publishOn(Schedulers.boundedElastic())
+                .map(streamResponse -> {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    try {
+                        streamResponse.writeValueTo(Channels.newChannel(bos));
+                    } catch (IOException e) {
+                        throw Exceptions.propagate(e);
+                    } finally {
+                        streamResponse.close();
+                    }
+                    return Tuples.of(streamResponse.getHeaders().getValue("Etag"), MessageDigestUtils.md5(bos.toByteArray()));
+                }))
+            .assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2()))
+            .verifyComplete();
+
+        Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
+        tempFile.toFile().deleteOnExit();
+        StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
+                .flatMap(streamResponse -> Mono.using(
+                        () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                        streamResponse::writeValueToAsync,
+                        channel -> {
+                            try {
+                                channel.close();
+                            } catch (IOException e) {
+                                throw Exceptions.propagate(e);
+                            }
+                        }).doFinally(ignored -> streamResponse.close())
+                    .then(Mono.just(streamResponse.getHeaders().getValue("ETag")))))
+            .assertNext(hash -> {
+                try {
+                    assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
+                } catch (IOException e) {
+                    Exceptions.propagate(e);
+                }
+            })
+            .verifyComplete();
+    }
+
+    public static Stream<Arguments> downloadTestArgumentProvider() {
+        return Stream.of(
+            Arguments.of(Named.named("default", Context.NONE)),
+            Arguments.of(Named.named("sync proxy enabled", Context.NONE
+                .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))));
     }
 
     @Test
