@@ -16,10 +16,14 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCap
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
+import com.azure.communication.phonenumbers.models.AreaCodeResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
+import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
 import com.azure.communication.phonenumbers.models.PhoneNumberErrorResponseException;
+import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
+import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
@@ -56,9 +60,15 @@ public final class PhoneNumbersAsyncClient {
     private final ClientLogger logger = new ClientLogger(PhoneNumbersAsyncClient.class);
     private final PhoneNumbersImpl client;
     private final Duration defaultPollInterval = Duration.ofSeconds(1);
+    private String acceptLanguage;
 
     PhoneNumbersAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
+        this(phoneNumberAdminClient, null);
+    }
+
+    PhoneNumbersAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient, String acceptLanguage) {
         this.client = phoneNumberAdminClient.getPhoneNumbers();
+        this.acceptLanguage = acceptLanguage;
     }
 
     /**
@@ -73,7 +83,7 @@ public final class PhoneNumbersAsyncClient {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
-        return client.getByNumberAsync(phoneNumber)
+        return client.getByNumberAsync(phoneNumber, acceptLanguage)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
@@ -89,7 +99,7 @@ public final class PhoneNumbersAsyncClient {
         if (Objects.isNull(phoneNumber)) {
             return monoError(logger, new NullPointerException("'phoneNumber' cannot be null."));
         }
-        return client.getByNumberWithResponseAsync(phoneNumber)
+        return client.getByNumberWithResponseAsync(phoneNumber, acceptLanguage)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
     }
 
@@ -101,7 +111,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PurchasedPhoneNumber> listPurchasedPhoneNumbers() {
         try {
-            return client.listPhoneNumbersAsync(null, null);
+            return client.listPhoneNumbersAsync(null, null, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -383,9 +393,186 @@ public final class PhoneNumbersAsyncClient {
     private Function<PollingContext<PhoneNumberOperation>, Mono<PurchasedPhoneNumber>>
         updateNumberCapabilitiesFetchFinalResultOperation(String phoneNumber) {
         return (pollingContext) -> {
-            return client.getByNumberAsync(phoneNumber)
+            return client.getByNumberAsync(phoneNumber, acceptLanguage)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
         };
+    }
+
+/**
+     * Gets the list of the available countries.
+     *
+     * @return A {@link PagedFlux} of {@link PhoneNumberCountry} instances representing available countries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberCountry> listAvailableCountries() {
+        try {
+            return this.listAvailableCountries(null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available countries with context.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedFlux} of {@link PhoneNumberCountry} instances representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberCountry> listAvailableCountries(Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return client.listAvailableCountriesAsync(acceptLanguage, null, null, context);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available localities. I.e. cities, towns.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param administrativeDivision An optional parameter. The name or short name of the state/province within which to list the localities.
+     * @return A {@link PagedFlux} of {@link PhoneNumberLocality} instances representing available localities with phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision) {
+        try {
+            return this.listAvailableLocalities(countryCode, administrativeDivision, null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available localities. I.e. cities, towns.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param administrativeDivision An optional parameter. The name or short name of the state/province within which to list the localities.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedFlux} of {@link PhoneNumberLocality} instances representing available localities with phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision, Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return client.listAvailableLocalitiesAsync(countryCode, acceptLanguage, null, null, administrativeDivision, context);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available Toll-Free area codes for a given country.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @return A {@link PagedFlux} of {@link AreaCodeResult} instances representing available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType) {
+        try {
+            return this.listAvailableTollFreeAreaCodes(countryCode, assignmentType, null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+/**
+     * Gets the list of the available Toll-Free area codes for a given country.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedFlux} of {@link AreaCodeResult} instances representing available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, Context context) {
+        context = context == null ? Context.NONE : context;
+       
+        try {
+            return client.listAreaCodesAsync(countryCode, null, null, PhoneNumberType.TOLL_FREE, assignmentType, null, null, context);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available Geographic area codes for a given country and locality.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param locality The name of the locality (e.g. city or town name) in which to fetch area codes.
+     * @param administrativeDivision An optional parameter. The name of the administrative division (e.g. state or province) of the locality.
+     * @return A {@link PagedFlux} of {@link AreaCodeResult} instances representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AreaCodeResult> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision) {
+        try {
+            return this.listAvailableGeographicAreaCodes(countryCode, assignmentType, locality, administrativeDivision, null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available Geographic area codes for a given country and locality.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number assignment type.
+     * @param locality The name of the locality (e.g. city or town name) in which to fetch area codes.
+     * @param administrativeDivision An optional parameter. The name of the administrative division (e.g. state or province) of the locality.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedFlux} of {@link AreaCodeResult} instances representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AreaCodeResult> listAvailableGeographicAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, String locality, String administrativeDivision, Context context) {
+        context = context == null ? Context.NONE : context;
+       
+        try {
+            return client.listAreaCodesAsync(countryCode, null, null, PhoneNumberType.GEOGRAPHIC, assignmentType, locality, administrativeDivision, context);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available phone number offerings for the given country.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict the offerings to the phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} Optional parameter. Restrict the offerings to the assignment type.
+     * @return A {@link PagedFlux} of {@link PurchasedPhoneNumber} instances representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberOffering> listAvailableOfferings(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType) {
+        try {
+            return this.listAvailableOfferings(countryCode, phoneNumberType, assignmentType, null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available phone number offerings for the given country.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict the offerings to the phone number type.
+     * @param assignmentType {@link PhoneNumberAssignmentType} Optional parameter. Restrict the offerings to the assignment type.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedFlux} of {@link PurchasedPhoneNumber} instances representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberOffering> listAvailableOfferings(String countryCode, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
+        context = context == null ? Context.NONE : context;
+
+        try {
+            return client.listOfferingsAsync(countryCode, phoneNumberType, assignmentType, null, null, context);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {

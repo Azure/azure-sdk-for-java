@@ -15,12 +15,23 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersRe
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumbers;
+import com.azure.communication.phonenumbers.models.AreaCodeResult;
+import com.azure.communication.phonenumbers.models.AreaCodes;
+import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbers.models.PhoneNumberCountries;
+import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
+import com.azure.communication.phonenumbers.models.PhoneNumberLocalities;
+import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
+import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
+import com.azure.communication.phonenumbers.models.PhoneNumberOfferings;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -67,6 +78,57 @@ public final class PhoneNumbersImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "PhoneNumberAdminClie")
     public interface PhoneNumbersService {
+        @Get("/availablePhoneNumbers/countries")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberCountries>> listAvailableCountries(
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept-language") String acceptLanguage,
+                @QueryParam("skip") Integer skip,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
+
+        @Get("/availablePhoneNumbers/countries/{countryCode}/localities")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberLocalities>> listAvailableLocalities(
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept-language") String acceptLanguage,
+                @PathParam("countryCode") String countryCode,
+                @QueryParam("skip") Integer skip,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("administrativeDivision") String administrativeDivision,
+                Context context);
+
+        @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<AreaCodes>> listAreaCodes(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("countryCode") String countryCode,
+                @QueryParam("skip") Integer skip,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType,
+                @QueryParam("assignmentType") PhoneNumberAssignmentType assignmentType,
+                @QueryParam("locality") String locality,
+                @QueryParam("administrativeDivision") String administrativeDivision,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
+
+        @Get("/availablePhoneNumbers/countries/{countryCode}/offerings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberOfferings>> listOfferings(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("countryCode") String countryCode,
+                @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType,
+                @QueryParam("assignmentType") PhoneNumberAssignmentType assignmentType,
+                @QueryParam("skip") Integer skip,
+                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
+
         @Post("/availablePhoneNumbers/countries/{countryCode}/:search")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -129,6 +191,7 @@ public final class PhoneNumbersImpl {
         Mono<Response<PurchasedPhoneNumber>> getByNumber(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("phoneNumber") String phoneNumber,
+                @HeaderParam("accept-language") String acceptLanguage,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
@@ -148,8 +211,33 @@ public final class PhoneNumbersImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("skip") Integer skip,
                 @QueryParam("top") Integer top,
+                @HeaderParam("accept-language") String acceptLanguage,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberCountries>> listAvailableCountriesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberLocalities>> listAvailableLocalitiesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<AreaCodes>> listAreaCodesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PhoneNumberOfferings>> listOfferingsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -159,9 +247,826 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Search for available phone numbers to purchase.
+     * Gets the list of supported countries.
      *
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of supported countries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesSinglePageAsync(
+            String acceptLanguage, Integer skip, Integer maxPageSize) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listAvailableCountries(
+                                        this.client.getEndpoint(),
+                                        acceptLanguage,
+                                        skip,
+                                        maxPageSize,
+                                        this.client.getApiVersion(),
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Gets the list of supported countries.
+     *
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of supported countries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesSinglePageAsync(
+            String acceptLanguage, Integer skip, Integer maxPageSize, Context context) {
+        return service.listAvailableCountries(
+                        this.client.getEndpoint(),
+                        acceptLanguage,
+                        skip,
+                        maxPageSize,
+                        this.client.getApiVersion(),
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Gets the list of supported countries.
+     *
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of supported countries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberCountry> listAvailableCountriesAsync(
+            String acceptLanguage, Integer skip, Integer maxPageSize) {
+        return new PagedFlux<>(
+                () -> listAvailableCountriesSinglePageAsync(acceptLanguage, skip, maxPageSize),
+                nextLink -> listAvailableCountriesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the list of supported countries.
+     *
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of supported countries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberCountry> listAvailableCountriesAsync(
+            String acceptLanguage, Integer skip, Integer maxPageSize, Context context) {
+        return new PagedFlux<>(
+                () -> listAvailableCountriesSinglePageAsync(acceptLanguage, skip, maxPageSize, context),
+                nextLink -> listAvailableCountriesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets the list of supported countries.
+     *
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of supported countries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberCountry> listAvailableCountries(
+            String acceptLanguage, Integer skip, Integer maxPageSize) {
+        return new PagedIterable<>(listAvailableCountriesAsync(acceptLanguage, skip, maxPageSize));
+    }
+
+    /**
+     * Gets the list of supported countries.
+     *
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of supported countries.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberCountry> listAvailableCountries(
+            String acceptLanguage, Integer skip, Integer maxPageSize, Context context) {
+        return new PagedIterable<>(listAvailableCountriesAsync(acceptLanguage, skip, maxPageSize, context));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     *     the area code. e.g. California.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(
+            String countryCode,
+            String acceptLanguage,
+            Integer skip,
+            Integer maxPageSize,
+            String administrativeDivision) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listAvailableLocalities(
+                                        this.client.getEndpoint(),
+                                        acceptLanguage,
+                                        countryCode,
+                                        skip,
+                                        maxPageSize,
+                                        administrativeDivision,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberLocalities(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     *     the area code. e.g. California.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(
+            String countryCode,
+            String acceptLanguage,
+            Integer skip,
+            Integer maxPageSize,
+            String administrativeDivision,
+            Context context) {
+        return service.listAvailableLocalities(
+                        this.client.getEndpoint(),
+                        acceptLanguage,
+                        countryCode,
+                        skip,
+                        maxPageSize,
+                        administrativeDivision,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberLocalities(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     *     the area code. e.g. California.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(
+            String countryCode,
+            String acceptLanguage,
+            Integer skip,
+            Integer maxPageSize,
+            String administrativeDivision) {
+        return new PagedFlux<>(
+                () ->
+                        listAvailableLocalitiesSinglePageAsync(
+                                countryCode, acceptLanguage, skip, maxPageSize, administrativeDivision),
+                nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     *     the area code. e.g. California.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(
+            String countryCode,
+            String acceptLanguage,
+            Integer skip,
+            Integer maxPageSize,
+            String administrativeDivision,
+            Context context) {
+        return new PagedFlux<>(
+                () ->
+                        listAvailableLocalitiesSinglePageAsync(
+                                countryCode, acceptLanguage, skip, maxPageSize, administrativeDivision, context),
+                nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     *     the area code. e.g. California.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(
+            String countryCode,
+            String acceptLanguage,
+            Integer skip,
+            Integer maxPageSize,
+            String administrativeDivision) {
+        return new PagedIterable<>(
+                listAvailableLocalitiesAsync(countryCode, acceptLanguage, skip, maxPageSize, administrativeDivision));
+    }
+
+    /**
+     * Gets the list of cities or towns with available phone numbers.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param administrativeDivision An optional parameter for the name of the state or province in which to search for
+     *     the area code. e.g. California.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cities or towns with available phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(
+            String countryCode,
+            String acceptLanguage,
+            Integer skip,
+            Integer maxPageSize,
+            String administrativeDivision,
+            Context context) {
+        return new PagedIterable<>(
+                listAvailableLocalitiesAsync(
+                        countryCode, acceptLanguage, skip, maxPageSize, administrativeDivision, context));
+    }
+
+    /**
+     * Gets the list of available area codes.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param locality The name of locality in which to search for the area code. e.g. Seattle. This is required if the
+     *     phone number type is Geographic.
+     * @param administrativeDivision The name of the state or province in which to search for the area code. e.g.
+     *     California.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AreaCodeResult>> listAreaCodesSinglePageAsync(
+            String countryCode,
+            Integer skip,
+            Integer maxPageSize,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            String locality,
+            String administrativeDivision) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listAreaCodes(
+                                        this.client.getEndpoint(),
+                                        countryCode,
+                                        skip,
+                                        maxPageSize,
+                                        phoneNumberType,
+                                        assignmentType,
+                                        locality,
+                                        administrativeDivision,
+                                        this.client.getApiVersion(),
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getAreaCodes(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Gets the list of available area codes.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param locality The name of locality in which to search for the area code. e.g. Seattle. This is required if the
+     *     phone number type is Geographic.
+     * @param administrativeDivision The name of the state or province in which to search for the area code. e.g.
+     *     California.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AreaCodeResult>> listAreaCodesSinglePageAsync(
+            String countryCode,
+            Integer skip,
+            Integer maxPageSize,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            String locality,
+            String administrativeDivision,
+            Context context) {
+        return service.listAreaCodes(
+                        this.client.getEndpoint(),
+                        countryCode,
+                        skip,
+                        maxPageSize,
+                        phoneNumberType,
+                        assignmentType,
+                        locality,
+                        administrativeDivision,
+                        this.client.getApiVersion(),
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getAreaCodes(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Gets the list of available area codes.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param locality The name of locality in which to search for the area code. e.g. Seattle. This is required if the
+     *     phone number type is Geographic.
+     * @param administrativeDivision The name of the state or province in which to search for the area code. e.g.
+     *     California.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AreaCodeResult> listAreaCodesAsync(
+            String countryCode,
+            Integer skip,
+            Integer maxPageSize,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            String locality,
+            String administrativeDivision) {
+        return new PagedFlux<>(
+                () ->
+                        listAreaCodesSinglePageAsync(
+                                countryCode,
+                                skip,
+                                maxPageSize,
+                                phoneNumberType,
+                                assignmentType,
+                                locality,
+                                administrativeDivision),
+                nextLink -> listAreaCodesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the list of available area codes.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param locality The name of locality in which to search for the area code. e.g. Seattle. This is required if the
+     *     phone number type is Geographic.
+     * @param administrativeDivision The name of the state or province in which to search for the area code. e.g.
+     *     California.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AreaCodeResult> listAreaCodesAsync(
+            String countryCode,
+            Integer skip,
+            Integer maxPageSize,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            String locality,
+            String administrativeDivision,
+            Context context) {
+        return new PagedFlux<>(
+                () ->
+                        listAreaCodesSinglePageAsync(
+                                countryCode,
+                                skip,
+                                maxPageSize,
+                                phoneNumberType,
+                                assignmentType,
+                                locality,
+                                administrativeDivision,
+                                context),
+                nextLink -> listAreaCodesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets the list of available area codes.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param locality The name of locality in which to search for the area code. e.g. Seattle. This is required if the
+     *     phone number type is Geographic.
+     * @param administrativeDivision The name of the state or province in which to search for the area code. e.g.
+     *     California.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AreaCodeResult> listAreaCodes(
+            String countryCode,
+            Integer skip,
+            Integer maxPageSize,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            String locality,
+            String administrativeDivision) {
+        return new PagedIterable<>(
+                listAreaCodesAsync(
+                        countryCode,
+                        skip,
+                        maxPageSize,
+                        phoneNumberType,
+                        assignmentType,
+                        locality,
+                        administrativeDivision));
+    }
+
+    /**
+     * Gets the list of available area codes.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param locality The name of locality in which to search for the area code. e.g. Seattle. This is required if the
+     *     phone number type is Geographic.
+     * @param administrativeDivision The name of the state or province in which to search for the area code. e.g.
+     *     California.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AreaCodeResult> listAreaCodes(
+            String countryCode,
+            Integer skip,
+            Integer maxPageSize,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            String locality,
+            String administrativeDivision,
+            Context context) {
+        return new PagedIterable<>(
+                listAreaCodesAsync(
+                        countryCode,
+                        skip,
+                        maxPageSize,
+                        phoneNumberType,
+                        assignmentType,
+                        locality,
+                        administrativeDivision,
+                        context));
+    }
+
+    /**
+     * List available offerings of capabilities with rates for the given country/region.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsSinglePageAsync(
+            String countryCode,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            Integer skip,
+            Integer maxPageSize) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listOfferings(
+                                        this.client.getEndpoint(),
+                                        countryCode,
+                                        phoneNumberType,
+                                        assignmentType,
+                                        skip,
+                                        maxPageSize,
+                                        this.client.getApiVersion(),
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberOfferings(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * List available offerings of capabilities with rates for the given country/region.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsSinglePageAsync(
+            String countryCode,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            Integer skip,
+            Integer maxPageSize,
+            Context context) {
+        return service.listOfferings(
+                        this.client.getEndpoint(),
+                        countryCode,
+                        phoneNumberType,
+                        assignmentType,
+                        skip,
+                        maxPageSize,
+                        this.client.getApiVersion(),
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberOfferings(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * List available offerings of capabilities with rates for the given country/region.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberOffering> listOfferingsAsync(
+            String countryCode,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            Integer skip,
+            Integer maxPageSize) {
+        return new PagedFlux<>(
+                () -> listOfferingsSinglePageAsync(countryCode, phoneNumberType, assignmentType, skip, maxPageSize),
+                nextLink -> listOfferingsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List available offerings of capabilities with rates for the given country/region.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberOffering> listOfferingsAsync(
+            String countryCode,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            Integer skip,
+            Integer maxPageSize,
+            Context context) {
+        return new PagedFlux<>(
+                () ->
+                        listOfferingsSinglePageAsync(
+                                countryCode, phoneNumberType, assignmentType, skip, maxPageSize, context),
+                nextLink -> listOfferingsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List available offerings of capabilities with rates for the given country/region.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberOffering> listOfferings(
+            String countryCode,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            Integer skip,
+            Integer maxPageSize) {
+        return new PagedIterable<>(listOfferingsAsync(countryCode, phoneNumberType, assignmentType, skip, maxPageSize));
+    }
+
+    /**
+     * List available offerings of capabilities with rates for the given country/region.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
+     * @param phoneNumberType The type of phone numbers to search for, e.g. geographic, or tollFree.
+     * @param assignmentType The assignment type of the phone numbers to search for. A phone number can be assigned to a
+     *     person, or to an application.
+     * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     *     value is 100.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumberOffering> listOfferings(
+            String countryCode,
+            PhoneNumberType phoneNumberType,
+            PhoneNumberAssignmentType assignmentType,
+            Integer skip,
+            Integer maxPageSize,
+            Context context) {
+        return new PagedIterable<>(
+                listOfferingsAsync(countryCode, phoneNumberType, assignmentType, skip, maxPageSize, context));
+    }
+
+    /**
+     * Searches for available phone numbers to purchase.
+     *
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
      * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
      *     held for a following purchase.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,9 +1084,9 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Search for available phone numbers to purchase.
+     * Searches for available phone numbers to purchase.
      *
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
      * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
      *     held for a following purchase.
      * @param context The context to associate with this operation.
@@ -198,9 +1103,9 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Search for available phone numbers to purchase.
+     * Searches for available phone numbers to purchase.
      *
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
      * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
      *     held for a following purchase.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,9 +1128,9 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Search for available phone numbers to purchase.
+     * Searches for available phone numbers to purchase.
      *
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
      * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
      *     held for a following purchase.
      * @param context The context to associate with this operation.
@@ -249,9 +1154,9 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Search for available phone numbers to purchase.
+     * Searches for available phone numbers to purchase.
      *
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
      * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
      *     held for a following purchase.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,9 +1170,9 @@ public final class PhoneNumbersImpl {
     }
 
     /**
-     * Search for available phone numbers to purchase.
+     * Searches for available phone numbers to purchase.
      *
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param countryCode The ISO 3166-2 country/region code, e.g. US.
      * @param body Represents a phone number search request to find phone numbers. Found phone numbers are temporarily
      *     held for a following purchase.
      * @param context The context to associate with this operation.
@@ -801,23 +1706,30 @@ public final class PhoneNumbersImpl {
      * Gets the details of the given purchased phone number.
      *
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the given purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber) {
+    public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(
+            String phoneNumber, String acceptLanguage) {
         return FluxUtil.withContext(
                 context ->
                         service.getByNumber(
-                                this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                phoneNumber,
+                                acceptLanguage,
+                                this.client.getApiVersion(),
+                                context));
     }
 
     /**
      * Gets the details of the given purchased phone number.
      *
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -825,22 +1737,25 @@ public final class PhoneNumbersImpl {
      * @return the details of the given purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber, Context context) {
-        return service.getByNumber(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), context);
+    public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(
+            String phoneNumber, String acceptLanguage, Context context) {
+        return service.getByNumber(
+                this.client.getEndpoint(), phoneNumber, acceptLanguage, this.client.getApiVersion(), context);
     }
 
     /**
      * Gets the details of the given purchased phone number.
      *
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the given purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber) {
-        return getByNumberWithResponseAsync(phoneNumber)
+    public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber, String acceptLanguage) {
+        return getByNumberWithResponseAsync(phoneNumber, acceptLanguage)
                 .flatMap(
                         (Response<PurchasedPhoneNumber> res) -> {
                             if (res.getValue() != null) {
@@ -855,6 +1770,7 @@ public final class PhoneNumbersImpl {
      * Gets the details of the given purchased phone number.
      *
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -862,8 +1778,8 @@ public final class PhoneNumbersImpl {
      * @return the details of the given purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber, Context context) {
-        return getByNumberWithResponseAsync(phoneNumber, context)
+    public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber, String acceptLanguage, Context context) {
+        return getByNumberWithResponseAsync(phoneNumber, acceptLanguage, context)
                 .flatMap(
                         (Response<PurchasedPhoneNumber> res) -> {
                             if (res.getValue() != null) {
@@ -878,20 +1794,22 @@ public final class PhoneNumbersImpl {
      * Gets the details of the given purchased phone number.
      *
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the given purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PurchasedPhoneNumber getByNumber(String phoneNumber) {
-        return getByNumberAsync(phoneNumber).block();
+    public PurchasedPhoneNumber getByNumber(String phoneNumber, String acceptLanguage) {
+        return getByNumberAsync(phoneNumber, acceptLanguage).block();
     }
 
     /**
      * Gets the details of the given purchased phone number.
      *
      * @param phoneNumber The purchased phone number whose details are to be fetched in E.164 format, e.g. +11234567890.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -899,8 +1817,8 @@ public final class PhoneNumbersImpl {
      * @return the details of the given purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PurchasedPhoneNumber getByNumber(String phoneNumber, Context context) {
-        return getByNumberAsync(phoneNumber, context).block();
+    public PurchasedPhoneNumber getByNumber(String phoneNumber, String acceptLanguage, Context context) {
+        return getByNumberAsync(phoneNumber, acceptLanguage, context).block();
     }
 
     /**
@@ -1000,17 +1918,24 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param top An optional parameter for how many entries to return, for pagination purposes. The default value is
      *     100.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of all purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(Integer skip, Integer top) {
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(
+            Integer skip, Integer top, String acceptLanguage) {
         return FluxUtil.withContext(
                         context ->
                                 service.listPhoneNumbers(
-                                        this.client.getEndpoint(), skip, top, this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(),
+                                        skip,
+                                        top,
+                                        acceptLanguage,
+                                        this.client.getApiVersion(),
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1028,6 +1953,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param top An optional parameter for how many entries to return, for pagination purposes. The default value is
      *     100.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1036,8 +1962,9 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(
-            Integer skip, Integer top, Context context) {
-        return service.listPhoneNumbers(this.client.getEndpoint(), skip, top, this.client.getApiVersion(), context)
+            Integer skip, Integer top, String acceptLanguage, Context context) {
+        return service.listPhoneNumbers(
+                        this.client.getEndpoint(), skip, top, acceptLanguage, this.client.getApiVersion(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1055,15 +1982,16 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param top An optional parameter for how many entries to return, for pagination purposes. The default value is
      *     100.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of all purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top) {
+    public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top, String acceptLanguage) {
         return new PagedFlux<>(
-                () -> listPhoneNumbersSinglePageAsync(skip, top),
+                () -> listPhoneNumbersSinglePageAsync(skip, top, acceptLanguage),
                 nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink));
     }
 
@@ -1073,6 +2001,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param top An optional parameter for how many entries to return, for pagination purposes. The default value is
      *     100.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1080,9 +2009,10 @@ public final class PhoneNumbersImpl {
      * @return the list of all purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top, Context context) {
+    public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(
+            Integer skip, Integer top, String acceptLanguage, Context context) {
         return new PagedFlux<>(
-                () -> listPhoneNumbersSinglePageAsync(skip, top, context),
+                () -> listPhoneNumbersSinglePageAsync(skip, top, acceptLanguage, context),
                 nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink, context));
     }
 
@@ -1092,14 +2022,15 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param top An optional parameter for how many entries to return, for pagination purposes. The default value is
      *     100.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of all purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(Integer skip, Integer top) {
-        return new PagedIterable<>(listPhoneNumbersAsync(skip, top));
+    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(Integer skip, Integer top, String acceptLanguage) {
+        return new PagedIterable<>(listPhoneNumbersAsync(skip, top, acceptLanguage));
     }
 
     /**
@@ -1108,6 +2039,7 @@ public final class PhoneNumbersImpl {
      * @param skip An optional parameter for how many entries to skip, for pagination purposes. The default value is 0.
      * @param top An optional parameter for how many entries to return, for pagination purposes. The default value is
      *     100.
+     * @param acceptLanguage The locale to display in the localized fields in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1115,8 +2047,199 @@ public final class PhoneNumbersImpl {
      * @return the list of all purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(Integer skip, Integer top, Context context) {
-        return new PagedIterable<>(listPhoneNumbersAsync(skip, top, context));
+    public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers(
+            Integer skip, Integer top, String acceptLanguage, Context context) {
+        return new PagedIterable<>(listPhoneNumbersAsync(skip, top, acceptLanguage, context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a wrapper around a list of countries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.listAvailableCountriesNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a wrapper around a list of countries.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.listAvailableCountriesNext(nextLink, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberCountries(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a wrapper around a list of cities or towns.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.listAvailableLocalitiesNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberLocalities(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a wrapper around a list of cities or towns.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.listAvailableLocalitiesNext(nextLink, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberLocalities(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AreaCodeResult>> listAreaCodesNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.listAreaCodesNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getAreaCodes(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of available area codes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AreaCodeResult>> listAreaCodesNextSinglePageAsync(String nextLink, Context context) {
+        return service.listAreaCodesNext(nextLink, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getAreaCodes(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.listOfferingsNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberOfferings(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsNextSinglePageAsync(String nextLink, Context context) {
+        return service.listOfferingsNext(nextLink, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getPhoneNumberOfferings(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**

@@ -33,6 +33,20 @@ public final class PhoneNumberSearchRequest {
     private PhoneNumberCapabilities capabilities;
 
     /*
+     * Optionally for geographic phone number type, the locality of the desired
+     * phone numbers.
+     */
+    @JsonProperty(value = "locality")
+    private String locality;
+
+    /*
+     * The administrative division name to search for phone numbers, e.g. state
+     * or province.
+     */
+    @JsonProperty(value = "administrativeDivision")
+    private String administrativeDivision;
+
+    /*
      * The area code of the desired phone number, e.g. 425.
      */
     @JsonProperty(value = "areaCode")
@@ -103,6 +117,50 @@ public final class PhoneNumberSearchRequest {
      */
     public PhoneNumberSearchRequest setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
+        return this;
+    }
+
+    /**
+     * Get the locality property: Optionally for geographic phone number type, the locality of the desired phone
+     * numbers.
+     *
+     * @return the locality value.
+     */
+    public String getLocality() {
+        return this.locality;
+    }
+
+    /**
+     * Set the locality property: Optionally for geographic phone number type, the locality of the desired phone
+     * numbers.
+     *
+     * @param locality the locality value to set.
+     * @return the PhoneNumberSearchRequest object itself.
+     */
+    public PhoneNumberSearchRequest setLocality(String locality) {
+        this.locality = locality;
+        return this;
+    }
+
+    /**
+     * Get the administrativeDivision property: The administrative division name to search for phone numbers, e.g. state
+     * or province.
+     *
+     * @return the administrativeDivision value.
+     */
+    public String getAdministrativeDivision() {
+        return this.administrativeDivision;
+    }
+
+    /**
+     * Set the administrativeDivision property: The administrative division name to search for phone numbers, e.g. state
+     * or province.
+     *
+     * @param administrativeDivision the administrativeDivision value to set.
+     * @return the PhoneNumberSearchRequest object itself.
+     */
+    public PhoneNumberSearchRequest setAdministrativeDivision(String administrativeDivision) {
+        this.administrativeDivision = administrativeDivision;
         return this;
     }
 

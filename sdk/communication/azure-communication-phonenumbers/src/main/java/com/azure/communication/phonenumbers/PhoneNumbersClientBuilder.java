@@ -70,6 +70,7 @@ public final class PhoneNumbersClientBuilder implements
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private String acceptLanguage;
 
     /**
      * Set endpoint of the service
@@ -301,6 +302,17 @@ public final class PhoneNumbersClientBuilder implements
     }
 
     /**
+     * Sets the accepted language to be used in the client.
+     *
+     * @param acceptLanguage The locale to be used in the client. E.g. "en-US"
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
+     */
+    public PhoneNumbersClientBuilder acceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+    /**
      * Create synchronous client applying CommunicationClientCredentialPolicy,
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
@@ -316,7 +328,7 @@ public final class PhoneNumbersClientBuilder implements
             logger.info("Build client for service version" + this.version.getVersion());
         }
         PhoneNumberAdminClientImpl adminClient = this.createPhoneNumberAdminClient();
-        return new PhoneNumbersClient(adminClient, this.createPhoneNumberAsyncClient(adminClient));
+        return new PhoneNumbersClient(adminClient, this.createPhoneNumberAsyncClient(adminClient, this.acceptLanguage));
     }
 
     /**
@@ -335,11 +347,15 @@ public final class PhoneNumbersClientBuilder implements
             logger.info("Build client for service version" + this.version.getVersion());
         }
 
-        return this.createPhoneNumberAsyncClient(this.createPhoneNumberAdminClient());
+        return this.createPhoneNumberAsyncClient(this.createPhoneNumberAdminClient(), this.acceptLanguage);
     }
 
     PhoneNumbersAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
-        return new PhoneNumbersAsyncClient(phoneNumberAdminClient);
+        return this.createPhoneNumberAsyncClient(phoneNumberAdminClient, null);
+    }
+
+    PhoneNumbersAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient, String acceptLanguage) {
+        return new PhoneNumbersAsyncClient(phoneNumberAdminClient, acceptLanguage);
     }
 
     HttpPipelinePolicy createAuthenticationPolicy() {
@@ -381,7 +397,6 @@ public final class PhoneNumbersClientBuilder implements
 
     private void validateRequiredFields() {
         Objects.requireNonNull(this.endpoint);
-
     }
 
     private PhoneNumberAdminClientImpl createPhoneNumberAdminClient() {

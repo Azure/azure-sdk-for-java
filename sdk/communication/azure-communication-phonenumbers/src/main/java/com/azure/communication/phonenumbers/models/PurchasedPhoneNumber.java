@@ -24,7 +24,7 @@ public final class PurchasedPhoneNumber {
     private String phoneNumber;
 
     /*
-     * The ISO 3166-2 code of the phone number's country, e.g. US.
+     * The ISO 3166-2 code of the phone number's country/region, e.g. US.
      */
     @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
@@ -79,7 +79,7 @@ public final class PurchasedPhoneNumber {
     }
 
     /**
-     * Get the countryCode property: The ISO 3166-2 code of the phone number's country, e.g. US.
+     * Get the countryCode property: The ISO 3166-2 code of the phone number's country/region, e.g. US.
      *
      * @return the countryCode value.
      */
