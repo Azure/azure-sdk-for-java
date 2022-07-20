@@ -109,7 +109,7 @@ parameters:
   default: $(JavaTestVersion)
 - name: VersionOverrides
   type: string
-  default: null
+  default: ''
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
   - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:

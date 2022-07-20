@@ -22,6 +22,7 @@ parameters:
   TestOptions: $(TestOptions)
   AdditionalBuildOptions: $(AdditionalBuildOptions)
   TestParallelization: '1'
+  VersionOverrides: ''
 
 jobs:
   - job:
