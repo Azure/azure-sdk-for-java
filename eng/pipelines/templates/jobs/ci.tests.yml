@@ -49,7 +49,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
-
+  - name: BuildProfile
+    type: string
+    default: 'default'
 jobs:
   - job: 'Test'
     dependsOn: ${{ parameters.DependsOn }}

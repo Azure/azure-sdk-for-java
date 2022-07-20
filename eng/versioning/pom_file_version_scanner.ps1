@@ -101,6 +101,10 @@ class Dependency {
         if ($split.Count -eq 3)
         {
             $this.curVer = $split[2]
+        } elseif ($split.Count -eq 2)
+        {
+#            Write-Host "moary -> $($inputString)"
+            $this.curVer = $split[1]
         }
     }
 }
@@ -147,6 +151,7 @@ function Build-Dependency-Hash-From-File {
                     continue
                 }
                 $depHash.Add($dep.id, $dep)
+#                Write-Host "$($dep.id) $($dep.curVer)"
             }
             catch {
                 Write-Error-With-Color "Invalid dependency line='$($line) in file=$($depFile)"
@@ -210,6 +215,8 @@ function Test-Dependency-Tag-And-Version {
         {
             if ($versionString -ne $extDepHash[$depKey].ver)
             {
+                Write-Host "moary versionUpdateString -> $versionUpdateString"
+                Write-Host "moary -> $versionString ||| $depKey || $($extDepHash[$depKey].ver)"
                 return "Error: $($depKey)'s <version> is '$($versionString)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
             }
         }
@@ -414,11 +421,15 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
+#if (!$_.FullName.Equals("D:\java\azure-sdk-for-java\sdk\spring-2\spring-cloud-azure-actuator\pom.xml"))
+#{
+#    return
+#}
+
     if ($PomFilesIgnoreParent -contains $pomFile)
     {
         $xmlPomFile = New-Object xml
         $xmlPomFile.Load($pomFile)
-
     } else {
         $xmlPomFile = New-Object xml
         $xmlPomFile.Load($pomFile)
@@ -451,6 +462,9 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng")
     {
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:version", $xmlNsManager)
+
+#        Write-Host "moary -> $($versionNode.ToString())" version
+#        Write-Host "moary -> $($xmlPomFile.project.version) $($versionNode)"
         if ($xmlPomFile.project.version -and $versionNode)
         {
             $artifactId = $xmlPomFile.project.artifactId
@@ -458,7 +472,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
             {
                 # the project's version will always be an update type of "current"
-                if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
+                if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
                 {
                     $hasError = $true
                     # every project string needs to have an update tag and projects version tags are always 'current'

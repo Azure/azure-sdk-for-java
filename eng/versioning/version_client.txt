@@ -372,3 +372,47 @@ unreleased_com.azure:azure-ai-formrecognizer;4.0.0-beta.6
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+
+# Spring Cloud Azure 5.x release
+spring3_com.azure.spring:spring-cloud-azure-dependencies;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-messaging-azure;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-messaging-azure-eventhubs;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-messaging-azure-servicebus;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-messaging-azure-storage-queue;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-integration-azure-core;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-integration-azure-eventhubs;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-integration-azure-servicebus;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-integration-azure-storage-queue;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-core;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-actuator-autoconfigure;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-actuator;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-autoconfigure;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-resourcemanager;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-service;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-active-directory;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-active-directory-b2c;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-actuator;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-appconfiguration;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-cosmos;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-data-cosmos;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-eventhubs;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-keyvault;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-servicebus-jms;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-servicebus;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-storage;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-storage-blob;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-storage-file-share;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-storage-queue;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-integration-eventhubs;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-integration-servicebus;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-integration-storage-queue;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-stream-eventhubs;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter-stream-servicebus;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-starter;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-stream-binder-servicebus;5.0.0-beta.1;5.0.0-beta.1
+spring3_com.azure.spring:spring-cloud-azure-trace-sleuth;5.0.0-beta.1;5.0.0-beta.1
