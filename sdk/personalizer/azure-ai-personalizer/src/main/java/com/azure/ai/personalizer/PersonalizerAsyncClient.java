@@ -16,16 +16,9 @@ public final class PersonalizerAsyncClient {
 
     private PersonalizerClientV1Preview3Impl impl;
 
-    public PersonalizerAsyncClient(String endpoint, AzureKeyCredential keyCredential) {
+    public PersonalizerAsyncClient(PersonalizerClientV1Preview3Impl service) {
     PersonalizerClientV1Preview3ImplBuilder builder = new PersonalizerClientV1Preview3ImplBuilder();
-    HttpClient httpClient = HttpClient.createDefault();
-    impl = builder
-        .endpoint(endpoint)
-        .httpClient(httpClient)
-        .addPolicy(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY, keyCredential))
-        .retryPolicy(new RetryPolicy())
-        .httpLogOptions(new HttpLogOptions())
-        .buildClient();
+    impl = service;
     }
 
     public Mono<Response<RankResponse>> rank(RankRequest rankRequest, Context context) {
@@ -38,19 +31,23 @@ public final class PersonalizerAsyncClient {
         return impl.getEvents().rewardWithResponseAsync(eventId, rewardRequest);
     }
 
-    public Mono<Response<Void>> activate(String eventId) {
-        return impl.getEvents().activateWithResponseAsync(eventId);
+    public Mono<Response<Void>> activate(String eventId, Context context) {
+        context = context == null ? Context.NONE : context;
+        return impl.getEvents().activateWithResponseAsync(eventId, context);
     }
 
-    public Mono<Response<MultiSlotRankResponse>> rankMultiSlot(MultiSlotRankRequest rankRequest) {
-        return impl.getMultiSlots().rankWithResponseAsync(rankRequest);
+    public Mono<Response<MultiSlotRankResponse>> rankMultiSlot(MultiSlotRankRequest rankRequest, Context context) {
+        context = context == null ? Context.NONE : context;
+        return impl.getMultiSlots().rankWithResponseAsync(rankRequest, context);
     }
 
-    public Mono<Response<Void>> rewardMultiSlot(String eventId, MultiSlotRewardRequest rewardRequest) {
-        return impl.getMultiSlotEvents().rewardWithResponseAsync(eventId, rewardRequest);
+    public Mono<Response<Void>> rewardMultiSlot(String eventId, MultiSlotRewardRequest rewardRequest, Context context) {
+        context = context == null ? Context.NONE : context;
+        return impl.getMultiSlotEvents().rewardWithResponseAsync(eventId, rewardRequest, context);
     }
 
-    public Mono<Response<Void>> activateMultiSlot(String eventId) {
-        return impl.getMultiSlotEvents().activateWithResponseAsync(eventId);
+    public Mono<Response<Void>> activateMultiSlot(String eventId, Context context) {
+        context = context == null ? Context.NONE : context;
+        return impl.getMultiSlotEvents().activateWithResponseAsync(eventId, context);
     }
 }
