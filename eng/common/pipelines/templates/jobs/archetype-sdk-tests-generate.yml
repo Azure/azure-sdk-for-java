@@ -39,6 +39,8 @@ parameters:
 - name: PreGenerationSteps
   type: stepList
   default: []
+- name: VersionOverrides
+  type: string
 
 jobs:
 - job: ${{ parameters.GenerateJobName }}
@@ -102,6 +104,7 @@ jobs:
         Matrix: dependencies.${{ parameters.GenerateJobName }}.outputs['generate_vm_job_matrix_${{ config.Name }}.matrix']
         DependsOn: ${{ parameters.GenerateJobName }}
         CloudConfig: ${{ parameters.CloudConfig }}
+        VersionOverrides: ${{ parameters.VersionOverrides }}
         ${{ each param in parameters.AdditionalParameters }}:
           ${{ param.key }}: ${{ param.value }}
 
@@ -112,5 +115,6 @@ jobs:
         Matrix: dependencies.${{ parameters.GenerateJobName }}.outputs['generate_container_job_matrix_${{ config.Name }}.matrix']
         DependsOn: ${{ parameters.GenerateJobName }}
         CloudConfig: ${{ parameters.CloudConfig }}
+        VersionOverrides: ${{ parameters.VersionOverrides }}
         ${{ each param in parameters.AdditionalParameters }}:
           ${{ param.key }}: ${{ param.value }}
