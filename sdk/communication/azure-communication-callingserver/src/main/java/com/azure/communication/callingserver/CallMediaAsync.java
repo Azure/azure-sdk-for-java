@@ -47,55 +47,64 @@ public class CallMediaAsync {
     /**
      * Play
      *
-     * @param playSource type of the play source
-     * @param playTo     the targets to play to
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo the targets to play to
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return playWithResponse(playSource, playTo).flatMap(FluxUtil::toMono);
+        return playWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play to all participants
      *
-     * @param playSource type of the play source
+     * @param playSource A {@link PlaySource} representing the source to play.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playAll(PlaySource playSource) {
-        return playAllWithResponse(playSource).flatMap(FluxUtil::toMono);
+        return playAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play
      *
-     * @param playSource type of the play source
-     * @param playTo     the targets to play to
-     * @return Response
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo the targets to play to
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful play request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return withContext(context -> playWithResponseInternal(playSource, playTo, context));
+    public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
+                                                 Context context) {
+        return withContext(contextValue -> {
+            contextValue = context == null ? contextValue : context;
+            return playWithResponseInternal(playSource, playTo, contextValue);
+        });
     }
 
     /**
      * Play to all participants
      *
-     * @param playSource type of the play source
-     * @return Response
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful playAll request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource) {
-        return withContext(context ->
-            playWithResponseInternal(playSource, Collections.emptyList(), context)
-        );
+    public Mono<Response<Void>> playAllWithResponse(PlaySource playSource, Context context) {
+        return withContext(contextValue -> {
+            contextValue = context == null ? contextValue : context;
+            return playWithResponseInternal(playSource, Collections.emptyList(), contextValue);
+        });
     }
 
     Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
@@ -131,6 +140,6 @@ public class CallMediaAsync {
             return request;
         }
 
-        throw new IllegalArgumentException(playSource.getClass().getCanonicalName());
+        throw logger.logExceptionAsError(new IllegalArgumentException(playSource.getClass().getCanonicalName()));
     }
 }

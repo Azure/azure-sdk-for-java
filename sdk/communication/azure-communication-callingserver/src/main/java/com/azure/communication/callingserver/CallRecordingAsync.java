@@ -16,13 +16,12 @@ import com.azure.communication.callingserver.implementation.models.StartCallReco
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallLocatorKind;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.RecordingChannel;
-import com.azure.communication.callingserver.models.RecordingContent;
-import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingStatusResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
@@ -53,7 +52,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -90,19 +88,8 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStatusResponse> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
-        try {
-            if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
-                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
-            }
-            StartCallRecordingRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
-                recordingStateCallbackUri, null, null, null);
-
-            return contentsInternal.recordingAsync(requestWithCallLocator, null)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .flatMap(result -> Mono.just(RecordingStatusResponseConstructorProxy.create(result)));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return startRecordingWithResponse(callLocator, recordingStateCallbackUri, null, null)
+            .flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
@@ -110,9 +97,7 @@ public class CallRecordingAsync {
      *
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param content Content Type
-     * @param format format Type
-     * @param channel Channel Type
+     * @param options Recording options, i.e. format, channel, content.
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -123,16 +108,14 @@ public class CallRecordingAsync {
     public Mono<Response<RecordingStatusResponse>> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
-        RecordingContent content,
-        RecordingFormat format,
-        RecordingChannel channel,
+        StartRecordingOptions options,
         Context context) {
         try {
             if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
             StartCallRecordingRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
-                recordingStateCallbackUri, content, format, channel);
+                recordingStateCallbackUri, options);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -150,9 +133,7 @@ public class CallRecordingAsync {
 
     private StartCallRecordingRequest getStartCallRecordingWithCallLocatorRequest(CallLocator callLocator,
                                                                                   URI recordingStateCallbackUri,
-                                                                                  RecordingContent content,
-                                                                                  RecordingFormat format,
-                                                                                  RecordingChannel channel) {
+                                                                                  StartRecordingOptions options) {
         CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
             .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
@@ -168,14 +149,16 @@ public class CallRecordingAsync {
             .setCallLocator(callLocatorInternal)
             .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
 
-        if (content != null) {
-            request.setRecordingContentType(RecordingContentInternal.fromString(content.toString()));
-        }
-        if (format != null) {
-            request.setRecordingFormatType(RecordingFormatInternal.fromString(format.toString()));
-        }
-        if (channel != null) {
-            request.setRecordingChannelType(RecordingChannelInternal.fromString(channel.toString()));
+        if (options != null) {
+            if (options.getRecordingContent() != null) {
+                request.setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
+            }
+            if (options.getRecordingFormat() != null) {
+                request.setRecordingFormatType(RecordingFormatInternal.fromString(options.getRecordingFormat().toString()));
+            }
+            if (options.getRecordingChannel() != null) {
+                request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
+            }
         }
 
         return request;
@@ -191,29 +174,20 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopRecording(String recordingId) {
-        try {
-            return serverCallsInternal.stopRecordingAsync(recordingId)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return stopRecordingWithResponse(recordingId, null).then();
     }
 
     /**
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopRecordingWithResponse(String recordingId) {
-        return stopRecordingWithResponse(recordingId, Context.NONE);
-    }
-
-    Mono<Response<Void>> stopRecordingWithResponse(String recordingId, Context context) {
+    public Mono<Response<Void>> stopRecordingWithResponse(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -236,29 +210,20 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> pauseRecording(String recordingId) {
-        try {
-            return serverCallsInternal.pauseRecordingAsync(recordingId)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return pauseRecordingWithResponse(recordingId, null).then();
     }
 
     /**
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId) {
-        return pauseRecordingWithResponse(recordingId, Context.NONE);
-    }
-
-    Mono<Response<Void>> pauseRecordingWithResponse(String recordingId, Context context) {
+    public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -281,29 +246,20 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resumeRecording(String recordingId) {
-        try {
-            return serverCallsInternal.resumeRecordingAsync(recordingId)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .flatMap(result -> Mono.empty());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return resumeRecordingWithResponse(recordingId, null).then();
     }
 
     /**
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resumeRecordingWithResponse(String recordingId) {
-        return resumeRecordingWithResponse(recordingId, Context.NONE);
-    }
-
-    Mono<Response<Void>> resumeRecordingWithResponse(String recordingId, Context context) {
+    public Mono<Response<Void>> resumeRecordingWithResponse(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -326,29 +282,20 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStatusResponse> getRecordingState(String recordingId) {
-        try {
-            return serverCallsInternal.getRecordingPropertiesAsync(recordingId)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .flatMap(result -> Mono.just(RecordingStatusResponseConstructorProxy.create(result)));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getRecordingStateWithResponse(recordingId, null).flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> getRecordingStateWithResponse(String recordingId) {
-        return getRecordingStateWithResponse(recordingId, Context.NONE);
-    }
-
-    Mono<Response<RecordingStatusResponse>> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Mono<Response<RecordingStatusResponse>> getRecordingStateWithResponse(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -371,12 +318,7 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
-        try {
-            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-            return downloadStream(sourceEndpoint, null);
-        } catch (RuntimeException ex) {
-            return fluxError(logger, ex);
-        }
+        return downloadStream(sourceEndpoint, null);
     }
 
     /**
@@ -389,15 +331,10 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
-        try {
-            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, httpRange, null)
-                .map(Response::getValue)
-                .flux()
-                .flatMap(flux -> flux);
-        } catch (RuntimeException ex) {
-            return fluxError(logger, ex);
-        }
+        return downloadStreamWithResponse(sourceEndpoint, httpRange, null)
+            .map(Response::getValue)
+            .flux()
+            .flatMap(flux -> flux);
     }
 
     /**
@@ -405,13 +342,14 @@ public class CallRecordingAsync {
      * @param sourceEndpoint - URL where the content is located.
      * @param range - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
      *                  the whole content will be downloaded.
+     * @param context - A {@link Context} representing the request context.
      * @return A {@link Mono} object containing a {@link Response} with the byte stream of the content requested.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range) {
+    public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range, Context context) {
         try {
             Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range, null);
+            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -422,19 +360,17 @@ public class CallRecordingAsync {
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
+     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
+     *                  download will work.
      * @return Response for a successful downloadTo request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> downloadTo(
         String sourceEndpoint,
         Path destinationPath,
-        ParallelDownloadOptions parallelDownloadOptions,
-        boolean overwrite) {
+        DownloadToFileOptions options) {
         try {
-            return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null)
+            return downloadToWithResponse(sourceEndpoint, destinationPath, options, null)
                 .then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -446,21 +382,34 @@ public class CallRecordingAsync {
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
+     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
+     *                download will work.
+     * @param context A {@link Context} representing the request context.
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> downloadToWithResponse(
         String sourceEndpoint,
         Path destinationPath,
-        ParallelDownloadOptions parallelDownloadOptions,
-        boolean overwrite) {
+        DownloadToFileOptions options,
+        Context context) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+
+        Set<OpenOption> openOptions = new HashSet<>();
+
+        if (options.isOverwrite()) {
+            openOptions.add(StandardOpenOption.CREATE);
+        } else {
+            openOptions.add(StandardOpenOption.CREATE_NEW);
+        }
+        openOptions.add(StandardOpenOption.WRITE);
+
         try {
-            return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
+            return downloadToWithResponse(sourceEndpoint, destinationPath, file, options, context);
+        } catch (IOException ex) {
+            return monoError(logger, new RuntimeException(ex));
         }
     }
 
@@ -476,40 +425,14 @@ public class CallRecordingAsync {
     Mono<Response<Void>> downloadToWithResponse(
         String sourceEndpoint,
         Path destinationPath,
-        ParallelDownloadOptions parallelDownloadOptions,
-        boolean overwrite,
-        Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-
-        Set<OpenOption> openOptions = new HashSet<>();
-
-        if (overwrite) {
-            openOptions.add(StandardOpenOption.CREATE);
-        } else {
-            openOptions.add(StandardOpenOption.CREATE_NEW);
-        }
-        openOptions.add(StandardOpenOption.WRITE);
-
-        try {
-            AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
-            return downloadToWithResponse(sourceEndpoint, destinationPath, file, parallelDownloadOptions, context);
-        } catch (IOException ex) {
-            return monoError(logger, new RuntimeException(ex));
-        }
-    }
-
-    Mono<Response<Void>> downloadToWithResponse(
-        String sourceEndpoint,
-        Path destinationPath,
         AsynchronousFileChannel fileChannel,
-        ParallelDownloadOptions parallelDownloadOptions,
+        DownloadToFileOptions options,
         Context context
     ) {
         ParallelDownloadOptions finalParallelDownloadOptions =
-            parallelDownloadOptions == null
+            options.getParallelDownloadOptions() == null
                 ? new ParallelDownloadOptions()
-                : parallelDownloadOptions;
+                : options.getParallelDownloadOptions();
 
         return Mono.just(fileChannel).flatMap(
                 c -> contentDownloader.downloadToFileWithResponse(sourceEndpoint, c, finalParallelDownloadOptions, context))

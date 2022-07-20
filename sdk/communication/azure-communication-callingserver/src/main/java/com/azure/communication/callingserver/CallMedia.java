@@ -27,39 +27,37 @@ public class CallMedia {
     /**
      * Play
      *
-     * @param playSource type of the play source
-     * @param playTo     the targets to be played
-     * @return PlayResponse
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo the targets to play to.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return callMediaAsync.play(playSource, playTo).block();
+    public void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        callMediaAsync.play(playSource, playTo).block();
     }
 
     /**
      * Play to all participants
      *
-     * @param playSource type of the play source
-     * @return PlayResponse
+     * @param playSource A {@link PlaySource} representing the source to play.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void playAll(PlaySource playSource) {
-        return callMediaAsync.playAll(playSource).block();
+    public void playAll(PlaySource playSource) {
+        callMediaAsync.playAll(playSource).block();
     }
 
     /**
      * PlayWithResponse
      *
-     * @param playSource type of the play source
-     * @param playTo     the targets to be played
-     * @param context    Place_holder
-     * @return PlayResponse
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo the targets to play to.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful play request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
@@ -70,11 +68,11 @@ public class CallMedia {
     /**
      * PlayAllWithResponse
      *
-     * @param playSource type of the play source
-     * @param context    Place_holder
-     * @return PlayResponse
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful playAll request.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException            all other wrapped checked exceptions if the request fails to be sent.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playAllWithResponse(PlaySource playSource, Context context) {

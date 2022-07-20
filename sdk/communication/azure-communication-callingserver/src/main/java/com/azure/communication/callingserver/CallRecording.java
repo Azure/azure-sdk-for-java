@@ -5,17 +5,14 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.GroupCallLocator;
-import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.RecordingChannel;
-import com.azure.communication.callingserver.models.RecordingContent;
-import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.RecordingStatusResponse;
 import com.azure.communication.callingserver.models.ServerCallLocator;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpRange;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -55,9 +52,7 @@ public class CallRecording {
      *
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param content Content Type.
-     * @param format Format Type.
-     * @param channel Channel Type
+     * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -68,16 +63,12 @@ public class CallRecording {
     public Response<RecordingStatusResponse> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
-        RecordingContent content,
-        RecordingFormat format,
-        RecordingChannel channel,
+        StartRecordingOptions options,
         Context context) {
         return callRecordingAsync.startRecordingWithResponse(
             callLocator,
             recordingStateCallbackUri,
-            content,
-            format,
-            channel,
+            options,
             context).block();
     }
 
@@ -226,16 +217,14 @@ public class CallRecording {
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
+     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
+     *                 download will work.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint,
                            Path destinationPath,
-                           ParallelDownloadOptions parallelDownloadOptions,
-                           boolean overwrite) {
-        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+                           DownloadToFileOptions options) {
+        downloadToWithResponse(sourceEndpoint, destinationPath, options, null);
     }
 
     /**
@@ -243,22 +232,20 @@ public class CallRecording {
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
-     * @param overwrite - True to overwrite the file if it exists.
+     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
+     *                 download will work.
      * @param context A {@link Context} representing the request context.
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadToWithResponse(String sourceEndpoint,
                                                  Path destinationPath,
-                                                 ParallelDownloadOptions parallelDownloadOptions,
-                                                 boolean overwrite,
+                                                 DownloadToFileOptions options,
                                                  final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         return callRecordingAsync.downloadToWithResponse(sourceEndpoint, destinationPath,
-            parallelDownloadOptions, overwrite, context).block();
+            options, context).block();
     }
 
     /**
@@ -277,7 +264,7 @@ public class CallRecording {
      *
      * @param deleteEndpoint - ACS URL where the content is located.
      * @param context A {@link Context} representing the request context.
-     * @return Response containing the http response information from the download.
+     * @return Response for successful delete request..
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
