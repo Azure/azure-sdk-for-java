@@ -6,7 +6,7 @@ products:
   - azure
   - azure-blob-storage
   - azure-storage
-urlFragment: storage-blob-samples
+urlFragment: storage-blob-batch-samples
 ---
 
 # Azure Storage Blob Batch Samples client library for Java
