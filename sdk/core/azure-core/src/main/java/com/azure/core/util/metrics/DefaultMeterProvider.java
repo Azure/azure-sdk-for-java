@@ -41,7 +41,7 @@ final class DefaultMeterProvider implements MeterProvider {
                 String message = String.format("Expected only one MeterProvider on the classpath, but found multiple providers: %s. "
                          + "Please pick one MeterProvider implementation and remove or exclude packages that bring other implementations", allProviders);
 
-                ERROR = new UnsupportedOperationException(message);
+                ERROR = new IllegalStateException(message);
                 LOGGER.error(message);
             } else {
                 ERROR = null;
