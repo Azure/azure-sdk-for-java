@@ -15,7 +15,6 @@ parameters:
     default: client
   - name: VersionOverrides
     type: string
-    default: ''
 
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml

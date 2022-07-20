@@ -53,6 +53,7 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          VersionOverrides: ${{ parameters.VersionOverrides }}
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
