@@ -26,6 +26,10 @@ public class CachedTokenCredential implements TokenCredential {
         this.tokenCredential = tokenCredential;
     }
 
+    public TokenCredential getTokenCredential() {
+        return tokenCredential;
+    }
+
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
         // todo
