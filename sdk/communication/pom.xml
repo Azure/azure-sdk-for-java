@@ -13,6 +13,7 @@
       <module>azure-communication-callingserver</module>
       <module>azure-communication-chat</module>
       <module>azure-communication-common</module>
+      <module>azure-communication-email</module>
       <module>azure-communication-identity</module>
       <module>azure-communication-networktraversal</module>
       <module>azure-communication-phonenumbers</module>
