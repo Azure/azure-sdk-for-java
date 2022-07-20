@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IP restriction rule of the Azure Cognitive Search service. */
 @Fluent
 public final class IpRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpRule.class);
-
     /*
      * Value corresponding to a single IPv4 address (eg., 123.1.2.3) or an IP
      * range in CIDR format (eg., 123.1.2.3/24) to be allowed.
