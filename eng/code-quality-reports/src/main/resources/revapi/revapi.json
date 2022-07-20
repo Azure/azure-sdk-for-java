@@ -365,6 +365,18 @@
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
           "parameterIndex": "1",
           "justification": "To support mono method chaining, without explicit typcast for upper bounded generics"
+        },
+        {
+          "code": "java.annotation.attributeRemoved",
+          "annotationType": "com.azure.core.annotation.ServiceClient",
+          "new": "class com.azure.data.appconfiguration.ConfigurationClient",
+          "justification": "These are SDK metadata annotations and don't affect runtime behavior."
+        },
+        {
+          "code": "java.annotation.attributeRemoved",
+          "annotationType": "com.azure.core.annotation.ServiceClient",
+          "new": "class com.azure.data.appconfiguration.ConfigurationAsyncClient",
+          "justification": "These are SDK metadata annotations and don't affect runtime behavior."
         }
       ]
     }
