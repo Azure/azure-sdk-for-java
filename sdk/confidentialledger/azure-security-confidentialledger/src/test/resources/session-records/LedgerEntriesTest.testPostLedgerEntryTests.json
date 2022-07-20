@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/emily-java-sdk-tests?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "eddcb2fb-4909-4beb-9931-0d992fb5f36d"
+      "x-ms-client-request-id" : "d50fab9c-bf02-4b41-b196-8bc555d092e0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-machineName" : "identityservice-6499ffbf45-jjspj",
+      "x-ms-machineName" : "identityservice-555869b65b-9pfc9",
       "Server" : "Kestrel",
-      "x-ms-image-digest" : "sha256:7a76c9097c3450987501c23e71a3e16b89f727059ab6de727807ac97b808810e",
-      "x-ms-image-tag" : "1.0.01999.541-e02672ed644876c9cf10c5494e0203a0dc9da070",
+      "x-ms-image-digest" : "sha256:882aaa027c6a13390418cc070e29736d7255c85700ea0a3bde9eb7f85430c4b8",
+      "x-ms-image-tag" : "1.0.02013.15-4a5efc93f503a8000a23b4c5112a67c7be116764",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBejCCASCgAwIBAgIQMNwF270tS2Ex6jsW6jP46TAKBggqhkjOPQQDAjAWMRQw\\nEgYDVQQDDAtDQ0YgTmV0d29yazAeFw0yMjA3MDYyMTA0NDBaFw0yMjEwMDQyMTA0\\nMzlaMBYxFDASBgNVBAMMC0NDRiBOZXR3b3JrMFkwEwYHKoZIzj0CAQYIKoZIzj0D\\nAQcDQgAEDUWr/JYiEUnNS+4Ndfcci6yGRXhVWSnabgvShqrdxW4RBmsKZ+qsAWJP\\nnavsVjf8Zgd8gghMm1y4Zl4PoHzTxKNQME4wDAYDVR0TBAUwAwEB/zAdBgNVHQ4E\\nFgQUiIlVb/2YkHp4mXRhBuLaadG82zYwHwYDVR0jBBgwFoAUiIlVb/2YkHp4mXRh\\nBuLaadG82zYwCgYIKoZIzj0EAwIDSAAwRQIgfYFw63rQ8RrH0BBs6yWbYbm+OWCq\\nwyWR8oAT90gwHtACIQDNJ3eIewMJNDtUSJaRYhOIOu10evuW63wBLP/kftLAmw==\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"emily-java-sdk-tests\"}",
-      "Date" : "Thu, 07 Jul 2022 21:44:59 GMT",
-      "x-ms-correlation-request-id" : "b906fa0c-eb92-44f8-bdbc-2ab20b3d0ce7",
-      "x-ms-client-request-id" : "eddcb2fb-4909-4beb-9931-0d992fb5f36d",
+      "Date" : "Thu, 14 Jul 2022 00:02:52 GMT",
+      "x-ms-correlation-request-id" : "8109271e-0cbb-4f1f-bd27-a34b824caffa",
+      "x-ms-client-request-id" : "d50fab9c-bf02-4b41-b196-8bc555d092e0",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -26,18 +26,18 @@
     "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "90b399c0-c15c-4abb-b7dd-0665fd9f423c",
+      "x-ms-client-request-id" : "9bf591be-8ec3-4392-8f2c-ff4041127d71",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "30",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11593",
+      "x-ms-ccf-transaction-id" : "2.16988",
       "StatusCode" : "200",
-      "x-ms-request-id" : "803765130",
+      "x-ms-request-id" : "854819465",
       "Body" : "{\"collectionId\":\"subledger:0\"}",
-      "x-ms-client-request-id" : "90b399c0-c15c-4abb-b7dd-0665fd9f423c"
+      "x-ms-client-request-id" : "9bf591be-8ec3-4392-8f2c-ff4041127d71"
     },
     "Exception" : null
   }, {
@@ -45,54 +45,54 @@
     "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "90b399c0-c15c-4abb-b7dd-0665fd9f423c",
+      "x-ms-client-request-id" : "9bf591be-8ec3-4392-8f2c-ff4041127d71",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "30",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11593",
+      "x-ms-ccf-transaction-id" : "2.16988",
       "StatusCode" : "200",
-      "x-ms-request-id" : "803765130",
+      "x-ms-request-id" : "854819465",
       "Body" : "{\"collectionId\":\"subledger:0\"}",
-      "x-ms-client-request-id" : "90b399c0-c15c-4abb-b7dd-0665fd9f423c"
+      "x-ms-client-request-id" : "9bf591be-8ec3-4392-8f2c-ff4041127d71"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions/2.11593/status?api-version=2022-05-13",
+    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions/2.16988/status?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "b30e32db-096e-416a-a46f-3418eac4df0c"
+      "x-ms-client-request-id" : "96a1a0a4-09a1-45c9-9e25-3aaa0acc29a4"
     },
     "Response" : {
       "content-length" : "45",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11594",
+      "x-ms-ccf-transaction-id" : "2.16988",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1690552494",
-      "Body" : "{\"state\":\"Pending\",\"transactionId\":\"2.11593\"}",
-      "x-ms-client-request-id" : "b30e32db-096e-416a-a46f-3418eac4df0c"
+      "x-ms-request-id" : "328836846",
+      "Body" : "{\"state\":\"Pending\",\"transactionId\":\"2.16988\"}",
+      "x-ms-client-request-id" : "96a1a0a4-09a1-45c9-9e25-3aaa0acc29a4"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions/2.11593/status?api-version=2022-05-13",
+    "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions/2.16988/status?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "b30e32db-096e-416a-a46f-3418eac4df0c"
+      "x-ms-client-request-id" : "96a1a0a4-09a1-45c9-9e25-3aaa0acc29a4"
     },
     "Response" : {
       "content-length" : "45",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11594",
+      "x-ms-ccf-transaction-id" : "2.16988",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1690552494",
-      "Body" : "{\"state\":\"Pending\",\"transactionId\":\"2.11593\"}",
-      "x-ms-client-request-id" : "b30e32db-096e-416a-a46f-3418eac4df0c"
+      "x-ms-request-id" : "328836846",
+      "Body" : "{\"state\":\"Pending\",\"transactionId\":\"2.16988\"}",
+      "x-ms-client-request-id" : "96a1a0a4-09a1-45c9-9e25-3aaa0acc29a4"
     },
     "Exception" : null
   }, {
@@ -100,17 +100,17 @@
     "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions/current?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "6b12601a-fd06-44d4-b30f-e96db25dbc8e"
+      "x-ms-client-request-id" : "5e0de85e-7094-4c3c-be6f-5ed79ab75e3e"
     },
     "Response" : {
       "content-length" : "96",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11594",
+      "x-ms-ccf-transaction-id" : "2.16988",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1891844454",
-      "Body" : "{\"collectionId\":\"subledger:0\",\"contents\":\"New ledger entry contents.\",\"transactionId\":\"2.11592\"}",
-      "x-ms-client-request-id" : "6b12601a-fd06-44d4-b30f-e96db25dbc8e"
+      "x-ms-request-id" : "591351745",
+      "Body" : "{\"collectionId\":\"subledger:0\",\"contents\":\"New ledger entry contents.\",\"transactionId\":\"2.16987\"}",
+      "x-ms-client-request-id" : "5e0de85e-7094-4c3c-be6f-5ed79ab75e3e"
     },
     "Exception" : null
   }, {
@@ -118,17 +118,17 @@
     "Uri" : "https://REDACTED.confidential-ledger.azure.com/app/transactions/current?api-version=2022-05-13",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-security-confidentialledger/1.0.0-beta.3 (17.0.2; Linux; 5.4.0-1074-azure)",
-      "x-ms-client-request-id" : "6b12601a-fd06-44d4-b30f-e96db25dbc8e"
+      "x-ms-client-request-id" : "5e0de85e-7094-4c3c-be6f-5ed79ab75e3e"
     },
     "Response" : {
       "content-length" : "96",
       "content-type" : "application/json",
       "retry-after" : "0",
-      "x-ms-ccf-transaction-id" : "2.11594",
+      "x-ms-ccf-transaction-id" : "2.16988",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1891844454",
-      "Body" : "{\"collectionId\":\"subledger:0\",\"contents\":\"New ledger entry contents.\",\"transactionId\":\"2.11592\"}",
-      "x-ms-client-request-id" : "6b12601a-fd06-44d4-b30f-e96db25dbc8e"
+      "x-ms-request-id" : "591351745",
+      "Body" : "{\"collectionId\":\"subledger:0\",\"contents\":\"New ledger entry contents.\",\"transactionId\":\"2.16987\"}",
+      "x-ms-client-request-id" : "5e0de85e-7094-4c3c-be6f-5ed79ab75e3e"
     },
     "Exception" : null
   } ],

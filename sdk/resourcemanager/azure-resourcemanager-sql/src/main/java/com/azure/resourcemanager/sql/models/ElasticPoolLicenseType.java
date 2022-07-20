@@ -27,7 +27,11 @@ public final class ElasticPoolLicenseType extends ExpandableStringEnum<ElasticPo
         return fromString(name, ElasticPoolLicenseType.class);
     }
 
-    /** @return known ElasticPoolLicenseType values. */
+    /**
+     * Gets known ElasticPoolLicenseType values.
+     *
+     * @return known ElasticPoolLicenseType values.
+     */
     public static Collection<ElasticPoolLicenseType> values() {
         return values(ElasticPoolLicenseType.class);
     }
