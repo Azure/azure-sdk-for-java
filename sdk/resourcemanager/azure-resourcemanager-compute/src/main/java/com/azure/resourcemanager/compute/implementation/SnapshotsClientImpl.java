@@ -900,7 +900,14 @@ public final class SnapshotsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> getByResourceGroupAsync(String resourceGroupName, String snapshotName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, snapshotName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<SnapshotInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

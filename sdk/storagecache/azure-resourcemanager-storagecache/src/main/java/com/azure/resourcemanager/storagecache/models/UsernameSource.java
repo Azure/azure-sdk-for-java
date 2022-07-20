@@ -33,7 +33,11 @@ public final class UsernameSource extends ExpandableStringEnum<UsernameSource> {
         return fromString(name, UsernameSource.class);
     }
 
-    /** @return known UsernameSource values. */
+    /**
+     * Gets known UsernameSource values.
+     *
+     * @return known UsernameSource values.
+     */
     public static Collection<UsernameSource> values() {
         return values(UsernameSource.class);
     }

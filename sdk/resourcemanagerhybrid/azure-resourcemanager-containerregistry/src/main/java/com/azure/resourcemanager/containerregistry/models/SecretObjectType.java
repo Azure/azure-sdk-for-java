@@ -27,7 +27,11 @@ public final class SecretObjectType extends ExpandableStringEnum<SecretObjectTyp
         return fromString(name, SecretObjectType.class);
     }
 
-    /** @return known SecretObjectType values. */
+    /**
+     * Gets known SecretObjectType values.
+     *
+     * @return known SecretObjectType values.
+     */
     public static Collection<SecretObjectType> values() {
         return values(SecretObjectType.class);
     }

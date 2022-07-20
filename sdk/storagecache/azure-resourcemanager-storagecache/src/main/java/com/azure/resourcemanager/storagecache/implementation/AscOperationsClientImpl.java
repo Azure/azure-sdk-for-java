@@ -172,15 +172,7 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AscOperationInner> getAsync(String location, String operationId) {
-        return getWithResponseAsync(location, operationId)
-            .flatMap(
-                (Response<AscOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

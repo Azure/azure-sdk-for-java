@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.12</version>
+    <version>3.1.13</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -162,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -376,18 +376,18 @@ More details on setting up a container and required file structure can be found 
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
+SyncPoller<DocumentOperationResult, DocumentModelInfo> buildOperationPoller =
     documentModelAdminClient.beginBuildModel(trainingFilesUrl,
         DocumentBuildMode.TEMPLATE,
         new BuildModelOptions().setModelId("my-build-model").setDescription("model desc"), Context.NONE);
 
-DocumentModel documentModel = buildOperationPoller.getFinalResult();
+DocumentModelInfo documentModelInfo = buildOperationPoller.getFinalResult();
 
 // Model Info
-System.out.printf("Model ID: %s%n", documentModel.getModelId());
-System.out.printf("Model Description: %s%n", documentModel.getDescription());
-System.out.printf("Model created on: %s%n%n", documentModel.getCreatedOn());
-documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+System.out.printf("Model Description: %s%n", documentModelInfo.getDescription());
+System.out.printf("Model created on: %s%n%n", documentModelInfo.getCreatedOn());
+documentModelInfo.getDocTypes().forEach((key, docTypeInfo) -> {
     System.out.printf("Document type: %s%n", key);
     docTypeInfo.getFieldSchema().forEach((name, documentFieldSchema) -> {
         System.out.printf("Document field: %s%n", name);
@@ -463,19 +463,19 @@ Manage the models in your Form Recognizer account.
 AtomicReference<String> modelId = new AtomicReference<>();
 
 // First, we see how many models we have, and what our limit is
-AccountProperties accountProperties = documentModelAdminClient.getAccountProperties();
-System.out.printf("The account has %s models, and we can have at most %s models",
-    accountProperties.getDocumentModelCount(), accountProperties.getDocumentModelLimit());
+ResourceInfo resourceInfo = documentModelAdminClient.getResourceInfo();
+System.out.printf("The resource has %s models, and we can have at most %s models",
+    resourceInfo.getDocumentModelCount(), resourceInfo.getDocumentModelLimit());
 
 // Next, we get a paged list of all of our models
-PagedIterable<DocumentModelInfo> customDocumentModels = documentModelAdminClient.listModels();
+PagedIterable<DocumentModelSummary> customDocumentModels = documentModelAdminClient.listModels();
 System.out.println("We have following models in the account:");
 customDocumentModels.forEach(documentModelInfo -> {
     System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
     modelId.set(documentModelInfo.getModelId());
 
     // get custom document analysis model info
-    DocumentModel documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
+    DocumentModelInfo documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
     System.out.printf("Model ID: %s%n", documentModel.getModelId());
     System.out.printf("Model Description: %s%n", documentModel.getDescription());
     System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
@@ -532,7 +532,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Build a model: [BuildModel][build_model]
 * Manage custom models: [ManageCustomModels][manage_custom_models]
 * Copy a model between Form Recognizer resources: [CopyModel][copy_model]
-* Create a composed model from a collection of custom-built models: [CreateComposedModel][create_composed_model]
+* Create a composed model from a collection of custom-built models: [ComposeModel][compose_model]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
 
 ### Async APIs
@@ -555,7 +555,7 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Build a model: [BuildModelAsync][build_model_async]
 * Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
 * Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
-* Create a composed model from a collection of custom-built models: [CreateComposedModelAsync][create_composed_model_async]
+* Create a composed model from a collection of custom-built models: [ComposeModelAsync][compose_model_async]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
 
 ### Additional documentation
@@ -602,8 +602,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
 [changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/CHANGELOG.md
 
-[create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
-[create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
+[compose_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeModel.java
+[compose_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ComposeModelAsync.java
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/
 [document_analysis_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java
 [document_analysis_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java

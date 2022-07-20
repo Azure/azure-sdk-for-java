@@ -24,7 +24,11 @@ public final class ExtensionName extends ExpandableStringEnum<ExtensionName> {
         return fromString(name, ExtensionName.class);
     }
 
-    /** @return known ExtensionName values. */
+    /**
+     * Gets known ExtensionName values.
+     *
+     * @return known ExtensionName values.
+     */
     public static Collection<ExtensionName> values() {
         return values(ExtensionName.class);
     }

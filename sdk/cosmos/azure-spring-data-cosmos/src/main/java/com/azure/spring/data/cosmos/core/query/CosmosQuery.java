@@ -117,7 +117,9 @@ public class CosmosQuery {
         if (this.limit == 0) {
             this.limit = limit;
         }
-        this.offset = offset;
+        if (this.offset == 0) {
+            this.offset = offset;
+        }
     }
 
     /**

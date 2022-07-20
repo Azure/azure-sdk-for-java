@@ -1,14 +1,22 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
+### 4.34.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed issues with "id" encoding when using special characters that should be allowed in the "id" property of a document. [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944)
+* Fixed `NotFoundException` for `queryChangeFeed` with staled feed range after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed a regression introduced in [PR 27440](https://github.com/Azure/azure-sdk-for-java/pull/27440) which causes an `IllegalArgumentException` for distinct queries when using POJO serialization. - See [PR 30025](https://github.com/Azure/azure-sdk-for-java/pull/30025)
 
 #### Other Changes
+
+### 4.33.0 (2022-07-14)
+#### Other Changes
+* Updated netty library version to `4.1.78.Final`.
+* Updated `reactor-core` version to `3.4.19`.
 
 ### 4.32.1 (2022-06-30)
 
