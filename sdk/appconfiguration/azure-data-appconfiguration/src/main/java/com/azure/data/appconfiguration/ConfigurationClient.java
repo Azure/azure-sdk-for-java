@@ -17,7 +17,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
-import com.azure.data.appconfiguration.implementation.ConfigurationService;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -53,7 +52,7 @@ import static com.azure.data.appconfiguration.ConfigurationAsyncClient.validateS
  *
  * @see ConfigurationClientBuilder
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, serviceInterfaces = ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class)
 public final class ConfigurationClient {
     private final ConfigurationClientImpl serviceClient;
 

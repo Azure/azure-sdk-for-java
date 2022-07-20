@@ -19,7 +19,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
-import com.azure.data.appconfiguration.implementation.ConfigurationService;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -58,8 +57,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  *
  * @see ConfigurationClientBuilder
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
-    serviceInterfaces = ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true)
 public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
     private final ConfigurationClientImpl serviceClient;
