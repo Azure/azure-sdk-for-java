@@ -9,6 +9,7 @@ import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,7 @@ public final class PersonalizerAdminClient {
     }
 
     public Evaluation createEvaluation(EvaluationContract evaluationContract) {
-        Mono<EvaluationsCreateResponse> response = impl.getEvaluations().createWithResponseAsync(evaluationContract);
+        Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> response = impl.getEvaluations().createWithResponseAsync(evaluationContract);
         return response.block().getValue();
     }
 

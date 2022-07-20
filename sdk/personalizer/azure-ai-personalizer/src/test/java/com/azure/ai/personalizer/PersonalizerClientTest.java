@@ -5,7 +5,7 @@ import com.azure.ai.personalizer.implementation.models.RankResponse;
 import com.azure.ai.personalizer.implementation.models.RankableAction;
 import com.azure.ai.personalizer.implementation.models.RewardRequest;
 import com.azure.core.credential.AzureKeyCredential;
-import org.junit.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,12 @@ public class PersonalizerClientTest {
 
     private static PersonalizerClient client;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() {
-        client = new PersonalizerClient("https://<resource>.cognitiveservices.azure.com/", new AzureKeyCredential("<apikey>"));
+        client = new PersonalizerClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .buildClient();
     }
 
     @Test
