@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import reactor.core.Disposable;
@@ -19,6 +20,7 @@ import reactor.util.retry.Retry;
 
 import java.io.Closeable;
 import java.util.Queue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
@@ -29,7 +31,6 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final ClientLogger logger;
     private final EventHubProducerAsyncClient client;
     private final String partitionId;
-    private final BufferedProducerClientOptions options;
     private final AmqpErrorContext errorContext;
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final Disposable publishSubscription;
@@ -41,13 +42,14 @@ class EventHubBufferedPartitionProducer implements Closeable {
             return Mono.just(true);
         }
     });
+    private final CreateBatchOptions createBatchOptions;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options) {
         this.client = client;
         this.partitionId = partitionId;
-        this.options = options;
         this.errorContext = new AmqpErrorContext(client.getFullyQualifiedNamespace());
+        this.createBatchOptions = new CreateBatchOptions().setPartitionId(partitionId);
 
         this.logger = new ClientLogger(EventHubBufferedPartitionProducer.class + "-" + partitionId);
 
@@ -57,7 +59,12 @@ class EventHubBufferedPartitionProducer implements Closeable {
         final Flux<EventDataBatch> eventDataBatchFlux = Flux.defer(() -> {
             return new EventDataAggregator(eventSink.asFlux(),
                 () -> {
-                    return client.createBatch().subscribeOn(Schedulers.boundedElastic()).block();
+                    final Mono<EventDataBatch> batch = client.createBatch(createBatchOptions);
+                    try {
+                        return batch.toFuture().get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException("Unexpected exception when getting batch.", e);
+                    }
                 },
                 client.getFullyQualifiedNamespace(), options);
         }).retryWhen(retryWhenPolicy);
@@ -106,23 +113,6 @@ class EventHubBufferedPartitionProducer implements Closeable {
         return partitionId;
     }
 
-    /**
-     * Publishes {@link EventDataBatch} and returns the result.
-     *
-     * @return A stream of published results.
-     */
-    Flux<PublishResult> publishEvents(Flux<EventDataBatch> upstream) {
-
-        return Flux.defer(() -> {
-            return upstream.flatMap(batch -> {
-                return client.send(batch).thenReturn(new PublishResult(batch, null))
-                    // Resuming on error because an error is a terminal signal, so we want to wrap that with a result,
-                    // so it doesn't stop publishing.
-                    .onErrorResume(error -> Mono.just(new PublishResult(null, error)));
-            });
-        }).retryWhen(retryWhenPolicy);
-    }
-
     @Override
     public void close() {
         if (isClosed.getAndSet(true)) {
@@ -131,6 +121,23 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
         publishSubscription.dispose();
         client.close();
+    }
+
+    /**
+     * Publishes {@link EventDataBatch} and returns the result.
+     *
+     * @return A stream of published results.
+     */
+    private Flux<PublishResult> publishEvents(Flux<EventDataBatch> upstream) {
+
+        return Flux.defer(() -> {
+            return upstream.flatMap(batch -> {
+                return client.send(batch).thenReturn(new PublishResult(batch, null))
+                    // Resuming on error because an error is a terminal signal, so we want to wrap that with a result,
+                    // so it doesn't stop publishing.
+                    .onErrorResume(error -> Mono.just(new PublishResult(batch, error)));
+            });
+        }).retryWhen(retryWhenPolicy);
     }
 
     /**
