@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -22,15 +23,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.ServerAutomaticTuningsClient;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerAutomaticTuningsClient. */
 public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTuningsClient {
-    private final ClientLogger logger = new ClientLogger(ServerAutomaticTuningsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServerAutomaticTuningsService service;
 
@@ -56,7 +54,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     private interface ServerAutomaticTuningsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/automaticTuning/current")
@@ -68,9 +66,10 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             @PathParam("serverName") String serverName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/automaticTuning/current")
@@ -83,6 +82,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ServerAutomaticTuningInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -95,7 +95,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(
@@ -120,6 +120,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -130,8 +131,9 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                             serverName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -144,7 +146,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(
@@ -169,6 +171,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -177,6 +180,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                 serverName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -189,19 +193,11 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerAutomaticTuningInner> getAsync(String resourceGroupName, String serverName) {
-        return getWithResponseAsync(resourceGroupName, serverName)
-            .flatMap(
-                (Response<ServerAutomaticTuningInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, serverName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -230,7 +226,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerAutomaticTuningInner> getWithResponse(
@@ -244,11 +240,11 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(
@@ -278,6 +274,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -289,8 +286,9 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -299,12 +297,12 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(
@@ -334,6 +332,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -343,6 +342,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -352,24 +352,17 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerAutomaticTuningInner> updateAsync(
         String resourceGroupName, String serverName, ServerAutomaticTuningInner parameters) {
         return updateWithResponseAsync(resourceGroupName, serverName, parameters)
-            .flatMap(
-                (Response<ServerAutomaticTuningInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -378,7 +371,7 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -396,12 +389,12 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerAutomaticTuningInner> updateWithResponse(

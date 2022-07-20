@@ -4,43 +4,43 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** A restorable dropped managed database resource. */
-@JsonFlatten
-@Immutable
-public class RestorableDroppedManagedDatabaseInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedManagedDatabaseInner.class);
-
+@Fluent
+public final class RestorableDroppedManagedDatabaseInner extends Resource {
     /*
-     * The name of the database.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
+    @JsonProperty(value = "properties")
+    private RestorableDroppedManagedDatabaseProperties innerProperties;
 
-    /*
-     * The creation date of the database (ISO8601 format).
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
+    private RestorableDroppedManagedDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The deletion date of the database (ISO8601 format).
-     */
-    @JsonProperty(value = "properties.deletionDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime deletionDate;
+    /** {@inheritDoc} */
+    @Override
+    public RestorableDroppedManagedDatabaseInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
 
-    /*
-     * The earliest restore date of the database (ISO8601 format).
-     */
-    @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime earliestRestoreDate;
+    /** {@inheritDoc} */
+    @Override
+    public RestorableDroppedManagedDatabaseInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the databaseName property: The name of the database.
@@ -48,7 +48,7 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -57,7 +57,7 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -66,7 +66,7 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
-        return this.deletionDate;
+        return this.innerProperties() == null ? null : this.innerProperties().deletionDate();
     }
 
     /**
@@ -75,7 +75,7 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
-        return this.earliestRestoreDate;
+        return this.innerProperties() == null ? null : this.innerProperties().earliestRestoreDate();
     }
 
     /**
@@ -84,5 +84,8 @@ public class RestorableDroppedManagedDatabaseInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

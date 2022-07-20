@@ -22,7 +22,7 @@ public interface ServerAutomaticTuningsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName, String serverName);
@@ -36,7 +36,7 @@ public interface ServerAutomaticTuningsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerAutomaticTuningInner> getAsync(String resourceGroupName, String serverName);
@@ -65,7 +65,7 @@ public interface ServerAutomaticTuningsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerAutomaticTuningInner> getWithResponse(String resourceGroupName, String serverName, Context context);
@@ -76,11 +76,11 @@ public interface ServerAutomaticTuningsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(
@@ -92,11 +92,11 @@ public interface ServerAutomaticTuningsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerAutomaticTuningInner> updateAsync(
@@ -108,7 +108,7 @@ public interface ServerAutomaticTuningsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -124,12 +124,12 @@ public interface ServerAutomaticTuningsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters Server-level Automatic Tuning.
+     * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server-level Automatic Tuning.
+     * @return server-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerAutomaticTuningInner> updateWithResponse(

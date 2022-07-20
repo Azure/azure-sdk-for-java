@@ -23,7 +23,8 @@ public interface ElasticPoolActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list elastic pool activity request.
+     * @return represents the response to a list elastic pool activity request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ElasticPoolActivityInner> listByElasticPoolAsync(
@@ -39,7 +40,8 @@ public interface ElasticPoolActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list elastic pool activity request.
+     * @return represents the response to a list elastic pool activity request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ElasticPoolActivityInner> listByElasticPool(
@@ -56,7 +58,8 @@ public interface ElasticPoolActivitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a list elastic pool activity request.
+     * @return represents the response to a list elastic pool activity request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ElasticPoolActivityInner> listByElasticPool(

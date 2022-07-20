@@ -137,7 +137,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean
         client.getConfigurationSettingWithResponse(
             new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), null, false)
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 final ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
@@ -170,7 +170,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean
         client.deleteConfigurationSettingWithResponse(
             new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 final ConfigurationSetting responseSetting = response.getValue();
                 System.out.printf("Key: %s, Label: %s, Value: %s",
@@ -216,7 +216,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly
         client.setReadOnly("prodDBConnection", "westUS", false)
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> System.out.printf("Key: %s, Value: %s", response.getKey(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#string-string-boolean-clearReadOnly
 
@@ -230,7 +230,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-clearReadOnly
         client.setReadOnlyWithResponse(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"), false)
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(response -> {
                 ConfigurationSetting result = response.getValue();
                 System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
@@ -246,7 +246,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listsettings
         client.listConfigurationSettings(new SettingSelector().setKeyFilter("prodDBConnection"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.listsettings
@@ -259,7 +259,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions
         client.listRevisions(new SettingSelector().setKeyFilter("prodDBConnection"))
-            .subscriberContext(Context.of(key1, value1, key2, value2))
+            .contextWrite(Context.of(key1, value1, key2, value2))
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions

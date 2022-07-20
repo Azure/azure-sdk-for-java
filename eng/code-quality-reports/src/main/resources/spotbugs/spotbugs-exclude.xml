@@ -2610,6 +2610,12 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- Generated implementation of Personalizer is using an inline class -->
+  <Match>
+    <Class name="com.azure.ai.personalizer.implementation.ModelsImpl"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- Some generated base clients in Purview Catalog do not send api-version -->
   <Match>
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
