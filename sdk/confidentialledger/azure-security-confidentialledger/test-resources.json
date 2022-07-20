@@ -41,8 +41,20 @@
 	}],
     "outputs": {
         "LEDGER_NAME": {
-            "type": "String",
+            "type": "string",
             "value": "[parameters('ledgerName')]"
-        }
+        },
+		"IDENTITYSERVICEURI": {
+			"type": "string",
+			"value": "https://identity.confidential-ledger.core.azure.com"
+		},
+		"LEDGERURI": {
+			"type": "string",
+			"value": "https://[parameters('ledgerName')].confidential-ledger.azure.com"
+		},
+		"USERAAD": {
+			"type": "string",
+			"value": "[parameters('principalId')]"
+		}
     }
 }
