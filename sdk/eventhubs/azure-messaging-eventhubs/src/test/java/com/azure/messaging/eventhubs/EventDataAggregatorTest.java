@@ -291,7 +291,15 @@ public class EventDataAggregatorTest {
         publisher.assertMaxRequested(request);
     }
 
-    private static void setupBatchMock(EventDataBatch batch, List<EventData> resultSet, EventData... acceptedEvents) {
+    /**
+     * Helper method to set up mocked {@link EventDataBatch} to accept the given events in {@code resultSet}.
+     *
+     * @param batch Mocked batch.
+     * @param resultSet List to store added EventData in.
+     * @param acceptedEvents EventData that is accepted by the batch when {@link EventDataBatch#tryAdd(EventData)}
+     *     is invoked.
+     */
+    static void setupBatchMock(EventDataBatch batch, List<EventData> resultSet, EventData... acceptedEvents) {
         when(batch.tryAdd(any(EventData.class))).thenAnswer(invocation -> {
             final EventData arg = invocation.getArgument(0);
 
@@ -303,7 +311,9 @@ public class EventDataAggregatorTest {
 
             return matches;
         });
-        when(batch.getEvents()).thenAnswer(invocation -> resultSet);
+        when(batch.getEvents()).thenAnswer(invocation -> {
+            return resultSet;
+        });
         when(batch.getCount()).thenAnswer(invocation -> resultSet.size());
     }
 }
