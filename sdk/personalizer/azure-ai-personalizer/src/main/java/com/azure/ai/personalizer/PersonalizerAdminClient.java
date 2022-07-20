@@ -1,13 +1,6 @@
 package com.azure.ai.personalizer;
 
-import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl;
-import com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder;
 import com.azure.ai.personalizer.implementation.models.*;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
@@ -19,97 +12,89 @@ import java.util.List;
 
 public final class PersonalizerAdminClient {
 
-    private PersonalizerClientV1Preview3Impl impl;
+    private PersonalizerAdminAsyncClient client;
 
-    public PersonalizerAdminClient(String endpoint, AzureKeyCredential keyCredential) {
-    PersonalizerClientV1Preview3ImplBuilder builder = new PersonalizerClientV1Preview3ImplBuilder();
-    HttpClient httpClient = HttpClient.createDefault();
-    impl = builder
-        .endpoint(endpoint)
-        .httpClient(httpClient)
-        .addPolicy(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY, keyCredential))
-        .retryPolicy(new RetryPolicy())
-        .httpLogOptions(new HttpLogOptions())
-        .buildClient();
+    public PersonalizerAdminClient(PersonalizerAdminAsyncClient client) {
+        this.client = client;
     }
 
-    public Evaluation createEvaluation(EvaluationContract evaluationContract) {
-        Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> response = impl.getEvaluations().createWithResponseAsync(evaluationContract);
-        return response.block().getValue();
+    public Response<Evaluation> createEvaluation(EvaluationContract evaluationContract) {
+        Mono<ResponseBase<EvaluationsCreateHeaders, Evaluation>> response = client.createEvaluation(evaluationContract);
+        return response.block();
     }
 
-    public Evaluation getEvaluation(String evaluationId) {
-        Mono<Response<Evaluation>> response = impl.getEvaluations().getWithResponseAsync(evaluationId);
-        return response.block().getValue();
+    public Response<Evaluation> getEvaluation(String evaluationId) {
+        Mono<Response<Evaluation>> response = client.getEvaluation(evaluationId);
+        return response.block();
     }
 
     public void deleteEvaluation(String evaluationId) {
-        Mono<Response<Void>> response = impl.getEvaluations().deleteWithResponseAsync(evaluationId);
+        Mono<Response<Void>> response = client.deleteEvaluation(evaluationId);
         response.block();
     }
 
     public List<Evaluation> getEvaluations() {
-        Mono<Response<List<Evaluation>>> response = impl.getEvaluations().listWithResponseAsync();
+        Mono<Response<List<Evaluation>>> response = client.getEvaluations();
         return response.block().getValue();
     }
 
     public LogsProperties getLogsProperties() {
-        Mono<Response<LogsProperties>> response = impl.getLogs().getPropertiesWithResponseAsync();
+        Mono<Response<LogsProperties>> response = client.getLogsProperties();
         return response.block().getValue();
     }
 
     public void deleteLogs() {
-        Mono<Response<Void>> response = impl.getLogs().deleteWithResponseAsync();
+        Mono<Response<Void>> response = client.deleteLogs();
         response.block();
     }
 
     public ServiceConfiguration updateProperties(ServiceConfiguration configuration) {
-        Mono<Response<ServiceConfiguration>> updatedConfiguration = impl.getServiceConfigurations().updateWithResponseAsync(configuration);
+        Mono<Response<ServiceConfiguration>> updatedConfiguration = client.updateProperties(configuration);
         return updatedConfiguration.block().getValue();
     }
 
     public ServiceConfiguration getProperties(ServiceConfiguration configuration) {
-        Mono<Response<ServiceConfiguration>> updatedConfiguration = impl.getServiceConfigurations().getWithResponseAsync();
+        Mono<Response<ServiceConfiguration>> updatedConfiguration = client.getProperties(configuration);
         return updatedConfiguration.block().getValue();
     }
 
     public void applyEvaluation(PolicyReferenceContract policyReferenceContract) {
-        Mono<Response<Void>> updatedConfiguration = impl.getServiceConfigurations().applyFromEvaluationWithResponseAsync(policyReferenceContract);
+        Mono<Response<Void>> updatedConfiguration = client.applyEvaluation(policyReferenceContract);
         updatedConfiguration.block();
     }
 
     public ModelProperties getModelProperties() {
-        Mono<Response<ModelProperties>> response = impl.getModels().getPropertiesWithResponseAsync();
+        Mono<Response<ModelProperties>> response = client.getModelProperties();
         return response.block().getValue();
     }
 
     public PolicyContract getPolicy() {
-        Mono<Response<PolicyContract>> response = impl.getPolicies().getWithResponseAsync();
+        Mono<Response<PolicyContract>> response = client.getPolicy();
         return response.block().getValue();
     }
 
     public PolicyContract updatePolicy(PolicyContract policy) {
-        Mono<Response<PolicyContract>> response = impl.getPolicies().updateWithResponseAsync(policy);
+        Mono<Response<PolicyContract>> response = client.updatePolicy(policy);
         return response.block().getValue();
     }
 
     public PolicyContract resetPolicy() {
-        Mono<Response<PolicyContract>> response = impl.getPolicies().resetWithResponseAsync();
+        Mono<Response<PolicyContract>> response = client.resetPolicy();
         return response.block().getValue();
     }
 
     public StreamResponse exportModel(boolean isSigned) {
-        Mono<StreamResponse> response = impl.getModels().getWithResponseAsync(isSigned);
+        Mono<StreamResponse> response = client.exportModel(isSigned);
         return response.block();
     }
 
     public void resetModel() {
-        Mono<Response<Void>> response = impl.getModels().resetWithResponseAsync();
+        Mono<Response<Void>> response = client.resetModel();
         response.block();
     }
 
     public void importModel(Flux<ByteBuffer> body, long contentLength) {
-        Mono<Response<Void>> response = impl.getModels().importMethodWithResponseAsync(body, contentLength);
+        Mono<Response<Void>> response = client.importModel(body, contentLength);
         response.block();
     }
 }

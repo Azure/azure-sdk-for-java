@@ -7,5 +7,5 @@ module com.azure.ai.personalizer {
     exports com.azure.ai.personalizer;
 
     opens com.azure.ai.personalizer.implementation to com.fasterxml.jackson.databind;
-    opens com.azure.ai.personalizer.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    exports com.azure.ai.personalizer.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 }
