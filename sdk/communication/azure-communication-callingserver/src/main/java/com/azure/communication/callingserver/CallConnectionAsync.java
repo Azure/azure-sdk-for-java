@@ -404,7 +404,7 @@ public class CallConnectionAsync {
      * @return a CallContentAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallMediaAsync getCallContentAsyncClient() {
+    public CallMediaAsync getCallMediaAsyncClient() {
         return new CallMediaAsync(callConnectionId, contentsInternal);
     }
     //endregion
