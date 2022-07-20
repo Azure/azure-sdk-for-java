@@ -24,7 +24,7 @@ import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.domain.*;
+import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Before;
