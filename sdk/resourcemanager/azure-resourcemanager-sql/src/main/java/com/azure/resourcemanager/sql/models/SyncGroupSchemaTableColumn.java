@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of column in sync group table. */
 @Fluent
 public final class SyncGroupSchemaTableColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncGroupSchemaTableColumn.class);
-
     /*
      * Quoted name of sync group table column.
      */
