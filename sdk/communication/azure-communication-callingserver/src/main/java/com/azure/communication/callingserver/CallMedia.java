@@ -80,4 +80,23 @@ public class CallMedia {
             .playWithResponseInternal(playSource, Collections.emptyList(), context)
             .block();
     }
+
+    /**
+     * Cancels all the queued media operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelAllMediaOperations() {
+        cancelAllMediaOperationsWithResponse(null);
+    }
+
+    /**
+     * Cancels all the queued media operations
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful playAll request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelAllMediaOperationsWithResponse(Context context) {
+        return callMediaAsync.cancelAllMediaOperationsWithResponse(context).block();
+    }
+
 }

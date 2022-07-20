@@ -107,6 +107,32 @@ public class CallMediaAsync {
         });
     }
 
+    /**
+     * Cancels all the queued media operations.
+     * @return Void
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelAllMediaOperations() {
+        return cancelAllMediaOperationsWithResponse(null).then();
+    }
+
+    /**
+     * Cancels all the queued media operations
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful playAll request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponse(Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
                                                   Context context) {
         try {
