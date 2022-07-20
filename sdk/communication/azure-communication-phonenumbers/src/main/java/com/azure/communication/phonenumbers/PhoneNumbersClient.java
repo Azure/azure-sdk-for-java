@@ -295,8 +295,8 @@ public final class PhoneNumbersClient {
      * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType) {
-        return this.listAvailableTollFreeAreaCodes(countryCode, assignmentType, null);
+    public PagedIterable<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode) {
+        return this.listAvailableTollFreeAreaCodes(countryCode, null);
     }
 
 /**
@@ -308,8 +308,8 @@ public final class PhoneNumbersClient {
      * @return A {@link PagedIterable} of {@link AreaCodeResult} instances representing available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, PhoneNumberAssignmentType assignmentType, Context context) {
-        return client.listAreaCodes(countryCode, null, null, PhoneNumberType.TOLL_FREE, assignmentType, null, null);
+    public PagedIterable<AreaCodeResult> listAvailableTollFreeAreaCodes(String countryCode, Context context) {
+        return client.listAreaCodes(countryCode, null, null, PhoneNumberType.TOLL_FREE, PhoneNumberAssignmentType.APPLICATION, null, null);
     }
 
     /**
