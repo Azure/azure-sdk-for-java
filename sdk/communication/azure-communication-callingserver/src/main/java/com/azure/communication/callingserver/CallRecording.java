@@ -14,6 +14,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
 import java.io.OutputStream;
@@ -48,7 +49,7 @@ public class CallRecording {
     }
 
     /**
-     * Start recording of the call.     *
+     * Start recording of the call.
      *
      * @param callLocator Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
@@ -182,12 +183,10 @@ public class CallRecording {
      * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
-     *                  the whole content will be downloaded.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
-        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream) {
+        downloadToWithResponse(sourceEndpoint, destinationStream, null, null);
     }
 
     /**
@@ -204,7 +203,7 @@ public class CallRecording {
     public Response<Void> downloadToWithResponse(String sourceEndpoint,
                                                  OutputStream destinationStream,
                                                  HttpRange httpRange,
-                                                 final Context context) {
+                                                 Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         return callRecordingAsync
@@ -213,17 +212,44 @@ public class CallRecording {
     }
 
     /**
+     * Downloads the entire content.
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadTo(String, OutputStream)} to download larger blobs.</p>
+     *
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @return The content of the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadContent(String sourceEndpoint) {
+        return callRecordingAsync.downloadContent(sourceEndpoint).block();
+    }
+
+    /**
+     * Downloads the entire content.
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadToWithResponse(String, OutputStream, HttpRange, Context)} to download larger blobs.</p>
+     *
+     * @param sourceEndpoint ACS URL where the content is located.
+     * @param range An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @param context A {@link Context} representing the request context.
+     * @return The content of the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> downloadContentWithResponse(String sourceEndpoint, HttpRange range, Context context) {
+        return callRecordingAsync.downloadContentWithResponse(sourceEndpoint, range, context).block();
+    }
+
+    /**
      * Download the content located in {@code endpoint} into a file marked by {@code path}.
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
-     *                 download will work.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint,
-                           Path destinationPath,
-                           DownloadToFileOptions options) {
+                           Path destinationPath) {
+        DownloadToFileOptions options = new DownloadToFileOptions();
         downloadToWithResponse(sourceEndpoint, destinationPath, options, null);
     }
 
@@ -252,11 +278,10 @@ public class CallRecording {
      * Delete the content located in the deleteEndpoint
      *
      * @param deleteEndpoint - ACS URL where the content is located.
-     * @param context A {@link Context} representing the request context.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRecording(String deleteEndpoint, final Context context) {
-        callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
+    public void deleteRecording(String deleteEndpoint) {
+        deleteRecordingWithResponse(deleteEndpoint, null);
     }
 
     /**
@@ -267,7 +292,7 @@ public class CallRecording {
      * @return Response for successful delete request..
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
+    public Response<Void> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
         return callRecordingAsync.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 

@@ -32,6 +32,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -318,20 +319,7 @@ public class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
-        return downloadStream(sourceEndpoint, null);
-    }
-
-    /**
-     * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
-     * passed as parameter.
-     * @param sourceEndpoint - URL where the content is located.
-     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
-     *                  the whole content will be downloaded.
-     * @return A {@link Flux} object containing the byte stream of the content requested.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
-        return downloadStreamWithResponse(sourceEndpoint, httpRange, null)
+        return downloadStreamWithResponse(sourceEndpoint, null, null)
             .map(Response::getValue)
             .flux()
             .flatMap(flux -> flux);
@@ -356,20 +344,55 @@ public class CallRecordingAsync {
     }
 
     /**
+     * Reads the entire content.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStream(String)} ()} to download larger blobs.</p>
+     *
+     * @return A reactive response containing the content data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> downloadContent(String sourceEndpoint) {
+        return downloadStreamWithResponse(sourceEndpoint, null, null)
+            .flatMap(response -> BinaryData.fromFlux(response.getValue()));
+    }
+
+    /**
+     * Reads a range of bytes from a content.
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStreamWithResponse(String, HttpRange, Context)}
+     * to download larger blobs.</p>
+     *
+     * @param sourceEndpoint - URL where the content is located.
+     * @param range - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @param context - A {@link Context} representing the request context.
+     * @return A reactive response containing the blob data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> downloadContentWithResponse(String sourceEndpoint, HttpRange range, Context context) {
+        return downloadStreamWithResponse(sourceEndpoint, range, context)
+            .flatMap(response -> BinaryData.fromFlux(response.getValue())
+                .map(data -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), data)));
+    }
+
+    /**
      * Download the content located in {@code endpoint} into a file marked by {@code path}.
      * This download will be done using parallel workers.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationPath - File location.
-     * @param options - an optional {@link DownloadToFileOptions} object to modify how the
-     *                  download will work.
      * @return Response for a successful downloadTo request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> downloadTo(
         String sourceEndpoint,
-        Path destinationPath,
-        DownloadToFileOptions options) {
+        Path destinationPath) {
         try {
+            DownloadToFileOptions options = new DownloadToFileOptions();
             return downloadToWithResponse(sourceEndpoint, destinationPath, options, null)
                 .then();
         } catch (RuntimeException ex) {
@@ -439,6 +462,7 @@ public class CallRecordingAsync {
             .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
             .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType));
     }
+
     /**
      * Delete the content located at the deleteEndpoint
      * @param deleteEndpoint - ACS URL where the content is located.
