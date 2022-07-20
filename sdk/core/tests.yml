@@ -93,5 +93,5 @@ stages:
         - name: azure-core
           groupId: com.azure
           safeName: azurecore
-      TestName: 'reactor_3.5'
+      TestName: 'reactor_35'
       VersionOverrides: 'reactor_3.5'
