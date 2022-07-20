@@ -186,7 +186,7 @@ public final class ConfigurationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
-        return new ConfigurationClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY, buildAsyncClient());
+        return new ConfigurationClient(buildInnerClient(), DEFAULT_SYNC_TOKEN_POLICY);
     }
 
     /**
@@ -230,7 +230,7 @@ public final class ConfigurationClientBuilder implements
         }
 
         ConfigurationClientImpl client =
-            new ConfigurationClientImpl(pipeline, SERIALIZER_ADAPTER, endpoint, serviceVersion.toString());
+            new ConfigurationClientImpl(pipeline, SERIALIZER_ADAPTER, endpoint, serviceVersion.getVersion());
         return client;
     }
 

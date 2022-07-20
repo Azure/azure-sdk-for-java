@@ -68,14 +68,12 @@ public final class ConfigurationClient {
      * @param serviceClient The {@link ConfigurationClientImpl} that the client routes its request through.
      * @param syncTokenPolicy {@link SyncTokenPolicy} to be used to update the external synchronization token to ensure
      * service requests receive up-to-date values.
-     * @param configurationAsyncClient The {@link ConfigurationAsyncClient} that the client routes its request through.
      */
-    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy,
-        ConfigurationAsyncClient configurationAsyncClient) {
+    ConfigurationClient(ConfigurationClientImpl serviceClient, SyncTokenPolicy syncTokenPolicy) {
         this.serviceClient = serviceClient;
         this.syncTokenPolicy = syncTokenPolicy;
         // remove async client once #30031 resolved.
-        this.configurationAsyncClient = configurationAsyncClient;
+        this.configurationAsyncClient = new ConfigurationAsyncClient(serviceClient, syncTokenPolicy);
     }
 
     /**

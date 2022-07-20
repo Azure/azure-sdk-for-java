@@ -912,7 +912,7 @@ public final class ConfigurationAsyncClient {
                 return Mono.empty();
             }
 
-            return this.serviceClient.listConfigurationSettingsNextPageAsync(continuationToken,
+            return this.serviceClient.listKeyValuesNextPageAsync(continuationToken,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(
                     ignoredValue -> logger.verbose("Retrieving the next listing page - Page {}", continuationToken))
@@ -1046,7 +1046,7 @@ public final class ConfigurationAsyncClient {
     }
 
     private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result = this.serviceClient.listConfigurationSettingsNextPageAsync(nextPageLink,
+        Mono<PagedResponse<ConfigurationSetting>> result = this.serviceClient.listKeyValuesNextPageAsync(nextPageLink,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))

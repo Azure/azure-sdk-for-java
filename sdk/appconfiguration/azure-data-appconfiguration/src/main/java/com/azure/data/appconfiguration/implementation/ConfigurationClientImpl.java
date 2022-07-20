@@ -545,7 +545,7 @@ public final class ConfigurationClientImpl {
         return FluxUtil.withContext(
                 context ->
                     service.listKeyValues(
-                        this.getEndpoint(), this.getApiVersion(), key, label, fields, acceptDatetime, context))
+                        this.getEndpoint(), key, label, this.getApiVersion(), fields, acceptDatetime, context))
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -562,7 +562,7 @@ public final class ConfigurationClientImpl {
                                                                                   String label, String fields,
                                                                                   String acceptDatetime,
                                                                                   Context context) {
-        return service.listKeyValues(this.getEndpoint(), this.getApiVersion(), key, label, fields, acceptDatetime,
+        return service.listKeyValues(this.getEndpoint(), key, label, this.getApiVersion(), fields, acceptDatetime,
                 context)
             .map(
                 res ->
@@ -575,7 +575,7 @@ public final class ConfigurationClientImpl {
                         null));
     }
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> listConfigurationSettingsNextPageAsync(String continuationToken) {
+    public Mono<PagedResponse<ConfigurationSetting>> listKeyValuesNextPageAsync(String continuationToken) {
         return FluxUtil.withContext(
                 context ->
                     service.listKeyValues(
@@ -592,8 +592,8 @@ public final class ConfigurationClientImpl {
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> listConfigurationSettingsNextPageAsync(String continuationToken,
-                                                                                  Context context) {
+    public Mono<PagedResponse<ConfigurationSetting>> listKeyValuesNextPageAsync(String continuationToken,
+                                                                                Context context) {
         return service.listKeyValues(this.getEndpoint(), continuationToken, context)
             .map(
                 res ->
@@ -612,9 +612,8 @@ public final class ConfigurationClientImpl {
                                                                                           String acceptDatetime,
                                                                                           String range,
                                                                                           Context context) {
-        return service.listKeyValueRevisions(this.getEndpoint(), this.getApiVersion(), key, label, fields,
-                acceptDatetime, range,
-                context)
+        return service.listKeyValueRevisions(this.getEndpoint(), key, label, this.getApiVersion(), fields,
+                acceptDatetime, range, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
