@@ -181,7 +181,7 @@ public final class StorageFileResource extends AzureStorageResource {
         } catch (ShareStorageException e) {
             if (e.getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND
                 || e.getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND) {
-                throw new FileNotFoundException("Share or file not existed");
+                throw new FileNotFoundException("Share or file does not exist");
             } else {
                 throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
             }
