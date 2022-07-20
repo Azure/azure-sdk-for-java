@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.PlayRequest;
-import com.azure.communication.callingserver.implementation.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.implementation.models.RecordingStatusResponseInternal;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -73,7 +73,7 @@ public final class ContentsImpl {
         @Post("/calling/recordings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<RecordingStatusResponse>> recording(
+        Mono<Response<RecordingStatusResponseInternal>> recording(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StartCallRecordingRequest startCallRecording,
@@ -285,7 +285,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> recordingWithResponseAsync(
+    public Mono<Response<RecordingStatusResponseInternal>> recordingWithResponseAsync(
             StartCallRecordingRequest startCallRecording) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -309,7 +309,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> recordingWithResponseAsync(
+    public Mono<Response<RecordingStatusResponseInternal>> recordingWithResponseAsync(
             StartCallRecordingRequest startCallRecording, Context context) {
         final String accept = "application/json";
         return service.recording(
@@ -326,10 +326,10 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStatusResponse> recordingAsync(StartCallRecordingRequest startCallRecording) {
+    public Mono<RecordingStatusResponseInternal> recordingAsync(StartCallRecordingRequest startCallRecording) {
         return recordingWithResponseAsync(startCallRecording)
                 .flatMap(
-                        (Response<RecordingStatusResponse> res) -> {
+                        (Response<RecordingStatusResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -349,10 +349,11 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStatusResponse> recordingAsync(StartCallRecordingRequest startCallRecording, Context context) {
+    public Mono<RecordingStatusResponseInternal> recordingAsync(
+            StartCallRecordingRequest startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context)
                 .flatMap(
-                        (Response<RecordingStatusResponse> res) -> {
+                        (Response<RecordingStatusResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -371,7 +372,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStatusResponse recording(StartCallRecordingRequest startCallRecording) {
+    public RecordingStatusResponseInternal recording(StartCallRecordingRequest startCallRecording) {
         return recordingAsync(startCallRecording).block();
     }
 
@@ -386,7 +387,7 @@ public final class ContentsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStatusResponse> recordingWithResponse(
+    public Response<RecordingStatusResponseInternal> recordingWithResponse(
             StartCallRecordingRequest startCallRecording, Context context) {
         return recordingWithResponseAsync(startCallRecording, context).block();
     }

@@ -106,14 +106,17 @@ directive:
     from: RecordingIdResponse
     to: RecordingIdResponseInternal
 - rename-model:
-    from: RecordingStateResponse
-    to: RecordingStateResponseInternal
+    from: RecordingStatusResponse
+    to: RecordingStatusResponseInternal
 - rename-model:
     from: PlayResponse
     to: PlayResponseInternal
 - rename-model:
     from: PlaySource
     to: PlaySourceInternal
+- rename-model:
+    from: FileSource
+    to: FileSourceInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -177,4 +180,13 @@ directive:
   where: $.definitions.CallConnectionStateModel["x-ms-enum"]
   transform: >
     $.name = "CallConnectionStateModelInternal";
+```
+
+### Rename RecordingStatus to RecordingStatusInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStatus["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStatusInternal";
 ```

@@ -163,16 +163,7 @@ public final class CallingServerClient {
     //endregion
 
     //region Recording Management actions
-    /***
-     * Returns an object of CallContent
-     *
-     * @param callConnectionId the id of the call connection
-     * @return a CallContentAsync.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallContent getCallContentClient(String callConnectionId) {
-        return new CallContent(callingServerAsyncClient.getCallContentAsyncClient(callConnectionId));
-    }
+
 
     /***
      * Returns an object of CallRecording

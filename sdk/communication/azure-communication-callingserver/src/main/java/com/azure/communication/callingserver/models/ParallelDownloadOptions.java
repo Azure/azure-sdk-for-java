@@ -5,6 +5,7 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.Constants.ContentDownloader;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ProgressListener;
 
 import java.util.Locale;
 
@@ -16,61 +17,58 @@ import java.util.Locale;
 public final class ParallelDownloadOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private Long blockSize;
-    private Integer maxConcurrency;
-    private ProgressReceiver progressReceiver;
+    private long blockSize;
+    private int maxConcurrency;
+    private ProgressListener progressListener;
 
     /**
      * Creates a new {@link ParallelDownloadOptions} with default parameters applied.
      */
     public ParallelDownloadOptions() {
+        maxConcurrency = 1;
+        blockSize = ContentDownloader.DEFAULT_BUFFER_SIZE;
     }
 
     /**
      * Gets the block size (chunk size) to transfer at a time.
      * @return The block size.
      */
-    public long getBlockSize() {
-        return blockSize == null ? ContentDownloader.DEFAULT_BUFFER_SIZE : blockSize;
+    public Long getBlockSize() {
+        return blockSize;
     }
 
 
     /**
      * Sets the block size.
-     * For upload, The block size is the size of each block that will be staged. This value also determines the number
-     * of requests that need to be made. This parameter also determines the size that each buffer uses when buffering
-     * is required and consequently amount of memory consumed by such methods may be up to blockSize * numBuffers.
-     * For download to file, the block size is the size of each data chunk returned from the service.
-     * For both applications, If block size is large, upload will make fewer network calls, but each
-     * individual call will send more data and will therefore take longer.
+     * The block size is the size of each data chunk returned from the service.
+     * For both applications, If block size is large, download will make fewer network calls, but each
+     * individual call will receive more data and will therefore take longer.
      *
      * @param blockSize The block size.
      * @return The ParallelDownloadOptions object itself.
      */
-    public ParallelDownloadOptions setBlockSize(Long blockSize) {
-        if (blockSize != null) {
-            assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
-        }
+    public ParallelDownloadOptions setBlockSize(long blockSize) {
+        assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
         this.blockSize = blockSize;
         return this;
     }
 
     /**
-     * Gets the Progress receiver for parallel reporting
-     * @return The progress reporter
+     * Gets the Progress listener for parallel reporting
+     * @return The progress listener
      */
-    public ProgressReceiver getProgressReceiver() {
-        return progressReceiver;
+    public ProgressListener getProgressListener() {
+        return progressListener;
     }
 
     /**
-     * Sets the {@link ProgressReceiver}.
+     * Sets the {@link ProgressListener}.
      *
-     * @param progressReceiver The {@link ProgressReceiver}.
+     * @param progressListener The {@link ProgressListener}.
      * @return The ParallelDownloadOptions object itself.
      */
-    public ParallelDownloadOptions setProgressReceiver(ProgressReceiver progressReceiver) {
-        this.progressReceiver = progressReceiver;
+    public ParallelDownloadOptions setProgressReceiver(ProgressListener progressListener) {
+        this.progressListener = progressListener;
         return this;
     }
 
@@ -79,23 +77,19 @@ public final class ParallelDownloadOptions {
      * @return The max concurrency value.
      */
     public int getMaxConcurrency() {
-        return maxConcurrency == null ? ContentDownloader.DEFAULT_CONCURRENT_TRANSFERS_COUNT : maxConcurrency;
+        return maxConcurrency;
     }
 
     /**
      * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
-     * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
+     * a single parallel transfer. This value applies per api. For example, if two calls to downloadTo are made at
      * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
-     * up to 5 for each of the upload operations. For buffered uploads only, the maximum number of buffers to be
-     * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
-     * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
-     * In general, upload methods which do not accept a length parameter must perform some buffering.
+     * up to 5 for each of the upload operations.
+     * The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
      * @return The ParallelDownloadOptions object itself.
      */
-    public ParallelDownloadOptions setMaxConcurrency(Integer maxConcurrency) {
-        if (maxConcurrency != null) {
-            assertInBounds("numBuffers", maxConcurrency, 1, Integer.MAX_VALUE);
-        }
+    public ParallelDownloadOptions setMaxConcurrency(int maxConcurrency) {
+        assertInBounds("numBuffers", maxConcurrency, 1, Integer.MAX_VALUE);
         this.maxConcurrency = maxConcurrency;
         return this;
     }
@@ -110,7 +104,7 @@ public final class ParallelDownloadOptions {
      * @throws IllegalArgumentException If {@code value} is less than {@code min} or {@code value} is greater than
      * {@code max}.
      */
-    public static void assertInBounds(final String param, final long value, final long min, final long max) {
+    static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
             throw new IllegalArgumentException(String.format(Locale.ROOT,
                 PARAMETER_NOT_IN_RANGE, param, min, max));

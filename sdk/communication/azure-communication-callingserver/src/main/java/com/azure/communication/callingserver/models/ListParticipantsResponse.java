@@ -4,10 +4,8 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.accesshelpers.ListParticipantsResponseConstructorProxy;
-import com.azure.communication.callingserver.implementation.accesshelpers.TransferCallResponseConstructorProxy;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callingserver.implementation.models.TransferCallResponseInternal;
 import com.azure.core.annotation.Immutable;
 import java.util.List;
 import java.util.Objects;
@@ -19,12 +17,12 @@ public final class ListParticipantsResponse {
     /*
      * The list of participants in the call.
      */
-    private List<CallParticipant> values;
+    private final List<CallParticipant> values;
 
     /*
      * The nextLink property.
      */
-    private String nextLink;
+    private final String nextLink;
 
     static {
         ListParticipantsResponseConstructorProxy.setAccessor(

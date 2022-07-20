@@ -4,7 +4,7 @@
 
 package com.azure.communication.callingserver.implementation;
 
-import com.azure.communication.callingserver.implementation.models.RecordingStatusResponse;
+import com.azure.communication.callingserver.implementation.models.RecordingStatusResponseInternal;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -54,7 +54,7 @@ public final class ServerCallsImpl {
         @Get("/calling/recordings/{recordingId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<RecordingStatusResponse>> getRecordingProperties(
+        Mono<Response<RecordingStatusResponseInternal>> getRecordingProperties(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
@@ -99,7 +99,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> getRecordingPropertiesWithResponseAsync(String recordingId) {
+    public Mono<Response<RecordingStatusResponseInternal>> getRecordingPropertiesWithResponseAsync(String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -118,7 +118,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStatusResponse>> getRecordingPropertiesWithResponseAsync(
+    public Mono<Response<RecordingStatusResponseInternal>> getRecordingPropertiesWithResponseAsync(
             String recordingId, Context context) {
         final String accept = "application/json";
         return service.getRecordingProperties(
@@ -135,10 +135,10 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStatusResponse> getRecordingPropertiesAsync(String recordingId) {
+    public Mono<RecordingStatusResponseInternal> getRecordingPropertiesAsync(String recordingId) {
         return getRecordingPropertiesWithResponseAsync(recordingId)
                 .flatMap(
-                        (Response<RecordingStatusResponse> res) -> {
+                        (Response<RecordingStatusResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -158,10 +158,10 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStatusResponse> getRecordingPropertiesAsync(String recordingId, Context context) {
+    public Mono<RecordingStatusResponseInternal> getRecordingPropertiesAsync(String recordingId, Context context) {
         return getRecordingPropertiesWithResponseAsync(recordingId, context)
                 .flatMap(
-                        (Response<RecordingStatusResponse> res) -> {
+                        (Response<RecordingStatusResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -180,7 +180,7 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStatusResponse getRecordingProperties(String recordingId) {
+    public RecordingStatusResponseInternal getRecordingProperties(String recordingId) {
         return getRecordingPropertiesAsync(recordingId).block();
     }
 
@@ -195,7 +195,8 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStatusResponse> getRecordingPropertiesWithResponse(String recordingId, Context context) {
+    public Response<RecordingStatusResponseInternal> getRecordingPropertiesWithResponse(
+            String recordingId, Context context) {
         return getRecordingPropertiesWithResponseAsync(recordingId, context).block();
     }
 

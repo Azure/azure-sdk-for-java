@@ -288,22 +288,11 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnectionAsync getCallConnectionAsyncClient(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionInternal, contentsInternal);
     }
     //endregion
 
     //region Content management Actions
-    /***
-     * Returns an object of CallContentAsync
-     *
-     * @param callConnectionId the id of the call connection
-     * @return a CallContentAsync.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallContentAsync getCallContentAsyncClient(String callConnectionId) {
-        return new CallContentAsync(callConnectionId, contentsInternal);
-    }
-
     /***
      * Returns an object of CallRecordingAsync
      *
