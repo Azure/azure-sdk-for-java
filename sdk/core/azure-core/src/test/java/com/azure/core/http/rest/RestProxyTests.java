@@ -80,6 +80,14 @@ public class RestProxyTests {
 
         @Get("my/url/path")
         @ExpectedResponses({200})
+        Mono<Response<Void>> testMethodReturnsMonoResponseVoid();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        Response<Void> testMethodReturnsResponseVoid();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
         StreamResponse testDownload();
 
         @Get("my/url/path")
@@ -242,6 +250,38 @@ public class RestProxyTests {
         StepVerifier.create(
                 testInterface.testMethodReturnsMonoVoid())
             .verifyComplete();
+
+        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+    }
+
+    @Test
+    public void monoResponseVoidReturningApiEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StepVerifier.create(
+                testInterface.testMethodReturnsMonoResponseVoid())
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+    }
+
+    @Test
+    public void responseVoidReturningApiEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testMethodReturnsResponseVoid();
 
         assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
         assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());

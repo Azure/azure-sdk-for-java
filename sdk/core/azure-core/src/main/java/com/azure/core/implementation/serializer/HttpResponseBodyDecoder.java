@@ -370,20 +370,13 @@ public final class HttpResponseBodyDecoder {
         }
 
 
-        return isReturnTypeDecodable(returnType)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)
-            || isMonoVoid(returnType);
+        return isReturnTypeDecodable(returnType) || doesNotNeedResponseBody(returnType);
     }
 
-    private static boolean isMonoVoid(Type type) {
-        if (TypeUtil.isTypeOrSubTypeOf(type, Mono.class)) {
-            Type monoType = TypeUtil.getTypeArgument(type);
-            return TypeUtil.isTypeOrSubTypeOf(monoType, Void.TYPE)
-                || TypeUtil.isTypeOrSubTypeOf(monoType, Void.class);
-        }
-
-        return false;
+    private static boolean doesNotNeedResponseBody(Type type) {
+        Type typeToInspect = unwrapReturnType(type);
+        return TypeUtil.isTypeOrSubTypeOf(typeToInspect, Void.TYPE)
+            || TypeUtil.isTypeOrSubTypeOf(typeToInspect, Void.class);
     }
 
     private static Type unwrapReturnType(Type returnType) {
