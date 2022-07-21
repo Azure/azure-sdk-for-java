@@ -2,16 +2,19 @@ package com.azure.ai.personalizer;
 
 import com.azure.ai.personalizer.implementation.models.PolicyContract;
 import com.azure.ai.personalizer.implementation.models.ServiceConfiguration;
-import com.azure.core.credential.AzureKeyCredential;
-import org.junit.jupiter.api.Test;
+import com.azure.core.http.HttpClient;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 
+import static com.azure.ai.personalizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigurationTests {
-    @Test
-    public final void ConfigurationTests() {
+public class ConfigurationTests extends PersonalizerTestBase {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
+    public final void ConfigurationTests(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
         Duration newExperimentalUnitDuration = Duration.ofHours(4);
         Duration modelExportFrequency = Duration.ofHours(3);
         double newDefaultReward = 1.0;
@@ -24,7 +27,7 @@ public class ConfigurationTests {
             .setRewardWaitTime(newExperimentalUnitDuration)
             .setExplorationPercentage(newExplorationPercentage)
             .setLogRetentionDays(Integer.MAX_VALUE);
-        PersonalizerAdminClient client = GetAdministrationClient();
+        PersonalizerAdminClient client = GetAdministrationClient(httpClient, serviceVersion);
         UpdateProperties(client, properties);
         GetProperties(client, properties);
         UpdateAndGetPolicy(client);

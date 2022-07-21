@@ -3,15 +3,41 @@
 
 package com.azure.ai.personalizer;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
+import org.junit.jupiter.params.provider.Arguments;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.getHttpClients;
 
 public final class TestUtils {
 
+    public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
+    public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
-    public static final String AZURE_PERSONALIZER_ENDPOINT_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("AZURE_PERSONALIZER_ENDPOINT");
+    public static final String PERSONALIZER_ENDPOINT_SINGLE_SLOT =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_ENDPOINT_SINGLE_SLOT");
+
+    public static final String INVALID_KEY = "invalid key";
+
+    public static final String AZURE_CLIENT_ID
+        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
+    public static final String AZURE_TENANT_ID
+        = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
+    public static final String AZURE_PERSONALIZER_CLIENT_SECRET
+        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
+
+    public static final String PERSONALIZER_API_KEY_SINGLE_SLOT =
+        GLOBAL_CONFIGURATION.get("PERSONALIZER_API_KEY_SINGLE_SLOT");
 
     public static PersonalizerAudience getAudience(String endpoint) {
         String authority = getAuthority(endpoint);
@@ -51,4 +77,36 @@ public final class TestUtils {
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
 
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    static Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        List<PersonalizerServiceVersion> serviceVersions = new ArrayList<>();
+        serviceVersions.add(PersonalizerServiceVersion.V1_1_PREVIEW_3);
+        getHttpClients()
+            .forEach(httpClient -> serviceVersions.stream().filter(
+                    TestUtils::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+        return argumentsList.stream();
+    }
+
+    private static boolean shouldServiceVersionBeTested(PersonalizerServiceVersion serviceVersion) {
+        String serviceVersionFromEnv =
+            Configuration.getGlobalConfiguration().get("AZURE_PERSONALIZER_TEST_SERVICE_VERSIONS");
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
+            return PersonalizerServiceVersion.getLatest().equals(serviceVersion);
+        }
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
 }
