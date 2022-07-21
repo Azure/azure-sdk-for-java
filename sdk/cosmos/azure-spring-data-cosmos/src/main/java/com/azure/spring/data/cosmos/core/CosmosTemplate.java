@@ -749,6 +749,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
 
         Flux<FeedResponse<JsonNode>> feedResponseFlux;
+        /*
+         * The user can pass in an offset with the pageable, if this is done we need to apply
+         * the offset to the first page so that we can shift the data and skip the number of
+         * offset records. Starting with the 2nd page it picks up where the first page left off
+         * so we do not need to apply the offset as the continuation token handles the pages.
+         */
         if (pageable instanceof CosmosPageRequest) {
             int contentSize = pageable.getPageSize();
             if (!pageable.hasPrevious()) {

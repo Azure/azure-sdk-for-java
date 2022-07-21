@@ -303,10 +303,6 @@ public abstract class AbstractQueryGenerator {
                                                          toCosmosDbValue(p.getSecond())))
                                                      .collect(Collectors.toList());
 
-        /*if (query.getPageable().isPaged()) {
-            query.withOffsetAndLimit(query.getPageable().getOffset(), query.getPageable().getPageSize());
-        }*/
-
         if (query.getLimit() > 0) {
             queryString = new StringBuilder(queryString)
                 .append(" OFFSET ")
