@@ -10,6 +10,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IOUtils;
 import com.azure.core.util.ProgressReporter;
+import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Flux;
@@ -27,6 +28,10 @@ import java.util.function.BiFunction;
  * This class contains the response information returned from the server when downloading a blob.
  */
 public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> implements Closeable {
+
+    static {
+        BlobDownloadAsyncResponseConstructorProxy.setAccessor(BlobDownloadAsyncResponse::new);
+    }
 
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
@@ -60,7 +65,7 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      * @param onErrorResume Function used to resume.
      * @param retryOptions Retry options.
      */
-    public BlobDownloadAsyncResponse(
+    BlobDownloadAsyncResponse(
         StreamResponse initialResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
         DownloadRetryOptions retryOptions) {
