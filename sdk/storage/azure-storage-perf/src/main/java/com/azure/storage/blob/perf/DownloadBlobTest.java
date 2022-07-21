@@ -54,6 +54,7 @@ public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public Mono<Void> runAsync() {
         if (NEW_DOWNLOAD != null) {
