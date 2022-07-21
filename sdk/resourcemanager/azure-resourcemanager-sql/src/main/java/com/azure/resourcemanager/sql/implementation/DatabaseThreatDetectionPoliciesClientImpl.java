@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -22,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.DatabaseThreatDetectionPoliciesClient;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
@@ -30,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabaseThreatDetectionPoliciesClient. */
 public final class DatabaseThreatDetectionPoliciesClientImpl implements DatabaseThreatDetectionPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(DatabaseThreatDetectionPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabaseThreatDetectionPoliciesService service;
 
@@ -60,7 +58,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
     private interface DatabaseThreatDetectionPoliciesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
@@ -74,9 +72,10 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
             @PathParam("databaseName") String databaseName,
             @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
@@ -91,6 +90,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
             @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseSecurityAlertPolicyInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -105,7 +105,8 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -141,6 +142,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -153,8 +155,9 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
                             databaseName,
                             securityAlertPolicyName,
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -169,7 +172,8 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -206,6 +210,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -216,6 +221,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
                 databaseName,
                 securityAlertPolicyName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -230,7 +236,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseSecurityAlertPolicyInner> getAsync(
@@ -239,14 +245,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
         String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName)
-            .flatMap(
-                (Response<DatabaseSecurityAlertPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -283,7 +282,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's threat detection policy.
+     * @return a database's threat detection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseSecurityAlertPolicyInner> getWithResponse(
@@ -304,11 +303,12 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -350,6 +350,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -363,8 +364,9 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
                             securityAlertPolicyName,
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -375,12 +377,13 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -423,6 +426,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
             parameters.validate();
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -434,6 +438,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
                 securityAlertPolicyName,
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -445,11 +450,11 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -460,14 +465,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
         DatabaseSecurityAlertPolicyInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters)
-            .flatMap(
-                (Response<DatabaseSecurityAlertPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -478,7 +476,7 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -503,12 +501,12 @@ public final class DatabaseThreatDetectionPoliciesClientImpl implements Database
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which database Threat Detection policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters Contains information about a database Threat Detection policy.
+     * @param parameters The database Threat Detection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a database Threat Detection policy.
+     * @return contains information about a database Threat Detection policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(

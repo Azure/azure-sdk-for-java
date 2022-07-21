@@ -24,7 +24,11 @@ public final class ConnectionPolicyName extends ExpandableStringEnum<ConnectionP
         return fromString(name, ConnectionPolicyName.class);
     }
 
-    /** @return known ConnectionPolicyName values. */
+    /**
+     * Gets known ConnectionPolicyName values.
+     *
+     * @return known ConnectionPolicyName values.
+     */
     public static Collection<ConnectionPolicyName> values() {
         return values(ConnectionPolicyName.class);
     }

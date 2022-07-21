@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Import database parameters. */
 @Fluent
 public final class ImportRequest extends ExportRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportRequest.class);
-
     /*
      * The name of the database to import.
      */
@@ -148,6 +145,48 @@ public final class ImportRequest extends ExportRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ImportRequest withStorageKeyType(StorageKeyType storageKeyType) {
+        super.withStorageKeyType(storageKeyType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImportRequest withStorageKey(String storageKey) {
+        super.withStorageKey(storageKey);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImportRequest withStorageUri(String storageUri) {
+        super.withStorageUri(storageUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImportRequest withAdministratorLogin(String administratorLogin) {
+        super.withAdministratorLogin(administratorLogin);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImportRequest withAdministratorLoginPassword(String administratorLoginPassword) {
+        super.withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImportRequest withAuthenticationType(AuthenticationType authenticationType) {
+        super.withAuthenticationType(authenticationType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -157,25 +196,27 @@ public final class ImportRequest extends ExportRequest {
     public void validate() {
         super.validate();
         if (databaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property databaseName in model ImportRequest"));
         }
         if (edition() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property edition in model ImportRequest"));
         }
         if (serviceObjectiveName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serviceObjectiveName in model ImportRequest"));
         }
         if (maxSizeBytes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property maxSizeBytes in model ImportRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportRequest.class);
 }

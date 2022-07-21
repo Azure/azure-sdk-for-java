@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -23,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.BackupLongTermRetentionPoliciesClient;
@@ -35,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupLongTermRetentionPoliciesClient. */
 public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLongTermRetentionPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(BackupLongTermRetentionPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupLongTermRetentionPoliciesService service;
 
@@ -65,7 +63,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientB")
     private interface BackupLongTermRetentionPoliciesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
@@ -79,9 +77,10 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
             @PathParam("policyName") LongTermRetentionPolicyName policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}")
@@ -96,9 +95,10 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") BackupLongTermRetentionPolicyInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/backupLongTermRetentionPolicies")
@@ -111,6 +111,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
             @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -125,7 +126,8 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupLongTermRetentionPolicyInner>> getWithResponseAsync(
@@ -156,6 +158,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -168,8 +171,9 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                             policyName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -184,7 +188,8 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupLongTermRetentionPolicyInner>> getWithResponseAsync(
@@ -219,6 +224,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -229,6 +235,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                 policyName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -243,20 +250,13 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupLongTermRetentionPolicyInner> getAsync(
         String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, policyName)
-            .flatMap(
-                (Response<BackupLongTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -290,7 +290,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupLongTermRetentionPolicyInner> getWithResponse(
@@ -310,11 +310,11 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -354,6 +354,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -367,8 +368,9 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -379,12 +381,12 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -425,6 +427,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -436,6 +439,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -447,13 +451,13 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -481,14 +485,14 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -519,13 +523,13 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -545,14 +549,14 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupLongTermRetentionPolicyInner>, BackupLongTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -573,11 +577,11 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupLongTermRetentionPolicyInner> createOrUpdateAsync(
@@ -599,12 +603,12 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupLongTermRetentionPolicyInner> createOrUpdateAsync(
@@ -627,7 +631,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -651,7 +655,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,7 +684,8 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupLongTermRetentionPolicyInner>> listByDatabaseWithResponseAsync(
@@ -708,6 +713,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -719,8 +725,9 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                             databaseName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -734,7 +741,8 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupLongTermRetentionPolicyInner>> listByDatabaseWithResponseAsync(
@@ -762,6 +770,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -771,6 +780,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
                 databaseName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -784,20 +794,13 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupLongTermRetentionPolicyInner> listByDatabaseAsync(
         String resourceGroupName, String serverName, String databaseName) {
         return listByDatabaseWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap(
-                (Response<BackupLongTermRetentionPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -829,7 +832,7 @@ public final class BackupLongTermRetentionPoliciesClientImpl implements BackupLo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupLongTermRetentionPolicyInner> listByDatabaseWithResponse(

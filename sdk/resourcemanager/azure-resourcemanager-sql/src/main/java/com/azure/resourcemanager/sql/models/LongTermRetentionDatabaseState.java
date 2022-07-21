@@ -30,7 +30,11 @@ public final class LongTermRetentionDatabaseState extends ExpandableStringEnum<L
         return fromString(name, LongTermRetentionDatabaseState.class);
     }
 
-    /** @return known LongTermRetentionDatabaseState values. */
+    /**
+     * Gets known LongTermRetentionDatabaseState values.
+     *
+     * @return known LongTermRetentionDatabaseState values.
+     */
     public static Collection<LongTermRetentionDatabaseState> values() {
         return values(LongTermRetentionDatabaseState.class);
     }
