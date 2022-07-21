@@ -369,9 +369,21 @@ public final class HttpResponseBodyDecoder {
             return false;
         }
 
+
         return isReturnTypeDecodable(returnType)
             || TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);
+            || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)
+            || isMonoVoid(returnType);
+    }
+
+    private static boolean isMonoVoid(Type type) {
+        if (TypeUtil.isTypeOrSubTypeOf(type, Mono.class)) {
+            Type monoType = TypeUtil.getTypeArgument(type);
+            return TypeUtil.isTypeOrSubTypeOf(monoType, Void.TYPE)
+                || TypeUtil.isTypeOrSubTypeOf(monoType, Void.class);
+        }
+
+        return false;
     }
 
     private static Type unwrapReturnType(Type returnType) {

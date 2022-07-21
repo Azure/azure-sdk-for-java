@@ -216,6 +216,37 @@ public class RestProxyTests {
         Mockito.verify(client.lastResponseSpy).close();
     }
 
+    @Test
+    public void voidReturningApiEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+
+        testInterface.testVoidMethod();
+
+        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+    }
+
+    @Test
+    public void monoVoidReturningApiEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StepVerifier.create(
+                testInterface.testMethodReturnsMonoVoid())
+            .verifyComplete();
+
+        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+    }
+
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
         String string = "hello";
         byte[] bytes = string.getBytes();
@@ -243,10 +274,17 @@ public class RestProxyTests {
 
         private volatile HttpRequest lastHttpRequest;
         private volatile HttpResponse lastResponseSpy;
+        private volatile Context lastContext;
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
+            return send(request, Context.NONE);
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
             lastHttpRequest = request;
+            lastContext = context;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success = success && request.getHeaders()
@@ -269,6 +307,10 @@ public class RestProxyTests {
 
         public HttpResponse getLastResponseSpy() {
             return lastResponseSpy;
+        }
+
+        public Context getLastContext() {
+            return lastContext;
         }
     }
 
