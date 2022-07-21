@@ -116,6 +116,16 @@ class EventHubBufferedPartitionProducer implements Closeable {
         return eventQueue.size();
     }
 
+    /**
+     * Flushes all the events in the queue. Does not allow for any additional events to be enqueued as it is being
+     * flushed.
+     *
+     * @return A Mono that completes when all events are flushed.
+     */
+    Mono<Void> flush() {
+        return Mono.error(new IllegalStateException("not implemented yet."));
+    }
+
     @Override
     public void close() {
         if (isClosed.getAndSet(true)) {
