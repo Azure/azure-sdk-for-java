@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -285,6 +286,40 @@ public class RestProxyTests {
 
         assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
         assertTrue((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+    }
+
+    @Test
+    public void streamResponseDoesNotEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testDownload();
+
+        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+    }
+
+    @Test
+    public void monoWithStreamResponseDoesNotEagerlyReadsResponse() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StepVerifier.create(
+                testInterface.testDownloadAsync()
+                    .doOnNext(StreamResponse::close))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
+        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
