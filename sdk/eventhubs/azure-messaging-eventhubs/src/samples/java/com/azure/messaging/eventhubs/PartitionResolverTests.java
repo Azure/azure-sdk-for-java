@@ -73,6 +73,11 @@ public class PartitionResolverTests {
         return arguments.stream();
     }
 
+    /**
+     * Tests that events are distributed equally given the set of partitions.
+     *
+     * @param partitionsList List of partitions to distribute all events between.
+     */
     @ParameterizedTest
     @MethodSource("partitionSetTestCases")
     public void distributesRoundRobinFairly(List<String> partitionsList) {
