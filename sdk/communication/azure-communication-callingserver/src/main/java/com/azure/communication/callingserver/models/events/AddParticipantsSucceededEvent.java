@@ -4,8 +4,7 @@
 
 package com.azure.communication.callingserver.models.events;
 
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.ResultInformation;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,13 +23,13 @@ public final class AddParticipantsSucceededEvent extends CallingServerEventBase 
      * The resultInfo property.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInformation resultInfo;
+    private ResultInfo resultInfo;
 
     /*
      * Participants added
      */
     @JsonProperty(value = "participants")
-    private List<CommunicationIdentifierModel> participants;
+    private List<CommunicationIdentifier> participants;
 
     /*
      * The type property.
@@ -82,7 +81,7 @@ public final class AddParticipantsSucceededEvent extends CallingServerEventBase 
      *
      * @return the resultInfo value.
      */
-    public ResultInformation getResultInfo() {
+    public ResultInfo getResultInfo() {
         return this.resultInfo;
     }
 
@@ -92,7 +91,7 @@ public final class AddParticipantsSucceededEvent extends CallingServerEventBase 
      * @param resultInfo the resultInfo value to set.
      * @return the AddParticipantsSucceededEvent object itself.
      */
-    public AddParticipantsSucceededEvent setResultInfo(ResultInformation resultInfo) {
+    public AddParticipantsSucceededEvent setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
@@ -102,7 +101,7 @@ public final class AddParticipantsSucceededEvent extends CallingServerEventBase 
      *
      * @return the participants value.
      */
-    public List<CommunicationIdentifierModel> getParticipants() {
+    public List<CommunicationIdentifier> getParticipants() {
         return this.participants;
     }
 
@@ -112,7 +111,7 @@ public final class AddParticipantsSucceededEvent extends CallingServerEventBase 
      * @param participants the participants value to set.
      * @return the AddParticipantsSucceededEvent object itself.
      */
-    public AddParticipantsSucceededEvent setParticipants(List<CommunicationIdentifierModel> participants) {
+    public AddParticipantsSucceededEvent setParticipants(List<CommunicationIdentifier> participants) {
         this.participants = participants;
         return this;
     }

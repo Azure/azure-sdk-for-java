@@ -4,7 +4,6 @@
 
 package com.azure.communication.callingserver.models.events;
 
-import com.azure.communication.callingserver.implementation.models.ResultInformation;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,7 +20,7 @@ public final class CallTransferAcceptedEvent extends CallingServerEventBase {
      * The resultInfo property.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInformation resultInfo;
+    private ResultInfo resultInfo;
 
     /*
      * The type property.
@@ -73,7 +72,7 @@ public final class CallTransferAcceptedEvent extends CallingServerEventBase {
      *
      * @return the resultInfo value.
      */
-    public ResultInformation getResultInfo() {
+    public ResultInfo getResultInfo() {
         return this.resultInfo;
     }
 
@@ -83,7 +82,7 @@ public final class CallTransferAcceptedEvent extends CallingServerEventBase {
      * @param resultInfo the resultInfo value to set.
      * @return the CallTransferAcceptedEvent object itself.
      */
-    public CallTransferAcceptedEvent setResultInfo(ResultInformation resultInfo) {
+    public CallTransferAcceptedEvent setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
