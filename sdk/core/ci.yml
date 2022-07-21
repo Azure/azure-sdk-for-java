@@ -82,7 +82,7 @@ parameters:
   default: true
 
 extends:
-  template: intermediate.yml
+  template: build-and-test.yml
   parameters:
     Artifacts:
       - name: azure-core
