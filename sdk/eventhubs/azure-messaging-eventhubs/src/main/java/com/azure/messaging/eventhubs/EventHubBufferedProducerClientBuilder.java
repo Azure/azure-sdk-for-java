@@ -35,6 +35,7 @@ import static com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.
 public final class EventHubBufferedProducerClientBuilder {
     private final EventHubClientBuilder builder;
     private final BufferedProducerClientOptions clientOptions = new BufferedProducerClientOptions();
+    private final PartitionResolver partitionResolver = new PartitionResolver();
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -353,14 +354,13 @@ public final class EventHubBufferedProducerClientBuilder {
         return this;
     }
 
-
     /**
      * Builds a new instance of the async buffered producer client.
      *
      * @return A new instance of {@link EventHubBufferedProducerAsyncClient}.
      */
     public EventHubBufferedProducerAsyncClient buildAsyncClient() {
-        return new EventHubBufferedProducerAsyncClient(builder, clientOptions);
+        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver);
     }
 
     /**
