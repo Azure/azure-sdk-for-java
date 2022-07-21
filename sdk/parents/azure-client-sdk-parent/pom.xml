@@ -193,6 +193,9 @@
     <skipTestCompile>false</skipTestCompile>
 
     <compiler.proc>none</compiler.proc>
+
+    <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
+    <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
   </properties>
 
   <build>
@@ -528,7 +531,7 @@
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
-              <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+              <arg>-Xlint:${compiler.failondeprecatedstatus}deprecation</arg>
               <arg>-Xlint:dep-ann</arg>
               <arg>-Xlint:divzero</arg>
               <arg>-Xlint:empty</arg>
@@ -970,6 +973,7 @@
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:removal</arg>
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>

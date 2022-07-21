@@ -30,7 +30,11 @@ public final class ElasticPoolState extends ExpandableStringEnum<ElasticPoolStat
         return fromString(name, ElasticPoolState.class);
     }
 
-    /** @return known ElasticPoolState values. */
+    /**
+     * Gets known ElasticPoolState values.
+     *
+     * @return known ElasticPoolState values.
+     */
     public static Collection<ElasticPoolState> values() {
         return values(ElasticPoolState.class);
     }

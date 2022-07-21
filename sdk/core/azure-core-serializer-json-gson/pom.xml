@@ -49,6 +49,9 @@
       --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=ALL-UNNAMED
       --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=com.google.gson
     </javaModulesSurefireArgLine>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
   </properties>
 
   <developers>
@@ -117,17 +120,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:deprecation</arg>
-          </compilerArgs>
         </configuration>
       </plugin>
     </plugins>

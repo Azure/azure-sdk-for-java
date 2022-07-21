@@ -222,7 +222,14 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
     public Mono<CommunityGalleryImageInner> getAsync(
         String location, String publicGalleryName, String galleryImageName) {
         return getWithResponseAsync(location, publicGalleryName, galleryImageName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(
+                (Response<CommunityGalleryImageInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**

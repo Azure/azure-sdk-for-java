@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ServerCommunicationLinkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of server communication links. */
 @Fluent
 public final class ServerCommunicationLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerCommunicationLinkListResult.class);
-
     /*
      * The list of server communication links.
      */
